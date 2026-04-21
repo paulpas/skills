@@ -19,6 +19,28 @@ Skills are loaded in OpenCode via the `/skill` command. Browse by category below
 
 ---
 
+## Coding Patterns
+
+**[coding-conviction-scoring](./coding-conviction-scoring/SKILL.md)** — Multi-factor conviction scoring engine combining technical, momentum, trend, volatility, and volume signals with configurable weights
+
+**[coding-data-normalization](./coding-data-normalization/SKILL.md)** — Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization
+
+**[coding-event-bus](./coding-event-bus/SKILL.md)** — Async pub/sub event bus with typed events, mixed sync/async dispatch, and singleton initialization for trading systems
+
+**[coding-event-driven-architecture](./coding-event-driven-architecture/SKILL.md)** — Event-driven architecture for real-time trading systems: pub/sub patterns, event types, signal flow, strategy base, and common pitfalls
+
+**[coding-fastapi-patterns](./coding-fastapi-patterns/SKILL.md)** — FastAPI application structure with typed error hierarchy, global exception handlers, CORS middleware, request timing, and lifecycle events
+
+**[coding-pydantic-config](./coding-pydantic-config/SKILL.md)** — Pydantic-based configuration management with frozen models, nested hierarchy, TOML/env parsing, and module-level singleton
+
+**[coding-pydantic-models](./coding-pydantic-models/SKILL.md)** — Pydantic frozen data models for trading: enums, annotated constraints, field/model validators, and computed properties
+
+**[coding-strategy-base](./coding-strategy-base/SKILL.md)** — Abstract base strategy pattern with initialization guards, typed abstract methods, and conviction scoring integration
+
+**[coding-websocket-manager](./coding-websocket-manager/SKILL.md)** — WebSocket connection manager with state machine (connecting/connected/reconnecting/error), exponential backoff, and message routing
+
+---
+
 ## Trading AI & ML
 
 **[trading-ai-anomaly-detection](./trading-ai-anomaly-detection/SKILL.md)** — Detect anomalous market behavior, outliers, and potential market manipulation
@@ -219,26 +241,6 @@ Skills are loaded in OpenCode via the `/skill` command. Browse by category below
 
 **[trading-fundamentals-trading-psychology](./trading-fundamentals-trading-psychology/SKILL.md)** — Emotional discipline, cognitive bias awareness, and maintaining operational integrity in trading
 
----
 
-## Coding Patterns
-
-**[coding-conviction-scoring](./coding-conviction-scoring/SKILL.md)** — Multi-factor conviction scoring engine combining technical, momentum, trend, volatility, and volume signals with configurable weights
-
-**[coding-data-normalization](./coding-data-normalization/SKILL.md)** — Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization
-
-**[coding-event-bus](./coding-event-bus/SKILL.md)** — Async pub/sub event bus with typed events, mixed sync/async dispatch, and singleton initialization for trading systems
-
-**[coding-event-driven-architecture](./coding-event-driven-architecture/SKILL.md)** — Event-driven architecture for real-time trading systems: pub/sub patterns, event types, signal flow, strategy base, and common pitfalls
-
-**[coding-fastapi-patterns](./coding-fastapi-patterns/SKILL.md)** — FastAPI application structure with typed error hierarchy, global exception handlers, CORS middleware, request timing, and lifecycle events
-
-**[coding-pydantic-config](./coding-pydantic-config/SKILL.md)** — Pydantic-based configuration management with frozen models, nested hierarchy, TOML/env parsing, and module-level singleton
-
-**[coding-pydantic-models](./coding-pydantic-models/SKILL.md)** — Pydantic frozen data models for trading: enums, annotated constraints, field/model validators, and computed properties
-
-**[coding-strategy-base](./coding-strategy-base/SKILL.md)** — Abstract base strategy pattern with initialization guards, typed abstract methods, and conviction scoring integration
-
-**[coding-websocket-manager](./coding-websocket-manager/SKILL.md)** — WebSocket connection manager with state machine (connecting/connected/reconnecting/error), exponential backoff, and message routing
 
 ---
