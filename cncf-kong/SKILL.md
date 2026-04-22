@@ -323,36 +323,6 @@ Use kong when you need api-gateway capabilities in your Kubernetes or cloud-nati
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-kong follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-kong-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -384,3 +354,126 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Kong Ingress Controller with TLS Termination
+
+
+```yaml
+# Kong Ingress Controller configuration
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/strip-path: "true"
+    konghq.com/preserve-host: "true"
+spec:
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: myapp-service
+            port:
+              number: 80
+      - path: /graphql
+        pathType: Prefix
+        backend:
+          service:
+            name: graphql-service
+            port:
+              number: 4000
+  tls:
+  - hosts:
+    - api.example.com
+    secretName: myapp-tls-secret
+```
+
+### Kong Plugin Configuration
+
+
+```yaml
+# Kong Consumer and Plugin configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: myapp-api-key
+type: Opaque
+stringData:
+  apikey: my-secret-api-key
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: myapp-consumer
+  annotations:
+    konghq.com/credentials: myapp-api-key
+username: myapp
+credentials:
+- myapp-api-key
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: rate-limiting
+config:
+  minute: 100
+  policy: local
+plugin: rate-limiting
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: request-transformer
+config:
+  headers:
+  - add: X-Request-ID
+    value: $pid
+plugin: request-transformer
+```
+
+### Kong Service and Route Configuration
+
+
+```yaml
+# Kong Service and Route via CRD
+apiVersion: configuration.konghq.com/v1
+kind: KongService
+metadata:
+  name: myapp-service
+  namespace: production
+spec:
+  url: http://myapp-service.production.svc:8080
+  retries: 3
+  connect_timeout: 60000
+  write_timeout: 60000
+  read_timeout: 60000
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongRoute
+metadata:
+  name: myapp-route
+  namespace: production
+spec:
+  service:
+    name: myapp-service
+  paths:
+  - /api
+  - /api/*
+  strip_path: true
+  preserve_host: true
+  protocols:
+  - http
+  - https
+```
+

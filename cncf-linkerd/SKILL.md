@@ -813,36 +813,6 @@ resources:
 - **Logs correlation**: Request IDs enable correlation
 - **Custom metrics**: Application-specific metrics integration
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-linkerd follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-linkerd-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -873,3 +843,110 @@ data:
 - Search GitHub issues
 - Join community channels
 - Review logs and metrics
+
+## Examples
+
+### Linkerd Service Profile Configuration
+
+
+```yaml
+# Linkerd ServiceProfile for HTTP services
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: payments-api.production.svc.cluster.local
+  namespace: production
+spec:
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /payments/(.+)/status
+    name: GET Payments Status
+    timeout: 500ms
+  - condition:
+      method: POST
+      pathRegex: /payments
+    name: POST Payments
+    timeout: 10s
+  - condition:
+      method: DELETE
+      pathRegex: /payments/(.+)
+    name: DELETE Payments
+    timeout: 5s
+```
+
+### Linkerd TrafficSplit Configuration
+
+
+```yaml
+# Linkerd TrafficSplit for canary deployments
+apiVersion: linkerd.io/v1alpha2
+kind: TrafficSplit
+metadata:
+  name: myapp-canary
+  namespace: production
+spec:
+  backends:
+  - service: myapp
+    weight: 90
+  - service: myapp-canary
+    weight: 10
+  service: myapp.production.svc.cluster.local
+---
+# Apply to existing service
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: production
+spec:
+  selector:
+    app: myapp
+  ports:
+  - port: 80
+    targetPort: 8080
+```
+
+### Linkerd Policy for mTLS
+
+
+```yaml
+# Linkerd policy for strict mTLS
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  name: myapp-server
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  port: http
+  policy:
+    mtls:
+      mode: strict
+
+---
+# ServerPolicy for multiple ports
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerPolicy
+metadata:
+  name: myapp-server-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  policies:
+  - name: http-server
+    serverPorts:
+    - 8080
+    port: 8080
+    protocol: http
+  - name: grpc-server
+    serverPorts:
+    - 9090
+    port: 9090
+    protocol: grpc
+```
+

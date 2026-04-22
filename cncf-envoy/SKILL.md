@@ -361,36 +361,6 @@ Use Envoy as a sidecar proxy in a service mesh, as an edge router for ingress tr
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-envoy follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-envoy-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -422,3 +392,138 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### HTTP Route Configuration
+
+
+```yaml
+# Envoy HTTP route configuration
+static_resources:
+  listeners:
+  - name: http_listener
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 8080
+    filter_chains:
+    - filters:
+      - name: envoy.filters.network.http_connection_manager
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          stat_prefix: ingress_http
+          codec_type: AUTO
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: backend
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/api"
+                route:
+                  cluster: api_service
+                  timeout: 30s
+                  retry_policy:
+                    retry_on: 5xx
+                    num_retries: 3
+              - match:
+                  prefix: "/"
+                route:
+                  cluster: static_content
+          http_filters:
+          - name: envoy.filters.http.router
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+```
+
+### TCP Filter with Connection Load Balancing
+
+
+```yaml
+# Envoy TCP filter configuration
+static_resources:
+  listeners:
+  - name: tcp_listener
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 5432
+    filter_chains:
+    - filters:
+      - name: envoy.filters.network.tcp_proxy
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+          stat_prefix: postgresql_proxy
+          cluster: postgresql_cluster
+          access_log:
+          - name: envoy.access_loggers.file
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
+              path: /var/log/envoy/tcp.log
+          load_balancing_policy:
+            policy:
+              ring_hash_lb_config:
+                hash_function: XX_HASH
+                minimum_ring_size: 1024
+```
+
+### gRPC Route with Rate Limiting
+
+
+```yaml
+# Envoy gRPC route configuration with rate limiting
+static_resources:
+  listeners:
+  - name: grpc_listener
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 50051
+    filter_chains:
+    - filters:
+      - name: envoy.filters.network.http_connection_manager
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          stat_prefix: ingress_http
+          codec_type: AUTO
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: grpc_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/"
+                  headers:
+                  - name: content-type
+                    exact_match: application/grpc
+                route:
+                  cluster: grpc_backend
+                  timeout: 60s
+                  retry_policy:
+                    retry_on: 5xx
+                    num_retries: 3
+          http_filters:
+          - name: envoy.filters.http.local_ratelimit
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+              stat_prefix: http_local_rate_limiter
+              token_bucket:
+                max_tokens: 100
+                tokens_per_fill: 10
+                fill_interval: 1s
+              filter_enabled:
+                runtime_key: local_rate_limit_enabled
+                default_value:
+                  numerator: 100
+                  denominator: HUNDRED
+              rate_limit:
+                - name: envoy.filters.http.local_ratelimit
+                  descriptor: { key: key, value: "local_rate_limiter" }
+          - name: envoy.filters.http.router
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+```
+

@@ -332,36 +332,6 @@ Use Helm when deploying multi-component applications to Kubernetes, managing app
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-helm follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-helm-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -393,3 +363,151 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Basic Chart with Values Configuration
+
+
+```yaml
+# Chart.yaml
+apiVersion: v2
+name: myapp
+description: A Helm chart for Kubernetes
+type: application
+version: 1.0.0
+appVersion: "1.16.0"
+dependencies:
+  - name: common
+    version: "0.1.0"
+    repository: "file://../common"
+
+# values.yaml
+replicaCount: 3
+
+image:
+  repository: myregistry/myapp
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# values-production.yaml
+replicaCount: 5
+
+image:
+  tag: "1.0.0-prod"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+```
+
+### Chart with Hooks for Database Migration
+
+
+```yaml
+# templates/pre-upgrade-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-db-migrate
+  labels:
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}-db-migrate
+    spec:
+      containers:
+      - name: migrate
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        command: ["sh", "-c", "python manage.py migrate"]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-db-secrets
+              key: database-url
+      restartPolicy: Never
+  backoffLimit: 3
+```
+
+### Complex Chart with Subcharts and Templates
+
+
+```yaml
+# templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "myapp.fullname" . }}
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "myapp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "myapp.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "myapp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: {{ .Values.probe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: {{ .Values.probe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probe.periodSeconds }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+```
+

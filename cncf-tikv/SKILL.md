@@ -263,36 +263,6 @@ Use TiKV when need distributed storage, require strong consistency, or manage la
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-tikv follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-tikv-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -324,3 +294,96 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### TiKV Cluster Configuration
+
+
+```yaml
+# TiKV configuration for a production cluster
+[tikv]
+# Server configuration
+addr = "192.168.1.101:20160"
+advertise-addr = "192.168.1.101:20160"
+status-addr = "192.168.1.101:20180"
+
+# PD configuration
+pd-endpoints = ["192.168.1.101:2379","192.168.1.102:2379","192.168.1.103:2379"]
+
+# Storage configuration
+storage.data-dir = "/data/tikv"
+storage.engine-addr = "192.168.1.101:20160"
+storage.block-cache.capacity = "8GB"
+
+# Logging configuration
+log-level = "info"
+log-file = "/var/log/tikv/tikv.log"
+
+# Coprocessor configuration
+coprocessor.split-region-on-table = true
+coprocessor.batch-split-limit = 10
+coprocessor.region-max-size = "96MB"
+coprocessor.region-split-size = "64MB"
+```
+
+### TiKV with TiFlash Configuration
+
+
+```yaml
+# TiKV configuration with TiFlash replication
+[tikv]
+addr = "192.168.1.101:20160"
+advertise-addr = "192.168.1.101:20160"
+status-addr = "192.168.1.101:20180"
+
+pd-endpoints = ["192.168.1.101:2379"]
+
+storage.data-dir = "/data/tikv"
+storage.engine-addr = "192.168.1.101:20160"
+
+[server]
+engine-addr = "192.168.1.101:20160"
+status-addr = "192.168.1.101:20180"
+tidb-status-addr = "192.168.1.101:10080"
+
+[raftstore]
+apply-pool-size = 4
+store-pool-size = 4
+raft-entry-max-size = 8
+raft-snapshot-count = 10000
+
+[coprocessor]
+region-max-keys = 100000
+region-split-keys = 50000
+```
+
+### TiKV Backup and Restore Configuration
+
+
+```yaml
+# TiKV backup configuration for BR (Backup & Restore)
+[br]
+# Backup configuration
+backup-concurrency = 16
+checksum-concurrency = 4
+send-credentials-to-tikv = true
+send-stores-to-tikv = true
+
+[restore]
+# Restore configuration
+restore-concurrency = 16
+data-concurrency = 4
+index-concurrency = 4
+region-merge-concurrency = 4
+
+[pd]
+pd-endpoints = ["192.168.1.101:2379"]
+
+[tikv]
+# Ensure sufficient resources for backup/restore
+storage.write-thread-num = 4
+storage.backup-thread-num = 4
+coprocessorThreadPoolSize = 4
+```
+

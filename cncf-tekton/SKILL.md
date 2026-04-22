@@ -343,36 +343,6 @@ Use Tekton when you need a Kubernetes-native CI/CD pipeline framework, want to r
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-tekton follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-tekton-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -404,3 +374,196 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Tekton Pipeline with Multiple Tasks
+
+
+```yaml
+# Tekton Pipeline for CI/CD workflow
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-deploy-pipeline
+spec:
+  workspaces:
+  - name: source
+  - name: registry-auth
+  params:
+  - name: image-url
+    type: string
+  - name: path-context
+    type: string
+    default: .
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: source
+    params:
+    - name: url
+      value: $(params.git-url)
+    - name: revision
+      value: $(params.git-revision)
+
+  - name: build
+    taskRef:
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: source
+    params:
+    - name: IMAGE
+      value: $(params.image-url)
+    - name: CONTEXT
+      value: $(params.path-context)
+    runAfter:
+    - fetch-repository
+
+  - name: deploy
+    taskRef:
+      name: kubectl-apply
+    params:
+    - name: IMAGE
+      value: $(tasks.build.results.image-url)
+    - name: MANIFESTS
+      value: $(params.manifests)
+    runAfter:
+    - build
+---
+# PipelineRun to execute the pipeline
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-deploy-pipelinerun
+spec:
+  pipelineRef:
+    name: build-deploy-pipeline
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: source-pvc
+  - name: registry-auth
+    secret:
+      secretName: registry-credentials
+  params:
+  - name: image-url
+    value: gcr.io/myproject/myapp:latest
+  - name: path-context
+    value: src
+  - name: git-url
+    value: https://github.com/myorg/myapp.git
+  - name: git-revision
+    value: main
+```
+
+### Tekton Task with Input/Output Resources
+
+
+```yaml
+# Tekton Task for testing with artifacts
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: test-task
+spec:
+  workspaces:
+  - name: source
+  - name: test-results
+  steps:
+  - name: install-dependencies
+    image: node:16
+    workingDir: $(workspaces.source.path)
+    script: |
+      npm ci
+  - name: run-tests
+    image: node:16
+    workingDir: $(workspaces.source.path)
+    script: |
+      npm test
+    volumeMounts:
+    - name: test-results
+      mountPath: /results
+  - name: upload-results
+    image: ubuntu
+    workingDir: $(workspaces.source.path)
+    script: |
+      if [ -f /results/junit.xml ]; then
+        echo "Test results uploaded"
+      else
+        echo "No test results to upload"
+      fi
+---
+# TaskRun to execute the task
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: test-task-run
+spec:
+  taskRef:
+    name: test-task
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: source-pvc
+  - name: test-results
+    emptyDir: {}
+```
+
+### Tekton PipelineResource for Git and Image
+
+
+```yaml
+# Tekton PipelineResources for external resources
+apiVersion: tekton.dev/v1beta1
+kind: PipelineResource
+metadata:
+  name: myapp-git
+spec:
+  type: git
+  params:
+  - name: url
+    value: https://github.com/myorg/myapp.git
+  - name: revision
+    value: main
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineResource
+metadata:
+  name: myapp-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: gcr.io/myproject/myapp:latest
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-with-resources
+spec:
+  resources:
+  - name: git-source
+    type: git
+  - name: app-image
+    type: image
+  tasks:
+  - name: build
+    taskRef:
+      name: kaniko
+    resources:
+      inputs:
+      - name: git-source
+        resources:
+        - git-source
+      outputs:
+      - name: image
+        resources:
+        - app-image
+```
+

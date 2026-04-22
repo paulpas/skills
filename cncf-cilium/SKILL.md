@@ -487,3 +487,40 @@ helm install cilium cilium/cilium --set ipam.mode=cilium --set clusterPoolIPv4Po
 helm install cilium cilium/cilium   --set kubeProxyReplacement=partial   --set k8sServiceHost=<api-server-ip>   --set k8sServicePort=<api-server-port>
 ```
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Troubleshooting
+
+### Cilium pods not starting or crashing
+
+**Cause:** BPF filesystem not mounted, kernel version incompatible, or configuration errors
+
+**Solution:** Verify BPF filesystem mounted at /sys/fs/bpf, check kernel version requirements, validate Cilium configuration, and examine pod logs for specific errors.
+
+
+### Network policies not being enforced
+
+**Cause:** Cilium not installed in namespace, wrong policy type, or policy selector mismatch
+
+**Solution:** Verify Cilium is installed in namespace, check policy type (CiliumNetworkPolicy vs NetworkPolicy), ensure pod selectors match target pods, and run `cilium policy get`.
+
+
+### Service load balancing not working
+
+**Cause:** BPF masquerade not enabled, Cilium not watching correct endpoints, or kube-proxy conflicts
+
+**Solution:** Enable BPF masquerade in Cilium config, ensure Cilium has proper RBAC permissions, verify Cilium is managing endpoints with `cilium service list`, and check for kube-proxy interference.
+
+
+### High memory usage by Cilium
+
+**Cause:** Large number of endpoints, complex policies, or memory leaks
+
+**Solution:** Check endpoint count with `cilium endpoint list`, optimize policies for fewer rules, monitor memory usage with `cilium status`, and consider upgrading to newer Cilium versions.
+
+
+### Connectivity issues between pods in different nodes
+
+**Cause:** BGP not configured correctly, tunnel not working, or firewall blocking overlay traffic
+
+**Solution:** Verify BGP peer configuration with `cilium bpg peer status`, check tunnel status with `cilium status`, verify firewall allows overlay traffic, and test direct pod-to-pod connectivity.
+

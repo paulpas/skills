@@ -359,36 +359,6 @@ Use Argo Workflows for complex multi-step workflows, Argo CD for GitOps deployme
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-argo follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-argo-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -420,3 +390,159 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Argo Workflows DAG for Data Pipeline
+
+
+```yaml
+# Data processing workflow with DAG execution
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: data-pipeline-
+spec:
+  entrypoint: data-pipeline
+  templates:
+  - name: data-pipeline
+    steps:
+    - - name: extract
+        template: extract
+    - - name: transform
+        template: transform
+    - - name: load
+        template: load
+
+  - name: extract
+    container:
+      image: python:3.9-slim
+      command: [python]
+      args: ["-c", "import json; print(json.dumps({'data': 'extracted'}))"]
+      volumeMounts:
+      - name: scratch
+        mountPath: /data
+    outputs:
+      artifacts:
+      - name: data
+        path: /data/extracted.json
+        raw:
+          dataKey: data
+
+  - name: transform
+    container:
+      image: python:3.9-slim
+      command: [python]
+      args: ["-c", "import json; print(json.dumps({'transformed': True}))"]
+      volumeMounts:
+      - name: scratch
+        mountPath: /data
+    inputs:
+      artifacts:
+      - name: data
+        path: /data/
+        raw:
+          dataKey: data
+
+  - name: load
+    container:
+      image: python:3.9-slim
+      command: [python]
+      args: ["-c", "print('Data loaded successfully')"]
+
+  volumes:
+  - name: scratch
+    emptyDir: {}
+```
+
+### Argo CD Application for GitOps Deployment
+
+
+```yaml
+# Argo CD Application for GitOps continuous deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/myorg/myapp.git
+    targetRevision: HEAD
+    path: k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - FailOnSharedResource=true
+  revisionHistoryLimit: 10
+```
+
+### Argo Rollouts Canary Deployment
+
+
+```yaml
+# Argo Rollouts Canary deployment with progressive delivery
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: myapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: myregistry/myapp:v1
+        ports:
+        - containerPort: 8080
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {duration: 5m}
+      - setWeight: 40
+      - pause: {duration: 5m}
+      - setWeight: 60
+      - pause: {duration: 5m}
+      - setWeight: 80
+      - pause: {duration: 5m}
+      - setWeight: 100
+      analysis:
+        templates:
+        - templateName: success-rate
+        startingStep: 2
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: success-rate
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: success-rate
+    interval: 1m
+    count: 5
+    successCondition: result[0] >= 0.95
+    provider:
+      prometheus:
+        address: http://prometheus:9090
+        query: |
+          sum(rate(http_requests_total{service="{{args.service-name}}",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{service="{{args.service-name}}"}[1m]))
+```
+
