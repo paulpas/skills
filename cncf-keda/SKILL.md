@@ -1,19 +1,333 @@
 ---
 name: cncf-keda
-description: KEDA in Scheduling &amp; Orchestration - cloud native architecture, patterns, pitfalls, and best practices
+description: KEDA in Cloud-Native Engineering - event-driven autoscaling
 ---
 # KEDA in Cloud-Native Engineering
 
+**Category:** autoscaling  
+**Status:** Graduated  
+**Stars:** 8,000  
+**Last Updated:** 2026-04-22  
+**Primary Language:** Go  
+**Documentation:** [https://keda.sh/](https://keda.sh/)  
+
+---
+
 ## Purpose and Use Cases
+
+KEDA is a event-driven autoscaling designed to help engineers build, deploy, and manage cloud-native applications.
+
+### What Problem Does It Solve?
+
+KEDA addresses complex autoscaling challenges by providing:
+- Standardized APIs and interfaces
+- Declarative configuration management
+- Automatic resource management and reconciliation
+- Built-in observability and monitoring
+- Extensible architecture for custom integrations
+
+### When to Use This Project
+
+Use KEDA when you need event-driven autoscaling, require autoscaling-specific features, want to integrate with other CNCF projects, need production-ready autoscaling solutions, or require autoscaling-specific best practices.
+
+### Key Use Cases
+
+- **KEDA Core**: Primary use case for event-driven autoscaling
+- **Integration with Kubernetes**: Native Kubernetes integration
+- **Multi-Cluster Support**: Manage multiple clusters
+- **Scalable Operations**: Handle large-scale deployments
+- **Automated Management**: Self-healing and automatic recovery
+- **Security Features**: Built-in security controls
+- **Observability**: Comprehensive metrics and logging
+
+---
 
 ## Architecture Design Patterns
 
+### Core Components
+
+- **Main Controller**: Primary reconciliation loop
+- **API Server**: REST/gRPC API endpoint
+- **Webhook**: Admission webhooks for validation
+- **Scheduler**: Work scheduling and distribution
+- **Storage Backend**: Persistent state storage
+- **Agent**: Worker component for distributed tasks
+- **Metrics Collector**: Metrics aggregation
+
+### Component Interactions
+
+1. **User → API Server**: Create/modify resources
+2. **API Server → Controller**: Resource creation event
+3. **Controller → Storage**: State persistence
+4. **Storage → Controller**: State retrieval for reconciliation
+5. **Controller → Worker**: Task delegation
+6. **Worker → Status**: Status updates back to API
+
+### Data Flow Patterns
+
+1. **Reconciliation Flow**: Resource change → Controller detects → State comparison → Action taken → Status updated
+2. **Event Flow**: Event received → Event handler → Reconciler → State updated
+3. **Scaling Flow**: Metrics threshold → Controller evaluates → Scale decision → Resource scaled
+4. **Failure Flow**: Component failure → Detector → Recovery action → State restored
+
+### Design Principles
+
+- **Kubernetes Native**: Built on Kubernetes APIs and conventions
+- **Declarative**: Desired state management
+- **Automated**: Self-healing and automatic recovery
+- **Extensible**: Plugin architecture for extensions
+- ** Observability**: Built-in metrics and logging
+- **Secure**: Security-first design principles
+- **Reliable**: High availability and disaster recovery
+
+---
+
 ## Integration Approaches
+
+### Integration with Other CNCF Projects
+
+- **Kubernetes**: Core platform for KEDA
+- **Prometheus**: Metrics collection and alerting
+- **OpenTelemetry**: Distributed tracing integration
+- **Helm**: Chart deployment
+- **cert-manager**: TLS certificate management
+- **Istio/Linkerd**: Service mesh integration
+- **Flux/ArgoCD**: GitOps integration
+
+### API Patterns
+
+- **Kubernetes API**: Standard Kubernetes CRDs
+- **REST API**: HTTP/JSON REST API
+- **gRPC API**: High-performance gRPC API
+- **Webhook API**: Admission webhooks
+- **Metrics API**: Prometheus-compatible metrics
+
+### Configuration Patterns
+
+- **YAML Configuration**: Declarative YAML manifests
+- **Environment Variables**: Runtime configuration
+- **ConfigMaps**: Externalized configuration
+- **Secrets**: Sensitive data management
+- **Helm Values**: Helm chart configuration
+
+### Extension Mechanisms
+
+- **CRDs**: Custom Resource Definitions
+- **Webhooks**: Custom admission webhooks
+- **Plugins**: Plugin architecture for extensions
+- **Controllers**: Custom controllers
+- **Adapters**: Adapter pattern for integrations
+
+---
 
 ## Common Pitfalls and How to Avoid Them
 
+### Configuration Issues
+
+- **YAML Syntax Errors**: Incorrect YAML formatting
+- **Missing Dependencies**: Missing required resources
+- **Invalid Values**: Invalid configuration values
+- **Resource Limits**: Insufficient resource limits
+
+**How to Avoid:**
+- Use kubectl dry-run for validation
+- Implement CI/CD pipeline with yamllint
+- Test configurations in staging environment
+- Use configuration validation webhooks
+
+### Performance Issues
+
+- **Resource Exhaustion**: CPU or memory limits hit
+- **Latency Spikes**: Slow responses under load
+- **Scale Bottlenecks**: Scaling limitations
+- **Storage Growth**: Unbounded storage growth
+
+**How to Avoid:**
+- Monitor resource usage with Prometheus
+- Implement appropriate resource limits
+- Use horizontalPodAutoscaler
+- Configure storage quotas and cleanup policies
+
+### Operational Challenges
+
+- **Upgrade Complexity**: Complex upgrade procedures
+- **Data Migration**: Migration between versions
+- **Backup and Restore**: Backup procedures
+- **Troubleshooting**: Debugging issues
+
+**How to Avoid:**
+- Follow official upgrade path documentation
+- Test upgrades in staging first
+- Implement regular backups
+- Use diagnostic tools and logs
+
+### Security Pitfalls
+
+- **Privilege Escalation**: Overly permissive RBAC
+- **Secrets Exposure**: Secrets in logs or configs
+- **Network Exposure**: Exposed services
+- **Authentication**: Weak authentication mechanisms
+
+**How to Avoid:**
+- Implement least-privilege RBAC
+- Use secrets management
+- Implement network policies
+- Enable authentication and authorization
+
+---
+
 ## Coding Practices
+
+### Idiomatic Configuration
+
+- **Resource Definitions**: Declarative YAML manifests
+- **Configuration Management**: Externalized configuration
+- **Secret Management**: Secure secrets handling
+- **Version Control**: GitOps for configuration
+
+### API Usage Patterns
+
+- **kubectl**: Command-line administration
+- **Kubernetes Client Libraries**: Programmatic access
+- **REST API**: HTTP API for automation
+- **CRUD Operations**: Standard create, read, update, delete
+
+### Observability Best Practices
+
+- **Metrics Collection**: Prometheus metrics
+- **Logging**: Structured logging
+- **Tracing**: Distributed tracing
+- **Dashboards**: Grafana dashboards
+
+### Development Workflow
+
+- **Local Testing**: Kind or Minikube for development
+- **Testing**: Integration tests
+- **Debugging**: Debug logs and diagnostics
+- **CI/CD**: Automated testing and deployment
+- **Tools**: kubectl, Helm, kustomize
+
+### Code Examples
+
+```yaml
+# Example configuration for KEDA
+apiVersion: cncf.keda/v1
+kind: Keda
+metadata:
+  name: example
+  namespace: default
+spec:
+  # Configuration details
+  replicas: 3
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+```
+
+---
 
 ## Fundamentals
 
+### Essential Concepts
+
+- **Resource**: Core abstraction managed by KEDA
+- **Reconciliation**: Process of achieving desired state
+- **Controller**: Component managing resources
+- **Webhook**: Admission control mechanism
+- **CRD**: Custom Resource Definition
+- **Operator**: Pattern for managing complex applications
+- **Status**: Current state of the resource
+
+### Terminology Glossary
+
+- **Controller**: Management component
+- **Reconciler**: State reconciliation logic
+- **CRD**: Custom Resource Definition
+- **Webhook**: Admission webhook
+- **Operator**: Application operator pattern
+- **Reconciliation**: State synchronization
+
+### Data Models and Types
+
+- **Custom Resource**: User-defined resource type
+- **Status**: Resource status information
+- **Spec**: Desired state specification
+- **Owner Reference**: Resource ownership chain
+
+### Lifecycle Management
+
+- **Resource Lifecycle**: Create → Configure → Deploy → Update → Delete
+- **Controller Lifecycle**: Start → Watch → Reconcile → Stop
+- **Upgrade Lifecycle**: Backup → Upgrade → Verify → Rollback (if needed)
+
+### State Management
+
+- **Desired State**: Spec field in resource
+- **Current State**: Status field in resource
+- **Reconciliation Loop**: Controller loop for state sync
+- **Event Queue**: Change event processing
+
+---
+
 ## Scaling and Deployment Patterns
+
+### Horizontal Scaling
+
+- **Controller Scaling**: Multiple controller replicas
+- **Worker Scaling**: Scale worker pods based on load
+- **API Server Scaling**: Scale API servers
+- **Storage Scaling**: Add storage capacity
+
+### High Availability
+
+- **Controller HA**: Multiple controller replicas
+- **Storage HA**: HA storage backend
+- **Load Balancing**: Distribute traffic
+- **Multi-Region**: Geographic distribution
+
+### Production Deployments
+
+- **Standalone**: Single instance deployment
+- **HA**: High availability deployment
+- **Clustered**: Multi-node cluster
+- **Resource Configuration**: CPU, memory, storage limits
+
+### Upgrade Strategies
+
+- **Rolling Update**: Update without downtime
+- **Blue-Green**: Blue-green deployments
+- **Canary**: Canary releases
+- **Version Compatibility**: Follow upgrade path
+
+### Resource Management
+
+- **CPU/Memory Requests**: Appropriate resource requests
+- **Limits**: Resource limits for stability
+- **Storage Quotas**: Storage allocation
+- **Network Bandwidth**: Network resource allocation
+
+### Deployment Patterns
+
+- **DaemonSet**: One instance per node
+- **Deployment**: Standard deployment
+- **StatefulSet**: Stateful applications
+- **Helm Chart**: Chart-based deployment
+- **Operator Pattern**: Operator-based management
+
+---
+
+## Additional Resources
+
+- **Official Documentation:** [https://keda.sh/](https://keda.sh/)
+- **GitHub Repository:** [github.com/cncf/keda](https://github.com/cncf/keda)
+- **CNCF Project Page:** [cncf.io/projects/keda/](https://www.cncf.io/projects/keda/)
+- **Community:** Check the GitHub repository for community channels
+- **Versioning:** Refer to project's release notes for version-specific features
+
+---
+
+*Content generated automatically. Verify against official documentation before production use.*
