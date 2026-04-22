@@ -352,36 +352,6 @@ Use Istio when you need a comprehensive service mesh with built-in traffic manag
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-istio follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-istio-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -413,3 +383,109 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Virtual Service with Canary Deployment
+
+
+```yaml
+# Virtual Service with traffic splitting for canary deployment
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: myapp
+  namespace: production
+spec:
+  hosts:
+  - myapp.production.svc.cluster.local
+  http:
+  # Main traffic (90%)
+  - route:
+    - destination:
+        host: myapp.production.svc.cluster.local
+        subset: main
+      weight: 90
+    - destination:
+        host: myapp.production.svc.cluster.local
+        subset: canary
+      weight: 10
+    headers:
+      request:
+        add:
+          x-deployment: canary
+    match:
+    - headers:
+        x-canary:
+          exact: "true"
+    route:
+    - destination:
+        host: myapp.production.svc.cluster.local
+        subset: canary
+  subsets:
+  - name: main
+    labels:
+      version: v1
+  - name: canary
+    labels:
+      version: v2
+```
+
+### PeerAuthentication for Strict mTLS
+
+
+```yaml
+# Enforce strict mTLS across the mesh
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: production
+spec:
+  mtls:
+    mode: STRICT
+---
+# Permissive mode for gradual migration
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: production-policy
+  namespace: production
+spec:
+  mtls:
+    mode: PERMISSIVE
+```
+
+### Gateway with TLS Termination
+
+
+```yaml
+# Ingress Gateway with TLS termination
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: myapp-gateway
+  namespace: production
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: myapp-tls-cert
+    hosts:
+    - myapp.example.com
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - myapp.example.com
+    tls:
+      httpsRedirect: true
+```
+

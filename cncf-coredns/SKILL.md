@@ -510,3 +510,40 @@ forward . /etc/resolv.conf {
 }
 ```
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Troubleshooting
+
+### DNS queries returning NXDOMAIN for valid services
+
+**Cause:** Kubernetes service not found, CoreDNS not watching correct namespace, or service endpoint missing
+
+**Solution:** Verify service exists with `kubectl get svc`, check CoreDNS logs, and ensure endpoints exist for the service.
+
+
+### DNS resolution timing out
+
+**Cause:** Upstream DNS servers unreachable, CoreDNS not responding, or network issues between pods and CoreDNS
+
+**Solution:** Test CoreDNS connectivity from pod, verify upstream DNS servers are reachable, and check network policies allowing DNS traffic.
+
+
+### Incorrect DNS responses or stale data
+
+**Cause:** Cache misconfiguration, CoreDNS not reloading configuration, or upstream DNS returning wrong data
+
+**Solution:** Adjust cache TTL settings, force CoreDNS reload, and verify upstream DNS server responses.
+
+
+### CoreDNS pods crashing or restarting
+
+**Cause:** Configuration errors, resource constraints, or file descriptor limits
+
+**Solution:** Validate Corefile syntax, check pod logs for errors, increase resource limits, and raise file descriptor limits.
+
+
+### Service discovery not working for external domains
+
+**Cause:** Forward plugin not configured, upstream DNS blocking requests, or firewall rules blocking DNS
+
+**Solution:** Configure forward plugin for external domains, verify upstream DNS configuration, and ensure network allows DNS queries.
+

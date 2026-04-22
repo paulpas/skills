@@ -488,3 +488,40 @@ openssl x509 -in /etc/etcd/pki/etcd.crt -noout -dates
 etcdctl endpoint health --endpoints=https://127.0.0.1:2379   --cacert=/etc/etcd/pki/ca.crt   --cert=/etc/etcd/pki/admin.crt   --key=/etc/etcd/pki/admin.key
 ```
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Troubleshooting
+
+### Deployment failures
+
+**Cause:** Configuration errors or resource constraints
+
+**Solution:** Check pod logs with `kubectl logs <pod>`, verify configuration values, and ensure adequate cluster resources.
+
+
+### Performance issues
+
+**Cause:** Resource limits or configuration bottlenecks
+
+**Solution:** Monitor resource usage with `kubectl top`, adjust resource limits, and optimize configuration settings.
+
+
+### Configuration errors
+
+**Cause:** YAML syntax or missing required fields
+
+**Solution:** Validate YAML syntax, check required configuration fields, and verify environment-specific settings.
+
+
+### Integration problems
+
+**Cause:** API compatibility or version mismatches
+
+**Solution:** Verify API compatibility, check dependency versions, and review integration documentation.
+
+
+### Connectivity issues
+
+**Cause:** Network policies or service discovery problems
+
+**Solution:** Check network policies, verify service endpoints, and ensure proper DNS resolution.
+

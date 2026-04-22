@@ -323,36 +323,6 @@ Use kong-ingress-controller when you need kubernetes capabilities in your Kubern
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-kong-ingress-controller follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-kong-ingress-controller-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -384,3 +354,147 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Kong Ingress Controller with Plugins
+
+
+```yaml
+# Kong Ingress Controller configuration with plugins
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/strip-path: "true"
+spec:
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: myapp-service
+            port:
+              number: 80
+
+---
+# KongPlugin for rate limiting
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: rate-limiting
+config:
+  minute: 100
+  policy: local
+  limit_by: consumer
+plugin: rate-limiting
+
+---
+# KongPlugin for request transformation
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: request-transformer
+config:
+  add:
+    headers:
+    - X-Request-ID:$pid
+    - X-Forwarded-Proto:$remote_addr
+plugin: request-transformer
+```
+
+### KongConsumer and Credentials
+
+
+```yaml
+# KongConsumer with API key credential
+apiVersion: v1
+kind: Secret
+metadata:
+  name: myapp-api-key
+  namespace: production
+type: Opaque
+stringData:
+  apikey: my-secret-api-key-12345
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongConsumer
+metadata:
+  name: myapp-consumer
+  namespace: production
+  annotations:
+    konghq.com/credentials: myapp-api-key
+username: myapp
+tags:
+- app: myapp
+- env: production
+
+---
+# KongPlugin for HMAC authentication
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: hmac-auth
+config:
+  methods:
+  - HMAC
+  clock_skew: 300
+  encoding: hex
+  hide_credentials: false
+plugin: hmac-auth
+```
+
+### KongService and KongRoute
+
+
+```yaml
+# KongService configuration
+apiVersion: configuration.konghq.com/v1
+kind: KongService
+metadata:
+  name: myapp-service
+  namespace: production
+spec:
+  url: http://myapp-service.production.svc:8080
+  connect_timeout: 60000
+  write_timeout: 60000
+  read_timeout: 60000
+  retries: 3
+  protocol: http
+  tags:
+  - app: myapp
+
+---
+# KongRoute configuration
+apiVersion: configuration.konghq.com/v1
+kind: KongRoute
+metadata:
+  name: myapp-route
+  namespace: production
+spec:
+  service:
+    name: myapp-service
+  paths:
+  - /api
+  - /api/*
+  strip_path: true
+  preserve_host: true
+  protocols:
+  - http
+  - https
+  regex_priority: 10
+  methods:
+  - GET
+  - POST
+  - PUT
+  - DELETE
+  tags:
+  - app: myapp
+```
+

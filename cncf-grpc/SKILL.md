@@ -736,36 +736,6 @@ grpc.MaxSendMsgSize(m)           // Max message size
 - **Metrics**: Request count, latency, error rates
 - **Tracing**: Full request flow across services
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-grpc follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-grpc-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -796,3 +766,157 @@ data:
 - Search GitHub issues
 - Join community channels
 - Review logs and metrics
+
+## Examples
+
+### gRPC Service Definition with protobuf
+
+
+```yaml
+// myapp.proto
+syntax = "proto3";
+
+package myapp.v1;
+
+import "google/api/annotations.proto";
+
+service MyService {
+  rpc GetUser(UserRequest) returns (UserResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}"
+    };
+  }
+  
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  }
+  
+  rpc CreateUser(CreateUserRequest) returns (UserResponse) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "user"
+    };
+  }
+}
+
+message User {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  int64 created_at = 4;
+}
+
+message UserRequest {
+  string user_id = 1;
+}
+
+message ListUsersRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  string next_page_token = 2;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+```
+
+### gRPC Gateway Configuration
+
+
+```yaml
+# gRPC Gateway configuration for reverse proxy
+{
+  "routes": [
+    {
+      "selector": {
+        "GET": "/v1/users"
+      },
+      "grpc": {
+        "service": "myapp.v1.MyService",
+        "method": "ListUsers"
+      }
+    },
+    {
+      "selector": {
+        "GET": "/v1/users/{user_id}"
+      },
+      "grpc": {
+        "service": "myapp.v1.MyService",
+        "method": "GetUser"
+      }
+    },
+    {
+      "selector": {
+        "POST": "/v1/users"
+      },
+      "grpc": {
+        "service": "myapp.v1.MyService",
+        "method": "CreateUser"
+      }
+    }
+  ],
+  "backend": {
+    "address": "localhost:50051"
+  }
+}
+```
+
+### gRPC Client with Interceptors
+
+
+```yaml
+// TypeScript gRPC client with interceptors
+import { createChannel, createClient, Interceptor, ServiceError } from '@grpc/grpc-js';
+import { Metadata } from '@grpc/grpc-js';
+
+// Authentication interceptor
+const authInterceptor: Interceptor = (options, nextCall) => {
+  const newOptions = {
+    ...options,
+    metadata: new Metadata({
+      'x-api-key': process.env.API_KEY || '',
+      'x-user-id': process.env.USER_ID || '',
+    }),
+  };
+  return nextCall(newOptions);
+};
+
+// Logging interceptor
+const loggingInterceptor: Interceptor = (options, nextCall) => {
+  const startTime = Date.now();
+  return nextCall(options).getResponse((error, value) => {
+    const duration = Date.now() - startTime;
+    console.log(`gRPC call ${options.method} took ${duration}ms`);
+    if (error) {
+      console.error(`gRPC error: ${error.message}`);
+    }
+  });
+};
+
+// Client configuration
+const channel = createChannel('localhost:50051');
+const client = createClient('myapp.v1.MyService', channel);
+
+// Add interceptors
+client.intercept({
+  name: 'auth',
+  request: authInterceptor,
+});
+
+client.intercept({
+  name: 'logging',
+  response: loggingInterceptor,
+});
+
+// Usage
+const response = await client.GetUser({ user_id: '123' });
+console.log('User:', response);
+```
+

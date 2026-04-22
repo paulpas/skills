@@ -371,36 +371,6 @@ Use Prometheus when you need to monitor microservices, require metrics-based ale
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-prometheus follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-prometheus-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -432,3 +402,166 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Prometheus Configuration with Kubernetes Service Discovery
+
+
+```yaml
+# prometheus.yaml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: production
+    environment: prod
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+scrape_configs:
+  # Kubernetes node metrics
+  - job_name: 'kubernetes-nodes'
+    kubernetes_sd_configs:
+    - role: node
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+    - action: labelmap
+      regex: __meta_kubernetes_node_label_(.+)
+
+  # Kubernetes pods
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+    - role: pod
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+      action: replace
+      target_label: __metrics_path__
+      regex: (.+)
+    - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+      action: replace
+      regex: ([^:]+)(?::\d+)?;(\d+)
+      replacement: $1:$2
+      target_label: __address__
+
+  # Kubernetes services
+  - job_name: 'kubernetes-services'
+    kubernetes_sd_configs:
+    - role: service
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+```
+
+### Alerting Rules for Application Health
+
+
+```yaml
+# rules/alerting.rules.yml
+groups:
+- name: application-alerts
+  rules:
+  - alert: HighErrorRate
+    expr: |
+      sum(rate(http_requests_total{status=~"5.."}[5m]))
+      /
+      sum(rate(http_requests_total[5m])) > 0.05
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High error rate detected"
+      description: "Error rate is {{ $value | humanizePercentage }} for the last 5 minutes."
+
+  - alert: ServiceDown
+    expr: up{job="kubernetes-pods"} == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Service is down"
+      description: "Service {{ $labels.pod }} in namespace {{ $labels.namespace }} has been down for more than 2 minutes."
+
+  - alert: HighLatency
+    expr: |
+      histogram_quantile(0.99, 
+        sum(rate(http_request_duration_seconds_bucket[5m])) 
+        by (le, service)
+      ) > 1
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High latency detected"
+      description: "99th percentile latency is above 1 second for service {{ $labels.service }}."
+
+- name: infrastructure-alerts
+  rules:
+  - alert: HighMemoryUsage
+    expr: |
+      (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes)
+      / node_memory_MemTotal_bytes > 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage on node"
+      description: "Node {{ $labels.instance }} is using {{ $value | humanizePercentage }} of memory."
+
+  - alert: HighCPUUsage
+    expr: |
+      100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage on node"
+      description: "Node {{ $labels.instance }} is using {{ $value | humanizePercentage }} of CPU."
+```
+
+### Service Monitor for Custom Application
+
+
+```yaml
+# ServiceMonitor for Prometheus Operator
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: myapp-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  namespaceSelector:
+    matchNames:
+    - production
+  endpoints:
+  - port: http
+    interval: 15s
+    path: /metrics
+    scheme: http
+    scrapeTimeout: 10s
+    honorLabels: true
+    metricRelabelings:
+    - sourceLabels: [__name__]
+      regex: 'go_.*'
+      action: drop
+```
+

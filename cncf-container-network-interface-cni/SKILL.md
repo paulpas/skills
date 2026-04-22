@@ -1082,36 +1082,6 @@ curl http://localhost:9101/metrics
 ---
 
 *This SKILL.md file was verified and last updated on 2026-04-22. Content based on CNCF CNI v1.0.0 specification and production usage patterns.*
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-container-network-interface-cni follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-container-network-interface-cni-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -1142,3 +1112,74 @@ data:
 - Search GitHub issues
 - Join community channels
 - Review logs and metrics
+
+## Examples
+
+### Basic Configuration
+
+
+```yaml
+# Basic configuration example
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{project_name}}-config
+  namespace: default
+data:
+  # Configuration goes here
+  config.yaml: |
+    # Base configuration
+    # Add your settings here
+```
+
+### Kubernetes Deployment
+
+
+```yaml
+# Kubernetes deployment for {{project_name}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{project_name}}
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{project_name}}
+  template:
+    metadata:
+      labels:
+        app: {{project_name}}
+    spec:
+      containers:
+      - name: {{project_name}}
+        image: {{project_name}}:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+```
+
+### Kubernetes Service
+
+
+```yaml
+# Kubernetes service for {{project_name}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{project_name}}
+  namespace: default
+spec:
+  selector:
+    app: {{project_name}}
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+```
+

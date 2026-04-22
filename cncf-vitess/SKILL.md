@@ -263,36 +263,6 @@ Use Vitess when need MySQL scaling, require high availability, or manage large d
 
 ---
 
-## Examples
-
-### Basic Configuration
-
-The typical configuration pattern for cncf-vitess follows standard CNCF practices:
-
-```yaml
-# Example configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cncf-vitess-config
-data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-```
-
-### Common Workflows
-
-1. **Installation**: Use official documentation for platform-specific installation
-2. **Configuration**: Configure via ConfigMaps or Helm values
-3. **Scaling**: Scale based on workload requirements
-
-### Advanced Features
-
-- Feature-rich configuration options
-- Integration with Kubernetes ecosystem
-- Production-grade deployment patterns
-
 ## Troubleshooting
 
 ### Common Issues
@@ -324,3 +294,128 @@ data:
 - Join community channels
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+
+### Vitess Keyspace Configuration
+
+
+```yaml
+# Vitess keyspace configuration for a sharded database
+{
+  "keyspace": {
+    "name": "commerce",
+    "sharding_column_name": "user_id",
+    "sharding_column_type": "INT64",
+    "served_froms": [
+      {
+        "cell": "zone1",
+        "type": "BACKUP"
+      }
+    ]
+  },
+  "vindexes": {
+    "hash": {
+      "type": "hash"
+    },
+    "numeric": {
+      "type": "numeric"
+    }
+  },
+  "tables": {
+    "users": {
+      "column_vindexes": [
+        {
+          "column": "user_id",
+          "name": "hash"
+        }
+      ]
+    },
+    "orders": {
+      "column_vindexes": [
+        {
+          "column": "order_id",
+          "name": "numeric"
+        }
+      ]
+    }
+  }
+}
+```
+
+### Vitens VTGate Configuration
+
+
+```yaml
+# VTGate configuration for connection routing
+vtgate:
+  port: 15001
+  grpc-port: 15000
+  auth-module: none
+  cell: zone1
+  root-zone: zone1
+  enable-gtids: true
+  enable-partial-route: true
+  enable-planning-trace: true
+  tablet-layout-timeout: 1m
+  tablet-layout-refresh: 10s
+  query-cache-size: 10000
+  query-log-sampling-rate: 1
+  stream-pool-size: 100
+  enable-separate-cache: true
+  enable-native-sharding: true
+  enable-pkid-sharding: true
+```
+
+### Vitess VSchema Example
+
+
+```yaml
+{
+  "commerce": {
+    "sharded": true,
+    "vindexes": {
+      "hash": {
+        "type": "hash"
+      }
+    },
+    "tables": {
+      "users": {
+        "column_vindexes": [
+          {
+            "column": "user_id",
+            "name": "hash"
+          }
+        ],
+        "auto_increment": {
+          "column": "user_id",
+          "type": "VTAUTO"
+        }
+      },
+      "products": {
+        "column_vindexes": [
+          {
+            "column": "product_id",
+            "name": "hash"
+          }
+        ]
+      },
+      "orders": {
+        "column_vindexes": [
+          {
+            "column": "order_id",
+            "name": "hash"
+          }
+        ],
+        "column_vindexes": [
+          {
+            "column": "user_id",
+            "name": "hash"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
