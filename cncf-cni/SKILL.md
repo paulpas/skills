@@ -1,0 +1,318 @@
+---
+name: cncf-cni
+description: Cni in Cloud-Native Engineering - Container Network Interface - networking for Linux containers
+---
+
+# Cni in Cloud-Native Engineering
+
+**Category:** containers  
+**Status:** Active  
+**Stars:** 6,032  
+**Last Updated:** 2026-04-21  
+**Primary Language:** Go  
+**Documentation:** [https://github.com/containernetworking/cni/blob/master/SPEC.md](https://github.com/containernetworking/cni/blob/master/SPEC.md)  
+
+---
+
+## Purpose and Use Cases
+
+Cni is a core component of the cloud-native ecosystem, serving as a Container Network Interface specification and plugins that provide networking for containers in Kubernetes.
+
+### What Problem Does It Solve?
+
+The lack of a standardized interface for container networking in Kubernetes, requiring each CNI plugin to implement the same interface differently.
+
+### When to Use This Project
+
+Use CNI when you need to configure networking for containers in Kubernetes, or when building your own container networking solution that integrates with Kubernetes.
+
+### Key Use Cases
+
+
+- Kubernetes pod networking
+- Container network configuration
+- Network policy enforcement
+- CNI plugin development
+- Custom networking solutions for containers
+
+
+---
+
+## Architecture Design Patterns
+
+### Core Components
+
+
+- **Plugin**: Network implementation (bridge, host-local, flannel, etc.)
+- **ConfFile**: Configuration file specifying plugin and network
+- **Network Namespace**: Isolated network context for containers
+- **IPAM**: IP Address Management plugin
+- **Result**: Network configuration result returned to caller
+
+
+### Component Interactions
+
+
+1. **Container Runtime → CNI Plugin**: Network setup request
+2. **ConfFile → Plugin**: Provides network configuration
+3. **IPAM Plugin**: Allocates IP address
+4. **Plugin → Network Namespace**: Configures network
+5. **Result → Runtime**: Returns network configuration
+
+
+### Data Flow Patterns
+
+
+1. **Network Setup**: Add network → Plugin config → IPAM → Namespace setup → Result returned
+2. **IP Allocation**: Pool check → IP assignment → Lease created → Result returned
+3. **Network Cleanup**: Delete network → Plugin cleanup → IP release → Namespace cleanup
+
+
+### Design Principles
+
+
+- **Simple Interface**: Minimal API for network setup
+- **Declarative**: Configuration-based
+- **Pluggable**: Multiple implementations
+- **Standardized**: Consistent behavior across implementations
+- **Namespace-Scoped**: Per-container configuration
+
+
+---
+
+## Integration Approaches
+
+### Integration with Other CNCF Projects
+
+
+- **Kubernetes**: Pod networking standard
+- **Containerd**: Container runtime integration
+- **Flannel, Calico, Cilium**: Popular CNI implementations
+
+
+### API Patterns
+
+
+- **Config File**: JSON-based network configuration
+- **Executable Protocol**:stdin/stdout communication
+- **Result Schema**: Network configuration output
+
+
+### Configuration Patterns
+
+
+- **Conf File**: Network configuration
+- **Conf List**: Multiple network configuration
+- **IPAM Section**: IP address management config
+
+
+### Extension Mechanisms
+
+
+- **Plugins**: Network implementations
+- **IPAM Plugins**: IP address management
+- **Version Support**: Multiple spec versions
+
+
+---
+
+## Common Pitfalls and How to Avoid Them
+
+### Misconfigurations
+
+
+- **Plugin Order**: Incorrect plugin sequence
+- **Network Name**: Duplicate network names
+- **IPAM Pool**: Insufficient IP addresses
+- **Conflicting Networks**: Overlapping subnets
+
+
+### Performance Issues
+
+
+- **Network Setup Time**: Slow plugin execution
+- **IP Allocation**: Slow IPAM performance
+- **Plugin Chaining**: Multiple plugins overhead
+
+
+### Operational Challenges
+
+
+- **Plugin Compatibility**: Multiple plugin versions
+- **Network Upgrades**: Zero-downtime network changes
+- **Debugging**: Network connectivity issues
+- **IPAM Management**: IP pool exhaustion
+
+
+### Security Pitfalls
+
+
+- **Network Policies**: Missing policies in plugins
+- **IP Allocation**: Address space exhaustion
+- **Plugin Vulnerabilities**: Outdated plugins
+
+
+---
+
+## Coding Practices
+
+### Idiomatic Configuration
+
+
+- **Conf File**: Single file per network
+- **Conf List**: Multiple networks
+- **Plugin Configuration**: Nested in plugin blocks
+
+
+### API Usage Patterns
+
+
+- **CNI Plugin Protocol**: stdin/stdout
+- **Config File**: JSON configuration
+- **Exec-in-Container**: Network setup
+
+
+### Observability Best Practices
+
+
+- **Plugin Metrics**: Performance metrics
+- **IPAM Statistics**: IP allocation stats
+- **Error Logging**: Network errors
+
+
+### Testing Strategies
+
+
+- **Unit Tests**: Plugin tests
+- **Integration Tests**: Network behavior
+- **E2E Tests**: Full network setup
+- **Compatibility Tests**: Spec compliance
+
+
+### Development Workflow
+
+
+- **Development**: CNI plugin development
+- **Testing**: Plugin tests
+- **Debugging**: Plugin logs, network inspection
+- **Deployment**: DaemonSet, static pods
+- **CI/CD**: Plugin-specific CI
+- **Tools**: cilium-cli, calicoctl
+
+
+---
+
+## Fundamentals
+
+### Essential Concepts
+
+
+- **Plugin**: Network implementation
+- **Conf File**: Configuration file
+- **Conf List**: Multiple network config
+- **Network Namespace**: Container network context
+- **IPAM**: IP address management
+- **Result**: Network configuration output
+- **Version**: Spec version
+- **Type**: Plugin type
+- **Name**: Network name
+- **Routes**: Network routes
+
+
+### Terminology Glossary
+
+
+- **Plugin**: Network implementation
+- **Conf File**: Config file
+- **Conf List**: Multi-network config
+- **Namespace**: Network context
+- **IPAM**: IP management
+- **Result**: Config output
+- **Version**: Spec version
+- **Type**: Plugin type
+- **Name**: Network name
+- **Routes**: Network routes
+
+
+### Data Models and Types
+
+
+- **Conf File**: Network configuration
+- **Conf List**: Multiple network config
+- **IPAM Config**: IPAM configuration
+- **Result**: Network result
+- **Route**: Route definition
+- **DNS**: DNS configuration
+
+
+### Lifecycle Management
+
+
+- **Network Lifecycle**: Add → Setup → Delete → Cleanup
+- **IPAM Lifecycle**: Allocate → Config → Release
+- **Namespace Lifecycle**: Enter → Configure → Exit
+
+
+### State Management
+
+
+- **IPAM State**: IP allocations
+- **Network State**: Network configuration
+- **Namespace State**: Network namespace
+
+
+---
+
+## Scaling and Deployment Patterns
+
+### Horizontal Scaling
+
+
+- **Plugin Scaling**: Multiple plugin instances
+- **IP Pool Scaling**: IP address pool
+- **Network Scaling**: Multiple network instances
+
+
+### High Availability
+
+
+- **Node HA**: CNI plugin on each node
+- **Network HA**: Multiple network configurations
+
+
+### Production Deployments
+
+
+- **Production Configuration**: Production plugin configuration
+- **Network Policy**: Enforced network policies
+- **Monitoring**: Network metrics
+- **Security**: Network isolation
+
+
+### Upgrade Strategies
+
+
+- **Plugin Upgrade**: Plugin version compatibility
+- **Network Reconfiguration**: Zero-downtime network update
+
+
+### Resource Management
+
+
+- **IP Address Pool**: IP address management
+- **Network Storage**: Network configuration storage
+
+
+---
+
+## Additional Resources
+
+- **Official Documentation:** [https://github.com/containernetworking/cni/blob/master/SPEC.md](https://github.com/containernetworking/cni/blob/master/SPEC.md)
+- **GitHub Repository:** [github.com/containernetworking/cni](https://github.com/containernetworking/cni)
+- **CNCF Project Page:** [cncf.io/projects/cni/](https://www.cncf.io/projects/cni/)
+- **Community:** Check the GitHub repository for community channels
+- **Versioning:** Refer to project's release notes for version-specific features
+
+---
+
+*Content generated automatically. Verify against official documentation before production use.*
