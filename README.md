@@ -67,7 +67,6 @@ Skills are automatically discovered when you run `/skill` command in OpenCode.
 
 CNCF Cloud Native skills organized by domain. Each skill is a self-contained directory (`cncf-*` prefix) — the directory name indicates the specific CNCF project.
 
-<<<<<<< HEAD
 **[cncf-argo](./cncf-argo/SKILL.md)** — Argo in Continuous Integration & Delivery - cloud native architecture, patterns, pitfalls, and best practices
 
 **[cncf-artifact-hub](./cncf-artifact-hub/SKILL.md)** — Artifact Hub in Application Definition & Image Build - cloud native architecture, patterns, pitfalls, and best practices
