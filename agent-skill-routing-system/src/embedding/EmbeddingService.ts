@@ -5,11 +5,15 @@ import path from 'path';
 import { EmbeddingResponse } from '../core/types.js';
 import { Logger } from '../observability/Logger.js';
 
+export type EmbeddingProvider = 'openai' | 'llamacpp';
+
 /**
  * Configuration for the embedding service
  */
 export interface EmbeddingServiceConfig {
+  provider?: EmbeddingProvider;
   apiKey?: string;
+  llamacppBaseUrl?: string;
   model: string;
   dimensions: number;
   cacheDirectory?: string;
@@ -17,20 +21,23 @@ export interface EmbeddingServiceConfig {
 }
 
 /**
- * Embedding service using OpenAI's embedding model
+ * Embedding service supporting OpenAI and llama.cpp providers
  */
 export class EmbeddingService {
-  private config: EmbeddingServiceConfig;
+  private config: Required<EmbeddingServiceConfig>;
   private cache: Map<string, EmbeddingResponse> = new Map();
   private logger: Logger;
 
   constructor(config: Partial<EmbeddingServiceConfig> = {}) {
+    const provider = (process.env.EMBEDDING_PROVIDER as EmbeddingProvider) || config.provider || 'openai';
     this.config = {
-      model: 'text-embedding-3-small',
-      dimensions: 1536,
-      batchSize: 100,
-      cacheDirectory: './.embedding-cache',
-      ...config,
+      provider,
+      apiKey: config.apiKey || process.env.OPENAI_API_KEY || '',
+      llamacppBaseUrl: config.llamacppBaseUrl || process.env.LLAMACPP_BASE_URL || 'http://localhost:8080',
+      model: config.model || process.env.EMBEDDING_MODEL || (provider === 'llamacpp' ? 'local-embedding-model' : 'text-embedding-3-small'),
+      dimensions: config.dimensions || 1536,
+      batchSize: config.batchSize || 100,
+      cacheDirectory: config.cacheDirectory || './.embedding-cache',
     };
     this.logger = new Logger('EmbeddingService', {
       level: 'info',
@@ -126,45 +133,43 @@ export class EmbeddingService {
   }
 
   /**
-   * Generate embedding from OpenAI API
+   * Generate embedding from API (OpenAI or llama.cpp)
    */
   private async generateEmbeddingFromAPI(
     text: string
   ): Promise<EmbeddingResponse> {
     try {
-      const response = await fetch('https://api.openai.com/v1/embeddings', {
+      const baseUrl = this.config.provider === 'llamacpp'
+        ? this.config.llamacppBaseUrl
+        : 'https://api.openai.com';
+
+      const apiKey = this.config.provider === 'llamacpp'
+        ? (this.config.apiKey || 'no-key')
+        : this.config.apiKey;
+
+      const response = await fetch(`${baseUrl}/v1/embeddings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.config.apiKey}`,
+          'Authorization': `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({
-          model: this.config.model,
-          input: text,
-        }),
+        body: JSON.stringify({ model: this.config.model, input: text }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `OpenAI API error: ${response.statusText} - ${JSON.stringify(errorData)}`
-        );
+        const errorData = await response.text();
+        throw new Error(`Embedding API error ${response.status}: ${errorData}`);
       }
 
-      const data = await response.json();
+      const data = await response.json() as { data: { embedding: number[] }[] };
       const embedding = data.data[0].embedding;
-
-      return {
-        embedding,
-        dimensions: embedding.length,
-        model: this.config.model,
-      };
+      return { embedding, dimensions: embedding.length, model: this.config.model };
     } catch (error) {
       // If API fails, generate a deterministic placeholder embedding
       // This allows the system to work without API keys for testing
-      this.logger.warn('Failed to generate embedding from API, using placeholder', {
+      this.logger.warn('Failed to generate embedding, using placeholder', {
+        provider: this.config.provider,
         error: error instanceof Error ? error.message : String(error),
-        textLength: text.length,
       });
 
       const placeholder = this.generatePlaceholderEmbedding(text);
@@ -177,35 +182,39 @@ export class EmbeddingService {
   }
 
   /**
-   * Generate embeddings from OpenAI API in batch
+   * Generate embeddings from API in batch (OpenAI or llama.cpp)
    */
   private async generateEmbeddingsFromAPI(
     texts: string[]
   ): Promise<number[][]> {
     try {
-      const response = await fetch('https://api.openai.com/v1/embeddings', {
+      const baseUrl = this.config.provider === 'llamacpp'
+        ? this.config.llamacppBaseUrl
+        : 'https://api.openai.com';
+
+      const apiKey = this.config.provider === 'llamacpp'
+        ? (this.config.apiKey || 'no-key')
+        : this.config.apiKey;
+
+      const response = await fetch(`${baseUrl}/v1/embeddings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.config.apiKey}`,
+          'Authorization': `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({
-          model: this.config.model,
-          input: texts,
-        }),
+        body: JSON.stringify({ model: this.config.model, input: texts }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `OpenAI API error: ${response.statusText} - ${JSON.stringify(errorData)}`
-        );
+        const errorData = await response.text();
+        throw new Error(`Embedding API error ${response.status}: ${errorData}`);
       }
 
-      const data = await response.json();
-      return data.data.map((item: { embedding: number[] }) => item.embedding);
+      const data = await response.json() as { data: { embedding: number[] }[] };
+      return data.data.map((item) => item.embedding);
     } catch (error) {
       this.logger.warn('Failed to generate batch embeddings from API', {
+        provider: this.config.provider,
         error: error instanceof Error ? error.message : String(error),
         count: texts.length,
       });
@@ -251,7 +260,7 @@ export class EmbeddingService {
   ): Promise<void> {
     try {
       const cacheDir = path.join(
-        this.config.cacheDirectory!,
+        this.config.cacheDirectory,
         subdirectory || 'default'
       );
       await fs.promises.mkdir(cacheDir, { recursive: true });
@@ -274,7 +283,7 @@ export class EmbeddingService {
    * Get cache directory path
    */
   getCacheDirectory(): string {
-    return this.config.cacheDirectory!;
+    return this.config.cacheDirectory;
   }
 
   /**

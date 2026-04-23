@@ -15,6 +15,12 @@ RUN npm ci --omit=dev
 COPY samples/ ./samples/
 EXPOSE 3000
 ENV SKILLS_DIRECTORY=/skills
+ENV LLM_PROVIDER=openai
+ENV LLM_MODEL=gpt-4o-mini
+ENV EMBEDDING_PROVIDER=openai
+ENV EMBEDDING_MODEL=text-embedding-3-small
+# For llamacpp: set to http://host.docker.internal:8080 to reach host's llama.cpp
+ENV LLAMACPP_BASE_URL=http://host.docker.internal:8080
 VOLUME ["/skills"]
 ENV NODE_ENV=production
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \

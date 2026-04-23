@@ -9,19 +9,22 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const Logger_js_1 = require("../observability/Logger.js");
 /**
- * Embedding service using OpenAI's embedding model
+ * Embedding service supporting OpenAI and llama.cpp providers
  */
 class EmbeddingService {
     config;
     cache = new Map();
     logger;
     constructor(config = {}) {
+        const provider = process.env.EMBEDDING_PROVIDER || config.provider || 'openai';
         this.config = {
-            model: 'text-embedding-3-small',
-            dimensions: 1536,
-            batchSize: 100,
-            cacheDirectory: './.embedding-cache',
-            ...config,
+            provider,
+            apiKey: config.apiKey || process.env.OPENAI_API_KEY || '',
+            llamacppBaseUrl: config.llamacppBaseUrl || process.env.LLAMACPP_BASE_URL || 'http://localhost:8080',
+            model: config.model || process.env.EMBEDDING_MODEL || (provider === 'llamacpp' ? 'local-embedding-model' : 'text-embedding-3-small'),
+            dimensions: config.dimensions || 1536,
+            batchSize: config.batchSize || 100,
+            cacheDirectory: config.cacheDirectory || './.embedding-cache',
         };
         this.logger = new Logger_js_1.Logger('EmbeddingService', {
             level: 'info',
@@ -96,39 +99,38 @@ class EmbeddingService {
         return results;
     }
     /**
-     * Generate embedding from OpenAI API
+     * Generate embedding from API (OpenAI or llama.cpp)
      */
     async generateEmbeddingFromAPI(text) {
         try {
-            const response = await fetch('https://api.openai.com/v1/embeddings', {
+            const baseUrl = this.config.provider === 'llamacpp'
+                ? this.config.llamacppBaseUrl
+                : 'https://api.openai.com';
+            const apiKey = this.config.provider === 'llamacpp'
+                ? (this.config.apiKey || 'no-key')
+                : this.config.apiKey;
+            const response = await fetch(`${baseUrl}/v1/embeddings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${this.config.apiKey}`,
+                    'Authorization': `Bearer ${apiKey}`,
                 },
-                body: JSON.stringify({
-                    model: this.config.model,
-                    input: text,
-                }),
+                body: JSON.stringify({ model: this.config.model, input: text }),
             });
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`OpenAI API error: ${response.statusText} - ${JSON.stringify(errorData)}`);
+                const errorData = await response.text();
+                throw new Error(`Embedding API error ${response.status}: ${errorData}`);
             }
             const data = await response.json();
             const embedding = data.data[0].embedding;
-            return {
-                embedding,
-                dimensions: embedding.length,
-                model: this.config.model,
-            };
+            return { embedding, dimensions: embedding.length, model: this.config.model };
         }
         catch (error) {
             // If API fails, generate a deterministic placeholder embedding
             // This allows the system to work without API keys for testing
-            this.logger.warn('Failed to generate embedding from API, using placeholder', {
+            this.logger.warn('Failed to generate embedding, using placeholder', {
+                provider: this.config.provider,
                 error: error instanceof Error ? error.message : String(error),
-                textLength: text.length,
             });
             const placeholder = this.generatePlaceholderEmbedding(text);
             return {
@@ -139,30 +141,34 @@ class EmbeddingService {
         }
     }
     /**
-     * Generate embeddings from OpenAI API in batch
+     * Generate embeddings from API in batch (OpenAI or llama.cpp)
      */
     async generateEmbeddingsFromAPI(texts) {
         try {
-            const response = await fetch('https://api.openai.com/v1/embeddings', {
+            const baseUrl = this.config.provider === 'llamacpp'
+                ? this.config.llamacppBaseUrl
+                : 'https://api.openai.com';
+            const apiKey = this.config.provider === 'llamacpp'
+                ? (this.config.apiKey || 'no-key')
+                : this.config.apiKey;
+            const response = await fetch(`${baseUrl}/v1/embeddings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${this.config.apiKey}`,
+                    'Authorization': `Bearer ${apiKey}`,
                 },
-                body: JSON.stringify({
-                    model: this.config.model,
-                    input: texts,
-                }),
+                body: JSON.stringify({ model: this.config.model, input: texts }),
             });
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`OpenAI API error: ${response.statusText} - ${JSON.stringify(errorData)}`);
+                const errorData = await response.text();
+                throw new Error(`Embedding API error ${response.status}: ${errorData}`);
             }
             const data = await response.json();
             return data.data.map((item) => item.embedding);
         }
         catch (error) {
             this.logger.warn('Failed to generate batch embeddings from API', {
+                provider: this.config.provider,
                 error: error instanceof Error ? error.message : String(error),
                 count: texts.length,
             });

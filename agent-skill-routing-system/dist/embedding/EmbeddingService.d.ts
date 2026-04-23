@@ -1,16 +1,19 @@
 import { EmbeddingResponse } from '../core/types.js';
+export type EmbeddingProvider = 'openai' | 'llamacpp';
 /**
  * Configuration for the embedding service
  */
 export interface EmbeddingServiceConfig {
+    provider?: EmbeddingProvider;
     apiKey?: string;
+    llamacppBaseUrl?: string;
     model: string;
     dimensions: number;
     cacheDirectory?: string;
     batchSize: number;
 }
 /**
- * Embedding service using OpenAI's embedding model
+ * Embedding service supporting OpenAI and llama.cpp providers
  */
 export declare class EmbeddingService {
     private config;
@@ -30,11 +33,11 @@ export declare class EmbeddingService {
      */
     private processBatch;
     /**
-     * Generate embedding from OpenAI API
+     * Generate embedding from API (OpenAI or llama.cpp)
      */
     private generateEmbeddingFromAPI;
     /**
-     * Generate embeddings from OpenAI API in batch
+     * Generate embeddings from API in batch (OpenAI or llama.cpp)
      */
     private generateEmbeddingsFromAPI;
     /**
