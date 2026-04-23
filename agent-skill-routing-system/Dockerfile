@@ -14,6 +14,8 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 COPY samples/ ./samples/
 EXPOSE 3000
+ENV SKILLS_DIRECTORY=/skills
+VOLUME ["/skills"]
 ENV NODE_ENV=production
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -qO- http://localhost:3000/health || exit 1

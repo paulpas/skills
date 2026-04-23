@@ -253,6 +253,8 @@ docker run -d \
   --restart unless-stopped \
   -p "${PORT}:3000" \
   -e OPENAI_API_KEY="$OPENAI_API_KEY" \
+  -e SKILLS_DIRECTORY=/skills \
+  -v "${ROUTER_DIR%/agent-skill-routing-system}:/skills:ro" \
   skill-router:latest
 
 ok "Container started: skill-router on port $PORT"
