@@ -74,6 +74,32 @@ OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
 
 Adds `skill-router-api.md` to your `~/.config/opencode/opencode.json` instructions array so OpenCode knows how to call the router.
 
+## Provider Configuration
+
+### OpenAI (default)
+```bash
+OPENAI_API_KEY=sk-... ./install-skill-router.sh
+```
+
+### Anthropic
+```bash
+OPENAI_API_KEY=sk-... \
+ANTHROPIC_API_KEY=sk-ant-... \
+./install-skill-router.sh --provider anthropic --model claude-3-5-haiku-20241022
+```
+Embeddings still use OpenAI (Anthropic has no embedding API). `OPENAI_API_KEY` remains required.
+
+### Local llama.cpp
+```bash
+# Assumes llama.cpp server running on host port 8080
+./install-skill-router.sh \
+  --provider llamacpp \
+  --model local-model \
+  --llamacpp-url http://host.docker.internal:8080 \
+  --embedding-provider llamacpp
+```
+No `OPENAI_API_KEY` required. llama.cpp must serve both `/v1/chat/completions` and `/v1/embeddings`.
+
 ## Skill Format
 
 Skills are loaded exclusively from `SKILL.md` files. The router scans the mounted skills directory recursively for every file named `SKILL.md` and parses its YAML frontmatter.
@@ -125,7 +151,13 @@ See [`SKILL_FORMAT_SPEC.md`](../SKILL_FORMAT_SPEC.md) for the complete authoring
 
 | Variable | Default | Description |
 |---|---|---|
-| `OPENAI_API_KEY` | *(required)* | Used for embeddings and LLM ranking |
+| `OPENAI_API_KEY` | *(required for openai/embeddings)* | OpenAI API key |
+| `ANTHROPIC_API_KEY` | — | Anthropic API key (required when `LLM_PROVIDER=anthropic`) |
+| `LLM_PROVIDER` | `openai` | LLM ranking provider: `openai` · `anthropic` · `llamacpp` |
+| `LLM_MODEL` | provider default | Model name (e.g. `gpt-4o-mini`, `claude-3-5-haiku-20241022`, `local-model`) |
+| `EMBEDDING_PROVIDER` | `openai` | Embedding provider: `openai` · `llamacpp` |
+| `EMBEDDING_MODEL` | `text-embedding-3-small` | Embedding model name |
+| `LLAMACPP_BASE_URL` | `http://host.docker.internal:8080` | llama.cpp server base URL |
 | `SKILLS_DIRECTORY` | `/skills` | Path to skills repo root inside the container |
 | `PORT` | `3000` | HTTP server port |
 

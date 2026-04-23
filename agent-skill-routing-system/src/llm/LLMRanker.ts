@@ -1,99 +1,74 @@
-// LLM Ranker - ranks skill candidates using an LLM
+// LLM Ranker - ranks skill candidates using OpenAI, Anthropic, or llama.cpp
 
 import type { SkillDefinition, SkillRanking, SelectedSkill } from '../core/types.js';
 import { Logger } from '../observability/Logger.js';
 
-/**
- * Configuration for the LLM ranker
- */
+export type LLMProvider = 'openai' | 'anthropic' | 'llamacpp';
+
 export interface LLMRankerConfig {
+  provider?: LLMProvider;
+  /** OpenAI API key (required for openai provider; also used for embeddings) */
   apiKey?: string;
+  /** Anthropic API key (required for anthropic provider) */
+  anthropicApiKey?: string;
+  /** llama.cpp base URL e.g. http://localhost:8080 (required for llamacpp provider) */
+  llamacppBaseUrl?: string;
   model: string;
   temperature?: number;
   maxTokens?: number;
   maxCandidates?: number;
 }
 
-/**
- * LLM-based skill ranker
- */
 export class LLMRanker {
-  private config: LLMRankerConfig;
+  private config: Required<LLMRankerConfig>;
   private logger: Logger;
 
   constructor(config: Partial<LLMRankerConfig> = {}) {
+    const provider = (process.env.LLM_PROVIDER as LLMProvider) || config.provider || 'openai';
     this.config = {
-      model: 'gpt-4o-mini',
-      temperature: 0.1,
-      maxTokens: 1000,
-      maxCandidates: 10,
-      ...config,
+      provider,
+      apiKey: config.apiKey || process.env.OPENAI_API_KEY || '',
+      anthropicApiKey: config.anthropicApiKey || process.env.ANTHROPIC_API_KEY || '',
+      llamacppBaseUrl: config.llamacppBaseUrl || process.env.LLAMACPP_BASE_URL || 'http://localhost:8080',
+      model: config.model || process.env.LLM_MODEL || this.defaultModel(provider),
+      temperature: config.temperature ?? 0.1,
+      maxTokens: config.maxTokens ?? 1000,
+      maxCandidates: config.maxCandidates ?? 10,
     };
-    this.logger = new Logger('LLMRanker', {
-      level: 'info',
-      includePayloads: false,
-    });
+    this.logger = new Logger('LLMRanker', { level: 'info', includePayloads: false });
+    this.logger.info(`LLMRanker initialized`, { provider: this.config.provider, model: this.config.model });
   }
 
-  /**
-   * Rank skill candidates based on task description
-   */
-  async rankCandidates(
-    task: string,
-    candidates: SkillDefinition[]
-  ): Promise<SelectedSkill[]> {
-    if (candidates.length === 0) {
-      return [];
+  private defaultModel(provider: LLMProvider): string {
+    switch (provider) {
+      case 'anthropic': return 'claude-3-5-haiku-20241022';
+      case 'llamacpp':  return 'local-model';
+      default:          return 'gpt-4o-mini';
     }
+  }
 
-    // Limit to max candidates
-    const limitedCandidates = candidates.slice(
-      0,
-      this.config.maxCandidates!
-    );
+  async rankCandidates(task: string, candidates: SkillDefinition[]): Promise<SelectedSkill[]> {
+    if (candidates.length === 0) return [];
 
-    // Build prompt
-    const prompt = this.buildRankingPrompt(task, limitedCandidates);
-
-    // Get ranking from LLM
+    const limited = candidates.slice(0, this.config.maxCandidates);
+    const prompt = this.buildRankingPrompt(task, limited);
     const response = await this.callLLM(prompt);
+    const rankings = this.parseRankingResponse(response, limited.map(c => c.metadata.name));
 
-    // Parse response
-    const rankings = this.parseRankingResponse(
-      response,
-      limitedCandidates.map((c) => c.metadata.name)
-    );
-
-    // Convert to SelectedSkill format
-    const selectedSkills: SelectedSkill[] = rankings.map((ranking, index) => ({
+    return rankings.map((ranking, index) => ({
       name: ranking.skillName,
       score: ranking.score,
       role: index === 0 ? 'primary' : 'supporting',
       reasoning: ranking.reason,
     }));
+  }
 
-    return selectedSkills;
-   }
+  private buildRankingPrompt(task: string, candidates: SkillDefinition[]): string {
+    const candidatesInfo = candidates
+      .map((c, i) => `${i + 1}. ${c.metadata.name}\n   Category: ${c.metadata.category}\n   Description: ${c.metadata.description}\n   Tags: ${c.metadata.tags.join(', ')}`)
+      .join('\n\n');
 
-   /**
-    * Build the ranking prompt for the LLM
-    */
-   private buildRankingPrompt(
-     task: string,
-     candidates: SkillDefinition[]
-   ): string {
-     const candidatesInfo = candidates
-       .map(
-         (c, index) => `
- ${index + 1}. ${c.metadata.name}
-    Category: ${c.metadata.category}
-    Description: ${c.metadata.description}
-    Tags: ${c.metadata.tags.join(', ')}
- `
-       )
-       .join('\n');
-
-     return `You are a skill router for an agentic coding system. Given a task, rank the most appropriate skills to execute it.
+    return `You are a skill router for an agentic coding system. Given a task, rank the most appropriate skills.
 
 Task: ${task}
 
@@ -101,131 +76,126 @@ Available Skills:
 ${candidatesInfo}
 
 Instructions:
-1. Rank the skills from 1 (most relevant) to N (least relevant)
-2. Assign a relevance score (0.0-1.0) to each skill
+1. Rank skills from most to least relevant
+2. Assign a relevance score (0.0-1.0)
 3. Provide a brief reason for each ranking
 4. Only include skills with score >= 0.5
 
-Output format (JSON):
+Output format (JSON only, no extra text):
 {
   "rankings": [
-    {
-      "skillName": "skill-name-1",
-      "score": 0.95,
-      "reason": "Brief reason why this skill is relevant"
-    },
-    ...
+    {"skillName": "skill-name", "score": 0.95, "reason": "Brief reason"}
   ]
-}
-`;
+}`;
   }
 
-  /**
-   * Parse the LLM ranking response
-   */
-  private parseRankingResponse(
-    response: string,
-    availableSkills: string[]
-  ): SkillRanking[] {
-    try {
-      // Try to extract JSON from response
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const json = JSON.parse(jsonMatch[0]);
-        return json.rankings || [];
-      }
-    } catch (error) {
-      this.logger.warn('Failed to parse LLM ranking response as JSON:', {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-
-    // Fallback: parse line by line
-    const rankings: SkillRanking[] = [];
-    const lines = response.split('\n');
-
-    for (const line of lines) {
-      const match = line.match(
-        /(\d+)\.\s+(\S+)\s+score:\s*([\d.]+)\s*reason:\s*(.+)/i
-      );
-      if (match) {
-        const [, , skillName, score, reason] = match;
-        if (availableSkills.includes(skillName)) {
-          rankings.push({
-            skillName,
-            score: parseFloat(score) || 0,
-            reason: reason.trim(),
-            confidence: 0.8,
-          });
-        }
-      }
-    }
-
-    return rankings;
-  }
-
-  /**
-   * Call the LLM API
-   */
   private async callLLM(prompt: string): Promise<string> {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.config.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: this.config.model,
-          messages: [
-            {
-              role: 'system',
-              content:
-                'You are a precise skill router. Always output valid JSON.',
-            },
-            { role: 'user', content: prompt },
-          ],
-          temperature: this.config.temperature,
-          max_tokens: this.config.maxTokens,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `LLM API error: ${response.statusText} - ${JSON.stringify(errorData)}`
-        );
+      switch (this.config.provider) {
+        case 'anthropic': return await this.callAnthropic(prompt);
+        case 'llamacpp':  return await this.callOpenAICompatible(prompt, this.config.llamacppBaseUrl);
+        default:          return await this.callOpenAICompatible(prompt, 'https://api.openai.com');
       }
-
-      const data = await response.json();
-      return data.choices[0].message.content;
     } catch (error) {
-      this.logger.error('LLM call failed:', {
+      this.logger.error('LLM call failed, using fallback ranking', {
+        provider: this.config.provider,
         error: error instanceof Error ? error.message : String(error),
       });
       return this.fallbackRanking();
     }
   }
 
-  /**
-   * Fallback ranking when LLM fails
-   */
-  private fallbackRanking(): string {
-    return JSON.stringify({
-      rankings: [
-        {
-          skillName: 'fallback-ranker',
-          score: 0.5,
-          reason: 'Fallback ranking due to LLM failure',
-        },
-      ],
+  /** OpenAI-compatible endpoint (used for both openai and llamacpp) */
+  private async callOpenAICompatible(prompt: string, baseUrl: string): Promise<string> {
+    const apiKey = this.config.provider === 'llamacpp'
+      ? (this.config.apiKey || 'no-key')  // llama.cpp doesn't require a real key
+      : this.config.apiKey;
+
+    const response = await fetch(`${baseUrl}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: this.config.model,
+        messages: [
+          { role: 'system', content: 'You are a precise skill router. Always output valid JSON.' },
+          { role: 'user', content: prompt },
+        ],
+        temperature: this.config.temperature,
+        max_tokens: this.config.maxTokens,
+      }),
     });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`${baseUrl} API error ${response.status}: ${err}`);
+    }
+
+    const data = await response.json() as { choices: { message: { content: string } }[] };
+    return data.choices[0].message.content;
   }
 
-  /**
-   * Get the LLM model name
-   */
-  getModel(): string {
-    return this.config.model;
+  /** Anthropic Messages API */
+  private async callAnthropic(prompt: string): Promise<string> {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': this.config.anthropicApiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: this.config.model,
+        max_tokens: this.config.maxTokens,
+        system: 'You are a precise skill router. Always output valid JSON.',
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`Anthropic API error ${response.status}: ${err}`);
+    }
+
+    const data = await response.json() as { content: { type: string; text: string }[] };
+    const textBlock = data.content.find(b => b.type === 'text');
+    if (!textBlock) throw new Error('Anthropic response contained no text block');
+    return textBlock.text;
   }
+
+  private parseRankingResponse(response: string, availableSkills: string[]): SkillRanking[] {
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const json = JSON.parse(jsonMatch[0]) as { rankings?: SkillRanking[] };
+        return (json.rankings || []).filter(r => availableSkills.includes(r.skillName));
+      }
+    } catch (error) {
+      this.logger.warn('Failed to parse LLM ranking response as JSON', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+
+    // line-by-line fallback
+    const rankings: SkillRanking[] = [];
+    for (const line of response.split('\n')) {
+      const match = line.match(/(\d+)\.\s+(\S+)\s+score:\s*([\d.]+)\s*reason:\s*(.+)/i);
+      if (match) {
+        const [, , skillName, score, reason] = match;
+        if (availableSkills.includes(skillName)) {
+          rankings.push({ skillName, score: parseFloat(score) || 0, reason: reason.trim(), confidence: 0.8 });
+        }
+      }
+    }
+    return rankings;
+  }
+
+  private fallbackRanking(): string {
+    return JSON.stringify({ rankings: [{ skillName: 'fallback', score: 0.5, reason: 'LLM unavailable' }] });
+  }
+
+  getModel(): string { return this.config.model; }
+  getProvider(): LLMProvider { return this.config.provider; }
 }

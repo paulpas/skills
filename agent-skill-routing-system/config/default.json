@@ -62,12 +62,12 @@ export interface AppConfig {
 export const defaultConfig: AppConfig = {
   skillsDirectory: process.env.SKILLS_DIRECTORY || './samples/skill-definitions',
   embedding: {
-    model: 'text-embedding-3-small',
+    model: process.env.EMBEDDING_MODEL || 'text-embedding-3-small',
     dimensions: 1536,
     batchSize: 100,
   },
   llm: {
-    model: 'gpt-4o-mini',
+    model: process.env.LLM_MODEL || 'gpt-4o-mini',
     maxCandidates: 10,
     temperature: 0.1,
     maxTokens: 1000,

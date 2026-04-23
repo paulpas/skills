@@ -25,6 +25,11 @@ SKILLS_DIR_ARG=""
 CONFIG_ARG=""
 NO_SERVICE=false
 INTEGRATE_OPENCODE=false
+LLM_PROVIDER="${LLM_PROVIDER:-openai}"
+LLM_MODEL="${LLM_MODEL:-}"
+ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"
+LLAMACPP_URL="${LLAMACPP_URL:-}"
+EMBEDDING_PROVIDER="${EMBEDDING_PROVIDER:-openai}"
 
 usage() {
   cat <<EOF
@@ -40,6 +45,11 @@ ${BOLD}Options:${RESET}
   --integrate-opencode   Generate skill-router-api.md and register it in
                          opencode.json instructions (steps 11-13)
   --config PATH          Path to opencode.json (only used with --integrate-opencode)
+  --provider openai|anthropic|llamacpp   LLM provider (default: openai)
+  --model MODEL                          LLM model name (provider default if omitted)
+  --anthropic-key KEY                    Anthropic API key (or ANTHROPIC_API_KEY env)
+  --llamacpp-url URL                     llama.cpp base URL (default: http://host.docker.internal:8080)
+  --embedding-provider openai|llamacpp   Embedding provider (default: openai)
   --help                 Show this help message
 
 ${BOLD}Examples:${RESET}
@@ -47,6 +57,8 @@ ${BOLD}Examples:${RESET}
   $0 --openai-key sk-... --port 3001 --no-service
   $0 --openai-key sk-... --integrate-opencode
   $0 --openai-key sk-... --integrate-opencode --config ~/.config/opencode/opencode.json
+  $0 --openai-key sk-... --provider anthropic --anthropic-key sk-ant-... --model claude-3-5-haiku-20241022
+  $0 --provider llamacpp --llamacpp-url http://host.docker.internal:8080 --embedding-provider llamacpp
 EOF
   exit 0
 }
@@ -76,6 +88,26 @@ while [[ $# -gt 0 ]]; do
     --integrate-opencode)
       INTEGRATE_OPENCODE=true
       shift
+      ;;
+    --provider)
+      LLM_PROVIDER="${2:?'--provider requires a value'}"
+      shift 2
+      ;;
+    --model)
+      LLM_MODEL="${2:?'--model requires a value'}"
+      shift 2
+      ;;
+    --anthropic-key)
+      ANTHROPIC_API_KEY="${2:?'--anthropic-key requires a value'}"
+      shift 2
+      ;;
+    --llamacpp-url)
+      LLAMACPP_URL="${2:?'--llamacpp-url requires a value'}"
+      shift 2
+      ;;
+    --embedding-provider)
+      EMBEDDING_PROVIDER="${2:?'--embedding-provider requires a value'}"
+      shift 2
       ;;
     --help|-h)
       usage
@@ -214,12 +246,23 @@ fi
 echo ""
 echo -e "${BOLD}[Step 5] Validating OPENAI_API_KEY...${RESET}"
 
-if [[ -z "$OPENAI_API_KEY" ]]; then
-  err "OPENAI_API_KEY is required."
-  err "Set it with:  --openai-key sk-...   OR   export OPENAI_API_KEY=sk-..."
+if [[ "$LLM_PROVIDER" != "llamacpp" || "$EMBEDDING_PROVIDER" != "llamacpp" ]]; then
+  if [[ -z "$OPENAI_API_KEY" ]]; then
+    err "OPENAI_API_KEY is required when using openai provider for LLM or embeddings."
+    err "Set it with:  --openai-key sk-...   OR   export OPENAI_API_KEY=sk-..."
+    err "For a fully local setup: --provider llamacpp --embedding-provider llamacpp"
+    exit 1
+  fi
+  ok "OPENAI_API_KEY is set (${#OPENAI_API_KEY} chars)"
+else
+  info "Skipping OPENAI_API_KEY check (using llamacpp for both LLM and embeddings)"
+fi
+
+if [[ "$LLM_PROVIDER" == "anthropic" && -z "$ANTHROPIC_API_KEY" ]]; then
+  err "--provider anthropic requires --anthropic-key or ANTHROPIC_API_KEY env var"
   exit 1
 fi
-ok "OPENAI_API_KEY is set (${#OPENAI_API_KEY} chars)"
+[[ -n "$ANTHROPIC_API_KEY" ]] && ok "ANTHROPIC_API_KEY is set (${#ANTHROPIC_API_KEY} chars)"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # STEP 6 — Build Docker image
@@ -253,6 +296,11 @@ docker run -d \
   --restart unless-stopped \
   -p "${PORT}:3000" \
   -e OPENAI_API_KEY="$OPENAI_API_KEY" \
+  -e LLM_PROVIDER="$LLM_PROVIDER" \
+  ${LLM_MODEL:+-e LLM_MODEL="$LLM_MODEL"} \
+  ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY"} \
+  ${LLAMACPP_URL:+-e LLAMACPP_BASE_URL="$LLAMACPP_URL"} \
+  -e EMBEDDING_PROVIDER="$EMBEDDING_PROVIDER" \
   -e SKILLS_DIRECTORY=/skills \
   -v "${ROUTER_DIR%/agent-skill-routing-system}:/skills:ro" \
   skill-router:latest
@@ -516,9 +564,12 @@ echo -e "${BOLD}${GREEN}╔═════════════════�
 echo -e "${BOLD}${GREEN}║         Skill Router Installation Complete        ║${RESET}"
 echo -e "${BOLD}${GREEN}╚══════════════════════════════════════════════════╝${RESET}"
 echo ""
+_model_display="${LLM_MODEL:-provider default}"
 echo -e "  ${BOLD}Container:${RESET}    skill-router (running on port $PORT)"
 echo -e "  ${BOLD}Image:${RESET}        skill-router:latest"
 echo -e "  ${BOLD}Health:${RESET}       http://localhost:$PORT/health ${GREEN}✓${RESET}"
+echo -e "  ${BOLD}LLM Provider:${RESET} $LLM_PROVIDER ($_model_display)"
+echo -e "  ${BOLD}Embeddings:${RESET}   $EMBEDDING_PROVIDER"
 echo -e "  ${BOLD}Service:${RESET}      $SERVICE_STATUS"
 
 if $INTEGRATE_OPENCODE; then
