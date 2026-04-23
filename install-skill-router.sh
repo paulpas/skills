@@ -325,14 +325,15 @@ ok "Container started: skill-router on port $PORT"
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}[Step 9] Waiting for health check...${RESET}"
-info "Polling http://localhost:$PORT/health (up to 15 attempts)"
+info "Note: skills load in the background — server responds immediately, ready:true appears once loading completes"
+info "Polling http://localhost:${PORT}/health (up to 60 attempts, 5s apart = 5min max)"
 
 HEALTH_RESPONSE=""
 HEALTHY=false
 
-for attempt in $(seq 1 15); do
+for attempt in $(seq 1 60); do
   printf "  ."
-  sleep 2
+  sleep 5
   HTTP_CODE=$(curl -s -o /tmp/skill-router-health.json -w "%{http_code}" \
     "http://localhost:$PORT/health" 2>/dev/null || echo "000")
 
@@ -348,13 +349,21 @@ done
 echo ""
 
 if [[ "$HEALTHY" != "true" ]]; then
-  err "Health check failed after 15 attempts."
+  err "Health check failed after 60 attempts."
   err "Container logs:"
   docker logs skill-router --tail 20 >&2
   exit 1
 fi
 
+READY=$(echo "$HEALTH_RESPONSE" | grep -o '"ready":[a-z]*' | cut -d: -f2 || echo "unknown")
+
 ok "Health check passed on attempt $attempt"
+echo ""
+echo -e "  ${GREEN}→ Server is up (ready: $READY)${RESET}"
+if [[ "$READY" != "true" ]]; then
+  echo -e "  ${YELLOW}→ Skills are still loading in background. Check readiness with:${RESET}"
+  echo -e "      curl http://localhost:${PORT}/health | jq .ready"
+fi
 echo ""
 echo -e "  ${GREEN}Health response:${RESET}"
 if $HAS_JQ; then

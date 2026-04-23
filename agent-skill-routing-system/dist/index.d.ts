@@ -12,24 +12,29 @@ export * from './llm/LLMRanker.js';
 export * from './observability/Logger.js';
 export * from './skills/GitHubSkillLoader.js';
 /**
-  * Main application class
-   */
+ * Main application class
+ */
 export declare class AgentSkillRoutingApp {
     private app;
     private router;
     private mcpBridge;
     private githubLoader;
     private logger;
+    private ready;
+    private loadingError;
     constructor(config?: Partial<RouterConfig & MCPBridgeConfig>);
     private config;
     /**
-     * Initialize the application
-     */
-    initialize(): Promise<void>;
-    /**
-     * Start the HTTP server
+     * Start the HTTP server immediately, then load skills in the background.
+     * /health returns 200 right away; /route, /execute, /reload, /skills return
+     * 503 until ready === true.
      */
     start(port?: number): Promise<void>;
+    /**
+     * All heavy init work: GitHub clone, skill loading, embedding generation.
+     * Runs after the server is already accepting connections.
+     */
+    private initializeAsync;
     /**
      * Stop the application
      */
