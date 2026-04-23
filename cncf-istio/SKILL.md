@@ -384,6 +384,460 @@ Use Istio when you need a comprehensive service mesh with built-in traffic manag
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
 
+## Tutorial
+
+This tutorial will guide you through installing, configuring, and using Istio for service mesh management in Kubernetes.
+
+### Prerequisites
+
+Before beginning, ensure you have:
+- A running Kubernetes cluster (minikube with 4GB+ RAM, kind, EKS, GKE, AKS)
+- `kubectl` configured with cluster-admin permissions
+- `istioctl` CLI (for Istio installation and debugging)
+- Basic understanding of Kubernetes services and networking
+
+Verify your setup:
+
+```bash
+# Check cluster connectivity
+kubectl cluster-info
+
+# Verify kubectl configuration
+kubectl get nodes
+
+# Check Kubernetes version (1.21+ recommended)
+kubectl version --short
+
+# Check if Envoy proxy sidecar injection is supported
+kubectl get mutatingwebhookconfigurations
+```
+
+---
+
+### 1. Installation
+
+Istio can be installed using istioctl, Helm, or with managed offerings from cloud providers.
+
+#### Method 1: Using istioctl (Recommended)
+
+```bash
+# Download istioctl
+curl -L https://istio.io/downloadIstio | sh -
+
+# Add istioctl to PATH
+export PATH="$PATH:$(pwd)/istio-*/bin"
+# Or for Linux:
+# export PATH="$PATH:$(pwd)/istio-1.21.0/bin"
+
+# Verify installation
+istioctl version
+
+# Or install istioctl via Homebrew (macOS/Linux)
+brew install istioctl
+
+# Or via Chocolatey (Windows)
+choco install istioctl
+```
+
+#### Method 2: Using istioctl with Profile
+
+```bash
+# Install with default profile (recommended for production)
+istioctl install --set profile=default -y
+
+# Install with demo profile (for learning and testing)
+istioctl install --set profile=demo -y
+
+# Install with minimal profile (custom configuration)
+istioctl install --set profile=minimal -y
+
+# Install with custom settings
+istioctl install --set profile=default \
+  --set values.gateways.istio-ingressgateway.type=LoadBalancer \
+  --set values.pilot.resources.requests.memory=1Gi \
+  -y
+```
+
+#### Method 3: Using Helm
+
+```bash
+# Add the Istio Helm repository
+helm repo add istio.io https://istio-release.storage.googleapis.com/charts
+helm repo update
+
+# Install Istio base charts
+helm install istio-base istio.io/base -n istio-system --create-namespace
+
+# Install Istio control plane
+helm install istiod istio.io/istiod -n istio-system \
+  --set global.sts.tokenAudience=istiod.istio-system.svc.service-account
+
+# Install Istio ingress gateway
+helm install istio-ingress istio.io/gateway -n istio-system \
+  --set service.type=LoadBalancer
+
+# Verify installation
+kubectl get pods -n istio-system
+```
+
+#### Method 4: Using Managed Istio (Cloud Providers)
+
+```bash
+# Amazon EKS with AWS Distro for Istio
+# See: https://aws.amazon.com/istio/
+
+# Google GKE with Istio
+gcloud container clusters update my-cluster \
+  --update-istio=enabled \
+  --istio-version=1.21.0
+
+# Azure AKS with Istio
+az aks update \
+  --name myAKSCluster \
+  --resource-group myResourceGroup \
+  --enable-istio
+```
+
+---
+
+### 2. Basic Configuration
+
+#### Enable Sidecar Injection
+
+```bash
+# Enable injection on namespace
+kubectl label namespace default istio-injection=enabled
+
+# Or use label selector
+kubectl label namespace production istio-injection=enabled
+
+# Verify namespace is labeled
+kubectl get namespace -L istio-injection
+
+# Manually inject sidecar
+kubectl get default -o yaml | istioctl kube-inject -f - | kubectl apply -f -
+```
+
+#### Configure Mesh Settings
+
+```yaml
+# Create IstioOperator configuration
+cat <<EOF | kubectl apply -f -
+apiVersion: istio.io/v1beta1
+kind: IstioOperator
+metadata:
+  name: istio-control-plane
+  namespace: istio-system
+spec:
+  profile: default
+  components:
+    pilot:
+      k8s:
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "500m"
+        env:
+        - name: PILOT_ENABLE_PROTOCOL_SNIFFING_FOR_OUTBOUND
+          value: "true"
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        service:
+          type: LoadBalancer
+EOF
+```
+
+#### Configure mTLS
+
+```yaml
+# Enable mTLS in namespace
+cat <<EOF | kubectl apply -f -
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: production
+spec:
+  mtls:
+    mode: STRICT
+---
+# Disable mTLS for specific workloads
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: explicit-disabled
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: monitoring
+  mtls:
+    mode: DISABLE
+EOF
+```
+
+#### Configure Gateways
+
+```yaml
+# Create Gateway for external access
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: myapp-gateway
+  namespace: production
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - myapp.example.com
+EOF
+```
+
+---
+
+### 3. Usage Examples
+
+#### Deploying an Application with Istio
+
+```bash
+# Deploy the sleep application (sample app)
+kubectl apply -f istio-*/samples/sleep/sleep.yaml
+
+# Verify sidecar injection
+kubectl get pods -l app=sleep
+
+# Check injected sidecar
+istioctl proxy-status
+
+# Describe pod to see sidecar
+kubectl describe pod sleep-xxxxx
+```
+
+#### Traffic Management Examples
+
+```bash
+# Create a Virtual Service
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: sleep
+  namespace: default
+spec:
+  hosts:
+  - sleep
+  http:
+  - route:
+    - destination:
+        host: sleep
+        subset: v1
+      weight: 100
+---
+# Create subsets
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: sleep
+  namespace: default
+spec:
+  host: sleep
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+EOF
+
+# Apply traffic policy
+istioctl analyze
+```
+
+#### Testing Circuit Breaking
+
+```yaml
+# Configure circuit breaking
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: myapp-circuit-breaker
+  namespace: production
+spec:
+  host: myapp.production.svc.cluster.local
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+        http1MaxPendingRequests: 100
+        http2MaxRequests: 1000
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+EOF
+```
+
+#### Observability with Kiali
+
+```bash
+# Enable Kiali addon
+istioctl install --set profile=demo -y
+
+# Access Kiali dashboard
+istioctl dashboard kiali
+
+# Or port-forward manually
+kubectl -n istio-system port-forward svc/kiali 20001:20001
+
+# Access via browser
+open http://localhost:20001
+```
+
+---
+
+### 4. Common Operations
+
+#### Monitoring Mesh Health
+
+```bash
+# Check Istio components status
+kubectl get pods -n istio-system
+
+# Check proxy status
+istioctl proxy-status
+
+# Verify configuration
+istioctl analyze
+
+# Check sidecar injection status
+istioctl proxy-status --injection
+
+# View configuration dumps
+istioctl proxy-config listeners <pod-name> -n <namespace>
+istioctl proxy-config routes <pod-name> -n <namespace>
+istioctl proxy-config clusters <pod-name> -n <namespace>
+```
+
+#### Debugging Service Mesh
+
+```bash
+# View Envoy logs
+kubectl logs <pod-name> -c istio-proxy -n <namespace>
+
+# View sidecar logs
+kubectl logs <pod-name> -c sidecar-redirect -n <namespace>
+
+# Test connectivity
+istioctl proxy-status | grep SYMBOLIC-NAME
+istioctl proxy-config <pod-name> -n <namespace>
+
+# Check certificate status
+istioctl proxy-config <pod-name> -n <namespace> --type certificate
+
+# Verify mTLS status
+istioctl proxy-check <pod-name> -n <namespace>
+```
+
+#### Managing Configuration
+
+```bash
+# List all Istio resources
+kubectl get virtualservices -A
+kubectl get destinationrules -A
+kubectl get gateways -A
+kubectl get servicesettings -A
+
+# Dry-run configuration
+istioctl analyze -I manifest.yaml
+
+# Validate configuration
+istioctl validate -f manifest.yaml
+
+# Export configuration
+istioctl proxy-config <pod-name> -n <namespace> -o json
+```
+
+#### Upgrading Istio
+
+```bash
+# Download new version
+curl -L https://istio.io/downloadIstio | sh -
+export PATH="$PATH:$(pwd)/istio-1.21.0/bin"
+
+# Validate previous version
+istioctl analyze
+
+# Upgrade istioctl
+istioctl upgrade --version 1.21.0
+
+# Or use upgrade command
+istioctl upgrade -y --version 1.21.0
+
+# Verify upgrade
+istioctl version
+kubectl get pods -n istio-system
+```
+
+---
+
+### 5. Best Practices
+
+#### Configuration Best Practices
+
+1. **Namespace Isolation**: Use dedicated namespaces for different mesh components
+2. **Resource Limits**: Set appropriate CPU and memory limits for Istio components
+3. **Auto-Injection**: Enable sidecar injection selectively by namespace
+4. **Version Management**: Always use specific Istio versions in production
+5. **Rolling Updates**: Use rolling updates for Istio control plane
+6. **Backup Configuration**: Backup Istio configurations regularly
+7. **Network Policies**: Configure network policies for mesh security
+8. **Monitoring**: Enable metrics collection for all mesh components
+
+#### Security Best Practices
+
+1. **Enable mTLS**: Always enable strict mTLS in production
+2. **Rotate Certificates**: Regularly rotate root and intermediate certificates
+3. **Use Pod Security Policies**: Restrict pod capabilities
+4. **Network Policies**: Implement network policies for micro-segmentation
+5. **RBAC**: Configure RBAC for Istio resources
+6. **Audit Logging**: Enable audit logging for security analysis
+7. **Secret Management**: Use external secret management
+8. **Image Verification**: Use verified Istio images
+
+#### Observability Best Practices
+
+1. **Collect All Metrics**: Enable comprehensive metrics collection
+2. **Distributed Tracing**: Integrate with Jaeger or Zipkin
+3. **Centralized Logging**: Configure centralized logging
+4. **Dashboards**: Create Grafana dashboards for mesh metrics
+5. **Alerting**: Set up alerts for mesh health
+6. **Service Graph**: Monitor service dependency graph
+7. **Latency Tracking**: Track request latency across services
+8. **Error Rates**: Monitor error rates and trends
+
+#### Performance Best Practices
+
+1. **Optimize Sidecar**: Configure sidecar resource limits appropriately
+2. **Disable Unused Features**: Disable features you don't use
+3. **Use CRDs Efficiently**: Limit the number of Istio CRDs
+4. **Network Optimization**: Configure network policies for optimal performance
+5. **Caching**: Enable caching where appropriate
+6. **Compression**: Enable HTTP compression
+7. **Connection Pooling**: Configure connection pooling
+8. **Load Balancing**: Choose appropriate load balancing strategies
+
+*Content generated automatically. Verify against official documentation before production use.*
+
 ## Examples
 
 ### Virtual Service with Canary Deployment

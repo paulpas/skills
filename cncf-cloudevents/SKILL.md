@@ -1018,7 +1018,552 @@ class AuditLogger {
 
 ---
 
-## Additional Resources
+## Tutorial
+
+### Prerequisites
+
+Before working with CloudEvents, ensure you have:
+
+- **Kubernetes cluster** (v1.20+)
+- **kubectl** (v1.20+)
+- **Helm** (v3.0+)
+- **Basic understanding of event-driven architectures**
+- **Node.js** (v16+ or Python 3.8+) for SDK examples
+
+**Check your environment:**
+```bash
+kubectl version --client
+helm version
+node --version
+```
+
+### Installation
+
+#### Using Helm (Recommended)
+
+```bash
+# Add the Knative repository
+helm repo add knative https://charts.knative.dev
+helm repo update
+
+# Install Knative Eventing (includes CloudEvents support)
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.12.0/eventing-crds.yaml
+kubectl wait --for=condition=Established --timeout=30s -f https://github.com/knative/eventing/releases/download/knative-v1.12.0/eventing-crds.yaml
+
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.12.0/eventing-core.yaml
+kubectl wait --for=condition=Ready --timeout=300s -n knative-eventing --all pods
+
+# Install a broker implementation (e.g., InMemoryChannel)
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.12.0/in-memory-channel.yaml
+
+# Verify installation
+kubectl get pods -n knative-eventing
+kubectl get brokers.eventing.knative.dev
+```
+
+#### Using kubectl Direct Apply
+
+```bash
+# Apply CloudEvents CRDs and components
+kubectl apply -f https://github.com/cloudevents/spec/raw/main/cloudevents.yaml
+
+# Install NATS JetStream (alternative event bus)
+helm repo add nats https://nats-io.github.io/k8s/helm/
+helm repo update
+helm install nats nats/nats -n nats-system --create-namespace
+
+# Install Eventing Bus
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.12.0/eventing.yaml
+```
+
+#### Using Docker for Local Testing
+
+```bash
+# Run a CloudEvents receiver container
+docker run -p 8080:8080 \
+  -e PORT=8080 \
+  -e TARGET_EVENT_TYPE=com.example.test \
+  cloudEvents receiver
+
+# Test locally
+curl -X POST http://localhost:8080 \
+  -H "Content-Type: application/cloudevents+json" \
+  -H "Ce-Specversion: 1.0" \
+  -H "Ce-Type: com.example.test" \
+  -H "Ce-Source: test-client" \
+  -H "Ce-Id: test-123" \
+  -d '{"message": "Hello CloudEvents"}'
+```
+
+### Basic Configuration
+
+#### CloudEvents Configuration File
+
+```yaml
+# cloudevents-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudevents-config
+  namespace: default
+data:
+  config.yaml: |
+    # CloudEvents configuration
+    specversion: "1.0"
+    
+    # Default attributes for events
+    defaultAttributes:
+      source: "https://myapp.example.com"
+      type: "com.example.application.event"
+      datacontenttype: "application/json"
+    
+    # Broker configuration
+    broker:
+      name: default
+      namespace: default
+    
+    # Retry policy
+    retry:
+      maxRetries: 3
+      backoffPolicy: linear
+      backoffDelay: "PT1S"
+    
+    # Dead letter queue
+    deadLetterSink:
+      uri: "http://dlq-service.default.svc.cluster.local"
+```
+
+#### Environment Variables
+
+**Node.js:**
+```javascript
+// .env
+CLOUD_EVENTS_SOURCE=https://myapp.example.com
+CLOUD_EVENTS_TYPE=com.example.order.created
+CLOUD_EVENTS_TARGET=http://event-broker.default.svc.cluster.local
+CLOUD_EVENTS_RETRY_COUNT=3
+CLOUD_EVENTS_TIMEOUT=5000
+```
+
+**Python:**
+```python
+# .env
+CLOUD_EVENTS_SOURCE=https://myapp.example.com
+CLOUD_EVENTS_TYPE=com.example.order.created
+CLOUD_EVENTS_TARGET=http://event-broker.default.svc.cluster.local
+CLOUD_EVENTS_RETRY_COUNT=3
+CLOUD_EVENTS_TIMEOUT=5000
+```
+
+#### Kubernetes Secret for Sensitive Configuration
+
+```yaml
+# cloudevents-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudevents-secrets
+  namespace: default
+type: Opaque
+stringData:
+  # API keys or tokens for external events
+  api-key: "your-api-key-here"
+  webhook-secret: "your-webhook-secret-here"
+```
+
+### Usage Examples
+
+#### Creating CloudEvents in Node.js
+
+```javascript
+// cloudevents-client.js
+const { CloudEvent } = require('cloudevents');
+
+// Create a CloudEvent factory
+class CloudEventFactory {
+  constructor(source, defaultTypePrefix = '') {
+    this.source = source;
+    this.defaultTypePrefix = defaultTypePrefix;
+  }
+
+  create(type, data, attributes = {}) {
+    return {
+      specversion: '1.0',
+      type: this.defaultTypePrefix + type,
+      source: this.source,
+      id: this.generateId(),
+      time: new Date().toISOString(),
+      ...attributes,
+      data: data
+    };
+  }
+
+  generateId() {
+    return crypto.randomUUID();
+  }
+}
+
+// Usage
+const factory = new CloudEventFactory('https://orders.example.com', 'com.example.');
+const event = factory.create('order.created', { orderId: '123', total: 99.99 });
+
+console.log('Created CloudEvent:', JSON.stringify(event, null, 2));
+```
+
+#### Sending CloudEvents via HTTP
+
+```javascript
+// Send CloudEvent to broker
+async function sendCloudEvent(event, targetUrl) {
+  const response = await fetch(targetUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/cloudevents+json',
+    },
+    body: JSON.stringify(event)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to send CloudEvent: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// Usage
+const event = factory.create('order.shipped', {
+  orderId: '123',
+  trackingNumber: 'TRK-456'
+});
+
+await sendCloudEvent(event, 'http://event-broker.default.svc.cluster.local');
+```
+
+#### Receiving CloudEvents in Node.js
+
+```javascript
+// cloudevents-server.js
+const http = require('http');
+
+const server = http.createServer(async (req, res) => {
+  if (req.method !== 'POST') {
+    res.writeHead(405);
+    res.end('Method Not Allowed');
+    return;
+  }
+
+  // Parse the incoming CloudEvent
+  const headers = req.headers;
+  const contentType = headers['content-type'];
+
+  let event;
+
+  if (contentType === 'application/cloudevents+json') {
+    // Structured content mode
+    const body = [];
+    req.on('data', chunk => body.push(chunk));
+    req.on('end', () => {
+      try {
+        event = JSON.parse(Buffer.concat(body).toString());
+        handleCloudEvent(event);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'received', id: event.id }));
+      } catch (err) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'Invalid CloudEvent' }));
+      }
+    });
+  } else if (headers['ce-specversion']) {
+    // Binary content mode
+    const body = [];
+    req.on('data', chunk => body.push(chunk));
+    req.on('end', () => {
+      try {
+        event = {
+          specversion: headers['ce-specversion'],
+          type: headers['ce-type'],
+          source: headers['ce-source'],
+          id: headers['ce-id'],
+          time: headers['ce-time'] || new Date().toISOString(),
+          datacontenttype: headers['content-type'],
+          data: headers['content-type']?.includes('json') 
+            ? JSON.parse(Buffer.concat(body).toString()) 
+            : Buffer.concat(body).toString()
+        };
+        handleCloudEvent(event);
+        res.writeHead(200);
+        res.end();
+      } catch (err) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'Invalid CloudEvent' }));
+      }
+    });
+  } else {
+    res.writeHead(400);
+    res.end(JSON.stringify({ error: 'Not a CloudEvent' }));
+  }
+});
+
+function handleCloudEvent(event) {
+  console.log(`Received event: ${event.id} of type ${event.type}`);
+  
+  switch (event.type) {
+    case 'com.example.order.created':
+      processOrderCreated(event.data);
+      break;
+    case 'com.example.order.shipped':
+      processOrderShipped(event.data);
+      break;
+    default:
+      console.log('Unknown event type');
+  }
+}
+
+server.listen(8080, () => {
+  console.log('CloudEvents server running on port 8080');
+});
+```
+
+#### Creating CloudEvents in Python
+
+```python
+# cloudevents_client.py
+import uuid
+from datetime import datetime
+import requests
+import json
+
+class CloudEventFactory:
+    def __init__(self, source, default_type_prefix=""):
+        self.source = source
+        self.default_type_prefix = default_type_prefix
+
+    def create(self, type_, data, attributes=None):
+        attributes = attributes or {}
+        return {
+            "specversion": "1.0",
+            "type": self.default_type_prefix + type_,
+            "source": self.source,
+            "id": str(uuid.uuid4()),
+            "time": datetime.utcnow().isoformat() + "Z",
+            **attributes,
+            "data": data
+        }
+
+# Usage
+factory = CloudEventFactory("https://orders.example.com", "com.example.")
+event = factory.create(
+    "order.created",
+    {"orderId": "123", "total": 99.99}
+)
+
+print(json.dumps(event, indent=2))
+```
+
+#### Sending CloudEvents via HTTP in Python
+
+```python
+def send_cloud_event(event, target_url):
+    """Send a CloudEvent to a target URL."""
+    response = requests.post(
+        target_url,
+        headers={
+            "Content-Type": "application/cloudevents+json"
+        },
+        json=event
+    )
+    response.raise_for_status()
+    return response.json()
+
+# Usage
+event = factory.create(
+    "order.shipped",
+    {"orderId": "123", "trackingNumber": "TRK-456"}
+)
+
+result = send_cloud_event(
+    event,
+    "http://event-broker.default.svc.cluster.local"
+)
+print(f"Event sent with response: {result}")
+```
+
+### Common Operations
+
+#### Monitoring CloudEvents
+
+**Kubernetes Pod Logs:**
+```bash
+# Monitor Knative service logs
+kubectl logs -l knative-service=order-processor -f
+
+# Monitor event broker logs
+kubectl logs -n knative-eventing -l eventing.knative.dev/component=broker-controller -f
+
+# Filter for specific event types
+kubectl logs -l knative-service=order-processor | grep "com.example.order.created"
+```
+
+**CloudEvents Metrics:**
+
+```bash
+# View CloudEvents metrics
+kubectl port-forward -n knative-eventing svc/mt-adapter 8080:8080
+
+# Query Prometheus for CloudEvents metrics
+curl -s "http://prometheus-k8s.monitoring.svc.cluster.local:9090/api/v1/query" \
+  --data-urlencode 'query=event_count_total{type="com.example.order.created"}'
+```
+
+#### Debugging CloudEvents
+
+**Enable Detailed Logging:**
+```yaml
+# knative-service.yaml with debug logging
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: event-processor
+spec:
+  template:
+    spec:
+      containers:
+        - image: event-processor
+          env:
+            - name: LOG_LEVEL
+              value: debug
+            - name: CE_TYPE
+              value: com.example.order.created
+```
+
+**Test Event Delivery:**
+```bash
+# Send test event
+kubectl -n default run test-event --rm -i --restart=Never \
+  --image=alpine/curl:3.18 \
+  -- curl -s -X POST \
+  -H "Content-Type: application/cloudevents+json" \
+  -H "Ce-Specversion: 1.0" \
+  -H "Ce-Type: com.example.test" \
+  -H "Ce-Source: test-client" \
+  -H "Ce-Id: test-123" \
+  -d '{"message": "test"}' \
+  http://event-broker.default.svc.cluster.local
+```
+
+#### Retrying Failed Events
+
+**Knative Trigger with Retry Policy:**
+```yaml
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: order-processor
+spec:
+  broker: default
+  filter:
+    attributes:
+      type: com.example.order.created
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: order-service
+  retry:
+    retryOnce: true
+    backoffPolicy: linear
+    backoffDelay: "PT1S"
+    maxRetries: 3
+```
+
+### Best Practices
+
+#### 1. Consistent Event Naming
+
+```javascript
+// ✅ Correct - consistent naming convention
+const event = factory.create('order.created', data);
+// Type: com.example.order.created
+
+// ❌ Incorrect - inconsistent naming
+const badEvent = {
+  type: 'OrderCreated', // camelCase, no namespace
+  data: data
+};
+```
+
+#### 2. Unique Event IDs
+
+```javascript
+// ✅ Correct - unique ID
+const event = factory.create('order.created', data);
+// ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+
+// ❌ Incorrect - predictable or reused IDs
+const badEvent = {
+  id: '123', // Not unique
+  ...
+};
+```
+
+#### 3. Proper Time Formatting
+
+```javascript
+// ✅ Correct - RFC 3339 format
+const event = factory.create('order.created', data);
+// Time: 2024-01-15T10:30:00Z
+
+// ❌ Incorrect - local time without timezone
+const badEvent = {
+  time: '2024-01-15 10:30:00', // Invalid format
+  ...
+};
+```
+
+#### 4. Data Schema Versioning
+
+```javascript
+// Include schema version in events
+const event = factory.create('order.created', {
+  ...data,
+  schemaVersion: '1.0'
+});
+
+// Consumer validates schema version
+function handleOrderCreated(data) {
+  if (data.schemaVersion !== '1.0') {
+    throw new Error(`Unsupported schema version: ${data.schemaVersion}`);
+  }
+  // Process event
+}
+```
+
+#### 5. Error Events
+
+```javascript
+// Create error events for troubleshooting
+function createErrorEvent(originalEvent, error) {
+  return {
+    specversion: '1.0',
+    type: 'com.example.error',
+    source: originalEvent.source,
+    id: originalEvent.id + '-error',
+    time: new Date().toISOString(),
+    datacontenttype: 'application/json',
+    data: {
+      originalEventId: originalEvent.id,
+      originalType: originalEvent.type,
+      errorMessage: error.message,
+      stackTrace: error.stack,
+      timestamp: new Date().toISOString()
+    }
+  };
+}
+```
+
+---
+
+## Troubleshooting
 
 ### Official Documentation
 
@@ -1047,9 +1592,6 @@ class AuditLogger {
 - [CloudEvents Webinars](https://www.cncf.io/cloudevents-webinars/) - Video content
 
 ---
-
-*This SKILL.md file was verified and last updated on 2026-04-22. Content based on CNCF CloudEvents v1.0 specification and production usage patterns.*
-## Troubleshooting
 
 ### Common Issues
 
@@ -1084,65 +1626,79 @@ class AuditLogger {
 
 ### Basic Configuration
 
-
 ```yaml
-# Basic configuration example
+# CloudEvents configuration example
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{project_name}}-config
+  name: cloudevents-config
   namespace: default
 data:
-  # Configuration goes here
   config.yaml: |
-    # Base configuration
-    # Add your settings here
+    specversion: "1.0"
+    defaultAttributes:
+      source: "https://myapp.example.com"
+      type: "com.example.application.event"
+      datacontenttype: "application/json"
+    broker:
+      name: default
+      namespace: default
+    retry:
+      maxRetries: 3
+      backoffPolicy: linear
+      backoffDelay: "PT1S"
 ```
 
 ### Kubernetes Deployment
 
-
 ```yaml
-# Kubernetes deployment for {{project_name}}
+# Kubernetes deployment for CloudEvents processor
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{project_name}}
+  name: cloudevents-processor
   namespace: default
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: {{project_name}}
+      app: cloudevents-processor
   template:
     metadata:
       labels:
-        app: {{project_name}}
+        app: cloudevents-processor
     spec:
       containers:
-      - name: {{project_name}}
-        image: {{project_name}}:latest
+      - name: cloudevents-processor
+        image: cloudevents-processor:latest
         ports:
         - containerPort: 8080
+        env:
+        - name: CE_SOURCE
+          value: "https://myapp.example.com"
+        - name: CE_TYPE
+          value: "com.example.application.event"
         resources:
           limits:
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
 ```
 
 ### Kubernetes Service
 
-
 ```yaml
-# Kubernetes service for {{project_name}}
+# Kubernetes service for CloudEvents processor
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{project_name}}
+  name: cloudevents-processor
   namespace: default
 spec:
   selector:
-    app: {{project_name}}
+    app: cloudevents-processor
   ports:
   - protocol: TCP
     port: 80

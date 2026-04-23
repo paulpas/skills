@@ -364,6 +364,434 @@ Use Helm when deploying multi-component applications to Kubernetes, managing app
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
 
+## Tutorial
+
+This tutorial will guide you through installing, configuring, and using Helm for Kubernetes application management.
+
+### Prerequisites
+
+Before beginning, ensure you have:
+- A running Kubernetes cluster (minikube, kind, EKS, GKE, AKS, or any other)
+- `kubectl` configured to access your cluster
+- Basic understanding of Kubernetes concepts (pods, services, deployments)
+- A package registry or container registry for storing charts
+
+Verify your setup:
+
+```bash
+# Check cluster connectivity
+kubectl cluster-info
+
+# Verify kubectl configuration
+kubectl get nodes
+
+# Check Helm version (after installation)
+helm version
+```
+
+---
+
+### 1. Installation
+
+Helm can be installed using various package managers or by downloading the binary directly.
+
+#### Method 1: Using Homebrew (macOS/Linux)
+
+```bash
+# Add the Helm repository
+brew install helm
+
+# Verify installation
+helm version
+```
+
+#### Method 2: Using Snap (Linux)
+
+```bash
+# Install Helm via Snap
+sudo snap install helm --classic
+
+# Verify installation
+helm version
+```
+
+#### Method 3: Using curl (All Platforms)
+
+```bash
+# Download the latest release
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Verify installation
+helm version
+
+# Or download a specific version
+wget https://get.helm.sh/helm-v3.14.0-linux-amd64.tar.gz
+tar -zxvf helm-v3.14.0-linux-amd64.tar.gz
+sudo mv linux-amd64/helm /usr/local/bin/helm
+```
+
+#### Method 4: Using Chocolatey (Windows)
+
+```bash
+# Install Helm via Chocolatey
+choco install kubernetes-helm
+
+# Verify installation
+helm version
+```
+
+---
+
+### 2. Basic Configuration
+
+#### Initialize Helm Repository
+
+```bash
+# Add the official Helm stable repository
+helm repo add stable https://charts.helm.sh/stable
+
+# Add the official Helm incubator repository
+helm repo add incubator https://charts.helm.sh/incubator
+
+# Add common chart repositories
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add jetstack https://charts.jetstack.io
+
+# Update repositories to get latest charts
+helm repo update
+
+# List configured repositories
+helm repo list
+```
+
+#### Configure Helm Settings
+
+```bash
+# View current Helm configuration
+helm env
+
+# Set default namespace for commands
+export HELM_NAMESPACE=kube-system
+
+# Configure Helm cache directory
+export HELM_CACHE_HOME=/path/to/cache
+
+# Configure Helm data directory
+export HELM_DATA_HOME=/path/to/data
+```
+
+#### Create a Helm Chart Configuration
+
+```yaml
+# Chart.yaml - Chart metadata
+apiVersion: v2
+name: myapp
+description: A Helm chart for Kubernetes
+type: application
+version: 1.0.0
+appVersion: "1.16.0"
+annotations:
+  artifacthub.io/license: Apache-2.0
+dependencies:
+  - name: common
+    version: "0.1.0"
+    repository: "file://../common"
+```
+
+```yaml
+# values.yaml - Default values for the chart
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.19.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+```
+
+---
+
+### 3. Usage Examples
+
+#### Creating a New Chart
+
+```bash
+# Create a new chart
+helm create myapp
+
+# Chart structure:
+# myapp/
+# ├── Chart.yaml
+# ├── values.yaml
+# ├── charts/ (dependencies)
+# ├── templates/ (Kubernetes manifests)
+# └── .helmignore
+
+# View chart structure
+ls -R myapp
+```
+
+#### Linting and Testing Charts
+
+```bash
+# Lint a chart without installation
+helm lint ./myapp
+
+# Lint with strict mode
+helm lint --strict ./myapp
+
+# Lint with values file
+helm lint ./myapp -f values.yaml
+
+# Render templates locally (dry-run)
+helm template ./myapp
+
+# Render with custom values
+helm template ./myapp -f values.yaml
+
+# Render and show diff
+helm template ./myapp --debug
+```
+
+#### Installing Applications
+
+```bash
+# Install from repository
+helm install myrelease bitnami/nginx
+
+# Install with custom name
+helm install myapp ./myapp
+
+# Install with custom values
+helm install myapp ./myapp -f values.yaml
+
+# Install with set values
+helm install myapp ./myapp \
+  --set replicaCount=3 \
+  --set image.tag=1.20.0
+
+# Install with set string values
+helm install myapp ./myapp \
+  --set-string replicaCount=3 \
+  --set-string image.tag=1.20.0
+
+# Install with namespace
+helm install myapp ./myapp --namespace production --create-namespace
+
+# Install with atomic (rollback on failure)
+helm install myapp ./myapp --atomic
+
+# Install with timeout
+helm install myapp ./myapp --timeout 5m
+```
+
+#### Upgrading and Rolling Back
+
+```bash
+# Upgrade a release with new values
+helm upgrade myapp ./myapp -f values.yaml
+
+# Upgrade with rollback on failure
+helm upgrade myapp ./myapp --atomic
+
+# Upgrade with custom values
+helm upgrade myapp ./myapp \
+  --set replicaCount=5
+
+# View upgrade history
+helm history myapp
+
+# Rollback to previous revision
+helm rollback myapp
+
+# Rollback to specific revision
+helm rollback myapp 3
+```
+
+#### Viewing Releases
+
+```bash
+# List all releases
+helm list
+
+# List releases in specific namespace
+helm list -n production
+
+# List releases with status
+helm list --status deployed
+helm list --status failed
+helm list --status pending
+
+# Get detailed release info
+helm get values myapp
+
+# Get all information about a release
+helm get all myapp
+
+# View release history
+helm history myapp
+```
+
+#### Uninstalling Applications
+
+```bash
+# Uninstall a release
+helm uninstall myapp
+
+# Uninstall with dry-run
+helm uninstall myapp --dry-run
+
+# Uninstall with cascade (delete resources)
+helm uninstall myapp --cascade
+```
+
+---
+
+### 4. Common Operations
+
+#### Monitoring Releases
+
+```bash
+# Watch release status
+helm status myapp
+
+# Get release values
+helm get values myapp -a
+
+# Get release notes
+helm get notes myapp
+
+# Get hooks
+helm get hooks myapp
+
+# Get manifest
+helm get manifest myapp
+```
+
+#### Debugging Charts
+
+```bash
+# Debug template rendering
+helm template ./myapp --debug
+
+# Debug with values
+helm template ./myapp -f values.yaml --debug
+
+# Debug with include function
+helm template ./myapp --show-only templates/deployment.yaml
+
+# Debug with all templates
+helm template ./myapp --show-only templates/*.*yaml
+```
+
+#### Chart Dependency Management
+
+```bash
+# Update chart dependencies
+helm dependency update ./myapp
+
+# List chart dependencies
+helm dependency list ./myapp
+
+# Add a new dependency
+helm dependency add nginx --version 9.0.0
+
+# Remove a dependency
+helm dependency remove nginx
+```
+
+#### Chart Repository Operations
+
+```bash
+# Package a chart
+helm package ./myapp
+
+# Push chart to repository
+helm push myapp-1.0.0.tgz oci://registry-1.docker.io/myorg
+
+# Search charts in repository
+helm search repo nginx
+
+# SearchHub for charts across all repositories
+helm search hub nginx
+
+# Show chart info
+helm show chart bitnami/nginx
+
+# Show values documentation
+helm show values bitnami/nginx
+
+# Show README
+helm show readme bitnami/nginx
+```
+
+---
+
+### 5. Best Practices
+
+#### Chart Development Best Practices
+
+1. **Version Your Charts**: Use semantic versioning for both chart version and appVersion
+2. **Document Your Charts**: Include comprehensive README and values documentation
+3. **Use templates**: Avoid hardcoding values; use Helm templating
+4. **Set Resource Limits**: Always specify resource requests and limits
+5. **Use Namespaces**: Deploy to specific namespaces for isolation
+6. **Test Locally**: Use `helm template` and `helm lint` before pushing
+7. **Version Control**: Keep charts in version control with proper branching
+8. **Security Scanning**: Scan charts for secrets and vulnerabilities
+
+#### Release Management Best Practices
+
+1. **Use Atomic Upgrades**: Set `--atomic` flag to ensure rollback on failure
+2. **Set Timeouts**: Define appropriate timeouts for releases
+3. **Monitor Releases**: Regularly check release status and health
+4. **Keep History**: Retain enough release history for rollback capability
+5. **Use Descriptive Names**: Choose clear, descriptive release names
+6. **Document Changes**: Document changes between releases
+7. **Test in Staging**: Test upgrades in staging before production
+8. **Set Resource Quotas**: Configure resource quotas per namespace
+
+#### Security Best Practices
+
+1. **Use Private Registries**: Store sensitive charts in private repositories
+2. **Sign Charts**: Use chart signing for integrity verification
+3. **RBAC**: Implement proper RBAC for Helm operations
+4. **Secret Management**: Use external secret management (Vault, Sealed Secrets)
+5. **Audit Logging**: Enable audit logging for Helm operations
+6. **Network Policies**: Configure network policies for deployed applications
+7. **Image Verification**: Use image digests instead of tags
+8. **Limit RBAC**: Grant minimal required permissions
+
+#### CI/CD Integration Best Practices
+
+1. **Lint in CI**: Add `helm lint` to CI pipeline
+2. **Test Templates**: Use `helm unittest` for template testing
+3. **Automate Testing**: Implement automated testing for charts
+4. **Version Management**: Automate version increments
+5. **Artifact Storage**: Store packaged charts in artifact repository
+6. **Security Scanning**: Integrate security scanning in CI/CD
+7. **Progressive Delivery**: Use progressive delivery strategies
+8. **Monitoring**: Set up monitoring for deployed applications
+
+*Content generated automatically. Verify against official documentation before production use.*
+
 ## Examples
 
 ### Basic Chart with Values Configuration

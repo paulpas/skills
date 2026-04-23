@@ -1,366 +1,431 @@
----
-name: cncf-fluentd
-description: Fluentd in Cloud-Native Engineering - logging collection
----
-# Fluentd in Cloud-Native Engineering
+## Tutorial
 
-**Category:** logging  
-**Status:** Incubating  
-**Stars:** 15,000  
-**Last Updated:** 2026-04-22  
-**Primary Language:** Go  
-**Documentation:** [https://www.fluentd.org/](https://www.fluentd.org/)  
+This tutorial will guide you through installing, configuring, and using Fluentd for centralized logging collection.
 
----
+### Prerequisites
 
-## Purpose and Use Cases
+Before beginning, ensure you have:
+- A running Kubernetes cluster (minikube, kind, EKS, GKE, AKS)
+- `kubectl` configured to access your cluster
+- Basic understanding of logging concepts and Kubernetes architecture
+- A logging destination (Elasticsearch, Fluentd, S3, etc.)
 
-Fluentd is a logging collection designed to help engineers build, deploy, and manage cloud-native applications.
+Verify your setup:
 
-### What Problem Does It Solve?
+```bash
+# Check cluster connectivity
+kubectl cluster-info
 
-Fluentd addresses complex logging challenges by providing:
-- Standardized APIs and interfaces
-- Declarative configuration management
-- Automatic resource management and reconciliation
-- Built-in observability and monitoring
-- Extensible architecture for custom integrations
+# Verify kubectl configuration
+kubectl get nodes
 
-### When to Use This Project
-
-Use Fluentd when you need logging collection, require logging-specific features, want to integrate with other CNCF projects, need production-ready logging solutions, or require logging-specific best practices.
-
-### Key Use Cases
-
-- **Fluentd Core**: Primary use case for logging collection
-- **Integration with Kubernetes**: Native Kubernetes integration
-- **Multi-Cluster Support**: Manage multiple clusters
-- **Scalable Operations**: Handle large-scale deployments
-- **Automated Management**: Self-healing and automatic recovery
-- **Security Features**: Built-in security controls
-- **Observability**: Comprehensive metrics and logging
-
----
-
-## Architecture Design Patterns
-
-### Core Components
-
-- **Main Controller**: Primary reconciliation loop
-- **API Server**: REST/gRPC API endpoint
-- **Webhook**: Admission webhooks for validation
-- **Scheduler**: Work scheduling and distribution
-- **Storage Backend**: Persistent state storage
-- **Agent**: Worker component for distributed tasks
-- **Metrics Collector**: Metrics aggregation
-
-### Component Interactions
-
-1. **User → API Server**: Create/modify resources
-2. **API Server → Controller**: Resource creation event
-3. **Controller → Storage**: State persistence
-4. **Storage → Controller**: State retrieval for reconciliation
-5. **Controller → Worker**: Task delegation
-6. **Worker → Status**: Status updates back to API
-
-### Data Flow Patterns
-
-1. **Reconciliation Flow**: Resource change → Controller detects → State comparison → Action taken → Status updated
-2. **Event Flow**: Event received → Event handler → Reconciler → State updated
-3. **Scaling Flow**: Metrics threshold → Controller evaluates → Scale decision → Resource scaled
-4. **Failure Flow**: Component failure → Detector → Recovery action → State restored
-
-### Design Principles
-
-- **Kubernetes Native**: Built on Kubernetes APIs and conventions
-- **Declarative**: Desired state management
-- **Automated**: Self-healing and automatic recovery
-- **Extensible**: Plugin architecture for extensions
-- ** Observability**: Built-in metrics and logging
-- **Secure**: Security-first design principles
-- **Reliable**: High availability and disaster recovery
-
----
-
-## Integration Approaches
-
-### Integration with Other CNCF Projects
-
-- **Kubernetes**: Core platform for Fluentd
-- **Prometheus**: Metrics collection and alerting
-- **OpenTelemetry**: Distributed tracing integration
-- **Helm**: Chart deployment
-- **cert-manager**: TLS certificate management
-- **Istio/Linkerd**: Service mesh integration
-- **Flux/ArgoCD**: GitOps integration
-
-### API Patterns
-
-- **Kubernetes API**: Standard Kubernetes CRDs
-- **REST API**: HTTP/JSON REST API
-- **gRPC API**: High-performance gRPC API
-- **Webhook API**: Admission webhooks
-- **Metrics API**: Prometheus-compatible metrics
-
-### Configuration Patterns
-
-- **YAML Configuration**: Declarative YAML manifests
-- **Environment Variables**: Runtime configuration
-- **ConfigMaps**: Externalized configuration
-- **Secrets**: Sensitive data management
-- **Helm Values**: Helm chart configuration
-
-### Extension Mechanisms
-
-- **CRDs**: Custom Resource Definitions
-- **Webhooks**: Custom admission webhooks
-- **Plugins**: Plugin architecture for extensions
-- **Controllers**: Custom controllers
-- **Adapters**: Adapter pattern for integrations
-
----
-
-## Common Pitfalls and How to Avoid Them
-
-### Configuration Issues
-
-- **YAML Syntax Errors**: Incorrect YAML formatting
-- **Missing Dependencies**: Missing required resources
-- **Invalid Values**: Invalid configuration values
-- **Resource Limits**: Insufficient resource limits
-
-**How to Avoid:**
-- Use kubectl dry-run for validation
-- Implement CI/CD pipeline with yamllint
-- Test configurations in staging environment
-- Use configuration validation webhooks
-
-### Performance Issues
-
-- **Resource Exhaustion**: CPU or memory limits hit
-- **Latency Spikes**: Slow responses under load
-- **Scale Bottlenecks**: Scaling limitations
-- **Storage Growth**: Unbounded storage growth
-
-**How to Avoid:**
-- Monitor resource usage with Prometheus
-- Implement appropriate resource limits
-- Use horizontalPodAutoscaler
-- Configure storage quotas and cleanup policies
-
-### Operational Challenges
-
-- **Upgrade Complexity**: Complex upgrade procedures
-- **Data Migration**: Migration between versions
-- **Backup and Restore**: Backup procedures
-- **Troubleshooting**: Debugging issues
-
-**How to Avoid:**
-- Follow official upgrade path documentation
-- Test upgrades in staging first
-- Implement regular backups
-- Use diagnostic tools and logs
-
-### Security Pitfalls
-
-- **Privilege Escalation**: Overly permissive RBAC
-- **Secrets Exposure**: Secrets in logs or configs
-- **Network Exposure**: Exposed services
-- **Authentication**: Weak authentication mechanisms
-
-**How to Avoid:**
-- Implement least-privilege RBAC
-- Use secrets management
-- Implement network policies
-- Enable authentication and authorization
-
----
-
-## Coding Practices
-
-### Idiomatic Configuration
-
-- **Resource Definitions**: Declarative YAML manifests
-- **Configuration Management**: Externalized configuration
-- **Secret Management**: Secure secrets handling
-- **Version Control**: GitOps for configuration
-
-### API Usage Patterns
-
-- **kubectl**: Command-line administration
-- **Kubernetes Client Libraries**: Programmatic access
-- **REST API**: HTTP API for automation
-- **CRUD Operations**: Standard create, read, update, delete
-
-### Observability Best Practices
-
-- **Metrics Collection**: Prometheus metrics
-- **Logging**: Structured logging
-- **Tracing**: Distributed tracing
-- **Dashboards**: Grafana dashboards
-
-### Development Workflow
-
-- **Local Testing**: Kind or Minikube for development
-- **Testing**: Integration tests
-- **Debugging**: Debug logs and diagnostics
-- **CI/CD**: Automated testing and deployment
-- **Tools**: kubectl, Helm, kustomize
-
-### Code Examples
-
-```yaml
-# Example configuration for Fluentd
-apiVersion: cncf.fluentd/v1
-kind: Fluentd
-metadata:
-  name: example
-  namespace: default
-spec:
-  # Configuration details
-  replicas: 3
-  resources:
-    requests:
-      memory: "256Mi"
-      cpu: "250m"
-    limits:
-      memory: "512Mi"
-      cpu: "500m"
+# Check cluster version
+kubectl version --client --short
 ```
 
 ---
 
-## Fundamentals
+### 1. Installation
 
-### Essential Concepts
+Fluentd can be installed in various ways depending on your environment and requirements.
 
-- **Resource**: Core abstraction managed by Fluentd
-- **Reconciliation**: Process of achieving desired state
-- **Controller**: Component managing resources
-- **Webhook**: Admission control mechanism
-- **CRD**: Custom Resource Definition
-- **Operator**: Pattern for managing complex applications
-- **Status**: Current state of the resource
+#### Method 1: Using Helm (Recommended for Kubernetes)
 
-### Terminology Glossary
+```bash
+# Add the Fluentd Helm repository
+helm repo add fluent-stable https://fluent.github.io/helm-charts
+helm repo add fluentd https://fluent.github.io/helm-charts
 
-- **Controller**: Management component
-- **Reconciler**: State reconciliation logic
-- **CRD**: Custom Resource Definition
-- **Webhook**: Admission webhook
-- **Operator**: Application operator pattern
-- **Reconciliation**: State synchronization
+# Update repositories
+helm repo update
 
-### Data Models and Types
+# Install Fluentd with default configuration
+helm install fluentd fluent-stable/fluentd \
+  --namespace logging \
+  --create-namespace \
+  --wait
 
-- **Custom Resource**: User-defined resource type
-- **Status**: Resource status information
-- **Spec**: Desired state specification
-- **Owner Reference**: Resource ownership chain
+# Install with custom values
+helm install fluentd fluent-stable/fluentd \
+  --namespace logging \
+  --create-namespace \
+  --set fluentd.conf.type="s3" \
+  --set output.host="elasticsearch.logging.svc.cluster.local"
 
-### Lifecycle Management
+# Verify installation
+helm list -n logging
+kubectl -n logging get pods
+```
 
-- **Resource Lifecycle**: Create → Configure → Deploy → Update → Delete
-- **Controller Lifecycle**: Start → Watch → Reconcile → Stop
-- **Upgrade Lifecycle**: Backup → Upgrade → Verify → Rollback (if needed)
+#### Method 2: Using kubectl apply (Direct Manifests)
 
-### State Management
+```bash
+# Download the Fluentd manifest
+curl -O https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/master/fluentd-daemonset-kubernetes-1.16.yaml
 
-- **Desired State**: Spec field in resource
-- **Current State**: Status field in resource
-- **Reconciliation Loop**: Controller loop for state sync
-- **Event Queue**: Change event processing
+# Or use the simplified version
+kubectl apply -f https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/master/fluentd-daemonset-elasticsearch.yaml
 
----
+# Verify deployment
+kubectl get daemonset fluentd -n kube-system
+kubectl get pods -n kube-system -l app=fluentd
+```
 
-## Scaling and Deployment Patterns
+#### Method 3: Installing Fluentd on Bare Metal
 
-### Horizontal Scaling
+```bash
+# Install Fluentd using RubyGems
+gem install fluentd --no-document
 
-- **Controller Scaling**: Multiple controller replicas
-- **Worker Scaling**: Scale worker pods based on load
-- **API Server Scaling**: Scale API servers
-- **Storage Scaling**: Add storage capacity
+# Or use td-agent (Fluentd's distribution)
+# For Ubuntu/Debian
+curl -fsSL https://toolbelt.treasuredata.com/sh/install-ubuntu-focal-td-agent4.sh | sh
 
-### High Availability
+# For CentOS/RHEL
+curl -fsSL https://toolbelt.treasuredata.com/sh/install-redhat-centos-td-agent4.sh | sh
 
-- **Controller HA**: Multiple controller replicas
-- **Storage HA**: HA storage backend
-- **Load Balancing**: Distribute traffic
-- **Multi-Region**: Geographic distribution
+# Verify installation
+td-agent --version
+fluentd --version
+```
 
-### Production Deployments
+#### Method 4: Using Docker
 
-- **Standalone**: Single instance deployment
-- **HA**: High availability deployment
-- **Clustered**: Multi-node cluster
-- **Resource Configuration**: CPU, memory, storage limits
+```bash
+# Pull the Fluentd Docker image
+docker pull fluent/fluentd:v1.16
 
-### Upgrade Strategies
+# Run Fluentd with custom configuration
+docker run -d \
+  -p 24224:24224 \
+  -v /path/to/fluent.conf:/fluentd/etc/fluent.conf \
+  -v /var/log:/fluentd/log \
+  fluent/fluentd:v1.16
 
-- **Rolling Update**: Update without downtime
-- **Blue-Green**: Blue-green deployments
-- **Canary**: Canary releases
-- **Version Compatibility**: Follow upgrade path
-
-### Resource Management
-
-- **CPU/Memory Requests**: Appropriate resource requests
-- **Limits**: Resource limits for stability
-- **Storage Quotas**: Storage allocation
-- **Network Bandwidth**: Network resource allocation
-
-### Deployment Patterns
-
-- **DaemonSet**: One instance per node
-- **Deployment**: Standard deployment
-- **StatefulSet**: Stateful applications
-- **Helm Chart**: Chart-based deployment
-- **Operator Pattern**: Operator-based management
+# Verify container is running
+docker ps | grep fluentd
+```
 
 ---
 
-## Additional Resources
+### 2. Basic Configuration
 
-- **Official Documentation:** [https://www.fluentd.org/](https://www.fluentd.org/)
-- **GitHub Repository:** [github.com/cncf/fluentd](https://github.com/cncf/fluentd)
-- **CNCF Project Page:** [cncf.io/projects/fluentd/](https://www.cncf.io/projects/fluentd/)
-- **Community:** Check the GitHub repository for community channels
-- **Versioning:** Refer to project's release notes for version-specific features
+#### Fluentd Configuration File Structure
+
+```yaml
+# fluent.conf - Basic configuration
+<system>
+  log_level info
+  suppress_config_dump true
+</system>
+
+# Source: Kubernetes container logs
+<source>
+  @type tail
+  path /var/log/containers/*.log
+  pos_file /var/log/fluentd-containers.log.pos
+  tag kubernetes.*
+  read_from_head true
+  <parse>
+    @type json
+    time_key time
+    time_format %Y-%m-%dT%H:%M:%S.%NZ
+  </parse>
+</source>
+
+# Filter: Enrich logs with Kubernetes metadata
+<filter kubernetes.**>
+  @type kubernetes_metadata
+  kubernetes_url https://kubernetes.default.svc
+  verify_ssl false
+</filter>
+
+# Match: Send logs to Elasticsearch
+<match **>
+  @type elasticsearch
+  host elasticsearch.logging.svc.cluster.local
+  port 9200
+  logstash_format true
+  logstash_prefix kubernetes
+  flatten_hashes true
+  <buffer>
+    @type file
+    path /var/log/fluentd/buffer
+    flush_interval 5s
+    flush_thread_count 2
+    retry_type exponential_backoff
+  </buffer>
+</match>
+```
+
+#### Environment Variables for Configuration
+
+```bash
+# Set environment variables for runtime configuration
+export FLUENTD_CONF=fluent.conf
+export FLUENTD_ARGS=--no-config-autoreload
+
+# Kubernetes environment variables (for kubernetes_metadata filter)
+export KUBERNETES_SERVICE_HOST=kubernetes.default.svc
+export KUBERNETES_SERVICE_PORT=443
+```
+
+#### ConfigMap for Kubernetes
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: logging
+data:
+  fluent.conf: |
+    <system>
+      log_level info
+    </system>
+    
+    <source>
+      @type forward
+      port 24224
+      bind 0.0.0.0
+    </source>
+    
+    <match **>
+      @type file
+      path /var/log/fluentd/output
+      append true
+      <format>
+        @type json
+      </format>
+      <buffer>
+        @type file
+        path /var/log/fluentd/buffer
+        flush_interval 1s
+      </buffer>
+    </match>
+  
+  parsers.conf: |
+    <parse>
+      @type json
+      time_key time
+      time_format %Y-%m-%dT%H:%M:%S.%NZ
+    </parse>
+```
 
 ---
 
-## Troubleshooting
+### 3. Usage Examples
 
-### Common Issues
+#### Viewing Fluentd Logs
 
-1. **Deployment Failures**
-   - Check pod logs for errors
-   - Verify configuration values
-   - Ensure network connectivity
+```bash
+# View Fluentd logs in Kubernetes
+kubectl -n logging logs -f deployment/fluentd
 
-2. **Performance Issues**
-   - Monitor resource usage
-   - Adjust resource limits
-   - Check for bottlenecks
+# Follow Fluentd logs with timestamp
+kubectl -n logging logs -f deployment/fluentd --timestamps
 
-3. **Configuration Errors**
-   - Validate YAML syntax
-   - Check required fields
-   - Verify environment-specific settings
+# View logs from a specific pod
+kubectl -n logging logs fluentd-xyz123 -f
 
-4. **Integration Problems**
-   - Verify API compatibility
-   - Check dependency versions
-   - Review integration documentation
+# Check Fluentd pod status
+kubectl -n logging get pods -l app=fluentd
+```
 
-### Getting Help
+#### Testing Log Collection
 
-- Check official documentation
-- Search GitHub issues
-- Join community channels
-- Review logs and metrics
-*Content generated automatically. Verify against official documentation before production use.*
+```bash
+# Create a test pod to generate logs
+kubectl run test-logger --image=busybox --restart=Never -- tail -f /dev/null
+
+# In another terminal, send a test log
+kubectl exec test-logger -- sh -c 'echo '{"level":"info","message":"Test log message"}' | fluent-cat test.tag'
+
+# Verify the log was collected
+kubectl -n logging logs -l app=fluentd | grep "Test log"
+```
+
+#### Loading Configuration from ConfigMap
+
+```bash
+# Create ConfigMap from fluent.conf
+kubectl create configmap fluentd-config \
+  --from-file=fluent.conf \
+  --namespace=logging
+
+# Or update existing ConfigMap
+kubectl create configmap fluentd-config \
+  --from-file=fluent.conf \
+  --namespace=logging \
+  --dry-run=client \
+  -o yaml | kubectl apply -f -
+
+# Verify ConfigMap
+kubectl -n logging get configmap fluentd-config -o yaml
+```
+
+#### Setting up Multiple Outputs
+
+```yaml
+# Multiple output configuration
+<match **>
+  @type copy
+  <store>
+    @type elasticsearch
+    host elasticsearch.logging.svc.cluster.local
+    port 9200
+    logstash_format true
+  </store>
+  <store>
+    @type s3
+    s3_bucket my-logs-bucket
+    s3_region us-east-1
+    path logs/%Y/%m/%d/
+    <format>
+      @type json
+    </format>
+    <buffer>
+      @type file
+      path /var/log/fluentd/s3
+    </buffer>
+  </store>
+  <store>
+    @type stdout
+  </store>
+</match>
+```
+
+---
+
+### 4. Common Operations
+
+#### Monitoring Fluentd
+
+```bash
+# Check Fluentd metrics (if Prometheus plugin is enabled)
+kubectl -n logging get pods -l app=fluentd -o wide
+
+# View Fluentd pod resources
+kubectl -n logging describe pod -l app=fluentd
+
+# Check Fluentd configuration reload status
+kubectl -n logging logs deployment/fluentd | grep "config file"
+
+# View Fluentd buffer status
+kubectl -n logging exec -it deployment/fluentd -- ls -la /var/log/fluentd/buffer
+```
+
+#### Restarting Fluentd DaemonSet
+
+```bash
+# Rolling restart of Fluentd pods
+kubectl -n logging delete pods -l app=fluentd
+
+# Wait for pods to restart
+kubectl -n logging rollout status daemonset/fluentd
+
+# Verify all pods are running
+kubectl -n logging get pods -l app=fluentd
+```
+
+#### Updating Configuration
+
+```bash
+# Update ConfigMap
+kubectl create configmap fluentd-config \
+  --from-file=fluent.conf \
+  --namespace=logging \
+  --dry-run=client \
+  -o yaml | kubectl apply -f -
+
+# Delete pods to trigger reload
+kubectl -n logging delete pods -l app=fluentd
+```
+
+#### Scaling Fluentd
+
+```bash
+# Fluentd typically runs as a DaemonSet (one per node)
+# To scale, update the DaemonSet
+kubectl -n logging patch daemonset fluentd -p '{"spec":{"template":{"spec":{"containers":[{"name":"fluentd","resources":{"limits":{"cpu":"500m","memory":"512Mi"}}}]}}}}'
+
+# Or edit the daemonset
+kubectl -n logging edit daemonset fluentd
+```
+
+#### Backup and Restore
+
+```bash
+# Backup Fluentd configuration
+kubectl -n logging get configmap fluentd-config -o yaml > fluentd-config-backup.yaml
+
+# Export buffer state (if needed)
+kubectl -n logging exec deployment/fluentd -- tar czf /tmp/buffer-backup.tar.gz /var/log/fluentd/buffer
+
+# Restore configuration
+kubectl -n logging apply -f fluentd-config-backup.yaml
+```
+
+---
+
+### 5. Best Practices
+
+#### Configuration Best Practices
+
+1. **Use Separate Sources**: Define separate `<source>` blocks for different log types
+2. **Filter Early**: Apply filters as close to the source as possible
+3. **Buffer Properly**: Configure buffer to prevent data loss during outages
+4. **Use Tags**: Use meaningful tags for route matching
+5. **Separate Concerns**: Keep configuration modular with @include directives
+
+#### Performance Optimization
+
+1. **Optimize Buffer**: Adjust buffer settings based on log volume
+   ```yaml
+   <buffer>
+     @type file
+     flush_interval 5s
+     flush_thread_count 2
+     chunk_limit_size 8MB
+     queued_chunks_limit_size 32
+   </buffer>
+   ```
+
+2. **Use Multiple Threads**: Configure flush_thread_count for parallel processing
+3. **Reduce Parsing**: Use forward input to receive pre-parsed logs when possible
+4. **Compress Buffers**: Enable compression for large buffers
+
+#### Security Best Practices
+
+1. **RBAC**: Configure proper RBAC for Fluentd service account
+2. **Network Policies**: Restrict Fluentd network access to required destinations
+3. **Secrets Management**: Use Kubernetes Secrets for sensitive configuration
+4. **Log Redaction**: Implement filters to redact sensitive data
+5. **TLS Encryption**: Use TLS for log transmission to external systems
+
+#### Monitoring and Alerting
+
+1. **Prometheus Metrics**: Enable Fluentd's Prometheus plugin
+   ```yaml
+   <source>
+     @type prometheus
+     bind 0.0.0.0
+     port 24231
+   </source>
+   ```
+
+2. **Health Checks**: Configure readiness/liveness probes
+3. **Alert on Backlog**: Monitor buffer size and alert on growth
+4. **Log Volume Monitoring**: Track log volume trends
+
+#### Kubernetes-Specific Tips
+
+1. **Use DaemonSet**: Deploy Fluentd as a DaemonSet for node-level log collection
+2. **Namespace Isolation**: Use separate Fluentd instances per namespace for isolation
+3. **Label Selectors**: Use label selectors to filter logs by application
+4. **Resource Limits**: Set appropriate CPU/memory limits based on cluster size
+
+---
 
 ## Examples
 
@@ -372,63 +437,164 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{project_name}}-config
-  namespace: default
+  name: fluentd-config
+  namespace: logging
 data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-    # Add your settings here
+  fluent.conf: |
+    <system>
+      log_level info
+    </system>
+    
+    <source>
+      @type forward
+      port 24224
+      bind 0.0.0.0
+    </source>
+    
+    <match **>
+      @type file
+      path /var/log/fluentd/output
+      append true
+      <format>
+        @type json
+      </format>
+      <buffer>
+        @type file
+        path /var/log/fluentd/buffer
+        flush_interval 1s
+      </buffer>
+    </match>
 ```
 
 ### Kubernetes Deployment
 
 
 ```yaml
-# Kubernetes deployment for {{project_name}}
+# Fluentd DaemonSet for Kubernetes
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
-  name: {{project_name}}
-  namespace: default
+  name: fluentd
+  namespace: logging
+  labels:
+    app: fluentd
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: {{project_name}}
+      app: fluentd
   template:
     metadata:
       labels:
-        app: {{project_name}}
+        app: fluentd
     spec:
       containers:
-      - name: {{project_name}}
-        image: {{project_name}}:latest
-        ports:
-        - containerPort: 8080
+      - name: fluentd
+        image: fluent/fluentd:v1.16
+        env:
+        - name: FLUENT_UID
+          value: "0"
         resources:
           limits:
-            memory: "128Mi"
+            memory: "512Mi"
             cpu: "500m"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /fluentd/etc
+        - name: varlog
+          mountPath: /var/log
+      volumes:
+      - name: config-volume
+        configMap:
+          name: fluentd-config
+      - name: varlog
+        hostPath:
+          path: /var/log
 ```
 
 ### Kubernetes Service
 
 
 ```yaml
-# Kubernetes service for {{project_name}}
+# Kubernetes service for Fluentd
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{project_name}}
-  namespace: default
+  name: fluentd
+  namespace: logging
 spec:
   selector:
-    app: {{project_name}}
+    app: fluentd
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 8080
+    port: 24224
+    targetPort: 24224
+    name: fluentd
+  - protocol: TCP
+    port: 24231
+    targetPort: 24231
+    name: prometheus
   type: ClusterIP
 ```
 
+### Kubernetes Container Log Collection
+
+```yaml
+# Collect logs from Kubernetes containers
+<source>
+  @type tail
+  path /var/log/containers/*.log
+  pos_file /var/log/fluentd-containers.log.pos
+  tag kubernetes.*
+  read_from_head true
+  <parse>
+    @type json
+    time_key time
+    time_format %Y-%m-%dT%H:%M:%S.%NZ
+  </parse>
+</source>
+
+# Enrich with Kubernetes metadata
+<filter kubernetes.**>
+  @type kubernetes_metadata
+  kubernetes_url https://kubernetes.default.svc
+  verify_ssl false
+</filter>
+
+# Send to Elasticsearch
+<match kubernetes.**>
+  @type elasticsearch
+  host elasticsearch.logging.svc.cluster.local
+  port 9200
+  logstash_format true
+  logstash_prefix kubernetes
+  <buffer>
+    @type file
+    path /var/log/fluentd/buffer
+    flush_interval 5s
+  </buffer>
+</match>
+```
+
+### Multi-Output Configuration
+
+```yaml
+# Copy logs to multiple destinations
+<match **>
+  @type copy
+  <store>
+    @type elasticsearch
+    host es1.example.com
+    port 9200
+  </store>
+  <store>
+    @type elasticsearch
+    host es2.example.com
+    port 9200
+  </store>
+  <store>
+    @type s3
+    s3_bucket my-logs
+    s3_region us-east-1
+  </store>
+</match>
+```
