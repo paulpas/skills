@@ -43,167 +43,118 @@ export * from './observability/Logger.js';
 export * from './skills/GitHubSkillLoader.js';
 
 /**
-  * Main application class
-   */
-  export class AgentSkillRoutingApp {
-    private app: FastifyInstance | null = null;
-    private router: Router | null = null;
-    private mcpBridge: MCPBridge | null = null;
-    private githubLoader: GitHubSkillLoader | null = null;
-    private logger: Logger;
+ * Main application class
+ */
+export class AgentSkillRoutingApp {
+  private app: FastifyInstance | null = null;
+  private router: Router | null = null;
+  private mcpBridge: MCPBridge | null = null;
+  private githubLoader: GitHubSkillLoader | null = null;
+  private logger: Logger;
+  private ready = false;
+  private loadingError: string | null = null;
 
-    constructor(config: Partial<RouterConfig & MCPBridgeConfig> = {}) {
-      this.logger = new Logger('Main', {
-        level: config.observability?.level || 'info',
-      });
-      // Store config for later use if needed
-      this.config = config as RouterConfig & MCPBridgeConfig;
-    }
-    
-    private config: RouterConfig & MCPBridgeConfig;
-
-  /**
-   * Initialize the application
-   */
-  async initialize(): Promise<void> {
-    this.logger.info('Initializing Agent Skill Routing System');
-
-    // Build skills directory list (local mount + optional GitHub cache)
-    const localSkillsDir = (this.config.skillsDirectory as string) ||
-      process.env.SKILLS_DIRECTORY ||
-      './samples/skill-definitions';
-    const skillsDirs: string[] = [localSkillsDir];
-
-    const githubEnabled = process.env.GITHUB_SKILLS_ENABLED !== 'false';
-    if (githubEnabled) {
-      const repoUrl = process.env.GITHUB_SKILLS_REPO || 'https://github.com/paulpas/skills';
-      const cacheDir = process.env.SKILL_CACHE_DIR || '/cache/skills';
-      const syncIntervalMs = parseInt(process.env.SKILL_SYNC_INTERVAL || '3600', 10) * 1000;
-      const githubToken = process.env.GITHUB_TOKEN || '';
-
-      this.githubLoader = new GitHubSkillLoader({ repoUrl, cacheDir, syncIntervalMs, githubToken });
-      try {
-        await this.githubLoader.initialize();
-        skillsDirs.push(this.githubLoader.getSkillsDir());
-        this.logger.info('GitHub skills loaded', { dir: cacheDir });
-      } catch (err) {
-        this.logger.warn('GitHub skill loader init failed, continuing without remote skills', {
-          error: err instanceof Error ? err.message : String(err),
-        });
-        this.githubLoader = null;
-      }
-    }
-
-    // Initialize MCP Bridge
-    this.mcpBridge = new MCPBridge({
-      enabledTools: this.config.enabledTools,
-      disableTools: this.config.disableTools,
-      defaultTimeoutMs: this.config.defaultTimeoutMs,
+  constructor(config: Partial<RouterConfig & MCPBridgeConfig> = {}) {
+    this.logger = new Logger('Main', {
+      level: config.observability?.level || 'info',
     });
-
-    // Initialize Router with all skill directories
-    this.router = new Router({ ...this.config, skillsDirectory: skillsDirs });
-    await this.router.initialize();
-
-    // Start background sync after router is ready
-    if (this.githubLoader) {
-      this.githubLoader.startSync(async () => {
-        await this.router!.reloadSkills();
-      });
-    }
-
-    this.logger.info('Agent Skill Routing System initialized successfully', {
-      skillCount: this.router.getStats().totalSkills,
-      tools: this.mcpBridge.getStats().enabledTools,
-      githubSync: !!this.githubLoader,
-    });
+    this.config = config as RouterConfig & MCPBridgeConfig;
   }
 
+  private config: RouterConfig & MCPBridgeConfig;
+
   /**
-   * Start the HTTP server
+   * Start the HTTP server immediately, then load skills in the background.
+   * /health returns 200 right away; /route, /execute, /reload, /skills return
+   * 503 until ready === true.
    */
   async start(port: number = 3000): Promise<void> {
-    this.app = fastify({
-      logger: false,
+    this.app = fastify({ logger: false });
+
+    // ── /route ─────────────────────────────────────────────────────────────
+    this.app.post('/route', async (request, reply) => {
+      if (!this.ready) {
+        reply.code(503).send({ error: 'Service unavailable', message: 'Skills are still loading' });
+        return;
+      }
+      try {
+        const body = request.body as RouteRequestBody;
+        const response = await this.router!.routeTask(body);
+        reply.code(200).send(response);
+      } catch (error) {
+        this.logger.error('Route request failed', {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        reply.code(500).send({
+          error: 'Route failed',
+          message: error instanceof Error ? error.message : String(error),
+        });
+      }
     });
 
-    // Define routes with proper Fastify typing
-    this.app.post(
-      '/route',
-      async (request, reply) => {
-        try {
-          const body = request.body as RouteRequestBody;
-          const response = await this.router!.routeTask(body);
-          reply.code(200).send(response);
-        } catch (error) {
-          this.logger.error('Route request failed', {
-            error: error instanceof Error ? error.message : String(error),
-          });
-          reply.code(500).send({
-            error: 'Route failed',
-            message: error instanceof Error ? error.message : String(error),
-          });
-        }
+    // ── /execute ───────────────────────────────────────────────────────────
+    this.app.post('/execute', async (request, reply) => {
+      if (!this.ready) {
+        reply.code(503).send({ error: 'Service unavailable', message: 'Skills are still loading' });
+        return;
       }
-    );
+      try {
+        const body = request.body as ExecuteRequestBody;
+        const { task, taskId, inputs, skills } = body;
+        const results: {
+          skillName: string;
+          status: 'success' | 'failure';
+          output?: unknown;
+          error?: string;
+          latencyMs: number;
+        }[] = [];
 
-    this.app.post(
-      '/execute',
-      async (request, reply) => {
-        try {
-          const body = request.body as ExecuteRequestBody;
-          const { task, taskId, inputs, skills } = body;
-          const results: {
-            skillName: string;
-            status: 'success' | 'failure';
-            output?: unknown;
-            error?: string;
-            latencyMs: number;
-          }[] = [];
-
-          if (skills && skills.length > 0) {
-            for (const skillName of skills) {
-              const tool = this.mcpBridge!.getTool(skillName);
-              if (tool) {
-                const result = await tool.execute(inputs || {});
-                results.push({
-                  skillName,
-                  status: result.success ? 'success' : 'failure',
-                  output: result.output,
-                  error: result.error,
-                  latencyMs: result.latencyMs,
-                });
-              } else {
-                results.push({
-                  skillName,
-                  status: 'failure',
-                  error: `Tool not found: ${skillName}`,
-                  latencyMs: 0,
-                });
-              }
+        if (skills && skills.length > 0) {
+          for (const skillName of skills) {
+            const tool = this.mcpBridge!.getTool(skillName);
+            if (tool) {
+              const result = await tool.execute(inputs || {});
+              results.push({
+                skillName,
+                status: result.success ? 'success' : 'failure',
+                output: result.output,
+                error: result.error,
+                latencyMs: result.latencyMs,
+              });
+            } else {
+              results.push({
+                skillName,
+                status: 'failure',
+                error: `Tool not found: ${skillName}`,
+                latencyMs: 0,
+              });
             }
           }
-
-          reply.code(200).send({
-            taskId: taskId || 'auto_' + Date.now(),
-            task,
-            status: results.every((r) => r.status === 'success') ? 'success' : 'partial_failure',
-            results,
-          });
-        } catch (error) {
-          this.logger.error('Execute request failed', {
-            error: error instanceof Error ? error.message : String(error),
-          });
-          reply.code(500).send({
-            error: 'Execution failed',
-            message: error instanceof Error ? error.message : String(error),
-          });
         }
-      }
-    );
 
-    // Manual reload trigger
+        reply.code(200).send({
+          taskId: taskId || 'auto_' + Date.now(),
+          task,
+          status: results.every((r) => r.status === 'success') ? 'success' : 'partial_failure',
+          results,
+        });
+      } catch (error) {
+        this.logger.error('Execute request failed', {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        reply.code(500).send({
+          error: 'Execution failed',
+          message: error instanceof Error ? error.message : String(error),
+        });
+      }
+    });
+
+    // ── /reload ────────────────────────────────────────────────────────────
     this.app.post('/reload', async (_request, reply) => {
+      if (!this.ready) {
+        reply.code(503).send({ error: 'Service unavailable', message: 'Skills are still loading' });
+        return;
+      }
       try {
         if (this.githubLoader) {
           await this.githubLoader.syncNow(async () => {
@@ -225,8 +176,12 @@ export * from './skills/GitHubSkillLoader.js';
       }
     });
 
-    // List all loaded skills
+    // ── /skills ────────────────────────────────────────────────────────────
     this.app.get('/skills', async (_request, reply) => {
+      if (!this.ready) {
+        reply.code(503).send({ error: 'Service unavailable', message: 'Skills are still loading' });
+        return;
+      }
       const skills = this.router!.getAllSkills().map((s) => ({
         name: s.metadata.name,
         category: s.metadata.category,
@@ -238,33 +193,108 @@ export * from './skills/GitHubSkillLoader.js';
       reply.code(200).send({ total: skills.length, skills });
     });
 
+    // ── /health — always 200 immediately ──────────────────────────────────
     this.app.get('/health', async (_request, reply) => {
       reply.code(200).send({
         status: 'healthy',
+        ready: this.ready,
+        loading: !this.ready && !this.loadingError,
+        error: this.loadingError,
         timestamp: new Date().toISOString(),
         version: '1.0.0',
       });
     });
 
+    // ── /stats — returns loading status when not ready ────────────────────
     this.app.get('/stats', async (_request, reply) => {
+      if (!this.ready) {
+        reply.code(200).send({
+          status: this.loadingError ? 'error' : 'loading',
+          message: this.loadingError || 'Skills are still loading, please wait',
+          skills: { totalSkills: 0, categories: 0, tags: 0 },
+          mcpTools: { totalTools: 0, enabledTools: [] },
+        });
+        return;
+      }
       const routerStats = this.router!.getStats();
       const mcpStats = this.mcpBridge!.getStats();
-      reply.code(200).send({
-        skills: routerStats,
-        mcpTools: mcpStats,
-      });
+      reply.code(200).send({ skills: routerStats, mcpTools: mcpStats });
     });
 
-    // Start server
+    // Bind port IMMEDIATELY — skills load in background below
     try {
       await this.app.listen({ port, host: '0.0.0.0' });
-      this.logger.info(`Server started on port ${port}`);
+      this.logger.info(`Server listening on port ${port} (skills loading in background)`);
     } catch (error) {
       this.logger.error('Failed to start server', {
         error: error instanceof Error ? error.message : String(error),
       });
       process.exit(1);
     }
+
+    // Heavy init runs without blocking the already-bound server
+    this.initializeAsync().catch((err) => {
+      this.loadingError = err instanceof Error ? err.message : String(err);
+      this.logger.error('Background initialization failed', { error: this.loadingError });
+    });
+  }
+
+  /**
+   * All heavy init work: GitHub clone, skill loading, embedding generation.
+   * Runs after the server is already accepting connections.
+   */
+  private async initializeAsync(): Promise<void> {
+    this.logger.info('Starting background skill initialization');
+
+    const localSkillsDir =
+      (this.config.skillsDirectory as string) ||
+      process.env.SKILLS_DIRECTORY ||
+      './samples/skill-definitions';
+    const skillsDirs: string[] = [localSkillsDir];
+
+    const githubEnabled = process.env.GITHUB_SKILLS_ENABLED !== 'false';
+    if (githubEnabled) {
+      const repoUrl = process.env.GITHUB_SKILLS_REPO || 'https://github.com/paulpas/skills';
+      const cacheDir = process.env.SKILL_CACHE_DIR || '/cache/skills';
+      const syncIntervalMs = parseInt(process.env.SKILL_SYNC_INTERVAL || '3600', 10) * 1000;
+      const githubToken = process.env.GITHUB_TOKEN || '';
+
+      this.githubLoader = new GitHubSkillLoader({ repoUrl, cacheDir, syncIntervalMs, githubToken });
+      try {
+        await this.githubLoader.initialize();
+        skillsDirs.push(this.githubLoader.getSkillsDir());
+        this.logger.info('GitHub skills loaded', { dir: cacheDir });
+      } catch (err) {
+        this.logger.warn('GitHub skill loader failed, continuing with local skills only', {
+          error: err instanceof Error ? err.message : String(err),
+        });
+        this.githubLoader = null;
+      }
+    }
+
+    // Initialize MCP Bridge
+    this.mcpBridge = new MCPBridge({
+      enabledTools: this.config.enabledTools,
+      disableTools: this.config.disableTools,
+      defaultTimeoutMs: this.config.defaultTimeoutMs,
+    });
+
+    // Initialize Router with all skill directories
+    this.router = new Router({ ...this.config, skillsDirectory: skillsDirs });
+    await this.router.initialize();
+
+    // Start background GitHub sync after router is ready
+    if (this.githubLoader) {
+      this.githubLoader.startSync(async () => {
+        await this.router!.reloadSkills();
+      });
+    }
+
+    this.ready = true;
+    this.logger.info('Background initialization complete', {
+      skillCount: this.router.getStats().totalSkills,
+      githubSync: !!this.githubLoader,
+    });
   }
 
   /**
@@ -292,7 +322,7 @@ if (require.main === module) {
   const skillsDirectory = process.env.SKILLS_DIRECTORY || './samples/skill-definitions';
   const port = parseInt(process.env.PORT || '3000', 10);
   const app = createApp({ skillsDirectory } as RouterConfig & MCPBridgeConfig);
-  app.initialize().then(() => app.start(port)).catch((err) => {
+  app.start(port).catch((err) => {
     console.error('Failed to start:', err);
     process.exit(1);
   });
