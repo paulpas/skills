@@ -60,7 +60,7 @@ export interface AppConfig {
  * Default configuration
  */
 export const defaultConfig: AppConfig = {
-  skillsDirectory: './samples/skill-definitions',
+  skillsDirectory: process.env.SKILLS_DIRECTORY || './samples/skill-definitions',
   embedding: {
     model: 'text-embedding-3-small',
     dimensions: 1536,

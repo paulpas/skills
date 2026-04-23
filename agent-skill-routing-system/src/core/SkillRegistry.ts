@@ -48,8 +48,8 @@ export class SkillRegistry {
     });
 
     try {
-      // Find all skill definition files (ts, js, json, yaml, yml)
-      const pattern = path.join(this.config.skillsDirectory, '**/*.{ts,js,json,yaml,yml}');
+      // Find all skill definition files (ts, js, json, yaml, yml, md)
+      const pattern = path.join(this.config.skillsDirectory, '**/*.{ts,js,json,yaml,yml,md}');
       const files = await glob(pattern);
 
       this.logger.debug(`Found ${files.length} potential skill files`);
@@ -115,6 +115,12 @@ export class SkillRegistry {
           content = yamlContent;
           break;
 
+        case '.md':
+          const mdContent = await fs.promises.readFile(filePath, 'utf-8');
+          metadata = this.parseSkillFromMarkdown(mdContent, filePath);
+          content = mdContent;
+          break;
+
         default:
           this.logger.debug(`Skipping unsupported file type: ${filePath}`);
           return null;
@@ -176,6 +182,83 @@ export class SkillRegistry {
       category: 'general',
       description: 'Skill loaded from file',
       tags: ['default'],
+      input_schema: { type: 'object', properties: {}, required: [] },
+      output_schema: { type: 'object', properties: {}, required: [] },
+    };
+  }
+
+  /**
+   * Parse skill metadata from a SKILL.md file with YAML frontmatter
+   * Maps OpenCode skill frontmatter fields to SkillMetadata schema
+   */
+  private parseSkillFromMarkdown(content: string, filePath: string): SkillMetadata {
+    // Extract YAML frontmatter between --- delimiters
+    const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (!fmMatch) {
+      this.logger.debug(`No YAML frontmatter found in ${filePath}, using filename defaults`);
+      const baseName = path.basename(path.dirname(filePath));
+      return {
+        name: baseName,
+        category: baseName.split('-')[0] || 'general',
+        description: `Skill loaded from ${baseName}`,
+        tags: [baseName.split('-')[0] || 'general'],
+        input_schema: { type: 'object', properties: {}, required: [] },
+        output_schema: { type: 'object', properties: {}, required: [] },
+      };
+    }
+
+    let fm: Record<string, unknown>;
+    try {
+      fm = YAML.parse(fmMatch[1]) as Record<string, unknown>;
+    } catch {
+      this.logger.warn(`Failed to parse YAML frontmatter in ${filePath}`);
+      const baseName = path.basename(path.dirname(filePath));
+      return {
+        name: baseName,
+        category: baseName.split('-')[0] || 'general',
+        description: `Skill loaded from ${baseName}`,
+        tags: [baseName.split('-')[0] || 'general'],
+        input_schema: { type: 'object', properties: {}, required: [] },
+        output_schema: { type: 'object', properties: {}, required: [] },
+      };
+    }
+
+    // Map SKILL.md frontmatter fields to SkillMetadata
+    const nestedMeta = (fm.metadata as Record<string, unknown>) || {};
+
+    // name: use frontmatter name, fall back to directory name
+    const name = (fm.name as string) || path.basename(path.dirname(filePath));
+
+    // category: metadata.domain → category, fall back to domain prefix from name
+    const category =
+      (nestedMeta.domain as string) ||
+      name.split('-')[0] ||
+      'general';
+
+    // description
+    const description = (fm.description as string) || `Skill: ${name}`;
+
+    // tags: parse metadata.triggers (comma-separated string) + add domain prefix
+    const triggersRaw = (nestedMeta.triggers as string) || '';
+    const triggerTags = triggersRaw
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+
+    // Also add role and scope as tags if present
+    const roleTags = [
+      nestedMeta.role as string,
+      nestedMeta.scope as string,
+    ].filter(Boolean) as string[];
+
+    const tags = [...new Set([category, ...triggerTags, ...roleTags])];
+
+    return {
+      name,
+      category,
+      description,
+      tags: tags.length > 0 ? tags : [category],
+      version: (nestedMeta.version as string) || '1.0.0',
       input_schema: { type: 'object', properties: {}, required: [] },
       output_schema: { type: 'object', properties: {}, required: [] },
     };
