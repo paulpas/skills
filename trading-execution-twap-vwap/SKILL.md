@@ -1,6 +1,6 @@
 ---
 name: trading-execution-twap-vwap
-description: TWAP and VWAP Execution Algorithms: Institutional-Grade Order Execution
+description: "TWAP and VWAP Execution Algorithms: Institutional-Grade Order Execution"
 license: MIT
 compatibility: opencode
 metadata:
