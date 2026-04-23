@@ -950,3 +950,437 @@ spec:
     protocol: grpc
 ```
 
+## Tutorial
+
+This tutorial will guide you through installing, configuring, and using Linkerd for lightweight service mesh management in Kubernetes.
+
+### Prerequisites
+
+Before beginning, ensure you have:
+- A running Kubernetes cluster (minikube, kind, EKS, GKE, AKS)
+- `kubectl` configured with cluster-admin permissions
+- `linkerd` CLI installed
+- Basic understanding of Kubernetes services and networking
+
+Verify your setup:
+
+```bash
+# Check cluster connectivity
+kubectl cluster-info
+
+# Verify kubectl configuration
+kubectl get nodes
+
+# Check Linkerd CLI version (after installation)
+linkerd version
+
+# Verify cluster supports sidecar injection
+kubectl get mutatingwebhookconfigurations
+```
+
+---
+
+### 1. Installation
+
+Linkerd can be installed using the official Linkerd CLI or Helm.
+
+#### Method 1: Using Linkerd CLI (Recommended)
+
+```bash
+# Download and install Linkerd CLI
+curl --proto '=https' --tlsv1.2 -sSfL https://linkerd.io/install | sh
+
+# Add Linkerd to PATH
+export PATH=$PATH:~/.linkerd2/bin
+
+# Verify installation
+linkerd version
+
+# Or install via Homebrew (macOS/Linux)
+brew install linkerd
+
+# Or via Chocolatey (Windows)
+choco install linkerd
+```
+
+#### Method 2: Install Linkerd Control Plane
+
+```bash
+# Validate prerequisites
+linkerd check --pre
+
+# Install Linkerd control plane
+linkerd install | kubectl apply -f -
+
+# Or install with custom configuration
+linkerd install \
+  --proxy-version stable-2.14.0 \
+  --identity-external-issuer=true \
+  --metrics-server-tls-auto | kubectl apply -f -
+
+# Verify installation
+linkerd check
+
+# Check Linkerd pods
+kubectl get pods -n linkerd
+```
+
+#### Method 3: Using Helm
+
+```bash
+# Add Linkerd Helm repository
+helm repo add linkerd https://helm.linkerd.io/stable
+helm repo update
+
+# Install Linkerd control plane
+helm install linkerd-control-plane linkerd/linkerd-control-plane \
+  --namespace linkerd \
+  --create-namespace \
+  --wait
+
+# Verify installation
+helm list -n linkerd
+kubectl get pods -n linkerd
+```
+
+#### Method 4: Install Linkerd Viz Extension
+
+```bash
+# Install Viz extension for observability
+linkerd viz install | kubectl apply -f -
+
+# Or using Helm
+helm install linkerd-viz linkerd/linkerd-viz \
+  --namespace linkerd-viz \
+  --create-namespace \
+  --wait
+
+# Verify Viz installation
+linkerd viz check
+```
+
+---
+
+### 2. Basic Configuration
+
+#### Enable Proxy Injection
+
+```bash
+# Enable injection on namespace
+kubectl label namespace default linkerd.io/inject=enabled
+
+# Or use label selector for specific namespaces
+kubectl label namespace production linkerd.io/inject=enabled
+
+# Verify injection is enabled
+kubectl get namespace -L linkerd.io/inject
+
+# Manually inject sidecar
+kubectl get deployment myapp -o yaml | linkerd inject - | kubectl apply -f -
+```
+
+#### Configure Service Profiles
+
+```yaml
+# Create a ServiceProfile for HTTP services
+cat <<EOF | kubectl apply -f -
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: api-service.default.svc.cluster.local
+  namespace: default
+spec:
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /api/users
+    name: GET Users
+    timeout: 500ms
+    retries:
+      budget:
+        retryRatio: 0.1
+        minRetriesPerSecond: 5
+        ttl: 10s
+  - condition:
+      method: POST
+      pathRegex: /api/users
+    name: POST Users
+    timeout: 2s
+    retries:
+      budget:
+        retryRatio: 0.2
+        minRetriesPerSecond: 10
+        ttl: 10s
+EOF
+```
+
+#### Configure mTLS Settings
+
+```bash
+# Verify mTLS is working
+linkerd edges identity
+
+# Check certificate status
+linkerd identity
+
+# View certificate details
+linkerd -n linkerd identity service/linkerd-identity
+```
+
+#### Configure Traffic Policies
+
+```yaml
+# Create Server for mTLS
+cat <<EOF | kubectl apply -f -
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  name: myapp-server
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  port: http
+  policy:
+    mtls:
+      mode: strict
+EOF
+
+# Create ServerPolicy for authorization
+cat <<EOF | kubectl apply -f -
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerPolicy
+metadata:
+  name: myapp-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  policies:
+  - name: allow-frontend
+    serverPorts:
+    - 8080
+    port: 8080
+    protocol: http
+    allowed:
+    - namespaces:
+      - frontend
+EOF
+```
+
+---
+
+### 3. Usage Examples
+
+#### Deploying an Application with Linkerd
+
+```bash
+# Deploy sample application
+kubectl apply -f https://raw.githubusercontent.com/linkerd/linkerd2/main/demo/nginx.yaml
+
+# Enable mesh injection
+kubectl get deployment nginx -o yaml | linkerd inject - | kubectl apply -f -
+
+# Verify injection
+kubectl get pods -o json | jq '.items[].spec.containers[].name' | grep linkerd-proxy
+
+# Check proxy status
+linkerd -n default proxies
+```
+
+#### Traffic Split for Canary Deployments
+
+```bash
+# Create traffic split
+cat <<EOF | kubectl apply -f -
+apiVersion: linkerd.io/v1alpha2
+kind: TrafficSplit
+metadata:
+  name: myapp-split
+  namespace: production
+spec:
+  backends:
+  - service: myapp
+    weight: 90
+  - service: myapp-canary
+    weight: 10
+  service: myapp.production.svc.cluster.local
+EOF
+
+# Update traffic split
+kubectl patch traficsplit myapp-split -p '{"spec":{"backends":[{"service":"myapp","weight":80},{"service":"myapp-canary","weight":20}]}}'
+
+# Remove traffic split
+kubectl delete traficsplit myapp-split
+```
+
+#### Using Linkerd CLI Commands
+
+```bash
+# View service list with health status
+linkerd -n production services
+
+# View pod list
+linkerd -n default proxies
+
+# View traffic summary
+linkerd -n production stat deploy
+
+# View specific service stats
+linkerd -n production stat svc/api-service
+
+# View top endpoints
+linkerd -n production top pods
+```
+
+#### Observability with Linkerd Viz
+
+```bash
+# Access dashboard
+linkerd viz dashboard &
+
+# View traffic metrics
+linkerd viz stat deploy -n production
+
+# View top routes
+linkerd viz top routes -n production
+
+# View proxy logs
+linkerd viz logs -n production deploy/myapp
+
+# View tap for real-time traffic
+linkerd tap deploy/myapp -n production
+
+# View service profile
+linkerd -n default sp get api-service
+```
+
+---
+
+### 4. Common Operations
+
+#### Monitoring Linkerd Health
+
+```bash
+# Check overall health
+linkerd check
+
+# Check specific components
+linkerd check --proxy
+linkerd check --pre
+
+# View control plane status
+kubectl get pods -n linkerd
+
+# View proxy status
+linkerd -n default proxies | head -20
+
+# View certificate status
+linkerd -n linkerd edges identity
+```
+
+#### Debugging Service Mesh
+
+```bash
+# View pod connectivity
+linkerd -n default proxies
+
+# View proxy configuration
+linkerd -n default proxy-config deploy/myapp
+
+# View proxy logs
+linkerd -n default logs deploy/myapp -c linkerd-proxy
+
+# View traffic tap
+linkerd -n default tap deploy/myapp
+
+# View edge connections
+linkerd edges deploy/myapp
+```
+
+#### Managing Linkerd Updates
+
+```bash
+# Check for updates
+linkerd upgrade --check
+
+# Upgrade Linkerd
+linkerd upgrade | kubectl apply -f -
+
+# Verify upgrade
+linkerd check
+
+# Check proxy versions
+linkerd -n default proxy-version
+
+# Restart proxies to get new version
+linkerd -n default restart deploy/*
+```
+
+#### Exporting Data
+
+```bash
+# Export metrics
+linkerd -n linkerd metrics
+
+# Export proxy configuration
+linkerd -n default proxy-config deploy/myapp -o json
+
+# Export logs
+linkerd -n default logs -c linkerd-proxy deploy/myapp > proxy.log
+```
+
+---
+
+### 5. Best Practices
+
+#### Configuration Best Practices
+
+1. **Enable Proxy Injection Selectively**: Only enable on namespaces that need it
+2. **Set Resource Limits**: Configure CPU and memory limits for proxies
+3. **Use Service Profiles**: Define service profiles for important services
+4. **Configure Timeouts**: Set appropriate timeouts based on service SLAs
+5. **Enable mTLS**: Always enable strict mTLS in production
+6. **Monitor Resource Usage**: Track proxy CPU and memory usage
+7. **Use Service Accounts**: Configure dedicated service accounts for proxies
+8. **Enable Observability**: Install Viz extension for metrics and traces
+
+#### Security Best Practices
+
+1. **Rotate Certificates**: Regularly rotate identity certificates
+2. **Enable Policy Enforcement**: Use Server and ServerPolicy resources
+3. **Network Policies**: Combine with Kubernetes network policies
+4. **Audit Logging**: Enable audit logging for security analysis
+5. **Service Account Token Projection**: Use projected service account tokens
+6. **Pod Security Standards**: Apply pod security standards
+7. **Secrets Management**: Use external secret management for certificates
+8. **Image Verification**: Use verified Linkerd images
+
+#### Observability Best Practices
+
+1. **Collect All Metrics**: Enable proxy metrics collection
+2. **Set Up Alerts**: Configure alerts for high error rates and latency
+3. **Create Dashboards**: Build Grafana dashboards for Linkerd metrics
+4. **Distributed Tracing**: Integrate with Jaeger or Zipkin
+5. **Service Graph**: Monitor service dependency graph
+6. **Track SLOs**: Set up SLO-based alerting
+7. **Log Aggregation**: Configure centralized logging
+8. **Anomaly Detection**: Set up anomaly detection for traffic patterns
+
+#### Performance Best Practices
+
+1. **Optimize Proxy Resources**: Adjust proxy resource limits based on traffic
+2. **Connection Pooling**: Enable connection pooling for HTTP/2
+3. **Reduce Proxy Count**: Minimize hops through the mesh
+4. **Use HTTP/2**: Prefer HTTP/2 over HTTP/1.1
+5. **Configure Timeouts**: Set appropriate request timeouts
+6. **Load Balancing**: Configure appropriate load balancing strategies
+7. **Caching**: Enable response caching where appropriate
+8. **Compression**: Enable request/response compression
+
+*Content generated automatically. Verify against official documentation before production use.*
+
+## Examples
+

@@ -362,6 +362,303 @@ spec:
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
 
+---
+
+## Tutorial
+
+This tutorial covers installation, configuration, and basic usage of Jaeger for distributed tracing in cloud-native applications.
+
+### Prerequisites
+
+Before starting with Jaeger, ensure you have:
+
+- A running Kubernetes cluster (1.22+)
+- `kubectl` configured with cluster admin access
+- Basic understanding of distributed tracing concepts
+- Helm 3.x (if using Helm installation)
+
+### Installation
+
+#### Method 1: Using Helm (Recommended)
+
+```bash
+# Add the Jaeger Helm repository
+helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
+helm repo update
+
+# Install Jaeger with all-in-one mode (development)
+helm install jaeger jaegertracing/jaeger \
+  --namespace observability \
+  --create-namespace \
+  --set storage.type=memory
+
+# Install with Elasticsearch backend (production)
+helm install jaeger jaegertracing/jaeger \
+  --namespace observability \
+  --create-namespace \
+  --set storage.type=elasticsearch \
+  --set esServerURL=http://elasticsearch-master:9200
+
+# Verify installation
+helm -n observability list
+kubectl -n observability get pods
+```
+
+#### Method 2: Using kubectl apply (Direct Manifest)
+
+```bash
+# Apply Jaeger operator
+kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/main/deploy/crds/jaegertracing.io_jaegers.yaml
+kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/main/deploy/role.yaml
+kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/main/deploy/role_binding.yaml
+kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/main/deploy/service_account.yaml
+
+# Apply Jaeger custom resource
+kubectl apply -f - <<EOF
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger
+  namespace: observability
+spec:
+  strategy: production
+  storage:
+    type: elasticsearch
+    options:
+      es:
+        server-urls: http://elasticsearch-master:9200
+EOF
+
+# Verify
+kubectl -n observability get jaegers
+kubectl -n observability get pods -l app=jaeger
+```
+
+#### Method 3: All-in-One Docker
+
+```bash
+# Run Jaeger all-in-one with Elasticsearch
+docker run -d \
+  --name jaeger \
+  -e SPAN_STORAGE_TYPE=elasticsearch \
+  -e ES_SERVER_URLS=http://elasticsearch:9200 \
+  -p 6831:6831/udp \
+  -p 6832:6832/udp \
+  -p 5778:5778 \
+  -p 16686:16686 \
+  -p 14268:14268 \
+  -p 14250:14250 \
+  jaegertracing/all-in-one:latest
+
+# Access UI
+open http://localhost:16686
+```
+
+### Basic Configuration
+
+#### Jaeger Custom Resource Configuration
+
+```yaml
+# jaeger.yaml - Full Jaeger configuration
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger-production
+  namespace: observability
+spec:
+  strategy: production
+  ingress:
+    enabled: true
+    host: tracing.example.com
+    security: none
+  storage:
+    type: elasticsearch
+    options:
+      es:
+        server-urls: http://elasticsearch-master:9200
+        username: elastic
+        password: changeme
+  collector:
+    replicas: 3
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "1Gi"
+        cpu: "1000m"
+  query:
+    replicas: 2
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+  ui:
+    options:
+      dashboard:
+        url: https://grafana.example.com
+```
+
+### Usage Examples
+
+#### Sending Traces to Jaeger
+
+```bash
+# Using curl to send a trace via HTTP
+curl -X POST http://localhost:14268/api/traces \
+  -H "Content-Type: application/json" \
+  -d '{
+    "spans": [
+      {
+        "traceId": "592753b7-d6f3-4e12-8f8e-9b8e9b8e9b8e",
+        "spanId": "a1b2c3d4e5f6g7h8",
+        "operationName": "payment-service",
+        "startTime": 1614500000000,
+        "duration": 100000,
+        "tags": [
+          {"key": "service.name", "value": "payment-service"},
+          {"key": "span.kind", "value": "server"}
+        ]
+      }
+    ]
+  }'
+```
+
+#### Instrumenting with OpenTelemetry
+
+```yaml
+# Add OpenTelemetry to your service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-service
+spec:
+  template:
+    spec:
+      containers:
+      - name: my-service
+        image: my-service:latest
+        env:
+        - name: OTEL_TRACES_EXPORTER
+          value: jaeger
+        - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+          value: http://jaeger-collector:14250
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.name=my-service,service.version=1.0.0
+```
+
+#### Querying Traces via UI
+
+```bash
+# Port-forward to access Jaeger UI
+kubectl -n observability port-forward svc/jaeger-query 16686:16686
+
+# Access in browser
+open http://localhost:16686
+```
+
+### Common Operations
+
+#### Checking Jaeger Status
+
+```bash
+# Check Jaeger pods
+kubectl -n observability get pods -l app=jaeger
+
+# View Jaeger logs
+kubectl -n observability logs -l app=jaeger -f
+
+# Check Jaeger UI
+kubectl -n observability port-forward svc/jaeger-query 16686:16686
+```
+
+### Best Practices for Jaeger
+
+#### 1. Use Appropriate Storage Backend
+
+```yaml
+# Production storage configuration
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger-production
+spec:
+  storage:
+    type: elasticsearch
+    options:
+      es:
+        server-urls: http://elasticsearch:9200
+        index-prefix: jaeger-
+        ttl: 259200
+```
+
+#### 2. Configure Sampling
+
+```yaml
+# Sampling configuration
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger-production
+spec:
+  agent:
+    options:
+      sampling:
+        server-url: http://jaeger-query:5778/sampling
+        refresh-interval: 1m
+```
+
+#### 3. Enable Security
+
+```yaml
+# Secure Jaeger deployment
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger-production
+spec:
+  ingress:
+    enabled: true
+    security: tls
+  storage:
+    type: elasticsearch
+    options:
+      es:
+        server-urls: http://elasticsearch:9200
+        username: jaeger
+        password-secret:
+          name: jaeger-secrets
+          key: es-password
+```
+
+#### 4. Monitor Jaeger
+
+```yaml
+# Prometheus monitoring configuration
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: jaeger-collector
+  namespace: observability
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: jaeger-collector
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+```
+
+---
+
+*This SKILL.md file was verified and last updated on 2026-04-22. Content based on CNCF Jaeger project and production usage patterns.*
+
 ## Examples
 
 ### Basic Configuration

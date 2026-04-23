@@ -403,6 +403,529 @@ Use Prometheus when you need to monitor microservices, require metrics-based ale
 - Review logs and metrics
 *Content generated automatically. Verify against official documentation before production use.*
 
+## Tutorial
+
+This tutorial will guide you through installing, configuring, and using Prometheus for monitoring Kubernetes applications.
+
+### Prerequisites
+
+Before beginning, ensure you have:
+- A running Kubernetes cluster (minikube, kind, EKS, GKE, AKS)
+- `kubectl` configured with cluster-admin permissions
+- `helm` CLI (for Helm installation method)
+- Basic understanding of monitoring concepts (metrics, alerts, dashboards)
+
+Verify your setup:
+
+```bash
+# Check cluster connectivity
+kubectl cluster-info
+
+# Verify kubectl configuration
+kubectl get nodes
+
+# Verify access to kube-system namespace
+kubectl get pods -n kube-system
+```
+
+---
+
+### 1. Installation
+
+Prometheus can be installed using various methods including kubectl, Helm, or using the Prometheus Operator.
+
+#### Method 1: Using kubectl with kube-prometheus-stack (Recommended)
+
+```bash
+# Create monitoring namespace
+kubectl create namespace monitoring
+
+# Download and apply Prometheus Operator manifests
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml
+
+# Verify installation
+kubectl get pods -n monitoring
+
+# Or use kube-prometheus-stack for a complete installation
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/setup/kube-prometheus-crd.yaml
+
+# Wait for CRDs to be created
+kubectl wait --for=condition=Established --all=CustomResourceDefinition --timeout=30s
+
+# Apply kube-prometheus-stack
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/
+```
+
+#### Method 2: Using Helm (Recommended for most users)
+
+```bash
+# Add the Prometheus Community Helm repository
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add prometheus-stack https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# Install kube-prometheus-stack (includes Prometheus, Grafana, Alertmanager)
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --wait
+
+# Verify installation
+kubectl get pods -n monitoring
+helm list -n monitoring
+```
+
+#### Method 3: Using Helm with Custom Values
+
+```bash
+# Create custom values file
+cat > prometheus-values.yaml << EOF
+prometheus:
+  prometheusSpec:
+    retention: 30d
+    replicas: 2
+    resources:
+      requests:
+        memory: 400Mi
+        cpu: 100m
+      limits:
+        memory: 2Gi
+        cpu: 1000m
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: standard
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+
+alertmanager:
+  alertmanagerSpec:
+    replicas: 3
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 50m
+
+grafana:
+  enabled: true
+  adminPassword: admin
+EOF
+
+# Install with custom configuration
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  -f prometheus-values.yaml \
+  --wait
+```
+
+#### Method 4: Using kubectl with vanilla Prometheus
+
+```bash
+# Create namespace
+kubectl create namespace monitoring
+
+# Deploy Prometheus without Operator
+kubectl apply -n monitoring -f - <<EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - nodes/proxy
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["extensions"]
+  resources:
+  - ingresses
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/metrics", "/metrics/cadvisor"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus
+subjects:
+- kind: ServiceAccount
+  name: prometheus
+  namespace: monitoring
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+    - job_name: 'prometheus'
+      static_configs:
+      - targets: ['localhost:9090']
+    - job_name: 'kubernetes-nodes'
+      kubernetes_sd_configs:
+      - role: node
+    - job_name: 'kubernetes-pods'
+      kubernetes_sd_configs:
+      - role: pod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  selector:
+    app: prometheus
+  ports:
+  - port: 9090
+    targetPort: 9090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.45.0
+        args:
+        - "--config.file=/etc/prometheus/prometheus.yml"
+        - "--storage.tsdb.path=/prometheus"
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: config
+          mountPath: /etc/prometheus
+        - name: storage
+          mountPath: /prometheus
+      volumes:
+      - name: config
+        configMap:
+          name: prometheus-config
+      - name: storage
+        emptyDir: {}
+EOF
+```
+
+---
+
+### 2. Basic Configuration
+
+#### Accessing Prometheus UI
+
+```bash
+# Port-forward to access Prometheus UI
+kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090
+
+# Or access via LoadBalancer
+kubectl -n monitoring patch svc prometheus-kube-prometheus-prometheus -p '{"spec":{"type":"LoadBalancer"}}'
+
+# Or access via Ingress
+kubectl -n monitoring create ingress prometheus \
+  --class=nginx \
+  --rule="prometheus.example.com/*=prometheus-kube-prometheus-prometheus:9090"
+```
+
+#### Configuring Scrape Targets
+
+```yaml
+# Add custom scrape configuration via ConfigMap
+cat > prometheus-scrape-config.yaml << EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-additional-configs
+  namespace: monitoring
+data:
+  additional-scrape-configs.yaml: |
+    - job_name: 'myapp'
+      static_configs:
+      - targets: ['myapp-service:8080']
+      metrics_path: /metrics
+EOF
+
+kubectl apply -f prometheus-scrape-config.yaml
+```
+
+#### Configuring Alerting Rules
+
+```yaml
+# Create alerting rules
+cat > prometheus-alert-rules.yaml << EOF
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: application-alerts
+  namespace: monitoring
+  labels:
+    prometheus: kube-prometheus
+    role: alert-rules
+spec:
+  groups:
+  - name: application.rules
+    rules:
+    - alert: HighErrorRate
+      expr: |
+        sum(rate(http_requests_total{status=~"5.."}[5m]))
+        /
+        sum(rate(http_requests_total[5m])) > 0.05
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "High error rate detected"
+        description: "Error rate is {{ $value | humanizePercentage }}"
+    - alert: ServiceDown
+      expr: up == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Service {{ $labels.instance }} is down"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 2 minutes."
+EOF
+
+kubectl apply -f prometheus-alert-rules.yaml
+```
+
+#### Configuring Service Monitors
+
+```yaml
+# ServiceMonitor to automatically discover and scrape services
+cat > service-monitor.yaml << EOF
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: myapp-monitor
+  namespace: production
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  namespaceSelector:
+    matchNames:
+    - production
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
+    scheme: http
+EOF
+
+kubectl apply -f service-monitor.yaml
+```
+
+---
+
+### 3. Usage Examples
+
+#### Querying Metrics with PromQL
+
+```bash
+# View all metrics
+curl http://localhost:9090/api/v1/label/__name__/values
+
+# Query CPU usage
+curl -s 'http://localhost:9090/api/v1/query?query=node_cpu_seconds_total' | jq .
+
+# Query memory usage
+curl -s 'http://localhost:9090/api/v1/query?query=node_memory_MemAvailable_bytes' | jq .
+
+# Query pod CPU usage
+curl -s 'http://localhost:9090/api/v1/query?query=sum by (pod) (rate(container_cpu_usage_seconds_total[5m]))' | jq .
+```
+
+#### Using PromQL in Prometheus UI
+
+```promql
+# CPU usage percentage
+100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+
+# Memory usage percentage
+(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+
+# HTTP error rate
+sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) * 100
+
+# Request latency percentiles
+histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service))
+
+# Up time percentage
+avg(rate(up[5m])) by (instance) * 100
+```
+
+#### Creating Grafana Dashboards
+
+```bash
+# Access Grafana
+kubectl -n monitoring port-forward svc/prometheus-grafana 3000:80
+
+# Or get admin password
+kubectl -n monitoring get secret prometheus-grafana \
+  -o jsonpath="{.data.admin-password}" | base64 -d; echo
+
+# Import dashboard via API
+curl -X POST http://localhost:3000/api/dashboards/db \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d @dashboard.json
+```
+
+---
+
+### 4. Common Operations
+
+#### Monitoring Prometheus Health
+
+```bash
+# Check Prometheus status
+kubectl get pods -n monitoring -l app=kube-prometheus-prometheus
+
+# View Prometheus logs
+kubectl logs -n monitoring prometheus-kube-prometheus-prometheus-0 -c prometheus
+
+# Check Prometheus configuration
+kubectl -n monitoring get configmap prometheus-kube-prometheus-prometheus -o yaml
+
+# View Prometheus targets
+curl http://localhost:9090/api/v1/targets | jq .
+
+# View active alerts
+curl http://localhost:9090/api/v1/alerts | jq .
+
+# View rule groups
+curl http://localhost:9090/api/v1/rules | jq .
+```
+
+#### Managing Retention and Storage
+
+```bash
+# Scale storage (for StatefulSet deployments)
+kubectl -n monitoring scale statefulset prometheus-kube-prometheus-prometheus --replicas=3
+
+# Check storage usage
+kubectl -n monitoring exec prometheus-kube-prometheus-prometheus-0 -- df -h /prometheus
+
+# Extend retention period
+kubectl -n monitoring patch prometheus prometheus-kube-prometheus-prometheus \
+  --type='merge' -p '{"spec":{"retention":"90d"}}'
+```
+
+#### Backing Up and Restoring
+
+```bash
+# Create backup of Prometheus data
+kubectl -n monitoring exec prometheus-kube-prometheus-prometheus-0 \
+  -- mkdir -p /backup
+
+kubectl -n monitoring exec prometheus-kube-prometheus-prometheus-0 \
+  -- cp -r /prometheus/* /backup/
+
+# Export backup
+kubectl -n monitoring cp monitoring/prometheus-kube-prometheus-prometheus-0:/backup \
+  ./prometheus-backup --container=prometheus
+```
+
+#### Upgrading Prometheus
+
+```bash
+# Using Helm
+helm upgrade prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  -f prometheus-values.yaml
+
+# Using kubectl (Operator)
+kubectl -n monitoring apply -f manifests/
+
+# Rollback if needed
+helm rollback prometheus -n monitoring
+```
+
+---
+
+### 5. Best Practices
+
+#### Configuration Best Practices
+
+1. **Set Appropriate Retention**: Balance between storage costs and historical data needs
+2. **Configure Scrape Intervals**: Shorter intervals for critical metrics, longer for infrequent metrics
+3. **Use Relabeling**: Configure relabeling to reduce metric cardinality
+4. **Configure Alertmanagers**: Set up HA Alertmanager configuration
+5. **Set Resource Limits**: Configure CPU and memory limits for Prometheus
+6. **Enable Remote Write**: Configure remote write for long-term storage
+7. **Use Recording Rules**: Pre-compute expensive queries
+8. **Configure Federation**: Set up federation for multi-cluster monitoring
+
+#### Query Best Practices
+
+1. **Use Aggregation**: Always aggregate metrics when possible
+2. **Set Appropriate Time Ranges**: Use appropriate duration windows for queries
+3. **Avoid High Cardinality**: Filter metrics by labels to reduce cardinality
+4. **Use Rate vs Counter**: Use rate() for counters, instant for gauges
+5. **Test Queries**: Test queries in Prometheus UI before dashboards
+6. **Use Vector Matching**: Understand instant vs range vectors
+7. **Limit Results**: Use limit() for large result sets
+8. **Cache Results**: Use recording rules for complex queries
+
+#### Security Best Practices
+
+1. **Enable Authentication**: Configure basic auth or OAuth for Prometheus UI
+2. **Use Network Policies**: Restrict access to Prometheus and Alertmanager
+3. **Configure RBAC**: Grant minimal required permissions
+4. **Encrypt Traffic**: Use TLS for all communications
+5. **Scrape interval**: Configure appropriate scrape intervals to avoid overwhelming targets
+6. **Secret Management**: Store sensitive configuration in secrets
+7. **Audit Logging**: Enable audit logging for security analysis
+8. **Image Verification**: Use verified Prometheus images from trusted sources
+
+#### Alerting Best Practices
+
+1. **Set Appropriate Thresholds**: Balance between false positives and missed alerts
+2. **Use For Duration**: Include for clause to prevent flapping alerts
+3. **Group Related Alerts**: Use alert groups for related metrics
+4. **Set Severity Levels**: Use warning and critical severity levels
+5. **Downtime Notification**: Configure silence rules for maintenance
+6. **Escalation Policies**: Set up alert escalation paths
+7. **Alert Clustering**: Use Alertmanager for alert clustering
+8. **Test Alerts**: Regularly test alerting rules
+
+*Content generated automatically. Verify against official documentation before production use.*
+
 ## Examples
 
 ### Prometheus Configuration with Kubernetes Service Discovery

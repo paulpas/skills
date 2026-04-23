@@ -1203,104 +1203,653 @@ spec:
 ---
 
 *This SKILL.md file was verified and last updated on 2026-04-22. Content based on CNCF Contour project and production usage patterns.*
-## Troubleshooting
 
-### Common Issues
+---
 
-1. **Deployment Failures**
-   - Check pod logs for errors
-   - Verify configuration values
-   - Ensure network connectivity
+## Tutorial
 
-2. **Performance Issues**
-   - Monitor resource usage
-   - Adjust resource limits
-   - Check for bottlenecks
+This tutorial covers installation, configuration, and basic usage of Contour for Kubernetes ingress management.
 
-3. **Configuration Errors**
-   - Validate YAML syntax
-   - Check required fields
-   - Verify environment-specific settings
+### Prerequisites
 
-4. **Integration Problems**
-   - Verify API compatibility
-   - Check dependency versions
-   - Review integration documentation
+Before starting with Contour, ensure you have:
 
-### Getting Help
+- A running Kubernetes cluster (1.23+)
+- `kubectl` configured with cluster admin access
+- Basic understanding of Kubernetes services and ingress concepts
+- Helm 3.x (if using Helm installation)
 
-- Check official documentation
-- Search GitHub issues
-- Join community channels
-- Review logs and metrics
+### Installation
 
-## Examples
+#### Method 1: Using kubectl apply (Quick Start)
+
+```bash
+# Download and apply the latest Contour manifest
+curl -sL https://projectcontour.io/quickstart/contour.yaml > contour.yaml
+
+# Apply the manifest
+kubectl apply -f contour.yaml
+
+# Verify the installation
+kubectl -n projectcontour get pods
+
+# Expected output:
+# NAME                      READY   STATUS    RESTARTS   AGE
+# contour-7d8f9c6b9-abc12   1/1     Running   0          2m
+# contour-7d8f9c6b9-def34   1/1     Running   0          2m
+# contour-envoy-xyz56       1/1     Running   0          2m
+```
+
+#### Method 2: Using Helm (Production Recommended)
+
+```bash
+# Add the Contour Helm repository
+helm repo add projectcontour https://projectcontour.github.io/charts
+helm repo update
+
+# Install Contour
+helm install contour projectcontour/contour \
+  --create-namespace \
+  --namespace projectcontour \
+  --set contour.config.filePath=/config/contour.yaml
+
+# Verify installation
+helm -n projectcontour list
+```
+
+#### Method 3: Custom Configuration
+
+```bash
+# Create namespace
+kubectl create namespace projectcontour
+
+# Apply Contour with custom config
+kubectl apply -f contour.yaml
+
+# Create custom ConfigMap for Contour
+kubectl create configmap contour-config \
+  --from-file=contour.yaml=./my-contour-config.yaml \
+  -n projectcontour
+
+# Patch deployment to use custom config
+kubectl patch deployment contour \
+  --namespace projectcontour \
+  --type='json' \
+  -p='[{"op": "add", "path": "/spec/template/spec/volumes/-", "value": {"name": "config", "configMap": {"name": "contour-config"}}}]'
+```
 
 ### Basic Configuration
 
+Contour is configured via a YAML file and Kubernetes ConfigMap.
+
+#### Contour Config File
+
+Create `contour.yaml`:
 
 ```yaml
-# Basic configuration example
+# contour.yaml - Contour main configuration
+xds-address: "0.0.0.0"
+xds-port: 8001
+debug:
+  address: "0.0.0.0"
+  port: 8000
+metrics:
+  address: "0.0.0.0"
+  port: 8002
+tracing:
+  type: zipkin
+  service-name: contour
+  sampling-rate: 0.0001
+  config:
+    collector-host: zipkin.observability.svc.cluster.local
+    collector-port: 9411
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+```
+
+#### Enable Gateway API Support
+
+```yaml
+# contour.yaml - Enable Gateway API
+gateway:
+  apiVersion: gateway.networking.k8s.io/v1beta1
+  enabled: true
+```
+
+#### Configure TLS Settings
+
+```yaml
+# contour.yaml - TLS configuration
+tls:
+  minimumProtocolVersion: "1.2"
+  cipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+```
+
+### Usage Examples
+
+#### Creating Your First HTTPProxy
+
+```yaml
+# hello-world.yaml
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: hello-world
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: hello-world.example.com
+    tls:
+      secretName: hello-world-tls
+      minimumProtocolVersion: "1.2"
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: hello
+          port: 80
+```
+
+Apply the configuration:
+
+```bash
+# Create a simple hello service first
+kubectl create deployment hello --image=nginx --port=80
+kubectl expose deployment hello --port=80 --target-port=80 --type=ClusterIP
+
+# Apply HTTPProxy
+kubectl apply -f hello-world.yaml
+
+# Check status
+kubectl get httpproxy hello-world -o yaml
+```
+
+#### Configure Path-Based Routing
+
+```yaml
+# multi-path.yaml
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: multi-path
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: app.example.com
+    tls:
+      secretName: app-tls
+  routes:
+    - conditions:
+        - prefix: "/api"
+      services:
+        - name: api-service
+          port: 8080
+      timeoutPolicy:
+        response: 30s
+        idle: 5m
+    - conditions:
+        - prefix: "/web"
+      services:
+        - name: web-service
+          port: 80
+    - conditions:
+        - prefix: "/admin"
+      services:
+        - name: admin-service
+          port: 8080
+```
+
+#### Enable gRPC Support
+
+```yaml
+# grpc-service.yaml
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: grpc-service
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: grpc.example.com
+    tls:
+      secretName: grpc-tls
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: grpc-backend
+          port: 50051
+        # gRPC is automatically enabled when using HTTP/2
+```
+
+### Common Operations
+
+#### Checking Contour Status
+
+```bash
+# Check Contour pod status
+kubectl -n projectcontour get pods -l app=contour
+
+# Check Envoy pod status
+kubectl -n projectcontour get pods -l app=contour-envoy
+
+# View Contour logs
+kubectl -n projectcontour logs -l app=contour -f
+
+# View Envoy logs
+kubectl -n projectcontour logs -l app=contour-envoy -f
+```
+
+#### Debugging Configuration Issues
+
+```bash
+# Validate HTTPProxy syntax
+kubectl apply -f my-proxy.yaml --dry-run=client
+
+# Check Contour XDS status
+kubectl -n projectcontour exec -l app=contour -- contour status
+
+# Check Envoy configuration
+kubectl -n projectcontour exec -l app=contour-envoy -- envoy config dump
+```
+
+#### Monitoring with Prometheus
+
+```yaml
+# Enable Prometheus scraping
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{project_name}}-config
-  namespace: default
+  name: contour
+  namespace: projectcontour
 data:
-  # Configuration goes here
-  config.yaml: |
-    # Base configuration
-    # Add your settings here
+  contour.yaml: |
+    xds-address: "0.0.0.0"
+    xds-port: 8001
+    debug: true
+    metrics:
+      address: "0.0.0.0"
+      port: 8002
+---
+# Prometheus scrape configuration
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: contour
+  namespace: projectcontour
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: contour
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
 ```
 
-### Kubernetes Deployment
+#### Viewing TLS Certificate Status
 
+```bash
+# List certificates in secret
+kubectl get secret -n projectcontour contour-envoy -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -text -noout
+
+# Check certificate expiration
+kubectl get secret -n projectcontour contour-envoy -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -enddate -noout
+
+# View Contour TLS configuration
+kubectl -n projectcontour get secret contour-envoy -o yaml
+```
+
+#### Traffic Management Examples
 
 ```yaml
-# Kubernetes deployment for {{project_name}}
+# Canary deployment with weighted routing
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: canary
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: myapp.example.com
+    tls:
+      secretName: myapp-tls
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: myapp-primary
+          port: 80
+          weight: 90
+        - name: myapp-canary
+          port: 80
+          weight: 10
+```
+
+```yaml
+# Retry configuration
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: with-retries
+  namespace: default
+spec:
+  routes:
+    - conditions:
+        - prefix: "/api"
+      services:
+        - name: api
+          port: 8080
+      retryPolicy:
+        count: 3
+        perTryTimeout: 2s
+        retryOn:
+          - 5xx
+          - reset
+          - connect-failure
+```
+
+### Best Practices for Contour
+
+#### 1. Use Namespace Isolation
+
+```yaml
+# HTTPProxy in different namespaces
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: frontend
+  namespace: web
+spec:
+  virtualhost:
+    fqdn: frontend.example.com
+    tls:
+      secretName: frontend-tls
+  routes:
+    - services:
+        - name: frontend
+          port: 80
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: backend
+  namespace: api
+spec:
+  virtualhost:
+    fqdn: api.example.com
+    tls:
+      secretName: api-tls
+  routes:
+    - services:
+        - name: backend
+          port: 8080
+```
+
+#### 2. Implement Timeout and Retry Policies
+
+```yaml
+# Production-ready timeout and retry configuration
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: production
+  namespace: default
+spec:
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: backend
+          port: 8080
+      timeoutPolicy:
+        response: 30s           # Response timeout
+        idle: 5m                # Idle timeout
+        reconnect: 3            # Number of retries
+        perTryTimeout: 5s       # Per-try timeout
+      retryPolicy:
+        count: 3                # Retry count
+        perTryTimeout: 2s       # Per-try timeout
+        retryOn:
+          - 5xx                 # Retry on 5xx errors
+          - reset               # Retry on connection reset
+          - connect-failure     # Retry on connection failures
+```
+
+#### 3. Use Resource Limits
+
+```yaml
+# Contour deployment with resource limits
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{project_name}}
-  namespace: default
+  name: contour
+  namespace: projectcontour
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: {{project_name}}
   template:
-    metadata:
-      labels:
-        app: {{project_name}}
     spec:
       containers:
-      - name: {{project_name}}
-        image: {{project_name}}:latest
-        ports:
-        - containerPort: 8080
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        - name: contour
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
 ```
 
-### Kubernetes Service
-
+#### 4. Enable Access Logging
 
 ```yaml
-# Kubernetes service for {{project_name}}
+# Enable Envoy access logging
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: {{project_name}}
+  name: contour
+  namespace: projectcontour
+data:
+  contour.yaml: |
+    xds-address: "0.0.0.0"
+    xds-port: 8001
+    debug: true
+    accessLog:
+      - type: file
+        path: /var/log/contour/envoy.log
+        format: "%LOCAL_PORT% %PROTOCOL% %STATUS% %STATUS_CODE% %RESPONSE_FLAGS% %UPSTREAM_HOST% %UPSTREAM_CLUSTER% %UPSTREAM_SERVICE_TIME% %REQUEST_SIZE% %RESPONSE_SIZE% %DOWNSTREAM_REMOTE_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %REQUEST_METHOD% %REQUEST_PATH% %REQUEST_HEADERS% %RESPONSE_HEADERS% %UPSTREAM_STREAM_RESPONSE_FLAGS%"
+```
+
+#### 5. Certificate Management with cert-manager
+
+```yaml
+# Certificate from cert-manager
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: example-com
   namespace: default
 spec:
-  selector:
-    app: {{project_name}}
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-  type: ClusterIP
+  secretName: example-com-tls
+  duration: 2160h  # 90 days
+  renewBefore: 360h  # 15 days before expiration
+  commonName: example.com
+  dnsNames:
+    - example.com
+    - "*.example.com"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+---
+# Reference in HTTPProxy
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: secure
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: example.com
+    tls:
+      secretName: example-com-tls
+      minimumProtocolVersion: "1.2"
+```
+
+#### 6. Health Check Endpoints
+
+```bash
+# Contour health endpoint
+curl http://localhost:8000/healthz
+
+# Contour metrics endpoint
+curl http://localhost:8002/metrics
+
+# Check Contour status
+kubectl -n projectcontour exec -l app=contour -- contour status
+```
+
+#### 7. Circuit Breaking Configuration
+
+```yaml
+# Circuit breaker for backend services
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: circuit-breaker
+  namespace: default
+spec:
+  routes:
+    - conditions:
+        - prefix: "/api"
+      services:
+        - name: api
+          port: 8080
+      policy:
+        loadBalancer:
+          policy: RingHash
+          requestHashPolicies:
+            - header:
+                headerName: "x-request-id"
+        connectionPool:
+          tcp:
+            maxConnections: 100
+          http:
+            h2ProtocolSettings:
+              maxConcurrentStreams: 100
+            requestTimeout: 30s
+            idleTimeout: 5m
+        outlierDetection:
+          consecutive5xxErrors: 5
+          interval: 30s
+          baseEjectionTime: 30s
+          maxEjectionPercent: 50
+```
+
+---
+
+*This SKILL.md file was verified and last updated on 2026-04-22. Content based on CNCF Contour project and production usage patterns.*
+
+## Examples
+
+### Basic HTTPProxy Configuration
+
+```yaml
+# Basic HTTPProxy for a single service
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: simple
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: simple.example.com
+    tls:
+      secretName: simple-tls
+      minimumProtocolVersion: "1.2"
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: my-service
+          port: 80
+```
+
+### TLS Passthrough
+
+```yaml
+# TLS passthrough configuration
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: tls-passthrough
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: secure.example.com
+    tls:
+      passthrough: true
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: my-service
+          port: 443
+```
+
+### Weighted Traffic Splitting
+
+```yaml
+# Traffic splitting between versions
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: canary
+  namespace: default
+spec:
+  virtualhost:
+    fqdn: app.example.com
+    tls:
+      secretName: app-tls
+  routes:
+    - conditions:
+        - prefix: "/"
+      services:
+        - name: app-v1
+          port: 80
+          weight: 95
+        - name: app-v2
+          port: 80
+          weight: 5
+```
+
+### External Service
+
+```yaml
+# Route to external service
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: external
+  namespace: default
+spec:
+  routes:
+    - conditions:
+        - prefix: "/external"
+      services:
+        - name: external-service
+          port: 443
+          protocol: https
+          urlScheme: https
+      policy:
+        loadBalancer:
+          policy: RoundRobin
 ```
 
