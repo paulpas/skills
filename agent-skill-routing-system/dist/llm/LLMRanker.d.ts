@@ -16,7 +16,13 @@ export interface LLMRankerConfig {
 export declare class LLMRanker {
     private config;
     private logger;
+    private rankingCache;
     constructor(config?: Partial<LLMRankerConfig>);
+    /**
+     * Deterministic hash key for a task + candidate set combination.
+     * Used to avoid redundant LLM calls for identical routing requests.
+     */
+    private hashKey;
     private defaultModel;
     rankCandidates(task: string, candidates: SkillDefinition[]): Promise<SelectedSkill[]>;
     private buildRankingPrompt;

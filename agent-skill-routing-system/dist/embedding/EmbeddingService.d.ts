@@ -21,6 +21,11 @@ export declare class EmbeddingService {
     private logger;
     constructor(config?: Partial<EmbeddingServiceConfig>);
     /**
+     * Load persisted embeddings from disk into the in-memory cache at startup.
+     * Prevents re-generating all embeddings after every Docker restart.
+     */
+    private loadCacheFromDisk;
+    /**
      * Generate embedding for a single text
      */
     generateEmbedding(text: string): Promise<EmbeddingResponse>;
