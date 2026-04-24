@@ -452,6 +452,12 @@ class SkillRegistry {
         await this.loadSkills();
     }
     /**
+     * Get the current number of skills in the registry.
+     */
+    getSkillCount() {
+        return this.skills.size;
+    }
+    /**
      * Get registry statistics
      */
     getStats() {

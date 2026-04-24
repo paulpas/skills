@@ -56,6 +56,8 @@ class AgentSkillRoutingApp {
         this.config = config;
     }
     config;
+    remoteIndexUrl = null;
+    remoteIndexSyncTimer = null;
     /**
      * Start the HTTP server immediately, then load skills in the background.
      * /health returns 200 right away; /route, /execute, /reload, /skills return
@@ -174,7 +176,11 @@ class AgentSkillRoutingApp {
                 return;
             }
             try {
-                if (this.githubLoader) {
+                if (this.remoteIndexUrl) {
+                    await this.router.getRegistry().loadFromRemoteIndex(this.remoteIndexUrl);
+                    this.router.syncVectorDatabase();
+                }
+                else if (this.githubLoader) {
                     await this.githubLoader.syncNow(async () => {
                         await this.router.reloadSkills();
                     });
@@ -309,6 +315,31 @@ class AgentSkillRoutingApp {
                 this.logger.info('[INDEX] Using remote index', { url: remoteIndexUrl });
                 await this.router.getRegistry().loadFromRemoteIndex(remoteIndexUrl);
                 this.router.syncVectorDatabase();
+                this.remoteIndexUrl = remoteIndexUrl;
+                // Start periodic remote index refresh so newly pushed skills are discovered
+                const syncIntervalMs = parseInt(process.env.SKILL_SYNC_INTERVAL || '3600', 10) * 1000;
+                this.remoteIndexSyncTimer = setInterval(async () => {
+                    try {
+                        this.logger.info('[INDEX] Periodic sync: re-fetching skills index', { url: remoteIndexUrl });
+                        const beforeCount = this.router.getRegistry().getSkillCount();
+                        await this.router.getRegistry().loadFromRemoteIndex(remoteIndexUrl);
+                        this.router.syncVectorDatabase();
+                        const afterCount = this.router.getRegistry().getSkillCount();
+                        const newSkills = afterCount - beforeCount;
+                        if (newSkills > 0) {
+                            this.logger.info('[INDEX] Periodic sync: discovered new skills', { newSkills, total: afterCount });
+                        }
+                        else {
+                            this.logger.debug('[INDEX] Periodic sync: no new skills', { total: afterCount });
+                        }
+                    }
+                    catch (err) {
+                        this.logger.warn('[INDEX] Periodic sync failed', {
+                            error: err instanceof Error ? err.message : String(err),
+                        });
+                    }
+                }, syncIntervalMs);
+                this.logger.info('[INDEX] Periodic remote index sync started', { intervalMs: syncIntervalMs });
             }
             catch (indexErr) {
                 // Remote index failed — fall back to local directory scan + optional git clone
@@ -355,6 +386,10 @@ class AgentSkillRoutingApp {
      * Stop the application
      */
     async stop() {
+        if (this.remoteIndexSyncTimer) {
+            clearInterval(this.remoteIndexSyncTimer);
+            this.remoteIndexSyncTimer = null;
+        }
         if (this.githubLoader) {
             this.githubLoader.stopSync();
         }

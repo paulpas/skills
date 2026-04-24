@@ -25,6 +25,8 @@ export declare class AgentSkillRoutingApp {
     private accessLog;
     constructor(config?: Partial<RouterConfig & MCPBridgeConfig>);
     private config;
+    private remoteIndexUrl;
+    private remoteIndexSyncTimer;
     /**
      * Start the HTTP server immediately, then load skills in the background.
      * /health returns 200 right away; /route, /execute, /reload, /skills return
