@@ -97,6 +97,10 @@ export declare class SkillRegistry {
      */
     reload(): Promise<void>;
     /**
+     * Get the current number of skills in the registry.
+     */
+    getSkillCount(): number;
+    /**
      * Get registry statistics
      */
     getStats(): {

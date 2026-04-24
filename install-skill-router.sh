@@ -643,7 +643,8 @@ echo -e "  ${BOLD}LLM Provider:${RESET} $LLM_PROVIDER ($_model_display)"
 echo -e "  ${BOLD}Embeddings:${RESET}   $EMBEDDING_PROVIDER"
 echo -e "  ${BOLD}Service:${RESET}      $SERVICE_STATUS"
 if [[ "$GITHUB_ENABLED" == "true" ]]; then
-  echo -e "  ${BOLD}GitHub Sync:${RESET}  enabled (https://github.com/paulpas/skills, every ${SYNC_INTERVAL}s)"
+  echo -e "  ${BOLD}GitHub Sync:${RESET}  enabled (https://github.com/paulpas/skills)"
+  echo -e "  ${BOLD}Sync Interval:${RESET} every ${SYNC_INTERVAL}s (new skills auto-discovered without restart)"
 else
   echo -e "  ${BOLD}GitHub Sync:${RESET}  disabled"
 fi

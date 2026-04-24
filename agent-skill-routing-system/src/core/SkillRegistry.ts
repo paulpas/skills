@@ -524,6 +524,13 @@ export class SkillRegistry {
   }
 
   /**
+   * Get the current number of skills in the registry.
+   */
+  getSkillCount(): number {
+    return this.skills.size;
+  }
+
+  /**
    * Get registry statistics
    */
   getStats(): {
