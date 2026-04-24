@@ -13,62 +13,26 @@ Production-grade agentic skill orchestration for OpenCode. Routes tasks to the r
 
 Every time OpenCode receives a task, the skill router automatically selects the most relevant skill and injects its full content into the AI's context. Here is the complete flow with real timing data:
 
-```
-User prompt in OpenCode
-        │
-        ▼ (automatic — OpenCode calls MCP tool)
-┌─────────────────────────────────┐
-│  skill-router-mcp.js            │  MCP stdio server on localhost
-│  tools: route_to_skill,         │  Registered in opencode.json
-│         list_skills             │  Logs → ~/.config/opencode/skill-router-mcp.log
-└──────────────┬──────────────────┘
-               │ POST /route {"task":"..."} (~1ms)
-               ▼
-┌─────────────────────────────────┐
-│  Fastify HTTP Server :3000      │  Docker container: skill-router
-│  → POST /route                  │  Logs → docker logs skill-router
-└──────────────┬──────────────────┘
-               │
-               ▼ Safety check (~1ms)
-┌─────────────────────────────────┐
-│  Safety Layer                   │  Prompt injection detection
-│                                 │  Schema validation
-└──────────────┬──────────────────┘
-               │
-               ▼ Generate task embedding (~400ms)
-┌─────────────────────────────────┐
-│  Embedding Service              │  text-embedding-3-small (OpenAI)
-│                                 │  or llama.cpp local embeddings
-└──────────────┬──────────────────┘
-               │
-               ▼ Cosine similarity search (~1ms)
-┌─────────────────────────────────┐
-│  Vector Database                │  In-memory cosine similarity
-│                                 │  Returns top-20 candidates
-└──────────────┬──────────────────┘
-               │ e.g. coding-security-review (0.508), coding-code-review (0.442)...
-               ▼ Re-rank with LLM (~3000ms)
-┌─────────────────────────────────┐
-│  LLM Ranker                     │  gpt-4o-mini / claude / local
-│                                 │  Scores 0.0–1.0 + reasoning
-│                                 │  Logs prompt + raw response
-└──────────────┬──────────────────┘
-               │ e.g. coding-security-review score=0.95, "Directly matches..."
-               ▼ Filter (score >= 0.5, max 5 skills)
-┌─────────────────────────────────┐
-│  Execution Planner              │  sequential / parallel / hybrid
-└──────────────┬──────────────────┘
-               │
-               ▼ (~1ms)
-┌─────────────────────────────────┐
-│  MCP wrapper reads SKILL.md     │  From /home/user/git/skills/<name>/SKILL.md
-│  Returns full content to        │  (direct disk read — no extra HTTP call)
-│  OpenCode                       │
-└──────────────┬──────────────────┘
-               │
-               ▼
-OpenCode AI follows the skill's
-guidelines, checklists, and patterns
+```mermaid
+flowchart TD
+    A([User prompt in OpenCode]) --> B
+
+    subgraph MCP["MCP Layer (localhost)"]
+        B["skill-router-mcp.js\ntools: route_to_skill, list_skills\nLogs → skill-router-mcp.log"]
+    end
+
+    B -->|"POST /route"| C
+
+    subgraph Docker["Docker: skill-router :3000"]
+        C["Fastify HTTP Server\nPOST /route"] --> D["Safety Layer\ninjection detection + schema validation"]
+        D --> E["Embedding Service\ntext-embedding-3-small\n~400ms"]
+        E --> F["Vector Database\ncosine similarity search\n→ top-20 candidates"]
+        F --> G["LLM Ranker\ngpt-4o-mini / claude / llama.cpp\n~3,000ms — scores 0.0–1.0"]
+        G --> H["Execution Planner\nsequential / parallel / hybrid"]
+    end
+
+    H -->|"top skill name"| I["MCP wrapper reads\n/home/user/git/skills/&lt;name&gt;/SKILL.md\n~1ms"]
+    I --> J([OpenCode AI follows\nskill guidelines & patterns])
 ```
 
 ### Typical Latency Breakdown
@@ -110,43 +74,15 @@ guidelines, checklists, and patterns
 
 ## Architecture
 
-```
-User Request (Task Description)
-        │
-        ▼
-┌───────────────────┐
-│   Safety Layer    │  Prompt injection detection, schema validation, allowlist
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│ Embedding Service │  text-embedding-3-small → task vector
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│  Vector Database  │  Cosine similarity search → top-K skills
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│   LLM Ranker      │  gpt-4o-mini ranks candidates, assigns confidence scores
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│ Execution Planner │  sequential / parallel / hybrid strategy
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│ Execution Engine  │  Runs skills via MCP tools, handles retries
-└───────────────────┘
-        │
-        ▼
-┌───────────────────┐
-│   MCP Bridge      │  shell · file · http · kubectl · log_fetch
-└───────────────────┘
+```mermaid
+flowchart TD
+    A[User Request] --> B[Safety Layer\ninjection detection · schema validation · allowlist]
+    B --> C[Embedding Service\ntext-embedding-3-small → task vector]
+    C --> D[Vector Database\ncosine similarity → top-K candidates]
+    D --> E[LLM Ranker\nranks candidates · assigns confidence scores]
+    E --> F[Execution Planner\nsequential / parallel / hybrid strategy]
+    F --> G[Execution Engine\nruns skills via MCP tools · handles retries]
+    G --> H[MCP Bridge\nshell · file · http · kubectl · log_fetch]
 ```
 
 ## Remote Skill Loading
