@@ -59,7 +59,7 @@ class SkillRegistry {
             };
             const skill = { metadata, sourceFile: entry.path, rawContent: '' };
             if (!this.skills.has(entry.name)) {
-                await this.addSkill(skill);
+                this.addSkill(skill);
             }
         }
         if (this.config.generateEmbeddings) {
@@ -170,7 +170,7 @@ class SkillRegistry {
                         if (skill) {
                             // Local-first: first directory wins on name collision
                             if (!this.skills.has(skill.metadata.name)) {
-                                await this.addSkill(skill);
+                                this.addSkill(skill);
                                 this.logger.debug(`Loaded skill: ${skill.metadata.name}`, {
                                     file,
                                     category: skill.metadata.category,
@@ -322,15 +322,10 @@ class SkillRegistry {
         return true;
     }
     /**
-     * Add a skill to the registry
+     * Add a skill to the registry (no embedding — caller must invoke generateMissingEmbeddings())
      */
-    async addSkill(skill) {
+    addSkill(skill) {
         const name = skill.metadata.name;
-        // Generate embedding if not present
-        if (this.config.generateEmbeddings && !skill.metadata.embedding) {
-            const embeddingData = await this.embeddingService.generateEmbedding(this.buildEmbeddingText(skill.metadata));
-            skill.metadata.embedding = embeddingData.embedding;
-        }
         this.skills.set(name, skill);
         // Update category index
         const category = skill.metadata.category;
@@ -390,9 +385,7 @@ class SkillRegistry {
                 const embeddings = await this.embeddingService.batchEmbeddings(texts, primaryDir);
                 embeddings.forEach((embedding, index) => {
                     const { skill } = batchSlice[index];
-                    if (skill.metadata.embedding) {
-                        skill.metadata.embedding = embedding.embedding;
-                    }
+                    skill.metadata.embedding = embedding.embedding;
                 });
             }
             catch (error) {
