@@ -11,8 +11,8 @@ metadata:
   output-format: code
   triggers: cloud infrastructure, paper commission model, paper-commission-model,
     simulation, structure
-  related-skills: trading-fundamentals-market-regimes, trading-paper-market-impact, trading-paper-realistic-simulation
-    trading-fundamentals-trading-edge, trading-fundamentals-trading-plan
+  related-skills: trading-fundamentals-market-regimes, trading-fundamentals-trading-plan,
+    trading-paper-market-impact
 ---
 
 **Role:** Cost Analysis Specialist — implements comprehensive fee models to accurately calculate trading costs including commissions, exchange fees, clearing fees, and tax lot tracking for realistic backtesting and performance attribution.

@@ -11,8 +11,8 @@ metadata:
   output-format: code
   triggers: backtest drawdown analysis, backtest-drawdown-analysis, maximum, recovery,
     value-at-risk
-  related-skills: trading-backtest-position-sizing, trading-fundamentals-risk-management-basics, trading-risk-position-sizing, trading-risk-stop-loss
-    trading-exchange-order-book-sync, trading-exchange-order-execution-api
+  related-skills: trading-backtest-position-sizing, trading-exchange-order-execution-api,
+    trading-fundamentals-risk-management-basics, trading-risk-position-sizing
 ---
 
 **Role:** Risk Analysis Specialist — implements comprehensive drawdown and risk metrics to evaluate strategy drawdown behavior, recovery characteristics, and tail risk exposure.

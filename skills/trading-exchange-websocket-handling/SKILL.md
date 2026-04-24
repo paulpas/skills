@@ -12,8 +12,7 @@ metadata:
   output-format: code
   triggers: exchange websocket handling, exchange-websocket-handling, market, real-time,
     websockets
-  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data, trading-data-backfill-strategy
-    trading-data-order-book
+  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data
 ---
 
 **Role:** Guide an AI coding assistant to build robust real-time data pipelines using WebSockets that handle connection instability, data synchronization, and high-frequency updates

@@ -11,8 +11,7 @@ metadata:
   output-format: code
   triggers: agents, ai reinforcement learning, ai-reinforcement-learning, automated,
     trading
-  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai, trading-technical-cycle-analysis
-    trading-technical-false-signal-filtering
+  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai
 ---
 
 **Role:** Design and implement RL agents that learn optimal trading strategies through interaction with market environments

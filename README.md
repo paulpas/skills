@@ -665,7 +665,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-04-24 17:43:46 UTC  
+> **Last updated:** 2026-04-24 17:45:56 UTC  
 > **Total skills:** 338
 
 ## Skills by Domain

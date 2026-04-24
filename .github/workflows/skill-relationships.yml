@@ -1,0 +1,217 @@
+name: Skill Relationships & Index Generation
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'skills/**/SKILL.md'
+      - 'scripts/**/*.py'
+      - 'agent-skill-routing-system/scripts/**/*.py'
+      - '.github/workflows/skill-relationships.yml'
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - 'skills/**/SKILL.md'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update all indexes and relationships'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: skill-relationships-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-and-update:
+    name: Validate Skills & Update Relationships
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Detect changed SKILL.md files
+        id: detect_changes
+        run: |
+          echo "Detecting changes in SKILL.md files..."
+          if git diff --quiet origin/${{ github.base_ref || 'main' }}...HEAD -- 'skills/**/SKILL.md' 2>/dev/null || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "skill_files_changed=true" >> $GITHUB_OUTPUT
+            echo "✅ SKILL.md files detected"
+          else
+            echo "skill_files_changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No SKILL.md changes detected"
+          fi
+
+      - name: Phase 1 - YAML Validation
+        id: validation
+        if: steps.detect_changes.outputs.skill_files_changed == 'true' || github.event.inputs.force_update == 'true'
+        run: |
+          echo "🔍 Running YAML validation..."
+          if [ -f "reformat_skills.py" ]; then
+            python reformat_skills.py 2>&1 | tee validation.log
+            if [ ${PIPESTATUS[0]} -ne 0 ]; then
+              echo "❌ YAML validation failed"
+              exit 1
+            fi
+            echo "✅ YAML validation passed"
+          fi
+
+      - name: Phase 2 - Generate Index
+        id: index_gen
+        if: steps.validation.outcome != 'failure'
+        run: |
+          echo "📑 Generating skills-index.json..."
+          if [ -f "generate_index.py" ]; then
+            python generate_index.py 2>&1 | tee index_gen.log
+            echo "✅ Index generated"
+          fi
+
+      - name: Phase 3 - Analyze Relationships
+        id: analyze
+        if: steps.validation.outcome != 'failure'
+        continue-on-error: true
+        run: |
+          echo "🔗 Analyzing skill relationships..."
+          if [ -f "agent-skill-routing-system/scripts/analyze_skill_relationships.py" ]; then
+            python agent-skill-routing-system/scripts/analyze_skill_relationships.py 2>&1 | tee analyze.log
+            echo "✅ Relationship analysis completed"
+          fi
+
+      - name: Phase 4 - Fix Relationships
+        id: fix_relationships
+        if: steps.validation.outcome != 'failure'
+        continue-on-error: true
+        run: |
+          echo "🔧 Fixing skill relationships..."
+          if [ -f "agent-skill-routing-system/scripts/fix_skill_relationships.py" ]; then
+            python agent-skill-routing-system/scripts/fix_skill_relationships.py 2>&1 | tee fix_relationships.log
+            echo "✅ Relationships fixed"
+          fi
+
+      - name: Phase 5 - Enforce Bidirectionality
+        id: bidirectional
+        if: steps.validation.outcome != 'failure'
+        continue-on-error: true
+        run: |
+          echo "🔀 Enforcing bidirectional relationships..."
+          if [ -f "agent-skill-routing-system/scripts/enforce_bidirectionality.py" ]; then
+            python agent-skill-routing-system/scripts/enforce_bidirectionality.py 2>&1 | tee bidirectional.log
+            echo "✅ Bidirectionality enforced"
+          fi
+
+      - name: Phase 6 - Enhance CNCF Relationships
+        id: cncf
+        if: steps.validation.outcome != 'failure'
+        continue-on-error: true
+        run: |
+          echo "☸️  Enhancing CNCF relationships..."
+          if [ -f "agent-skill-routing-system/scripts/enhance_cncf_relationships.py" ]; then
+            python agent-skill-routing-system/scripts/enhance_cncf_relationships.py 2>&1 | tee cncf.log
+            echo "✅ CNCF relationships enhanced"
+          fi
+
+      - name: Phase 7 - Generate README
+        id: readme
+        if: steps.validation.outcome != 'failure'
+        continue-on-error: true
+        run: |
+          echo "📚 Generating README with skill catalog..."
+          if [ -f "scripts/generate_readme.py" ]; then
+            python scripts/generate_readme.py 2>&1 | tee readme.log
+            echo "✅ README generated"
+          elif [ -f "generate_readme.py" ]; then
+            python generate_readme.py 2>&1 | tee readme.log
+            echo "✅ README generated"
+          fi
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No changes detected"
+          else
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "📝 Changes detected"
+            git diff --stat
+          fi
+
+      - name: Display summary of changes
+        if: steps.changes.outputs.changes_detected == 'true'
+        run: |
+          echo "## 📊 Skill Relationship Updates" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Files Modified:" >> $GITHUB_STEP_SUMMARY
+          git diff --name-only >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "SKILL_RELATIONSHIPS_ANALYSIS.md" ]; then
+            echo "### Relationship Analysis:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            head -50 SKILL_RELATIONSHIPS_ANALYSIS.md >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "[View full analysis](SKILL_RELATIONSHIPS_ANALYSIS.md)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Commit and push changes (if on main branch)
+        if: steps.changes.outputs.changes_detected == 'true' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add skills-index.json README.md SKILL_RELATIONSHIPS_ANALYSIS.md TRIGGER_ENHANCEMENTS.md 2>/dev/null || true
+          
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update skill relationships and indexes" -m "- Regenerated skills-index.json" -m "- Updated README with latest skill catalog" -m "- Recalculated skill relationships and bidirectionality" -m "- Analyzed and fixed skill relationship gaps" -m "[skip ci]" || echo "No changes to commit"
+            git push origin HEAD:${{ github.ref }} || echo "Push failed (may already be updated)"
+          else
+            echo "ℹ️  No changes to commit"
+          fi
+
+      - name: Fail on validation errors
+        if: steps.validation.outcome == 'failure'
+        run: |
+          echo "❌ YAML validation failed. Please fix SKILL.md files."
+          exit 1
+
+      - name: Create summary
+        run: |
+          {
+            echo "## ✅ Skill Automation Summary"
+            echo ""
+            echo "| Phase | Status |"
+            echo "|-------|--------|"
+            echo "| YAML Validation | ${{ steps.validation.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| Index Generation | ${{ steps.index_gen.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| Relationship Analysis | ${{ steps.analyze.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| Fix Relationships | ${{ steps.fix_relationships.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| Bidirectionality | ${{ steps.bidirectional.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| CNCF Enhancements | ${{ steps.cncf.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| README Generation | ${{ steps.readme.outcome == 'success' && '✅ Pass' || '⚠️ Skipped' }} |"
+            echo "| Changes Detected | ${{ steps.changes.outputs.changes_detected == 'true' && 'Yes' || 'No' }} |"
+          } >> $GITHUB_STEP_SUMMARY

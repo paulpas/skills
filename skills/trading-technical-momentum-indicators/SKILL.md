@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: analysis, oscillators, stochastic, technical momentum indicators, technical-momentum-indicators
-  related-skills: trading-technical-cycle-analysis, trading-technical-false-signal-filtering
-    trading-fundamentals-trading-edge, trading-fundamentals-trading-plan
+  related-skills: trading-fundamentals-trading-plan, trading-technical-cycle-analysis
 ---
 
 **Role:** Measure the speed and strength of price movement for timing entries and exits

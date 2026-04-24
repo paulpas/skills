@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: actionable, ai feature engineering, ai-feature-engineering, create, trading
-  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai, trading-technical-cycle-analysis
-    trading-technical-false-signal-filtering
+  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai
 ---
 
 **Role:** Transform price and volume data into predictive features for machine learning models

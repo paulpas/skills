@@ -11,8 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: breaker, circuit, exchange rate limiting, exchange-rate-limiting, strategies
-  related-skills: trading-exchange-order-book-sync, trading-exchange-order-execution-api
-    trading-technical-cycle-analysis, trading-technical-false-signal-filtering
+  related-skills: trading-exchange-order-book-sync, trading-technical-false-signal-filtering
 ---
 
 **Role:** Backend System Architect — designs robust API integration patterns that respect exchange rate limits while maximizing throughput and resilience.

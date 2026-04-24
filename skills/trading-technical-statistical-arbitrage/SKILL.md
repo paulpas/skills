@@ -11,8 +11,7 @@ metadata:
   output-format: code
   triggers: cointegration-based, strategies, technical statistical arbitrage, technical-statistical-arbitrage,
     trading
-  related-skills: trading-technical-cycle-analysis, trading-technical-false-signal-filtering
-    trading-fundamentals-trading-edge, trading-fundamentals-trading-plan
+  related-skills: trading-fundamentals-trading-plan, trading-technical-cycle-analysis
 ---
 
 **Role:** Identify and trade mean-reverting relationships between securities

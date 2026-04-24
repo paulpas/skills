@@ -11,8 +11,7 @@ metadata:
   output-format: code
   triggers: data stream processing, data-stream-processing, real-time, streaming,
     trading
-  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data, trading-data-backfill-strategy
-    trading-data-order-book
+  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data
 ---
 
 **Role:** Process streaming data with low latency for real-time trading decisions

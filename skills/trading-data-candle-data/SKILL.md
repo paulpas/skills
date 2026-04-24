@@ -11,8 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: data candle data, data-candle-data, ohlcv, processing, timeframe
-  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data, trading-data-backfill-strategy
-    trading-data-order-book
+  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data
 ---
 
 # Candle Data Pipeline: The 5 Laws of Financial Time Series
