@@ -42,6 +42,8 @@ class SkillRegistry {
             : [this.config.skillsDirectory];
         this.logger.info('Loading skills from directories', { directories: dirs });
         for (const dir of dirs) {
+            let successCount = 0;
+            let errorCount = 0;
             try {
                 const pattern = path_1.default.join(dir, '**/SKILL.md');
                 const files = await (0, glob_1.glob)(pattern);
@@ -53,13 +55,23 @@ class SkillRegistry {
                             // Local-first: first directory wins on name collision
                             if (!this.skills.has(skill.metadata.name)) {
                                 await this.addSkill(skill);
+                                this.logger.debug(`Loaded skill: ${skill.metadata.name}`, {
+                                    file,
+                                    category: skill.metadata.category,
+                                    tags: skill.metadata.tags,
+                                });
+                                successCount++;
                             }
                             else {
                                 this.logger.debug(`Skipping duplicate skill from remote: ${skill.metadata.name}`);
                             }
                         }
+                        else {
+                            errorCount++;
+                        }
                     }
                     catch (error) {
+                        errorCount++;
                         this.logger.error(`Failed to load skill from ${file}`, {
                             error: error instanceof Error ? error.message : String(error),
                         });
@@ -71,6 +83,7 @@ class SkillRegistry {
                     error: error instanceof Error ? error.message : String(error),
                 });
             }
+            this.logger.info(`Loaded ${successCount} skills from ${dir}`, { dir, successCount, errorCount });
         }
         if (this.config.generateEmbeddings) {
             await this.generateMissingEmbeddings();

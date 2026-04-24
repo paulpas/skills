@@ -82,7 +82,6 @@ export class Router {
 
     this.logger = new Logger('Router', {
       level: config.observability?.level || 'info',
-      includePayloads: config.observability?.includePayloads ?? false,
     });
   }
 
@@ -141,6 +140,15 @@ export class Router {
       20
     );
 
+    this.logger.info('Vector search candidates', {
+      taskId,
+      candidateCount: candidates.length,
+      topCandidates: candidates.slice(0, 5).map(c => ({
+        name: c.skill.metadata.name,
+        similarity: (c as any).score ?? (c as any).similarity ?? null,
+      })),
+    });
+
     this.logger.debug('Found candidate skills', {
       taskId,
       candidateCount: candidates.length,
@@ -157,6 +165,17 @@ export class Router {
       rankedSkills,
       request.constraints
     );
+
+    this.logger.info('Selected skills for request', {
+      taskId,
+      task: request.task.slice(0, 100),
+      selectedSkills: filteredSkills.map(s => ({
+        name: s.name,
+        score: s.score,
+        role: s.role,
+        reasoning: s.reasoning?.slice(0, 100),
+      })),
+    });
 
     this.logger.debug('Filtered skills', {
       taskId,
