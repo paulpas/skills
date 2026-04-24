@@ -1,5 +1,20 @@
 [
   {
+    "name": "agent-add-new-skill",
+    "description": "Step-by-step guide for adding a new skill to the paulpas/skills repository: frontmatter spec, content structure, index update, and push workflow.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "add skill",
+      "new skill",
+      "create skill",
+      "skill authoring",
+      "skill template",
+      "contribute skill"
+    ],
+    "path": "skills/agent-add-new-skill/SKILL.md"
+  },
+  {
     "name": "agent-autoscaling-advisor",
     "description": "Advisors on optimal auto-scaling configurations for distributed systems to balance cost and availability.",
     "domain": "agent",
