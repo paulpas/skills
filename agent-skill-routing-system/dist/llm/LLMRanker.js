@@ -14,8 +14,8 @@ class LLMRanker {
             anthropicApiKey: config.anthropicApiKey || process.env.ANTHROPIC_API_KEY || '',
             llamacppBaseUrl: config.llamacppBaseUrl || process.env.LLAMACPP_BASE_URL || 'http://localhost:8080',
             model: config.model || process.env.LLM_MODEL || this.defaultModel(provider),
-            temperature: config.temperature ?? 0.1,
-            maxTokens: config.maxTokens ?? 1000,
+            temperature: config.temperature ?? 0,
+            maxTokens: config.maxTokens ?? 400,
             maxCandidates: config.maxCandidates ?? 10,
         };
         this.logger = new Logger_js_1.Logger('LLMRanker');
@@ -65,28 +65,28 @@ class LLMRanker {
         }));
     }
     buildRankingPrompt(task, candidates) {
-        const candidatesInfo = candidates
-            .map((c, i) => `${i + 1}. ${c.metadata.name}\n   Category: ${c.metadata.category}\n   Description: ${c.metadata.description}\n   Tags: ${c.metadata.tags.join(', ')}`)
-            .join('\n\n');
-        return `You are a skill router for an agentic coding system. Given a task, rank the most appropriate skills.
+        const candidateLines = candidates
+            .map((c, i) => `${i + 1}. ${c.metadata.name}: ${c.metadata.description}`)
+            .join('\n');
+        return `Task: "${task}"
 
-Task: ${task}
+Candidate skills:
+${candidateLines}
 
-Available Skills:
-${candidatesInfo}
+Rank these skills by relevance to the task.
 
-Instructions:
-1. Rank skills from most to least relevant
-2. Assign a relevance score (0.0-1.0)
-3. Provide a brief reason for each ranking
-4. Only include skills with score >= 0.5
-
-Output format (JSON only, no extra text):
+Return ONLY this JSON (no prose, no markdown, no explanation):
 {
   "rankings": [
-    {"skillName": "skill-name", "score": 0.95, "reason": "Brief reason"}
+    {"skillName": "<name>", "score": 0.0, "reason": "<10 words max>"}
   ]
-}`;
+}
+
+Rules:
+- score 0.0-1.0 (1.0 = perfect match)
+- reason must be 10 words or fewer
+- include only skills with score >= 0.3
+- order by score descending`;
     }
     async callLLM(prompt) {
         try {
@@ -119,7 +119,7 @@ Output format (JSON only, no extra text):
             body: JSON.stringify({
                 model: this.config.model,
                 messages: [
-                    { role: 'system', content: 'You are a precise skill router. Always output valid JSON.' },
+                    { role: 'system', content: 'You are a skill-routing classifier. Respond ONLY with valid JSON. No explanation, no markdown, no preamble. Output nothing except the JSON object requested.' },
                     { role: 'user', content: prompt },
                 ],
                 temperature: this.config.temperature,
@@ -145,7 +145,7 @@ Output format (JSON only, no extra text):
             body: JSON.stringify({
                 model: this.config.model,
                 max_tokens: this.config.maxTokens,
-                system: 'You are a precise skill router. Always output valid JSON.',
+                system: 'You are a skill-routing classifier. Respond ONLY with valid JSON. No explanation, no markdown, no preamble. Output nothing except the JSON object requested.',
                 messages: [{ role: 'user', content: prompt }],
             }),
         });
