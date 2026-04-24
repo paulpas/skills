@@ -72,12 +72,12 @@ class EmbeddingService {
         // Check cache first
         const cached = this.cache.get(text);
         if (cached) {
-            this.logger.info('[CACHE HIT] embedding (memory)', {
+            this.logger.debug('[CACHE HIT] embedding (memory)', {
                 textPreview: text.slice(0, 60),
             });
             return cached;
         }
-        this.logger.info('[CACHE MISS] embedding → API call', {
+        this.logger.debug('[CACHE MISS] embedding → API call', {
             provider: this.config.provider,
             textPreview: text.slice(0, 60),
         });
@@ -121,10 +121,10 @@ class EmbeddingService {
         }
         if (results.length > 0 || uncachedTexts.length > 0) {
             const hits = batch.length - uncachedTexts.length;
-            this.logger.info('[CACHE] batch embedding check', {
+            this.logger.info('[CACHE] batch embeddings', {
                 total: batch.length,
-                memoryHits: hits,
-                apiCalls: uncachedTexts.length,
+                hits,
+                misses: uncachedTexts.length,
             });
         }
         // Generate embeddings for uncached texts

@@ -61,7 +61,7 @@ export declare class SkillRegistry {
      */
     private isValidSkillMetadata;
     /**
-     * Add a skill to the registry
+     * Add a skill to the registry (no embedding — caller must invoke generateMissingEmbeddings())
      */
     private addSkill;
     /**
