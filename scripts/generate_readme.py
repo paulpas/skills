@@ -193,7 +193,7 @@ def read_all_skills(skills_root: Path) -> List[Dict]:
 
 
 def generate_skills_by_domain(skills: List[Dict]) -> str:
-    """Generate Skills by Domain section."""
+    """Generate Skills by Domain section as tables."""
     # Group by domain
     by_domain = {}
     for skill in skills:
@@ -210,20 +210,31 @@ def generate_skills_by_domain(skills: List[Dict]) -> str:
         skill_count = len(domain_skills)
 
         lines.append(f"\n### {domain.capitalize()} ({skill_count} skills)\n")
+        lines.append("| Skill Name | Description | Triggers |")
+        lines.append("|---|---|---|")
+
         for skill in domain_skills:
             skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
-            lines.append(
-                f"- {skill_link} — {skill['description'][:80]}..."
-                if len(skill["description"]) > 80
-                else f"- {skill_link} — {skill['description']}"
-            )
+
+            # Truncate description to ~60 chars
+            desc = skill["description"]
+            if len(desc) > 60:
+                desc = desc[:57] + "..."
+
+            # Show top 2-3 triggers
+            triggers = ", ".join(skill["trigger_list"][:2])
+            if len(skill["trigger_list"]) > 2:
+                triggers += "..."
+
+            lines.append(f"| {skill_link} | {desc} | {triggers} |")
+
         lines.append("")
 
     return "\n".join(lines)
 
 
 def generate_skills_by_role(skills: List[Dict]) -> str:
-    """Generate Skills by Role section."""
+    """Generate Skills by Role section as tables."""
     # Group by role
     by_role = {}
     for skill in skills:
@@ -253,13 +264,20 @@ def generate_skills_by_role(skills: List[Dict]) -> str:
         lines.append(
             f"\n### {role_display.get(role, role.capitalize())} ({skill_count} skills)\n"
         )
+        lines.append("| Skill Name | Domain | Description |")
+        lines.append("|---|---|---|")
+
         for skill in role_skills:
             skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
-            lines.append(
-                f"- {skill_link} — {skill['description'][:80]}..."
-                if len(skill["description"]) > 80
-                else f"- {skill_link} — {skill['description']}"
-            )
+            domain = skill["domain"].capitalize()
+
+            # Truncate description to ~60 chars
+            desc = skill["description"]
+            if len(desc) > 60:
+                desc = desc[:57] + "..."
+
+            lines.append(f"| {skill_link} | {domain} | {desc} |")
+
         lines.append("")
 
     return "\n".join(lines)
