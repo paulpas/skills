@@ -1,4 +1,5 @@
 import type { RouteRequest, RouteResponse } from '../core/types.js';
+import { SkillRegistry } from '../core/SkillRegistry.js';
 /**
  * Configuration for the Router
  */
@@ -73,5 +74,15 @@ export declare class Router {
      * Get all loaded skill definitions (delegates to registry)
      */
     getAllSkills(): import("../core/types.js").SkillDefinition[];
+    /**
+     * Expose the registry so HTTP endpoints can call on-demand methods
+     * (e.g. getSkillContent, loadFromRemoteIndex).
+     */
+    getRegistry(): SkillRegistry;
+    /**
+     * Sync the vector database from the current registry state.
+     * Call after loadFromRemoteIndex() to ensure semantic search reflects the index.
+     */
+    syncVectorDatabase(): void;
 }
 //# sourceMappingURL=Router.d.ts.map

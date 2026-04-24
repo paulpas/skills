@@ -302,4 +302,21 @@ export class Router {
   getAllSkills() {
     return this.skillRegistry.getAllSkills();
   }
+
+  /**
+   * Expose the registry so HTTP endpoints can call on-demand methods
+   * (e.g. getSkillContent, loadFromRemoteIndex).
+   */
+  getRegistry(): SkillRegistry {
+    return this.skillRegistry;
+  }
+
+  /**
+   * Sync the vector database from the current registry state.
+   * Call after loadFromRemoteIndex() to ensure semantic search reflects the index.
+   */
+  syncVectorDatabase(): void {
+    this.vectorDatabase.setSkills(this.skillRegistry.getAllSkills());
+    this.logger.info('Vector database synced', { skillCount: this.skillRegistry.getAllSkills().length });
+  }
 }

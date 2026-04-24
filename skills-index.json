@@ -1,0 +1,2951 @@
+[
+  {
+    "name": "agent-autoscaling-advisor",
+    "description": "Advisors on optimal auto-scaling configurations for distributed systems to balance cost and availability.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "autoscaling advisor",
+      "autoscaling-advisor",
+      "scaling policies",
+      "scale-out",
+      "scale-in"
+    ],
+    "path": "skills/agent-autoscaling-advisor/SKILL.md"
+  },
+  {
+    "name": "agent-ci-cd-pipeline-analyzer",
+    "description": "Analyzes CI/CD pipelines for optimization opportunities, identifying bottlenecks and improving build throughput.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "ci-cd analyzer",
+      "ci-cd-pipeline-analyzer",
+      "pipeline optimization",
+      "build bottlenecks",
+      "ci-cd analysis"
+    ],
+    "path": "skills/agent-ci-cd-pipeline-analyzer/SKILL.md"
+  },
+  {
+    "name": "agent-code-correctness-verifier",
+    "description": "Verifies code correctness by analyzing syntax, semantics, and type consistency across all code artifacts in the codebase.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "code correctness verifier",
+      "code-correctness-verifier",
+      "verifies",
+      "syntax",
+      "semantics",
+      "types"
+    ],
+    "path": "skills/agent-code-correctness-verifier/SKILL.md"
+  },
+  {
+    "name": "agent-confidence-based-selector",
+    "description": "Selects and executes the most appropriate skill based on confidence scores and relevance metrics, enabling intelligent skill routing for dynamic task resolution.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "confidence based selector",
+      "confidence-based-selector",
+      "selects",
+      "executes",
+      "appropriate"
+    ],
+    "path": "skills/agent-confidence-based-selector/SKILL.md"
+  },
+  {
+    "name": "agent-container-inspector",
+    "description": "Inspects container configurations, runtime state, logs, and system resources for debugging and security analysis.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "container inspector",
+      "container-inspector",
+      "inspects",
+      "container",
+      "runtime"
+    ],
+    "path": "skills/agent-container-inspector/SKILL.md"
+  },
+  {
+    "name": "agent-dependency-graph-builder",
+    "description": "Builds and maintains dependency graphs for task execution, enabling visualization of task relationships, identification of bottlenecks, and optimization of execution order.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "dependency graph builder",
+      "dependency-graph-builder",
+      "builds",
+      "maintains",
+      "graphs"
+    ],
+    "path": "skills/agent-dependency-graph-builder/SKILL.md"
+  },
+  {
+    "name": "agent-diff-quality-analyzer",
+    "description": "Analyzes code quality changes in diffs by evaluating syntactic, semantic, and architectural impact of modifications.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "diff quality analyzer",
+      "diff-quality-analyzer",
+      "analyzes",
+      "diffs",
+      "code quality"
+    ],
+    "path": "skills/agent-diff-quality-analyzer/SKILL.md"
+  },
+  {
+    "name": "agent-dynamic-replanner",
+    "description": "Dynamically adjusts execution plans based on real-time feedback, changing conditions, and emerging information, enabling adaptive problem solving in uncertain environments.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "dynamic replanner",
+      "dynamic-replanner",
+      "dynamically",
+      "adjusts",
+      "execution"
+    ],
+    "path": "skills/agent-dynamic-replanner/SKILL.md"
+  },
+  {
+    "name": "agent-error-trace-explainer",
+    "description": "Explains error traces and exceptions by analyzing stack traces, error messages, and context to provide human-understandable error explanations.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "error trace explainer",
+      "error-trace-explainer",
+      "explains",
+      "traces",
+      "exceptions",
+      "errors"
+    ],
+    "path": "skills/agent-error-trace-explainer/SKILL.md"
+  },
+  {
+    "name": "agent-failure-mode-analysis",
+    "description": "Performs failure mode analysis by identifying potential failure points in agent systems, assessing failure impact, and generating mitigation strategies.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "failure mode analysis",
+      "failure-mode-analysis",
+      "analyzes",
+      "failures",
+      "risk",
+      "mitigation"
+    ],
+    "path": "skills/agent-failure-mode-analysis/SKILL.md"
+  },
+  {
+    "name": "agent-goal-to-milestones",
+    "description": "Translates high-level goals into actionable milestones and tasks that can be executed by specialized skills, enabling goal-directed problem solving with measurable progress tracking.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "goal to milestones",
+      "goal-to-milestones",
+      "translates",
+      "high-level",
+      "goals"
+    ],
+    "path": "skills/agent-goal-to-milestones/SKILL.md"
+  },
+  {
+    "name": "agent-hot-path-detector",
+    "description": "Identifies critical execution paths (hot paths) in code that impact most performance, reliability, and resource usage.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "hot path detector",
+      "hot-path-detector",
+      "identifies",
+      "critical",
+      "execution"
+    ],
+    "path": "skills/agent-hot-path-detector/SKILL.md"
+  },
+  {
+    "name": "agent-infra-drift-detector",
+    "description": "Detects and reports infrastructure drift between desired state and actual cloud infrastructure configuration.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "infra drift",
+      "infra-drift-detector",
+      "drift detection",
+      "infrastructure drift"
+    ],
+    "path": "skills/agent-infra-drift-detector/SKILL.md"
+  },
+  {
+    "name": "agent-k8s-debugger",
+    "description": "Diagnoses Kubernetes cluster issues, debug pods, deployments, and cluster components using structured debugging workflows.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "k8s debugger",
+      "kubernetes-debugger",
+      "k8s-debugger",
+      "diagnoses",
+      "kubernetes"
+    ],
+    "path": "skills/agent-k8s-debugger/SKILL.md"
+  },
+  {
+    "name": "agent-memory-usage-analyzer",
+    "description": "Analyzes memory allocation patterns, identifies memory leaks, and provides optimization guidance for memory-efficient code.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "memory usage analyzer",
+      "memory-usage-analyzer",
+      "analyzes",
+      "memory",
+      "leaks"
+    ],
+    "path": "skills/agent-memory-usage-analyzer/SKILL.md"
+  },
+  {
+    "name": "agent-multi-skill-executor",
+    "description": "Orchestrates execution of multiple skill specifications in sequence, managing skill dependencies, result aggregation, and error recovery for complex multi-step operations.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "multi skill executor",
+      "multi-skill-executor",
+      "orchestrates",
+      "execution",
+      "multiple"
+    ],
+    "path": "skills/agent-multi-skill-executor/SKILL.md"
+  },
+  {
+    "name": "agent-network-diagnostics",
+    "description": "Diagnoses network connectivity issues, identifies bottlenecks, and provides actionable resolution strategies for distributed systems.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "network diagnostics",
+      "network-diagnostics",
+      "connectivity issues",
+      "bottlenecks",
+      "network analysis"
+    ],
+    "path": "skills/agent-network-diagnostics/SKILL.md"
+  },
+  {
+    "name": "agent-parallel-skill-runner",
+    "description": "Executes multiple skill specifications concurrently, managing parallel workers, synchronization, and result collection for performance-optimized multi-skill operations.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "parallel skill runner",
+      "parallel-skill-runner",
+      "executes",
+      "multiple",
+      "specifications"
+    ],
+    "path": "skills/agent-parallel-skill-runner/SKILL.md"
+  },
+  {
+    "name": "agent-performance-profiler",
+    "description": "Profiles code execution to identify performance bottlenecks and optimization opportunities across systems.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "performance profiler",
+      "performance-profiler",
+      "profiles",
+      "bottlenecks",
+      "optimization"
+    ],
+    "path": "skills/agent-performance-profiler/SKILL.md"
+  },
+  {
+    "name": "agent-query-optimizer",
+    "description": "Analyzes and optimizes database queries for performance, identifying bottlenecks and generating optimization recommendations.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "query optimizer",
+      "query-optimizer",
+      "query optimization",
+      "SQL optimization",
+      "database optimization"
+    ],
+    "path": "skills/agent-query-optimizer/SKILL.md"
+  },
+  {
+    "name": "agent-regression-detector",
+    "description": "Detects performance and behavioral regressions by comparing agent execution before and after code changes, identifying performance degradation and behavioral changes.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "regression detector",
+      "regression-detector",
+      "detects",
+      "performance",
+      "behavioral",
+      "regressions"
+    ],
+    "path": "skills/agent-regression-detector/SKILL.md"
+  },
+  {
+    "name": "agent-resource-optimizer",
+    "description": "Optimizes resource allocation across distributed systems to minimize costs while maintaining performance SLAs.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "resource optimizer",
+      "resource-optimizer",
+      "cost optimization",
+      "resource allocation"
+    ],
+    "path": "skills/agent-resource-optimizer/SKILL.md"
+  },
+  {
+    "name": "agent-runtime-log-analyzer",
+    "description": "Analyzes runtime logs from agent execution to identify patterns, detect anomalies, and extract actionable insights for system optimization.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "runtime log analyzer",
+      "runtime-log-analyzer",
+      "analyzes",
+      "logs",
+      "runtime",
+      "patterns"
+    ],
+    "path": "skills/agent-runtime-log-analyzer/SKILL.md"
+  },
+  {
+    "name": "agent-schema-inference-engine",
+    "description": "Inferences data schemas from actual data samples, generatingtyped data structures and validation rules for data pipelines.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "schema inference",
+      "schema-inference-engine",
+      "schema discovery",
+      "data schema"
+    ],
+    "path": "skills/agent-schema-inference-engine/SKILL.md"
+  },
+  {
+    "name": "agent-self-critique-engine",
+    "description": "Enables autonomous agents to self-critique their work by evaluating output quality, correctness, and compliance with requirements, enabling iterative improvement without external feedback.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "self critique engine",
+      "self-critique-engine",
+      "self-critiques",
+      "evaluates",
+      "quality",
+      "correctness"
+    ],
+    "path": "skills/agent-self-critique-engine/SKILL.md"
+  },
+  {
+    "name": "agent-stacktrace-root-cause",
+    "description": "Performs stacktrace root cause analysis by examining stack frames, identifying failure chains, and determining the underlying cause of errors and exceptions.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "stacktrace root cause",
+      "stacktrace-root-cause",
+      "analyzes",
+      "stacktraces",
+      "root cause",
+      "failures"
+    ],
+    "path": "skills/agent-stacktrace-root-cause/SKILL.md"
+  },
+  {
+    "name": "agent-task-decomposition-engine",
+    "description": "Decomposes complex tasks into smaller, manageable subtasks that can be executed by appropriate specialized skills, enabling problem-solving for complex multi-step operations.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "task decomposition engine",
+      "task-decomposition-engine",
+      "decomposes",
+      "complex",
+      "tasks"
+    ],
+    "path": "skills/agent-task-decomposition-engine/SKILL.md"
+  },
+  {
+    "name": "agent-test-oracle-generator",
+    "description": "Generates test oracles and expected outputs for testing code by analyzing specifications, requirements, and implementation intent to create accurate, comprehensive test validation data.",
+    "domain": "agent",
+    "tags": [
+      "agent",
+      "test oracle",
+      "test-oracle",
+      "test validation",
+      "expected output",
+      "test validation"
+    ],
+    "path": "skills/agent-test-oracle-generator/SKILL.md"
+  },
+  {
+    "name": "cncf-architecture-best-practices",
+    "description": "Cloud Native Computing Foundation (CNCF) architecture best practices for production-grade Kubernetes deployments. Covers service mesh, CNI, GitOps, CI/CD, observability, security, networking, and scaling patterns across the CNCF landscape.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "architecture best practices",
+      "architecture-best-practices",
+      "cloud",
+      "native",
+      "computing"
+    ],
+    "path": "skills/cncf-architecture-best-practices/SKILL.md"
+  },
+  {
+    "name": "cncf-argo",
+    "description": "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD, and Governance",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "argo",
+      "cloud-native",
+      "engineering",
+      "kubernetes-native"
+    ],
+    "path": "skills/cncf-argo/SKILL.md"
+  },
+  {
+    "name": "cncf-artifact-hub",
+    "description": "Artifact Hub in Cloud-Native Engineering - Repository for Kubernetes Helm, Falco, OPA, and more",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "artifact hub",
+      "artifact-hub",
+      "cloud-native",
+      "engineering",
+      "repository"
+    ],
+    "path": "skills/cncf-artifact-hub/SKILL.md"
+  },
+  {
+    "name": "cncf-backstage",
+    "description": "Backstage in Cloud-Native Engineering - Developer Portal for Microservices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "backstage",
+      "cloud-native",
+      "engineering",
+      "developer"
+    ],
+    "path": "skills/cncf-backstage/SKILL.md"
+  },
+  {
+    "name": "cncf-buildpacks",
+    "description": "Buildpacks in Cloud-Native Engineering - Turn source code into container images without Dockerfiles",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "buildpacks",
+      "cloud-native",
+      "engineering",
+      "source"
+    ],
+    "path": "skills/cncf-buildpacks/SKILL.md"
+  },
+  {
+    "name": "cncf-calico",
+    "description": "Calico in Cloud Native Security - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "calico",
+      "cloud",
+      "native",
+      "security"
+    ],
+    "path": "skills/cncf-calico/SKILL.md"
+  },
+  {
+    "name": "cncf-cert-manager",
+    "description": "cert-manager in Cloud-Native Engineering - Certificate Management for Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cert manager",
+      "cert-manager",
+      "cert-manager",
+      "cloud-native",
+      "engineering"
+    ],
+    "path": "skills/cncf-cert-manager/SKILL.md"
+  },
+  {
+    "name": "cncf-chaosmesh",
+    "description": "Chaos Mesh in Cloud-Native Engineering -\u6df7\u6c8c\u5de5\u7a0b\u5e73\u53f0 for Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "chaosmesh",
+      "chaos",
+      "cloud-native",
+      "engineering"
+    ],
+    "path": "skills/cncf-chaosmesh/SKILL.md"
+  },
+  {
+    "name": "cncf-cilium",
+    "description": "Cilium in Cloud Native Network - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cilium",
+      "cloud",
+      "native",
+      "network"
+    ],
+    "path": "skills/cncf-cilium/SKILL.md"
+  },
+  {
+    "name": "cncf-cloud-custodian",
+    "description": "Cloud Custodian in Cloud-Native Engineering -/rules engine for cloud infrastructure management",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cloud custodian",
+      "cloud-custodian",
+      "cloud-native",
+      "engineering",
+      "rules"
+    ],
+    "path": "skills/cncf-cloud-custodian/SKILL.md"
+  },
+  {
+    "name": "cncf-cloudevents",
+    "description": "CloudEvents in Streaming & Messaging - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cloudevents",
+      "streaming",
+      "messaging",
+      "cloud"
+    ],
+    "path": "skills/cncf-cloudevents/SKILL.md"
+  },
+  {
+    "name": "cncf-cni",
+    "description": "Cni in Cloud-Native Engineering - Container Network Interface - networking for Linux containers",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cni",
+      "cloud-native",
+      "engineering",
+      "container"
+    ],
+    "path": "skills/cncf-cni/SKILL.md"
+  },
+  {
+    "name": "cncf-container-network-interface-cni",
+    "description": "Container Network Interface in Cloud Native Network - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "container network interface cni",
+      "container-network-interface-cni",
+      "cloud",
+      "native",
+      "architecture"
+    ],
+    "path": "skills/cncf-container-network-interface-cni/SKILL.md"
+  },
+  {
+    "name": "cncf-containerd",
+    "description": "Containerd in Cloud-Native Engineering - An open and reliable container runtime",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "containerd",
+      "cloud-native",
+      "engineering",
+      "reliable"
+    ],
+    "path": "skills/cncf-containerd/SKILL.md"
+  },
+  {
+    "name": "cncf-contour",
+    "description": "Contour in Service Proxy - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "contour",
+      "service",
+      "proxy",
+      "cloud"
+    ],
+    "path": "skills/cncf-contour/SKILL.md"
+  },
+  {
+    "name": "cncf-coredns",
+    "description": "Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains plugins",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "coredns",
+      "cloud-native",
+      "engineering",
+      "server"
+    ],
+    "path": "skills/cncf-coredns/SKILL.md"
+  },
+  {
+    "name": "cncf-cortex",
+    "description": "Cortex in Monitoring & Observability - distributed, horizontally scalable Prometheus system",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cortex",
+      "monitoring",
+      "observability",
+      "distributed"
+    ],
+    "path": "skills/cncf-cortex/SKILL.md"
+  },
+  {
+    "name": "cncf-cri-o",
+    "description": "CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cri o",
+      "cri-o",
+      "cri-o",
+      "container",
+      "runtime"
+    ],
+    "path": "skills/cncf-cri-o/SKILL.md"
+  },
+  {
+    "name": "cncf-crossplane",
+    "description": "Crossplane in Platform Engineering - Kubernetes-native control plane for multi-cloud infrastructure",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "crossplane",
+      "platform",
+      "engineering",
+      "kubernetes-native"
+    ],
+    "path": "skills/cncf-crossplane/SKILL.md"
+  },
+  {
+    "name": "cncf-cubefs",
+    "description": "CubeFS in Storage - distributed, high-performance file system",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "cubefs",
+      "storage",
+      "distributed",
+      "high-performance"
+    ],
+    "path": "skills/cncf-cubefs/SKILL.md"
+  },
+  {
+    "name": "cncf-dapr",
+    "description": "Dapr in Cloud-Native Engineering - distributed application runtime",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "dapr",
+      "cloud-native",
+      "engineering",
+      "distributed"
+    ],
+    "path": "skills/cncf-dapr/SKILL.md"
+  },
+  {
+    "name": "cncf-dragonfly",
+    "description": "Dragonfly in Cloud-Native Engineering - P2P file distribution",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "dragonfly",
+      "cloud-native",
+      "engineering",
+      "distribution"
+    ],
+    "path": "skills/cncf-dragonfly/SKILL.md"
+  },
+  {
+    "name": "cncf-emissary-ingress",
+    "description": "Emissary-Ingress in Cloud-Native Engineering - Kubernetes ingress controller",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "emissary ingress",
+      "emissary-ingress",
+      "emissary-ingress",
+      "cloud-native",
+      "engineering"
+    ],
+    "path": "skills/cncf-emissary-ingress/SKILL.md"
+  },
+  {
+    "name": "cncf-envoy",
+    "description": "Envoy in Cloud-Native Engineering - Cloud-native high-performance edge/middle/service proxy",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "envoy",
+      "cloud-native",
+      "engineering",
+      "high-performance"
+    ],
+    "path": "skills/cncf-envoy/SKILL.md"
+  },
+  {
+    "name": "cncf-etcd",
+    "description": "etcd in Cloud-Native Engineering - distributed key-value store",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "etcd",
+      "cloud-native",
+      "engineering",
+      "distributed"
+    ],
+    "path": "skills/cncf-etcd/SKILL.md"
+  },
+  {
+    "name": "cncf-falco",
+    "description": "Falco in Cloud-Native Engineering - Cloud Native Runtime Security",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "falco",
+      "cloud-native",
+      "engineering",
+      "cloud"
+    ],
+    "path": "skills/cncf-falco/SKILL.md"
+  },
+  {
+    "name": "cncf-flatcar-container-linux",
+    "description": "Flatcar Container Linux in Cloud-Native Engineering - container Linux",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "flatcar container linux",
+      "flatcar-container-linux",
+      "cloud-native",
+      "engineering"
+    ],
+    "path": "skills/cncf-flatcar-container-linux/SKILL.md"
+  },
+  {
+    "name": "cncf-fluentd",
+    "description": "Fluentd unified logging layer for collecting, transforming, and routing log data in cloud-native environments",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "fluentd",
+      "log collection",
+      "logging",
+      "unified logging",
+      "log routing"
+    ],
+    "path": "skills/cncf-fluentd/SKILL.md"
+  },
+  {
+    "name": "cncf-fluid",
+    "description": "Fluid in A Kubernetes-native data acceleration layer for data-intensive applications",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "fluid",
+      "kubernetes-native",
+      "acceleration",
+      "layer"
+    ],
+    "path": "skills/cncf-fluid/SKILL.md"
+  },
+  {
+    "name": "cncf-flux",
+    "description": "Flux in Cloud-Native Engineering - GitOps for Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "flux",
+      "cloud-native",
+      "engineering",
+      "gitops"
+    ],
+    "path": "skills/cncf-flux/SKILL.md"
+  },
+  {
+    "name": "cncf-grpc",
+    "description": "gRPC in Remote Procedure Call - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "grpc",
+      "remote",
+      "procedure",
+      "cloud"
+    ],
+    "path": "skills/cncf-grpc/SKILL.md"
+  },
+  {
+    "name": "cncf-harbor",
+    "description": "Harbor in Cloud-Native Engineering - container registry",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "harbor",
+      "cloud-native",
+      "engineering",
+      "container"
+    ],
+    "path": "skills/cncf-harbor/SKILL.md"
+  },
+  {
+    "name": "cncf-helm",
+    "description": "Helm in Cloud-Native Engineering - The Kubernetes Package Manager",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "helm",
+      "cloud-native",
+      "engineering",
+      "kubernetes"
+    ],
+    "path": "skills/cncf-helm/SKILL.md"
+  },
+  {
+    "name": "cncf-in-toto",
+    "description": "in-toto in Supply Chain Security - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "in toto",
+      "in-toto",
+      "in-toto",
+      "supply",
+      "chain"
+    ],
+    "path": "skills/cncf-in-toto/SKILL.md"
+  },
+  {
+    "name": "cncf-istio",
+    "description": "Istio in Cloud-Native Engineering - Connect, secure, control, and observe services.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "istio",
+      "cloud-native",
+      "engineering",
+      "connect"
+    ],
+    "path": "skills/cncf-istio/SKILL.md"
+  },
+  {
+    "name": "cncf-jaeger",
+    "description": "Jaeger in Cloud-Native Engineering - distributed tracing",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "jaeger",
+      "cloud-native",
+      "engineering",
+      "distributed"
+    ],
+    "path": "skills/cncf-jaeger/SKILL.md"
+  },
+  {
+    "name": "cncf-karmada",
+    "description": "Karmada in Cloud-Native Engineering - multi-cluster orchestration",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "karmada",
+      "cloud-native",
+      "engineering",
+      "multi-cluster"
+    ],
+    "path": "skills/cncf-karmada/SKILL.md"
+  },
+  {
+    "name": "cncf-keda",
+    "description": "KEDA in Cloud-Native Engineering - event-driven autoscaling",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "keda",
+      "cloud-native",
+      "engineering",
+      "event-driven"
+    ],
+    "path": "skills/cncf-keda/SKILL.md"
+  },
+  {
+    "name": "cncf-keycloak",
+    "description": "Keycloak in Cloud-Native Engineering - identity and access management",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "keycloak",
+      "cloud-native",
+      "engineering",
+      "identity"
+    ],
+    "path": "skills/cncf-keycloak/SKILL.md"
+  },
+  {
+    "name": "cncf-knative",
+    "description": "Knative in Cloud-Native Engineering - serverless on Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "knative",
+      "cloud-native",
+      "engineering",
+      "serverless"
+    ],
+    "path": "skills/cncf-knative/SKILL.md"
+  },
+  {
+    "name": "cncf-kong",
+    "description": "Kong in API Gateway - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kong",
+      "gateway",
+      "cloud",
+      "native"
+    ],
+    "path": "skills/cncf-kong/SKILL.md"
+  },
+  {
+    "name": "cncf-kong-ingress-controller",
+    "description": "Kong Ingress Controller in Kubernetes - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kong ingress controller",
+      "kong-ingress-controller",
+      "kubernetes",
+      "cloud",
+      "native"
+    ],
+    "path": "skills/cncf-kong-ingress-controller/SKILL.md"
+  },
+  {
+    "name": "cncf-krustlet",
+    "description": "Krustlet in Kubernetes Runtime - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "krustlet",
+      "kubernetes",
+      "runtime",
+      "cloud"
+    ],
+    "path": "skills/cncf-krustlet/SKILL.md"
+  },
+  {
+    "name": "cncf-kserve",
+    "description": "KServe in Cloud-Native Engineering - model serving",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kserve",
+      "cloud-native",
+      "engineering",
+      "model"
+    ],
+    "path": "skills/cncf-kserve/SKILL.md"
+  },
+  {
+    "name": "cncf-kubeedge",
+    "description": "KubeEdge in Cloud-Native Engineering - edge computing",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kubeedge",
+      "cloud-native",
+      "engineering",
+      "computing"
+    ],
+    "path": "skills/cncf-kubeedge/SKILL.md"
+  },
+  {
+    "name": "cncf-kubeflow",
+    "description": "Kubeflow in Cloud-Native Engineering - ML on Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kubeflow",
+      "cloud-native",
+      "engineering",
+      "kubernetes"
+    ],
+    "path": "skills/cncf-kubeflow/SKILL.md"
+  },
+  {
+    "name": "cncf-kubernetes",
+    "description": "Kubernetes in Cloud-Native Engineering - Production-Grade Container Scheduling and Management",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kubernetes",
+      "cloud-native",
+      "engineering",
+      "production-grade"
+    ],
+    "path": "skills/cncf-kubernetes/SKILL.md"
+  },
+  {
+    "name": "cncf-kubescape",
+    "description": "Kubescape in Cloud-Native Engineering - Kubernetes security",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kubescape",
+      "cloud-native",
+      "engineering",
+      "kubernetes"
+    ],
+    "path": "skills/cncf-kubescape/SKILL.md"
+  },
+  {
+    "name": "cncf-kubevela",
+    "description": "KubeVela in Cloud-Native Engineering - application platform",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kubevela",
+      "cloud-native",
+      "engineering",
+      "application"
+    ],
+    "path": "skills/cncf-kubevela/SKILL.md"
+  },
+  {
+    "name": "cncf-kubevirt",
+    "description": "KubeVirt in Cloud-Native Engineering - virtualization on Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kubevirt",
+      "cloud-native",
+      "engineering",
+      "virtualization"
+    ],
+    "path": "skills/cncf-kubevirt/SKILL.md"
+  },
+  {
+    "name": "cncf-kuma",
+    "description": "Kuma in Service Mesh - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kuma",
+      "service",
+      "cloud",
+      "native"
+    ],
+    "path": "skills/cncf-kuma/SKILL.md"
+  },
+  {
+    "name": "cncf-kyverno",
+    "description": "Kyverno in Cloud-Native Engineering - policy engine",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "kyverno",
+      "cloud-native",
+      "engineering",
+      "policy"
+    ],
+    "path": "skills/cncf-kyverno/SKILL.md"
+  },
+  {
+    "name": "cncf-lima",
+    "description": "Lima in Container Runtime - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "lima",
+      "container",
+      "runtime",
+      "cloud"
+    ],
+    "path": "skills/cncf-lima/SKILL.md"
+  },
+  {
+    "name": "cncf-linkerd",
+    "description": "Linkerd in Service Mesh - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "linkerd",
+      "service",
+      "cloud",
+      "native"
+    ],
+    "path": "skills/cncf-linkerd/SKILL.md"
+  },
+  {
+    "name": "cncf-litmus",
+    "description": "Litmus in Chaos Engineering - cloud native architecture, patterns, pits and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "litmus",
+      "chaos",
+      "engineering",
+      "cloud"
+    ],
+    "path": "skills/cncf-litmus/SKILL.md"
+  },
+  {
+    "name": "cncf-longhorn",
+    "description": "Longhorn in Cloud Native Storage - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "longhorn",
+      "cloud",
+      "native",
+      "storage"
+    ],
+    "path": "skills/cncf-longhorn/SKILL.md"
+  },
+  {
+    "name": "cncf-metal3-io",
+    "description": "metal3.io in Bare Metal Provisioning - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "metal3 io",
+      "metal3-io",
+      "metal",
+      "provisioning",
+      "cloud"
+    ],
+    "path": "skills/cncf-metal3-io/SKILL.md"
+  },
+  {
+    "name": "cncf-nats",
+    "description": "NATS in Cloud Native Messaging - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "nats",
+      "cloud",
+      "native",
+      "messaging"
+    ],
+    "path": "skills/cncf-nats/SKILL.md"
+  },
+  {
+    "name": "cncf-networking-osi",
+    "description": "OSI Model Networking for Cloud-Native - All 7 layers with CNCF project mappings, Kubernetes networking, and troubleshooting patterns.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "networking osi",
+      "networking-osi",
+      "model",
+      "cloud-native",
+      "layers"
+    ],
+    "path": "skills/cncf-networking-osi/SKILL.md"
+  },
+  {
+    "name": "cncf-notary-project",
+    "description": "Notary Project in Content Trust &amp; Security - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "notary project",
+      "notary-project",
+      "content",
+      "trust",
+      "security"
+    ],
+    "path": "skills/cncf-notary-project/SKILL.md"
+  },
+  {
+    "name": "cncf-oathkeeper",
+    "description": "Oathkeeper in Identity & Access - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "oathkeeper",
+      "identity",
+      "access",
+      "cloud"
+    ],
+    "path": "skills/cncf-oathkeeper/SKILL.md"
+  },
+  {
+    "name": "cncf-open-policy-agent-opa",
+    "description": "Open Policy Agent in Security &amp; Compliance - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "open policy agent opa",
+      "open-policy-agent-opa",
+      "security",
+      "compliance",
+      "cloud"
+    ],
+    "path": "skills/cncf-open-policy-agent-opa/SKILL.md"
+  },
+  {
+    "name": "cncf-open-telemetry",
+    "description": "OpenTelemetry in Observability - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "open telemetry",
+      "open-telemetry",
+      "opentelemetry",
+      "observability",
+      "cloud"
+    ],
+    "path": "skills/cncf-open-telemetry/SKILL.md"
+  },
+  {
+    "name": "cncf-opencost",
+    "description": "OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "opencost",
+      "kubernetes",
+      "monitoring",
+      "cloud"
+    ],
+    "path": "skills/cncf-opencost/SKILL.md"
+  },
+  {
+    "name": "cncf-openfeature",
+    "description": "OpenFeature in Feature Flagging - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "openfeature",
+      "feature",
+      "flagging",
+      "cloud"
+    ],
+    "path": "skills/cncf-openfeature/SKILL.md"
+  },
+  {
+    "name": "cncf-openfga",
+    "description": "OpenFGA in Security &amp; Compliance - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "openfga",
+      "security",
+      "compliance",
+      "cloud"
+    ],
+    "path": "skills/cncf-openfga/SKILL.md"
+  },
+  {
+    "name": "cncf-openkruise",
+    "description": "OpenKruise in Extended Kubernetes workload management with advanced deployment strategies",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "openkruise",
+      "extended",
+      "kubernetes",
+      "workload"
+    ],
+    "path": "skills/cncf-openkruise/SKILL.md"
+  },
+  {
+    "name": "cncf-opentelemetry",
+    "description": "OpenTelemetry in Observability framework for tracing, metrics, and logs with vendor-neutral APIs",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "opentelemetry",
+      "observability",
+      "framework",
+      "tracing"
+    ],
+    "path": "skills/cncf-opentelemetry/SKILL.md"
+  },
+  {
+    "name": "cncf-openyurt",
+    "description": "OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edge\u534f\u540c",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "openyurt",
+      "extending",
+      "kubernetes",
+      "computing"
+    ],
+    "path": "skills/cncf-openyurt/SKILL.md"
+  },
+  {
+    "name": "cncf-operator-framework",
+    "description": "Operator Framework in Tools to build and manage Kubernetes operators with standardized patterns",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "operator framework",
+      "operator-framework",
+      "tools",
+      "build",
+      "manage"
+    ],
+    "path": "skills/cncf-operator-framework/SKILL.md"
+  },
+  {
+    "name": "cncf-ory-hydra",
+    "description": "ORY Hydra in Security & Compliance - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "ory hydra",
+      "ory-hydra",
+      "security",
+      "compliance",
+      "cloud"
+    ],
+    "path": "skills/cncf-ory-hydra/SKILL.md"
+  },
+  {
+    "name": "cncf-ory-kratos",
+    "description": "ORY Kratos in Identity & Access - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "ory kratos",
+      "ory-kratos",
+      "identity",
+      "access",
+      "cloud"
+    ],
+    "path": "skills/cncf-ory-kratos/SKILL.md"
+  },
+  {
+    "name": "cncf-process-architecture",
+    "description": "Creates or updates ARCHITECTURE.md documenting the project's design, components, and technical decisions for CNCF projects",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "process architecture",
+      "process-architecture",
+      "creates",
+      "updates",
+      "documenting"
+    ],
+    "path": "skills/cncf-process-architecture/SKILL.md"
+  },
+  {
+    "name": "cncf-process-incident-response",
+    "description": "Creates or updates an incident response plan covering detection, triage, communication, and post-incident review for CNCF projects",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "process incident response",
+      "process-incident-response",
+      "creates",
+      "updates",
+      "covering"
+    ],
+    "path": "skills/cncf-process-incident-response/SKILL.md"
+  },
+  {
+    "name": "cncf-process-releases",
+    "description": "Creates or updates RELEASES.md documenting the release process, versioning policy, and release cadence for CNCF projects",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "process releases",
+      "process-releases",
+      "creates",
+      "updates",
+      "documenting"
+    ],
+    "path": "skills/cncf-process-releases/SKILL.md"
+  },
+  {
+    "name": "cncf-process-security-policy",
+    "description": "Creates or updates SECURITY.md defining the vulnerability reporting process, disclosure timeline, and supported versions for CNCF projects",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "process security policy",
+      "process-security-policy",
+      "creates",
+      "updates",
+      "defining"
+    ],
+    "path": "skills/cncf-process-security-policy/SKILL.md"
+  },
+  {
+    "name": "cncf-prometheus",
+    "description": "Prometheus in Cloud-Native Engineering - The Prometheus monitoring system and time series database.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "prometheus",
+      "cloud-native",
+      "engineering",
+      "monitoring"
+    ],
+    "path": "skills/cncf-prometheus/SKILL.md"
+  },
+  {
+    "name": "cncf-rook",
+    "description": "Rook in Cloud-Native Storage Orchestration for Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "rook",
+      "cloud-native",
+      "storage",
+      "orchestration"
+    ],
+    "path": "skills/cncf-rook/SKILL.md"
+  },
+  {
+    "name": "cncf-spiffe",
+    "description": "SPIFFE in Secure Product Identity Framework for Applications",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "spiffe",
+      "secure",
+      "product",
+      "identity"
+    ],
+    "path": "skills/cncf-spiffe/SKILL.md"
+  },
+  {
+    "name": "cncf-spire",
+    "description": "SPIRE in SPIFFE Implementation for Real-World Deployments",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "spire",
+      "spiffe",
+      "implementation",
+      "real-world"
+    ],
+    "path": "skills/cncf-spire/SKILL.md"
+  },
+  {
+    "name": "cncf-strimzi",
+    "description": "Strimzi in Kafka on Kubernetes - Apache Kafka for cloud-native environments",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "strimzi",
+      "kafka",
+      "kubernetes",
+      "apache"
+    ],
+    "path": "skills/cncf-strimzi/SKILL.md"
+  },
+  {
+    "name": "cncf-tekton",
+    "description": "Tekton in Cloud-Native Engineering - A cloud-native Pipeline resource.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "tekton",
+      "cloud-native",
+      "engineering",
+      "pipeline"
+    ],
+    "path": "skills/cncf-tekton/SKILL.md"
+  },
+  {
+    "name": "cncf-thanos",
+    "description": "Thanos in High availability Prometheus solution with long-term storage",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "thanos",
+      "availability",
+      "prometheus",
+      "solution"
+    ],
+    "path": "skills/cncf-thanos/SKILL.md"
+  },
+  {
+    "name": "cncf-the-update-framework-tuf",
+    "description": "The Update Framework (TUF) in Secure software update framework for protecting software deliveries",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "the update framework tuf",
+      "the-update-framework-tuf",
+      "secure",
+      "software",
+      "protecting"
+    ],
+    "path": "skills/cncf-the-update-framework-tuf/SKILL.md"
+  },
+  {
+    "name": "cncf-tikv",
+    "description": "TiKV in Distributed transactional key-value database inspired by Google Spanner",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "tikv",
+      "distributed",
+      "transactional",
+      "key-value"
+    ],
+    "path": "skills/cncf-tikv/SKILL.md"
+  },
+  {
+    "name": "cncf-vitess",
+    "description": "Vitess in Database clustering system for horizontal scaling of MySQL",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "vitess",
+      "database",
+      "clustering",
+      "system"
+    ],
+    "path": "skills/cncf-vitess/SKILL.md"
+  },
+  {
+    "name": "cncf-volcano",
+    "description": "Volcano in Batch scheduling infrastructure for Kubernetes",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "volcano",
+      "batch",
+      "scheduling",
+      "infrastructure"
+    ],
+    "path": "skills/cncf-volcano/SKILL.md"
+  },
+  {
+    "name": "cncf-wasmcloud",
+    "description": "wasmCloud in WebAssembly-based distributed applications platform",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "wasmcloud",
+      "webassembly-based",
+      "distributed",
+      "applications"
+    ],
+    "path": "skills/cncf-wasmcloud/SKILL.md"
+  },
+  {
+    "name": "cncf-zot",
+    "description": "Zot in Container Registry - cloud native architecture, patterns, pitfalls, and best practices",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "zot",
+      "container",
+      "registry",
+      "cloud"
+    ],
+    "path": "skills/cncf-zot/SKILL.md"
+  },
+  {
+    "name": "coding-code-review",
+    "description": "Analyzes code diffs and files to identify bugs, security vulnerabilities, code smells, and architectural concerns, producing a structured review report with prioritized, actionable feedback",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "code review",
+      "code-review",
+      "analyzes",
+      "diffs",
+      "files"
+    ],
+    "path": "skills/coding-code-review/SKILL.md"
+  },
+  {
+    "name": "coding-conviction-scoring",
+    "description": "Multi-factor conviction scoring engine combining technical, momentum, trend, volatility, and volume signals with configurable weights",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "conviction scoring",
+      "conviction-scoring",
+      "multi-factor",
+      "engine",
+      "combining"
+    ],
+    "path": "skills/coding-conviction-scoring/SKILL.md"
+  },
+  {
+    "name": "coding-data-normalization",
+    "description": "Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "data normalization",
+      "data-normalization",
+      "exchange",
+      "layer",
+      "typed"
+    ],
+    "path": "skills/coding-data-normalization/SKILL.md"
+  },
+  {
+    "name": "coding-event-bus",
+    "description": "Async pub/sub event bus with typed events, mixed sync/async dispatch, and singleton initialization for trading systems",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "event bus",
+      "event-bus",
+      "async",
+      "typed",
+      "events"
+    ],
+    "path": "skills/coding-event-bus/SKILL.md"
+  },
+  {
+    "name": "coding-event-driven-architecture",
+    "description": "Event-driven architecture for real-time trading systems: pub/sub patterns, event types, signal flow, strategy base, and common pitfalls",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "event driven architecture",
+      "event-driven-architecture",
+      "event-driven",
+      "real-time",
+      "trading"
+    ],
+    "path": "skills/coding-event-driven-architecture/SKILL.md"
+  },
+  {
+    "name": "coding-fastapi-patterns",
+    "description": "FastAPI application structure with typed error hierarchy, global exception handlers, CORS middleware, request timing, and lifecycle events",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "fastapi patterns",
+      "fastapi-patterns",
+      "application",
+      "structure",
+      "typed"
+    ],
+    "path": "skills/coding-fastapi-patterns/SKILL.md"
+  },
+  {
+    "name": "coding-git-branching-strategies",
+    "description": "Git branching models including Git Flow, GitHub Flow, Trunk-Based Development, and feature flag strategies for CI/CD pipelines",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "git branching strategies",
+      "git-branching-strategies",
+      "models",
+      "including",
+      "github"
+    ],
+    "path": "skills/coding-git-branching-strategies/SKILL.md"
+  },
+  {
+    "name": "coding-juice-shop",
+    "description": "OWASP Juice Shop guide: Web application security testing with intentionally vulnerable Node.js/Express application for learning and practice",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "juice shop",
+      "juice-shop",
+      "owasp",
+      "guide",
+      "application"
+    ],
+    "path": "skills/coding-juice-shop/SKILL.md"
+  },
+  {
+    "name": "coding-markdown-best-practices",
+    "description": "Markdown best practices for OpenCode skills - syntax rules, common pitfalls, and coding practices for documentation consistency",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "markdown best practices",
+      "markdown-best-practices",
+      "opencode",
+      "skills",
+      "syntax"
+    ],
+    "path": "skills/coding-markdown-best-practices/SKILL.md"
+  },
+  {
+    "name": "coding-pydantic-config",
+    "description": "Pydantic-based configuration management with frozen models, nested hierarchy, TOML/env parsing, and module-level singleton",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "pydantic config",
+      "pydantic-config",
+      "pydantic-based",
+      "configuration",
+      "management"
+    ],
+    "path": "skills/coding-pydantic-config/SKILL.md"
+  },
+  {
+    "name": "coding-pydantic-models",
+    "description": "Pydantic frozen data models for trading: enums, annotated constraints, field/model validators, and computed properties",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "pydantic models",
+      "pydantic-models",
+      "frozen",
+      "trading",
+      "enums"
+    ],
+    "path": "skills/coding-pydantic-models/SKILL.md"
+  },
+  {
+    "name": "coding-security-review",
+    "description": "Security-focused code review identifying vulnerabilities like injection, XSS, insecure deserialization, and misconfigurations, with remediation guidance",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "security review",
+      "security-review",
+      "security-focused",
+      "identifying",
+      "vulnerabilities"
+    ],
+    "path": "skills/coding-security-review/SKILL.md"
+  },
+  {
+    "name": "coding-strategy-base",
+    "description": "Abstract base strategy pattern with initialization guards, typed abstract methods, and conviction scoring integration",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "strategy base",
+      "strategy-base",
+      "abstract",
+      "pattern",
+      "initialization"
+    ],
+    "path": "skills/coding-strategy-base/SKILL.md"
+  },
+  {
+    "name": "coding-test-driven-development",
+    "description": "Test-Driven Development (TDD) and Behavior-Driven Development (BDD) patterns with pytest, unit tests, mocking, and test pyramid principles",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "test driven development",
+      "test-driven-development",
+      "test-driven",
+      "behavior-driven",
+      "patterns"
+    ],
+    "path": "skills/coding-test-driven-development/SKILL.md"
+  },
+  {
+    "name": "coding-websocket-manager",
+    "description": "WebSocket connection manager with state machine (connecting/connected/reconnecting/error), exponential backoff, and message routing",
+    "domain": "coding",
+    "tags": [
+      "coding",
+      "websocket manager",
+      "websocket-manager",
+      "connection",
+      "state",
+      "machine"
+    ],
+    "path": "skills/coding-websocket-manager/SKILL.md"
+  },
+  {
+    "name": "programming-algorithms",
+    "description": "Comprehensive algorithm selection guide \u2014 choose, implement, and optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints",
+    "domain": "programming",
+    "tags": [
+      "programming",
+      "algorithm",
+      "algorithms",
+      "data structure",
+      "sorting",
+      "searching",
+      "complexity",
+      "big-O"
+    ],
+    "path": "skills/programming-algorithms/SKILL.md"
+  },
+  {
+    "name": "trading-ai-anomaly-detection",
+    "description": "Detect anomalous market behavior, outliers, and potential market manipulation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai anomaly detection",
+      "ai-anomaly-detection",
+      "detect",
+      "anomalous",
+      "market"
+    ],
+    "path": "skills/trading-ai-anomaly-detection/SKILL.md"
+  },
+  {
+    "name": "trading-ai-explainable-ai",
+    "description": "Explainable AI for understanding and trusting trading model decisions",
+    "domain": "trading",
+    "tags": [
+      "ai explainable ai",
+      "ai-explainable-ai",
+      "understanding",
+      "trusting",
+      "trading"
+    ],
+    "path": "skills/trading-ai-explainable-ai/SKILL.md"
+  },
+  {
+    "name": "trading-ai-feature-engineering",
+    "description": "Create actionable trading features from raw market data",
+    "domain": "trading",
+    "tags": [
+      "ai feature engineering",
+      "ai-feature-engineering",
+      "create",
+      "actionable",
+      "trading"
+    ],
+    "path": "skills/trading-ai-feature-engineering/SKILL.md"
+  },
+  {
+    "name": "trading-ai-hyperparameter-tuning",
+    "description": "Optimize model configurations for trading applications",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai hyperparameter tuning",
+      "ai-hyperparameter-tuning",
+      "optimize",
+      "model",
+      "configurations"
+    ],
+    "path": "skills/trading-ai-hyperparameter-tuning/SKILL.md"
+  },
+  {
+    "name": "trading-ai-live-model-monitoring",
+    "description": "Monitor production ML models for drift, decay, and performance degradation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai live model monitoring",
+      "ai-live-model-monitoring",
+      "monitor",
+      "production",
+      "models"
+    ],
+    "path": "skills/trading-ai-live-model-monitoring/SKILL.md"
+  },
+  {
+    "name": "trading-ai-llm-orchestration",
+    "description": "Large Language Model orchestration for trading analysis with structured output using instructor/pydantic",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai llm orchestration",
+      "ai-llm-orchestration",
+      "large",
+      "language",
+      "model"
+    ],
+    "path": "skills/trading-ai-llm-orchestration/SKILL.md"
+  },
+  {
+    "name": "trading-ai-model-ensemble",
+    "description": "Combine multiple models for improved prediction accuracy and robustness",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai model ensemble",
+      "ai-model-ensemble",
+      "combine",
+      "multiple",
+      "models"
+    ],
+    "path": "skills/trading-ai-model-ensemble/SKILL.md"
+  },
+  {
+    "name": "trading-ai-multi-asset-model",
+    "description": "Model inter-asset relationships for portfolio and cross-asset strategies",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai multi asset model",
+      "ai-multi-asset-model",
+      "inter-asset",
+      "relationships",
+      "portfolio"
+    ],
+    "path": "skills/trading-ai-multi-asset-model/SKILL.md"
+  },
+  {
+    "name": "trading-ai-news-embedding",
+    "description": "Process news text using NLP embeddings for trading signals",
+    "domain": "trading",
+    "tags": [
+      "ai news embedding",
+      "ai-news-embedding",
+      "process",
+      "embeddings",
+      "trading"
+    ],
+    "path": "skills/trading-ai-news-embedding/SKILL.md"
+  },
+  {
+    "name": "trading-ai-order-flow-analysis",
+    "description": "Analyze order flow to detect market pressure and anticipate price moves",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai order flow analysis",
+      "ai-order-flow-analysis",
+      "analyze",
+      "detect",
+      "market"
+    ],
+    "path": "skills/trading-ai-order-flow-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-ai-regime-classification",
+    "description": "Detect current market regime for adaptive trading strategies",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai regime classification",
+      "ai-regime-classification",
+      "detect",
+      "current",
+      "market"
+    ],
+    "path": "skills/trading-ai-regime-classification/SKILL.md"
+  },
+  {
+    "name": "trading-ai-reinforcement-learning",
+    "description": "Reinforcement Learning for automated trading agents and policy optimization",
+    "domain": "trading",
+    "tags": [
+      "ai reinforcement learning",
+      "ai-reinforcement-learning",
+      "automated",
+      "trading",
+      "agents"
+    ],
+    "path": "skills/trading-ai-reinforcement-learning/SKILL.md"
+  },
+  {
+    "name": "trading-ai-sentiment-analysis",
+    "description": "AI-powered sentiment analysis for news, social media, and political figures in trading",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai sentiment analysis",
+      "ai-sentiment-analysis",
+      "ai-powered",
+      "social",
+      "media"
+    ],
+    "path": "skills/trading-ai-sentiment-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-ai-sentiment-features",
+    "description": "Extract market sentiment from news, social media, and analyst reports",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai sentiment features",
+      "ai-sentiment-features",
+      "extract",
+      "market",
+      "social"
+    ],
+    "path": "skills/trading-ai-sentiment-features/SKILL.md"
+  },
+  {
+    "name": "trading-ai-synthetic-data",
+    "description": "Generate synthetic financial data for training and testing trading models",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai synthetic data",
+      "ai-synthetic-data",
+      "generate",
+      "financial",
+      "training"
+    ],
+    "path": "skills/trading-ai-synthetic-data/SKILL.md"
+  },
+  {
+    "name": "trading-ai-time-series-forecasting",
+    "description": "Time series forecasting for price prediction and market analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai time series forecasting",
+      "ai-time-series-forecasting",
+      "price",
+      "prediction",
+      "market"
+    ],
+    "path": "skills/trading-ai-time-series-forecasting/SKILL.md"
+  },
+  {
+    "name": "trading-ai-volatility-prediction",
+    "description": "Forecast volatility for risk management and option pricing",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "ai volatility prediction",
+      "ai-volatility-prediction",
+      "forecast",
+      "management",
+      "option"
+    ],
+    "path": "skills/trading-ai-volatility-prediction/SKILL.md"
+  },
+  {
+    "name": "trading-backtest-drawdown-analysis",
+    "description": "Maximum Drawdown, Recovery Time, and Value-at-Risk Analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "backtest drawdown analysis",
+      "backtest-drawdown-analysis",
+      "maximum",
+      "recovery",
+      "value-at-risk"
+    ],
+    "path": "skills/trading-backtest-drawdown-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-backtest-lookahead-bias",
+    "description": "Preventing lookahead bias in backtesting through strict causality enforcement, time-based validation, and comprehensive detection frameworks.",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "backtest lookahead bias",
+      "backtest-lookahead-bias",
+      "preventing",
+      "backtesting",
+      "strict"
+    ],
+    "path": "skills/trading-backtest-lookahead-bias/SKILL.md"
+  },
+  {
+    "name": "trading-backtest-position-exits",
+    "description": "Exit strategies, trailing stops, and take-profit mechanisms for trading systems.",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "backtest position exits",
+      "backtest-position-exits",
+      "strategies",
+      "trailing",
+      "stops"
+    ],
+    "path": "skills/trading-backtest-position-exits/SKILL.md"
+  },
+  {
+    "name": "trading-backtest-position-sizing",
+    "description": "Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility Adjustment",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "backtest position sizing",
+      "backtest-position-sizing",
+      "algorithms",
+      "fixed",
+      "fractional"
+    ],
+    "path": "skills/trading-backtest-position-sizing/SKILL.md"
+  },
+  {
+    "name": "trading-backtest-sharpe-ratio",
+    "description": "Sharpe Ratio Calculation and Risk-Adjusted Performance Metrics",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "backtest sharpe ratio",
+      "backtest-sharpe-ratio",
+      "calculation",
+      "risk-adjusted",
+      "performance"
+    ],
+    "path": "skills/trading-backtest-sharpe-ratio/SKILL.md"
+  },
+  {
+    "name": "trading-backtest-walk-forward",
+    "description": "Walk-Forward Optimization for Robust Strategy Validation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "backtest walk forward",
+      "backtest-walk-forward",
+      "walk-forward",
+      "optimization",
+      "robust"
+    ],
+    "path": "skills/trading-backtest-walk-forward/SKILL.md"
+  },
+  {
+    "name": "trading-data-alternative-data",
+    "description": "Alternative data ingestion pipelines for trading signals including news, social media, and on-chain data sources",
+    "domain": "trading",
+    "tags": [
+      "data alternative data",
+      "data-alternative-data",
+      "ingestion",
+      "pipelines",
+      "trading"
+    ],
+    "path": "skills/trading-data-alternative-data/SKILL.md"
+  },
+  {
+    "name": "trading-data-backfill-strategy",
+    "description": "Strategic data backfill for populating historical data in trading systems",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "data backfill strategy",
+      "data-backfill-strategy",
+      "strategic",
+      "populating",
+      "historical"
+    ],
+    "path": "skills/trading-data-backfill-strategy/SKILL.md"
+  },
+  {
+    "name": "trading-data-candle-data",
+    "description": "OHLCV candle data processing, timeframe management, and validation for trading algorithms",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "data candle data",
+      "data-candle-data",
+      "ohlcv",
+      "processing",
+      "timeframe"
+    ],
+    "path": "skills/trading-data-candle-data/SKILL.md"
+  },
+  {
+    "name": "trading-data-enrichment",
+    "description": "Data enrichment techniques for adding context to raw trading data",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "data enrichment",
+      "data-enrichment",
+      "techniques",
+      "adding",
+      "context"
+    ],
+    "path": "skills/trading-data-enrichment/SKILL.md"
+  },
+  {
+    "name": "trading-data-feature-store",
+    "description": "Feature storage and management for machine learning trading models",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "data feature store",
+      "data-feature-store",
+      "storage",
+      "management",
+      "machine"
+    ],
+    "path": "skills/trading-data-feature-store/SKILL.md"
+  },
+  {
+    "name": "trading-data-lake",
+    "description": "Data lake architecture and management for trading data storage",
+    "domain": "trading",
+    "tags": [
+      "data lake",
+      "data-lake",
+      "architecture",
+      "management",
+      "trading"
+    ],
+    "path": "skills/trading-data-lake/SKILL.md"
+  },
+  {
+    "name": "trading-data-order-book",
+    "description": "Order book data handling, spread calculation, liquidity measurement, and cross-exchange normalization",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "data order book",
+      "data-order-book",
+      "handling",
+      "spread",
+      "calculation"
+    ],
+    "path": "skills/trading-data-order-book/SKILL.md"
+  },
+  {
+    "name": "trading-data-stream-processing",
+    "description": "Streaming data processing for real-time trading signals and analytics",
+    "domain": "trading",
+    "tags": [
+      "data stream processing",
+      "data-stream-processing",
+      "streaming",
+      "real-time",
+      "trading"
+    ],
+    "path": "skills/trading-data-stream-processing/SKILL.md"
+  },
+  {
+    "name": "trading-data-time-series-database",
+    "description": "Time-series database queries and optimization for financial data",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "data time series database",
+      "data-time-series-database",
+      "time-series",
+      "queries",
+      "optimization"
+    ],
+    "path": "skills/trading-data-time-series-database/SKILL.md"
+  },
+  {
+    "name": "trading-data-validation",
+    "description": "Data validation and quality assurance for trading data pipelines",
+    "domain": "trading",
+    "tags": [
+      "data validation",
+      "data-validation",
+      "quality",
+      "assurance",
+      "trading"
+    ],
+    "path": "skills/trading-data-validation/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-ccxt-patterns",
+    "description": "Effective patterns for using CCXT library for exchange connectivity including error handling, rate limiting, and state management",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange ccxt patterns",
+      "exchange-ccxt-patterns",
+      "effective",
+      "library",
+      "connectivity"
+    ],
+    "path": "skills/trading-exchange-ccxt-patterns/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-failover-handling",
+    "description": "Automated failover and redundancy management for exchange connectivity",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange failover handling",
+      "exchange-failover-handling",
+      "automated",
+      "redundancy",
+      "management"
+    ],
+    "path": "skills/trading-exchange-failover-handling/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-health",
+    "description": "Exchange system health monitoring and connectivity status tracking",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange health",
+      "exchange-health",
+      "system",
+      "monitoring",
+      "connectivity"
+    ],
+    "path": "skills/trading-exchange-health/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-market-data-cache",
+    "description": "High-performance caching layer for market data with low latency and high throughput",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange market data cache",
+      "exchange-market-data-cache",
+      "high-performance",
+      "caching",
+      "layer"
+    ],
+    "path": "skills/trading-exchange-market-data-cache/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-order-book-sync",
+    "description": "Order book synchronization and state management for accurate trading",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange order book sync",
+      "exchange-order-book-sync",
+      "synchronization",
+      "state",
+      "management"
+    ],
+    "path": "skills/trading-exchange-order-book-sync/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-order-execution-api",
+    "description": "Order execution and management API for trading systems",
+    "domain": "trading",
+    "tags": [
+      "exchange order execution api",
+      "exchange-order-execution-api",
+      "management",
+      "trading",
+      "systems"
+    ],
+    "path": "skills/trading-exchange-order-execution-api/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-rate-limiting",
+    "description": "Rate Limiting Strategies and Circuit Breaker Patterns for Exchange API Integration",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange rate limiting",
+      "exchange-rate-limiting",
+      "strategies",
+      "circuit",
+      "breaker"
+    ],
+    "path": "skills/trading-exchange-rate-limiting/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-trade-reporting",
+    "description": "Real-time trade reporting and execution analytics for monitoring and optimization",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange trade reporting",
+      "exchange-trade-reporting",
+      "real-time",
+      "execution",
+      "analytics"
+    ],
+    "path": "skills/trading-exchange-trade-reporting/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-websocket-handling",
+    "description": "Real-time market data handling with WebSockets including connection management, data aggregation, and robust error recovery",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange websocket handling",
+      "exchange-websocket-handling",
+      "real-time",
+      "market",
+      "websockets"
+    ],
+    "path": "skills/trading-exchange-websocket-handling/SKILL.md"
+  },
+  {
+    "name": "trading-exchange-websocket-streaming",
+    "description": "Real-time market data streaming and processing",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "exchange websocket streaming",
+      "exchange-websocket-streaming",
+      "real-time",
+      "market",
+      "processing"
+    ],
+    "path": "skills/trading-exchange-websocket-streaming/SKILL.md"
+  },
+  {
+    "name": "trading-execution-order-book-impact",
+    "description": "Order Book Impact Measurement and Market Microstructure Analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "execution order book impact",
+      "execution-order-book-impact",
+      "measurement",
+      "market",
+      "microstructure"
+    ],
+    "path": "skills/trading-execution-order-book-impact/SKILL.md"
+  },
+  {
+    "name": "trading-execution-rate-limiting",
+    "description": "Rate Limiting and Exchange API Management for Robust Trading Execution",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "execution rate limiting",
+      "execution-rate-limiting",
+      "exchange",
+      "management",
+      "robust"
+    ],
+    "path": "skills/trading-execution-rate-limiting/SKILL.md"
+  },
+  {
+    "name": "trading-execution-slippage-modeling",
+    "description": "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution Analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "execution slippage modeling",
+      "execution-slippage-modeling",
+      "estimation",
+      "simulation",
+      "realistic"
+    ],
+    "path": "skills/trading-execution-slippage-modeling/SKILL.md"
+  },
+  {
+    "name": "trading-execution-twap",
+    "description": "Time-Weighted Average Price algorithm for executing large orders with minimal market impact",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "execution twap",
+      "execution-twap",
+      "time-weighted",
+      "average",
+      "price"
+    ],
+    "path": "skills/trading-execution-twap/SKILL.md"
+  },
+  {
+    "name": "trading-execution-twap-vwap",
+    "description": "TWAP and VWAP Execution Algorithms: Institutional-Grade Order Execution",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "execution twap vwap",
+      "execution-twap-vwap",
+      "algorithms",
+      "institutional-grade",
+      "order"
+    ],
+    "path": "skills/trading-execution-twap-vwap/SKILL.md"
+  },
+  {
+    "name": "trading-execution-vwap",
+    "description": "Volume-Weighted Average Price algorithm for executing orders relative to market volume",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "execution vwap",
+      "execution-vwap",
+      "volume-weighted",
+      "average",
+      "price"
+    ],
+    "path": "skills/trading-execution-vwap/SKILL.md"
+  },
+  {
+    "name": "trading-fundamentals-market-regimes",
+    "description": "Market regime detection and adaptation for trading systems across changing market conditions.",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "fundamentals market regimes",
+      "fundamentals-market-regimes",
+      "regime",
+      "detection",
+      "adaptation"
+    ],
+    "path": "skills/trading-fundamentals-market-regimes/SKILL.md"
+  },
+  {
+    "name": "trading-fundamentals-market-structure",
+    "description": "Market Structure and Trading Participants Analysis",
+    "domain": "trading",
+    "tags": [
+      "fundamentals market structure",
+      "fundamentals-market-structure",
+      "trading",
+      "participants",
+      "analysis"
+    ],
+    "path": "skills/trading-fundamentals-market-structure/SKILL.md"
+  },
+  {
+    "name": "trading-fundamentals-risk-management-basics",
+    "description": "Position sizing, stop-loss implementation, and system-level risk controls to preserve capital",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "fundamentals risk management basics",
+      "fundamentals-risk-management-basics",
+      "position",
+      "sizing",
+      "stop-loss"
+    ],
+    "path": "skills/trading-fundamentals-risk-management-basics/SKILL.md"
+  },
+  {
+    "name": "trading-fundamentals-trading-edge",
+    "description": "Finding and maintaining competitive advantage in trading systems.",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "fundamentals trading edge",
+      "fundamentals-trading-edge",
+      "finding",
+      "maintaining",
+      "competitive"
+    ],
+    "path": "skills/trading-fundamentals-trading-edge/SKILL.md"
+  },
+  {
+    "name": "trading-fundamentals-trading-plan",
+    "description": "Trading Plan Structure and Risk Management Framework",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "fundamentals trading plan",
+      "fundamentals-trading-plan",
+      "structure",
+      "management",
+      "framework"
+    ],
+    "path": "skills/trading-fundamentals-trading-plan/SKILL.md"
+  },
+  {
+    "name": "trading-fundamentals-trading-psychology",
+    "description": "Emotional discipline, cognitive bias awareness, and maintaining operational integrity in trading",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "fundamentals trading psychology",
+      "fundamentals-trading-psychology",
+      "emotional",
+      "discipline",
+      "cognitive"
+    ],
+    "path": "skills/trading-fundamentals-trading-psychology/SKILL.md"
+  },
+  {
+    "name": "trading-paper-commission-model",
+    "description": "Commission Model and Fee Structure Simulation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "paper commission model",
+      "paper-commission-model",
+      "structure",
+      "simulation"
+    ],
+    "path": "skills/trading-paper-commission-model/SKILL.md"
+  },
+  {
+    "name": "trading-paper-fill-simulation",
+    "description": "Fill Simulation Models for Order Execution Probability",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "paper fill simulation",
+      "paper-fill-simulation",
+      "models",
+      "order",
+      "execution"
+    ],
+    "path": "skills/trading-paper-fill-simulation/SKILL.md"
+  },
+  {
+    "name": "trading-paper-market-impact",
+    "description": "Market Impact Modeling and Order Book Simulation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "paper market impact",
+      "paper-market-impact",
+      "modeling",
+      "order",
+      "simulation"
+    ],
+    "path": "skills/trading-paper-market-impact/SKILL.md"
+  },
+  {
+    "name": "trading-paper-performance-attribution",
+    "description": "Performance Attribution Systems for Trading Strategy Decomposition",
+    "domain": "trading",
+    "tags": [
+      "paper performance attribution",
+      "paper-performance-attribution",
+      "systems",
+      "trading",
+      "strategy"
+    ],
+    "path": "skills/trading-paper-performance-attribution/SKILL.md"
+  },
+  {
+    "name": "trading-paper-realistic-simulation",
+    "description": "Realistic Paper Trading Simulation with Market Impact and Execution Fees",
+    "domain": "trading",
+    "tags": [
+      "paper realistic simulation",
+      "paper-realistic-simulation",
+      "trading",
+      "market",
+      "impact"
+    ],
+    "path": "skills/trading-paper-realistic-simulation/SKILL.md"
+  },
+  {
+    "name": "trading-paper-slippage-model",
+    "description": "Slippage Modeling and Execution Simulation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "paper slippage model",
+      "paper-slippage-model",
+      "modeling",
+      "execution",
+      "simulation"
+    ],
+    "path": "skills/trading-paper-slippage-model/SKILL.md"
+  },
+  {
+    "name": "trading-risk-correlation-risk",
+    "description": "Correlation breakdown and portfolio diversification risk",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk correlation risk",
+      "risk-correlation-risk",
+      "breakdown",
+      "portfolio",
+      "diversification"
+    ],
+    "path": "skills/trading-risk-correlation-risk/SKILL.md"
+  },
+  {
+    "name": "trading-risk-drawdown-control",
+    "description": "Maximum drawdown control and equity preservation",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk drawdown control",
+      "risk-drawdown-control",
+      "maximum",
+      "equity",
+      "preservation"
+    ],
+    "path": "skills/trading-risk-drawdown-control/SKILL.md"
+  },
+  {
+    "name": "trading-risk-kill-switches",
+    "description": "Implementing multi-layered kill switches at account, strategy, market, and infrastructure levels to prevent catastrophic losses and system failures",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk kill switches",
+      "risk-kill-switches",
+      "implementing",
+      "multi-layered",
+      "account"
+    ],
+    "path": "skills/trading-risk-kill-switches/SKILL.md"
+  },
+  {
+    "name": "trading-risk-liquidity-risk",
+    "description": "Liquidity assessment and trade execution risk",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk liquidity risk",
+      "risk-liquidity-risk",
+      "assessment",
+      "trade",
+      "execution"
+    ],
+    "path": "skills/trading-risk-liquidity-risk/SKILL.md"
+  },
+  {
+    "name": "trading-risk-position-sizing",
+    "description": "Calculating optimal position sizes using Kelly criterion, volatility adjustments, and edge-based sizing to maximize long-term growth while managing risk",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk position sizing",
+      "risk-position-sizing",
+      "calculating",
+      "optimal",
+      "sizes"
+    ],
+    "path": "skills/trading-risk-position-sizing/SKILL.md"
+  },
+  {
+    "name": "trading-risk-stop-loss",
+    "description": "Stop loss strategies for risk management",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk stop loss",
+      "risk-stop-loss",
+      "strategies",
+      "management"
+    ],
+    "path": "skills/trading-risk-stop-loss/SKILL.md"
+  },
+  {
+    "name": "trading-risk-stress-testing",
+    "description": "Stress test scenarios and portfolio resilience analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk stress testing",
+      "risk-stress-testing",
+      "scenarios",
+      "portfolio",
+      "resilience"
+    ],
+    "path": "skills/trading-risk-stress-testing/SKILL.md"
+  },
+  {
+    "name": "trading-risk-tail-risk",
+    "description": "Tail risk management and extreme event protection",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk tail risk",
+      "risk-tail-risk",
+      "management",
+      "extreme",
+      "event"
+    ],
+    "path": "skills/trading-risk-tail-risk/SKILL.md"
+  },
+  {
+    "name": "trading-risk-value-at-risk",
+    "description": "Value at Risk calculations for portfolio risk management",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "risk value at risk",
+      "risk-value-at-risk",
+      "calculations",
+      "portfolio",
+      "management"
+    ],
+    "path": "skills/trading-risk-value-at-risk/SKILL.md"
+  },
+  {
+    "name": "trading-technical-cycle-analysis",
+    "description": "Market cycles and periodic patterns in price movement",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical cycle analysis",
+      "technical-cycle-analysis",
+      "market",
+      "cycles",
+      "periodic"
+    ],
+    "path": "skills/trading-technical-cycle-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-technical-false-signal-filtering",
+    "description": "False Signal Filtering Techniques for Robust Technical Analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical false signal filtering",
+      "technical-false-signal-filtering",
+      "techniques",
+      "robust",
+      "analysis"
+    ],
+    "path": "skills/trading-technical-false-signal-filtering/SKILL.md"
+  },
+  {
+    "name": "trading-technical-indicator-confluence",
+    "description": "Indicator Confluence Validation Systems for Confirming Trading Signals",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical indicator confluence",
+      "technical-indicator-confluence",
+      "validation",
+      "systems",
+      "confirming"
+    ],
+    "path": "skills/trading-technical-indicator-confluence/SKILL.md"
+  },
+  {
+    "name": "trading-technical-intermarket-analysis",
+    "description": "Cross-market relationships and asset class correlations",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical intermarket analysis",
+      "technical-intermarket-analysis",
+      "cross-market",
+      "relationships",
+      "asset"
+    ],
+    "path": "skills/trading-technical-intermarket-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-technical-market-microstructure",
+    "description": "Order book dynamics and order flow analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical market microstructure",
+      "technical-market-microstructure",
+      "order",
+      "dynamics",
+      "analysis"
+    ],
+    "path": "skills/trading-technical-market-microstructure/SKILL.md"
+  },
+  {
+    "name": "trading-technical-momentum-indicators",
+    "description": "RSI, MACD, Stochastic oscillators and momentum analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical momentum indicators",
+      "technical-momentum-indicators",
+      "stochastic",
+      "oscillators",
+      "analysis"
+    ],
+    "path": "skills/trading-technical-momentum-indicators/SKILL.md"
+  },
+  {
+    "name": "trading-technical-price-action-patterns",
+    "description": "Analysis of candlestick and chart patterns for price movement prediction",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical price action patterns",
+      "technical-price-action-patterns",
+      "analysis",
+      "candlestick",
+      "chart"
+    ],
+    "path": "skills/trading-technical-price-action-patterns/SKILL.md"
+  },
+  {
+    "name": "trading-technical-regime-detection",
+    "description": "Market Regime Detection Systems for Adaptive Trading Strategies",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical regime detection",
+      "technical-regime-detection",
+      "market",
+      "systems",
+      "adaptive"
+    ],
+    "path": "skills/trading-technical-regime-detection/SKILL.md"
+  },
+  {
+    "name": "trading-technical-statistical-arbitrage",
+    "description": "Pair trading and cointegration-based arbitrage strategies",
+    "domain": "trading",
+    "tags": [
+      "technical statistical arbitrage",
+      "technical-statistical-arbitrage",
+      "trading",
+      "cointegration-based",
+      "strategies"
+    ],
+    "path": "skills/trading-technical-statistical-arbitrage/SKILL.md"
+  },
+  {
+    "name": "trading-technical-support-resistance",
+    "description": "Technical levels where price tends to pause or reverse",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical support resistance",
+      "technical-support-resistance",
+      "levels",
+      "where",
+      "price"
+    ],
+    "path": "skills/trading-technical-support-resistance/SKILL.md"
+  },
+  {
+    "name": "trading-technical-trend-analysis",
+    "description": "Trend identification, classification, and continuation analysis",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical trend analysis",
+      "technical-trend-analysis",
+      "identification",
+      "classification",
+      "continuation"
+    ],
+    "path": "skills/trading-technical-trend-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-technical-volatility-analysis",
+    "description": "Volatility measurement, forecasting, and risk assessment",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical volatility analysis",
+      "technical-volatility-analysis",
+      "measurement",
+      "forecasting",
+      "assessment"
+    ],
+    "path": "skills/trading-technical-volatility-analysis/SKILL.md"
+  },
+  {
+    "name": "trading-technical-volume-profile",
+    "description": "Volume analysis techniques for understanding market structure",
+    "domain": "trading",
+    "tags": [
+      "trading",
+      "technical volume profile",
+      "technical-volume-profile",
+      "analysis",
+      "techniques",
+      "understanding"
+    ],
+    "path": "skills/trading-technical-volume-profile/SKILL.md"
+  }
+]

@@ -20,7 +20,27 @@ export declare class SkillRegistry {
     private config;
     private embeddingService;
     private logger;
+    /** In-memory cache for on-demand skill content */
+    private contentCache;
     constructor(config: SkillRegistryConfig);
+    /**
+     * Fetch the lightweight skills-index.json from a remote URL and populate the
+     * registry with metadata only (no content). Content is fetched on-demand.
+     * Falls back gracefully — callers should catch errors and fall back to loadSkills().
+     */
+    loadFromRemoteIndex(indexUrl: string): Promise<void>;
+    /**
+     * Fetch the full SKILL.md content for a skill on-demand.
+     * Resolution order: memory cache → local disk → GitHub raw → persist to disk.
+     */
+    getSkillContent(name: string): Promise<string>;
+    /** Write skill content to the on-disk content cache (non-fatal on error). */
+    private persistSkillContent;
+    /**
+     * Pre-populate the memory content cache from the on-disk content cache at startup.
+     * This avoids a GitHub round-trip for skills accessed since last restart.
+     */
+    private loadPersistedContentCache;
     /**
      * Load all skills from one or more skill directories.
      * Directories are processed in order; first directory wins on name collision
