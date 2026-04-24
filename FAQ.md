@@ -4,6 +4,39 @@ Comprehensive questions and answers about the agent-skill-router MCP system, how
 
 ---
 
+## Table of Contents
+
+### [Section 1: Why MCP is Better Than Direct File Loading](#section-1-why-mcp-is-better-than-direct-file-loading)
+- [Q1: Why should I use the MCP skill-router instead of just loading all SKILL.md files directly?](#q1-why-should-i-use-the-mcp-skill-router-instead-of-just-loading-all-skillmd-files-directly)
+- [Q2: What are the performance benefits of using MCP skill-router?](#q2-what-are-the-performance-benefits-of-using-mcp-skill-router)
+- [Q3: How does the skill-router handle 387 skills without blowing up the context window?](#q3-how-does-the-skill-router-handle-387-skills-without-blowing-up-the-context-window)
+- [Q4: Can I just load all skills at once? Why shouldn't I?](#q4-can-i-just-load-all-skills-at-once-why-shouldnt-i)
+
+### [Section 2: How the Skill-Router Works](#section-2-how-the-skill-router-works)
+- [Q5: How does skill auto-routing work?](#q5-how-does-skill-auto-routing-work)
+- [Q6: What are "triggers" and why are they important?](#q6-what-are-triggers-and-why-are-they-important)
+- [Q7: Can I manually request a skill without relying on auto-routing?](#q7-can-i-manually-request-a-skill-without-relying-on-auto-routing)
+- [Q8: What happens if the router matches multiple skills to my task?](#q8-what-happens-if-the-router-matches-multiple-skills-to-my-task)
+
+### [Section 3: Skill Management](#section-3-skill-management)
+- [Q9: How do I add a new skill to the repository?](#q9-how-do-i-add-a-new-skill-to-the-repository)
+- [Q10: What is the relationship between skill domains, roles, and triggers?](#q10-what-is-the-relationship-between-skill-domains-roles-and-triggers)
+- [Q11: How do I update an existing skill without recreating it?](#q11-how-do-i-update-an-existing-skill-without-recreating-it)
+- [Q12: What happens when I run `generate_readme.py`?](#q12-what-happens-when-i-run-generate_readmepy)
+
+### [Section 4: Skill Quality & Consistency](#section-4-skill-quality--consistency)
+- [Q13: What quality standards do skills need to meet?](#q13-what-quality-standards-do-skills-need-to-meet)
+- [Q14: How are skills tested before being added to the repository?](#q14-how-are-skills-tested-before-being-added-to-the-repository)
+- [Q15: What makes a "good trigger" vs a "bad trigger"?](#q15-what-makes-a-good-trigger-vs-a-bad-trigger)
+- [Q16: How are related skills determined and linked?](#q16-how-are-related-skills-determined-and-linked)
+
+### [Section 5: OpenCode Integration](#section-5-opencode-integration)
+- [Q17: How does the skill-router integrate with OpenCode?](#q17-how-does-the-skill-router-integrate-with-opencode)
+- [Q18: Do I need to restart OpenCode when skills are updated?](#q18-do-i-need-to-restart-opencode-when-skills-are-updated)
+- [Q19: Can the skill-router run offline?](#q19-can-the-skill-router-run-offline)
+
+---
+
 ## Section 1: Why MCP is Better Than Direct File Loading
 
 ### Q1: Why should I use the MCP skill-router instead of just loading all SKILL.md files directly?
