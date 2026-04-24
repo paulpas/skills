@@ -39,6 +39,17 @@ Restart OpenCode. Every task you type now automatically routes to the most relev
 
 ---
 
+## FAQ
+
+**Have questions?** Check the **[Comprehensive FAQ](./FAQ.md)** for 27 questions covering:
+- Why MCP is better than direct skill loading
+- How auto-routing works
+- Skill management and creation
+- Troubleshooting and best practices
+- Offline mode, OpenCode integration, and more
+
+---
+
 ## How It Works
 
 Every time OpenCode receives a task, the `route_to_skill` MCP tool fires automatically:
