@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: equity, maximum, preservation, risk drawdown control, risk-drawdown-control
-  related-skills: trading-backtest-drawdown-analysis, trading-backtest-position-sizing
-    trading-exchange-order-book-sync, trading-exchange-order-execution-api
+  related-skills: trading-backtest-drawdown-analysis, trading-exchange-order-execution-api
 ---
 
 **Role:** Implement drawdown protection mechanisms to preserve capital during losing streaks

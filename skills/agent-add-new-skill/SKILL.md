@@ -12,6 +12,8 @@ metadata:
   output-format: analysis
   triggers: add skill, contribute skill, create skill, new skill, skill authoring,
     skill template
+  related-skills: agent-autoscaling-advisor, agent-ci-cd-pipeline-analyzer, agent-confidence-based-selector,
+    agent-container-inspector
 ---
 
 

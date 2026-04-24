@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ai multi asset model, ai-multi-asset-model, inter-asset, portfolio, relationships
-  related-skills: trading-backtest-drawdown-analysis, trading-risk-correlation-risk
-    trading-backtest-position-sizing, trading-fundamentals-risk-management-basics
+  related-skills: trading-backtest-drawdown-analysis, trading-fundamentals-risk-management-basics
 ---
 
 **Role:** Capture and exploit relationships between multiple assets for diversified trading

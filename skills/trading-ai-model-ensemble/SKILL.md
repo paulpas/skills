@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ai model ensemble, ai-model-ensemble, combine, models, multiple
-  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai, trading-technical-cycle-analysis
-    trading-technical-false-signal-filtering
+  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai
 ---
 
 **Role:** Design and implement ensemble methods that leverage multiple models for trading signals

@@ -11,8 +11,7 @@ metadata:
   output-format: code
   triggers: ai hyperparameter tuning, ai-hyperparameter-tuning, configurations, model,
     optimize
-  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai, trading-technical-cycle-analysis
-    trading-technical-false-signal-filtering
+  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai
 ---
 
 **Role:** Systematically find optimal hyperparameters that balance prediction accuracy with trading performance

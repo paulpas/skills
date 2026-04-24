@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: architecture, data lake, data-lake, management, trading
-  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data, trading-data-backfill-strategy
-    trading-data-order-book
+  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data
 ---
 
 **Role:** Provide scalable, cost-effective storage for trading data with efficient query capabilities

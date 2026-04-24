@@ -11,8 +11,7 @@ metadata:
   output-format: code
   triggers: classification, continuation, identification, technical trend analysis,
     technical-trend-analysis
-  related-skills: trading-technical-cycle-analysis, trading-technical-false-signal-filtering
-    trading-fundamentals-trading-edge, trading-fundamentals-trading-plan
+  related-skills: trading-fundamentals-trading-plan, trading-technical-cycle-analysis
 ---
 
 **Role:** Determine market trend direction and strength for directional trading decisions

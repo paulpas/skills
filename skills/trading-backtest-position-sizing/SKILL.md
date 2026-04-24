@@ -12,8 +12,8 @@ metadata:
   output-format: code
   triggers: algorithms, backtest position sizing, backtest-position-sizing, fixed,
     fractional
-  related-skills: trading-backtest-drawdown-analysis, trading-fundamentals-risk-management-basics, trading-risk-position-sizing, trading-risk-stop-loss
-    trading-exchange-order-book-sync, trading-exchange-order-execution-api
+  related-skills: trading-backtest-drawdown-analysis, trading-exchange-order-execution-api,
+    trading-fundamentals-risk-management-basics, trading-risk-position-sizing
 ---
 
 **Role:** Risk Management Specialist — implements dynamic position sizing algorithms to optimize capital allocation while controlling risk exposure and maximizing long-term growth.

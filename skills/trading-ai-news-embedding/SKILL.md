@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ai news embedding, ai-news-embedding, embeddings, process, trading
-  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai, trading-technical-cycle-analysis
-    trading-technical-false-signal-filtering
+  related-skills: trading-ai-anomaly-detection, trading-ai-explainable-ai
 ---
 
 **Role:** Extract meaningful representations from news text to create predictive trading features

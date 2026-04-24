@@ -11,8 +11,7 @@ metadata:
   output-format: code
   triggers: data time series database, data-time-series-database, optimization, queries,
     time-series, performance, speed
-  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data, trading-data-backfill-strategy
-    trading-data-order-book
+  related-skills: trading-ai-order-flow-analysis, trading-data-alternative-data
 ---
 
 **Role:** Efficiently query time-series data with support for financial data patterns

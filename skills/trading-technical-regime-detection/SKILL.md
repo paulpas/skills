@@ -10,8 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: adaptive, market, systems, technical regime detection, technical-regime-detection
-  related-skills: trading-technical-cycle-analysis, trading-technical-false-signal-filtering
-    trading-fundamentals-trading-edge, trading-fundamentals-trading-plan
+  related-skills: trading-fundamentals-trading-plan, trading-technical-cycle-analysis
 ---
 
 **Role:** Market Regime Analyst — implements algorithms to identify and track market regime transitions, enabling adaptive strategy parameters and risk management.
