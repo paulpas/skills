@@ -71,6 +71,20 @@ export class AgentSkillRoutingApp {
   async start(port: number = 3000): Promise<void> {
     this.app = fastify({ logger: false });
 
+    // Log every HTTP request/response
+    this.app.addHook('onRequest', async (request) => {
+      (request as any)._startTime = Date.now();
+      this.logger.info(`→ ${request.method} ${request.url}`);
+    });
+    this.app.addHook('onSend', async (request, reply, payload) => {
+      const durationMs = Date.now() - ((request as any)._startTime || Date.now());
+      this.logger.info(`← ${request.method} ${request.url}`, {
+        status: reply.statusCode,
+        durationMs,
+      });
+      return payload;
+    });
+
     // ── /route ─────────────────────────────────────────────────────────────
     this.app.post('/route', async (request, reply) => {
       if (!this.ready) {
@@ -79,7 +93,13 @@ export class AgentSkillRoutingApp {
       }
       try {
         const body = request.body as RouteRequestBody;
+        this.logger.info('Routing task', { task: body.task.slice(0, 120) });
         const response = await this.router!.routeTask(body);
+        this.logger.info('Route result', {
+          topSkill: response.selectedSkills?.[0]?.name,
+          totalMatches: response.selectedSkills?.length,
+          confidence: response.selectedSkills?.[0]?.score,
+        });
         reply.code(200).send(response);
       } catch (error) {
         this.logger.error('Route request failed', {

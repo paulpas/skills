@@ -19,8 +19,8 @@ class Logger {
     constructor(category, config = {}) {
         this.category = category;
         this.config = {
-            level: 'info',
-            includePayloads: false,
+            level: process.env.LOG_LEVEL || config.level || 'info',
+            includePayloads: true,
             logDirectory: './logs',
             logToConsole: true,
             ...config,
@@ -108,8 +108,12 @@ class Logger {
      */
     writeToConsole(entry) {
         const color = this.getColorForLevel(entry.level);
+        const reset = '\x1b[0m';
         const timestamp = entry.timestamp.split('T')[1].slice(0, 12);
-        console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${entry.data && this.config.includePayloads ? ' ' + JSON.stringify(entry.data) : ''}\x1b[0m`);
+        const dataStr = entry.data && Object.keys(entry.data).length > 0
+            ? '  ' + JSON.stringify(entry.data)
+            : '';
+        console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${dataStr}${reset}`);
     }
     /**
      * Get ANSI color code for log level

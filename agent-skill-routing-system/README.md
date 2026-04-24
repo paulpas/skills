@@ -85,6 +85,98 @@ Unauthenticated GitHub access is rate-limited to 60 requests/hour. For frequent 
 GITHUB_TOKEN=ghp_... ./install-skill-router.sh
 ```
 
+## OpenCode Integration
+
+The skill router exposes a native MCP tool (`route_to_skill`) that OpenCode calls automatically at the start of every task to load the most relevant skill.
+
+### Prerequisites
+- OpenCode installed and configured at `~/.config/opencode/opencode.json`
+- Skill router running (see Quick Start above)
+
+### Automated Setup
+
+Run the installer with the `--integrate-opencode` flag:
+```bash
+./install-skill-router.sh --integrate-opencode
+```
+
+This will:
+1. Create `~/.config/opencode/skill-router-api.md` — API reference injected into every OpenCode session
+2. Create `~/.config/opencode/skill-router-mcp.js` — MCP stdio wrapper (Node.js, stdlib-only)
+3. Register the MCP server in `~/.config/opencode/opencode.json`
+
+### Manual Setup
+
+If you prefer to configure manually:
+
+**Step 1** — Copy the MCP wrapper script:
+```bash
+cp skill-router-mcp.js ~/.config/opencode/skill-router-mcp.js
+chmod +x ~/.config/opencode/skill-router-mcp.js
+```
+
+**Step 2** — Add the MCP server to `~/.config/opencode/opencode.json`:
+
+Open `~/.config/opencode/opencode.json` in your editor and add a `skill-router` entry to the `mcp` object. **Important**: OpenCode's MCP local server schema requires `command` as a single `string[]` array (binary + args merged) — separate `args` and `type: "local"` with `transport` field are not valid:
+
+```json
+{
+  "mcp": {
+    "skill-router": {
+      "type": "local",
+      "command": ["node", "/home/YOUR_USER/.config/opencode/skill-router-mcp.js"],
+      "enabled": true
+    }
+  }
+}
+```
+
+Replace `YOUR_USER` with your username (e.g. `paulpas`).
+
+**Step 3** — Add the API reference to `instructions`:
+```json
+{
+  "instructions": [
+    "/home/YOUR_USER/.config/opencode/skill-router-api.md"
+  ]
+}
+```
+
+**Step 4** — Restart OpenCode. The `route_to_skill` tool will appear in the available MCP tools.
+
+### Verifying the Integration
+
+In an OpenCode chat session:
+```
+What MCP tools do you have? Then use route_to_skill to find the best skill for reviewing Python code for security issues.
+```
+
+Expected output:
+- `route_to_skill` listed as an available tool ✅
+- AI calls `route_to_skill("review Python code for security issues")` ✅  
+- Full `SKILL.md` content returned and followed ✅
+
+### Watching Logs
+
+To monitor skill routing in real time (two terminals):
+
+```bash
+# Terminal 1 — Docker service logs
+docker logs -f skill-router
+
+# Terminal 2 — MCP wrapper logs
+tail -f ~/.config/opencode/skill-router-mcp.log
+```
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `Invalid input mcp.skill-router` | Ensure `command` is a `string[]` array with binary + script merged, no separate `args` or `transport` field |
+| `route_to_skill` not in tool list | Restart OpenCode after editing `opencode.json` |
+| Tool returns "router not running" | Run `docker start skill-router` or `./install-skill-router.sh` |
+| Skill content missing | Check `docker logs skill-router` — ensure `ready: true` and 200+ skills loaded |
+
 ## Quick Start (Docker)
 
 The recommended way to run the router is via Docker with the skills repo mounted:
