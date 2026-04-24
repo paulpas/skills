@@ -452,6 +452,333 @@
     "path": "skills/cncf-artifact-hub/SKILL.md"
   },
   {
+    "name": "cncf-aws-auto-scaling",
+    "description": "Configures automatic scaling of compute resources (EC2, RDS, DynamoDB, Lambda) based on demand metrics with scaling policies and lifecycle hooks.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "auto-scaling",
+      "scaling policy",
+      "target tracking",
+      "ASG",
+      "dynamic scaling",
+      "scheduled scaling"
+    ],
+    "path": "skills/cncf-aws-auto-scaling/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-cloudformation",
+    "description": "Creates Infrastructure as Code templates with CloudFormation for reproducible, versioned, automated deployments of entire AWS infrastructure stacks.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "CloudFormation",
+      "infrastructure as code",
+      "IaC",
+      "CloudFormation template",
+      "stack",
+      "AWS template",
+      "YAML",
+      "JSON"
+    ],
+    "path": "skills/cncf-aws-cloudformation/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-cloudfront",
+    "description": "Configures CloudFront CDN for global content distribution with edge caching, DDoS protection, and SSL/TLS termination for improved performance and security.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "CloudFront",
+      "CDN",
+      "content distribution",
+      "edge caching",
+      "DDoS protection",
+      "WAF",
+      "SSL termination"
+    ],
+    "path": "skills/cncf-aws-cloudfront/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-cloudwatch",
+    "description": "Configures CloudWatch monitoring with metrics, logs, alarms, and dashboards for visibility into AWS resource performance, application health, and operational metrics.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "CloudWatch",
+      "monitoring",
+      "metrics",
+      "logs",
+      "alarms",
+      "dashboard",
+      "log insights",
+      "log groups"
+    ],
+    "path": "skills/cncf-aws-cloudwatch/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-dynamodb",
+    "description": "Deploys managed NoSQL databases with DynamoDB for scalable, low-latency key-value storage, streams, and global tables with high availability and automatic replication.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "DynamoDB",
+      "NoSQL",
+      "key-value store",
+      "DynamoDB stream",
+      "global table",
+      "partition key",
+      "sort key",
+      "auto-scaling"
+    ],
+    "path": "skills/cncf-aws-dynamodb/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-ec2",
+    "description": "Deploys, configures, and auto-scales EC2 instances with load balancing, using best practices for high availability, security, and cost optimization in AWS compute environments.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "EC2",
+      "compute instances",
+      "auto-scaling",
+      "load balancing",
+      "ASG",
+      "launch template",
+      "instance types",
+      "EBS volumes"
+    ],
+    "path": "skills/cncf-aws-ec2/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-ecr",
+    "description": "Manages container image repositories with ECR for secure storage, scanning, replication, and integration with EKS, ECS, and Lambda for container deployments.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "ECR",
+      "container registry",
+      "Docker images",
+      "image repository",
+      "image scanning",
+      "container security"
+    ],
+    "path": "skills/cncf-aws-ecr/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-eks",
+    "description": "Deploys managed Kubernetes clusters with EKS for container orchestration, auto-scaling, networking, and integrations with AWS services for production Kubernetes workloads.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "EKS",
+      "Kubernetes",
+      "container orchestration",
+      "K8s",
+      "cluster",
+      "pods",
+      "namespaces",
+      "ingress"
+    ],
+    "path": "skills/cncf-aws-eks/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-elb",
+    "description": "Configures Elastic Load Balancing (ALB, NLB, Classic) for distributing traffic across instances with health checks, SSL termination, and cross-AZ failover.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "ELB",
+      "load balancer",
+      "ALB",
+      "NLB",
+      "application load balancer",
+      "health check",
+      "SSL termination",
+      "traffic distribution"
+    ],
+    "path": "skills/cncf-aws-elb/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-iam",
+    "description": "Configures identity and access management with IAM users, roles, policies, and MFA for secure, least-privilege access control across AWS resources and services.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "IAM",
+      "identity management",
+      "access control",
+      "IAM role",
+      "IAM policy",
+      "MFA",
+      "least privilege",
+      "service role"
+    ],
+    "path": "skills/cncf-aws-iam/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-kms",
+    "description": "Manages encryption keys with AWS KMS for data protection at rest and in transit, key rotation, and compliance with encryption standards across all AWS services.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "KMS",
+      "encryption",
+      "key management",
+      "data encryption",
+      "key rotation",
+      "CMK",
+      "customer-managed key"
+    ],
+    "path": "skills/cncf-aws-kms/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-lambda",
+    "description": "Deploys serverless event-driven applications with Lambda functions, triggers, layers, and VPC integration for cost-effective, auto-scaling compute without server management.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "Lambda",
+      "serverless",
+      "event-driven",
+      "Lambda function",
+      "API Gateway",
+      "S3 trigger",
+      "SQS",
+      "DynamoDB stream"
+    ],
+    "path": "skills/cncf-aws-lambda/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-rds",
+    "description": "Deploys managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server) with multi-AZ failover, automated backups, read replicas, and encryption for production-grade database infrastructure.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "RDS",
+      "relational database",
+      "MySQL",
+      "PostgreSQL",
+      "multi-AZ",
+      "database failover",
+      "read replica",
+      "automated backup"
+    ],
+    "path": "skills/cncf-aws-rds/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-route53",
+    "description": "Configures DNS routing with Route 53 for domain registration, health checks, failover, and traffic management with private hosted zones.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "Route 53",
+      "DNS",
+      "domain",
+      "health check",
+      "failover",
+      "traffic policy",
+      "hosted zone",
+      "CNAME"
+    ],
+    "path": "skills/cncf-aws-route53/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-s3",
+    "description": "Configures S3 object storage with versioning, lifecycle policies, encryption, and access controls for durable, scalable data storage with cost optimization in AWS.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "S3",
+      "object storage",
+      "bucket",
+      "versioning",
+      "lifecycle policy",
+      "S3 access",
+      "static website",
+      "object expiration"
+    ],
+    "path": "skills/cncf-aws-s3/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-secrets-manager",
+    "description": "Manages sensitive data with automatic encryption, rotation, and fine-grained access control for database passwords, API keys, and credentials.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "Secrets Manager",
+      "secret management",
+      "credential rotation",
+      "sensitive data",
+      "password rotation"
+    ],
+    "path": "skills/cncf-aws-secrets-manager/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-sns",
+    "description": "Deploys managed pub/sub messaging with SNS for asynchronous notifications across services, mobile push, email, and Lambda integrations.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "SNS",
+      "publish subscribe",
+      "messaging",
+      "notifications",
+      "pub/sub",
+      "topic",
+      "subscription"
+    ],
+    "path": "skills/cncf-aws-sns/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-sqs",
+    "description": "Deploys managed message queues with SQS for asynchronous processing, decoupling services, and reliable message delivery with visibility timeout and dead-letter queues.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "SQS",
+      "message queue",
+      "queue",
+      "FIFO queue",
+      "visibility timeout",
+      "dead-letter queue",
+      "message deduplication"
+    ],
+    "path": "skills/cncf-aws-sqs/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-ssm",
+    "description": "Manages EC2 instances and on-premises servers with AWS Systems Manager for configuration management, patch management, and secure shell access without SSH keys.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "Systems Manager",
+      "SSM",
+      "patch management",
+      "configuration management",
+      "Session Manager",
+      "parameter store"
+    ],
+    "path": "skills/cncf-aws-ssm/SKILL.md"
+  },
+  {
+    "name": "cncf-aws-vpc",
+    "description": "Configures Virtual Private Clouds with subnets, route tables, NAT gateways, security groups, and network ACLs for secure, isolated network infrastructure on AWS.",
+    "domain": "cncf",
+    "tags": [
+      "cncf",
+      "VPC",
+      "virtual private cloud",
+      "subnet",
+      "route table",
+      "security group",
+      "NAT gateway",
+      "network ACL",
+      "VPN"
+    ],
+    "path": "skills/cncf-aws-vpc/SKILL.md"
+  },
+  {
     "name": "cncf-backstage",
     "description": "Backstage in Cloud-Native Engineering - Developer Portal for Microservices",
     "domain": "cncf",
@@ -1799,6 +2126,41 @@
       "machine"
     ],
     "path": "skills/coding-websocket-manager/SKILL.md"
+  },
+  {
+    "name": "programming-abl-v10-learning",
+    "description": "Reference guide for Progress OpenEdge ABL 10.1A (2005) \u2014 data types, variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow",
+    "domain": "programming",
+    "tags": [
+      "programming",
+      "ABL",
+      "OpenEdge",
+      "Progress 4GL",
+      "ABL v10",
+      "OpenEdge 10",
+      "Progress ABL",
+      "ABL programming"
+    ],
+    "path": "skills/programming-abl-v10-learning/SKILL.md"
+  },
+  {
+    "name": "programming-abl-v12-learning",
+    "description": "Reference guide for Progress OpenEdge ABL 12.7 (2023) \u2014 v10\u2192v12 migration, INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins",
+    "domain": "programming",
+    "tags": [
+      "programming",
+      "ABL v12",
+      "OpenEdge 12",
+      "ABL 12.7",
+      "v10 to v12 migration",
+      "ABL migration",
+      "CATCH THROW",
+      "JsonObject",
+      "READ-JSON",
+      "VAR shorthand",
+      "safe navigation"
+    ],
+    "path": "skills/programming-abl-v12-learning/SKILL.md"
   },
   {
     "name": "programming-algorithms",
