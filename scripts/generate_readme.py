@@ -211,10 +211,11 @@ def generate_skills_by_domain(skills: List[Dict]) -> str:
 
         lines.append(f"\n### {domain.capitalize()} ({skill_count} skills)\n")
         for skill in domain_skills:
+            skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
             lines.append(
-                f"- **{skill['name']}** — {skill['description'][:80]}..."
+                f"- {skill_link} — {skill['description'][:80]}..."
                 if len(skill["description"]) > 80
-                else f"- **{skill['name']}** — {skill['description']}"
+                else f"- {skill_link} — {skill['description']}"
             )
         lines.append("")
 
@@ -253,10 +254,11 @@ def generate_skills_by_role(skills: List[Dict]) -> str:
             f"\n### {role_display.get(role, role.capitalize())} ({skill_count} skills)\n"
         )
         for skill in role_skills:
+            skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
             lines.append(
-                f"- **{skill['name']}** — {skill['description'][:80]}..."
+                f"- {skill_link} — {skill['description'][:80]}..."
                 if len(skill["description"]) > 80
-                else f"- **{skill['name']}** — {skill['description']}"
+                else f"- {skill_link} — {skill['description']}"
             )
         lines.append("")
 
@@ -282,7 +284,8 @@ def generate_skills_index(skills: List[Dict]) -> str:
             triggers += "..."
 
         domain = skill["domain"].capitalize()
-        lines.append(f"| `{skill['name']}` | {domain} | {desc} | {triggers} |")
+        skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
+        lines.append(f"| {skill_link} | {domain} | {desc} | {triggers} |")
 
     lines.append("")
     return "\n".join(lines)
