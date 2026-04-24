@@ -14,25 +14,36 @@ Production-grade agentic skill orchestration for OpenCode. Routes tasks to the r
 Every time OpenCode receives a task, the skill router automatically selects the most relevant skill and injects its full content into the AI's context. Here is the complete flow with real timing data:
 
 ```mermaid
-flowchart TD
-    A([User prompt in OpenCode]) --> B
+sequenceDiagram
+    participant U as OpenCode (User)
+    participant MCP as skill-router-mcp.js
+    participant API as Fastify :3000
+    participant Safety as Safety Layer
+    participant Embed as Embedding Service
+    participant VDB as Vector Database
+    participant LLM as LLM Ranker
+    participant Plan as Execution Planner
+    participant Disk as SKILL.md (disk)
 
-    subgraph MCP["MCP Layer (localhost)"]
-        B["skill-router-mcp.js\ntools: route_to_skill, list_skills\nLogs → skill-router-mcp.log"]
-    end
-
-    B -->|"POST /route"| C
-
-    subgraph Docker["Docker: skill-router :3000"]
-        C["Fastify HTTP Server\nPOST /route"] --> D["Safety Layer\ninjection detection + schema validation"]
-        D --> E["Embedding Service\ntext-embedding-3-small\n~400ms"]
-        E --> F["Vector Database\ncosine similarity search\n→ top-20 candidates"]
-        F --> G["LLM Ranker\ngpt-4o-mini / claude / llama.cpp\n~3,000ms — scores 0.0–1.0"]
-        G --> H["Execution Planner\nsequential / parallel / hybrid"]
-    end
-
-    H -->|"top skill name"| I["MCP wrapper reads\n/home/user/git/skills/&lt;name&gt;/SKILL.md\n~1ms"]
-    I --> J([OpenCode AI follows\nskill guidelines & patterns])
+    U->>MCP: invoke route_to_skill(task)
+    MCP->>API: POST /route {"task":"..."}
+    API->>Safety: validate request
+    Safety-->>API: pass
+    API->>Embed: generate task embedding
+    Note over Embed: text-embedding-3-small ~400ms
+    Embed-->>API: task vector
+    API->>VDB: cosine similarity search
+    Note over VDB: returns top-20 candidates
+    VDB-->>API: candidates (e.g. score=0.508, 0.442...)
+    API->>LLM: rank candidates
+    Note over LLM: gpt-4o-mini / claude / llama.cpp ~3,000ms
+    LLM-->>API: ranked skills with scores + reasoning
+    API->>Plan: build execution plan
+    Plan-->>API: sequential / parallel / hybrid
+    API-->>MCP: top skill name + confidence
+    MCP->>Disk: read /skills/<name>/SKILL.md
+    Disk-->>MCP: full skill content
+    MCP-->>U: skill content injected into context
 ```
 
 ### Typical Latency Breakdown
@@ -75,14 +86,24 @@ flowchart TD
 ## Architecture
 
 ```mermaid
-flowchart TD
-    A[User Request] --> B[Safety Layer\ninjection detection · schema validation · allowlist]
-    B --> C[Embedding Service\ntext-embedding-3-small → task vector]
-    C --> D[Vector Database\ncosine similarity → top-K candidates]
-    D --> E[LLM Ranker\nranks candidates · assigns confidence scores]
-    E --> F[Execution Planner\nsequential / parallel / hybrid strategy]
-    F --> G[Execution Engine\nruns skills via MCP tools · handles retries]
-    G --> H[MCP Bridge\nshell · file · http · kubectl · log_fetch]
+sequenceDiagram
+    participant C as Client
+    participant S as Safety Layer
+    participant E as Embedding Service
+    participant V as Vector Database
+    participant L as LLM Ranker
+    participant P as Execution Planner
+    participant X as Execution Engine
+    participant M as MCP Bridge
+
+    C->>S: task request
+    S->>E: validated request
+    E->>V: task vector
+    V->>L: top-K candidates
+    L->>P: ranked skills + scores
+    P->>X: execution plan
+    X->>M: skill invocations
+    M-->>C: results
 ```
 
 ## Remote Skill Loading
