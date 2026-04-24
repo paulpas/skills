@@ -22,6 +22,8 @@ class SkillRegistry {
     config;
     embeddingService;
     logger;
+    /** In-memory cache for on-demand skill content */
+    contentCache = new Map();
     constructor(config) {
         this.config = {
             cacheDirectory: './.skill-cache',
@@ -30,6 +32,120 @@ class SkillRegistry {
         };
         this.embeddingService = new EmbeddingService_js_1.EmbeddingService();
         this.logger = new Logger_js_1.Logger('SkillRegistry');
+        this.loadPersistedContentCache();
+    }
+    /**
+     * Fetch the lightweight skills-index.json from a remote URL and populate the
+     * registry with metadata only (no content). Content is fetched on-demand.
+     * Falls back gracefully — callers should catch errors and fall back to loadSkills().
+     */
+    async loadFromRemoteIndex(indexUrl) {
+        this.logger.info('[INDEX] Fetching skills index', { url: indexUrl });
+        const t0 = Date.now();
+        const response = await fetch(indexUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch skills index: ${response.status}`);
+        }
+        const entries = await response.json();
+        this.logger.info('[INDEX] Skills index loaded', { count: entries.length, durationMs: Date.now() - t0 });
+        for (const entry of entries) {
+            const metadata = {
+                name: entry.name,
+                category: entry.domain,
+                description: entry.description,
+                tags: entry.tags,
+                input_schema: { type: 'object', properties: {}, required: [] },
+                output_schema: { type: 'object', properties: {}, required: [] },
+            };
+            const skill = { metadata, sourceFile: entry.path, rawContent: '' };
+            if (!this.skills.has(entry.name)) {
+                await this.addSkill(skill);
+            }
+        }
+        if (this.config.generateEmbeddings) {
+            await this.generateMissingEmbeddings();
+        }
+        this.logger.info('[INDEX] Registry ready', { total: this.skills.size });
+    }
+    /**
+     * Fetch the full SKILL.md content for a skill on-demand.
+     * Resolution order: memory cache → local disk → GitHub raw → persist to disk.
+     */
+    async getSkillContent(name) {
+        // 1. Memory cache hit — fastest path
+        const cached = this.contentCache.get(name);
+        if (cached) {
+            this.logger.info('[ON-DEMAND] skill served from memory cache', { name });
+            return cached;
+        }
+        // 2. Try local disk (if volume is mounted or local dev)
+        const localPaths = Array.isArray(this.config.skillsDirectory)
+            ? this.config.skillsDirectory
+            : [this.config.skillsDirectory];
+        for (const dir of localPaths) {
+            const localFile = path_1.default.join(dir, name, 'SKILL.md');
+            try {
+                const content = await fs_1.default.promises.readFile(localFile, 'utf-8');
+                this.contentCache.set(name, content);
+                this.logger.info('[ON-DEMAND] skill served from local disk', { name, file: localFile });
+                return content;
+            }
+            catch {
+                // Not in this directory — try the next one
+            }
+        }
+        // 3. Fetch from GitHub raw
+        const skill = this.skills.get(name);
+        const skillPath = skill?.sourceFile ?? `skills/${name}/SKILL.md`;
+        const rawUrl = `https://raw.githubusercontent.com/paulpas/skills/main/${skillPath}`;
+        this.logger.info('[ON-DEMAND] fetching skill from GitHub', { name, url: rawUrl });
+        const t0 = Date.now();
+        const response = await fetch(rawUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch skill ${name} from GitHub: ${response.status}`);
+        }
+        const content = await response.text();
+        const durationMs = Date.now() - t0;
+        this.logger.info('[ON-DEMAND] skill fetched from GitHub', { name, durationMs, bytes: content.length });
+        // Cache in memory for the lifetime of this process
+        this.contentCache.set(name, content);
+        // Persist to disk so next restart skips the GitHub fetch
+        await this.persistSkillContent(name, content);
+        return content;
+    }
+    /** Write skill content to the on-disk content cache (non-fatal on error). */
+    async persistSkillContent(name, content) {
+        try {
+            const cacheDir = path_1.default.join(this.config.cacheDirectory ?? './.skill-cache', 'content');
+            await fs_1.default.promises.mkdir(cacheDir, { recursive: true });
+            await fs_1.default.promises.writeFile(path_1.default.join(cacheDir, `${name}.md`), content, 'utf-8');
+        }
+        catch {
+            // Non-fatal: disk cache is best-effort
+        }
+    }
+    /**
+     * Pre-populate the memory content cache from the on-disk content cache at startup.
+     * This avoids a GitHub round-trip for skills accessed since last restart.
+     */
+    loadPersistedContentCache() {
+        try {
+            const cacheDir = path_1.default.join(this.config.cacheDirectory ?? './.skill-cache', 'content');
+            if (!fs_1.default.existsSync(cacheDir))
+                return;
+            const files = fs_1.default.readdirSync(cacheDir).filter((f) => f.endsWith('.md'));
+            for (const file of files) {
+                const skillName = file.replace(/\.md$/, '');
+                const content = fs_1.default.readFileSync(path_1.default.join(cacheDir, file), 'utf-8');
+                this.contentCache.set(skillName, content);
+            }
+            if (files.length > 0) {
+                this.logger.info('[ON-DEMAND] Loaded persisted skill content from disk cache', { count: files.length });
+            }
+        }
+        catch {
+            // Cache directory doesn't exist yet — first boot
+        }
     }
     /**
      * Load all skills from one or more skill directories.

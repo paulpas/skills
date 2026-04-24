@@ -15,6 +15,8 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 COPY samples/ ./samples/
 EXPOSE 3000
+# SKILLS_DIRECTORY is optional when GITHUB_SKILLS_ENABLED=true (remote index is used instead).
+# Mount -v /your/skills:/skills:ro only if you want a local override of skill content.
 ENV SKILLS_DIRECTORY=/skills
 ENV LLM_PROVIDER=openai
 ENV LLM_MODEL=gpt-4o-mini
@@ -24,10 +26,13 @@ ENV EMBEDDING_MODEL=text-embedding-3-small
 ENV LLAMACPP_BASE_URL=http://host.docker.internal:8080
 ENV GITHUB_SKILLS_ENABLED=true
 ENV GITHUB_SKILLS_REPO=https://github.com/paulpas/skills
+# Base URL for GitHub raw content — used for skills-index.json and on-demand SKILL.md fetches
+ENV GITHUB_RAW_BASE_URL=https://raw.githubusercontent.com/paulpas/skills/main
 ENV SKILL_CACHE_DIR=/cache/skills
 ENV SKILL_SYNC_INTERVAL=3600
 # GITHUB_TOKEN= (optional, set at runtime for private repos or higher rate limits)
-VOLUME ["/skills", "/cache"]
+# /skills volume mount is optional — skill content is fetched on-demand from GitHub
+VOLUME ["/cache"]
 ENV LOG_LEVEL=info
 ENV NODE_ENV=production
 HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=3 \

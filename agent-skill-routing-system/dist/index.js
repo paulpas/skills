@@ -211,6 +211,23 @@ class AgentSkillRoutingApp {
             }));
             reply.code(200).send({ total: skills.length, skills });
         });
+        // ── /skill/:name — on-demand SKILL.md content ─────────────────────────
+        this.app.get('/skill/:name', async (request, reply) => {
+            if (!this.ready) {
+                return reply.status(503).send({ error: 'Skills are still loading, please wait.' });
+            }
+            const { name } = request.params;
+            try {
+                const content = await this.router.getRegistry().getSkillContent(name);
+                reply.header('Content-Type', 'text/plain; charset=utf-8').send(content);
+            }
+            catch (error) {
+                reply.status(404).send({
+                    error: `Skill not found: ${name}`,
+                    detail: error instanceof Error ? error.message : String(error),
+                });
+            }
+        });
         // ── /access-log ────────────────────────────────────────────────────────
         this.app.get('/access-log', async (_request, reply) => {
             if (!this.ready) {
@@ -275,34 +292,54 @@ class AgentSkillRoutingApp {
             './samples/skill-definitions';
         const skillsDirs = [localSkillsDir];
         const githubEnabled = process.env.GITHUB_SKILLS_ENABLED !== 'false';
-        if (githubEnabled) {
-            const repoUrl = process.env.GITHUB_SKILLS_REPO || 'https://github.com/paulpas/skills';
-            const cacheDir = process.env.SKILL_CACHE_DIR || '/cache/skills';
-            const syncIntervalMs = parseInt(process.env.SKILL_SYNC_INTERVAL || '3600', 10) * 1000;
-            const githubToken = process.env.GITHUB_TOKEN || '';
-            this.githubLoader = new GitHubSkillLoader_js_1.GitHubSkillLoader({ repoUrl, cacheDir, syncIntervalMs, githubToken });
-            try {
-                await this.githubLoader.initialize();
-                skillsDirs.push(this.githubLoader.getSkillsDir());
-                this.logger.info('GitHub skills loaded', { dir: cacheDir });
-            }
-            catch (err) {
-                this.logger.warn('GitHub skill loader failed, continuing with local skills only', {
-                    error: err instanceof Error ? err.message : String(err),
-                });
-                this.githubLoader = null;
-            }
-        }
         // Initialize MCP Bridge
         this.mcpBridge = new MCPBridge_js_1.MCPBridge({
             enabledTools: this.config.enabledTools,
             disableTools: this.config.disableTools,
             defaultTimeoutMs: this.config.defaultTimeoutMs,
         });
-        // Initialize Router with all skill directories
+        // Initialize Router with all skill directories (used for local-scan fallback)
         this.router = new Router_js_1.Router({ ...this.config, skillsDirectory: skillsDirs });
-        await this.router.initialize();
-        // Start background GitHub sync after router is ready
+        if (githubEnabled) {
+            // Primary path: fetch lightweight index from GitHub (no git clone needed)
+            const githubRawBase = process.env.GITHUB_RAW_BASE_URL ||
+                'https://raw.githubusercontent.com/paulpas/skills/main';
+            const remoteIndexUrl = `${githubRawBase}/skills-index.json`;
+            try {
+                this.logger.info('[INDEX] Using remote index', { url: remoteIndexUrl });
+                await this.router.getRegistry().loadFromRemoteIndex(remoteIndexUrl);
+                this.router.syncVectorDatabase();
+            }
+            catch (indexErr) {
+                // Remote index failed — fall back to local directory scan + optional git clone
+                this.logger.warn('[INDEX] Remote index fetch failed, falling back to local directory scan', {
+                    error: indexErr instanceof Error ? indexErr.message : String(indexErr),
+                });
+                const cacheDir = process.env.SKILL_CACHE_DIR || '/cache/skills';
+                const syncIntervalMs = parseInt(process.env.SKILL_SYNC_INTERVAL || '3600', 10) * 1000;
+                const githubToken = process.env.GITHUB_TOKEN || '';
+                const repoUrl = process.env.GITHUB_SKILLS_REPO || 'https://github.com/paulpas/skills';
+                this.githubLoader = new GitHubSkillLoader_js_1.GitHubSkillLoader({ repoUrl, cacheDir, syncIntervalMs, githubToken });
+                try {
+                    await this.githubLoader.initialize();
+                    skillsDirs.push(this.githubLoader.getSkillsDir());
+                    this.logger.info('[INDEX] Using local directory scan', { dir: cacheDir });
+                }
+                catch (cloneErr) {
+                    this.logger.warn('[INDEX] Git clone also failed, local-only mode', {
+                        error: cloneErr instanceof Error ? cloneErr.message : String(cloneErr),
+                    });
+                    this.githubLoader = null;
+                }
+                await this.router.initialize();
+            }
+        }
+        else {
+            // GitHub disabled — local directory scan only
+            this.logger.info('[INDEX] Using local directory scan (GITHUB_SKILLS_ENABLED=false)');
+            await this.router.initialize();
+        }
+        // Start background GitHub sync after router is ready (only when git-clone path was used)
         if (this.githubLoader) {
             this.githubLoader.startSync(async () => {
                 await this.router.reloadSkills();
