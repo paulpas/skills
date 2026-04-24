@@ -35,7 +35,7 @@ export class LLMRanker {
       maxTokens: config.maxTokens ?? 1000,
       maxCandidates: config.maxCandidates ?? 10,
     };
-    this.logger = new Logger('LLMRanker', { level: 'info', includePayloads: false });
+    this.logger = new Logger('LLMRanker');
     this.logger.info(`LLMRanker initialized`, { provider: this.config.provider, model: this.config.model });
   }
 
@@ -52,8 +52,35 @@ export class LLMRanker {
 
     const limited = candidates.slice(0, this.config.maxCandidates);
     const prompt = this.buildRankingPrompt(task, limited);
+
+    // Log what we're sending to the LLM
+    this.logger.info('Sending ranking request to LLM', {
+      provider: this.config.provider,
+      model: this.config.model,
+      task: task.slice(0, 120),
+      candidateCount: limited.length,
+      candidates: limited.map(c => c.metadata.name),
+    });
+
+    const t0 = Date.now();
     const response = await this.callLLM(prompt);
+    const durationMs = Date.now() - t0;
+
+    // Log raw LLM response
+    this.logger.debug('LLM raw response', {
+      durationMs,
+      responseLength: response.length,
+      response: response.slice(0, 500),  // truncate very long responses
+    });
+
     const rankings = this.parseRankingResponse(response, limited.map(c => c.metadata.name));
+
+    // Log parsed rankings
+    this.logger.info('LLM ranking result', {
+      durationMs,
+      rankedCount: rankings.length,
+      rankings: rankings.map(r => ({ skill: r.skillName, score: r.score, reason: r.reason?.slice(0, 80) })),
+    });
 
     return rankings.map((ranking, index) => ({
       name: ranking.skillName,
@@ -99,6 +126,7 @@ Output format (JSON only, no extra text):
     } catch (error) {
       this.logger.error('LLM call failed, using fallback ranking', {
         provider: this.config.provider,
+        model: this.config.model,
         error: error instanceof Error ? error.message : String(error),
       });
       return this.fallbackRanking();

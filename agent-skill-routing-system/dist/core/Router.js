@@ -44,7 +44,6 @@ class Router {
         });
         this.logger = new Logger_js_1.Logger('Router', {
             level: config.observability?.level || 'info',
-            includePayloads: config.observability?.includePayloads ?? false,
         });
     }
     /**
@@ -85,6 +84,14 @@ class Router {
         const taskEmbedding = await this.embeddingService.generateEmbedding(request.task);
         // Search for candidates
         const candidates = await this.vectorDatabase.search(taskEmbedding.embedding, 20);
+        this.logger.info('Vector search candidates', {
+            taskId,
+            candidateCount: candidates.length,
+            topCandidates: candidates.slice(0, 5).map(c => ({
+                name: c.skill.metadata.name,
+                similarity: c.score ?? c.similarity ?? null,
+            })),
+        });
         this.logger.debug('Found candidate skills', {
             taskId,
             candidateCount: candidates.length,
@@ -93,6 +100,16 @@ class Router {
         const rankedSkills = await this.llmRanker.rankCandidates(request.task, candidates.map((c) => c.skill));
         // Apply deterministic filtering
         const filteredSkills = this.applyDeterministicFilter(rankedSkills, request.constraints);
+        this.logger.info('Selected skills for request', {
+            taskId,
+            task: request.task.slice(0, 100),
+            selectedSkills: filteredSkills.map(s => ({
+                name: s.name,
+                score: s.score,
+                role: s.role,
+                reasoning: s.reasoning?.slice(0, 100),
+            })),
+        });
         this.logger.debug('Filtered skills', {
             taskId,
             filteredCount: filteredSkills.length,
