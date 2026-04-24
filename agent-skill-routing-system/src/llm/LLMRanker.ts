@@ -22,6 +22,7 @@ export interface LLMRankerConfig {
 export class LLMRanker {
   private config: Required<LLMRankerConfig>;
   private logger: Logger;
+  private rankingCache: Map<string, SelectedSkill[]> = new Map();
 
   constructor(config: Partial<LLMRankerConfig> = {}) {
     const provider = (process.env.LLM_PROVIDER as LLMProvider) || config.provider || 'openai';
@@ -39,6 +40,21 @@ export class LLMRanker {
     this.logger.info(`LLMRanker initialized`, { provider: this.config.provider, model: this.config.model });
   }
 
+  /**
+   * Deterministic hash key for a task + candidate set combination.
+   * Used to avoid redundant LLM calls for identical routing requests.
+   */
+  private hashKey(task: string, candidates: SkillDefinition[]): string {
+    const key = task.trim().toLowerCase() + '|' + candidates.map(c => c.metadata.name).sort().join(',');
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+      const char = key.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash;
+    }
+    return hash.toString(16).padStart(8, '0');
+  }
+
   private defaultModel(provider: LLMProvider): string {
     switch (provider) {
       case 'anthropic': return 'claude-3-5-haiku-20241022';
@@ -51,6 +67,20 @@ export class LLMRanker {
     if (candidates.length === 0) return [];
 
     const limited = candidates.slice(0, this.config.maxCandidates);
+
+    // Check ranking cache first — avoids ~3s LLM round-trip for repeated queries
+    const cacheKey = this.hashKey(task, limited);
+    const cached = this.rankingCache.get(cacheKey);
+    if (cached) {
+      this.logger.info('[CACHE HIT] LLM ranking (memory) — remote call avoided', {
+        cacheKey,
+        task: task.slice(0, 80),
+        topSkill: cached[0]?.name ?? null,
+        savedMs: '~3000ms',
+      });
+      return cached;
+    }
+
     const prompt = this.buildRankingPrompt(task, limited);
 
     // Log what we're sending to the LLM
@@ -82,12 +112,21 @@ export class LLMRanker {
       rankings: rankings.map(r => ({ skill: r.skillName, score: r.score, reason: r.reason?.slice(0, 80) })),
     });
 
-    return rankings.map((ranking, index) => ({
+    const result: SelectedSkill[] = rankings.map((ranking, index) => ({
       name: ranking.skillName,
       score: ranking.score,
-      role: index === 0 ? 'primary' : 'supporting',
+      role: (index === 0 ? 'primary' : 'supporting') as SelectedSkill['role'],
       reasoning: ranking.reason,
     }));
+
+    this.rankingCache.set(cacheKey, result);
+    this.logger.info('[CACHE STORE] LLM ranking cached', {
+      cacheKey,
+      topSkill: result[0]?.name ?? null,
+      cacheSize: this.rankingCache.size,
+    });
+
+    return result;
   }
 
   private buildRankingPrompt(task: string, candidates: SkillDefinition[]): string {

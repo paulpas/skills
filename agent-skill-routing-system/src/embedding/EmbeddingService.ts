@@ -39,10 +39,42 @@ export class EmbeddingService {
       batchSize: config.batchSize || 100,
       cacheDirectory: config.cacheDirectory || './.embedding-cache',
     };
-    this.logger = new Logger('EmbeddingService', {
-      level: 'info',
-      includePayloads: false,
-    });
+    this.logger = new Logger('EmbeddingService');
+    this.loadCacheFromDisk();
+  }
+
+  /**
+   * Load persisted embeddings from disk into the in-memory cache at startup.
+   * Prevents re-generating all embeddings after every Docker restart.
+   */
+  private loadCacheFromDisk(): void {
+    try {
+      const cacheDir = path.join(this.config.cacheDirectory, 'default');
+      if (!fs.existsSync(cacheDir)) return;
+      const files = fs.readdirSync(cacheDir).filter(f => f.endsWith('.json'));
+      let loaded = 0;
+      for (const file of files) {
+        try {
+          const raw = fs.readFileSync(path.join(cacheDir, file), 'utf-8');
+          const entry = JSON.parse(raw) as { text: string; embedding: number[] };
+          if (entry.text && Array.isArray(entry.embedding)) {
+            this.cache.set(entry.text, {
+              embedding: entry.embedding,
+              dimensions: entry.embedding.length,
+              model: this.config.model,
+            });
+            loaded++;
+          }
+        } catch {
+          // skip corrupt files silently
+        }
+      }
+      if (loaded > 0) {
+        this.logger.info('[CACHE] Loaded embeddings from disk', { count: loaded, dir: cacheDir });
+      }
+    } catch {
+      // cache dir doesn't exist yet — that's fine
+    }
   }
 
   /**
@@ -52,8 +84,15 @@ export class EmbeddingService {
     // Check cache first
     const cached = this.cache.get(text);
     if (cached) {
+      this.logger.info('[CACHE HIT] embedding (memory)', {
+        textPreview: text.slice(0, 60),
+      });
       return cached;
     }
+    this.logger.info('[CACHE MISS] embedding → API call', {
+      provider: this.config.provider,
+      textPreview: text.slice(0, 60),
+    });
 
     // Generate embedding
     const response = await this.generateEmbeddingFromAPI(text);
@@ -105,6 +144,15 @@ export class EmbeddingService {
       } else {
         uncachedTexts.push(text);
       }
+    }
+
+    if (results.length > 0 || uncachedTexts.length > 0) {
+      const hits = batch.length - uncachedTexts.length;
+      this.logger.info('[CACHE] batch embedding check', {
+        total: batch.length,
+        memoryHits: hits,
+        apiCalls: uncachedTexts.length,
+      });
     }
 
     // Generate embeddings for uncached texts
