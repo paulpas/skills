@@ -446,8 +446,15 @@ class BenchmarkRunner:
 
 
 def main():
+    # Load config early to get defaults
+    try:
+        default_model = ModelRegistry.get_default_model()
+    except ValueError:
+        # Config not found or invalid, use internal fallback
+        default_model = "gpt-4"
+
     parser = argparse.ArgumentParser(
-        description="Run agent-skill-router benchmarks with real LLM API calls"
+        description="Run agent-skill-router benchmarks with config-driven LLM selection"
     )
     parser.add_argument(
         "--tier",
@@ -502,8 +509,8 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="gpt-4",
-        help="LLM model to use (gpt-4, gpt-3.5-turbo, claude-3-opus, mixtral-8x7b, etc.)",
+        default=default_model,
+        help=f"LLM model to use (default from openconfig.json: {default_model})",
     )
     parser.add_argument(
         "--list-models",
@@ -516,6 +523,11 @@ def main():
         help="Show only configured models (with API keys)",
     )
     parser.add_argument(
+        "--list-local-only",
+        action="store_true",
+        help="Filter to free/local models only (no API keys needed)",
+    )
+    parser.add_argument(
         "--show-costs",
         action="store_true",
         help="Show cost comparison across models",
@@ -525,33 +537,35 @@ def main():
         type=str,
         help="Compare multiple models (comma-separated: gpt-4,claude-3-opus,mixtral-8x7b)",
     )
-    parser.add_argument(
-        "--interactive",
-        action="store_true",
-        help="Interactive model selection",
-    )
 
     args = parser.parse_args()
 
     # Handle list/info commands
     if args.list_models:
-        ModelRegistry.print_model_catalog(configured_only=False)
+        ModelRegistry.print_config_models()
         sys.exit(0)
 
     if args.list_configured:
         ModelRegistry.print_model_catalog(configured_only=True)
         sys.exit(0)
 
+    if args.list_local_only:
+        # Filter to local/free models only
+        all_models = ModelRegistry.list_all_models()
+        local_models = {
+            name: info for name, info in all_models.items() if info.is_local()
+        }
+        print("\n" + "=" * 100)
+        print("LOCAL/FREE MODELS (no API key required)")
+        print("=" * 100)
+        for model_name, model in sorted(local_models.items()):
+            print(f"  ✅ {model_name:<25} {model.description}")
+        print("=" * 100 + "\n")
+        sys.exit(0)
+
     if args.show_costs:
         ModelRegistry.print_cost_comparison()
         sys.exit(0)
-
-    # Interactive mode: let user select model
-    if args.interactive and args.with_llm:
-        selected_model = _interactive_model_selection()
-        if selected_model is None:
-            sys.exit(1)
-        args.model = selected_model
 
     # Guard: validate model selection if using LLM
     if args.with_llm:
@@ -559,6 +573,7 @@ def main():
         if not is_valid:
             print(f"❌ Error: {error}")
             print("\nRun --list-configured to see available models")
+            print("Run --list-local-only to see free models (no API key)")
             sys.exit(1)
 
     # Handle multiple model comparison

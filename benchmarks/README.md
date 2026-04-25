@@ -6,6 +6,7 @@ A comprehensive benchmarking suite for measuring the performance, accuracy, and 
 
 - [Overview](#overview)
 - [Quick Start](#quick-start)
+- [Configuration](#configuration)
 - [Three-Tier Exercise Framework](#three-tier-exercise-framework)
 - [Running Benchmarks](#running-benchmarks)
 - [Understanding Results](#understanding-results)
@@ -56,12 +57,17 @@ cd /home/paulpas/git/agent-skill-router
 
 # Verify benchmarks directory exists
 ls -la benchmarks/
+
+# Check config
+cat openconfig.json
 ```
+
+The benchmark system is **config-driven**. The `openconfig.json` file specifies the default model and available options. No API keys needed for local models!
 
 ### Run All Benchmarks
 
 ```bash
-# Run all exercises (simple + medium + heavy)
+# Run all exercises (simple + medium + heavy) - uses default model from config
 python3 benchmarks/harness/benchmark.py --tier all --verbose
 
 # Run just simple tier (fastest, ~2 minutes)
@@ -72,6 +78,12 @@ python3 benchmarks/harness/benchmark.py --exercise "Code Review Basic"
 
 # Save results with timestamp
 python3 benchmarks/harness/benchmark.py --tier all --output results/bench-2024-01-15.json
+
+# Override default model
+python3 benchmarks/harness/benchmark.py --tier simple --model gpt-4o
+
+# Use local/free model (no API key needed)
+python3 benchmarks/harness/benchmark.py --tier simple --model codellama
 ```
 
 ### View Results
@@ -105,6 +117,155 @@ python3 benchmarks/harness/comparison.py --summarize
 ║          accuracy. Suitable for production use.                ║
 ╚════════════════════════════════════════════════════════════════╝
 ```
+
+---
+
+## Configuration
+
+The benchmarking system uses `openconfig.json` for config-driven LLM model selection. This eliminates the need for command-line flags and provides a single source of truth for model preferences.
+
+### Configuration File
+
+**Location:** `openconfig.json` (in project root)
+
+**Example:**
+
+```json
+{
+  "models": {
+    "default": "llama3",
+    "available": [
+      "llama3",
+      "gpt-4o",
+      "claude-3-opus",
+      "mixtral-8x7b",
+      "codellama",
+      "gpt-3.5-turbo"
+    ]
+  }
+}
+```
+
+### How Configuration Works
+
+1. **Default Model**: The `default` field specifies which model is used when `--model` flag is not provided
+2. **Available Models**: The `available` list shows which models can be selected
+3. **Fallback**: If `openconfig.json` is missing, the system falls back to internal defaults (gpt-4)
+
+### Changing the Default Model
+
+Edit `openconfig.json` and change the `default` field:
+
+```json
+{
+  "models": {
+    "default": "gpt-4o",
+    "available": [...]
+  }
+}
+```
+
+Now all benchmarks run with GPT-4o unless overridden with `--model`:
+
+```bash
+# Uses gpt-4o (from config)
+python3 benchmarks/harness/benchmark.py --tier simple
+
+# Override config with different model
+python3 benchmarks/harness/benchmark.py --tier simple --model claude-3-opus
+```
+
+### Adding New Models to Config
+
+1. Add model to the `available` list:
+```json
+{
+  "models": {
+    "default": "llama3",
+    "available": [
+      "llama3",
+      "my-custom-model",
+      ...
+    ]
+  }
+}
+```
+
+2. The model must exist in the model registry (defined in `model_registry.py`)
+
+### Available Commands
+
+List all models and their configuration:
+
+```bash
+# Show all available models
+python3 benchmarks/harness/benchmark.py --list-models
+
+# Show only configured models (with API keys available)
+python3 benchmarks/harness/benchmark.py --list-configured
+
+# Show only free/local models (no API key needed)
+python3 benchmarks/harness/benchmark.py --list-local-only
+
+# Show cost comparison across all models
+python3 benchmarks/harness/benchmark.py --show-costs
+```
+
+### Model Categories
+
+**Free/Local Models (no API key):**
+- `llama3` — Local Llama 3 (default recommended)
+- `llama2` — Local Llama 2
+- `llama2-7b` — Local Llama 2 7B
+- `codellama` — Local Code Llama
+- `mistral` — Local Mistral
+- `neural-chat` — Local Neural Chat
+- `gemma` — Local Google Gemma
+
+**Cloud Models (require API keys):**
+- `gpt-4o` — OpenAI's optimized model (requires `OPENAI_API_KEY`)
+- `gpt-4` — OpenAI's powerful reasoning model
+- `gpt-3.5-turbo` — OpenAI's fast, cost-effective model
+- `claude-3-opus` — Anthropic's most capable model (requires `ANTHROPIC_API_KEY`)
+- `claude-3-sonnet` — Anthropic's balanced model
+- `claude-3-haiku` — Anthropic's fast, cost-effective model
+- `mixtral-8x7b` — Groq's fast model (requires `GROQ_API_KEY`)
+- `llama-2-70b-chat` — Groq's fast Llama 2 model
+- `llama3-70b-8192` — Groq's fast Llama 3 model
+
+### Setting API Keys
+
+For cloud models, set environment variables:
+
+```bash
+# OpenAI
+export OPENAI_API_KEY="sk-..."
+
+# Anthropic
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Groq
+export GROQ_API_KEY="gsk-..."
+
+# Then run benchmarks
+python3 benchmarks/harness/benchmark.py --tier simple --with-llm
+```
+
+### Best Practices
+
+1. **Start with Local Models**
+   - Use `llama3` as default (free, no API key)
+   - Perfect for development and testing
+
+2. **Use Cloud Models for Production**
+   - Switch default to `gpt-4o` or `claude-3-opus`
+   - Set API keys in CI/CD pipeline
+   - Track costs with `--show-costs`
+
+3. **Compare Models**
+   - Update `available` list to test new models
+   - Run benchmarks across multiple models
+   - Track performance improvements
 
 ---
 
