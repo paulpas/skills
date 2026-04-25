@@ -8,6 +8,19 @@ import YAML from 'yaml';
 import type { SkillMetadata, SkillDefinition } from './types.js';
 import { EmbeddingService } from '../embedding/EmbeddingService.js';
 import { Logger } from '../observability/Logger.js';
+import { SkillCompressor } from './SkillCompressor.js';
+import { CompressionMetrics } from '../utils/CompressionMetrics.js';
+
+/**
+ * Cached skill content entry with LRU metadata
+ */
+export interface CacheEntry {
+  content: string;
+  compressionLevel: number;
+  timestamp: number; // Last access time (for TTL)
+  accessCount: number;
+  sizeBytes: number;
+}
 
 /**
  * Configuration for the skill registry
@@ -19,6 +32,8 @@ export interface SkillRegistryConfig {
   skillsDirectory: string | string[];
   cacheDirectory?: string;
   generateEmbeddings?: boolean;
+  compressionLevel?: number; // 0=off, 1-10+ for compression levels
+  maxCacheSizeBytes?: number; // Default: 100MB
 }
 
 /**
@@ -31,17 +46,34 @@ export class SkillRegistry {
   private config: SkillRegistryConfig;
   private embeddingService: EmbeddingService;
   private logger: Logger;
+  private compressor: SkillCompressor;
+
   /** In-memory cache for on-demand skill content */
   private contentCache: Map<string, string> = new Map();
+
+  /** LRU cache with TTL for compressed content */
+  private compressionCache: Map<string, CacheEntry> = new Map();
+  private maxCacheSizeBytes: number;
+  private currentCacheSizeBytes: number = 0;
+  private readonly ONE_HOUR_MS = 60 * 60 * 1000;
 
   constructor(config: SkillRegistryConfig) {
     this.config = {
       cacheDirectory: './.skill-cache',
       generateEmbeddings: true,
+      compressionLevel: 0,
+      maxCacheSizeBytes: 100 * 1024 * 1024, // 100MB
       ...config,
     };
+    this.maxCacheSizeBytes = this.config.maxCacheSizeBytes || 100 * 1024 * 1024;
     this.embeddingService = new EmbeddingService();
+    this.compressor = new SkillCompressor();
     this.logger = new Logger('SkillRegistry');
+    
+    // Initialize metrics with max cache size
+    const metrics = CompressionMetrics.getInstance();
+    metrics.setMaxCacheSize(this.maxCacheSizeBytes);
+    
     this.loadPersistedContentCache();
   }
 
@@ -90,36 +122,70 @@ export class SkillRegistry {
   /**
    * Fetch the full SKILL.md content for a skill on-demand.
    * Resolution order: memory cache → local disk → GitHub raw → persist to disk.
+   * Supports compression and caching with TTL/LRU.
    */
-  async getSkillContent(name: string): Promise<string> {
-    // 1. Memory cache hit — fastest path
-    const cached = this.contentCache.get(name);
-    if (cached) {
-      this.logger.info('[ON-DEMAND] skill served from memory cache', { name });
-      return cached;
+  async getSkillContent(name: string, compressionLevel?: number): Promise<string> {
+    // Use provided compression level or fall back to config default
+    const level = compressionLevel !== undefined ? compressionLevel : (this.config.compressionLevel || 0);
+
+    // 1. Check compression cache if compression is enabled
+    if (level > 0) {
+      const cached = this.getFromCompressionCache(name, level);
+      if (cached) {
+        this.logger.info('[COMPRESSION-CACHE] skill served from cache', { name, compressionLevel: level });
+        return cached;
+      }
     }
 
-    // 2. Try local disk (if volume is mounted or local dev)
+    // 2. Memory cache hit — fastest path
+    const basicCached = this.contentCache.get(name);
+    if (basicCached) {
+      this.logger.info('[ON-DEMAND] skill served from memory cache', { name });
+      return level > 0 ? this.applyCompressionAndCache(name, basicCached, level) : basicCached;
+    }
+
+    // 3. Try local disk (if volume is mounted or local dev)
     const localPaths = Array.isArray(this.config.skillsDirectory)
       ? this.config.skillsDirectory
       : [this.config.skillsDirectory];
 
     for (const dir of localPaths) {
+      // Try domain/skillname structure first, then fallback to flat structure
+      const DOMAINS = ['agent', 'cncf', 'coding', 'programming', 'trading'];
+      
+      for (const domain of DOMAINS) {
+        const localFile = path.join(dir, domain, name, 'SKILL.md');
+        try {
+          const content = await fs.promises.readFile(localFile, 'utf-8');
+          this.contentCache.set(name, content);
+          this.logger.info('[ON-DEMAND] skill served from local disk', { name, file: localFile });
+          return level > 0 ? this.applyCompressionAndCache(name, content, level) : content;
+        } catch {
+          // Not in this directory — try the next domain
+        }
+      }
+      
+      // Fallback to flat structure for backwards compatibility
       const localFile = path.join(dir, name, 'SKILL.md');
       try {
         const content = await fs.promises.readFile(localFile, 'utf-8');
         this.contentCache.set(name, content);
-        this.logger.info('[ON-DEMAND] skill served from local disk', { name, file: localFile });
-        return content;
+        this.logger.info('[ON-DEMAND] skill served from local disk (flat)', { name, file: localFile });
+        return level > 0 ? this.applyCompressionAndCache(name, content, level) : content;
       } catch {
         // Not in this directory — try the next one
       }
     }
 
-    // 3. Fetch from GitHub raw
+    // 4. Fetch from GitHub raw
     const skill = this.skills.get(name);
-    const skillPath = skill?.sourceFile ?? `skills/${name}/SKILL.md`;
-    const rawUrl = `https://raw.githubusercontent.com/paulpas/skills/main/${skillPath}`;
+    // If sourceFile not set, try to infer from domain metadata
+    let skillPath = skill?.sourceFile;
+    if (!skillPath) {
+      const domain = skill?.metadata.category || 'programming';
+      skillPath = `skills/${domain}/${name}/SKILL.md`;
+    }
+    const rawUrl = `https://raw.githubusercontent.com/paulpas/agent-skill-router/main/${skillPath}`;
     this.logger.info('[ON-DEMAND] fetching skill from GitHub', { name, url: rawUrl });
     const t0 = Date.now();
     const response = await fetch(rawUrl);
@@ -136,7 +202,196 @@ export class SkillRegistry {
     // Persist to disk so next restart skips the GitHub fetch
     await this.persistSkillContent(name, content);
 
-    return content;
+    return level > 0 ? this.applyCompressionAndCache(name, content, level) : content;
+  }
+
+  /**
+   * Get skill content from compression cache if valid (not expired)
+   */
+  private getFromCompressionCache(name: string, level: number): string | null {
+    const metrics = CompressionMetrics.getInstance();
+    const key = `${name}@L${level}`;
+    const entry = this.compressionCache.get(key);
+
+    if (!entry) {
+      // Log cache miss
+      metrics.logCompressionEvent({
+        timestamp: new Date().toISOString(),
+        event: 'cache_miss',
+        skillName: name,
+        compressionLevel: level,
+      });
+      return null;
+    }
+
+    // Check if entry is expired (1 hour from last access)
+    const now = Date.now();
+    if (now - entry.timestamp > this.ONE_HOUR_MS) {
+      this.logger.info('[COMPRESSION-CACHE] entry expired', { name, level, ageMs: now - entry.timestamp });
+      this.compressionCache.delete(key);
+      this.currentCacheSizeBytes -= entry.sizeBytes;
+      
+      // Log TTL expiration
+      metrics.logCompressionEvent({
+        timestamp: new Date().toISOString(),
+        event: 'cache_miss',
+        skillName: name,
+        compressionLevel: level,
+        ttlExpired: true,
+      });
+      return null;
+    }
+
+    // Update TTL (reset timestamp on each access)
+    entry.timestamp = now;
+    entry.accessCount++;
+
+    // Log cache hit
+    metrics.logCompressionEvent({
+      timestamp: new Date().toISOString(),
+      event: 'cache_hit',
+      skillName: name,
+      compressionLevel: level,
+      accessCount: entry.accessCount,
+    });
+
+    return entry.content;
+  }
+
+  /**
+   * Apply compression and cache the result
+   */
+  private applyCompressionAndCache(name: string, content: string, level: number): string {
+    const metrics = CompressionMetrics.getInstance();
+
+    try {
+      // Check if compression is worthwhile
+      if (!this.compressor.shouldCompress(content)) {
+        this.logger.debug('[COMPRESSION] skipped (too small)', { name, level, bytes: content.length });
+        return content;
+      }
+
+      // Compress content
+      const compressed = this.compressor.compress(content, level);
+
+      if (compressed.isCompressed) {
+        // Cache the compressed content
+        const key = `${name}@L${level}`;
+        const sizeBytes = compressed.compressedLength;
+
+        // Check cache size and evict if necessary
+        if (this.currentCacheSizeBytes + sizeBytes > this.maxCacheSizeBytes) {
+          this.evictLRUEntry();
+        }
+
+        // Store in cache
+        this.compressionCache.set(key, {
+          content: compressed.content,
+          compressionLevel: level,
+          timestamp: Date.now(),
+          accessCount: 1,
+          sizeBytes,
+        });
+
+        this.currentCacheSizeBytes += sizeBytes;
+
+        // Log compression event with metrics
+        metrics.logCompressionEvent({
+          timestamp: new Date().toISOString(),
+          event: 'compression',
+          skillName: name,
+          compressionLevel: level,
+          tokensBefore: compressed.originalLength,
+          tokensAfter: compressed.compressedLength,
+          ratio: compressed.ratio,
+          cacheSize: this.currentCacheSizeBytes,
+          error: null,
+        });
+
+        this.logger.info('[COMPRESSION] content cached', {
+          name,
+          level,
+          originalBytes: compressed.originalLength,
+          compressedBytes: compressed.compressedLength,
+          ratio: compressed.ratio.toFixed(2),
+          tokensSaved: compressed.tokensSaved,
+          cacheSize: (this.currentCacheSizeBytes / 1024 / 1024).toFixed(1),
+        });
+
+        return compressed.content;
+      }
+
+      // Compression failed — return original
+      metrics.logCompressionEvent({
+        timestamp: new Date().toISOString(),
+        event: 'compression',
+        skillName: name,
+        compressionLevel: level,
+        error: 'Compression produced no reduction',
+      });
+
+      this.logger.warn('[COMPRESSION] failed, returning original', { name, level });
+      return content;
+    } catch (error) {
+      // Fail gracefully: log error and return original content
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      
+      metrics.logCompressionEvent({
+        timestamp: new Date().toISOString(),
+        event: 'compression',
+        skillName: name,
+        compressionLevel: level,
+        error: errorMsg,
+      });
+
+      this.logger.error('[COMPRESSION] error', {
+        name,
+        level,
+        error: errorMsg,
+      });
+      return content;
+    }
+  }
+
+  /**
+   * Evict the least recently accessed entry from the compression cache
+   */
+  private evictLRUEntry(): void {
+    const metrics = CompressionMetrics.getInstance();
+    let lruKey: string | null = null;
+    let lruAccessCount = Infinity;
+    let lruTimestamp = Infinity;
+
+    for (const [key, entry] of this.compressionCache.entries()) {
+      // LRU: lowest access count, then oldest timestamp
+      if (entry.accessCount < lruAccessCount || (entry.accessCount === lruAccessCount && entry.timestamp < lruTimestamp)) {
+        lruKey = key;
+        lruAccessCount = entry.accessCount;
+        lruTimestamp = entry.timestamp;
+      }
+    }
+
+    if (lruKey) {
+      const entry = this.compressionCache.get(lruKey);
+      if (entry) {
+        this.currentCacheSizeBytes -= entry.sizeBytes;
+        this.compressionCache.delete(lruKey);
+        
+        // Log eviction event
+        metrics.logCompressionEvent({
+          timestamp: new Date().toISOString(),
+          event: 'cache_eviction',
+          skillName: lruKey.split('@')[0], // Extract skill name from key
+          cacheSize: this.currentCacheSizeBytes,
+        });
+        
+        this.logger.info('[COMPRESSION-CACHE] LRU eviction', {
+          key: lruKey,
+          freedBytes: entry.sizeBytes,
+          cacheSize: (this.currentCacheSizeBytes / 1024 / 1024).toFixed(1),
+        });
+      }
+    }
   }
 
   /** Write skill content to the on-disk content cache (non-fatal on error). */

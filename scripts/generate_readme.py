@@ -189,7 +189,7 @@ def parse_skill(skill_dir: Path) -> Optional[Dict]:
 
 
 def read_all_skills(skills_root: Path) -> List[Dict]:
-    """Read all skills from the skills/ directory."""
+    """Read all skills from the skills/ directory, organized by domain subdirectories."""
     skills = []
 
     if not skills_root.exists():
@@ -199,12 +199,20 @@ def read_all_skills(skills_root: Path) -> List[Dict]:
         )
         return skills
 
-    skill_dirs = sorted([d for d in skills_root.iterdir() if d.is_dir()])
+    # Define domains
+    DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
 
-    for skill_dir in skill_dirs:
-        skill_data = parse_skill(skill_dir)
-        if skill_data:
-            skills.append(skill_data)
+    # Scan each domain directory
+    for domain in sorted(DOMAINS):
+        domain_path = skills_root / domain
+        if not domain_path.exists():
+            continue
+
+        skill_dirs = sorted([d for d in domain_path.iterdir() if d.is_dir()])
+        for skill_dir in skill_dirs:
+            skill_data = parse_skill(skill_dir)
+            if skill_data:
+                skills.append(skill_data)
 
     return skills
 
@@ -231,7 +239,9 @@ def generate_skills_by_domain(skills: List[Dict]) -> str:
         lines.append("|---|---|---|")
 
         for skill in domain_skills:
-            skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
+            skill_link = (
+                f"[{skill['name']}](../../skills/{domain}/{skill['name']}/SKILL.md)"
+            )
 
             # Truncate description at word boundary
             desc = truncate_at_word_boundary(skill["description"], max_length=60)
@@ -313,8 +323,8 @@ def generate_skills_index(skills: List[Dict]) -> str:
         # Format role
         role = skill["role"].capitalize()
 
-        # Create skill link
-        skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
+        # Create skill link using domain/skillname structure
+        skill_link = f"[{skill['name']}](../../skills/{skill['domain']}/{skill['name']}/SKILL.md)"
 
         lines.append(f"| {skill_link} | {domain} | {desc} | {role} |")
 

@@ -5,6 +5,7 @@ import { Router, RouterConfig } from './core/Router.js';
 import { MCPBridge, MCPBridgeConfig } from './mcp/MCPBridge.js';
 import { Logger } from './observability/Logger.js';
 import { GitHubSkillLoader } from './skills/GitHubSkillLoader.js';
+import { CompressionMetrics } from './utils/CompressionMetrics.js';
 
 /**
  * Route request body
@@ -34,6 +35,7 @@ export * from './core/Router.js';
 export * from './core/ExecutionEngine.js';
 export * from './core/ExecutionPlanner.js';
 export * from './core/SafetyLayer.js';
+export * from './core/SkillCompressor.js';
 export * from './mcp/MCPBridge.js';
 // DO NOT export mcp/types.js to avoid duplicate ToolResult/ToolSpec exports
 export * from './embedding/EmbeddingService.js';
@@ -41,6 +43,7 @@ export * from './embedding/VectorDatabase.js';
 export * from './llm/LLMRanker.js';
 export * from './observability/Logger.js';
 export * from './skills/GitHubSkillLoader.js';
+export * from './utils/CompressionMetrics.js';
 
 /**
  * Main application class
@@ -53,6 +56,7 @@ export class AgentSkillRoutingApp {
   private logger: Logger;
   private ready = false;
   private loadingError: string | null = null;
+  private compressionLevel: number = 0; // Compression level (0=off by default)
   private accessLog: Array<{
     timestamp: string;
     task: string;
@@ -62,11 +66,12 @@ export class AgentSkillRoutingApp {
     latencyMs: number;
   }> = [];
 
-  constructor(config: Partial<RouterConfig & MCPBridgeConfig> = {}) {
+  constructor(config: Partial<RouterConfig & MCPBridgeConfig> = {}, compressionLevel: number = 0) {
     this.logger = new Logger('Main', {
       level: config.observability?.level || 'info',
     });
     this.config = config as RouterConfig & MCPBridgeConfig;
+    this.compressionLevel = compressionLevel;
   }
 
   private config: RouterConfig & MCPBridgeConfig;
@@ -239,22 +244,28 @@ export class AgentSkillRoutingApp {
       reply.code(200).send({ total: skills.length, skills });
     });
 
-    // ── /skill/:name — on-demand SKILL.md content ─────────────────────────
-    this.app.get<{ Params: { name: string } }>('/skill/:name', async (request, reply) => {
-      if (!this.ready) {
-        return reply.status(503).send({ error: 'Skills are still loading, please wait.' });
+    // ── /skill/:name — on-demand SKILL.md content (with optional compression) ─
+    this.app.get<{ Params: { name: string }; Querystring: { compression?: string } }>(
+      '/skill/:name',
+      async (request, reply) => {
+        if (!this.ready) {
+          return reply.status(503).send({ error: 'Skills are still loading, please wait.' });
+        }
+        const { name } = request.params;
+        const queryCompression = request.query.compression ? parseInt(request.query.compression, 10) : undefined;
+        const level = queryCompression !== undefined ? queryCompression : this.compressionLevel;
+
+        try {
+          const content = await this.router!.getRegistry().getSkillContent(name, level);
+          reply.header('Content-Type', 'text/plain; charset=utf-8').send(content);
+        } catch (error) {
+          reply.status(404).send({
+            error: `Skill not found: ${name}`,
+            detail: error instanceof Error ? error.message : String(error),
+          });
+        }
       }
-      const { name } = request.params;
-      try {
-        const content = await this.router!.getRegistry().getSkillContent(name);
-        reply.header('Content-Type', 'text/plain; charset=utf-8').send(content);
-      } catch (error) {
-        reply.status(404).send({
-          error: `Skill not found: ${name}`,
-          detail: error instanceof Error ? error.message : String(error),
-        });
-      }
-    });
+    );
 
     // ── /access-log ────────────────────────────────────────────────────────
     this.app.get('/access-log', async (_request, reply) => {
@@ -264,6 +275,16 @@ export class AgentSkillRoutingApp {
       reply.send({
         totalRequests: this.accessLog.length,
         entries: [...this.accessLog].reverse(), // newest first
+      });
+    });
+
+    // ── /metrics — compression metrics and statistics ────────────────────────
+    this.app.get('/metrics', async (_request, reply) => {
+      const metrics = CompressionMetrics.getInstance();
+      reply.send({
+        timestamp: new Date().toISOString(),
+        compression: metrics.getStats(),
+        recentEvents: metrics.getRecentEvents(50),
       });
     });
 
@@ -298,7 +319,9 @@ export class AgentSkillRoutingApp {
     // Bind port IMMEDIATELY — skills load in background below
     try {
       await this.app.listen({ port, host: '0.0.0.0' });
-      this.logger.info(`Server listening on port ${port} (skills loading in background)`);
+      this.logger.info(`Server listening on port ${port} (skills loading in background)`, {
+        compressionLevel: this.compressionLevel,
+      });
     } catch (error) {
       this.logger.error('Failed to start server', {
         error: error instanceof Error ? error.message : String(error),
@@ -437,15 +460,45 @@ export class AgentSkillRoutingApp {
 /**
  * Create and return a new application instance
  */
-export function createApp(config?: RouterConfig & MCPBridgeConfig): AgentSkillRoutingApp {
-  return new AgentSkillRoutingApp(config);
+export function createApp(config?: RouterConfig & MCPBridgeConfig, compressionLevel: number = 0): AgentSkillRoutingApp {
+  return new AgentSkillRoutingApp(config, compressionLevel);
+}
+
+/**
+ * Parse CLI arguments for compression level
+ */
+function parseCompressionLevel(): number {
+  // Check environment variable first (highest priority)
+  if (process.env.SKILL_COMPRESSION_LEVEL) {
+    const level = parseInt(process.env.SKILL_COMPRESSION_LEVEL, 10);
+    if (!isNaN(level) && level >= 0) {
+      return level;
+    }
+  }
+
+  // Check command-line arguments
+  for (const arg of process.argv.slice(2)) {
+    if (arg === '--uncompressed') {
+      return 0;
+    }
+    if (arg.startsWith('--compression-level=')) {
+      const level = parseInt(arg.replace('--compression-level=', ''), 10);
+      if (!isNaN(level) && level >= 0) {
+        return level;
+      }
+    }
+  }
+
+  // Default: no compression
+  return 0;
 }
 
 // Auto-start when run directly
 if (require.main === module) {
   const skillsDirectory = process.env.SKILLS_DIRECTORY || './samples/skill-definitions';
   const port = parseInt(process.env.PORT || '3000', 10);
-  const app = createApp({ skillsDirectory } as RouterConfig & MCPBridgeConfig);
+  const compressionLevel = parseCompressionLevel();
+  const app = createApp({ skillsDirectory } as RouterConfig & MCPBridgeConfig, compressionLevel);
   app.start(port).catch((err) => {
     console.error('Failed to start:', err);
     process.exit(1);

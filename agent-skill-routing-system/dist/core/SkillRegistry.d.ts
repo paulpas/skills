@@ -1,5 +1,15 @@
 import type { SkillDefinition } from './types.js';
 /**
+ * Cached skill content entry with LRU metadata
+ */
+export interface CacheEntry {
+    content: string;
+    compressionLevel: number;
+    timestamp: number;
+    accessCount: number;
+    sizeBytes: number;
+}
+/**
  * Configuration for the skill registry
  */
 export interface SkillRegistryConfig {
@@ -9,6 +19,8 @@ export interface SkillRegistryConfig {
     skillsDirectory: string | string[];
     cacheDirectory?: string;
     generateEmbeddings?: boolean;
+    compressionLevel?: number;
+    maxCacheSizeBytes?: number;
 }
 /**
  * Skill Registry - manages all available skills
@@ -20,8 +32,14 @@ export declare class SkillRegistry {
     private config;
     private embeddingService;
     private logger;
+    private compressor;
     /** In-memory cache for on-demand skill content */
     private contentCache;
+    /** LRU cache with TTL for compressed content */
+    private compressionCache;
+    private maxCacheSizeBytes;
+    private currentCacheSizeBytes;
+    private readonly ONE_HOUR_MS;
     constructor(config: SkillRegistryConfig);
     /**
      * Fetch the lightweight skills-index.json from a remote URL and populate the
@@ -32,8 +50,21 @@ export declare class SkillRegistry {
     /**
      * Fetch the full SKILL.md content for a skill on-demand.
      * Resolution order: memory cache → local disk → GitHub raw → persist to disk.
+     * Supports compression and caching with TTL/LRU.
      */
-    getSkillContent(name: string): Promise<string>;
+    getSkillContent(name: string, compressionLevel?: number): Promise<string>;
+    /**
+     * Get skill content from compression cache if valid (not expired)
+     */
+    private getFromCompressionCache;
+    /**
+     * Apply compression and cache the result
+     */
+    private applyCompressionAndCache;
+    /**
+     * Evict the least recently accessed entry from the compression cache
+     */
+    private evictLRUEntry;
     /** Write skill content to the on-disk content cache (non-fatal on error). */
     private persistSkillContent;
     /**

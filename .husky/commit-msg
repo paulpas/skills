@@ -1,0 +1,84 @@
+#!/bin/sh
+
+# Commit-msg hook for conventional commit validation
+# This script validates commit messages against conventional commits format
+
+COMMIT_MSG_FILE=$1
+
+# Check if commit message file exists
+if [ ! -f "$COMMIT_MSG_FILE" ]; then
+  echo "❌ Commit message file not found: $COMMIT_MSG_FILE"
+  exit 1
+fi
+
+# Read commit message
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Remove comments and empty lines
+COMMIT_MSG=$(echo "$COMMIT_MSG" | sed '/^#/d' | grep -v '^$')
+
+# Check if commit message is empty
+if [ -z "$COMMIT_MSG" ]; then
+  echo "❌ Commit message cannot be empty"
+  exit 1
+fi
+
+# Validate conventional commit format
+# Format: <type>[optional scope]: <description>
+
+# Get the first line (subject)
+SUBJECT=$(echo "$COMMIT_MSG" | head -n 1)
+
+# Valid commit types
+VALID_TYPES="feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert"
+
+# Check if subject matches conventional commit format
+if ! echo "$SUBJECT" | grep -qE "^($VALID_TYPES)(\([a-zA-Z0-9_-]+\))?!?: .+$"; then
+  echo "❌ Commit message does not follow conventional commit format"
+  echo ""
+  echo "Expected format: <type>[optional scope]: <description>"
+  echo ""
+  echo "Valid types:"
+  echo "  feat     - New feature (MINOR bump)"
+  echo "  fix      - Bug fix (PATCH bump)"
+  echo "  docs     - Documentation only (no bump)"
+  echo "  style    - Code formatting (no bump)"
+  echo "  refactor - Code refactoring (no bump)"
+  echo "  perf     - Performance improvement (PATCH bump)"
+  echo "  test     - Test additions/changes (no bump)"
+  echo "  chore    - Build, deps, tooling (no bump)"
+  echo "  build    - Build system changes (no bump)"
+  echo "  ci       - CI configuration (no bump)"
+  echo "  revert   - Revert previous commit (depends)"
+  echo ""
+  echo "Example commits:"
+  echo "  feat(auth): add two-factor authentication"
+  echo "  fix(api): handle null responses"
+  echo "  docs(readme): update installation guide"
+  echo "  feat(api)!: breaking change (MAJOR bump)"
+  echo ""
+  echo "Your commit message:"
+  echo "$SUBJECT"
+  echo ""
+  echo "Read more: .github/conventional-commits.md"
+  exit 1
+fi
+
+# Check for breaking change indicator
+if echo "$SUBJECT" | grep -qE "^($VALID_TYPES)(\([a-zA-Z0-9_-]+\))?!:"; then
+  echo "✅ Breaking change detected in commit message"
+  echo "   Please ensure BREAKING CHANGE: is documented in the commit body."
+fi
+
+# Check if breaking change is documented
+if echo "$COMMIT_MSG" | grep -q "BREAKING CHANGE:"; then
+  echo "✅ Breaking change documented in commit body"
+fi
+
+# Check for issue references
+if echo "$SUBJECT" | grep -qE "#[0-9]+"; then
+  echo "✅ Issue reference found in commit message"
+fi
+
+echo "✅ Commit message validated successfully!"
+exit 0
