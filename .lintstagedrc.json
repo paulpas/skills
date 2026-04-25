@@ -1,0 +1,19 @@
+{
+  "**/*.{js,ts,jsx,tsx}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "**/*.{json,md,yml,yaml,css,scss}": [
+    "prettier --write"
+  ],
+  "**/*.{ts,tsx}": [
+    "tsc --noEmit"
+  ],
+  "package.json": [
+    "npm run lint"
+  ],
+  "*.{sh,bash}": [
+    "shellcheck",
+    "shfmt -w"
+  ]
+}

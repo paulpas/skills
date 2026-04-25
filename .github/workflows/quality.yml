@@ -1,0 +1,235 @@
+name: Code Quality Gates
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  # Run ESLint for code quality
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: false
+
+      - name: ESLint Failed
+        if: ${{ failure() }}
+        run: |
+          echo "ESLint found issues. Please fix them before merging."
+          echo "Run 'npm run lint' locally to see details."
+          exit 1
+
+  # Run Prettier for code formatting
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Check Formatting
+        run: npm run format:check
+
+      - name: Prettier Failed
+        if: ${{ failure() }}
+        run: |
+          echo "Code is not properly formatted. Please run 'npm run format' and commit changes."
+          exit 1
+
+  # TypeScript type checking
+  typescript:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Type Check
+        run: npm run typecheck
+
+      - name: TypeScript Failed
+        if: ${{ failure() }}
+        run: |
+          echo "TypeScript type errors found. Please fix them before merging."
+          exit 1
+
+  # Unit test coverage
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests with Coverage
+        run: npm run test:coverage
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+      - name: Check Coverage Threshold
+        run: |
+          COVERAGE=$(cat coverage/coverage-final.json | grep -o '"pct":[0-9.]*' | head -1 | grep -o '[0-9.]*')
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+            echo "Coverage is below 70% threshold!"
+            exit 1
+          fi
+
+  # Security scanning
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Security Audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Run Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      - name: Security Audit Failed
+        if: ${{ failure() }}
+        run: |
+          echo "Security audit found vulnerabilities."
+          echo "Please address high and critical vulnerabilities before merging."
+          exit 1
+
+  # Commit message linting
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Commitlint
+        run: npx commitlint --from HEAD~1 --to HEAD --verbose
+        continue-on-error: true
+
+  # Code complexity analysis
+  complexity:
+    name: Complexity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Complexity Analysis
+        run: npm run complexity || echo "Complexity check skipped"
+        continue-on-error: true
+
+  # Final status check
+  quality-status:
+    name: Quality Gates Status
+    runs-on: ubuntu-latest
+    needs:
+      - eslint
+      - prettier
+      - typescript
+      - coverage
+      - security
+      - commitlint
+      - complexity
+    if: always()
+    steps:
+      - name: Check All Jobs Passed
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: |
+          echo "❌ Some quality gates failed. Please fix the issues above."
+          exit 1
+
+      - name: All Quality Gates Passed
+        if: ${{ !(contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) }}
+        run: |
+          echo "✅ All quality gates passed!"
+          echo "Ready for merge."

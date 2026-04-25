@@ -6,6 +6,7 @@ import os, re, json, sys
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS_DIR = os.path.join(REPO_ROOT, "skills")
 OUTPUT = os.path.join(REPO_ROOT, "skills-index.json")
+DOMAINS = ["agent", "cncf", "coding", "trading", "programming"]
 
 
 def parse_frontmatter(content):
@@ -35,31 +36,36 @@ def parse_frontmatter(content):
 
 
 index = []
-for skill_dir in sorted(os.listdir(SKILLS_DIR)):
-    skill_path = os.path.join(SKILLS_DIR, skill_dir)
-    skill_md = os.path.join(skill_path, "SKILL.md")
-    if not os.path.isfile(skill_md):
+for domain in DOMAINS:
+    domain_path = os.path.join(SKILLS_DIR, domain)
+    if not os.path.isdir(domain_path):
         continue
-    with open(skill_md, encoding="utf-8") as f:
-        content = f.read()
-    fm = parse_frontmatter(content)
-    meta = fm.get("_meta", {})
-    name = fm.get("name", skill_dir)
-    description = fm.get("description", f"Skill: {name}")
-    domain = meta.get("domain", name.split("-")[0])
-    triggers_raw = meta.get("triggers", "")
-    tags = [t.strip() for t in triggers_raw.split(",") if t.strip()]
-    if domain not in tags:
-        tags.insert(0, domain)
-    index.append(
-        {
-            "name": name,
-            "description": description,
-            "domain": domain,
-            "tags": tags,
-            "path": f"skills/{skill_dir}/SKILL.md",
-        }
-    )
+
+    for skill_dir in sorted(os.listdir(domain_path)):
+        skill_path = os.path.join(domain_path, skill_dir)
+        skill_md = os.path.join(skill_path, "SKILL.md")
+        if not os.path.isfile(skill_md):
+            continue
+        with open(skill_md, encoding="utf-8") as f:
+            content = f.read()
+        fm = parse_frontmatter(content)
+        meta = fm.get("_meta", {})
+        name = fm.get("name", skill_dir)
+        description = fm.get("description", f"Skill: {name}")
+        domain_from_meta = meta.get("domain", domain)
+        triggers_raw = meta.get("triggers", "")
+        tags = [t.strip() for t in triggers_raw.split(",") if t.strip()]
+        if domain_from_meta not in tags:
+            tags.insert(0, domain_from_meta)
+        index.append(
+            {
+                "name": name,
+                "description": description,
+                "domain": domain_from_meta,
+                "tags": tags,
+                "path": f"skills/{domain}/{skill_dir}/SKILL.md",
+            }
+        )
 
 with open(OUTPUT, "w", encoding="utf-8") as f:
     json.dump(index, f, indent=2)

@@ -5,12 +5,14 @@ export * from './core/Router.js';
 export * from './core/ExecutionEngine.js';
 export * from './core/ExecutionPlanner.js';
 export * from './core/SafetyLayer.js';
+export * from './core/SkillCompressor.js';
 export * from './mcp/MCPBridge.js';
 export * from './embedding/EmbeddingService.js';
 export * from './embedding/VectorDatabase.js';
 export * from './llm/LLMRanker.js';
 export * from './observability/Logger.js';
 export * from './skills/GitHubSkillLoader.js';
+export * from './utils/CompressionMetrics.js';
 /**
  * Main application class
  */
@@ -22,8 +24,9 @@ export declare class AgentSkillRoutingApp {
     private logger;
     private ready;
     private loadingError;
+    private compressionLevel;
     private accessLog;
-    constructor(config?: Partial<RouterConfig & MCPBridgeConfig>);
+    constructor(config?: Partial<RouterConfig & MCPBridgeConfig>, compressionLevel?: number);
     private config;
     private remoteIndexUrl;
     private remoteIndexSyncTimer;
@@ -46,5 +49,5 @@ export declare class AgentSkillRoutingApp {
 /**
  * Create and return a new application instance
  */
-export declare function createApp(config?: RouterConfig & MCPBridgeConfig): AgentSkillRoutingApp;
+export declare function createApp(config?: RouterConfig & MCPBridgeConfig, compressionLevel?: number): AgentSkillRoutingApp;
 //# sourceMappingURL=index.d.ts.map

@@ -302,7 +302,13 @@ def enhance_all_skills(skills_root: Path) -> Tuple[List[Dict], int, int]:
     Enhance triggers for all skills.
     Returns: (list of updated skills, total processed, total with changes)
     """
-    skill_dirs = sorted([d for d in skills_root.iterdir() if d.is_dir()])
+    DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+    skill_dirs = []
+    for domain in DOMAINS:
+        domain_path = skills_root / domain
+        if domain_path.exists():
+            skill_dirs.extend(sorted([d for d in domain_path.iterdir() if d.is_dir()]))
+    skill_dirs = sorted(skill_dirs)
 
     updated_skills = []
     total_processed = 0

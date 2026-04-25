@@ -1,0 +1,51 @@
+---
+name: sheets-automation
+description: '"Provides Lightweight Google Sheets integration with standalone OAuth
+  authentication. No MCP server required. Full read/write access"'
+license: MIT
+compatibility: opencode
+metadata:
+  version: 1.0.0
+  domain: programming
+  role: implementation
+  scope: implementation
+  output-format: code
+  triggers: google sheets automation, spreadsheet, processing, implementation guide
+---
+
+
+# Google Sheets Automation
+
+Lightweight Google Sheets integration with standalone OAuth authentication. No MCP server required. Full read/write access.
+
+## When to Use
+
+- When lightweight google sheets integration with standal...
+- Implementing this specific pattern or feature
+- Part of a larger architectural decision
+
+## When NOT to Use
+
+- For unrelated tasks
+- When a simpler approach would suffice
+- Without understanding the broader context
+
+## Core Workflow
+
+1. Identify the specific use case
+2. Apply the pattern or technique
+3. Validate and test the implementation
+4. Iterate based on results
+
+## Key Patterns
+
+This skill provides domain expertise for:
+
+- Implementation and architecture guidance
+- Best practices and standards compliance
+- Pattern recognition and application
+- Quality assurance and validation
+
+## Related Skills
+
+See the metadata for related skills in the same domain.

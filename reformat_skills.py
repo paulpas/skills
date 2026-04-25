@@ -32,6 +32,8 @@ DOMAIN_PREFIXES = {
     "programming-": "programming",
 }
 
+DOMAINS = ["agent", "cncf", "coding", "trading", "programming"]
+
 DOMAIN_DEFAULTS = {
     "agent": {
         "role": "orchestration",
@@ -456,17 +458,23 @@ SKIP_DIRS = {"__pycache__", ".git"}
 
 
 def find_skill_dirs(root: str):
-    """Yield (folder_name, skill_path) for every SKILL.md under root."""
-    for entry in sorted(os.listdir(root)):
-        # Skip hidden dirs and known non-skill dirs
-        if entry.startswith(".") or entry in SKIP_DIRS:
+    """Yield (folder_name, skill_path) for every SKILL.md under root, including domain subdirectories."""
+    # Scan domain subdirectories
+    for domain in DOMAINS:
+        domain_path = os.path.join(root, domain)
+        if not os.path.isdir(domain_path):
             continue
-        dir_path = os.path.join(root, entry)
-        if not os.path.isdir(dir_path):
-            continue
-        skill_path = os.path.join(dir_path, "SKILL.md")
-        if os.path.isfile(skill_path):
-            yield entry, skill_path
+
+        for entry in sorted(os.listdir(domain_path)):
+            # Skip hidden dirs and known non-skill dirs
+            if entry.startswith(".") or entry in SKIP_DIRS:
+                continue
+            dir_path = os.path.join(domain_path, entry)
+            if not os.path.isdir(dir_path):
+                continue
+            skill_path = os.path.join(dir_path, "SKILL.md")
+            if os.path.isfile(skill_path):
+                yield entry, skill_path
 
 
 # ---------------------------------------------------------------------------

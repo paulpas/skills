@@ -454,7 +454,11 @@ class TradingSkillAnalyzer:
     def load_skills(self):
         """Load all trading skills from disk."""
         print("📚 Loading trading skills...")
-        trading_dirs = sorted(self.skills_dir.glob("trading-*"), key=lambda p: p.name)
+        trading_path = self.skills_dir / "trading"
+        if not trading_path.exists():
+            print("⚠️  No trading skills directory found")
+            return
+        trading_dirs = sorted(trading_path.glob("*"), key=lambda p: p.name)
 
         for skill_dir in trading_dirs:
             try:

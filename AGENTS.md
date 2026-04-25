@@ -2,7 +2,7 @@
 
 This guide explains how to create new skills for the agent-skill-router repository.
 
-> **Quick Reference:** Skills are self-contained documentation files that provide specialized expertise to AI agents. Each skill lives in `skills/<domain>-<topic>/SKILL.md` and follows a strict format.
+> **Quick Reference:** Skills are self-contained documentation files that provide specialized expertise to AI agents. Each skill lives in `skills/<domain>/<topic>/SKILL.md` and follows a strict format.
 
 ---
 
@@ -62,20 +62,20 @@ Model reads skill and applies its constraints
 
 ```
 skills/
-├── agent-*/          ← Agent orchestration, routing, analysis skills
-├── cncf-*/           ← CNCF cloud-native project reference skills
-├── coding-*/         ← Software engineering patterns skills
-├── trading-*/        ← Algorithmic trading implementation skills
-└── programming-*/    ← CS fundamentals, algorithms reference skills
-    └── <skill-name>/
-        ├── SKILL.md          ← Required: skill documentation
-        ├── references/       ← Optional: referenced sub-documents
-        └── scripts/          ← Optional: helper scripts
+├── agent/            ← Agent orchestration, routing, analysis skills
+│   └── <skill-name>/
+│       ├── SKILL.md  ← Required: skill documentation
+│       ├── references/  ← Optional: referenced sub-documents
+│       └── scripts/  ← Optional: helper scripts
+├── cncf/             ← CNCF cloud-native project reference skills
+├── coding/           ← Software engineering patterns skills
+├── programming/      ← CS fundamentals, algorithms reference skills
+└── trading/          ← Algorithmic trading implementation skills
 ```
 
 **Current Statistics:**
-- **266 skills** across 5 domains
-- **5 domain categories**: agent, cncf, coding, trading, programming
+- **1,825 skills** across 5 domains
+- **5 domain categories**: agent (271), cncf (365), coding (316), programming (791), trading (83)
 
 ---
 
@@ -83,13 +83,13 @@ skills/
 
 Each domain has a prefix and default metadata values:
 
-| Domain Prefix | Category | Default Role | Default Scope | Default Output Format |
+| Domain | Category | Default Role | Default Scope | Default Output Format |
 |---|---|---|---|---|
-| `agent-` | AI agent orchestration patterns | `orchestration` | `orchestration` | `analysis` |
-| `cncf-` | CNCF cloud-native projects | `reference` | `infrastructure` | `manifests` |
-| `coding-` | Software engineering patterns | `implementation` | `implementation` | `code` |
-| `trading-` | Algorithmic trading implementation | `implementation` | `implementation` | `code` |
-| `programming-` | CS fundamentals, algorithms | `reference` | `implementation` | `code` |
+| `agent` | AI agent orchestration patterns | `orchestration` | `orchestration` | `analysis` |
+| `cncf` | CNCF cloud-native projects | `reference` | `infrastructure` | `manifests` |
+| `coding` | Software engineering patterns | `implementation` | `implementation` | `code` |
+| `trading` | Algorithmic trading implementation | `implementation` | `implementation` | `code` |
+| `programming` | CS fundamentals, algorithms | `reference` | `implementation` | `code` |
 
 **Note:** These defaults can be overridden for specific skills that don't fit the typical pattern.
 
@@ -99,17 +99,17 @@ Each domain has a prefix and default metadata values:
 
 ### Step 1: Create the Directory
 
-Create a new directory under `skills/` using kebab-case naming:
+Create a new directory under `skills/` with the domain and topic in kebab-case:
 
 ```
-skills/<domain>-<topic>/
+skills/<domain>/<topic>/
 ```
 
 Examples:
-- `skills/trading-risk-stop-loss/`
-- `skills/coding-code-review/`
-- `skills/agent-task-decomposition-engine/`
-- `skills/cncf-prometheus/`
+- `skills/trading/risk-stop-loss/`
+- `skills/coding/code-review/`
+- `skills/agent/task-decomposition-engine/`
+- `skills/cncf/prometheus/`
 
 ### Step 2: Create SKILL.md
 
@@ -284,39 +284,39 @@ Describe what the model's output must contain when this skill is active.
 
 ### Directory Names
 
-**Must be kebab-case:** lowercase with hyphens between words.
+**Must be kebab-case:** lowercase with hyphens between words. Format: `skills/<domain>/<topic>/`
 
 | Valid | Invalid |
 |---|---|
-| `trading-risk-stop-loss` | `TradingRiskStopLoss` |
-| `cncf-prometheus` | `cncf_prometheus` |
-| `coding-code-review` | `coding_codeReview` |
-| `agent-confidence-based-selector` | `agentConfidenceSelector` |
+| `skills/trading/risk-stop-loss/` | `skills/trading-risk-stop-loss/` |
+| `skills/cncf/prometheus/` | `skills/cncf_prometheus/` |
+| `skills/coding/code-review/` | `skills/coding_codeReview/` |
+| `skills/agent/confidence-based-selector/` | `skills/agentConfidenceSelector/` |
 
 ### Frontmatter `name` Field
 
-The `name` field in frontmatter **must exactly match** the directory name.
+The `name` field in frontmatter **must match the skill topic** (without domain prefix).
 
 ```yaml
-# Directory: skills/trading-risk-stop-loss/
+# Directory: skills/trading/risk-stop-loss/
 ---
-name: trading-risk-stop-loss  # ✅ Must match directory name
+name: risk-stop-loss  # ✅ Must match topic (domain prefix removed)
+# ❌ name: trading-risk-stop-loss  (don't include domain)
 # ❌ name: trading_risk_stop_loss  (wrong format)
-# ❌ name: trading-risk-stopLoss  (wrong case)
 ---
 ```
 
 ### H1 Title
 
-Use a human-readable title, not the kebab-case name.
+Use a human-readable title, not the kebab-case topic name.
 
 ```markdown
 # ✅ Stop Loss Manager
 # ✅ Confidence-Based Selector (Agent Skill Selection)
 # ✅ Prometheus in Cloud-Native Engineering
 
-# ❌ trading-risk-stop-loss
-# ❌ agent-confidence-based-selector
+# ❌ risk-stop-loss
+# ❌ confidence-based-selector
 ```
 
 ---
@@ -814,7 +814,7 @@ Related skills show: trading-risk-position-sizing, trading-risk-kill-switches
 
 ## Workflow to Add a Skill
 
-1. **Create directory**: `skills/<name>/`
+1. **Create directory**: `skills/<domain>/<topic>/`
 
 2. **Create SKILL.md**: Write YAML frontmatter + content
 
@@ -1000,8 +1000,8 @@ When adding or modifying skills, follow this step-by-step process:
 
 Create a new skill directory and SKILL.md file:
 ```bash
-mkdir -p skills/<skill-name>/
-# Edit skills/<skill-name>/SKILL.md
+mkdir -p skills/<domain>/<topic>/
+# Edit skills/<domain>/<topic>/SKILL.md
 # Follow skill schema from this document
 ```
 
@@ -1056,7 +1056,7 @@ Commit all changes:
 git add -A
 git commit -m "feat: add [skill-name] skill
 
-- New skill directory: skills/[skill-name]/
+- New skill directory: skills/[domain]/[topic]/
 - Description: [your description]
 - Triggers: [list key triggers]
 - Updated skill catalog and router index"

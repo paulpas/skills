@@ -1,0 +1,93 @@
+#!/bin/sh
+
+# Pre-commit hook for code quality gates
+# This script runs before each commit to ensure code quality
+
+# Get the list of staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|jsx|tsx|json|md)$' || true)
+
+if [ -z "$STAGED_FILES" ]; then
+  exit 0
+fi
+
+echo "Running pre-commit checks..."
+
+# Check if ESLint is available
+if command -v npm &> /dev/null; then
+  # Check if lint-staged is configured
+  if [ -f "package.json" ] && grep -q "lint-staged" package.json; then
+    echo "Running lint-staged..."
+    npm run lint-staged
+    EXIT_CODE=$?
+    
+    if [ $EXIT_CODE -ne 0 ]; then
+      echo "❌ Lint-staged failed. Please fix the issues before committing."
+      exit 1
+    fi
+  fi
+fi
+
+# Run Prettier on staged files
+if command -v npx &> /dev/null; then
+  echo "Running Prettier on staged files..."
+  npx prettier --write $STAGED_FILES 2>/dev/null || true
+  
+  # Check if Prettier made changes
+  if ! git diff --cached --quiet; then
+    echo "⚠️  Prettier reformatted files. Staging changes..."
+    git add $STAGED_FILES
+  fi
+fi
+
+# Run TypeScript type checking if tsconfig.json exists
+if [ -f "tsconfig.json" ] && command -v npx &> /dev/null; then
+  echo "Running TypeScript type check..."
+  npx tsc --noEmit --project tsconfig.json 2>/dev/null
+  EXIT_CODE=$?
+  
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "❌ TypeScript type errors found. Please fix them before committing."
+    exit 1
+  fi
+fi
+
+# Run basic ESLint on staged files
+if command -v npx &> /dev/null && [ -f ".eslintrc.json" ]; then
+  echo "Running ESLint on staged files..."
+  npx eslint $STAGED_FILES --max-warnings=0 2>/dev/null
+  EXIT_CODE=$?
+  
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "❌ ESLint found errors. Please fix them before committing."
+    exit 1
+  fi
+fi
+
+# Check for console.log statements (except in test files)
+CONSOLE_LOGS=$(echo "$STAGED_FILES" | xargs grep -n "console\.\(log\|error\|warn\)" 2>/dev/null | grep -v "\.test\." || true)
+
+if [ -n "$CONSOLE_LOGS" ]; then
+  echo "⚠️  Found console statements in code. Please remove or use a logger:"
+  echo "$CONSOLE_LOGS"
+  read -p "Continue anyway? (y/N) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    exit 1
+  fi
+fi
+
+# Check for TODO comments
+TODO_COMMENTS=$(echo "$STAGED_FILES" | xargs grep -n "TODO" 2>/dev/null || true)
+
+if [ -n "$TODO_COMMENTS" ]; then
+  echo "⚠️  Found TODO comments in staged files:"
+  echo "$TODO_COMMENTS"
+  read -p "Continue with TODOs? (y/N) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    exit 1
+  fi
+fi
+
+echo "✅ All pre-commit checks passed!"
+exit 0
