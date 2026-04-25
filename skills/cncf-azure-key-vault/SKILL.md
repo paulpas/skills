@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-key-vault
-description: Manages encryption keys, secrets, and certificates with access control
+description: "Manages encryption keys, secrets, and certificates with access control"
   and auditing.
 license: MIT
 compatibility: opencode

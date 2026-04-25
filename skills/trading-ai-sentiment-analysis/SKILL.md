@@ -1,6 +1,6 @@
 ---
 name: trading-ai-sentiment-analysis
-description: AI-powered sentiment analysis for news, social media, and political figures
+description: "AI-powered sentiment analysis for news, social media, and political figures"
   in trading
 license: MIT
 compatibility: opencode

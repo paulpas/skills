@@ -1,6 +1,6 @@
 ---
 name: trading-ai-hyperparameter-tuning
-description: Optimize model configurations for trading applications
+description: "Optimize model configurations for trading applications"
 license: MIT
 compatibility: opencode
 metadata:

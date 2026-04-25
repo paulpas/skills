@@ -1,6 +1,6 @@
 ---
 name: agent-error-trace-explainer
-description: Explains error traces and exceptions by analyzing stack traces, error
+description: "Explains error traces and exceptions by analyzing stack traces, error"
   messages, and context to provide human-understandable error explanations.
 license: MIT
 compatibility: opencode

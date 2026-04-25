@@ -1,6 +1,6 @@
 ---
 name: cncf-istio
-description: Istio in Cloud-Native Engineering - Connect, secure, control, and observe
+description: "Istio in Cloud-Native Engineering - Connect, secure, control, and observe"
   services.
 license: MIT
 compatibility: opencode

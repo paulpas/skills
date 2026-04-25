@@ -1,6 +1,6 @@
 ---
 name: trading-paper-commission-model
-description: Commission Model and Fee Structure Simulation
+description: "Commission Model and Fee Structure Simulation"
 license: MIT
 compatibility: opencode
 metadata:

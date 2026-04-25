@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-sqs
-description: Deploys managed message queues with SQS for asynchronous processing,
+description: "Deploys managed message queues with SQS for asynchronous processing"
   decoupling services, and reliable message delivery with visibility timeout and dead-letter
   queues.
 license: MIT

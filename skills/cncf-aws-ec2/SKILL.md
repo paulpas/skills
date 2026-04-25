@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-ec2
-description: Deploys, configures, and auto-scales EC2 instances with load balancing,
+description: "Deploys, configures, and auto-scales EC2 instances with load balancing"
   using best practices for high availability, security, and cost optimization in AWS
   compute environments.
 license: MIT

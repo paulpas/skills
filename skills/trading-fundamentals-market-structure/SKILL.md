@@ -1,6 +1,6 @@
 ---
 name: trading-fundamentals-market-structure
-description: Market Structure and Trading Participants Analysis
+description: "Market Structure and Trading Participants Analysis"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: programming-abl-v10-learning
-description: Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types,
+description: "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types"
   variable declaration, procedures, functions, OOP basics, error handling, database
   access, transaction handling, control flow
 license: MIT

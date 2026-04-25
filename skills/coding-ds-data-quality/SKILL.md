@@ -1,6 +1,6 @@
 ---
 name: coding-ds-data-quality
-description: Implements data validation, cleaning, outlier detection, and quality assurance techniques to ensure reliable datasets for model training
+description: "Implements data validation, cleaning, outlier detection, and quality assurance techniques to ensure reliable datasets for model training"
 license: MIT
 compatibility: opencode
 metadata:

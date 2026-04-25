@@ -1,6 +1,6 @@
 ---
 name: cncf-openyurt
-description: "OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edge\u534F\
+description: "OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edge\u534F\"
   \u540C"
 license: MIT
 compatibility: opencode

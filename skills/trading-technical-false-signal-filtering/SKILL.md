@@ -1,6 +1,6 @@
 ---
 name: trading-technical-false-signal-filtering
-description: False Signal Filtering Techniques for Robust Technical Analysis
+description: "False Signal Filtering Techniques for Robust Technical Analysis"
 license: MIT
 compatibility: opencode
 metadata:

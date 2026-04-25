@@ -1,6 +1,6 @@
 ---
 name: trading-execution-vwap
-description: Volume-Weighted Average Price algorithm for executing orders relative
+description: "Volume-Weighted Average Price algorithm for executing orders relative"
   to market volume
 license: MIT
 compatibility: opencode

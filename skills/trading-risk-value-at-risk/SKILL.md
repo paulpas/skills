@@ -1,6 +1,6 @@
 ---
 name: trading-risk-value-at-risk
-description: Value at Risk calculations for portfolio risk management
+description: "Value at Risk calculations for portfolio risk management"
 license: MIT
 compatibility: opencode
 metadata:

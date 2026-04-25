@@ -1,6 +1,6 @@
 ---
 name: trading-paper-performance-attribution
-description: Performance Attribution Systems for Trading Strategy Decomposition
+description: "Performance Attribution Systems for Trading Strategy Decomposition"
 license: MIT
 compatibility: opencode
 metadata:

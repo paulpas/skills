@@ -1,6 +1,6 @@
 ---
 name: agent-hot-path-detector
-description: Identifies critical execution paths (hot paths) in code that impact most
+description: "Identifies critical execution paths (hot paths) in code that impact most"
   performance, reliability, and resource usage.
 license: MIT
 compatibility: opencode

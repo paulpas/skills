@@ -1,6 +1,6 @@
 ---
 name: cncf-open-telemetry
-description: OpenTelemetry in Observability - cloud native architecture, patterns,
+description: "OpenTelemetry in Observability - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode

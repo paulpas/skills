@@ -1,6 +1,6 @@
 ---
 name: cncf-keda
-description: KEDA in Cloud-Native Engineering - event-driven autoscaling
+description: "KEDA in Cloud-Native Engineering - event-driven autoscaling"
 license: MIT
 compatibility: opencode
 metadata:

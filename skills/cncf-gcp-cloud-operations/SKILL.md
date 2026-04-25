@@ -1,6 +1,7 @@
 ---
 name: cncf-gcp-cloud-operations
-description: Systems management including monitoring, logging, error reporting, and diagnostics.
+description: Systems management including monitoring, logging, error reporting, and
+  diagnostics
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: cloud operations, monitoring, logging, error reporting, diagnostics
-  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-monitoring, cncf-gcp-compute-engine, cncf-gcp-gke
+  triggers: cloud operations, monitoring, logging, error reporting, diagnostics, cloudwatch
+  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-monitoring, cncf-gcp-compute-engine,
+    cncf-gcp-gke
 ---
+
 
 
 # Google Cloud Operations

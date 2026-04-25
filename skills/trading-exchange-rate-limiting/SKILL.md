@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-rate-limiting
-description: Rate Limiting Strategies and Circuit Breaker Patterns for Exchange API
+description: "Rate Limiting Strategies and Circuit Breaker Patterns for Exchange API"
   Integration
 license: MIT
 compatibility: opencode

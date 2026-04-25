@@ -1,6 +1,6 @@
 ---
 name: cncf-jaeger
-description: Jaeger in Cloud-Native Engineering - distributed tracing
+description: "Jaeger in Cloud-Native Engineering - distributed tracing"
 license: MIT
 compatibility: opencode
 metadata:

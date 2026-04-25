@@ -1,6 +1,6 @@
 ---
 name: coding-git-advanced
-description: Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for experienced developers
+description: "Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper"
 license: MIT
 compatibility: opencode
 metadata:

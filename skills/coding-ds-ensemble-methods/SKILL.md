@@ -1,6 +1,6 @@
 ---
 name: coding-ds-ensemble-methods
-description: Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness
+description: "Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness"
 license: MIT
 compatibility: opencode
 metadata:

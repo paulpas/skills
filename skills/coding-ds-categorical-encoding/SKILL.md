@@ -1,6 +1,6 @@
 ---
 name: coding-ds-categorical-encoding
-description: Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies
+description: "Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies"
 license: MIT
 compatibility: opencode
 metadata:

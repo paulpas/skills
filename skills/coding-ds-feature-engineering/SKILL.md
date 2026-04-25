@@ -1,6 +1,6 @@
 ---
 name: coding-ds-feature-engineering
-description: Creates and transforms features including polynomial features, interactions, domain-specific features, and feature transformations
+description: "Creates and transforms features including polynomial features, interactions, domain-specific features, and feature transformations"
 license: MIT
 compatibility: opencode
 metadata:

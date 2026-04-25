@@ -1,6 +1,6 @@
 ---
 name: coding-ds-experimental-design
-description: Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning
+description: "Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning"
 license: MIT
 compatibility: opencode
 metadata:

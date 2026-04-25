@@ -1,6 +1,6 @@
 ---
 name: programming-algorithms
-description: "Comprehensive algorithm selection guide \u2014 choose, implement, and\
+description: "Comprehensive algorithm selection guide \u2014 choose, implement, and\"
   \ optimize algorithms based on time/space trade-offs, input characteristics, and\
   \ problem constraints"
 license: MIT

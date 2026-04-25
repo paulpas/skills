@@ -1,6 +1,6 @@
 ---
 name: cncf-in-toto
-description: in-toto in Supply Chain Security - cloud native architecture, patterns,
+description: "in-toto in Supply Chain Security - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode

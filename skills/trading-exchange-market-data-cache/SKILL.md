@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-market-data-cache
-description: High-performance caching layer for market data with low latency and high
+description: "High-performance caching layer for market data with low latency and high"
   throughput
 license: MIT
 compatibility: opencode

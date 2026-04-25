@@ -1,6 +1,7 @@
 ---
 name: cncf-gcp-cloud-functions
-description: Deploys serverless functions triggered by events with automatic scaling and GCP service integration.
+description: Deploys serverless functions triggered by events with automatic scaling
+  and GCP service integration
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: cloud functions, serverless, functions, event-driven, function deployment
-  related-skills: cncf-gcp-cloud-monitoring, cncf-gcp-cloud-pubsub, cncf-gcp-cloud-tasks, cncf-gcp-iam
+  triggers: cloud functions, serverless, functions, event-driven, function deployment,
+    eventbridge, kubernetes deployment
+  related-skills: cncf-gcp-cloud-monitoring, cncf-gcp-cloud-pubsub, cncf-gcp-cloud-tasks,
+    cncf-gcp-iam
 ---
+
 
 
 # Google Cloud Functions

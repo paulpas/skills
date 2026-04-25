@@ -1,6 +1,6 @@
 ---
 name: trading-technical-indicator-confluence
-description: Indicator Confluence Validation Systems for Confirming Trading Signals
+description: "Indicator Confluence Validation Systems for Confirming Trading Signals"
 license: MIT
 compatibility: opencode
 metadata:

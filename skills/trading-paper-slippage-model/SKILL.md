@@ -1,6 +1,6 @@
 ---
 name: trading-paper-slippage-model
-description: Slippage Modeling and Execution Simulation
+description: "Slippage Modeling and Execution Simulation"
 license: MIT
 compatibility: opencode
 metadata:

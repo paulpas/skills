@@ -1,409 +1,396 @@
 # Skill Relationship Analysis Report
 
-**Generated:** 2026-04-24 17:59:56
-**Total Skills Analyzed:** 303
+**Generated:** 2026-04-25 08:06:47
+**Total Skills Analyzed:** 1582
 
 ## 📊 Quick Statistics
 
-- **Total Skills:** 303
-- **Orphaned Skills** (0-1 relationships): 45 (14.9%)
-- **Reciprocal Failures:** 401
-- **Average Relations per Skill:** 2.76
+- **Total Skills:** 1582
+- **Orphaned Skills** (0-1 relationships): 1426 (90.1%)
+- **Reciprocal Failures:** 243
+- **Average Relations per Skill:** 0.30
 
 ## 🏢 Skills by Domain
 
 | Domain | Count | Avg Relations | Orphaned | Target |
 |--------|-------|---------------|----------|--------|
-| agent | 28 | 4.00 | 0 | 4+ |
-| cncf | 123 | 2.52 | 41 | 3+ |
-| coding | 66 | 3.29 | 3 | 3+ |
-| programming | 3 | 1.33 | 1 | 2+ |
-| trading | 83 | 2.31 | 0 | 2+ |
+| agent | 192 | 0.00 | 192 | 2+ |
+| cncf | 270 | 0.48 | 237 | 2+ |
+| coding | 298 | 0.70 | 237 | 2+ |
+| programming | 760 | 0.00 | 760 | 2+ |
+| trading | 62 | 2.27 | 0 | 2+ |
 
 ## ❌ Reciprocal Failures
 
-Found **401** relationships that are not reciprocated.
+Found **243** relationships that are not reciprocated.
 
-### agent-diff-quality-analyzer
+### cncf-azure-aks
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-autoscaling-advisor** (No reciprocal relationship)
-- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-dynamic-replanner
+### cncf-azure-automation
 
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-key-vault** (Referenced skill does not exist)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
 
-### agent-error-trace-explainer
+### cncf-azure-blob-storage
 
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-key-vault** (Referenced skill does not exist)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-failure-mode-analysis
+### cncf-azure-cdn
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-autoscaling-advisor** (No reciprocal relationship)
-- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **cncf-cni** (Referenced skill does not exist)
 
-### agent-goal-to-milestones
+### cncf-azure-container-registry
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-functions** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-infra-drift-detector
+### cncf-azure-cosmos-db
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **cncf-azure-key-vault** (Referenced skill does not exist)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-k8s-debugger
+### cncf-azure-event-hubs
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
-- → **agent-multi-skill-executor** (No reciprocal relationship)
+- → **cncf-azure-functions** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
 
-### agent-memory-usage-analyzer
+### cncf-azure-functions
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-autoscaling-advisor** (No reciprocal relationship)
-- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-multi-skill-executor
+### cncf-azure-keyvault-secrets
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **cncf-azure-functions** (No reciprocal relationship)
+- → **cncf-azure-key-vault** (Referenced skill does not exist)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
 
-### agent-network-diagnostics
+### cncf-azure-load-balancer
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-autoscaling-advisor** (No reciprocal relationship)
-- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **cncf-azure-virtual-networks** (No reciprocal relationship)
 
-### agent-parallel-skill-runner
+### cncf-azure-resource-manager
 
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-dynamic-replanner** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
-- → **agent-multi-skill-executor** (No reciprocal relationship)
+- → **cncf-azure-aks** (No reciprocal relationship)
+- → **cncf-azure-sql-database** (No reciprocal relationship)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **cncf-azure-virtual-networks** (No reciprocal relationship)
 
-### agent-performance-profiler
+### cncf-azure-scale-sets
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **cncf-azure-virtual-networks** (No reciprocal relationship)
 
-### agent-query-optimizer
+### cncf-azure-service-bus
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-regression-detector
+### cncf-azure-sql-database
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
-- → **agent-hot-path-detector** (No reciprocal relationship)
+- → **cncf-azure-key-vault** (Referenced skill does not exist)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-rbac** (Referenced skill does not exist)
 
-### agent-resource-optimizer
+### cncf-azure-traffic-manager
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **cncf-azure-aks** (No reciprocal relationship)
+- → **cncf-azure-load-balancer** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
 
-### agent-runtime-log-analyzer
+### cncf-azure-virtual-networks
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
-- → **agent-k8s-debugger** (No reciprocal relationship)
+- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
 
-### agent-schema-inference-engine
+### cncf-gcp-autoscaling
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
-- → **agent-multi-skill-executor** (No reciprocal relationship)
+- → **cncf-gcp-cloud-load-balancing** (No reciprocal relationship)
+- → **cncf-gcp-cloud-monitoring** (No reciprocal relationship)
+- → **cncf-gcp-gke** (No reciprocal relationship)
 
-### agent-self-critique-engine
+### cncf-gcp-cloud-cdn
 
-- → **agent-add-new-skill** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-goal-to-milestones** (No reciprocal relationship)
-- → **agent-multi-skill-executor** (No reciprocal relationship)
+- → **cncf-gcp-cloud-load-balancing** (No reciprocal relationship)
+- → **cncf-gcp-cloud-monitoring** (No reciprocal relationship)
+- → **cncf-gcp-compute-engine** (No reciprocal relationship)
 
-### agent-stacktrace-root-cause
+### cncf-gcp-cloud-dns
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
-- → **agent-k8s-debugger** (No reciprocal relationship)
+- → **cncf-gcp-cloud-load-balancing** (No reciprocal relationship)
+- → **cncf-gcp-cloud-monitoring** (No reciprocal relationship)
+- → **cncf-gcp-compute-engine** (No reciprocal relationship)
+- → **cncf-gcp-vpc** (No reciprocal relationship)
 
-### agent-task-decomposition-engine
+### cncf-gcp-cloud-functions
 
-- → **agent-code-correctness-verifier** (No reciprocal relationship)
-- → **agent-confidence-based-selector** (No reciprocal relationship)
-- → **agent-dynamic-replanner** (No reciprocal relationship)
-- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **cncf-gcp-cloud-pubsub** (Referenced skill does not exist)
+- → **cncf-gcp-cloud-tasks** (Referenced skill does not exist)
+- → **cncf-gcp-iam** (Referenced skill does not exist)
 
 ## 🏜️ Orphaned Skills
 
-Found **45** skills with 0-1 relationships.
+Found **1426** skills with 0-1 relationships.
 
-- **cncf-argo** (cncf): (none)
-- **cncf-artifact-hub** (cncf): (none)
-- **cncf-cert-manager** (cncf): (none)
-- **cncf-cloudevents** (cncf): cncf-nats
-- **cncf-cni** (cncf): (none)
-- **cncf-coredns** (cncf): (none)
-- **cncf-cortex** (cncf): (none)
-- **cncf-cri-o** (cncf): (none)
-- **cncf-crossplane** (cncf): (none)
-- **cncf-cubefs** (cncf): (none)
-- **cncf-emissary-ingress** (cncf): (none)
-- **cncf-falco** (cncf): (none)
-- **cncf-fluentd** (cncf): (none)
-- **cncf-fluid** (cncf): (none)
-- **cncf-flux** (cncf): (none)
-- **cncf-helm** (cncf): (none)
-- **cncf-istio** (cncf): (none)
-- **cncf-knative** (cncf): (none)
-- **cncf-kubeedge** (cncf): (none)
-- **cncf-kubeflow** (cncf): (none)
-- **cncf-kubernetes** (cncf): (none)
-- **cncf-kubescape** (cncf): (none)
-- **cncf-kubevela** (cncf): (none)
-- **cncf-kubevirt** (cncf): (none)
-- **cncf-networking-osi** (cncf): (none)
-- **cncf-oathkeeper** (cncf): cncf-ory-kratos
-- **cncf-openkruise** (cncf): (none)
-- **cncf-opentelemetry** (cncf): (none)
-- **cncf-openyurt** (cncf): (none)
-- **cncf-operator-framework** (cncf): (none)
+- **00-andruia-consultant** (agent): (none)
+- **007** (coding): (none)
+- **10-andruia-skill-smith** (agent): (none)
+- **20-andruia-niche-intelligence** (agent): (none)
+- **2d-games** (programming): (none)
+- **3d-games** (programming): (none)
+- **3d-web-experience** (programming): (none)
+- **ab-test-setup** (programming): (none)
+- **acceptance-orchestrator** (agent): (none)
+- **accessibility-compliance-accessibility-audit** (programming): (none)
+- **active-directory-attacks** (coding): (none)
+- **activecampaign-automation** (programming): (none)
+- **ad-creative** (programming): (none)
+- **address-github-comments** (agent): (none)
+- **adhx** (programming): (none)
+- **advanced-evaluation** (programming): (none)
+- **advogado-criminal** (programming): (none)
+- **advogado-especialista** (programming): (none)
+- **aegisops-ai** (cncf): (none)
+- **agent-evaluation** (agent): (none)
+- **agent-framework-azure-ai-py** (programming): (none)
+- **agent-manager-skill** (agent): (none)
+- **agent-memory-mcp** (programming): (none)
+- **agent-memory-systems** (agent): (none)
+- **agent-orchestration-improve-agent** (programming): (none)
+- **agent-orchestration-multi-agent-optimize** (programming): (none)
+- **agent-orchestrator** (programming): (none)
+- **agent-tool-builder** (programming): (none)
+- **agentflow** (programming): (none)
+- **agentfolio** (programming): (none)
 
-... and 15 more
+... and 1396 more
 
 ## 💡 Suggested New Relationships
 
 Based on domain and semantic similarity analysis, here are **50** suggested relationships:
 
-1. **cncf-open-policy-agent-opa** → **cncf-openfga**
-   - Similarity Score: 0.68
-   - Rationale: Same domain (cncf) with semantic similarity
+1. **error-debugging-error-analysis** → **error-diagnostics-error-analysis**
+   - Similarity Score: 0.91
+   - Rationale: Same domain (programming) with semantic similarity
 
-2. **cncf-calico** → **cncf-openfga**
-   - Similarity Score: 0.65
-   - Rationale: Same domain (cncf) with semantic similarity
+2. **code-review-ai-ai-review** → **performance-testing-review-ai-review**
+   - Similarity Score: 0.90
+   - Rationale: Same domain (programming) with semantic similarity
 
-3. **cncf-container-network-interface-cni** → **cncf-zot**
-   - Similarity Score: 0.65
-   - Rationale: Same domain (cncf) with semantic similarity
+3. **code-documentation-doc-generate** → **documentation-generation-doc-generate**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-4. **cncf-lima** → **cncf-zot**
-   - Similarity Score: 0.65
-   - Rationale: Same domain (cncf) with semantic similarity
+4. **error-debugging-error-trace** → **error-diagnostics-error-trace**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-5. **cncf-calico** → **cncf-longhorn**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+5. **hig-components-controls** → **hig-components-menus**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-6. **cncf-calico** → **cncf-nats**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+6. **hig-components-controls** → **hig-inputs**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-7. **cncf-calico** → **cncf-open-telemetry**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+7. **hig-components-controls** → **hig-technologies**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-8. **cncf-cilium** → **cncf-longhorn**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+8. **hig-components-menus** → **hig-inputs**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-9. **cncf-cilium** → **cncf-nats**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+9. **hig-components-menus** → **hig-technologies**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-10. **cncf-cilium** → **cncf-open-telemetry**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+10. **hig-inputs** → **hig-technologies**
+   - Similarity Score: 0.89
+   - Rationale: Same domain (programming) with semantic similarity
 
-11. **cncf-longhorn** → **cncf-nats**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+11. **awareness-stage-mapper** → **brand-perception-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-12. **cncf-longhorn** → **cncf-open-telemetry**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+12. **awareness-stage-mapper** → **copywriting-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-13. **cncf-nats** → **cncf-open-telemetry**
-   - Similarity Score: 0.62
-   - Rationale: Same domain (cncf) with semantic similarity
+13. **awareness-stage-mapper** → **customer-psychographic-profiler**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-14. **cncf-calico** → **cncf-ory-hydra**
-   - Similarity Score: 0.61
-   - Rationale: Same domain (cncf) with semantic similarity
+14. **awareness-stage-mapper** → **emotional-arc-designer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-15. **cncf-krustlet** → **cncf-opencost**
-   - Similarity Score: 0.61
-   - Rationale: Same domain (cncf) with semantic similarity
+15. **awareness-stage-mapper** → **headline-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-16. **cncf-azure-resource-manager** → **cncf-gcp-deployment-manager**
-   - Similarity Score: 0.60
-   - Rationale: Same domain (cncf) with semantic similarity
+16. **awareness-stage-mapper** → **identity-mirror**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-17. **cncf-notary-project** → **cncf-openfga**
-   - Similarity Score: 0.60
-   - Rationale: Same domain (cncf) with semantic similarity
+17. **awareness-stage-mapper** → **jobs-to-be-done-analyst**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-18. **cncf-calico** → **cncf-kong**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+18. **awareness-stage-mapper** → **loss-aversion-designer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-19. **cncf-calico** → **cncf-krustlet**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+19. **awareness-stage-mapper** → **objection-preemptor**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-20. **cncf-calico** → **cncf-kuma**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+20. **awareness-stage-mapper** → **onboarding-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-21. **cncf-calico** → **cncf-lima**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+21. **awareness-stage-mapper** → **pitch-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-22. **cncf-calico** → **cncf-linkerd**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+22. **awareness-stage-mapper** → **price-psychology-strategist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-23. **cncf-calico** → **cncf-openfeature**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+23. **awareness-stage-mapper** → **scarcity-urgency-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-24. **cncf-calico** → **cncf-zot**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+24. **awareness-stage-mapper** → **sequence-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-25. **cncf-cilium** → **cncf-krustlet**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+25. **awareness-stage-mapper** → **social-proof-architect**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-26. **cncf-cilium** → **cncf-kuma**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+26. **awareness-stage-mapper** → **subject-line-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-27. **cncf-cilium** → **cncf-lima**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+27. **awareness-stage-mapper** → **trust-calibrator**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-28. **cncf-cilium** → **cncf-linkerd**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+28. **awareness-stage-mapper** → **ux-persuasion-engineer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-29. **cncf-cilium** → **cncf-openfeature**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+29. **awareness-stage-mapper** → **visual-emotion-engineer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-30. **cncf-cilium** → **cncf-zot**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+30. **brand-guidelines-anthropic** → **brand-guidelines-community**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-31. **cncf-container-network-interface-cni** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+31. **brand-perception-psychologist** → **copywriting-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-32. **cncf-container-network-interface-cni** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+32. **brand-perception-psychologist** → **customer-psychographic-profiler**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-33. **cncf-contour** → **cncf-longhorn**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+33. **brand-perception-psychologist** → **emotional-arc-designer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-34. **cncf-contour** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+34. **brand-perception-psychologist** → **headline-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-35. **cncf-contour** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+35. **brand-perception-psychologist** → **identity-mirror**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-36. **cncf-kong** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+36. **brand-perception-psychologist** → **jobs-to-be-done-analyst**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-37. **cncf-kong** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+37. **brand-perception-psychologist** → **loss-aversion-designer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-38. **cncf-krustlet** → **cncf-longhorn**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+38. **brand-perception-psychologist** → **objection-preemptor**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-39. **cncf-krustlet** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+39. **brand-perception-psychologist** → **onboarding-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-40. **cncf-krustlet** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+40. **brand-perception-psychologist** → **pitch-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-41. **cncf-kuma** → **cncf-longhorn**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+41. **brand-perception-psychologist** → **price-psychology-strategist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-42. **cncf-kuma** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+42. **brand-perception-psychologist** → **scarcity-urgency-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-43. **cncf-kuma** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+43. **brand-perception-psychologist** → **sequence-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-44. **cncf-lima** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+44. **brand-perception-psychologist** → **social-proof-architect**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-45. **cncf-lima** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+45. **brand-perception-psychologist** → **subject-line-psychologist**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-46. **cncf-linkerd** → **cncf-longhorn**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+46. **brand-perception-psychologist** → **trust-calibrator**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-47. **cncf-linkerd** → **cncf-nats**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+47. **brand-perception-psychologist** → **ux-persuasion-engineer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-48. **cncf-linkerd** → **cncf-open-telemetry**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+48. **brand-perception-psychologist** → **visual-emotion-engineer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-49. **cncf-longhorn** → **cncf-openfeature**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+49. **copywriting-psychologist** → **customer-psychographic-profiler**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
-50. **cncf-longhorn** → **cncf-zot**
-   - Similarity Score: 0.59
-   - Rationale: Same domain (cncf) with semantic similarity
+50. **copywriting-psychologist** → **emotional-arc-designer**
+   - Similarity Score: 0.86
+   - Rationale: Same domain (programming) with semantic similarity
 
 ## 🎯 Recommendations
 
 1. **Reduce Orphaned Skills:** Target at least 2-3 relationships per skill for discovery
 2. **Fix Reciprocals:** All relationships should be bidirectional for consistency
 3. **Domain-Specific Goals:**
-   - **agent:** Increase from 4.0 to 4+ relations/skill
-   - **cncf:** Increase from 2.5 to 3+ relations/skill
-   - **coding:** Increase from 3.3 to 3+ relations/skill
-   - **programming:** Increase from 1.3 to 2+ relations/skill
+   - **agent:** Increase from 0.0 to 2+ relations/skill
+   - **cncf:** Increase from 0.5 to 2+ relations/skill
+   - **coding:** Increase from 0.7 to 2+ relations/skill
+   - **programming:** Increase from 0.0 to 2+ relations/skill
    - **trading:** Increase from 2.3 to 2+ relations/skill
 
 ---

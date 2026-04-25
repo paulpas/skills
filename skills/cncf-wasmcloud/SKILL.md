@@ -1,6 +1,6 @@
 ---
 name: cncf-wasmcloud
-description: wasmCloud in WebAssembly-based distributed applications platform
+description: "wasmCloud in WebAssembly-based distributed applications platform"
 license: MIT
 compatibility: opencode
 metadata:

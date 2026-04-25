@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-health
-description: Exchange system health monitoring and connectivity status tracking
+description: "Exchange system health monitoring and connectivity status tracking"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: agent-test-oracle-generator
-description: Generates test oracles and expected outputs for testing code by analyzing
+description: "Generates test oracles and expected outputs for testing code by analyzing"
   specifications, requirements, and implementation intent to create accurate, comprehensive
   test validation data.
 license: MIT

@@ -1,6 +1,7 @@
 ---
 name: cncf-azure-automation
-description: Automation and orchestration of Azure resources with runbooks and update management.
+description: Automation and orchestration of Azure resources with runbooks and update
+  management
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: automation, runbooks, update management, orchestration, automation account
+  triggers: automation, runbooks, update management, orchestration, automation account,
+    jenkins
   related-skills: cncf-azure-key-vault, cncf-azure-monitor, cncf-azure-rbac, cncf-azure-virtual-machines
 ---
+
 
 
 # Azure Automation

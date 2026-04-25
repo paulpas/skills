@@ -1,6 +1,6 @@
 ---
 name: coding-ds-logistic-regression
-description: Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation
+description: "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation"
 license: MIT
 compatibility: opencode
 metadata:

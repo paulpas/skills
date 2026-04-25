@@ -1,6 +1,6 @@
 ---
 name: trading-paper-fill-simulation
-description: Fill Simulation Models for Order Execution Probability
+description: "Fill Simulation Models for Order Execution Probability"
 license: MIT
 compatibility: opencode
 metadata:

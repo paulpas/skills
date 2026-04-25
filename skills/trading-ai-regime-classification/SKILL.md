@@ -1,6 +1,6 @@
 ---
 name: trading-ai-regime-classification
-description: Detect current market regime for adaptive trading strategies
+description: "Detect current market regime for adaptive trading strategies"
 license: MIT
 compatibility: opencode
 metadata:

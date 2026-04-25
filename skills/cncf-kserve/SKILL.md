@@ -1,6 +1,6 @@
 ---
 name: cncf-kserve
-description: KServe in Cloud-Native Engineering - model serving
+description: "KServe in Cloud-Native Engineering - model serving"
 license: MIT
 compatibility: opencode
 metadata:

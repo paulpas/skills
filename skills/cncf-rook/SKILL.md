@@ -1,6 +1,6 @@
 ---
 name: cncf-rook
-description: Rook in Cloud-Native Storage Orchestration for Kubernetes
+description: "Rook in Cloud-Native Storage Orchestration for Kubernetes"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: trading-backtest-position-sizing
-description: 'Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility
+description: "'Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility"
   Adjustment'
 license: MIT
 compatibility: opencode

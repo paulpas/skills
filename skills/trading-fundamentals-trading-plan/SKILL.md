@@ -1,6 +1,6 @@
 ---
 name: trading-fundamentals-trading-plan
-description: Trading Plan Structure and Risk Management Framework
+description: "Trading Plan Structure and Risk Management Framework"
 license: MIT
 compatibility: opencode
 metadata:

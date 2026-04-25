@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-cloudfront
-description: Configures CloudFront CDN for global content distribution with edge caching,
+description: "Configures CloudFront CDN for global content distribution with edge caching"
   DDoS protection, and SSL/TLS termination for improved performance and security.
 license: MIT
 compatibility: opencode

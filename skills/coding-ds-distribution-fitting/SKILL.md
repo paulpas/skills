@@ -1,6 +1,6 @@
 ---
 name: coding-ds-distribution-fitting
-description: Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods
+description: "Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods"
 license: MIT
 compatibility: opencode
 metadata:

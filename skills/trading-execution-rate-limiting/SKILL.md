@@ -1,6 +1,6 @@
 ---
 name: trading-execution-rate-limiting
-description: Rate Limiting and Exchange API Management for Robust Trading Execution
+description: "Rate Limiting and Exchange API Management for Robust Trading Execution"
 license: MIT
 compatibility: opencode
 metadata:

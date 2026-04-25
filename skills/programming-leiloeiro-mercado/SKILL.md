@@ -1,0 +1,49 @@
+---
+name: leiloeiro-mercado
+description: "Analise de mercado imobiliario para leiloes. Liquidez, desagio tipico, ROI, estrategias de saida (flip/reforma/renda), Selic 2025 e benchmark CDI/FII"
+license: MIT
+compatibility: opencode
+metadata:
+  version: "1.0.0"
+  domain: programming
+  role: implementation
+  scope: implementation
+  output-format: code
+  triggers: leiloeiro mercado, leiloeiro, implementation guide
+---
+
+# Leiloeiro Mercado
+
+Analise de mercado imobiliario para leiloes. Liquidez, desagio tipico, ROI, estrategias de saida (flip/reforma/renda), Selic 2025 e benchmark CDI/FII.
+
+## When to Use
+
+- When analise de mercado imobiliario para leiloes. liqui...
+- Implementing this specific pattern or feature
+- Part of a larger architectural decision
+
+## When NOT to Use
+
+- For unrelated tasks
+- When a simpler approach would suffice
+- Without understanding the broader context
+
+## Core Workflow
+
+1. Identify the specific use case
+2. Apply the pattern or technique
+3. Validate and test the implementation
+4. Iterate based on results
+
+## Key Patterns
+
+This skill provides domain expertise for:
+
+- Implementation and architecture guidance
+- Best practices and standards compliance
+- Pattern recognition and application
+- Quality assurance and validation
+
+## Related Skills
+
+See the metadata for related skills in the same domain.

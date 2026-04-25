@@ -1,6 +1,6 @@
 ---
 name: agent-parallel-skill-runner
-description: Executes multiple skill specifications concurrently, managing parallel
+description: "Executes multiple skill specifications concurrently, managing parallel"
   workers, synchronization, and result collection for performance-optimized multi-skill
   operations.
 license: MIT

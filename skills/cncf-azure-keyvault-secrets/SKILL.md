@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-keyvault-secrets
-description: Secret management and rotation for sensitive credentials and configuration.
+description: "Secret management and rotation for sensitive credentials and configuration"
 license: MIT
 compatibility: opencode
 metadata:

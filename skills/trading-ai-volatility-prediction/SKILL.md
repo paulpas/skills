@@ -1,6 +1,6 @@
 ---
 name: trading-ai-volatility-prediction
-description: Forecast volatility for risk management and option pricing
+description: "Forecast volatility for risk management and option pricing"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,7 @@
 ---
 name: cncf-azure-resource-manager
-description: Infrastructure as code using ARM templates for repeatable Azure resource deployments.
+description: Infrastructure as code using ARM templates for repeatable Azure resource
+  deployments
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: resource manager, arm templates, infrastructure as code, iac, deployment
-  related-skills: cncf-azure-aks, cncf-azure-sql-database, cncf-azure-virtual-machines, cncf-azure-virtual-networks
+  triggers: resource manager, arm templates, infrastructure as code, iac, deployment,
+    cloudformation, kubernetes deployment, rolling updates
+  related-skills: cncf-azure-aks, cncf-azure-sql-database, cncf-azure-virtual-machines,
+    cncf-azure-virtual-networks
 ---
+
 
 
 # Azure Resource Manager

@@ -1,6 +1,6 @@
 ---
 name: coding-websocket-manager
-description: WebSocket connection manager with state machine (connecting/connected/reconnecting/error),
+description: "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)"
   exponential backoff, and message routing
 license: MIT
 compatibility: opencode

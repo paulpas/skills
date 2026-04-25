@@ -1,6 +1,6 @@
 ---
 name: coding-ds-association-rules
-description: Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining
+description: "Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining"
 license: MIT
 compatibility: opencode
 metadata:

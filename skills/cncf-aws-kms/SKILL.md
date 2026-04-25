@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-kms
-description: Manages encryption keys with AWS KMS for data protection at rest and
+description: "Manages encryption keys with AWS KMS for data protection at rest and"
   in transit, key rotation, and compliance with encryption standards across all AWS
   services.
 license: MIT

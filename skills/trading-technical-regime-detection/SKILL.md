@@ -1,6 +1,6 @@
 ---
 name: trading-technical-regime-detection
-description: Market Regime Detection Systems for Adaptive Trading Strategies
+description: "Market Regime Detection Systems for Adaptive Trading Strategies"
 license: MIT
 compatibility: opencode
 metadata:

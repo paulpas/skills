@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-secret-manager
-description: Stores and rotates secrets with encryption and audit logging for sensitive data.
+description: "Stores and rotates secrets with encryption and audit logging for sensitive data"
 license: MIT
 compatibility: opencode
 metadata:

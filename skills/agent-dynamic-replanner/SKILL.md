@@ -1,6 +1,6 @@
 ---
 name: agent-dynamic-replanner
-description: Dynamically adjusts execution plans based on real-time feedback, changing
+description: "Dynamically adjusts execution plans based on real-time feedback, changing"
   conditions, and emerging information, enabling adaptive problem solving in uncertain
   environments.
 license: MIT

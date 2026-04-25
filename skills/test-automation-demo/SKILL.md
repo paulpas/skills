@@ -1,17 +1,20 @@
 ---
 name: test-automation-demo
-description: Demonstrates the skill automation system with pre-commit hook validation and automatic relationship updates
+description: Demonstrates the skill automation system with pre-commit hook validation
+  and automatic relationship updates
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: test automation, automation testing, demo skill, hook test
+  triggers: test automation, automation testing, demo skill, hook test, testing, unit
+    tests
   related-skills: coding-code-review
 ---
+
 
 # Test Automation Demo Skill
 

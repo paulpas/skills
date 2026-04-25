@@ -1,17 +1,21 @@
 ---
 name: coding-ds-maximum-likelihood
-description: Implements maximum likelihood estimation, likelihood functions, and optimization methods for parameter estimation in probabilistic models
+description: Implements maximum likelihood estimation, likelihood functions, and optimization
+  methods for parameter estimation in probabilistic models
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: maximum likelihood, MLE, likelihood estimation, likelihood function, optimization
-  related-skills: coding-ds-bayesian-inference, coding-ds-hypothesis-testing, coding-ds-linear-regression, coding-ds-monte-carlo
+  triggers: maximum likelihood, MLE, likelihood estimation, likelihood function, optimization,
+    performance
+  related-skills: coding-ds-bayesian-inference, coding-ds-hypothesis-testing, coding-ds-linear-regression,
+    coding-ds-monte-carlo
 ---
+
 
 # Maximum Likelihood Estimation
 

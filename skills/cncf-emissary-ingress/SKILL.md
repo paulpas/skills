@@ -1,6 +1,6 @@
 ---
 name: cncf-emissary-ingress
-description: Emissary-Ingress in Cloud-Native Engineering - Kubernetes ingress controller
+description: "Emissary-Ingress in Cloud-Native Engineering - Kubernetes ingress controller"
 license: MIT
 compatibility: opencode
 metadata:

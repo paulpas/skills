@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-lambda
-description: Deploys serverless event-driven applications with Lambda functions, triggers,
+description: "Deploys serverless event-driven applications with Lambda functions, triggers"
   layers, and VPC integration for cost-effective, auto-scaling compute without server
   management.
 license: MIT

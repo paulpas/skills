@@ -1,6 +1,6 @@
 ---
 name: agent-infra-drift-detector
-description: Detects and reports infrastructure drift between desired state and actual
+description: "Detects and reports infrastructure drift between desired state and actual"
   cloud infrastructure configuration.
 license: MIT
 compatibility: opencode

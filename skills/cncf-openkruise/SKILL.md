@@ -1,6 +1,6 @@
 ---
 name: cncf-openkruise
-description: OpenKruise in Extended Kubernetes workload management with advanced deployment
+description: "OpenKruise in Extended Kubernetes workload management with advanced deployment"
   strategies
 license: MIT
 compatibility: opencode

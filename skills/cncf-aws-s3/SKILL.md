@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-s3
-description: Configures S3 object storage with versioning, lifecycle policies, encryption,
+description: "Configures S3 object storage with versioning, lifecycle policies, encryption"
   and access controls for durable, scalable data storage with cost optimization in
   AWS.
 license: MIT

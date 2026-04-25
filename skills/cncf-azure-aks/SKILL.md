@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-aks
-description: Managed Kubernetes cluster with automatic scaling and Azure service integration.
+description: "Managed Kubernetes cluster with automatic scaling and Azure service integration"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: coding-ds-confidence-intervals
-description: Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation
+description: "Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation"
 license: MIT
 compatibility: opencode
 metadata:

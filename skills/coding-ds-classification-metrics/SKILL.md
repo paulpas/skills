@@ -1,6 +1,6 @@
 ---
 name: coding-ds-classification-metrics
-description: Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification metrics
+description: "Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification metrics"
 license: MIT
 compatibility: opencode
 metadata:

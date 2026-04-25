@@ -1,6 +1,6 @@
 ---
 name: trading-risk-drawdown-control
-description: Maximum drawdown control and equity preservation
+description: "Maximum drawdown control and equity preservation"
 license: MIT
 compatibility: opencode
 metadata:

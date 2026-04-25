@@ -1,6 +1,6 @@
 ---
 name: coding-ds-privacy-ml
-description: Implements privacy-preserving machine learning including differential privacy, federated learning, and privacy attack prevention
+description: "Implements privacy-preserving machine learning including differential privacy, federated learning, and privacy attack prevention"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: coding-ds-model-selection
-description: Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques
+description: "Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques"
 license: MIT
 compatibility: opencode
 metadata:

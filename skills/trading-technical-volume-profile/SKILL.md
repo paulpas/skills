@@ -1,6 +1,6 @@
 ---
 name: trading-technical-volume-profile
-description: Volume analysis techniques for understanding market structure
+description: "Volume analysis techniques for understanding market structure"
 license: MIT
 compatibility: opencode
 metadata:

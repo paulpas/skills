@@ -1,6 +1,6 @@
 ---
 name: coding-fastapi-patterns
-description: FastAPI application structure with typed error hierarchy, global exception
+description: "FastAPI application structure with typed error hierarchy, global exception"
   handlers, CORS middleware, request timing, and lifecycle events
 license: MIT
 compatibility: opencode

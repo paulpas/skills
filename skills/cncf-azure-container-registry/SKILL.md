@@ -1,6 +1,7 @@
 ---
 name: cncf-azure-container-registry
-description: Stores and manages container images with integration to AKS and Azure services.
+description: Stores and manages container images with integration to AKS and Azure
+  services
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: container registry, acr, container images, image registry, docker images
+  triggers: container registry, acr, container images, image registry, docker images,
+    containers, docker, docker hub
   related-skills: cncf-azure-aks, cncf-azure-functions, cncf-azure-monitor, cncf-azure-rbac
 ---
+
 
 
 # Azure Container Registry

@@ -1,6 +1,6 @@
 ---
 name: coding-ds-clustering
-description: Implements clustering algorithms including K-means, hierarchical clustering, DBSCAN, Gaussian mixture models, and spectral clustering
+description: "Implements clustering algorithms including K-means, hierarchical clustering, DBSCAN, Gaussian mixture models, and spectral clustering"
 license: MIT
 compatibility: opencode
 metadata:

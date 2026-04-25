@@ -1,6 +1,7 @@
 ---
 name: cncf-azure-sql-database
-description: Managed relational database with elastic pools, geo-replication, and automatic backups.
+description: Managed relational database with elastic pools, geo-replication, and
+  automatic backups
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: sql database, relational database, managed database, azure sql, elasticity
+  triggers: sql database, relational database, managed database, azure sql, elasticity,
+    postgresql
   related-skills: cncf-azure-key-vault, cncf-azure-monitor, cncf-azure-rbac, cncf-azure-virtual-networks
 ---
+
 
 
 # Azure SQL Database

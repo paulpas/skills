@@ -1,6 +1,6 @@
 ---
 name: trading-risk-position-sizing
-description: Calculating optimal position sizes using Kelly criterion, volatility
+description: "Calculating optimal position sizes using Kelly criterion, volatility"
   adjustments, and edge-based sizing to maximize long-term growth while managing risk
 license: MIT
 compatibility: opencode

@@ -1,6 +1,6 @@
 ---
 name: trading-execution-order-book-impact
-description: Order Book Impact Measurement and Market Microstructure Analysis
+description: "Order Book Impact Measurement and Market Microstructure Analysis"
 license: MIT
 compatibility: opencode
 metadata:

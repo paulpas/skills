@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-order-execution-api
-description: Order execution and management API for trading systems
+description: "Order execution and management API for trading systems"
 license: MIT
 compatibility: opencode
 metadata:

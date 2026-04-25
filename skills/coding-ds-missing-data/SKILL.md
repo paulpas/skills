@@ -1,6 +1,6 @@
 ---
 name: coding-ds-missing-data
-description: Handles missing data using imputation strategies, deletion methods, and techniques for dealing with incomplete datasets while preserving information
+description: "Handles missing data using imputation strategies, deletion methods, and techniques for dealing with incomplete datasets while preserving information"
 license: MIT
 compatibility: opencode
 metadata:

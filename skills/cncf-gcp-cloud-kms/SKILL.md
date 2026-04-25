@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-cloud-kms
-description: Manages encryption keys for data protection with automated rotation and auditing.
+description: "Manages encryption keys for data protection with automated rotation and auditing"
 license: MIT
 compatibility: opencode
 metadata:

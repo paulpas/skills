@@ -1,6 +1,6 @@
 ---
 name: coding-ds-model-fairness
-description: Evaluates and mitigates fairness issues including bias detection, fairness metrics, and debiasing strategies in machine learning
+description: "Evaluates and mitigates fairness issues including bias detection, fairness metrics, and debiasing strategies in machine learning"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: trading-risk-correlation-risk
-description: Correlation breakdown and portfolio diversification risk
+description: "Correlation breakdown and portfolio diversification risk"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: trading-risk-tail-risk
-description: Tail risk management and extreme event protection
+description: "Tail risk management and extreme event protection"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-ssm
-description: Manages EC2 instances and on-premises servers with AWS Systems Manager
+description: "Manages EC2 instances and on-premises servers with AWS Systems Manager"
   for configuration management, patch management, and secure shell access without
   SSH keys.
 license: MIT

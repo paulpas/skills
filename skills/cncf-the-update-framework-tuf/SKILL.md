@@ -1,6 +1,6 @@
 ---
 name: cncf-the-update-framework-tuf
-description: The Update Framework (TUF) in Secure software update framework for protecting
+description: "The Update Framework (TUF) in Secure software update framework for protecting"
   software deliveries
 license: MIT
 compatibility: opencode

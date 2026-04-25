@@ -1,6 +1,6 @@
 ---
 name: cncf-backstage
-description: Backstage in Cloud-Native Engineering - Developer Portal for Microservices
+description: "Backstage in Cloud-Native Engineering - Developer Portal for Microservices"
 license: MIT
 compatibility: opencode
 metadata:

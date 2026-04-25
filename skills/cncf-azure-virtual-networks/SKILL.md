@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-virtual-networks
-description: Networking with subnets, network security groups, and VPN connectivity.
+description: Networking with subnets, network security groups, and VPN connectivity
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +9,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: virtual networks, networking, vnet, subnets, network security, vpn
+  triggers: virtual networks, networking, vnet, subnets, network security, vpn, availability
+    zones, network segmentation
   related-skills: cncf-azure-aks, cncf-azure-monitor, cncf-azure-sql-database, cncf-azure-virtual-machines
 ---
+
 
 
 # Azure Virtual Networks

@@ -1,6 +1,6 @@
 ---
 name: cncf-opencost
-description: OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns,
+description: "OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode
