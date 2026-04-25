@@ -1,16 +1,22 @@
 ---
 name: makepad-animation
 description: "''CRITICAL: Use for Makepad animation system. Triggers on' makepad animation, makepad animator, makepad hover, makepad state,'"
-makepad transition, "from: { all: Forward", makepad pres"
 license: MIT
 compatibility: opencode
-metadata:
+makepad transition, "from: { all: Forward", makepad pres"
 version: "1.0.0"
 domain: programming
 role: implementation
 scope: implementation
 output-format: code
 triggers: makepad animation, development, implementation guide
+metadata:
+  version: "1.0.0"
+  domain: programming
+  role: reference
+  scope: implementation
+  output-format: code
+  triggers: makepad animation, makepad-animation, critical, system, triggers
 ---
 
 # Makepad Animation

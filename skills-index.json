@@ -5193,7 +5193,11 @@
     "description": "Provides Chaos Mesh in Cloud-Native Engineering -u6DF7u6C8Cu5DE5u7A0B u5E73' u53F0 for Kubernetes",
     "domain": "cncf",
     "tags": [
-      "cncf"
+      "cncf",
+      "chaosmesh",
+      "chaos",
+      "cloud-native",
+      "engineering"
     ],
     "path": "skills/cncf-chaosmesh/SKILL.md"
   },
@@ -7040,7 +7044,11 @@
     "description": "Provides OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edgeu534F' u540C",
     "domain": "cncf",
     "tags": [
-      "cncf"
+      "cncf",
+      "openyurt",
+      "extending",
+      "kubernetes",
+      "computing"
     ],
     "path": "skills/cncf-openyurt/SKILL.md"
   },
@@ -12553,7 +12561,11 @@
     "description": "Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints",
     "domain": "programming",
     "tags": [
-      "programming"
+      "programming",
+      "algorithms",
+      "comprehensive",
+      "algorithm",
+      "selection"
     ],
     "path": "skills/programming-algorithms/SKILL.md"
   },
@@ -17289,9 +17301,14 @@
   {
     "name": "makepad-animation",
     "description": "CRITICAL: Use for Makepad animation system. Triggers on' makepad animation, makepad animator, makepad hover, makepad state,",
-    "domain": "makepad",
+    "domain": "programming",
     "tags": [
-      "makepad"
+      "programming",
+      "makepad animation",
+      "makepad-animation",
+      "critical",
+      "system",
+      "triggers"
     ],
     "path": "skills/programming-makepad-animation/SKILL.md"
   },
@@ -19485,9 +19502,14 @@
   {
     "name": "robius-app-architecture",
     "description": "CRITICAL: Use for Robius app architecture patterns. Triggers on' Tokio, async, submit_async_request, \u5f02\u6b65, \u67b6\u6784,",
-    "domain": "robius",
+    "domain": "programming",
     "tags": [
-      "robius"
+      "programming",
+      "robius app architecture",
+      "robius-app-architecture",
+      "critical",
+      "patterns",
+      "triggers"
     ],
     "path": "skills/programming-robius-app-architecture/SKILL.md"
   },
@@ -19518,9 +19540,14 @@
   {
     "name": "robius-state-management",
     "description": "CRITICAL: Use for Robius state management patterns. Triggers on' AppState, persistence, theme switch, \u72b6\u6001\u7ba1\u7406,",
-    "domain": "robius",
+    "domain": "programming",
     "tags": [
-      "robius"
+      "programming",
+      "robius state management",
+      "robius-state-management",
+      "critical",
+      "patterns",
+      "triggers"
     ],
     "path": "skills/programming-robius-state-management/SKILL.md"
   },

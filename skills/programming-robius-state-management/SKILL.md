@@ -1,16 +1,22 @@
 ---
 name: robius-state-management
 description: "''CRITICAL: Use for Robius state management patterns. Triggers on' AppState, persistence, theme switch, 状态管理,'"
-Scope: :with_data, save state, load state, serde,
 license: MIT
 compatibility: opencode
-metadata:
+Scope: :with_data, save state, load state, serde,
 version: "1.0.0"
 domain: programming
 role: implementation
 scope: implementation
 output-format: code
 triggers: robius state management, development, data processing
+metadata:
+  version: "1.0.0"
+  domain: programming
+  role: reference
+  scope: implementation
+  output-format: code
+  triggers: robius state management, robius-state-management, critical, patterns, triggers
 ---
 
 # Robius State Management
