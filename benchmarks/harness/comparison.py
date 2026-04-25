@@ -65,8 +65,12 @@ class BenchmarkComparison:
 
         return current_val, baseline_val, delta_pct
 
-    def print_comparison(self):
-        """Print side-by-side comparison with baseline."""
+    def print_comparison(self, include_llm: bool = True):
+        """Print side-by-side comparison with baseline.
+
+        Args:
+            include_llm: Include LLM results in comparison if available
+        """
         if not self.baseline:
             print("No baseline provided. Showing current results only.\n")
             self._print_results(self.current, "Current")
@@ -304,6 +308,91 @@ class BenchmarkComparison:
                     f"{baseline_acc * 100:.1f}% → {current_acc * 100:.1f}%"
                 )
 
+    def print_llm_comparison(self):
+        """Print LLM code generation quality comparison."""
+        current_llm = self.current.get("llm_results")
+        baseline_llm = self.baseline.get("llm_results") if self.baseline else None
+
+        if not current_llm:
+            return
+
+        print("\n" + "═" * 100)
+        print("║ LLM CODE GENERATION QUALITY COMPARISON".ljust(99) + "║")
+        print("═" * 100)
+
+        if not baseline_llm:
+            print(
+                "\nNo baseline LLM results for comparison. Showing current results only.\n"
+            )
+            self._print_llm_results(current_llm, "Current")
+            return
+
+        # Create lookup for baseline results
+        baseline_by_name = {r.get("exercise_name"): r for r in baseline_llm}
+
+        print(f"\n{self.current.get('llm_model', 'Unknown')} Model")
+        print("─" * 100)
+
+        metrics_to_compare = [
+            ("Code Correctness", "metrics.code_correctness_pct", "%"),
+            ("Complexity", "metrics.cyclomatic_complexity", "score"),
+            ("SLOC", "metrics.sloc", "lines"),
+            ("Maintainability", "metrics.maintainability_score", "%"),
+        ]
+
+        for result in current_llm:
+            name = result.get("exercise_name")
+            baseline_result = baseline_by_name.get(name)
+
+            if baseline_result:
+                print(f"\n{name}:")
+                for metric_name, path, unit in metrics_to_compare:
+                    # Navigate path like "metrics.code_correctness_pct"
+                    keys = path.split(".")
+                    current_val = result
+                    baseline_val = baseline_result
+
+                    for key in keys:
+                        current_val = (
+                            current_val.get(key)
+                            if isinstance(current_val, dict)
+                            else None
+                        )
+                        baseline_val = (
+                            baseline_val.get(key)
+                            if isinstance(baseline_val, dict)
+                            else None
+                        )
+
+                    if current_val is not None and baseline_val is not None:
+                        if unit == "%":
+                            delta = current_val - baseline_val
+                            print(
+                                f"  {metric_name:20s}: {current_val:6.1f}% (was {baseline_val:6.1f}%, {delta:+.1f}%)"
+                            )
+                        else:
+                            delta_pct = (
+                                ((current_val - baseline_val) / baseline_val * 100)
+                                if baseline_val != 0
+                                else 0
+                            )
+                            print(
+                                f"  {metric_name:20s}: {current_val:6.0f} {unit:s} (was {baseline_val:6.0f}, {delta_pct:+.1f}%)"
+                            )
+
+    def _print_llm_results(self, llm_results: list, label: str):
+        """Print LLM results without baseline comparison."""
+        print(f"{label} LLM Results:")
+        print("─" * 100)
+
+        for result in llm_results:
+            metrics = result.get("metrics", {})
+            print(f"\n{result.get('exercise_name')} [{result.get('tier').upper()}]:")
+            print(f"  Code Correctness: {metrics.get('code_correctness_pct', 0):.1f}%")
+            print(f"  Complexity: {metrics.get('cyclomatic_complexity', 0)}")
+            print(f"  SLOC: {metrics.get('sloc', 0)}")
+            print(f"  Maintainability: {metrics.get('maintainability_score', 0):.1f}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Compare benchmark results")
@@ -341,6 +430,10 @@ def main():
 
     # Print comparison
     comparison.print_comparison()
+
+    # Print LLM comparison if available
+    if baseline:
+        comparison.print_llm_comparison()
 
     # Print recommendations if baseline provided
     if baseline:
