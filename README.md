@@ -665,8 +665,8 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-04-25 09:34:31 UTC  
-> **Total skills:** 1770
+> **Last updated:** 2026-04-25 09:36:01 UTC  
+> **Total skills:** 1775
 
 ## Skills by Domain
 
@@ -899,7 +899,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [zoom-automation](../../skills/zoom-automation/SKILL.md) | Provides Automate Zoom meeting creation, management,... | zoom automation, automation... |
 
 
-### Cncf (363 skills)
+### Cncf (365 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -1081,6 +1081,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [cncf-buildpacks](../../skills/cncf-buildpacks/SKILL.md) | "Provides Buildpacks in Cloud-Native Engineering - Turn... | buildpacks, cloud-native... |
 | [cncf-calico](../../skills/cncf-calico/SKILL.md) | "Calico in Cloud Native Security - cloud native... | calico, cdn... |
 | [cncf-cert-manager](../../skills/cncf-cert-manager/SKILL.md) | "cert-manager in Cloud-Native Engineering - Certificate... | cert manager, cert-manager... |
+| [cncf-chaosmesh](../../skills/cncf-chaosmesh/SKILL.md) | ''Provides Chaos Mesh in Cloud-Native Engineering... | chaosmesh, chaos... |
 | [cncf-cilium](../../skills/cncf-cilium/SKILL.md) | "Cilium in Cloud Native Network - cloud native... | cdn, cilium... |
 | [cncf-cloud-custodian](../../skills/cncf-cloud-custodian/SKILL.md) | "Provides Cloud Custodian in Cloud-Native Engineering... | cloud custodian, cloud-custodian... |
 | [cncf-cloudevents](../../skills/cncf-cloudevents/SKILL.md) | "CloudEvents in Streaming & Messaging - cloud native... | cdn, cloudevents... |
@@ -1161,6 +1162,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [cncf-openfga](../../skills/cncf-openfga/SKILL.md) | "OpenFGA in Security &amp; Compliance - cloud native... | cdn, compliance... |
 | [cncf-openkruise](../../skills/cncf-openkruise/SKILL.md) | "OpenKruise in Extended Kubernetes workload management with... | container orchestration, extended... |
 | [cncf-opentelemetry](../../skills/cncf-opentelemetry/SKILL.md) | "OpenTelemetry in Observability framework for tracing,... | framework, observability... |
+| [cncf-openyurt](../../skills/cncf-openyurt/SKILL.md) | ''Provides OpenYurt in Extending Kubernetes to edge... | openyurt, extending... |
 | [cncf-operator-framework](../../skills/cncf-operator-framework/SKILL.md) | "Operator Framework in Tools to build and manage Kubernetes... | build, manage... |
 | [cncf-ory-hydra](../../skills/cncf-ory-hydra/SKILL.md) | "ORY Hydra in Security & Compliance - cloud native... | ory hydra, ory-hydra... |
 | [cncf-ory-kratos](../../skills/cncf-ory-kratos/SKILL.md) | "ORY Kratos in Identity & Access - cloud native... | access, cdn... |
@@ -1591,7 +1593,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [zustand-store-ts](../../skills/zustand-store-ts/SKILL.md) | "Provides Create Zustand stores following established... | zustand store ts, frontend... |
 
 
-### Programming (785 skills)
+### Programming (788 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -2131,6 +2133,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [programmatic-seo](../../skills/programmatic-seo/SKILL.md) | Provides Design and evaluate programmatic SEO strategies... | programmatic seo, marketing... |
 | [programming-abl-v10-learning](../../skills/programming-abl-v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... | abl, abl programming... |
 | [programming-abl-v12-learning](../../skills/programming-abl-v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... | abl v12, openedge 12... |
+| [programming-algorithms](../../skills/programming-algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide u2014... | algorithms, comprehensive... |
 | [progressive-estimation](../../skills/progressive-estimation/SKILL.md) | "Provides Estimate AI-assisted and hybrid human+agent... | progressive estimation, project... |
 | [project-development](../../skills/project-development/SKILL.md) | Provides this skill covers the principles for identifying... | project development, ai... |
 | [project-skill-audit](../../skills/project-skill-audit/SKILL.md) | "Provides Audit a project and recommend the highest-value... | project skill audit, uncategorized... |
@@ -2174,8 +2177,10 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [revops](../../skills/revops/SKILL.md) | "Provides Design and improve revenue operations, lead... | revops, business... |
 | [risk-manager](../../skills/risk-manager/SKILL.md) | "Provides Monitor portfolio risk, R-multiples, and position... | risk manager, business... |
 | [risk-metrics-calculation](../../skills/risk-metrics-calculation/SKILL.md) | "Provides Calculate portfolio risk metrics including VaR,... | risk metrics calculation, business... |
+| [robius-app-architecture](../../skills/robius-app-architecture/SKILL.md) | ''CRITICAL: Use for Robius app architecture patterns.... | robius app architecture, robius-app-architecture... |
 | [robius-event-action](../../skills/robius-event-action/SKILL.md) | "CRITICAL: Use for Robius event and action patterns.... | robius event action, development... |
 | [robius-matrix-integration](../../skills/robius-matrix-integration/SKILL.md) | "CRITICAL: Use for Matrix SDK integration with Makepad.... | robius matrix integration, development... |
+| [robius-state-management](../../skills/robius-state-management/SKILL.md) | ''CRITICAL: Use for Robius state management patterns.... | robius state management, robius-state-management... |
 | [robius-widget-patterns](../../skills/robius-widget-patterns/SKILL.md) | "CRITICAL: Use for Robius widget patterns. Triggers on"... | robius widget patterns, development... |
 | [rust-async-patterns](../../skills/rust-async-patterns/SKILL.md) | "Provides Master Rust async programming with Tokio, async... | rust async patterns, development... |
 | [saas-mvp-launcher](../../skills/saas-mvp-launcher/SKILL.md) | "Provides use when planning or building a saas mvp from... | saas mvp launcher, business... |
@@ -3897,7 +3902,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [zustand-store-ts](../../skills/zustand-store-ts/SKILL.md) | Coding | "Provides Create Zustand stores following established... |
 
 
-### Reference (Learn & Understand) (151 skills)
+### Reference (Learn & Understand) (156 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -3948,6 +3953,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [cncf-buildpacks](../../skills/cncf-buildpacks/SKILL.md) | Cncf | "Provides Buildpacks in Cloud-Native Engineering - Turn... |
 | [cncf-calico](../../skills/cncf-calico/SKILL.md) | Cncf | "Calico in Cloud Native Security - cloud native... |
 | [cncf-cert-manager](../../skills/cncf-cert-manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate... |
+| [cncf-chaosmesh](../../skills/cncf-chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering... |
 | [cncf-cilium](../../skills/cncf-cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native... |
 | [cncf-cloud-custodian](../../skills/cncf-cloud-custodian/SKILL.md) | Cncf | "Provides Cloud Custodian in Cloud-Native Engineering... |
 | [cncf-cloudevents](../../skills/cncf-cloudevents/SKILL.md) | Cncf | "CloudEvents in Streaming & Messaging - cloud native... |
@@ -4028,6 +4034,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [cncf-openfga](../../skills/cncf-openfga/SKILL.md) | Cncf | "OpenFGA in Security &amp; Compliance - cloud native... |
 | [cncf-openkruise](../../skills/cncf-openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with... |
 | [cncf-opentelemetry](../../skills/cncf-opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing,... |
+| [cncf-openyurt](../../skills/cncf-openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge... |
 | [cncf-operator-framework](../../skills/cncf-operator-framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes... |
 | [cncf-ory-hydra](../../skills/cncf-ory-hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native... |
 | [cncf-ory-kratos](../../skills/cncf-ory-kratos/SKILL.md) | Cncf | "ORY Kratos in Identity & Access - cloud native... |
@@ -4052,6 +4059,9 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [coding-git-advanced](../../skills/coding-git-advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing,... |
 | [programming-abl-v10-learning](../../skills/programming-abl-v10-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... |
 | [programming-abl-v12-learning](../../skills/programming-abl-v12-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... |
+| [programming-algorithms](../../skills/programming-algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014... |
+| [robius-app-architecture](../../skills/robius-app-architecture/SKILL.md) | Programming | ''CRITICAL: Use for Robius app architecture patterns.... |
+| [robius-state-management](../../skills/robius-state-management/SKILL.md) | Programming | ''CRITICAL: Use for Robius state management patterns.... |
 
 
 ### Orchestration (Manage AI Agents) (68 skills)
@@ -4677,6 +4687,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [cncf-buildpacks](../../skills/cncf-buildpacks/SKILL.md) | Cncf | "Provides Buildpacks in Cloud-Native Engineering - Turn... | Reference |
 | [cncf-calico](../../skills/cncf-calico/SKILL.md) | Cncf | "Calico in Cloud Native Security - cloud native... | Reference |
 | [cncf-cert-manager](../../skills/cncf-cert-manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate... | Reference |
+| [cncf-chaosmesh](../../skills/cncf-chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering... | Reference |
 | [cncf-cilium](../../skills/cncf-cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native... | Reference |
 | [cncf-cloud-custodian](../../skills/cncf-cloud-custodian/SKILL.md) | Cncf | "Provides Cloud Custodian in Cloud-Native Engineering... | Reference |
 | [cncf-cloudevents](../../skills/cncf-cloudevents/SKILL.md) | Cncf | "CloudEvents in Streaming & Messaging - cloud native... | Reference |
@@ -4757,6 +4768,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [cncf-openfga](../../skills/cncf-openfga/SKILL.md) | Cncf | "OpenFGA in Security &amp; Compliance - cloud native... | Reference |
 | [cncf-openkruise](../../skills/cncf-openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with... | Reference |
 | [cncf-opentelemetry](../../skills/cncf-opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing,... | Reference |
+| [cncf-openyurt](../../skills/cncf-openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge... | Reference |
 | [cncf-operator-framework](../../skills/cncf-operator-framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes... | Reference |
 | [cncf-ory-hydra](../../skills/cncf-ory-hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native... | Reference |
 | [cncf-ory-kratos](../../skills/cncf-ory-kratos/SKILL.md) | Cncf | "ORY Kratos in Identity & Access - cloud native... | Reference |
@@ -5520,6 +5532,7 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [programmatic-seo](../../skills/programmatic-seo/SKILL.md) | Programming | Provides Design and evaluate programmatic SEO strategies... | Implementation |
 | [programming-abl-v10-learning](../../skills/programming-abl-v10-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... | Reference |
 | [programming-abl-v12-learning](../../skills/programming-abl-v12-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... | Reference |
+| [programming-algorithms](../../skills/programming-algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014... | Reference |
 | [progressive-estimation](../../skills/progressive-estimation/SKILL.md) | Programming | "Provides Estimate AI-assisted and hybrid human+agent... | Implementation |
 | [progressive-web-app](../../skills/progressive-web-app/SKILL.md) | Coding | "Provides Build Progressive Web Apps (PWAs) with offline... | Implementation |
 | [project-development](../../skills/project-development/SKILL.md) | Programming | Provides this skill covers the principles for identifying... | Implementation |
@@ -5583,8 +5596,10 @@ Good triggers are specific and task-oriented (`kubernetes, k8s, pod, deployment,
 | [revops](../../skills/revops/SKILL.md) | Programming | "Provides Design and improve revenue operations, lead... | Implementation |
 | [risk-manager](../../skills/risk-manager/SKILL.md) | Programming | "Provides Monitor portfolio risk, R-multiples, and position... | Implementation |
 | [risk-metrics-calculation](../../skills/risk-metrics-calculation/SKILL.md) | Programming | "Provides Calculate portfolio risk metrics including VaR,... | Implementation |
+| [robius-app-architecture](../../skills/robius-app-architecture/SKILL.md) | Programming | ''CRITICAL: Use for Robius app architecture patterns.... | Reference |
 | [robius-event-action](../../skills/robius-event-action/SKILL.md) | Programming | "CRITICAL: Use for Robius event and action patterns.... | Implementation |
 | [robius-matrix-integration](../../skills/robius-matrix-integration/SKILL.md) | Programming | "CRITICAL: Use for Matrix SDK integration with Makepad.... | Implementation |
+| [robius-state-management](../../skills/robius-state-management/SKILL.md) | Programming | ''CRITICAL: Use for Robius state management patterns.... | Reference |
 | [robius-widget-patterns](../../skills/robius-widget-patterns/SKILL.md) | Programming | "CRITICAL: Use for Robius widget patterns. Triggers on"... | Implementation |
 | [ruby-pro](../../skills/ruby-pro/SKILL.md) | Coding | "Provides Write idiomatic Ruby code with metaprogramming,... | Implementation |
 | [rust-async-patterns](../../skills/rust-async-patterns/SKILL.md) | Programming | "Provides Master Rust async programming with Tokio, async... | Implementation |
