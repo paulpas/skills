@@ -51,7 +51,7 @@ OPENCODE_BINARY = Path("/home/paulpas/.opencode/bin/opencode")
 OPENCODE_CONFIG_PATH = Path("/home/paulpas/.config/opencode/opencode.json")
 
 DEFAULT_MODEL = "llamacpp/qwen3-coder-next-8_0"
-DEFAULT_TIMEOUT = 300
+DEFAULT_TIMEOUT = 900
 RESPONSE_PREVIEW_CHARS = 500
 CODE_EXEC_TIMEOUT_SECONDS = 10
 
