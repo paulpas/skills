@@ -1,10 +1,10 @@
 ---
 name: obsidian-cli
-description: "Use the Obsidian CLI to read, create, search, and manage vault content, or to develop and debug Obsidian plugins and themes from the command line"
+description: "\"Provides use the obsidian cli to read, create, search, and manage vault content, or to develop and debug obsidian plugins and themes from the command line\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

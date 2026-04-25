@@ -1,6 +1,6 @@
 ---
 name: performance-engineer
-description: Expert performance engineer specializing in modern observability
+description: "Provides Expert performance engineer specializing in modern observability"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: performance engineer, development, implementation guide, optimization
+  triggers: performance engineer, development, implementation guide, optimization,
+    performance
 ---
+
 
 
 # Performance Engineer

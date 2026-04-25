@@ -1,6 +1,6 @@
 ---
 name: trading-technical-trend-analysis
-description: "Trend identification, classification, and continuation analysis"
+description: "\"Provides Trend identification, classification, and continuation analysis\""
 license: MIT
 compatibility: opencode
 metadata:

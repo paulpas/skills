@@ -1,10 +1,10 @@
 ---
 name: iterate-pr
-description: "Iterate on a PR until CI passes. Use when you need to fix CI failures, address review feedback, or continuously push fixes until all checks are green"
+description: "\"Provides Iterate on a PR until CI passes. Use when you need to fix CI failures, address review feedback, or continuously push fixes until all checks are green\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

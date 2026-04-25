@@ -1,10 +1,10 @@
 ---
 name: office-productivity
-description: "Office productivity workflow covering document creation, spreadsheet automation, presentation generation, and integration with LibreOffice and Microso"
+description: "\"Provides Office productivity workflow covering document creation, spreadsheet automation, presentation generation, and integration with LibreOffice and Microso\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

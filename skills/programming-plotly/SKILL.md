@@ -1,7 +1,6 @@
 ---
 name: plotly
-description: Interactive visualization library. Use when you need hover info, zoom,
-  pan, or web-embeddable charts. Best for dashboards, exploratory analysis, and p
+description: "Provides Interactive visualization library. Use when you need hover info, zoom, pan, or web-embeddable charts. Best for dashboards, exploratory analysis, and p"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: plotly, data, science, data processing, spark
+  triggers: plotly, data, science, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Plotly

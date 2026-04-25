@@ -1,10 +1,10 @@
 ---
 name: c4-container
-description: "Expert C4 Container-level documentation specialist"
+description: "\"Implements expert c4 container-level documentation specialist patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

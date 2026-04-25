@@ -1,10 +1,10 @@
 ---
 name: azure-identity-dotnet
-description: "Azure Identity SDK for .NET. Authentication library for Azure SDK clients using Microsoft Entra ID. Use for DefaultAzureCredential, managed identity"
+description: "\"Provides Azure Identity SDK for .NET. Authentication library for Azure SDK clients using Microsoft Entra ID. Use for DefaultAzureCredential, managed identity\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

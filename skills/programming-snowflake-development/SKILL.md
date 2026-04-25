@@ -1,7 +1,6 @@
 ---
 name: snowflake-development
-description: Comprehensive Snowflake development assistant covering SQL best practices,
-  data pipeline design (Dynamic Tables, Streams, Tasks, Snowpipe), Cortex AI
+description: "Provides Comprehensive Snowflake development assistant covering SQL best practices, data pipeline design (Dynamic Tables, Streams, Tasks, Snowpipe), Cortex AI"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: snowflake development, data, engineering, data processing, spark
+  triggers: snowflake development, data, engineering, data processing, spark, big
+    data, distributed processing
 ---
+
 
 
 # Snowflake Development

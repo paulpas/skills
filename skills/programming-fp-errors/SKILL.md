@@ -1,10 +1,10 @@
 ---
 name: fp-errors
-description: "Stop throwing everywhere - handle errors as values using Either and TaskEither for cleaner, more predictable code"
+description: "\"Provides Stop throwing everywhere - handle errors as values using Either and TaskEither for cleaner, more predictable code\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

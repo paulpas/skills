@@ -1,7 +1,6 @@
 ---
 name: adhx
-description: Fetch any X/Twitter post as clean LLM-friendly JSON. Converts x.com,
-  twitter.com, or adhx.com links into structured data with full article content, au
+description: "Provides Fetch any X/Twitter post as clean LLM-friendly JSON. Converts x.com, twitter.com, or adhx.com links into structured data with full article content, au"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: adhx, uncategorized, data processing, spark
+  triggers: adhx, uncategorized, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Adhx

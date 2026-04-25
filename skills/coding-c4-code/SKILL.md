@@ -1,10 +1,10 @@
 ---
 name: c4-code
-description: "Expert C4 Code-level documentation specialist. Analyzes code directories to create comprehensive C4 code-level documentation including function signat"
+description: "\"Provides Expert C4 Code-level documentation specialist. Analyzes code directories to create comprehensive C4 code-level documentation including function signat\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

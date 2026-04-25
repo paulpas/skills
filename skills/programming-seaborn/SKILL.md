@@ -1,7 +1,6 @@
 ---
 name: seaborn
-description: Seaborn is a Python visualization library for creating publication-quality
-  statistical graphics. Use this skill for dataset-oriented plotting, multiva
+description: "Provides Seaborn is a Python visualization library for creating publication-quality statistical graphics. Use this skill for dataset-oriented plotting, multiva"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: seaborn, science, data processing, spark
+  triggers: seaborn, science, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Seaborn

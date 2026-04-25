@@ -1,7 +1,6 @@
 ---
 name: prompt-engineer
-description: Transforms user prompts into optimized prompts using frameworks (RTF,
-  RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR
+description: "Transforms user prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: prompt engineer, automation, how do i automate, jenkins
+  triggers: prompt engineer, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Prompt Engineer

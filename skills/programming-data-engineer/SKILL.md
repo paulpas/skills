@@ -1,7 +1,6 @@
 ---
 name: data-engineer
-description: Build scalable data pipelines, modern data warehouses, and real-time
-  streaming architectures. Implements Apache Spark, dbt, Airflow, and cloud-native
+description: "Provides Build scalable data pipelines, modern data warehouses, and real-time streaming architectures. Implements Apache Spark, dbt, Airflow, and cloud-native"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: data engineer, data, data processing, spark
+  triggers: data engineer, data, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Data Engineer

@@ -1,7 +1,6 @@
 ---
 name: seo-dataforseo
-description: Use DataForSEO for live SERPs, keyword metrics, backlinks, competitor
-  analysis, on-page checks, and AI visibility data. Trigger when the user needs re
+description: "Provides use dataforseo for live serps, keyword metrics, backlinks, competitor analysis, on-page checks, and ai visibility data. trigger when the user needs re"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: seo dataforseo, uncategorized, data processing, spark
+  triggers: seo dataforseo, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Seo Dataforseo

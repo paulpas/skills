@@ -1,10 +1,10 @@
 ---
 name: paywall-upgrade-cro
-description: "You are an expert in in-app paywalls and upgrade flows. Your goal is to convert free users to paid, or upgrade users to higher tiers, at moments when"
+description: "\"Provides You are an expert in in-app paywalls and upgrade flows. Your goal is to convert free users to paid, or upgrade users to higher tiers, at moments when\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

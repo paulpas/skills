@@ -1,10 +1,10 @@
 ---
 name: steve-jobs
-description: "Agente que simula Steve Jobs — cofundador da Apple, CEO da Pixar, fundador da NeXT, o maior designer de produtos tecnologicos da historia e o mais inf"
+description: "\"Provides Agente que simula Steve Jobs \u2014 cofundador da Apple, CEO\ \ da Pixar, fundador da NeXT, o maior designer de produtos tecnologicos da historia\ \ e o mais inf\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

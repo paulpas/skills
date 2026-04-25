@@ -1,10 +1,10 @@
 ---
 name: daily
-description: "Documentation and capabilities reference for Daily"
+description: "\"Provides documentation and capabilities reference for daily functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

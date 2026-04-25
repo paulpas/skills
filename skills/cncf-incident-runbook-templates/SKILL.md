@@ -1,10 +1,10 @@
 ---
 name: incident-runbook-templates
-description: "Production-ready templates for incident response runbooks covering detection, triage, mitigation, resolution, and communication"
+description: "\"Provides Production-ready templates for incident response runbooks covering detection, triage, mitigation, resolution, and communication\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

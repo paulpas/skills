@@ -1,10 +1,10 @@
 ---
 name: context7-auto-research
-description: "Automatically fetch latest library/framework documentation for Claude Code via Context7 API. Use when you need up-to-date documentation for libraries"
+description: "\"Provides Automatically fetch latest library/framework documentation for Claude Code via Context7 API. Use when you need up-to-date documentation for libraries\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

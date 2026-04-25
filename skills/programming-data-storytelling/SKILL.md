@@ -1,7 +1,6 @@
 ---
 name: data-storytelling
-description: Transform raw data into compelling narratives that drive decisions and
-  inspire action
+description: "Provides Transform raw data into compelling narratives that drive decisions and inspire action"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: data storytelling, data, science, data processing, spark
+  triggers: data storytelling, data, science, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Data Storytelling

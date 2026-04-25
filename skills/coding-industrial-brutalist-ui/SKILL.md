@@ -1,7 +1,6 @@
 ---
 name: industrial-brutalist-ui
-description: Use when creating raw industrial or tactical telemetry UIs with rigid
-  grids, stark typography, CRT effects, and high-density data
+description: "Provides use when creating raw industrial or tactical telemetry uis with rigid grids, stark typography, crt effects, and high-density data"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: industrial brutalist ui, frontend, data processing, spark
+  triggers: industrial brutalist ui, frontend, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Industrial Brutalist Ui

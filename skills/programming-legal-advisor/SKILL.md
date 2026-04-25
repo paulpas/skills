@@ -1,7 +1,6 @@
 ---
 name: legal-advisor
-description: Draft privacy policies, terms of service, disclaimers, and legal notices.
-  Creates GDPR-compliant texts, cookie policies, and data processing agreement
+description: "Provides Draft privacy policies, terms of service, disclaimers, and legal notices. Creates GDPR-compliant texts, cookie policies, and data processing agreement"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: legal advisor, legal, data processing, spark
+  triggers: legal advisor, legal, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Legal Advisor

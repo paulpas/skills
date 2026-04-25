@@ -1,10 +1,10 @@
 ---
 name: frontend-design
-description: "You are a frontend designer-engineer, not a layout generator"
+description: "\"Provides You are a frontend designer-engineer, not a layout generator\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

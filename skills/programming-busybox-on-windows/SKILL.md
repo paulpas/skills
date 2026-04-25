@@ -1,10 +1,10 @@
 ---
 name: busybox-on-windows
-description: "How to use a Win32 build of BusyBox to run many of the standard UNIX command line tools on Windows"
+description: "\"Provides How to use a Win32 build of BusyBox to run many of the standard UNIX command line tools on Windows\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

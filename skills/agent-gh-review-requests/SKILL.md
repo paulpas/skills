@@ -1,10 +1,10 @@
 ---
 name: gh-review-requests
-description: "Fetch unread GitHub notifications for open PRs where review is requested from a specified team or opened by a team member. Use when asked to"
+description: "\"Provides Fetch unread GitHub notifications for open PRs where review is requested from a specified team or opened by a team member. Use when asked to\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

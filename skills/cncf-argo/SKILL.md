@@ -1,7 +1,6 @@
 ---
 name: cncf-argo
-description: "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD"
-  and Governance
+description: "\"Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD\" and Governance"
 license: MIT
 compatibility: opencode
 metadata:

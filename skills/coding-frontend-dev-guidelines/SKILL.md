@@ -1,10 +1,10 @@
 ---
 name: frontend-dev-guidelines
-description: "You are a senior frontend engineer operating under strict architectural and performance standards. Use when creating components or pages, adding new f"
+description: "\"Provides You are a senior frontend engineer operating under strict architectural and performance standards. Use when creating components or pages, adding new f\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

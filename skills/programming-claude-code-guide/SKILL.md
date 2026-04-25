@@ -1,7 +1,6 @@
 ---
 name: claude-code-guide
-description: To provide a comprehensive reference for configuring and using Claude
-  Code (the agentic coding tool) to its full potential. This skill synthesizes bes
+description: "Provides To provide a comprehensive reference for configuring and using Claude Code (the agentic coding tool) to its full potential. This skill synthesizes bes"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude code guide, ai, ml, implementation guide, machine learning
+  triggers: claude code guide, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Claude Code Guide

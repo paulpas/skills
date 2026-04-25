@@ -1,10 +1,10 @@
 ---
 name: idea-os
-description: "Five-phase pipeline (triage → clarify → research → PRD → plan) that turns a raw idea into four linked files: clarifying questions, deep research, a PR"
+description: "\"Provides Five-phase pipeline (triage \u2192 clarify \u2192 research\ \ \u2192 PRD \u2192 plan) that turns a raw idea into four linked files: clarifying\ \ questions, deep research, a PR\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

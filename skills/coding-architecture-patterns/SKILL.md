@@ -1,7 +1,6 @@
 ---
 name: architecture-patterns
-description: Master proven backend architecture patterns including Clean Architecture,
-  Hexagonal Architecture, and Domain-Driven Design to build maintainable, test
+description: "Provides Master proven backend architecture patterns including Clean Architecture, Hexagonal Architecture, and Domain-Driven Design to build maintainable, test"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: architecture patterns, architecture, how do i test, design patterns
+  triggers: architecture patterns, architecture, how do i test, design patterns, best
+    practices
 ---
+
 
 
 # Architecture Patterns

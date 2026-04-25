@@ -1,16 +1,18 @@
 ---
 name: coding-ds-intervention-analysis
-description: "Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses"
+description: "\"Provides Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: treatment effects, intervention analysis, CATE, heterogeneous effects, treatment response
-  related-skills: coding-ds-causal-inference, coding-ds-observational-studies, coding-ds-randomized-experiments, coding-ds-synthetic-control
+  triggers: treatment effects, intervention analysis, CATE, heterogeneous effects,
+    treatment response
+  related-skills: coding-ds-causal-inference, coding-ds-observational-studies, coding-ds-randomized-experiments,
+    coding-ds-synthetic-control
 ---
 
 # Intervention Analysis

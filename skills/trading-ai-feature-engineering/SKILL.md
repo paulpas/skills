@@ -1,6 +1,6 @@
 ---
 name: trading-ai-feature-engineering
-description: "Create actionable trading features from raw market data"
+description: "\"Implements create actionable trading features from raw market data for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

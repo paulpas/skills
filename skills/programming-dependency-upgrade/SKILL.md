@@ -1,10 +1,10 @@
 ---
 name: dependency-upgrade
-description: "Master major dependency version upgrades, compatibility analysis, staged upgrade strategies, and comprehensive testing approaches"
+description: "\"Provides Master major dependency version upgrades, compatibility analysis, staged upgrade strategies, and comprehensive testing approaches\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

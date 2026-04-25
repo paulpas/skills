@@ -1,10 +1,10 @@
 ---
 name: lint-and-validate
-description: "MANDATORY: Run appropriate validation tools after EVERY code change. Do not finish a task until the code is error-free"
+description: "'Provides MANDATORY: Run appropriate validation tools after EVERY code change. Do not finish a task until the code is error-free'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

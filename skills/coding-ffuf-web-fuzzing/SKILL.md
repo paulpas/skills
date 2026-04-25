@@ -1,7 +1,6 @@
 ---
 name: ffuf-web-fuzzing
-description: Expert guidance for ffuf web fuzzing during penetration testing, including
-  authenticated fuzzing with raw requests, auto-calibration, and result analy
+description: "\"Provides Expert guidance for ffuf web fuzzing during penetration testing, including authenticated fuzzing with raw requests, auto-calibration, and result analy\""
 license: MIT
 compatibility: opencode
 metadata:

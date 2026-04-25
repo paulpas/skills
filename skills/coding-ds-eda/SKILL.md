@@ -1,16 +1,18 @@
 ---
 name: coding-ds-eda
-description: "Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristic"
+description: "\"Provides Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristic\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: exploratory data analysis, EDA, summary statistics, distributions, data exploration, how do i explore data
-  related-skills: coding-ds-correlation-analysis, coding-ds-data-profiling, coding-ds-data-visualization, coding-ds-missing-data
+  triggers: exploratory data analysis, EDA, summary statistics, distributions, data
+    exploration, how do i explore data
+  related-skills: coding-ds-correlation-analysis, coding-ds-data-profiling, coding-ds-data-visualization,
+    coding-ds-missing-data
 ---
 
 # Exploratory Data Analysis

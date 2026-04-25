@@ -1,7 +1,6 @@
 ---
 name: coding-ds-ab-testing
-description: Designs and analyzes A/B tests including hypothesis testing, power analysis,
-  sample size calculation, and statistical significance evaluation
+description: "Provides Designs and analyzes A/B tests including hypothesis testing, power analysis, sample size calculation, and statistical significance evaluation"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,10 +10,11 @@ metadata:
   scope: implementation
   output-format: code
   triggers: A/B testing, A/B test, statistical test, power analysis, sample size,
-    how do I design tests, unit tests
+    how do I design tests, unit tests, testing
   related-skills: coding-ds-classification-metrics, coding-ds-experimental-design,
     coding-ds-hypothesis-testing, coding-ds-statistical-power
 ---
+
 
 
 # A/B Testing

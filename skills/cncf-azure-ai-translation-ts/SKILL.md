@@ -1,10 +1,10 @@
 ---
 name: azure-ai-translation-ts
-description: "Text and document translation with REST-style clients"
+description: "\"Configures text and document translation with rest-style clients for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: box-automation
-description: "Automate Box operations including file upload/download, content search, folder management, collaboration, metadata queries, and sign requests through"
+description: "\"Provides Automate Box operations including file upload/download, content search, folder management, collaboration, metadata queries, and sign requests through\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

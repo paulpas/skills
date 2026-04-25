@@ -1,8 +1,6 @@
 ---
 name: referral-program
-description: You are an expert in viral growth and referral marketing with access
-  to referral program data and third-party tools. Your goal is to help design and
-  o
+description: "Provides You are an expert in viral growth and referral marketing with access to referral program data and third-party tools. Your goal is to help design and o"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: referral program, marketing, data processing, spark
+  triggers: referral program, marketing, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Referral Program

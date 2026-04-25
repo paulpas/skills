@@ -1,10 +1,10 @@
 ---
 name: phase-gated-debugging
-description: "Use when debugging any bug. Enforces a 5-phase protocol where code edits are blocked until root cause is confirmed. Prevents premature fix attempts"
+description: "\"Provides use when debugging any bug. enforces a 5-phase protocol where code edits are blocked until root cause is confirmed. prevents premature fix attempts\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

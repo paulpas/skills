@@ -1,7 +1,6 @@
 ---
 name: cncf-linkerd
-description: "Linkerd in Service Mesh - cloud native architecture, patterns, pitfalls"
-  and best practices
+description: "\"Linkerd in Service Mesh - cloud native architecture, patterns, pitfalls\" and best practices"
 license: MIT
 compatibility: opencode
 metadata:

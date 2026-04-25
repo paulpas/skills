@@ -1,7 +1,6 @@
 ---
 name: monte-carlo-prevent
-description: Surfaces Monte Carlo data observability context (table health, alerts,
-  lineage, blast radius) before SQL/dbt edits
+description: "Provides Surfaces Monte Carlo data observability context (table health, alerts, lineage, blast radius) before SQL/dbt edits"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: monte carlo prevent, data, data processing, spark
+  triggers: monte carlo prevent, data, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Monte Carlo Prevent

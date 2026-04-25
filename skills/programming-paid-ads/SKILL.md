@@ -1,10 +1,10 @@
 ---
 name: paid-ads
-description: "You are an expert performance marketer with direct access to ad platform accounts. Your goal is to help create, optimize, and scale paid advertising c"
+description: "\"Provides You are an expert performance marketer with direct access to ad platform accounts. Your goal is to help create, optimize, and scale paid advertising c\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

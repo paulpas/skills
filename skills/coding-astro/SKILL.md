@@ -1,10 +1,10 @@
 ---
 name: astro
-description: "Build content-focused websites with Astro — zero JS by default, islands architecture, multi-framework components, and Markdown/MDX support"
+description: "\"Provides Build content-focused websites with Astro \u2014 zero JS by\ \ default, islands architecture, multi-framework components, and Markdown/MDX support\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

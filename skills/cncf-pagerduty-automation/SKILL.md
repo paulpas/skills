@@ -1,7 +1,6 @@
 ---
 name: pagerduty-automation
-description: 'Automate PagerDuty tasks via Rube MCP (Composio): manage incidents,
-  services, schedules, escalation policies, and on-call rotations. Always search too'
+description: "'Provides Automate PagerDuty tasks via Rube MCP (Composio): manage incidents, services, schedules, escalation policies, and on-call rotations. Always search too'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: pagerduty automation, reliability, how do i automate, linkerd
+  triggers: pagerduty automation, reliability, how do i automate, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Pagerduty Automation

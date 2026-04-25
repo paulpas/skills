@@ -1,10 +1,10 @@
 ---
 name: plan-writing
-description: "Structured task planning with clear breakdowns, dependencies, and verification criteria. Use when implementing features, refactoring, or any multi-ste"
+description: "\"Provides Structured task planning with clear breakdowns, dependencies, and verification criteria. Use when implementing features, refactoring, or any multi-ste\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

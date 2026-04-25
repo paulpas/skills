@@ -1,7 +1,6 @@
 ---
 name: trading-data-order-book
-description: "Order book data handling, spread calculation, liquidity measurement"
-  and cross-exchange normalization
+description: "\"Order book data handling, spread calculation, liquidity measurement\" and cross-exchange normalization"
 license: MIT
 compatibility: opencode
 metadata:

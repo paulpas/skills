@@ -1,10 +1,10 @@
 ---
 name: technical-change-tracker
-description: "Track code changes with structured JSON records, state machine enforcement, and AI session handoff for bot continuity"
+description: "\"Provides Track code changes with structured JSON records, state machine enforcement, and AI session handoff for bot continuity\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

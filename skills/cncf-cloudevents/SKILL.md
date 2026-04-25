@@ -1,7 +1,6 @@
 ---
 name: cncf-cloudevents
-description: "CloudEvents in Streaming & Messaging - cloud native architecture, patterns"
-  pitfalls, and best practices
+description: "\"CloudEvents in Streaming & Messaging - cloud native architecture, patterns\" pitfalls, and best practices"
 license: MIT
 compatibility: opencode
 metadata:

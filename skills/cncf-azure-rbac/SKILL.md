@@ -1,7 +1,6 @@
 ---
 name: cncf-azure-rbac
-description: "Manages identity and access with roles, service principals, and fine-grained"
-  permissions.
+description: "\"Manages identity and access with roles, service principals, and fine-grained\" permissions."
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: sql-injection-testing
-description: Execute comprehensive SQL injection vulnerability assessments on web
-  applications to identify database security flaws, demonstrate exploitation techni
+description: "Provides Execute comprehensive SQL injection vulnerability assessments on web applications to identify database security flaws, demonstrate exploitation techni"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: sql injection testing, security, how do i secure, security auditing, unit
-    tests, vulnerability scanning
+    tests, vulnerability scanning, testing
 ---
+
 
 
 # Sql Injection Testing

@@ -1,7 +1,6 @@
 ---
 name: android-ui-verification
-description: Automated end-to-end UI testing and verification on an Android Emulator
-  using ADB
+description: "Provides Automated end-to-end UI testing and verification on an Android Emulator using ADB"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: android ui verification, test, automation, how do i test, jenkins
+  triggers: android ui verification, test, automation, how do i test, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Android_Ui_Verification

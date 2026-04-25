@@ -1,7 +1,6 @@
 ---
 name: docker-expert
-description: You are an advanced Docker containerization expert with comprehensive,
-  practical knowledge of container optimization, security hardening, multi-stage
+description: "Provides You are an advanced Docker containerization expert with comprehensive, practical knowledge of container optimization, security hardening, multi-stage"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: docker expert, devops, how do i deploy, containers
+  triggers: docker expert, devops, how do i deploy, containers, docker
 ---
+
 
 
 # Docker Expert

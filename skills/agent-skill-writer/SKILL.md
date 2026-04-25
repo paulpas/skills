@@ -1,10 +1,10 @@
 ---
 name: skill-writer
-description: "Create and improve agent skills following the Agent Skills specification. Use when asked to create, write, or update skills"
+description: "\"Provides Create and improve agent skills following the Agent Skills specification. Use when asked to create, write, or update skills\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: windows-privilege-escalation
-description: Provide systematic methodologies for discovering and exploiting privilege
-  escalation vulnerabilities on Windows systems during penetration testing eng
+description: "\"Provides Provide systematic methodologies for discovering and exploiting privilege escalation vulnerabilities on Windows systems during penetration testing eng\""
 license: MIT
 compatibility: opencode
 metadata:

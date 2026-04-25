@@ -1,7 +1,6 @@
 ---
 name: mcp-builder
-description: Create MCP (Model Context Protocol) servers that enable LLMs to interact
-  with external services through well-designed tools. The quality of an MCP ser
+description: "Provides Create MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. The quality of an MCP ser"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: mcp builder, ai, agents, implementation guide, machine learning
+  triggers: mcp builder, ai, agents, implementation guide, machine learning, ml, scikit-learn
 ---
+
 
 
 # Mcp Builder

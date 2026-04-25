@@ -1,10 +1,10 @@
 ---
 name: swiftui-ui-patterns
-description: "Apply proven SwiftUI UI patterns for navigation, sheets, async state, and reusable screens"
+description: "\"Provides Apply proven SwiftUI UI patterns for navigation, sheets, async state, and reusable screens\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

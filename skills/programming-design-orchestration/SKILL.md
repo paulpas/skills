@@ -1,6 +1,6 @@
 ---
 name: design-orchestration
-description: "Orchestrates design workflows by routing work through brainstorming, multi-agent review, and execution readiness in the correct order"
+description: "\"Orchestrates design workflows by routing work through brainstorming, multi-agent review, and execution readiness in the correct order\""
 license: MIT
 compatibility: opencode
 metadata:

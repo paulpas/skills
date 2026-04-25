@@ -1,6 +1,6 @@
 ---
 name: trading-backtest-walk-forward
-description: "Walk-Forward Optimization for Robust Strategy Validation"
+description: "\"Implements walk-forward optimization for robust strategy validation for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: competitor-alternatives
-description: "You are an expert in creating competitor comparison and alternative pages. Your goal is to build pages that rank for competitive search terms, provide"
+description: "\"Provides You are an expert in creating competitor comparison and alternative pages. Your goal is to build pages that rank for competitive search terms, provide\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

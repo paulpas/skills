@@ -1,7 +1,6 @@
 ---
 name: evaluation
-description: Build evaluation frameworks for agent systems. Use when testing agent
-  performance systematically, validating context engineering choices, or measuring
+description: "Provides Build evaluation frameworks for agent systems. Use when testing agent performance systematically, validating context engineering choices, or measuring"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: evaluation, ai, ml, how do i test, machine learning
+  triggers: evaluation, ai, ml, how do i test, machine learning, scikit-learn
 ---
+
 
 
 # Evaluation

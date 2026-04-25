@@ -1,7 +1,6 @@
 ---
 name: notion-automation
-description: 'Automate Notion tasks via Rube MCP (Composio): pages, databases, blocks,
-  comments, users. Always search tools first for current schemas'
+description: "'Provides Automate Notion tasks via Rube MCP (Composio): pages, databases, blocks, comments, users. Always search tools first for current schemas'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: notion automation, automation, how do i automate, jenkins
+  triggers: notion automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Notion Automation

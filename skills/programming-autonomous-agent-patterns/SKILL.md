@@ -1,7 +1,6 @@
 ---
 name: autonomous-agent-patterns
-description: Design patterns for building autonomous coding agents, inspired by [Cline](https://github.com/cline/cline)
-  and [OpenAI Codex](https://github.com/opena
+description: "Provides Design patterns for building autonomous coding agents, inspired by [Cline](https://github.com/cline/cline) and [OpenAI Codex](https://github.com/opena"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: autonomous agent patterns, ai, ml, implementation guide, machine learning
+  triggers: autonomous agent patterns, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Autonomous Agent Patterns

@@ -1,7 +1,6 @@
 ---
 name: azure-security-keyvault-keys-dotnet
-description: Azure Key Vault Keys SDK for .NET. Client library for managing cryptographic
-  keys in Azure Key Vault and Managed HSM. Use for key creation, rotation
+description: "Provides Azure Key Vault Keys SDK for .NET. Client library for managing cryptographic keys in Azure Key Vault and Managed HSM. Use for key creation, rotation"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: azure security keyvault keys dotnet, cloud, implementation guide, vulnerability
-    scanning
+    scanning, security
 ---
+
 
 
 # Azure Security Keyvault Keys Dotnet

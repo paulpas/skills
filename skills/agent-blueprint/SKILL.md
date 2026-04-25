@@ -1,10 +1,10 @@
 ---
 name: blueprint
-description: "Turn a one-line objective into a step-by-step construction plan any coding agent can execute cold. Each step has a self-contained context brief — a fr"
+description: "\"Provides Turn a one-line objective into a step-by-step construction\ \ plan any coding agent can execute cold. Each step has a self-contained context\ \ brief \u2014 a fr\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

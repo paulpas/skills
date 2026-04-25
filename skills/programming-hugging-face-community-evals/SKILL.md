@@ -1,7 +1,6 @@
 ---
 name: hugging-face-community-evals
-description: Run local evaluations for Hugging Face Hub models with inspect-ai or
-  lighteval
+description: "Provides Run local evaluations for Hugging Face Hub models with inspect-ai or lighteval"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face community evals, ai, ml, implementation guide, machine learning
+  triggers: hugging face community evals, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Hugging Face Community Evals

@@ -1,10 +1,10 @@
 ---
 name: i18n-localization
-description: "Internationalization and localization patterns. Detecting hardcoded strings, managing translations, locale files, RTL support"
+description: "\"Provides Internationalization and localization patterns. Detecting hardcoded strings, managing translations, locale files, RTL support\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

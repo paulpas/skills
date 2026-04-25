@@ -1,10 +1,10 @@
 ---
 name: azure-storage-file-share-ts
-description: "Azure File Share JavaScript/TypeScript SDK (@azure/storage-file-share) for SMB file share operations"
+description: "\"Provides Azure File Share JavaScript/TypeScript SDK (@azure/storage-file-share) for SMB file share operations\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

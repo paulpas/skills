@@ -1,6 +1,6 @@
 ---
 name: seo-meta-optimizer
-description: "Creates optimized meta titles, descriptions, and URL suggestions based on character limits and best practices. Generates compelling, keyword-rich meta"
+description: "\"Creates optimized meta titles, descriptions, and URL suggestions based on character limits and best practices. Generates compelling, keyword-rich meta\""
 license: MIT
 compatibility: opencode
 metadata:

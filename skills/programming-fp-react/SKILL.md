@@ -1,7 +1,6 @@
 ---
 name: fp-react
-description: Practical patterns for using fp-ts with React - hooks, state, forms,
-  data fetching. Works with React 18/19, Next.js 14/15
+description: "Provides Practical patterns for using fp-ts with React - hooks, state, forms, data fetching. Works with React 18/19, Next.js 14/15"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fp react, development, data processing, spark
+  triggers: fp react, development, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Fp React

@@ -1,10 +1,10 @@
 ---
 name: incident-response-incident-response
-description: "Use when working with incident response incident response"
+description: "\"Configures use when working with incident response incident response for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

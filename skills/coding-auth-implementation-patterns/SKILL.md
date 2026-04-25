@@ -1,7 +1,6 @@
 ---
 name: auth-implementation-patterns
-description: Build secure, scalable authentication and authorization systems using
-  industry-standard patterns and modern best practices
+description: "\"Provides Build secure, scalable authentication and authorization systems using industry-standard patterns and modern best practices\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,15 +1,16 @@
 ---
 name: coding-semver-automation
-description: "Automating semantic versioning in Git repositories for version bumping, changelog generation, and release automation using conventional commits and to"
+description: "\"Provides Automating semantic versioning in Git repositories for version bumping, changelog generation, and release automation using conventional commits and to\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: semantic versioning, semver, version bumping, conventional commits, semantic-release, changelog automation, release automation, git tags
+  triggers: semantic versioning, semver, version bumping, conventional commits, semantic-release,
+    changelog automation, release automation, git tags
   related-skills: coding-git-advanced, coding-git-branching-strategies
 ---
 

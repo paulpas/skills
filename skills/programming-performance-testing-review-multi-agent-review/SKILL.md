@@ -1,6 +1,6 @@
 ---
 name: performance-testing-review-multi-agent-review
-description: Use when working with performance testing review multi agent review
+description: "Provides use when working with performance testing review multi agent review"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: performance testing review multi agent review, development, how do i test,
-    optimization, unit tests
+    optimization, unit tests, performance, testing
 ---
+
 
 
 # Performance Testing Review Multi Agent Review

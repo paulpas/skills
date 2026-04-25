@@ -1,7 +1,6 @@
 ---
 name: prometheus-configuration
-description: Complete guide to Prometheus setup, metric collection, scrape configuration,
-  and recording rules
+description: "Provides Complete guide to Prometheus setup, metric collection, scrape configuration, and recording rules"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: prometheus configuration, uncategorized, implementation guide, metrics
+  triggers: prometheus configuration, uncategorized, implementation guide, metrics,
+    cloudwatch
 ---
+
 
 
 # Prometheus Configuration

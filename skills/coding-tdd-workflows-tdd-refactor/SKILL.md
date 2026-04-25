@@ -1,6 +1,6 @@
 ---
 name: tdd-workflows-tdd-refactor
-description: Use when working with tdd workflows tdd refactor
+description: "\"Implements use when working with tdd workflows tdd refactor patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:

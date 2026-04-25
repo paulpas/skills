@@ -1,7 +1,6 @@
 ---
 name: linux-privilege-escalation
-description: Execute systematic privilege escalation assessments on Linux systems
-  to identify and exploit misconfigurations, vulnerable services, and security weak
+description: "\"Provides Execute systematic privilege escalation assessments on Linux systems to identify and exploit misconfigurations, vulnerable services, and security weak\""
 license: MIT
 compatibility: opencode
 metadata:

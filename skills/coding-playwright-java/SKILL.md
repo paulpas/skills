@@ -1,7 +1,6 @@
 ---
 name: playwright-java
-description: Scaffold, write, debug, and enhance enterprise-grade Playwright E2E tests
-  in Java using Page Object Model, JUnit 5, Allure reporting, and parallel exe
+description: "Provides Scaffold, write, debug, and enhance enterprise-grade Playwright E2E tests in Java using Page Object Model, JUnit 5, Allure reporting, and parallel exe"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: playwright java, test, automation, how do i test, jenkins
+  triggers: playwright java, test, automation, how do i test, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Playwright Java

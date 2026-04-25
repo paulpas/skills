@@ -1,7 +1,6 @@
 ---
 name: context-guardian
-description: Guardiao de contexto que preserva dados criticos antes da compactacao
-  automatica. Snapshots, verificacao de integridade e zero perda de informacao
+description: "Provides Guardiao de contexto que preserva dados criticos antes da compactacao automatica. Snapshots, verificacao de integridade e zero perda de informacao"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context guardian, ai, ml, how do i automate, machine learning
+  triggers: context guardian, ai, ml, how do i automate, machine learning, scikit-learn
 ---
+
 
 
 # Context Guardian

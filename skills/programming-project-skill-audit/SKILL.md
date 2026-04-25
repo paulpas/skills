@@ -1,10 +1,10 @@
 ---
 name: project-skill-audit
-description: "Audit a project and recommend the highest-value skills to add or update"
+description: "\"Provides Audit a project and recommend the highest-value skills to add or update\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

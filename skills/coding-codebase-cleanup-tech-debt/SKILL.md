@@ -1,10 +1,10 @@
 ---
 name: codebase-cleanup-tech-debt
-description: "You are a technical debt expert specializing in identifying, quantifying, and prioritizing technical debt in software projects. Analyze the codebase t"
+description: "\"Provides You are a technical debt expert specializing in identifying, quantifying, and prioritizing technical debt in software projects. Analyze the codebase t\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

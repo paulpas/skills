@@ -1,10 +1,10 @@
 ---
 name: internal-comms
-description: "Write internal communications such as status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, and project updates using r"
+description: "\"Provides Write internal communications such as status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, and project updates using r\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

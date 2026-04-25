@@ -1,10 +1,10 @@
 ---
 name: hig-project-context
-description: "Create or update a shared Apple design context document that other HIG skills use to tailor guidance"
+description: "\"Provides Create or update a shared Apple design context document that other HIG skills use to tailor guidance\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

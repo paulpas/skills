@@ -1,7 +1,6 @@
 ---
 name: n8n-code-javascript
-description: Write JavaScript code in n8n Code nodes. Use when writing JavaScript
-  in n8n, using $input/$json/$node syntax, making HTTP requests with $helpers, work
+description: "Provides Write JavaScript code in n8n Code nodes. Use when writing JavaScript in n8n, using $input/$json/$node syntax, making HTTP requests with $helpers, work"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: n8n code javascript, automation, how do i automate, jenkins
+  triggers: n8n code javascript, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # N8N Code Javascript

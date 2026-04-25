@@ -1,6 +1,6 @@
 ---
 name: trading-ai-anomaly-detection
-description: "Detect anomalous market behavior, outliers, and potential market manipulation"
+description: "\"Provides Detect anomalous market behavior, outliers, and potential market manipulation\""
 license: MIT
 compatibility: opencode
 metadata:

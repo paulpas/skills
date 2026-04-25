@@ -1,10 +1,10 @@
 ---
 name: family-health-analyzer
-description: "分析家族病史、评估遗传风险、识别家庭健康模式、提供个性化预防建议"
+description: "\"Provides \u5206\u6790\u5BB6\u65CF\u75C5\u53F2\u3001\u8BC4\u4F30\u9057\ \u4F20\u98CE\u9669\u3001\u8BC6\u522B\u5BB6\u5EAD\u5065\u5EB7\u6A21\u5F0F\u3001\u63D0\ \u4F9B\u4E2A\u6027\u5316\u9884\u9632\u5EFA\u8BAE functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

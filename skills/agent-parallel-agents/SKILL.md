@@ -1,7 +1,6 @@
 ---
 name: parallel-agents
-description: Multi-agent orchestration patterns. Use when multiple independent tasks
-  can run with different domain expertise or when comprehensive analysis require
+description: "Provides Multi-agent orchestration patterns. Use when multiple independent tasks can run with different domain expertise or when comprehensive analysis require"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: parallel agents, ai, agents, implementation guide, machine learning
+  triggers: parallel agents, ai, agents, implementation guide, machine learning, ml,
+    scikit-learn
 ---
+
 
 
 # Parallel Agents

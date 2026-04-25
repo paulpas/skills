@@ -1,10 +1,10 @@
 ---
 name: theme-factory
-description: "This skill provides a curated collection of professional font and color themes themes, each with carefully selected color palettes and font pairings"
+description: "\"Provides this skill provides a curated collection of professional font and color themes themes, each with carefully selected color palettes and font pairings\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: wordpress
-description: "Complete WordPress development workflow covering theme development, plugin creation, WooCommerce integration, performance optimization, and security h"
+description: "\"Provides Complete WordPress development workflow covering theme development, plugin creation, WooCommerce integration, performance optimization, and security h\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

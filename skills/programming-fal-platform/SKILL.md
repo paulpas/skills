@@ -1,6 +1,6 @@
 ---
 name: fal-platform
-description: Platform APIs for model management, pricing, and usage tracking
+description: "Provides Platform APIs for model management, pricing, and usage tracking"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fal platform, ai, ml, implementation guide, machine learning
+  triggers: fal platform, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Fal Platform

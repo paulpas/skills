@@ -1,10 +1,10 @@
 ---
 name: pdf-official
-description: "This guide covers essential PDF processing operations using Python libraries and command-line tools. For advanced features, JavaScript libraries, and"
+description: "\"Provides this guide covers essential pdf processing operations using python libraries and command-line tools. for advanced features, javascript libraries, and\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

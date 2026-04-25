@@ -1,10 +1,10 @@
 ---
 name: api-documentation-generator
-description: "Generate comprehensive, developer-friendly API documentation from code, including endpoints, parameters, examples, and best practices"
+description: "\"Provides Generate comprehensive, developer-friendly API documentation from code, including endpoints, parameters, examples, and best practices\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

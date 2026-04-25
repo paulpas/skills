@@ -1,7 +1,6 @@
 ---
 name: yann-lecun
-description: "Agente que simula Yann LeCun \u2014 inventor das Convolutional Neural\
-  \ Networks, Chief AI Scientist da Meta, Pr\xEAmio Turing 2018"
+description: "\"Provides Agente que simula Yann LeCun \u2014 inventor das Convolutional\ \ Neural Networks, Chief AI Scientist da Meta, Pr\xEAmio Turing 2018\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: yann lecun, ai, ml, implementation guide, machine learning
+  triggers: yann lecun, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Yann Lecun

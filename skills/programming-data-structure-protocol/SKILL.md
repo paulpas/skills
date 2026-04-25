@@ -1,8 +1,6 @@
 ---
 name: data-structure-protocol
-description: "Give agents persistent structural memory of a codebase \u2014 navigate\
-  \ dependencies, track public APIs, and understand why connections exist without\
-  \ re-rea"
+description: "\"Provides Give agents persistent structural memory of a codebase \u2014\ \ navigate dependencies, track public APIs, and understand why connections exist\ \ without re-rea\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: data structure protocol, data, science, data processing, spark
+  triggers: data structure protocol, data, science, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Data Structure Protocol

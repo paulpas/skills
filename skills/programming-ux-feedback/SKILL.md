@@ -1,10 +1,10 @@
 ---
 name: ux-feedback
-description: "Add loading, empty, error, and success feedback states to StyleSeed components and pages with practical mobile-first rules"
+description: "\"Provides Add loading, empty, error, and success feedback states to StyleSeed components and pages with practical mobile-first rules\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

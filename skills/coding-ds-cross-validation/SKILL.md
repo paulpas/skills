@@ -1,6 +1,6 @@
 ---
 name: coding-ds-cross-validation
-description: "Implements k-fold cross-validation, stratified cross-validation, time-series cross-validation, and model validation strategies"
+description: "\"Implements k-fold cross-validation, stratified cross-validation, time-series cross-validation, and model validation strategies\""
 license: MIT
 compatibility: opencode
 metadata:

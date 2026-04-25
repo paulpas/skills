@@ -1,7 +1,6 @@
 ---
 name: sql-optimization-patterns
-description: Transform slow database queries into lightning-fast operations through
-  systematic optimization, proper indexing, and query plan analysis
+description: "Provides Transform slow database queries into lightning-fast operations through systematic optimization, proper indexing, and query plan analysis"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: sql optimization patterns, database, data processing, spark
+  triggers: sql optimization patterns, database, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Sql Optimization Patterns

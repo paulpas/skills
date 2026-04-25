@@ -1,7 +1,6 @@
 ---
 name: gemini-api-integration
-description: Use when integrating Google Gemini API into projects. Covers model selection,
-  multimodal inputs, streaming, function calling, and production best prac
+description: "Provides use when integrating google gemini api into projects. covers model selection, multimodal inputs, streaming, function calling, and production best prac"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: gemini api integration, automation, how do i automate, jenkins
+  triggers: gemini api integration, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Gemini Api Integration

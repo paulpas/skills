@@ -1,7 +1,6 @@
 ---
 name: hugging-face-papers
-description: Read and analyze Hugging Face paper pages or arXiv papers with markdown
-  and papers API metadata
+description: "Provides Read and analyze Hugging Face paper pages or arXiv papers with markdown and papers API metadata"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face papers, ai, ml, data processing, machine learning, spark
+  triggers: hugging face papers, ai, ml, data processing, machine learning, spark,
+    big data, distributed processing
 ---
+
 
 
 # Hugging Face Papers

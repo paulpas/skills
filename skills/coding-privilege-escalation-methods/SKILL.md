@@ -1,7 +1,6 @@
 ---
 name: privilege-escalation-methods
-description: Provide comprehensive techniques for escalating privileges from a low-privileged
-  user to root/administrator access on compromised Linux and Windows sy
+description: "\"Provides Provide comprehensive techniques for escalating privileges from a low-privileged user to root/administrator access on compromised Linux and Windows sy\""
 license: MIT
 compatibility: opencode
 metadata:

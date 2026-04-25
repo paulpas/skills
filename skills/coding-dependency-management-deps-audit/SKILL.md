@@ -1,7 +1,6 @@
 ---
 name: dependency-management-deps-audit
-description: You are a dependency security expert specializing in vulnerability scanning,
-  license compliance, and supply chain security. Analyze project dependenci
+description: "\"Provides You are a dependency security expert specializing in vulnerability scanning, license compliance, and supply chain security. Analyze project dependenci\""
 license: MIT
 compatibility: opencode
 metadata:

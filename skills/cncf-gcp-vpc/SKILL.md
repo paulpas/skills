@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-vpc
-description: Provides networking with subnets, firewall rules, and VPC peering for
-  secure cloud infrastructure
+description: "\"Provides networking with subnets, firewall rules, and VPC peering for secure cloud infrastructure\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -12,8 +11,8 @@ metadata:
   output-format: manifests
   triggers: vpc, virtual private cloud, networking, subnets, firewall, vpc peering,
     availability zones, network segmentation
-  related-skills: cncf-gcp-cloud-load-balancing, cncf-gcp-cloud-sql, cncf-gcp-compute-engine,
-    cncf-gcp-gke
+  related-skills: cncf-gcp-cloud-dns, cncf-gcp-cloud-load-balancing, cncf-gcp-cloud-sql,
+    cncf-gcp-compute-engine
 ---
 
 

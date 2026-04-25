@@ -1,10 +1,10 @@
 ---
 name: azure-servicebus-dotnet
-description: "Azure Service Bus SDK for .NET. Enterprise messaging with queues, topics, subscriptions, and sessions"
+description: "\"Provides Azure Service Bus SDK for .NET. Enterprise messaging with queues, topics, subscriptions, and sessions\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

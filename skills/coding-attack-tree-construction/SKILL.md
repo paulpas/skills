@@ -1,7 +1,6 @@
 ---
 name: attack-tree-construction
-description: Build comprehensive attack trees to visualize threat paths. Use when
-  mapping attack scenarios, identifying defense gaps, or communicating security ris
+description: "\"Provides Build comprehensive attack trees to visualize threat paths. Use when mapping attack scenarios, identifying defense gaps, or communicating security ris\""
 license: MIT
 compatibility: opencode
 metadata:

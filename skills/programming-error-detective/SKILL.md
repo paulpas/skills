@@ -1,10 +1,10 @@
 ---
 name: error-detective
-description: "Search logs and codebases for error patterns, stack traces, and anomalies. Correlates errors across systems and identifies root causes"
+description: "\"Provides Search logs and codebases for error patterns, stack traces, and anomalies. Correlates errors across systems and identifies root causes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

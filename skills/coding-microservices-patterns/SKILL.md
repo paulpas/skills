@@ -1,7 +1,6 @@
 ---
 name: microservices-patterns
-description: Master microservices architecture patterns including service boundaries,
-  inter-service communication, data management, and resilience patterns for bui
+description: "Provides Master microservices architecture patterns including service boundaries, inter-service communication, data management, and resilience patterns for bui"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: microservices patterns, architecture, data processing, spark
+  triggers: microservices patterns, architecture, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Microservices Patterns

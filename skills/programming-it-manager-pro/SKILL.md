@@ -1,7 +1,6 @@
 ---
 name: it-manager-pro
-description: Elite IT Management Advisor specializing in data-driven strategy, executive
-  communication, and human-centric leadership for the 2026 digital era
+description: "Provides Elite IT Management Advisor specializing in data-driven strategy, executive communication, and human-centric leadership for the 2026 digital era"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: it manager pro, uncategorized, data processing, spark
+  triggers: it manager pro, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # It Manager Pro

@@ -1,7 +1,6 @@
 ---
 name: testing-patterns
-description: Jest testing patterns, factory functions, mocking strategies, and TDD
-  workflow. Use when writing unit tests, creating test factories, or following TDD
+description: "\"Provides Jest testing patterns, factory functions, mocking strategies, and TDD workflow. Use when writing unit tests, creating test factories, or following TDD\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: context-compression
-description: When agent sessions generate millions of tokens of conversation history,
-  compression becomes mandatory. The naive approach is aggressive compression t
+description: "Implements when agent sessions generate millions of tokens of conversation history, compression becomes mandatory. the naive approach is aggressive compression t"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context compression, ai, ml, implementation guide, machine learning
+  triggers: context compression, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Context Compression

@@ -1,7 +1,6 @@
 ---
 name: agent-orchestration-improve-agent
-description: Systematic improvement of existing agents through performance analysis,
-  prompt engineering, and continuous iteration
+description: "Provides Systematic improvement of existing agents through performance analysis, prompt engineering, and continuous iteration"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: agent orchestration improve agent, ai, ml, implementation guide, machine
-    learning
+    learning, scikit-learn
 ---
+
 
 
 # Agent Orchestration Improve Agent

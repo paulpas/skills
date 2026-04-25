@@ -1,7 +1,6 @@
 ---
 name: analytics-product
-description: "Analytics de produto \u2014 PostHog, Mixpanel, eventos, funnels, cohorts,\
-  \ retencao, north star metric, OKRs e dashboards de produto"
+description: "\"Provides Analytics de produto \u2014 PostHog, Mixpanel, eventos, funnels,\ \ cohorts, retencao, north star metric, OKRs e dashboards de produto\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: analytics product, data, data processing, spark
+  triggers: analytics product, data, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Analytics Product

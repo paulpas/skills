@@ -1,10 +1,10 @@
 ---
 name: task-intelligence
-description: "Protocolo de Inteligência Pré-Tarefa — ativa TODOS os agentes relevantes do ecossistema ANTES de executar qualquer tarefa solicitada pelo usuário"
+description: "\"Provides Protocolo de Intelig\xEAncia Pr\xE9-Tarefa \u2014 ativa TODOS\ \ os agentes relevantes do ecossistema ANTES de executar qualquer tarefa solicitada\ \ pelo usu\xE1rio\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

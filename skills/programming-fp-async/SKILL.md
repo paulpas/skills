@@ -1,10 +1,10 @@
 ---
 name: fp-async
-description: "Practical async patterns using TaskEither - clean pipelines instead of try/catch hell, with real API examples"
+description: "\"Provides Practical async patterns using TaskEither - clean pipelines instead of try/catch hell, with real API examples\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

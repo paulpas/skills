@@ -1,7 +1,6 @@
 ---
 name: deep-research
-description: Run autonomous research tasks that plan, search, read, and synthesize
-  information into comprehensive reports
+description: "Provides Run autonomous research tasks that plan, search, read, and synthesize information into comprehensive reports"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: deep research, ai, ml, implementation guide, machine learning
+  triggers: deep research, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Deep Research

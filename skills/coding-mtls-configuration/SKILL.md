@@ -1,7 +1,6 @@
 ---
 name: mtls-configuration
-description: Configure mutual TLS (mTLS) for zero-trust service-to-service communication.
-  Use when implementing zero-trust networking, certificate management, or s
+description: "\"Provides Configure mutual TLS (mTLS) for zero-trust service-to-service communication. Use when implementing zero-trust networking, certificate management, or s\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: cncf-envoy
-description: "Envoy in Cloud-Native Engineering - Cloud-native high-performance edge/middle/service"
-  proxy
+description: "\"Envoy in Cloud-Native Engineering - Cloud-native high-performance edge/middle/service\" proxy"
 license: MIT
 compatibility: opencode
 metadata:

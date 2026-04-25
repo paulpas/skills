@@ -1,7 +1,6 @@
 ---
 name: agent-orchestrator
-description: Meta-skill que orquestra todos os agentes do ecossistema. Scan automatico
-  de skills, match por capacidades, coordenacao de workflows multi-skill e reg
+description: "Provides Meta-skill que orquestra todos os agentes do ecossistema. Scan automatico de skills, match por capacidades, coordenacao de workflows multi-skill e reg"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agent orchestrator, ai, ml, how do i automate, machine learning
+  triggers: agent orchestrator, ai, ml, how do i automate, machine learning, scikit-learn
 ---
+
 
 
 # Agent Orchestrator

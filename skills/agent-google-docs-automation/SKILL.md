@@ -1,7 +1,6 @@
 ---
 name: google-docs-automation
-description: Lightweight Google Docs integration with standalone OAuth authentication.
-  No MCP server required
+description: "Provides Lightweight Google Docs integration with standalone OAuth authentication. No MCP server required"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: google docs automation, automation, how do i automate, jenkins
+  triggers: google docs automation, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Google Docs Automation

@@ -1,10 +1,10 @@
 ---
 name: devops-deploy
-description: "DevOps e deploy de aplicacoes — Docker, CI/CD com GitHub Actions, AWS Lambda, SAM, Terraform, infraestrutura como codigo e monitoramento"
+description: "\"Provides DevOps e deploy de aplicacoes \u2014 Docker, CI/CD com GitHub\ \ Actions, AWS Lambda, SAM, Terraform, infraestrutura como codigo e monitoramento\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

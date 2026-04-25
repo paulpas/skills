@@ -1,8 +1,6 @@
 ---
 name: yann-lecun-debate
-description: "Sub-skill de debates e posi\xE7\xF5es de Yann LeCun. Cobre cr\xEDticas\
-  \ t\xE9cnicas detalhadas aos LLMs, rivalidades intelectuais (LeCun vs Hinton, Sutskever,\
-  \ Russ"
+description: "\"Provides Sub-skill de debates e posi\xE7\xF5es de Yann LeCun. Cobre\ \ cr\xEDticas t\xE9cnicas detalhadas aos LLMs, rivalidades intelectuais (LeCun vs\ \ Hinton, Sutskever, Russ\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: yann lecun debate, ai, ml, implementation guide, machine learning
+  triggers: yann lecun debate, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Yann Lecun Debate

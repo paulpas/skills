@@ -1,7 +1,6 @@
 ---
 name: frontend-security-coder
-description: Expert in secure frontend coding practices specializing in XSS prevention,
-  output sanitization, and client-side security patterns
+description: "\"Provides Expert in secure frontend coding practices specializing in XSS prevention, output sanitization, and client-side security patterns\""
 license: MIT
 compatibility: opencode
 metadata:

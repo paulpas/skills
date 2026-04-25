@@ -1,6 +1,6 @@
 ---
 name: azure-eventhub-ts
-description: High-throughput event streaming and real-time data ingestion
+description: "Provides High-throughput event streaming and real-time data ingestion"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: azure eventhub ts, cloud, data processing, spark
+  triggers: azure eventhub ts, cloud, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Azure Eventhub Ts

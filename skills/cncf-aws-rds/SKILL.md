@@ -1,8 +1,6 @@
 ---
 name: cncf-aws-rds
-description: "Deploys managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle"
-  SQL Server) with multi-AZ failover, automated backups, read replicas, and encryption
-  for production-grade database infrastructure.
+description: "\"Deploys managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle\" SQL Server) with multi-AZ failover, automated backups, read replicas, and encryption for production-grade database infrastructure."
 license: MIT
 compatibility: opencode
 metadata:

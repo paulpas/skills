@@ -1,10 +1,10 @@
 ---
 name: api-patterns
-description: "API design principles and decision-making. REST vs GraphQL vs tRPC selection, response formats, versioning, pagination"
+description: "\"Provides API design principles and decision-making. REST vs GraphQL vs tRPC selection, response formats, versioning, pagination\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

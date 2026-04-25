@@ -1,7 +1,6 @@
 ---
 name: api-security-best-practices
-description: Implement secure API design patterns including authentication, authorization,
-  input validation, rate limiting, and protection against common API vulne
+description: "Provides Implement secure API design patterns including authentication, authorization, input validation, rate limiting, and protection against common API vulne"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: api security best practices, backend, implementation guide, vulnerability
-    scanning
+    scanning, security
 ---
+
 
 
 # Api Security Best Practices

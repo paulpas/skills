@@ -1,7 +1,6 @@
 ---
 name: api-testing-observability-api-mock
-description: You are an API mocking expert specializing in realistic mock services
-  for development, testing, and demos. Design mocks that simulate real API behavio
+description: "Provides You are an API mocking expert specializing in realistic mock services for development, testing, and demos. Design mocks that simulate real API behavio"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: api testing observability api mock, backend, how do i test, unit tests
+  triggers: api testing observability api mock, backend, how do i test, unit tests,
+    testing
 ---
+
 
 
 # Api Testing Observability Api Mock

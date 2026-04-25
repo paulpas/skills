@@ -1,10 +1,10 @@
 ---
 name: superpowers-lab
-description: "Lab environment for Claude superpowers"
+description: "\"Provides lab environment for claude superpowers functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

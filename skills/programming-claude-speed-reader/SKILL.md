@@ -1,7 +1,6 @@
 ---
 name: claude-speed-reader
-description: -Speed read Claude's responses at 600+ WPM using RSVP with Spritz-style
-  ORP highlighting
+description: "Provides -Speed read Claude's responses at 600+ WPM using RSVP with Spritz-style ORP highlighting"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude speed reader, ai, ml, implementation guide, machine learning
+  triggers: claude speed reader, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Claude Speed Reader

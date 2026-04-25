@@ -1,7 +1,6 @@
 ---
 name: coding-pydantic-config
-description: "Pydantic-based configuration management with frozen models, nested hierarchy"
-  TOML/env parsing, and module-level singleton
+description: "\"Pydantic-based configuration management with frozen models, nested hierarchy\" TOML/env parsing, and module-level singleton"
 license: MIT
 compatibility: opencode
 metadata:

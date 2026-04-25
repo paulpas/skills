@@ -1,10 +1,10 @@
 ---
 name: bullmq-specialist
-description: "BullMQ expert for Redis-backed job queues, background processing, and reliable async execution in Node.js/TypeScript applications"
+description: "\"Provides BullMQ expert for Redis-backed job queues, background processing, and reliable async execution in Node.js/TypeScript applications\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

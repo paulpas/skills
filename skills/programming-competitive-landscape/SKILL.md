@@ -1,10 +1,10 @@
 ---
 name: competitive-landscape
-description: "Comprehensive frameworks for analyzing competition, identifying differentiation opportunities, and developing winning market positioning strategies"
+description: "\"Provides Comprehensive frameworks for analyzing competition, identifying differentiation opportunities, and developing winning market positioning strategies\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

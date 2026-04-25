@@ -1,7 +1,6 @@
 ---
 name: wordpress-penetration-testing
-description: Assess WordPress installations for common vulnerabilities and WordPress
-  7.0 attack surfaces
+description: "Provides Assess WordPress installations for common vulnerabilities and WordPress 7.0 attack surfaces"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: wordpress penetration testing, security, how do i secure, security auditing,
-    unit tests, vulnerability scanning
+    unit tests, vulnerability scanning, testing
 ---
+
 
 
 # Wordpress Penetration Testing

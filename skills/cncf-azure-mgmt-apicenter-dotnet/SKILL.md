@@ -1,10 +1,10 @@
 ---
 name: azure-mgmt-apicenter-dotnet
-description: "Azure API Center SDK for .NET. Centralized API inventory management with governance, versioning, and discovery"
+description: "\"Provides Azure API Center SDK for .NET. Centralized API inventory management with governance, versioning, and discovery\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

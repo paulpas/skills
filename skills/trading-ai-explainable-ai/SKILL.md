@@ -1,6 +1,6 @@
 ---
 name: trading-ai-explainable-ai
-description: "Explainable AI for understanding and trusting trading model decisions"
+description: "\"Provides Explainable AI for understanding and trusting trading model decisions\""
 license: MIT
 compatibility: opencode
 metadata:

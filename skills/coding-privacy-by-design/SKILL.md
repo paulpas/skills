@@ -1,7 +1,6 @@
 ---
 name: privacy-by-design
-description: "Use when building apps that collect user data. Ensures privacy protections\
-  \ are built in from the start\u2014data minimization, consent, encryption"
+description: "\"Provides use when building apps that collect user data. ensures privacy\ \ protections are built in from the start\u2014data minimization, consent, encryption\""
 license: MIT
 compatibility: opencode
 metadata:

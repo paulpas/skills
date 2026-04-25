@@ -1,6 +1,6 @@
 ---
 name: advanced-evaluation
-description: This skill should be used when the user asks to
+description: "Provides this skill should be used when the user asks to functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: advanced evaluation, ai, ml, implementation guide, machine learning
+  triggers: advanced evaluation, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Advanced Evaluation

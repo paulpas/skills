@@ -1,10 +1,10 @@
 ---
 name: linkedin-cli
-description: "Use when automating LinkedIn via CLI: fetch profiles, search people/companies, send messages, manage connections, create posts, and Sales Navigator"
+description: "'Provides use when automating linkedin via cli: fetch profiles, search people/companies, send messages, manage connections, create posts, and sales navigator'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

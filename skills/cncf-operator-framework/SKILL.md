@@ -1,7 +1,6 @@
 ---
 name: cncf-operator-framework
-description: "Operator Framework in Tools to build and manage Kubernetes operators"
-  with standardized patterns
+description: "\"Operator Framework in Tools to build and manage Kubernetes operators\" with standardized patterns"
 license: MIT
 compatibility: opencode
 metadata:

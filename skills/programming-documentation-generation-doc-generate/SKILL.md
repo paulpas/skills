@@ -1,10 +1,10 @@
 ---
 name: documentation-generation-doc-generate
-description: "You are a documentation expert specializing in creating comprehensive, maintainable documentation from code. Generate API docs, architecture diagrams"
+description: "\"Provides You are a documentation expert specializing in creating comprehensive, maintainable documentation from code. Generate API docs, architecture diagrams\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

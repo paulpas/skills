@@ -1,10 +1,10 @@
 ---
 name: azure-monitor-query-py
-description: "Azure Monitor Query SDK for Python. Use for querying Log Analytics workspaces and Azure Monitor metrics"
+description: "\"Provides Azure Monitor Query SDK for Python. Use for querying Log Analytics workspaces and Azure Monitor metrics\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

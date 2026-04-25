@@ -1,7 +1,6 @@
 ---
 name: langgraph
-description: Expert in LangGraph - the production-grade framework for building stateful,
-  multi-actor AI applications. Covers graph construction, state management
+description: "Provides Expert in LangGraph - the production-grade framework for building stateful, multi-actor AI applications. Covers graph construction, state management"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: langgraph, ai, agents, implementation guide, machine learning
+  triggers: langgraph, ai, agents, implementation guide, machine learning, ml, scikit-learn
 ---
+
 
 
 # Langgraph

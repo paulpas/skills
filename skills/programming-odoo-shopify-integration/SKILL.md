@@ -1,10 +1,10 @@
 ---
 name: odoo-shopify-integration
-description: "Connect Odoo with Shopify: sync products, inventory, orders, and customers using the Shopify API and Odoo's external API or connector modules"
+description: "'Provides Connect Odoo with Shopify: sync products, inventory, orders, and customers using the Shopify API and Odoo''s external API or connector modules'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: seo-hreflang
-description: "Hreflang and international SEO audit, validation, and generation. Detects common mistakes, validates language/region codes, and generates correct href"
+description: "\"Provides Hreflang and international SEO audit, validation, and generation. Detects common mistakes, validates language/region codes, and generates correct href\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

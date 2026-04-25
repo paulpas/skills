@@ -1,7 +1,6 @@
 ---
 name: workflow-automation
-description: Workflow automation is the infrastructure that makes AI agents reliable.
-  Without durable execution, a network hiccup during a 10-step payment flow mea
+description: "Provides Workflow automation is the infrastructure that makes AI agents reliable. Without durable execution, a network hiccup during a 10-step payment flow mea"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: orchestration
   scope: implementation
   output-format: code
-  triggers: workflow automation, workflow, how do i automate, github actions
+  triggers: workflow automation, workflow, how do i automate, github actions, ci/cd
 ---
+
 
 
 # Workflow Automation

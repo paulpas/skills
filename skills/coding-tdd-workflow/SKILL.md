@@ -1,6 +1,6 @@
 ---
 name: tdd-workflow
-description: Test-Driven Development workflow principles. RED-GREEN-REFACTOR cycle
+description: "\"Provides Test-Driven Development workflow principles. RED-GREEN-REFACTOR cycle\""
 license: MIT
 compatibility: opencode
 metadata:

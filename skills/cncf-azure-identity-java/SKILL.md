@@ -1,10 +1,10 @@
 ---
 name: azure-identity-java
-description: "Authenticate Java applications with Azure services using Microsoft Entra ID (Azure AD)"
+description: "\"Provides Authenticate Java applications with Azure services using Microsoft Entra ID (Azure AD)\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

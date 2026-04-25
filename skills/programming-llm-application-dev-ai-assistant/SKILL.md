@@ -1,7 +1,6 @@
 ---
 name: llm-application-dev-ai-assistant
-description: You are an AI assistant development expert specializing in creating intelligent
-  conversational interfaces, chatbots, and AI-powered applications. Desi
+description: "Provides You are an AI assistant development expert specializing in creating intelligent conversational interfaces, chatbots, and AI-powered applications. Desi"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: llm application dev ai assistant, ai, ml, implementation guide, machine
-    learning
+    learning, scikit-learn
 ---
+
 
 
 # Llm Application Dev Ai Assistant

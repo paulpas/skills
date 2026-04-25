@@ -1,7 +1,6 @@
 ---
 name: apify-competitor-intelligence
-description: Analyze competitor strategies, content, pricing, ads, and market positioning
-  across Google Maps, Booking.com, Facebook, Instagram, YouTube, and TikTok
+description: "Provides Analyze competitor strategies, content, pricing, ads, and market positioning across Google Maps, Booking.com, Facebook, Instagram, YouTube, and TikTok"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify competitor intelligence, automation, how do i automate, jenkins
+  triggers: apify competitor intelligence, automation, how do i automate, jenkins,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Apify Competitor Intelligence

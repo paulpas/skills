@@ -1,10 +1,10 @@
 ---
 name: gpt-taste
-description: "Use when generating elite GSAP-heavy frontend pages with strict AIDA structure, wide hero typography, and gapless bento grids"
+description: "\"Provides use when generating elite gsap-heavy frontend pages with strict aida structure, wide hero typography, and gapless bento grids\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

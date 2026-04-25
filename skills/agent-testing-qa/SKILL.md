@@ -1,7 +1,6 @@
 ---
 name: testing-qa
-description: Comprehensive testing and QA workflow covering unit testing, integration
-  testing, E2E testing, browser automation, and quality assurance
+description: "Provides Comprehensive testing and QA workflow covering unit testing, integration testing, E2E testing, browser automation, and quality assurance"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: testing qa, workflow, bundle, how do i test, unit tests
+  triggers: testing qa, workflow, bundle, how do i test, unit tests, testing
 ---
+
 
 
 # Testing Qa

@@ -1,6 +1,6 @@
 ---
 name: seo-aeo-content-cluster
-description: "Builds a topical authority map with a pillar page, prioritised cluster articles, content types, internal link map, and content gap analysis. Activate"
+description: "\"Builds a topical authority map with a pillar page, prioritised cluster articles, content types, internal link map, and content gap analysis. Activate\""
 license: MIT
 compatibility: opencode
 metadata:

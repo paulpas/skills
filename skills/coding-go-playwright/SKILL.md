@@ -1,7 +1,6 @@
 ---
 name: go-playwright
-description: Expert capability for robust, stealthy, and efficient browser automation
-  using Playwright Go
+description: "Provides Expert capability for robust, stealthy, and efficient browser automation using Playwright Go"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: go playwright, test, automation, how do i test, jenkins
+  triggers: go playwright, test, automation, how do i test, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Go Playwright

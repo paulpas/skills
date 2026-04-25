@@ -1,7 +1,6 @@
 ---
 name: vector-index-tuning
-description: Optimize vector index performance for latency, recall, and memory. Use
-  when tuning HNSW parameters, selecting quantization strategies, or scaling vect
+description: "Provides Optimize vector index performance for latency, recall, and memory. Use when tuning HNSW parameters, selecting quantization strategies, or scaling vect"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: vector index tuning, data, ai, data processing, machine learning, spark
+  triggers: vector index tuning, data, ai, data processing, machine learning, spark,
+    big data, distributed processing
 ---
+
 
 
 # Vector Index Tuning

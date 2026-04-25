@@ -1,7 +1,6 @@
 ---
 name: context-fundamentals
-description: Context is the complete state available to a language model at inference
-  time. It includes everything the model can attend to when generating response
+description: "Provides Context is the complete state available to a language model at inference time. It includes everything the model can attend to when generating response"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context fundamentals, ai, ml, implementation guide, machine learning
+  triggers: context fundamentals, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Context Fundamentals

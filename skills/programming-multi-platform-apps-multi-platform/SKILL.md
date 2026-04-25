@@ -1,10 +1,10 @@
 ---
 name: multi-platform-apps-multi-platform
-description: "Build and deploy the same feature consistently across web, mobile, and desktop platforms using API-first architecture and parallel implementation stra"
+description: "\"Provides Build and deploy the same feature consistently across web, mobile, and desktop platforms using API-first architecture and parallel implementation stra\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

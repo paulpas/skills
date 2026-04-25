@@ -1,7 +1,6 @@
 ---
 name: security-bluebook-builder
-description: Build a minimal but real security policy for sensitive apps. The output
-  is a single, coherent Blue Book document using MUST/SHOULD/CAN language, with
+description: "\"Provides Build a minimal but real security policy for sensitive apps. The output is a single, coherent Blue Book document using MUST/SHOULD/CAN language, with\""
 license: MIT
 compatibility: opencode
 metadata:

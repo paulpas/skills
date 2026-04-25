@@ -1,7 +1,6 @@
 ---
 name: scala-pro
-description: Master enterprise-grade Scala development with functional programming,
-  distributed systems, and big data processing. Expert in Apache Pekko, Akka, Spa
+description: "Provides Master enterprise-grade Scala development with functional programming, distributed systems, and big data processing. Expert in Apache Pekko, Akka, Spa"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: scala pro, code, data processing, spark
+  triggers: scala pro, code, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Scala Pro

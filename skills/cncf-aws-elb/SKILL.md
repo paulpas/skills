@@ -1,7 +1,6 @@
 ---
 name: cncf-aws-elb
-description: "Configures Elastic Load Balancing (ALB, NLB, Classic) for distributing"
-  traffic across instances with health checks, SSL termination, and cross-AZ failover.
+description: "\"Configures Elastic Load Balancing (ALB, NLB, Classic) for distributing\" traffic across instances with health checks, SSL termination, and cross-AZ failover."
 license: MIT
 compatibility: opencode
 metadata:

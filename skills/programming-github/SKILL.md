@@ -1,10 +1,10 @@
 ---
 name: github
-description: "Use the `gh` CLI for issues, pull requests, Actions runs, and GitHub API queries"
+description: "\"Provides use the `gh` cli for issues, pull requests, actions runs, and github api queries\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

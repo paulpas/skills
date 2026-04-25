@@ -1,6 +1,6 @@
 ---
 name: react-component-performance
-description: Diagnose slow React components and suggest targeted performance fixes
+description: "Provides Diagnose slow React components and suggest targeted performance fixes"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: react component performance, web, development, implementation guide, optimization
+  triggers: react component performance, web, development, implementation guide, optimization,
+    performance
 ---
+
 
 
 # React Component Performance

@@ -1,7 +1,6 @@
 ---
 name: shodan-reconnaissance
-description: Provide systematic methodologies for leveraging Shodan as a reconnaissance
-  tool during penetration testing engagements
+description: "\"Provides Provide systematic methodologies for leveraging Shodan as a reconnaissance tool during penetration testing engagements\""
 license: MIT
 compatibility: opencode
 metadata:

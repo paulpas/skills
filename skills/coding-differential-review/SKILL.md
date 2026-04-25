@@ -1,6 +1,6 @@
 ---
 name: differential-review
-description: Security-focused code review for PRs, commits, and diffs
+description: "\"Implements security-focused code review for prs, commits, and diffs patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:

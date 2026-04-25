@@ -1,7 +1,6 @@
 ---
 name: pydantic-ai
-description: "Build production-ready AI agents with PydanticAI \u2014 type-safe tool\
-  \ use, structured outputs, dependency injection, and multi-model support"
+description: "\"Provides Build production-ready AI agents with PydanticAI \u2014 type-safe\ \ tool use, structured outputs, dependency injection, and multi-model support\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: pydantic ai, ai, agents, implementation guide, machine learning
+  triggers: pydantic ai, ai, agents, implementation guide, machine learning, ml, scikit-learn
 ---
+
 
 
 # Pydantic Ai

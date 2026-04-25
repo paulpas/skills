@@ -1,10 +1,10 @@
 ---
 name: vibe-code-auditor
-description: "Audit rapidly generated or AI-produced code for structural flaws, fragility, and production risks"
+description: "\"Provides Audit rapidly generated or AI-produced code for structural flaws, fragility, and production risks\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

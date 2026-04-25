@@ -1,10 +1,10 @@
 ---
 name: error-diagnostics-smart-debug
-description: "Use when working with error diagnostics smart debug"
+description: "\"Provides use when working with error diagnostics smart debug functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

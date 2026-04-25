@@ -1,10 +1,10 @@
 ---
 name: emergency-card
-description: "生成紧急情况下快速访问的医疗信息摘要卡片。当用户需要旅行、就诊准备、紧急情况或询问"
+description: "\"Provides \u751F\u6210\u7D27\u6025\u60C5\u51B5\u4E0B\u5FEB\u901F\u8BBF\ \u95EE\u7684\u533B\u7597\u4FE1\u606F\u6458\u8981\u5361\u7247\u3002\u5F53\u7528\u6237\ \u9700\u8981\u65C5\u884C\u3001\u5C31\u8BCA\u51C6\u5907\u3001\u7D27\u6025\u60C5\u51B5\ \u6216\u8BE2\u95EE functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

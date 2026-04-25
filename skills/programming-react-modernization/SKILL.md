@@ -1,10 +1,10 @@
 ---
 name: react-modernization
-description: "Master React version upgrades, class to hooks migration, concurrent features adoption, and codemods for automated transformation"
+description: "\"Provides Master React version upgrades, class to hooks migration, concurrent features adoption, and codemods for automated transformation\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

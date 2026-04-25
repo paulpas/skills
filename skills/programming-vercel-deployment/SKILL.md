@@ -1,6 +1,6 @@
 ---
 name: vercel-deployment
-description: Expert knowledge for deploying to Vercel with Next.js
+description: "Provides expert knowledge for deploying to vercel with next.js functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: vercel deployment, uncategorized, how do i deploy, kubernetes deployment
+  triggers: vercel deployment, uncategorized, how do i deploy, kubernetes deployment,
+    container orchestration, deployment
 ---
+
 
 
 # Vercel Deployment

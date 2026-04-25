@@ -1,10 +1,10 @@
 ---
 name: docx-official
-description: "A user may ask you to create, edit, or analyze the contents of a .docx file. A .docx file is essentially a ZIP archive containing XML files and other"
+description: "\"Provides a user may ask you to create, edit, or analyze the contents of a .docx file. a .docx file is essentially a zip archive containing xml files and other\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

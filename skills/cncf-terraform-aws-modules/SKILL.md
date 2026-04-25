@@ -1,7 +1,6 @@
 ---
 name: terraform-aws-modules
-description: "Terraform module creation for AWS \u2014 reusable modules, state management,\
-  \ and HCL best practices. Use when building or reviewing Terraform AWS infrastru"
+description: "\"Provides Terraform module creation for AWS \u2014 reusable modules,\ \ state management, and HCL best practices. Use when building or reviewing Terraform\ \ AWS infrastru\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: terraform aws modules, devops, how do i deploy, infrastructure as code
+  triggers: terraform aws modules, devops, how do i deploy, infrastructure as code,
+    cloudformation
 ---
+
 
 
 # Terraform Aws Modules

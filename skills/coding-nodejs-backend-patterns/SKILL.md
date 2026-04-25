@@ -1,10 +1,10 @@
 ---
 name: nodejs-backend-patterns
-description: "Comprehensive guidance for building scalable, maintainable, and production-ready Node.js backend applications with modern frameworks, architectural pa"
+description: "\"Provides Comprehensive guidance for building scalable, maintainable, and production-ready Node.js backend applications with modern frameworks, architectural pa\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

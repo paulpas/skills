@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-scale-sets
-description: "Manages auto-scaling VM groups with load balancing and health management"
+description: "\"Manages auto-scaling VM groups with load balancing and health management\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: scale sets, vmss, auto-scaling, scaling, vm groups, autoscaling
-  related-skills: cncf-azure-load-balancer, cncf-azure-monitor, cncf-azure-virtual-machines, cncf-azure-virtual-networks
+  related-skills: cncf-azure-load-balancer, cncf-azure-monitor, cncf-azure-virtual-networks
 ---
 
 

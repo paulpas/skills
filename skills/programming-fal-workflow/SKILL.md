@@ -1,6 +1,6 @@
 ---
 name: fal-workflow
-description: Generate workflow JSON files for chaining AI models
+description: "Provides generate workflow json files for chaining ai models functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fal workflow, ai, ml, implementation guide, machine learning
+  triggers: fal workflow, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Fal Workflow

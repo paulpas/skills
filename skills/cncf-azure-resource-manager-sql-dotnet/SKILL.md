@@ -1,10 +1,10 @@
 ---
 name: azure-resource-manager-sql-dotnet
-description: "Azure Resource Manager SDK for Azure SQL in .NET"
+description: "\"Configures azure resource manager sdk for azure sql in .net for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

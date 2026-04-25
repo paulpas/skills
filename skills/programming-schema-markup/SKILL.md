@@ -1,7 +1,6 @@
 ---
 name: schema-markup
-description: Design, validate, and optimize schema.org structured data for eligibility,
-  correctness, and measurable SEO impact
+description: "Provides Design, validate, and optimize schema.org structured data for eligibility, correctness, and measurable SEO impact"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: schema markup, marketing, data processing, spark
+  triggers: schema markup, marketing, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Schema Markup

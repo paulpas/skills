@@ -1,10 +1,10 @@
 ---
 name: magic-animator
-description: "AI-powered animation tool for creating motion in logos, UI, icons, and social media assets"
+description: "\"Provides AI-powered animation tool for creating motion in logos, UI, icons, and social media assets\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-cosmos-db
-description: Global NoSQL database with multi-region distribution and guaranteed latency
+description: "Provides Global NoSQL database with multi-region distribution and guaranteed latency"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,10 +10,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cosmos db, nosql, document database, global database, distributed database,
-    cassandra, mongodb
-  related-skills: cncf-azure-functions, cncf-azure-key-vault, cncf-azure-monitor,
-    cncf-azure-rbac
+    cassandra, mongodb, nosql database
+  related-skills: cncf-azure-functions, cncf-azure-monitor
 ---
+
 
 
 

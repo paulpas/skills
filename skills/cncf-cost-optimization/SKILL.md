@@ -1,10 +1,10 @@
 ---
 name: cost-optimization
-description: "Strategies and patterns for optimizing cloud costs across AWS, Azure, and GCP"
+description: "\"Provides Strategies and patterns for optimizing cloud costs across AWS, Azure, and GCP\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

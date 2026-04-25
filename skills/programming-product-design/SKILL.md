@@ -1,10 +1,10 @@
 ---
 name: product-design
-description: "Design de produto nivel Apple — sistemas visuais, UX flows, acessibilidade, linguagem visual proprietaria, design tokens, prototipagem e handoff. Cobr"
+description: "\"Provides Design de produto nivel Apple \u2014 sistemas visuais, UX flows,\ \ acessibilidade, linguagem visual proprietaria, design tokens, prototipagem e handoff.\ \ Cobr\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

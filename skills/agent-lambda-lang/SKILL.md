@@ -1,7 +1,6 @@
 ---
 name: lambda-lang
-description: Native agent-to-agent language for compact multi-agent messaging. A shared
-  tongue agents speak directly, not a translation layer. 340+ atoms across 7
+description: "Provides Native agent-to-agent language for compact multi-agent messaging. A shared tongue agents speak directly, not a translation layer. 340+ atoms across 7"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: lambda lang, ai, agents, implementation guide, machine learning, serverless
-    functions
+    functions, lambda, ml
 ---
+
 
 
 # Lambda Lang

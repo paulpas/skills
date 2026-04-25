@@ -1,10 +1,10 @@
 ---
 name: csharp-pro
-description: "Write modern C# code with advanced features like records, pattern matching, and async/await. Optimizes .NET applications, implements enterprise patter"
+description: "\"Provides Write modern C# code with advanced features like records, pattern matching, and async/await. Optimizes .NET applications, implements enterprise patter\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

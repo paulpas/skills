@@ -1,10 +1,10 @@
 ---
 name: cc-skill-strategic-compact
-description: "Development skill from everything-claude-code"
+description: "\"Implements development skill from everything-claude-code for orchestration and agent coordination in autonomous systems.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

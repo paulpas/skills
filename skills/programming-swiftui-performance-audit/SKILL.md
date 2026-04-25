@@ -1,6 +1,6 @@
 ---
 name: swiftui-performance-audit
-description: Audit SwiftUI performance issues from code review and profiling evidence
+description: "Provides Audit SwiftUI performance issues from code review and profiling evidence"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: swiftui performance audit, mobile, implementation guide, optimization
+  triggers: swiftui performance audit, mobile, implementation guide, optimization,
+    performance
 ---
+
 
 
 # Swiftui Performance Audit

@@ -1,10 +1,10 @@
 ---
 name: scarcity-urgency-psychologist
-description: "One sentence - what this skill does and when to invoke it"
+description: "\"Provides one sentence - what this skill does and when to invoke it functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

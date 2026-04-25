@@ -1,7 +1,6 @@
 ---
 name: context-degradation
-description: Language models exhibit predictable degradation patterns as context length
-  increases. Understanding these patterns is essential for diagnosing failure
+description: "Provides Language models exhibit predictable degradation patterns as context length increases. Understanding these patterns is essential for diagnosing failure"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context degradation, ai, ml, implementation guide, machine learning
+  triggers: context degradation, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Context Degradation

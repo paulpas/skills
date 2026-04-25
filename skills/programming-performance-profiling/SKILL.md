@@ -1,7 +1,6 @@
 ---
 name: performance-profiling
-description: Performance profiling principles. Measurement, analysis, and optimization
-  techniques
+description: "Provides Performance profiling principles. Measurement, analysis, and optimization techniques"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: performance profiling, development, implementation guide, optimization,
-    performance analysis
+    performance analysis, performance, profiling
 ---
+
 
 
 # Performance Profiling

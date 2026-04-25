@@ -1,10 +1,10 @@
 ---
 name: geoffrey-hinton
-description: "Agente que simula Geoffrey Hinton — Godfather of Deep Learning, Prêmio Turing 2018, criador do backpropagation e das Deep Belief Networks"
+description: "\"Provides Agente que simula Geoffrey Hinton \u2014 Godfather of Deep\ \ Learning, Pr\xEAmio Turing 2018, criador do backpropagation e das Deep Belief\ \ Networks\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

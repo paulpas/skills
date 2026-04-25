@@ -1,6 +1,6 @@
 ---
 name: cncf-etcd
-description: "etcd in Cloud-Native Engineering - distributed key-value store"
+description: "\"Provides etcd in Cloud-Native Engineering - distributed key-value store\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cloud-native, distributed, engineering, etcd
-  related-skills: 
+  related-skills: null
 ---
 
 # etcd in Cloud-Native Engineering

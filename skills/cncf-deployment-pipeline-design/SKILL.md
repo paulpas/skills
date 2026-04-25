@@ -1,7 +1,6 @@
 ---
 name: deployment-pipeline-design
-description: Architecture patterns for multi-stage CI/CD pipelines with approval gates
-  and deployment strategies
+description: "Provides Architecture patterns for multi-stage CI/CD pipelines with approval gates and deployment strategies"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: deployment pipeline design, devops, how do i deploy, kubernetes deployment
+  triggers: deployment pipeline design, devops, how do i deploy, kubernetes deployment,
+    container orchestration, deployment
 ---
+
 
 
 # Deployment Pipeline Design

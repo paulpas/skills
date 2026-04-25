@@ -1,10 +1,10 @@
 ---
 name: react-native-architecture
-description: "Production-ready patterns for React Native development with Expo, including navigation, state management, native modules, and offline-first architectu"
+description: "\"Provides Production-ready patterns for React Native development with Expo, including navigation, state management, native modules, and offline-first architectu\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: citation-management
-description: "Manage citations systematically throughout the research and writing process"
+description: "\"Provides Manage citations systematically throughout the research and writing process\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

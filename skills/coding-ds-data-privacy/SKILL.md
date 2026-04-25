@@ -1,6 +1,6 @@
 ---
 name: coding-ds-data-privacy
-description: "Applies privacy-preserving techniques including anonymization, differential privacy, encryption, and GDPR compliance for sensitive data"
+description: "\"Applies privacy-preserving techniques including anonymization, differential privacy, encryption, and GDPR compliance for sensitive data\""
 license: MIT
 compatibility: opencode
 metadata:

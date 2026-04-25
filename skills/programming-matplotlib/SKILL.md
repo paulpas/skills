@@ -1,10 +1,10 @@
 ---
 name: matplotlib
-description: "Matplotlib is Python's foundational visualization library for creating static, animated, and interactive plots"
+description: "\"Provides Matplotlib is Python's foundational visualization library for creating static, animated, and interactive plots\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

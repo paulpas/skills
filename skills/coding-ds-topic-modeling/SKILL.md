@@ -1,6 +1,6 @@
 ---
 name: coding-ds-topic-modeling
-description: "Implements topic modeling using Latent Dirichlet Allocation (LDA), Non-negative Matrix Factorization (NMF), and other topic extraction methods"
+description: "\"Implements topic modeling using Latent Dirichlet Allocation (LDA), Non-negative Matrix Factorization (NMF), and other topic extraction methods\""
 license: MIT
 compatibility: opencode
 metadata:

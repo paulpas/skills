@@ -1,7 +1,6 @@
 ---
 name: e2e-testing-patterns
-description: Build reliable, fast, and maintainable end-to-end test suites that provide
-  confidence to ship code quickly and catch regressions before users do
+description: "Provides Build reliable, fast, and maintainable end-to-end test suites that provide confidence to ship code quickly and catch regressions before users do"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: e2e testing patterns, test, automation, how do i test, jenkins, unit tests
+  triggers: e2e testing patterns, test, automation, how do i test, jenkins, unit tests,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # E2E Testing Patterns

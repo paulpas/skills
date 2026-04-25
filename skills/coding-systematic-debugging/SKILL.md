@@ -1,10 +1,10 @@
 ---
 name: systematic-debugging
-description: "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes"
+description: "\"Provides use when encountering any bug, test failure, or unexpected behavior, before proposing fixes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

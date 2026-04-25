@@ -1,8 +1,6 @@
 ---
 name: akf-trust-metadata
-description: "The AI native file format. EXIF for AI \u2014 stamps every file with\
-  \ trust scores, source provenance, and compliance metadata. Embeds into 20+ formats\
-  \ (DOC"
+description: "\"Provides the ai native file format. exif for ai \u2014 stamps every\ \ file with trust scores, source provenance, and compliance metadata. embeds into\ \ 20+ formats (doc\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: akf trust metadata, uncategorized, data processing, spark
+  triggers: akf trust metadata, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Akf Trust Metadata

@@ -1,15 +1,16 @@
 ---
 name: coding-ds-feature-interaction
-description: "Discovers and engineers feature interactions including polynomial interactions, cross-features, and interaction detection methods"
+description: "\"Provides Discovers and engineers feature interactions including polynomial interactions, cross-features, and interaction detection methods\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: feature interaction, interaction terms, polynomial features, cross-features, feature interactions
+  triggers: feature interaction, interaction terms, polynomial features, cross-features,
+    feature interactions
   related-skills: coding-ds-correlation-analysis, coding-ds-feature-engineering, coding-ds-feature-selection
 ---
 

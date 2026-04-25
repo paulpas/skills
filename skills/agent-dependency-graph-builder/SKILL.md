@@ -1,8 +1,6 @@
 ---
 name: agent-dependency-graph-builder
-description: "Builds and maintains dependency graphs for task execution, enabling visualization"
-  of task relationships, identification of bottlenecks, and optimization of execution
-  order.
+description: "\"Builds and maintains dependency graphs for task execution, enabling visualization\" of task relationships, identification of bottlenecks, and optimization of execution order."
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,8 +1,6 @@
 ---
 name: cncf-aws-eks
-description: "Deploys managed Kubernetes clusters with EKS for container orchestration"
-  auto-scaling, networking, and integrations with AWS services for production Kubernetes
-  workloads.
+description: "\"Deploys managed Kubernetes clusters with EKS for container orchestration\" auto-scaling, networking, and integrations with AWS services for production Kubernetes workloads."
 license: MIT
 compatibility: opencode
 metadata:

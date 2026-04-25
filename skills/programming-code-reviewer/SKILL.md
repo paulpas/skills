@@ -1,10 +1,10 @@
 ---
 name: code-reviewer
-description: "Elite code review expert specializing in modern AI-powered code"
+description: "\"Provides Elite code review expert specializing in modern AI-powered code\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

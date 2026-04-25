@@ -1,6 +1,6 @@
 ---
 name: trading-data-stream-processing
-description: "Streaming data processing for real-time trading signals and analytics"
+description: "\"Provides Streaming data processing for real-time trading signals and analytics\""
 license: MIT
 compatibility: opencode
 metadata:

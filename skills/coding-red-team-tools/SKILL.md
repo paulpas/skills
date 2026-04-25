@@ -1,7 +1,6 @@
 ---
 name: red-team-tools
-description: Implement proven methodologies and tool workflows from top security researchers
-  for effective reconnaissance, vulnerability discovery, and bug bounty
+description: "\"Provides Implement proven methodologies and tool workflows from top security researchers for effective reconnaissance, vulnerability discovery, and bug bounty\""
 license: MIT
 compatibility: opencode
 metadata:

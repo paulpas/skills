@@ -1,7 +1,6 @@
 ---
 name: trading-exchange-websocket-handling
-description: "Real-time market data handling with WebSockets including connection management"
-  data aggregation, and robust error recovery
+description: "\"Real-time market data handling with WebSockets including connection management\" data aggregation, and robust error recovery"
 license: MIT
 compatibility: opencode
 metadata:

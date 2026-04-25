@@ -1,7 +1,6 @@
 ---
 name: mlops-engineer
-description: Build comprehensive ML pipelines, experiment tracking, and model registries
-  with MLflow, Kubeflow, and modern MLOps tools
+description: "Provides Build comprehensive ML pipelines, experiment tracking, and model registries with MLflow, Kubeflow, and modern MLOps tools"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: mlops engineer, ai, ml, implementation guide, machine learning
+  triggers: mlops engineer, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Mlops Engineer

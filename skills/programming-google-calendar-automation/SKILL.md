@@ -1,10 +1,10 @@
 ---
 name: google-calendar-automation
-description: "Lightweight Google Calendar integration with standalone OAuth authentication. No MCP server required"
+description: "\"Provides Lightweight Google Calendar integration with standalone OAuth authentication. No MCP server required\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

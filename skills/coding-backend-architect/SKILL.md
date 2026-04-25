@@ -1,10 +1,10 @@
 ---
 name: backend-architect
-description: "Expert backend architect specializing in scalable API design, microservices architecture, and distributed systems"
+description: "\"Provides Expert backend architect specializing in scalable API design, microservices architecture, and distributed systems\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

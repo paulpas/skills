@@ -1,10 +1,10 @@
 ---
 name: issues
-description: "Interact with GitHub issues - create, list, and view issues"
+description: "\"Implements interact with github issues - create, list, and view issues for orchestration and agent coordination in autonomous systems.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

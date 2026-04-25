@@ -1,7 +1,6 @@
 ---
 name: database-cloud-optimization-cost-optimize
-description: You are a cloud cost optimization expert specializing in reducing infrastructure
-  expenses while maintaining performance and reliability. Analyze cloud
+description: "Provides You are a cloud cost optimization expert specializing in reducing infrastructure expenses while maintaining performance and reliability. Analyze cloud"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: database cloud optimization cost optimize, database, data processing,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Database Cloud Optimization Cost Optimize

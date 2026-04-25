@@ -1,7 +1,6 @@
 ---
 name: trading-data-alternative-data
-description: "Alternative data ingestion pipelines for trading signals including news"
-  social media, and on-chain data sources
+description: "\"Alternative data ingestion pipelines for trading signals including news\" social media, and on-chain data sources"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: azure-resource-manager-cosmosdb-dotnet
-description: "Azure Resource Manager SDK for Cosmos DB in .NET"
+description: "\"Configures azure resource manager sdk for cosmos db in .net for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

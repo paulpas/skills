@@ -1,10 +1,10 @@
 ---
 name: design-md
-description: "Analyze Stitch projects and synthesize a semantic design system into DESIGN.md files"
+description: "\"Provides Analyze Stitch projects and synthesize a semantic design system into DESIGN.md files\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

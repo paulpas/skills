@@ -1,10 +1,10 @@
 ---
 name: uncle-bob-craft
-description: "Use when performing code review, writing or refactoring code, or discussing architecture; complements clean-code and does not replace project linter/f"
+description: "\"Provides use when performing code review, writing or refactoring code, or discussing architecture; complements clean-code and does not replace project linter/f\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

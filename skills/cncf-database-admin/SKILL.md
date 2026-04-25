@@ -1,10 +1,10 @@
 ---
 name: database-admin
-description: "Expert database administrator specializing in modern cloud databases, automation, and reliability engineering"
+description: "\"Provides Expert database administrator specializing in modern cloud databases, automation, and reliability engineering\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

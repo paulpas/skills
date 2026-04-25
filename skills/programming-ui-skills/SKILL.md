@@ -1,6 +1,6 @@
 ---
 name: ui-skills
-description: Opinionated, evolving constraints to guide agents when building interfaces
+description: "Provides Opinionated, evolving constraints to guide agents when building interfaces"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ui skills, ai, ml, implementation guide, machine learning
+  triggers: ui skills, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ui Skills

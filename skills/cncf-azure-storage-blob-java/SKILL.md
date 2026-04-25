@@ -1,10 +1,10 @@
 ---
 name: azure-storage-blob-java
-description: "Build blob storage applications using the Azure Storage Blob SDK for Java"
+description: "\"Provides Build blob storage applications using the Azure Storage Blob SDK for Java\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

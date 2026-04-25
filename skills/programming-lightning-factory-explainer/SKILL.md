@@ -1,10 +1,10 @@
 ---
 name: lightning-factory-explainer
-description: "Explain Bitcoin Lightning channel factories and the SuperScalar protocol — scalable Lightning onboarding using shared UTXOs, Decker-Wattenhofer trees"
+description: "\"Provides Explain Bitcoin Lightning channel factories and the SuperScalar\ \ protocol \u2014 scalable Lightning onboarding using shared UTXOs, Decker-Wattenhofer\ \ trees\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

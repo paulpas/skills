@@ -1,10 +1,10 @@
 ---
 name: powershell-windows
-description: "PowerShell Windows patterns. Critical pitfalls, operator syntax, error handling"
+description: "\"Provides PowerShell Windows patterns. Critical pitfalls, operator syntax, error handling\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

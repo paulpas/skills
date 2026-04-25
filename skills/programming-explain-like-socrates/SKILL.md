@@ -1,7 +1,6 @@
 ---
 name: explain-like-socrates
-description: "Explains concepts using Socratic-style dialogue. Use when the user asks to explain, teach or help understand a concept like socrates"
-"
+description: "\"Explains concepts using Socratic-style dialogue. Use when the user asks to explain, teach or help understand a concept like socrates\" \""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: chat-widget
-description: "Build a real-time support chat system with a floating widget for users and an admin dashboard for support staff. Use when the user wants live chat, cu"
+description: "\"Provides Build a real-time support chat system with a floating widget for users and an admin dashboard for support staff. Use when the user wants live chat, cu\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

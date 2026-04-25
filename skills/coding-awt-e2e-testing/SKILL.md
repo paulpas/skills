@@ -1,8 +1,6 @@
 ---
 name: awt-e2e-testing
-description: "AI-powered E2E web testing \u2014 eyes and hands for AI coding tools.\
-  \ Declarative YAML scenarios, Playwright execution, visual matching (OpenCV + OCR),\
-  \ pla"
+description: "\"Provides AI-powered E2E web testing \u2014 eyes and hands for AI coding\ \ tools. Declarative YAML scenarios, Playwright execution, visual matching (OpenCV\ \ + OCR), pla\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: awt e2e testing, test, automation, how do i test, jenkins, unit tests
+  triggers: awt e2e testing, test, automation, how do i test, jenkins, unit tests,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Awt E2E Testing

@@ -1,10 +1,10 @@
 ---
 name: concise-planning
-description: "Use when a user asks for a plan for a coding task, to generate a clear, actionable, and atomic checklist"
+description: "\"Provides use when a user asks for a plan for a coding task, to generate a clear, actionable, and atomic checklist\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

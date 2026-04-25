@@ -1,10 +1,10 @@
 ---
 name: clean-code
-description: "This skill embodies the principles of"
+description: "\"Implements this skill embodies the principles of patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

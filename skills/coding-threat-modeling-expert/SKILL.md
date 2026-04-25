@@ -1,7 +1,6 @@
 ---
 name: threat-modeling-expert
-description: Expert in threat modeling methodologies, security architecture review,
-  and risk assessment. Masters STRIDE, PASTA, attack trees, and security requirem
+description: "\"Provides Expert in threat modeling methodologies, security architecture review, and risk assessment. Masters STRIDE, PASTA, attack trees, and security requirem\""
 license: MIT
 compatibility: opencode
 metadata:

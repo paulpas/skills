@@ -1,10 +1,10 @@
 ---
 name: networkx
-description: "NetworkX is a Python package for creating, manipulating, and analyzing complex networks and graphs"
+description: "\"Provides NetworkX is a Python package for creating, manipulating, and analyzing complex networks and graphs\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

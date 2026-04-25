@@ -1,7 +1,6 @@
 ---
 name: seo-aeo-schema-generator
-description: Generates valid JSON-LD structured data for 10 schema types with rich
-  result eligibility validation and implementation-ready script blocks. Activate w
+description: "Generates valid JSON-LD structured data for 10 schema types with rich result eligibility validation and implementation-ready script blocks. Activate w"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: seo aeo schema generator, uncategorized, data processing, spark
+  triggers: seo aeo schema generator, uncategorized, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Seo Aeo Schema Generator

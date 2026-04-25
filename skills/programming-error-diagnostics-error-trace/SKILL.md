@@ -1,10 +1,10 @@
 ---
 name: error-diagnostics-error-trace
-description: "You are an error tracking and observability expert specializing in implementing comprehensive error monitoring solutions. Set up error tracking system"
+description: "\"Provides You are an error tracking and observability expert specializing in implementing comprehensive error monitoring solutions. Set up error tracking system\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

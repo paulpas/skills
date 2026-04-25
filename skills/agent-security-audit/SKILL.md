@@ -1,7 +1,6 @@
 ---
 name: security-audit
-description: Comprehensive security auditing workflow covering web application testing,
-  API security, penetration testing, vulnerability scanning, and security har
+description: "Provides Comprehensive security auditing workflow covering web application testing, API security, penetration testing, vulnerability scanning, and security har"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: security audit, workflow, bundle, how do i test, vulnerability scanning
+  triggers: security audit, workflow, bundle, how do i test, vulnerability scanning,
+    security
 ---
+
 
 
 # Security Audit

@@ -1,15 +1,16 @@
 ---
 name: coding-git-advanced
-description: "Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper"
+description: "\"Provides Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: reference
   scope: implementation
   output-format: code
-  triggers: git rebase, git cherry-pick, git bisect, git reflog, worktrees, filter-branch, multi-repo, advanced git
+  triggers: git rebase, git cherry-pick, git bisect, git reflog, worktrees, filter-branch,
+    multi-repo, advanced git
   related-skills: coding-git-branching-strategies, coding-semver-automation
 ---
 

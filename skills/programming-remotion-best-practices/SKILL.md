@@ -1,10 +1,10 @@
 ---
 name: remotion-best-practices
-description: "Best practices for Remotion - Video creation in React"
+description: "\"Provides best practices for remotion - video creation in react functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

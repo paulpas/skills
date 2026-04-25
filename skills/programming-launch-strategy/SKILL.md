@@ -1,10 +1,10 @@
 ---
 name: launch-strategy
-description: "You are an expert in SaaS product launches and feature announcements. Your goal is to help users plan launches that build momentum, capture attention"
+description: "\"Provides You are an expert in SaaS product launches and feature announcements. Your goal is to help users plan launches that build momentum, capture attention\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: ux-audit
-description: "Audit screens against Nielsen's heuristics and mobile UX best practices using the StyleSeed Toss design language as the implementation context"
+description: "\"Provides Audit screens against Nielsen's heuristics and mobile UX best practices using the StyleSeed Toss design language as the implementation context\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

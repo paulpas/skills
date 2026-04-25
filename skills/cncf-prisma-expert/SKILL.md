@@ -1,7 +1,6 @@
 ---
 name: prisma-expert
-description: You are an expert in Prisma ORM with deep knowledge of schema design,
-  migrations, query optimization, relations modeling, and database operations acro
+description: "Provides You are an expert in Prisma ORM with deep knowledge of schema design, migrations, query optimization, relations modeling, and database operations acro"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: prisma expert, database, data processing, spark
+  triggers: prisma expert, database, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Prisma Expert

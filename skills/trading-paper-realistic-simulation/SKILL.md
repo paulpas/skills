@@ -1,6 +1,6 @@
 ---
 name: trading-paper-realistic-simulation
-description: "Realistic Paper Trading Simulation with Market Impact and Execution Fees"
+description: "\"Provides Realistic Paper Trading Simulation with Market Impact and Execution Fees\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: postgres-best-practices
-description: Postgres performance optimization and best practices from Supabase. Use
-  this skill when writing, reviewing, or optimizing Postgres queries, schema des
+description: "Provides Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema des"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: postgres best practices, database, data processing, spark
+  triggers: postgres best practices, database, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Postgres Best Practices

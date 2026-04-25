@@ -1,10 +1,10 @@
 ---
 name: pricing-strategy
-description: "Design pricing, packaging, and monetization strategies based on value, customer willingness to pay, and growth objectives"
+description: "\"Provides Design pricing, packaging, and monetization strategies based on value, customer willingness to pay, and growth objectives\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

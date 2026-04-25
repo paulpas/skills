@@ -1,15 +1,16 @@
 ---
 name: coding-ds-association-rules
-description: "Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining"
+description: "\"Provides Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: association rules, market basket, apriori, frequent itemsets, recommendation, pattern mining
+  triggers: association rules, market basket, apriori, frequent itemsets, recommendation,
+    pattern mining
   related-skills: coding-ds-clustering, coding-ds-community-detection, coding-ds-topic-modeling
 ---
 

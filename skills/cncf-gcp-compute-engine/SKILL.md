@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-compute-engine
-description: "Deploys and manages virtual machine instances with auto-scaling, instance groups, and integration with GCP services for IaaS workloads"
+description: "\"Deploys and manages virtual machine instances with auto-scaling, instance groups, and integration with GCP services for IaaS workloads\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: compute engine, gce, virtual machine, vm, auto-scaling, instance group
-  related-skills: cncf-gcp-autoscaling, cncf-gcp-cloud-monitoring, cncf-gcp-iam, cncf-gcp-vpc
+  related-skills: cncf-gcp-autoscaling, cncf-gcp-cloud-cdn, cncf-gcp-cloud-dns, cncf-gcp-cloud-monitoring
 ---
 
 

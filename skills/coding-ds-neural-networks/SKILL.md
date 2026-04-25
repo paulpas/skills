@@ -1,7 +1,6 @@
 ---
 name: coding-ds-neural-networks
-description: Implements deep neural networks, backpropagation, activation functions,
-  architectures (CNN, RNN, Transformers), and training strategies
+description: "\"Implements deep neural networks, backpropagation, activation functions, architectures (CNN, RNN, Transformers), and training strategies\""
 license: MIT
 compatibility: opencode
 metadata:

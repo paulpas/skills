@@ -1,7 +1,6 @@
 ---
 name: agent-orchestration-multi-agent-optimize
-description: Optimize multi-agent systems with coordinated profiling, workload distribution,
-  and cost-aware orchestration. Use when improving agent performance, th
+description: "Provides Optimize multi-agent systems with coordinated profiling, workload distribution, and cost-aware orchestration. Use when improving agent performance, th"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: agent orchestration multi agent optimize, ai, ml, implementation guide,
-    machine learning
+    machine learning, scikit-learn
 ---
+
 
 
 # Agent Orchestration Multi Agent Optimize

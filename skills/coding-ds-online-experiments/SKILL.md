@@ -1,6 +1,6 @@
 ---
 name: coding-ds-online-experiments
-description: "Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms"
+description: "\"Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms\""
 license: MIT
 compatibility: opencode
 metadata:

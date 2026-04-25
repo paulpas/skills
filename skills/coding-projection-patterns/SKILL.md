@@ -1,10 +1,10 @@
 ---
 name: projection-patterns
-description: "Build read models and projections from event streams. Use when implementing CQRS read sides, building materialized views, or optimizing query performa"
+description: "\"Provides Build read models and projections from event streams. Use when implementing CQRS read sides, building materialized views, or optimizing query performa\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: wiki-onboarding
-description: "Generate two complementary onboarding documents that together give any engineer — from newcomer to principal — a complete understanding of a codebase"
+description: "\"Provides Generate two complementary onboarding documents that together\ \ give any engineer \u2014 from newcomer to principal \u2014 a complete understanding\ \ of a codebase\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

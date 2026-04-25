@@ -1,7 +1,6 @@
 ---
 name: hugging-face-cli
-description: Use the Hugging Face Hub CLI (`hf`) to download, upload, and manage models,
-  datasets, and Spaces
+description: "Provides use the hugging face hub cli (`hf`) to download, upload, and manage models, datasets, and spaces"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face cli, ai, ml, data processing, machine learning, spark
+  triggers: hugging face cli, ai, ml, data processing, machine learning, spark, big
+    data, distributed processing
 ---
+
 
 
 # Hugging Face Cli

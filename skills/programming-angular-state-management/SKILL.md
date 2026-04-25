@@ -1,10 +1,10 @@
 ---
 name: angular-state-management
-description: "Master modern Angular state management with Signals, NgRx, and RxJS. Use when setting up global state, managing component stores, choosing between sta"
+description: "\"Provides Master modern Angular state management with Signals, NgRx, and RxJS. Use when setting up global state, managing component stores, choosing between sta\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

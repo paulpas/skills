@@ -1,8 +1,6 @@
 ---
 name: makepad-platform
-description: "CRITICAL: Use for Makepad cross-platform support. Triggers on"
-makepad platform, makepad os, makepad macos, makepad windows, makepad linux,
-makepad android, makepad ios, makepad we"
+description: "\"CRITICAL: Use for Makepad cross-platform support. Triggers on\" makepad platform, makepad os, makepad macos, makepad windows, makepad linux, makepad android, makepad ios, makepad we\""
 license: MIT
 compatibility: opencode
 metadata:

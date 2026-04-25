@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-cloud-kms
-description: "Manages encryption keys for data protection with automated rotation and auditing"
+description: "\"Manages encryption keys for data protection with automated rotation and auditing\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: kms, key management, encryption, encryption keys, key rotation
-  related-skills: cncf-gcp-cloud-sql, cncf-gcp-cloud-storage, cncf-gcp-iam, cncf-gcp-secret-manager
+  related-skills: cncf-gcp-cloud-sql, cncf-gcp-cloud-storage, cncf-gcp-secret-manager
 ---
 
 

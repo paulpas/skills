@@ -1,7 +1,6 @@
 ---
 name: seo-programmatic
-description: Plan and audit programmatic SEO pages generated at scale from structured
-  data. Use when designing templates, URL systems, internal linking, quality ga
+description: "Provides Plan and audit programmatic SEO pages generated at scale from structured data. Use when designing templates, URL systems, internal linking, quality ga"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: seo programmatic, uncategorized, data processing, spark
+  triggers: seo programmatic, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Seo Programmatic

@@ -1,10 +1,10 @@
 ---
 name: hono
-description: "Build ultra-fast web APIs and full-stack apps with Hono — runs on Cloudflare Workers, Deno, Bun, Node.js, and any WinterCG-compatible runtime"
+description: "\"Provides Build ultra-fast web APIs and full-stack apps with Hono \u2014\ \ runs on Cloudflare Workers, Deno, Bun, Node.js, and any WinterCG-compatible runtime\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: vexor
-description: "Vector-powered CLI for semantic file search with a Claude/Codex skill"
+description: "\"Provides Vector-powered CLI for semantic file search with a Claude/Codex skill\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

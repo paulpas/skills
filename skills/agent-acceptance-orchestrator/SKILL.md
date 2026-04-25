@@ -1,10 +1,10 @@
 ---
 name: acceptance-orchestrator
-description: "Use when a coding task should be driven end-to-end from issue intake through implementation, review, deployment, and acceptance verification with mini"
+description: "\"Provides use when a coding task should be driven end-to-end from issue intake through implementation, review, deployment, and acceptance verification with mini\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

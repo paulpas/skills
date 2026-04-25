@@ -1,10 +1,10 @@
 ---
 name: 00-andruia-consultant
-description: "Arquitecto de Soluciones Principal y Consultor Tecnológico de Andru.ia. Diagnostica y traza la hoja de ruta óptima para proyectos de IA en español"
+description: "\"Provides Arquitecto de Soluciones Principal y Consultor Tecnol\xF3gico\ \ de Andru.ia. Diagnostica y traza la hoja de ruta \xF3ptima para proyectos de IA\ \ en espa\xF1ol\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

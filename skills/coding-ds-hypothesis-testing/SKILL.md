@@ -1,7 +1,6 @@
 ---
 name: coding-ds-hypothesis-testing
-description: Implements hypothesis testing including t-tests, chi-square tests, p-values,
-  and statistical significance evaluation for data-driven decisions
+description: "Implements hypothesis testing including t-tests, chi-square tests, p-values, and statistical significance evaluation for data-driven decisions"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,10 +10,11 @@ metadata:
   scope: implementation
   output-format: code
   triggers: hypothesis testing, t-test, chi-square, p-value, statistical significance,
-    how do i test hypotheses, unit tests
+    how do i test hypotheses, unit tests, testing
   related-skills: coding-ds-ab-testing, coding-ds-bayesian-inference, coding-ds-confidence-intervals,
     coding-ds-maximum-likelihood
 ---
+
 
 
 # Hypothesis Testing

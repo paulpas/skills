@@ -1,10 +1,10 @@
 ---
 name: code-review-ai-ai-review
-description: "You are an expert AI-powered code review specialist combining automated static analysis, intelligent pattern recognition, and modern DevOps practices"
+description: "\"Provides You are an expert AI-powered code review specialist combining automated static analysis, intelligent pattern recognition, and modern DevOps practices\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

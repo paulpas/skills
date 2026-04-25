@@ -1,7 +1,6 @@
 ---
 name: hugging-face-paper-publisher
-description: Publish and manage research papers on Hugging Face Hub. Supports creating
-  paper pages, linking papers to models/datasets, claiming authorship, and gen
+description: "Provides Publish and manage research papers on Hugging Face Hub. Supports creating paper pages, linking papers to models/datasets, claiming authorship, and gen"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: hugging face paper publisher, ai, ml, data processing, machine learning,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Hugging Face Paper Publisher

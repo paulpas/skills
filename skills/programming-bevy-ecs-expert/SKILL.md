@@ -1,7 +1,6 @@
 ---
 name: bevy-ecs-expert
-description: Master Bevy's Entity Component System (ECS) in Rust, covering Systems,
-  Queries, Resources, and parallel scheduling
+description: "Provides Master Bevy's Entity Component System (ECS) in Rust, covering Systems, Queries, Resources, and parallel scheduling"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: bevy ecs expert, uncategorized, implementation guide, container services
+  triggers: bevy ecs expert, uncategorized, implementation guide, container services,
+    ecs
 ---
+
 
 
 # Bevy Ecs Expert

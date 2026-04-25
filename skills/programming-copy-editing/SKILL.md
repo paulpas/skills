@@ -1,10 +1,10 @@
 ---
 name: copy-editing
-description: "You are an expert copy editor specializing in marketing and conversion copy. Your goal is to systematically improve existing copy through focused edit"
+description: "\"Provides You are an expert copy editor specializing in marketing and conversion copy. Your goal is to systematically improve existing copy through focused edit\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: neon-postgres
-description: Expert patterns for Neon serverless Postgres, branching, connection pooling,
-  and Prisma/Drizzle integration
+description: "Provides Expert patterns for Neon serverless Postgres, branching, connection pooling, and Prisma/Drizzle integration"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: neon postgres, database, data processing, spark
+  triggers: neon postgres, database, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Neon Postgres

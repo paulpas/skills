@@ -1,7 +1,6 @@
 ---
 name: stripe-automation
-description: 'Automate Stripe tasks via Rube MCP (Composio): customers, charges, subscriptions,
-  invoices, products, refunds. Always search tools first for current s'
+description: "'Provides Automate Stripe tasks via Rube MCP (Composio): customers, charges, subscriptions, invoices, products, refunds. Always search tools first for current s'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: stripe automation, automation, how do i automate, jenkins
+  triggers: stripe automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Stripe Automation

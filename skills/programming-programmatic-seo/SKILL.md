@@ -1,7 +1,6 @@
 ---
 name: programmatic-seo
-description: Design and evaluate programmatic SEO strategies for creating SEO-driven
-  pages at scale using templates and structured data
+description: "Provides Design and evaluate programmatic SEO strategies for creating SEO-driven pages at scale using templates and structured data"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: programmatic seo, marketing, data processing, spark
+  triggers: programmatic seo, marketing, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Programmatic Seo

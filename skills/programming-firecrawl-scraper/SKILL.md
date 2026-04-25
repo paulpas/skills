@@ -1,7 +1,6 @@
 ---
 name: firecrawl-scraper
-description: Deep web scraping, screenshots, PDF parsing, and website crawling using
-  Firecrawl API. Use when you need deep content extraction from web pages, page
+description: "Provides Deep web scraping, screenshots, PDF parsing, and website crawling using Firecrawl API. Use when you need deep content extraction from web pages, page"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: firecrawl scraper, data, data processing, spark
+  triggers: firecrawl scraper, data, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Firecrawl Scraper

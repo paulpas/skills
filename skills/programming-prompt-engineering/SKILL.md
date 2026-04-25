@@ -1,7 +1,6 @@
 ---
 name: prompt-engineering
-description: Expert guide on prompt engineering patterns, best practices, and optimization
-  techniques. Use when user wants to improve prompts, learn prompting stra
+description: "Provides Expert guide on prompt engineering patterns, best practices, and optimization techniques. Use when user wants to improve prompts, learn prompting stra"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: prompt engineering, ai, ml, implementation guide, machine learning
+  triggers: prompt engineering, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Prompt Engineering

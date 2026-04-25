@@ -1,10 +1,10 @@
 ---
 name: social-orchestrator
-description: "Orquestrador unificado de canais sociais — coordena Instagram, Telegram e WhatsApp em um unico fluxo de trabalho. Publicacao cross-channel, metricas u"
+description: "\"Provides Orquestrador unificado de canais sociais \u2014 coordena Instagram,\ \ Telegram e WhatsApp em um unico fluxo de trabalho. Publicacao cross-channel, metricas\ \ u\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

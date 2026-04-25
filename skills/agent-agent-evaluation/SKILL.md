@@ -1,7 +1,6 @@
 ---
 name: agent-evaluation
-description: "Testing and benchmarking LLM agents including behavioral testing, capability\
-  \ assessment, reliability metrics, and production monitoring\u2014where even top"
+description: "\"Provides Testing and benchmarking LLM agents including behavioral testing,\ \ capability assessment, reliability metrics, and production monitoring\u2014where\ \ even top\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agent evaluation, ai, agents, how do i test, machine learning
+  triggers: agent evaluation, ai, agents, how do i test, machine learning, ml, scikit-learn
 ---
+
 
 
 # Agent Evaluation

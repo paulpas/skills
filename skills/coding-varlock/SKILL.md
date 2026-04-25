@@ -1,6 +1,6 @@
 ---
 name: varlock
-description: Secure-by-default environment variable management for Claude Code sessions
+description: "\"Provides Secure-by-default environment variable management for Claude Code sessions\""
 license: MIT
 compatibility: opencode
 metadata:

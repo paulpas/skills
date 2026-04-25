@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-cloud-storage
-description: Stores objects with versioning, lifecycle policies, access control, and
-  integration with other GCP services
+description: "\"Provides Stores objects with versioning, lifecycle policies, access control, and integration with other GCP services\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -12,8 +11,7 @@ metadata:
   output-format: manifests
   triggers: cloud storage, gcs, object storage, bucket, versioning, storage lifecycle,
     how do i store files, s3
-  related-skills: cncf-gcp-cloud-cdn, cncf-gcp-cloud-kms, cncf-gcp-cloud-monitoring,
-    cncf-gcp-iam
+  related-skills: cncf-gcp-cloud-cdn, cncf-gcp-cloud-kms, cncf-gcp-cloud-monitoring
 ---
 
 

@@ -1,7 +1,6 @@
 ---
 name: network-101
-description: Configure and test common network services (HTTP, HTTPS, SNMP, SMB) for
-  penetration testing lab environments. Enable hands-on practice with service en
+description: "\"Provides Configure and test common network services (HTTP, HTTPS, SNMP, SMB) for penetration testing lab environments. Enable hands-on practice with service en\""
 license: MIT
 compatibility: opencode
 metadata:

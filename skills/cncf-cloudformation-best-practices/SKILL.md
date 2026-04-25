@@ -1,7 +1,6 @@
 ---
 name: cloudformation-best-practices
-description: CloudFormation template optimization, nested stacks, drift detection,
-  and production-ready patterns. Use when writing or reviewing CF templates
+description: "Provides CloudFormation template optimization, nested stacks, drift detection, and production-ready patterns. Use when writing or reviewing CF templates"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: cloudformation best practices, cloud, implementation guide, infrastructure
-    as code
+    as code, cloudformation
 ---
+
 
 
 # Cloudformation Best Practices

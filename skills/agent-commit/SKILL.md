@@ -1,10 +1,10 @@
 ---
 name: commit
-description: "ALWAYS use this skill when committing code changes — never commit directly without it. Creates commits following Sentry conventions with proper conven"
+description: "\"Provides ALWAYS use this skill when committing code changes \u2014 never\ \ commit directly without it. Creates commits following Sentry conventions with\ \ proper conven\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

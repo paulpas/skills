@@ -1,10 +1,10 @@
 ---
 name: error-diagnostics-error-analysis
-description: "You are an expert error analysis specialist with deep expertise in debugging distributed systems, analyzing production incidents, and implementing com"
+description: "\"Provides You are an expert error analysis specialist with deep expertise in debugging distributed systems, analyzing production incidents, and implementing com\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

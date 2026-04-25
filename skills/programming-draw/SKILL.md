@@ -1,10 +1,10 @@
 ---
 name: draw
-description: "Vector graphics and diagram creation, format conversion (ODG/SVG/PDF) with LibreOffice Draw"
+description: "\"Provides Vector graphics and diagram creation, format conversion (ODG/SVG/PDF) with LibreOffice Draw\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

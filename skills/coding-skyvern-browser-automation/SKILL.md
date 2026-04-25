@@ -1,7 +1,6 @@
 ---
 name: skyvern-browser-automation
-description: "AI-powered browser automation \u2014 navigate sites, fill forms, extract\
-  \ structured data, log in with stored credentials, and build reusable workflows"
+description: "\"Provides AI-powered browser automation \u2014 navigate sites, fill forms,\ \ extract structured data, log in with stored credentials, and build reusable workflows\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: skyvern browser automation, browser, automation, how do i automate, jenkins
+  triggers: skyvern browser automation, browser, automation, how do i automate, jenkins,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Skyvern Browser Automation

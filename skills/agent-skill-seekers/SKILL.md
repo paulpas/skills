@@ -1,10 +1,10 @@
 ---
 name: skill-seekers
-description: "-Automatically convert documentation websites, GitHub repositories, and PDFs into Claude AI skills in minutes"
+description: "\"Provides -Automatically convert documentation websites, GitHub repositories, and PDFs into Claude AI skills in minutes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

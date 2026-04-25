@@ -1,6 +1,6 @@
 ---
 name: tutorial-engineer
-description: "Creates step-by-step tutorials and educational content from code. Transforms complex concepts into progressive learning experiences with hands-on exam"
+description: "\"Creates step-by-step tutorials and educational content from code. Transforms complex concepts into progressive learning experiences with hands-on exam\""
 license: MIT
 compatibility: opencode
 metadata:

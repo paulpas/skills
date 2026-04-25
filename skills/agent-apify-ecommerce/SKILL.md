@@ -1,7 +1,6 @@
 ---
 name: apify-ecommerce
-description: Extract product data, prices, reviews, and seller information from any
-  e-commerce platform using Apify's E-commerce Scraping Tool
+description: "Provides Extract product data, prices, reviews, and seller information from any e-commerce platform using Apify's E-commerce Scraping Tool"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify ecommerce, automation, how do i automate, jenkins
+  triggers: apify ecommerce, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Apify Ecommerce

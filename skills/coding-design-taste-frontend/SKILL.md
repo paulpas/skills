@@ -1,10 +1,10 @@
 ---
 name: design-taste-frontend
-description: "Use when building high-agency frontend interfaces with strict design taste, calibrated color, responsive layout, and motion rules"
+description: "\"Provides use when building high-agency frontend interfaces with strict design taste, calibrated color, responsive layout, and motion rules\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: doc-coauthoring
-description: "This skill provides a structured workflow for guiding users through collaborative document creation. Act as an active guide, walking users through thr"
+description: "\"Provides this skill provides a structured workflow for guiding users through collaborative document creation. act as an active guide, walking users through thr\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

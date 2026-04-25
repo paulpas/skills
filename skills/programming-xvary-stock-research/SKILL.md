@@ -1,7 +1,6 @@
 ---
 name: xvary-stock-research
-description: Thesis-driven equity analysis from public SEC EDGAR and market data;
-  /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Curs
+description: "Provides Thesis-driven equity analysis from public SEC EDGAR and market data; /analyze, /score, /compare workflows with bundled Python tools (Claude Code, Curs"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: xvary stock research, uncategorized, data processing, spark
+  triggers: xvary stock research, uncategorized, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Xvary Stock Research

@@ -1,10 +1,10 @@
 ---
 name: matematico-tao
-description: "Matemático ultra-avançado inspirado em Terence Tao. Análise rigorosa de código e arquitetura com teoria matemática profunda: teoria da informação, teo"
+description: "\"Provides Matem\xE1tico ultra-avan\xE7ado inspirado em Terence Tao. An\xE1\ lise rigorosa de c\xF3digo e arquitetura com teoria matem\xE1tica profunda: teoria\ \ da informa\xE7\xE3o, teo\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,15 +1,16 @@
 ---
 name: coding-ds-confidence-intervals
-description: "Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation"
+description: "\"Provides Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: confidence intervals, bootstrap, uncertainty quantification, confidence bounds, credible intervals
+  triggers: confidence intervals, bootstrap, uncertainty quantification, confidence
+    bounds, credible intervals
   related-skills: coding-ds-bayesian-inference, coding-ds-hypothesis-testing, coding-ds-monte-carlo
 ---
 

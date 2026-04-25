@@ -1,7 +1,6 @@
 ---
 name: clarity-gate
-description: Pre-ingestion verification for epistemic quality in RAG systems. Ensures
-  documents are properly qualified before entering knowledge bases. Produces CG
+description: "Provides Pre-ingestion verification for epistemic quality in RAG systems. Ensures documents are properly qualified before entering knowledge bases. Produces CG"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: clarity gate, data, ai, data processing, machine learning, spark
+  triggers: clarity gate, data, ai, data processing, machine learning, spark, big
+    data, distributed processing
 ---
+
 
 
 # Clarity Gate

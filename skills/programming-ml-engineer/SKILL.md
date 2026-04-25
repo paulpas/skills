@@ -1,7 +1,6 @@
 ---
 name: ml-engineer
-description: Build production ML systems with PyTorch 2.x, TensorFlow, and modern
-  ML frameworks. Implements model serving, feature engineering, A/B testing, and mo
+description: "Provides Build production ML systems with PyTorch 2.x, TensorFlow, and modern ML frameworks. Implements model serving, feature engineering, A/B testing, and mo"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ml engineer, ai, ml, how do i test, machine learning
+  triggers: ml engineer, ai, ml, how do i test, machine learning, scikit-learn
 ---
+
 
 
 # Ml Engineer

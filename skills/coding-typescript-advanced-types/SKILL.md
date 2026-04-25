@@ -1,10 +1,10 @@
 ---
 name: typescript-advanced-types
-description: "Comprehensive guidance for mastering TypeScript's advanced type system including generics, conditional types, mapped types, template literal types, an"
+description: "\"Provides Comprehensive guidance for mastering TypeScript's advanced type system including generics, conditional types, mapped types, template literal types, an\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

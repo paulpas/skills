@@ -1,8 +1,6 @@
 ---
 name: makepad-basics
-description: "CRITICAL: Use for Makepad getting started and app structure. Triggers on"
-makepad, makepad getting started, makepad tutorial, live_design!, app_main!,
-makepad project setup, makepa"
+description: "\"CRITICAL: Use for Makepad getting started and app structure. Triggers on\" makepad, makepad getting started, makepad tutorial, live_design!, app_main!, makepad project setup, makepa\""
 license: MIT
 compatibility: opencode
 metadata:

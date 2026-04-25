@@ -1,10 +1,10 @@
 ---
 name: conductor-revert
-description: "Git-aware undo by logical work unit (track, phase, or task)"
+description: "\"Implements git-aware undo by logical work unit (track, phase, or task) for orchestration and agent coordination in autonomous systems.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: minecraft-bukkit-pro
-description: "Master Minecraft server plugin development with Bukkit, Spigot, and Paper APIs"
+description: "\"Provides Master Minecraft server plugin development with Bukkit, Spigot, and Paper APIs\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

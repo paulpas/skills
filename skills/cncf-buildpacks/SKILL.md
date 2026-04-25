@@ -1,16 +1,16 @@
 ---
 name: cncf-buildpacks
-description: "Buildpacks in Cloud-Native Engineering - Turn source code into container images without Dockerfiles"
+description: "\"Provides Buildpacks in Cloud-Native Engineering - Turn source code into container images without Dockerfiles\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: reference
   scope: infrastructure
   output-format: manifests
   triggers: buildpacks, cloud-native, engineering, source
-  related-skills: 
+  related-skills: null
 ---
 # Buildpacks in Cloud-Native Engineering
 

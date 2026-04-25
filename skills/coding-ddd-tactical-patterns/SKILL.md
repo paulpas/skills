@@ -1,10 +1,10 @@
 ---
 name: ddd-tactical-patterns
-description: "Apply DDD tactical patterns in code using entities, value objects, aggregates, repositories, and domain events with explicit invariants"
+description: "\"Provides Apply DDD tactical patterns in code using entities, value objects, aggregates, repositories, and domain events with explicit invariants\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

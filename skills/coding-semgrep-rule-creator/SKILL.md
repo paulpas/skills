@@ -1,7 +1,6 @@
 ---
 name: semgrep-rule-creator
-description: Creates custom Semgrep rules for detecting security vulnerabilities,
-  bug patterns, and code patterns. Use when writing Semgrep rules or building custo
+description: "\"Creates custom Semgrep rules for detecting security vulnerabilities, bug patterns, and code patterns. Use when writing Semgrep rules or building custo\""
 license: MIT
 compatibility: opencode
 metadata:

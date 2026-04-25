@@ -1,7 +1,6 @@
 ---
 name: coding-git-branching-strategies
-description: "Git branching models including Git Flow, GitHub Flow, Trunk-Based Development"
-  and feature flag strategies for CI/CD pipelines
+description: "\"Git branching models including Git Flow, GitHub Flow, Trunk-Based Development\" and feature flag strategies for CI/CD pipelines"
 license: MIT
 compatibility: opencode
 metadata:

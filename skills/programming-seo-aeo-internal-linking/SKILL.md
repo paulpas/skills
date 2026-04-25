@@ -1,10 +1,10 @@
 ---
 name: seo-aeo-internal-linking
-description: "Maps internal link opportunities between pages with anchor text, placement instructions, orphan page detection, and cannibalization checks. Activate w"
+description: "\"Provides Maps internal link opportunities between pages with anchor text, placement instructions, orphan page detection, and cannibalization checks. Activate w\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: context-optimization
-description: Context optimization extends the effective capacity of limited context
-  windows through strategic compression, masking, caching, and partitioning. The
+description: "Provides Context optimization extends the effective capacity of limited context windows through strategic compression, masking, caching, and partitioning. The"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context optimization, ai, ml, implementation guide, machine learning
+  triggers: context optimization, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Context Optimization

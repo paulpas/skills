@@ -1,10 +1,10 @@
 ---
 name: planning-with-files
-description: "Work like Manus: Use persistent markdown files as your"
+description: "'Implements work like manus: use persistent markdown files as your for orchestration and agent coordination in autonomous systems.'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

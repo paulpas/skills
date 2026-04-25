@@ -1,7 +1,6 @@
 ---
 name: hugging-face-trackio
-description: Track ML experiments with Trackio using Python logging, alerts, and CLI
-  metric retrieval
+description: "Provides Track ML experiments with Trackio using Python logging, alerts, and CLI metric retrieval"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face trackio, ai, ml, implementation guide, machine learning
+  triggers: hugging face trackio, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Hugging Face Trackio

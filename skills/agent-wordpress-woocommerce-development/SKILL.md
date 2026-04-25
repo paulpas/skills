@@ -1,15 +1,16 @@
 ---
 name: wordpress-woocommerce-development
-description: "WooCommerce store development workflow covering store setup, payment integration, shipping configuration, customization, and WordPress 7.0 features: A"
+description: "'Provides WooCommerce store development workflow covering store setup, payment integration, shipping configuration, customization, and WordPress 7.0 features: A'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation
   output-format: code
-  triggers: wordpress woocommerce development, granular, workflow, implementation guide
+  triggers: wordpress woocommerce development, granular, workflow, implementation
+    guide
 ---
 
 # Wordpress Woocommerce Development

@@ -1,10 +1,10 @@
 ---
 name: ui-page
-description: "Scaffold a new mobile-first page using StyleSeed Toss layout patterns, section rhythm, and existing shell components"
+description: "\"Provides Scaffold a new mobile-first page using StyleSeed Toss layout patterns, section rhythm, and existing shell components\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

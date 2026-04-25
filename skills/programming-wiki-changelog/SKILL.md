@@ -1,10 +1,10 @@
 ---
 name: wiki-changelog
-description: "Generate structured changelogs from git history. Use when user asks"
+description: "\"Provides Generate structured changelogs from git history. Use when user asks\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,6 +1,6 @@
 ---
 name: coding-ds-monte-carlo
-description: "Implements Monte Carlo sampling, simulation methods, and stochastic approximation for uncertainty estimation and numerical integration"
+description: "\"Implements Monte Carlo sampling, simulation methods, and stochastic approximation for uncertainty estimation and numerical integration\""
 license: MIT
 compatibility: opencode
 metadata:

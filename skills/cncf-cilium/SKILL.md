@@ -1,7 +1,6 @@
 ---
 name: cncf-cilium
-description: "Cilium in Cloud Native Network - cloud native architecture, patterns"
-  pitfalls, and best practices
+description: "\"Cilium in Cloud Native Network - cloud native architecture, patterns\" pitfalls, and best practices"
 license: MIT
 compatibility: opencode
 metadata:

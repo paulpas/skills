@@ -1,10 +1,10 @@
 ---
 name: bash-scripting
-description: "Bash scripting workflow for creating production-ready shell scripts with defensive patterns, error handling, and testing"
+description: "\"Provides Bash scripting workflow for creating production-ready shell scripts with defensive patterns, error handling, and testing\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

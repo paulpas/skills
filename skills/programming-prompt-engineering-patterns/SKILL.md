@@ -1,7 +1,6 @@
 ---
 name: prompt-engineering-patterns
-description: Master advanced prompt engineering techniques to maximize LLM performance,
-  reliability, and controllability
+description: "Provides Master advanced prompt engineering techniques to maximize LLM performance, reliability, and controllability"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: prompt engineering patterns, ai, ml, implementation guide, machine learning
+  triggers: prompt engineering patterns, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Prompt Engineering Patterns

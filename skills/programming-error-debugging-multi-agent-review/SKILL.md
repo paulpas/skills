@@ -1,10 +1,10 @@
 ---
 name: error-debugging-multi-agent-review
-description: "Use when working with error debugging multi agent review"
+description: "\"Provides use when working with error debugging multi agent review functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

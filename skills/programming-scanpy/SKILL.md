@@ -1,7 +1,6 @@
 ---
 name: scanpy
-description: Scanpy is a scalable Python toolkit for analyzing single-cell RNA-seq
-  data, built on AnnData. Apply this skill for complete single-cell workflows incl
+description: "Provides Scanpy is a scalable Python toolkit for analyzing single-cell RNA-seq data, built on AnnData. Apply this skill for complete single-cell workflows incl"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: scanpy, science, data processing, spark
+  triggers: scanpy, science, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Scanpy

@@ -1,10 +1,10 @@
 ---
 name: pydantic-models-py
-description: "Create Pydantic models following the multi-model pattern for clean API contracts"
+description: "\"Provides Create Pydantic models following the multi-model pattern for clean API contracts\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

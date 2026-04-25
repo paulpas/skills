@@ -1,7 +1,6 @@
 ---
 name: audit-skills
-description: Expert security auditor for AI Skills and Bundles. Performs non-intrusive
-  static analysis to identify malicious patterns, data leaks, system stability
+description: "\"Provides Expert security auditor for AI Skills and Bundles. Performs non-intrusive static analysis to identify malicious patterns, data leaks, system stability\""
 license: MIT
 compatibility: opencode
 metadata:

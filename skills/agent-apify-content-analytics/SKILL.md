@@ -1,7 +1,6 @@
 ---
 name: apify-content-analytics
-description: Track engagement metrics, measure campaign ROI, and analyze content performance
-  across Instagram, Facebook, YouTube, and TikTok
+description: "Provides Track engagement metrics, measure campaign ROI, and analyze content performance across Instagram, Facebook, YouTube, and TikTok"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify content analytics, automation, how do i automate, jenkins
+  triggers: apify content analytics, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Apify Content Analytics

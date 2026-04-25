@@ -1,7 +1,6 @@
 ---
 name: security-scanning-security-hardening
-description: Coordinate multi-layer security scanning and hardening across application,
-  infrastructure, and compliance controls
+description: "\"Provides Coordinate multi-layer security scanning and hardening across application, infrastructure, and compliance controls\""
 license: MIT
 compatibility: opencode
 metadata:

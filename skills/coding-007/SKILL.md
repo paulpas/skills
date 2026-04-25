@@ -1,7 +1,6 @@
 ---
 name: '007'
-description: Security audit, hardening, threat modeling (STRIDE/PASTA), Red/Blue Team,
-  OWASP checks, code review, incident response, and infrastructure security fo
+description: "\"Provides Security audit, hardening, threat modeling (STRIDE/PASTA), Red/Blue Team, OWASP checks, code review, incident response, and infrastructure security fo\""
 license: MIT
 compatibility: opencode
 metadata:

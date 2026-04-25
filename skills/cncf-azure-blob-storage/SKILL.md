@@ -1,7 +1,6 @@
 ---
 name: cncf-azure-blob-storage
-description: Object storage with versioning, lifecycle policies, and integration to
-  other Azure services
+description: "Provides Object storage with versioning, lifecycle policies, and integration to other Azure services"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,9 +10,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: blob storage, object storage, azure storage, storage account, blob, how
-    do i store files, s3
-  related-skills: cncf-azure-cdn, cncf-azure-key-vault, cncf-azure-monitor, cncf-azure-rbac
+    do i store files, s3, file storage
+  related-skills: cncf-azure-cdn, cncf-azure-monitor
 ---
+
 
 
 

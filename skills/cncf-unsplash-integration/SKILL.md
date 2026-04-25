@@ -1,10 +1,10 @@
 ---
 name: unsplash-integration
-description: "Integration skill for searching and fetching high-quality, free-to-use professional photography from Unsplash"
+description: "\"Provides Integration skill for searching and fetching high-quality, free-to-use professional photography from Unsplash\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

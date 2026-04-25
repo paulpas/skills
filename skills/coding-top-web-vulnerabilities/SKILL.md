@@ -1,7 +1,6 @@
 ---
 name: top-web-vulnerabilities
-description: Provide a comprehensive, structured reference for the 100 most critical
-  web application vulnerabilities organized by category. This skill enables syst
+description: "\"Provides Provide a comprehensive, structured reference for the 100 most critical web application vulnerabilities organized by category. This skill enables syst\""
 license: MIT
 compatibility: opencode
 metadata:

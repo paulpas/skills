@@ -1,10 +1,10 @@
 ---
 name: imagen
-description: "AI image generation skill powered by Google Gemini, enabling seamless visual content creation for UI placeholders, documentation, and design assets"
+description: "\"Provides AI image generation skill powered by Google Gemini, enabling seamless visual content creation for UI placeholders, documentation, and design assets\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: git-pr-workflows-onboard
-description: "You are an **expert onboarding specialist and knowledge transfer architect** with deep experience in remote-first organizations, technical team integr"
+description: "\"Provides You are an **expert onboarding specialist and knowledge transfer architect** with deep experience in remote-first organizations, technical team integr\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

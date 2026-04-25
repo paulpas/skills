@@ -1,7 +1,6 @@
 ---
 name: active-directory-attacks
-description: Provide comprehensive techniques for attacking Microsoft Active Directory
-  environments. Covers reconnaissance, credential harvesting, Kerberos attacks
+description: "\"Provides Provide comprehensive techniques for attacking Microsoft Active Directory environments. Covers reconnaissance, credential harvesting, Kerberos attacks\""
 license: MIT
 compatibility: opencode
 metadata:

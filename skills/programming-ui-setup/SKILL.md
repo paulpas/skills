@@ -1,10 +1,10 @@
 ---
 name: ui-setup
-description: "Interactive StyleSeed setup wizard for choosing app type, brand color, visual style, typography, and the first screen scaffold"
+description: "\"Provides Interactive StyleSeed setup wizard for choosing app type, brand color, visual style, typography, and the first screen scaffold\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

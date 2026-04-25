@@ -1,10 +1,10 @@
 ---
 name: aws-skills
-description: "AWS development with infrastructure automation and cloud architecture patterns"
+description: "\"Provides AWS development with infrastructure automation and cloud architecture patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

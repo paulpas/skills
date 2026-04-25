@@ -1,7 +1,6 @@
 ---
 name: apify-trend-analysis
-description: Discover and track emerging trends across Google Trends, Instagram, Facebook,
-  YouTube, and TikTok to inform content strategy
+description: "Provides Discover and track emerging trends across Google Trends, Instagram, Facebook, YouTube, and TikTok to inform content strategy"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify trend analysis, automation, how do i automate, jenkins
+  triggers: apify trend analysis, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Apify Trend Analysis

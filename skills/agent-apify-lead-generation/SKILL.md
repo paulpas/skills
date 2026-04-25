@@ -1,6 +1,6 @@
 ---
 name: apify-lead-generation
-description: Scrape leads from multiple platforms using Apify Actors
+description: "Implements scrape leads from multiple platforms using apify actors for orchestration and agent coordination in autonomous systems."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify lead generation, automation, how do i automate, jenkins
+  triggers: apify lead generation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Apify Lead Generation

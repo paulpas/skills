@@ -1,7 +1,6 @@
 ---
 name: tdd-workflows-tdd-green
-description: Implement the minimal code needed to make failing tests pass in the TDD
-  green phase
+description: "\"Provides Implement the minimal code needed to make failing tests pass in the TDD green phase\""
 license: MIT
 compatibility: opencode
 metadata:

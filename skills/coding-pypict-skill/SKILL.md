@@ -1,6 +1,6 @@
 ---
 name: pypict-skill
-description: Pairwise test generation
+description: "\"Implements pairwise test generation patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:

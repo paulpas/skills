@@ -1,10 +1,10 @@
 ---
 name: zustand-store-ts
-description: "Create Zustand stores following established patterns with proper TypeScript types and middleware"
+description: "\"Provides Create Zustand stores following established patterns with proper TypeScript types and middleware\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

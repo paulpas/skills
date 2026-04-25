@@ -1,10 +1,10 @@
 ---
 name: rayden-use
-description: "Build and maintain Rayden UI components and screens in Figma via Figma MCP with full design token enforcement"
+description: "\"Provides Build and maintain Rayden UI components and screens in Figma via Figma MCP with full design token enforcement\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

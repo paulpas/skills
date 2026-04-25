@@ -1,10 +1,10 @@
 ---
 name: finishing-a-development-branch
-description: "Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by prese"
+description: "\"Provides use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by prese\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

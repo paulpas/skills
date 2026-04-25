@@ -1,7 +1,6 @@
 ---
 name: frontend-mobile-security-xss-scan
-description: You are a frontend security specialist focusing on Cross-Site Scripting
-  (XSS) vulnerability detection and prevention. Analyze React, Vue, Angular, and
+description: "Provides You are a frontend security specialist focusing on Cross-Site Scripting (XSS) vulnerability detection and prevention. Analyze React, Vue, Angular, and"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: frontend mobile security xss scan, web, development, how do i secure,
-    vulnerability scanning
+    vulnerability scanning, security
 ---
+
 
 
 # Frontend Mobile Security Xss Scan

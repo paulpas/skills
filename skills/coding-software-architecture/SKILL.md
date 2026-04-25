@@ -1,10 +1,10 @@
 ---
 name: software-architecture
-description: "Guide for quality focused software architecture. This skill should be used when users want to write code, design architecture, analyze code, in any ca"
+description: "\"Provides Guide for quality focused software architecture. This skill should be used when users want to write code, design architecture, analyze code, in any ca\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

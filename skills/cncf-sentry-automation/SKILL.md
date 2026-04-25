@@ -1,7 +1,6 @@
 ---
 name: sentry-automation
-description: 'Automate Sentry tasks via Rube MCP (Composio): manage issues/events,
-  configure alerts, track releases, monitor projects and teams. Always search tools'
+description: "'Provides Automate Sentry tasks via Rube MCP (Composio): manage issues/events, configure alerts, track releases, monitor projects and teams. Always search tools'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: sentry automation, reliability, how do i automate, linkerd
+  triggers: sentry automation, reliability, how do i automate, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Sentry Automation

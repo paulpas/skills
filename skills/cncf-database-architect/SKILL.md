@@ -1,7 +1,6 @@
 ---
 name: database-architect
-description: Expert database architect specializing in data layer design from scratch,
-  technology selection, schema modeling, and scalable database architectures
+description: "Provides Expert database architect specializing in data layer design from scratch, technology selection, schema modeling, and scalable database architectures"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: database architect, database, processing, data processing, spark
+  triggers: database architect, database, processing, data processing, spark, big
+    data, distributed processing
 ---
+
 
 
 # Database Architect

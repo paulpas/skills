@@ -1,7 +1,6 @@
 ---
 name: llm-evaluation
-description: Master comprehensive evaluation strategies for LLM applications, from
-  automated metrics to human evaluation and A/B testing
+description: "Provides Master comprehensive evaluation strategies for LLM applications, from automated metrics to human evaluation and A/B testing"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: llm evaluation, ai, ml, how do i test, machine learning
+  triggers: llm evaluation, ai, ml, how do i test, machine learning, scikit-learn
 ---
+
 
 
 # Llm Evaluation

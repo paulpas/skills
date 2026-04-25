@@ -1,7 +1,6 @@
 ---
 name: varlock-claude-skill
-description: Secure environment variable management ensuring secrets are never exposed
-  in Claude sessions, terminals, logs, or git commits
+description: "\"Provides Secure environment variable management ensuring secrets are never exposed in Claude sessions, terminals, logs, or git commits\""
 license: MIT
 compatibility: opencode
 metadata:

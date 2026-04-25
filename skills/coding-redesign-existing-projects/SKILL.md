@@ -1,10 +1,10 @@
 ---
 name: redesign-existing-projects
-description: "Use when upgrading existing websites or apps by auditing generic UI patterns and applying premium design fixes without rewrites"
+description: "\"Provides use when upgrading existing websites or apps by auditing generic ui patterns and applying premium design fixes without rewrites\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

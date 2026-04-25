@@ -1,10 +1,10 @@
 ---
 name: puzzle-activity-planner
-description: "Plan puzzle-based activities for classrooms, parties, and events with pre-configured generator links"
+description: "\"Provides Plan puzzle-based activities for classrooms, parties, and events with pre-configured generator links\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

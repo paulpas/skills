@@ -1,7 +1,6 @@
 ---
 name: llm-ops
-description: LLM Operations -- RAG, embeddings, vector databases, fine-tuning, prompt
-  engineering avancado, custos de LLM, evals de qualidade e arquiteturas de IA
+description: "Provides LLM Operations -- RAG, embeddings, vector databases, fine-tuning, prompt engineering avancado, custos de LLM, evals de qualidade e arquiteturas de IA"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: llm ops, ai, ml, data processing, machine learning, spark
+  triggers: llm ops, ai, ml, data processing, machine learning, spark, big data, distributed
+    processing
 ---
+
 
 
 # Llm Ops

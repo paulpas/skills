@@ -1,7 +1,6 @@
 ---
 name: agent-tool-builder
-description: Tools are how AI agents interact with the world. A well-designed tool
-  is the difference between an agent that works and one that hallucinates, fails s
+description: "Provides Tools are how AI agents interact with the world. A well-designed tool is the difference between an agent that works and one that hallucinates, fails s"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agent tool builder, ai, ml, implementation guide, machine learning
+  triggers: agent tool builder, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Agent Tool Builder

@@ -1,10 +1,10 @@
 ---
 name: windows-shell-reliability
-description: "Reliable command execution on Windows: paths, encoding, and common binary pitfalls"
+description: "'Provides Reliable command execution on Windows: paths, encoding, and common binary pitfalls'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

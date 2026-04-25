@@ -1,7 +1,6 @@
 ---
 name: hubspot-automation
-description: Automate HubSpot CRM operations (contacts, companies, deals, tickets,
-  properties) via Rube MCP using Composio integration
+description: "Provides Automate HubSpot CRM operations (contacts, companies, deals, tickets, properties) via Rube MCP using Composio integration"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hubspot automation, automation, how do i automate, jenkins
+  triggers: hubspot automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Hubspot Automation

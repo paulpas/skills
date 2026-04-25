@@ -1,7 +1,6 @@
 ---
 name: web-security-testing
-description: Web application security testing workflow for OWASP Top 10 vulnerabilities
-  including injection, XSS, authentication flaws, and access control issues
+description: "Provides Web application security testing workflow for OWASP Top 10 vulnerabilities including injection, XSS, authentication flaws, and access control issues"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: web security testing, granular, workflow, how do i test, unit tests, vulnerability
-    scanning
+    scanning, security, testing
 ---
+
 
 
 # Web Security Testing

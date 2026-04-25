@@ -1,7 +1,6 @@
 ---
 name: cncf-notary-project
-description: "Notary Project in Content Trust &amp; Security - cloud native architecture"
-  patterns, pitfalls, and best practices
+description: "\"Notary Project in Content Trust &amp; Security - cloud native architecture\" patterns, pitfalls, and best practices"
 license: MIT
 compatibility: opencode
 metadata:

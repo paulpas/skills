@@ -1,10 +1,10 @@
 ---
 name: app-store-changelog
-description: "Generate user-facing App Store release notes from git history since the last tag"
+description: "\"Provides Generate user-facing App Store release notes from git history since the last tag\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

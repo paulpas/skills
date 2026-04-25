@@ -1,8 +1,6 @@
 ---
 name: startup-business-analyst-market-opportunity
-description: "Generate comprehensive market opportunity analysis with TAM/SAM/SOM"
-calculations
-"
+description: "\"Generate comprehensive market opportunity analysis with TAM/SAM/SOM\" calculations \""
 license: MIT
 compatibility: opencode
 metadata:

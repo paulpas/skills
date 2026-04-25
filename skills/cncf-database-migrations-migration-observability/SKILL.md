@@ -1,6 +1,6 @@
 ---
 name: database-migrations-migration-observability
-description: Migration monitoring, CDC, and observability infrastructure
+description: "Configures migration monitoring, cdc, and observability infrastructure for cloud-native deployment and infrastructure management."
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: database migrations migration observability, database, data processing,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Database Migrations Migration Observability

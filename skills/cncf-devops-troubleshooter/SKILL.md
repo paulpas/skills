@@ -1,10 +1,10 @@
 ---
 name: devops-troubleshooter
-description: "Expert DevOps troubleshooter specializing in rapid incident response, advanced debugging, and modern observability"
+description: "\"Provides Expert DevOps troubleshooter specializing in rapid incident response, advanced debugging, and modern observability\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

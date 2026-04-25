@@ -1,10 +1,10 @@
 ---
 name: hig-components-search
-description: "Apple HIG guidance for navigation-related components including search fields, page controls, and path controls"
+description: "\"Provides Apple HIG guidance for navigation-related components including search fields, page controls, and path controls\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

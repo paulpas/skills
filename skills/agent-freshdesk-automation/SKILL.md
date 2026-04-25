@@ -1,7 +1,6 @@
 ---
 name: freshdesk-automation
-description: Automate Freshdesk helpdesk operations including tickets, contacts, companies,
-  notes, and replies via Rube MCP (Composio). Always search tools first f
+description: "Provides Automate Freshdesk helpdesk operations including tickets, contacts, companies, notes, and replies via Rube MCP (Composio). Always search tools first f"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: freshdesk automation, automation, how do i automate, jenkins
+  triggers: freshdesk automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Freshdesk Automation

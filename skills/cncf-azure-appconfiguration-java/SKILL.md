@@ -1,10 +1,10 @@
 ---
 name: azure-appconfiguration-java
-description: "Azure App Configuration SDK for Java. Centralized application configuration management with key-value settings, feature flags, and snapshots"
+description: "\"Provides Azure App Configuration SDK for Java. Centralized application configuration management with key-value settings, feature flags, and snapshots\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

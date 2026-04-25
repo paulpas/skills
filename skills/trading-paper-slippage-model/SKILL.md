@@ -1,6 +1,6 @@
 ---
 name: trading-paper-slippage-model
-description: "Slippage Modeling and Execution Simulation"
+description: "\"Implements slippage modeling and execution simulation for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

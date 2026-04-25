@@ -1,10 +1,10 @@
 ---
 name: codex-review
-description: "Professional code review with auto CHANGELOG generation, integrated with Codex AI. Use when you want professional code review before commits, you need"
+description: "\"Provides Professional code review with auto CHANGELOG generation, integrated with Codex AI. Use when you want professional code review before commits, you need\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

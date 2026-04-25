@@ -1,10 +1,10 @@
 ---
 name: fitness-analyzer
-description: "分析运动数据、识别运动模式、评估健身进展，并提供个性化训练建议。支持与慢性病数据的关联分析。"
+description: "\"Provides \u5206\u6790\u8FD0\u52A8\u6570\u636E\u3001\u8BC6\u522B\u8FD0\ \u52A8\u6A21\u5F0F\u3001\u8BC4\u4F30\u5065\u8EAB\u8FDB\u5C55\uFF0C\u5E76\u63D0\u4F9B\ \u4E2A\u6027\u5316\u8BAD\u7EC3\u5EFA\u8BAE\u3002\u652F\u6301\u4E0E\u6162\u6027\u75C5\ \u6570\u636E\u7684\u5173\u8054\u5206\u6790\u3002 functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

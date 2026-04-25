@@ -1,7 +1,6 @@
 ---
 name: cncf-aws-route53
-description: "Configures DNS routing with Route 53 for domain registration, health"
-  checks, failover, and traffic management with private hosted zones.
+description: "\"Configures DNS routing with Route 53 for domain registration, health\" checks, failover, and traffic management with private hosted zones."
 license: MIT
 compatibility: opencode
 metadata:

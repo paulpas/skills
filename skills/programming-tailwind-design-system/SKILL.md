@@ -1,10 +1,10 @@
 ---
 name: tailwind-design-system
-description: "Build production-ready design systems with Tailwind CSS, including design tokens, component variants, responsive patterns, and accessibility"
+description: "\"Provides Build production-ready design systems with Tailwind CSS, including design tokens, component variants, responsive patterns, and accessibility\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-cloud-monitoring
-description: Monitors GCP resources with metrics, logging, and alerting for operational
-  visibility
+description: "\"Monitors GCP resources with metrics, logging, and alerting for operational visibility\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -12,8 +11,7 @@ metadata:
   output-format: manifests
   triggers: cloud monitoring, monitoring, logging, observability, metrics, alerting,
     cloudwatch, grafana
-  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-sql, cncf-gcp-compute-engine,
-    cncf-gcp-gke
+  related-skills: cncf-gcp-autoscaling, cncf-gcp-cloud-cdn, cncf-gcp-cloud-dns, cncf-gcp-cloud-functions
 ---
 
 

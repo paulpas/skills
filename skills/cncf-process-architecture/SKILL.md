@@ -1,7 +1,6 @@
 ---
 name: cncf-process-architecture
-description: "Creates or updates ARCHITECTURE.md documenting the project's design"
-  components, and technical decisions for CNCF projects
+description: "\"Creates or updates ARCHITECTURE.md documenting the project's design\" components, and technical decisions for CNCF projects"
 license: MIT
 compatibility: opencode
 id: architecture

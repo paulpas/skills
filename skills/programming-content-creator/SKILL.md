@@ -1,10 +1,10 @@
 ---
 name: content-creator
-description: "Professional-grade brand voice analysis, SEO optimization, and platform-specific content frameworks"
+description: "\"Provides Professional-grade brand voice analysis, SEO optimization, and platform-specific content frameworks\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

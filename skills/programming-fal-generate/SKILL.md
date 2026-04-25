@@ -1,6 +1,6 @@
 ---
 name: fal-generate
-description: Generate images and videos using fal.ai AI models
+description: "Provides generate images and videos using fal.ai ai models functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fal generate, ai, ml, implementation guide, machine learning
+  triggers: fal generate, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Fal Generate

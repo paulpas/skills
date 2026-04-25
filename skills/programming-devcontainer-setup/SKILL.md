@@ -1,6 +1,6 @@
 ---
 name: devcontainer-setup
-description: "Creates devcontainers with Claude Code, language-specific tooling (Python/Node/Rust/Go), and persistent volumes. Use when adding devcontainer support"
+description: "\"Creates devcontainers with Claude Code, language-specific tooling (Python/Node/Rust/Go), and persistent volumes. Use when adding devcontainer support\""
 license: MIT
 compatibility: opencode
 metadata:

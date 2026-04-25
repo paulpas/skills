@@ -1,10 +1,10 @@
 ---
 name: closed-loop-delivery
-description: "Use when a coding task must be completed against explicit acceptance criteria with minimal user re-intervention across implementation, review feedback"
+description: "\"Provides use when a coding task must be completed against explicit acceptance criteria with minimal user re-intervention across implementation, review feedback\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

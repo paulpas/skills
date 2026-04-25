@@ -1,7 +1,6 @@
 ---
 name: cncf-cni
-description: "Cni in Cloud-Native Engineering - Container Network Interface - networking"
-  for Linux containers
+description: "\"Cni in Cloud-Native Engineering - Container Network Interface - networking\" for Linux containers"
 license: MIT
 compatibility: opencode
 metadata:

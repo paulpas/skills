@@ -1,7 +1,6 @@
 ---
 name: ios-developer
-description: Develop native iOS applications with Swift/SwiftUI. Masters iOS 18, SwiftUI,
-  UIKit integration, Core Data, networking, and App Store optimization
+description: "Provides Develop native iOS applications with Swift/SwiftUI. Masters iOS 18, SwiftUI, UIKit integration, Core Data, networking, and App Store optimization"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ios developer, mobile, data processing, spark
+  triggers: ios developer, mobile, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Ios Developer

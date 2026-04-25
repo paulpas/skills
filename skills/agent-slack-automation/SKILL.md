@@ -1,7 +1,6 @@
 ---
 name: slack-automation
-description: Automate Slack workspace operations including messaging, search, channel
-  management, and reaction workflows through Composio's Slack toolkit
+description: "Provides Automate Slack workspace operations including messaging, search, channel management, and reaction workflows through Composio's Slack toolkit"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: slack automation, automation, how do i automate, jenkins
+  triggers: slack automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Slack Automation

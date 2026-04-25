@@ -1,7 +1,6 @@
 ---
 name: agent-query-optimizer
-description: "Analyzes and optimizes database queries for performance, identifying"
-  bottlenecks and generating optimization recommendations.
+description: "\"Analyzes and optimizes database queries for performance, identifying\" bottlenecks and generating optimization recommendations."
 license: MIT
 compatibility: opencode
 metadata:

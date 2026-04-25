@@ -1,10 +1,10 @@
 ---
 name: filesystem-context
-description: "Use for file-based context management, dynamic context discovery, and reducing context window bloat. Offload context to files for just-in-time loading"
+description: "\"Provides use for file-based context management, dynamic context discovery, and reducing context window bloat. offload context to files for just-in-time loading\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

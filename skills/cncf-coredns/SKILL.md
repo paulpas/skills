@@ -1,7 +1,6 @@
 ---
 name: cncf-coredns
-description: "Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains"
-  plugins
+description: "\"Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains\" plugins"
 license: MIT
 compatibility: opencode
 metadata:

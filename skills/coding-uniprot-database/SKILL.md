@@ -1,7 +1,6 @@
 ---
 name: uniprot-database
-description: Direct REST API access to UniProt. Protein searches, FASTA retrieval,
-  ID mapping, Swiss-Prot/TrEMBL. For Python workflows with multiple databases, pre
+description: "Provides Direct REST API access to UniProt. Protein searches, FASTA retrieval, ID mapping, Swiss-Prot/TrEMBL. For Python workflows with multiple databases, pre"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: uniprot database, backend, data processing, spark
+  triggers: uniprot database, backend, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Uniprot Database

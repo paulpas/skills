@@ -1,10 +1,10 @@
 ---
 name: game-art
-description: "Game art principles. Visual style selection, asset pipeline, animation workflow"
+description: "\"Provides Game art principles. Visual style selection, asset pipeline, animation workflow\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

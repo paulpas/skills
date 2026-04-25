@@ -1,7 +1,6 @@
 ---
 name: autonomous-agents
-description: Autonomous agents are AI systems that can independently decompose goals,
-  plan actions, execute tools, and self-correct without constant human guidance
+description: "Provides Autonomous agents are AI systems that can independently decompose goals, plan actions, execute tools, and self-correct without constant human guidance"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: autonomous agents, ai, ml, implementation guide, machine learning
+  triggers: autonomous agents, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Autonomous Agents

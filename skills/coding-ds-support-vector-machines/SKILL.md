@@ -1,6 +1,6 @@
 ---
 name: coding-ds-support-vector-machines
-description: "Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression"
+description: "\"Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression\""
 license: MIT
 compatibility: opencode
 metadata:

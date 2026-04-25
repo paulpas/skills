@@ -1,7 +1,6 @@
 ---
 name: on-call-handoff-patterns
-description: Effective patterns for on-call shift transitions, ensuring continuity,
-  context transfer, and reliable incident response across shifts
+description: "Provides Effective patterns for on-call shift transitions, ensuring continuity, context transfer, and reliable incident response across shifts"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: on call handoff patterns, reliability, implementation guide, linkerd
+  triggers: on call handoff patterns, reliability, implementation guide, linkerd,
+    observability, service mesh
 ---
+
 
 
 # On Call Handoff Patterns

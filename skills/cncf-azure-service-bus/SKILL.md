@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-service-bus
-description: Messaging service with queues and topics for reliable communication
+description: "\"Provides Messaging service with queues and topics for reliable communication\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +11,7 @@ metadata:
   output-format: manifests
   triggers: service bus, messaging, message queue, queues, topics, event messaging,
     kubernetes service, sns
-  related-skills: cncf-azure-event-hubs, cncf-azure-functions, cncf-azure-monitor,
-    cncf-azure-rbac
+  related-skills: cncf-azure-event-hubs, cncf-azure-functions, cncf-azure-monitor
 ---
 
 

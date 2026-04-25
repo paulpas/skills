@@ -1,7 +1,6 @@
 ---
 name: tool-use-guardian
-description: "FREE \u2014 Intelligent tool-call reliability wrapper. Monitors, retries,\
-  \ fixes, and learns from tool failures. Auto-recovers from truncated JSON, timeouts"
+description: "\"Provides FREE \u2014 Intelligent tool-call reliability wrapper. Monitors,\ \ retries, fixes, and learns from tool failures. Auto-recovers from truncated JSON,\ \ timeouts\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: tool use guardian, reliability, implementation guide, linkerd
+  triggers: tool use guardian, reliability, implementation guide, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Tool Use Guardian

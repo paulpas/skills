@@ -1,6 +1,6 @@
 ---
 name: coding-ds-statistical-power
-description: "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control"
+description: "\"Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control\""
 license: MIT
 compatibility: opencode
 metadata:

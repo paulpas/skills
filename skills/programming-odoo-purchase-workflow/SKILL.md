@@ -1,10 +1,10 @@
 ---
 name: odoo-purchase-workflow
-description: "Expert guide for Odoo Purchase: RFQ → PO → Receipt → Vendor Bill workflow, purchase agreements, vendor price lists, and 3-way matching"
+description: "\"Provides Expert guide for Odoo Purchase: RFQ \u2192 PO \u2192 Receipt\ \ \u2192 Vendor Bill workflow, purchase agreements, vendor price lists, and 3-way\ \ matching\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

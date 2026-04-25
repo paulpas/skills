@@ -1,6 +1,6 @@
 ---
 name: trading-data-lake
-description: "Data lake architecture and management for trading data storage"
+description: "\"Provides Data lake architecture and management for trading data storage\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: requesting-code-review
-description: "Use when completing tasks, implementing major features, or before merging to verify work meets requirements"
+description: "\"Provides use when completing tasks, implementing major features, or before merging to verify work meets requirements\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

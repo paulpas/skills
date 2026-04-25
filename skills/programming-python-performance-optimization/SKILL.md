@@ -1,7 +1,6 @@
 ---
 name: python-performance-optimization
-description: Profile and optimize Python code using cProfile, memory profilers, and
-  performance best practices. Use when debugging slow Python code, optimizing bot
+description: "Provides Profile and optimize Python code using cProfile, memory profilers, and performance best practices. Use when debugging slow Python code, optimizing bot"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: python performance optimization, development, implementation guide, optimization
+  triggers: python performance optimization, development, implementation guide, optimization,
+    performance
 ---
+
 
 
 # Python Performance Optimization

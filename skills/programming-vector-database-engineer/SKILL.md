@@ -1,7 +1,6 @@
 ---
 name: vector-database-engineer
-description: Expert in vector databases, embedding strategies, and semantic search
-  implementation. Masters Pinecone, Weaviate, Qdrant, Milvus, and pgvector for RAG
+description: "Provides Expert in vector databases, embedding strategies, and semantic search implementation. Masters Pinecone, Weaviate, Qdrant, Milvus, and pgvector for RAG"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: vector database engineer, data, ai, data processing, machine learning,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Vector Database Engineer

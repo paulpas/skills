@@ -1,10 +1,10 @@
 ---
 name: ui-visual-validator
-description: "Rigorous visual validation expert specializing in UI testing, design system compliance, and accessibility verification"
+description: "\"Provides Rigorous visual validation expert specializing in UI testing, design system compliance, and accessibility verification\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

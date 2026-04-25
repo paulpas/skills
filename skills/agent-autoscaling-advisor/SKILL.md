@@ -1,7 +1,6 @@
 ---
 name: agent-autoscaling-advisor
-description: "Advisors on optimal auto-scaling configurations for distributed systems"
-  to balance cost and availability.
+description: "\"Advisors on optimal auto-scaling configurations for distributed systems\" to balance cost and availability."
 license: MIT
 compatibility: opencode
 metadata:

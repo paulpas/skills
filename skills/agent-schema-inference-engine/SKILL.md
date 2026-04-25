@@ -1,7 +1,6 @@
 ---
 name: agent-schema-inference-engine
-description: "Inferences data schemas from actual data samples, generatingtyped data"
-  structures and validation rules for data pipelines.
+description: "\"Inferences data schemas from actual data samples, generatingtyped data\" structures and validation rules for data pipelines."
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: cncf-kubeflow
-description: "Kubeflow in Cloud-Native Engineering - ML on Kubernetes"
+description: "\"Configures kubeflow in cloud-native engineering - ml on kubernetes for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: temporal-golang-pro
-description: "Use when building durable distributed systems with Temporal Go SDK. Covers deterministic workflow rules, mTLS worker configs, and advanced patterns"
+description: "\"Provides use when building durable distributed systems with temporal go sdk. covers deterministic workflow rules, mtls worker configs, and advanced patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

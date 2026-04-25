@@ -1,10 +1,10 @@
 ---
 name: documentation
-description: "Documentation generation workflow covering API docs, architecture docs, README files, code comments, and technical writing"
+description: "\"Provides Documentation generation workflow covering API docs, architecture docs, README files, code comments, and technical writing\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

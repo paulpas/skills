@@ -1,6 +1,6 @@
 ---
 name: baseline-ui
-description: "Validates animation durations, enforces typography scale, checks component accessibility, and prevents layout anti-patterns in Tailwind CSS projects"
+description: "\"Validates animation durations, enforces typography scale, checks component accessibility, and prevents layout anti-patterns in Tailwind CSS projects\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: skill-check
-description: "Validate Claude Code skills against the agentskills specification. Catches structural, semantic, and naming issues before users do"
+description: "\"Provides Validate Claude Code skills against the agentskills specification. Catches structural, semantic, and naming issues before users do\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

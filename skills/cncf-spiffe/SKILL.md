@@ -1,6 +1,6 @@
 ---
 name: cncf-spiffe
-description: "SPIFFE in Secure Product Identity Framework for Applications"
+description: "\"Provides SPIFFE in Secure Product Identity Framework for Applications\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: identity, product, secure, spiffe
-  related-skills: 
+  related-skills: null
 ---
 
 

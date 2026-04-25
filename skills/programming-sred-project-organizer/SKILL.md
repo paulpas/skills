@@ -1,10 +1,10 @@
 ---
 name: sred-project-organizer
-description: "Take a list of projects and their related documentation, and organize them into the SRED format for submission"
+description: "\"Provides Take a list of projects and their related documentation, and organize them into the SRED format for submission\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

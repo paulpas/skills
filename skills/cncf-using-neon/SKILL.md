@@ -1,7 +1,6 @@
 ---
 name: using-neon
-description: Neon is a serverless Postgres platform that separates compute and storage
-  to offer autoscaling, branching, instant restore, and scale-to-zero. It's fu
+description: "Provides Neon is a serverless Postgres platform that separates compute and storage to offer autoscaling, branching, instant restore, and scale-to-zero. It's fu"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: using neon, database, processing, data processing, spark
+  triggers: using neon, database, processing, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Using Neon

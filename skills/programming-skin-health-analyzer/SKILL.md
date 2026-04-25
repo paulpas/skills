@@ -1,7 +1,6 @@
 ---
 name: skin-health-analyzer
-description: Analyze skin health data, identify skin problem patterns, assess skin
-  health status. Supports correlation analysis with nutrition, chronic diseases, a
+description: "Provides Analyze skin health data, identify skin problem patterns, assess skin health status. Supports correlation analysis with nutrition, chronic diseases, a"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: skin health analyzer, health, data processing, spark
+  triggers: skin health analyzer, health, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Skin Health Analyzer

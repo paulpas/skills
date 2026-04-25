@@ -1,6 +1,6 @@
 ---
 name: n8n-workflow-patterns
-description: Proven architectural patterns for building n8n workflows
+description: "Implements proven architectural patterns for building n8n workflows for orchestration and agent coordination in autonomous systems."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: n8n workflow patterns, automation, how do i automate, jenkins
+  triggers: n8n workflow patterns, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # N8N Workflow Patterns

@@ -1,6 +1,6 @@
 ---
 name: tdd-workflows-tdd-cycle
-description: Use when working with tdd workflows tdd cycle
+description: "\"Implements use when working with tdd workflows tdd cycle patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:

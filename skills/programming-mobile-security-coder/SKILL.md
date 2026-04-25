@@ -1,7 +1,6 @@
 ---
 name: mobile-security-coder
-description: Expert in secure mobile coding practices specializing in input validation,
-  WebView security, and mobile-specific security patterns
+description: "Provides Expert in secure mobile coding practices specializing in input validation, WebView security, and mobile-specific security patterns"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: mobile security coder, mobile, how do i secure, vulnerability scanning
+  triggers: mobile security coder, mobile, how do i secure, vulnerability scanning,
+    security
 ---
+
 
 
 # Mobile Security Coder

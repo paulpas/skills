@@ -1,10 +1,10 @@
 ---
 name: team-collaboration-issue
-description: "You are a GitHub issue resolution expert specializing in systematic bug investigation, feature implementation, and collaborative development workflows"
+description: "\"Provides You are a GitHub issue resolution expert specializing in systematic bug investigation, feature implementation, and collaborative development workflows\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

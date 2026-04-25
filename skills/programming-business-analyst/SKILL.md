@@ -1,7 +1,6 @@
 ---
 name: business-analyst
-description: Master modern business analysis with AI-powered analytics, real-time
-  dashboards, and data-driven insights. Build comprehensive KPI frameworks, predict
+description: "Provides Master modern business analysis with AI-powered analytics, real-time dashboards, and data-driven insights. Build comprehensive KPI frameworks, predict"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: business analyst, business, data processing, spark
+  triggers: business analyst, business, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Business Analyst

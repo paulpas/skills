@@ -1,7 +1,6 @@
 ---
 name: firmware-analyst
-description: Expert firmware analyst specializing in embedded systems, IoT security,
-  and hardware reverse engineering
+description: "\"Provides Expert firmware analyst specializing in embedded systems, IoT security, and hardware reverse engineering\""
 license: MIT
 compatibility: opencode
 metadata:

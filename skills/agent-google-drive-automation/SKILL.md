@@ -1,7 +1,6 @@
 ---
 name: google-drive-automation
-description: Lightweight Google Drive integration with standalone OAuth authentication.
-  No MCP server required. Full read/write access
+description: "Provides Lightweight Google Drive integration with standalone OAuth authentication. No MCP server required. Full read/write access"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: google drive automation, automation, how do i automate, jenkins
+  triggers: google drive automation, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Google Drive Automation

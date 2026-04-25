@@ -1,10 +1,10 @@
 ---
 name: mise-configurator
-description: "Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization"
+description: "\"Provides Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

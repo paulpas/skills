@@ -1,6 +1,6 @@
 ---
 name: terraform-skill
-description: Terraform infrastructure as code best practices
+description: "Configures terraform infrastructure as code best practices for cloud-native deployment and infrastructure management."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: terraform skill, devops, how do i deploy, infrastructure as code
+  triggers: terraform skill, devops, how do i deploy, infrastructure as code, cloudformation
 ---
+
 
 
 # Terraform Skill

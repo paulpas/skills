@@ -1,10 +1,10 @@
 ---
 name: azure-search-documents-ts
-description: "Build search applications with vector, hybrid, and semantic search capabilities"
+description: "\"Provides Build search applications with vector, hybrid, and semantic search capabilities\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

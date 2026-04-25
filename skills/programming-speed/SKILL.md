@@ -1,6 +1,6 @@
 ---
 name: speed
-description: Launch RSVP speed reader for text
+description: "Provides launch rsvp speed reader for text functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: speed, uncategorized, implementation guide, performance
+  triggers: speed, uncategorized, implementation guide, performance, optimization
 ---
+
 
 
 # Speed

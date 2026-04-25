@@ -1,10 +1,10 @@
 ---
 name: magic-ui-generator
-description: "Utilizes Magic by 21st.dev to generate, compare, and integrate multiple production-ready UI component variations"
+description: "\"Provides Utilizes Magic by 21st.dev to generate, compare, and integrate multiple production-ready UI component variations\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

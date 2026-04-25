@@ -1,7 +1,6 @@
 ---
 name: database
-description: Database development and operations workflow covering SQL, NoSQL, database
-  design, migrations, optimization, and data engineering
+description: "Provides Database development and operations workflow covering SQL, NoSQL, database design, migrations, optimization, and data engineering"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: database, workflow, bundle, data processing, spark
+  triggers: database, workflow, bundle, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Database

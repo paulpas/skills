@@ -1,7 +1,6 @@
 ---
 name: wireshark-analysis
-description: Execute comprehensive network traffic analysis using Wireshark to capture,
-  filter, and examine network packets for security investigations, performanc
+description: "\"Provides Execute comprehensive network traffic analysis using Wireshark to capture, filter, and examine network packets for security investigations, performanc\""
 license: MIT
 compatibility: opencode
 metadata:

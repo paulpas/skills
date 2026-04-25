@@ -1,10 +1,10 @@
 ---
 name: azure-ai-contentsafety-java
-description: "Build content moderation applications using the Azure AI Content Safety SDK for Java"
+description: "\"Provides Build content moderation applications using the Azure AI Content Safety SDK for Java\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

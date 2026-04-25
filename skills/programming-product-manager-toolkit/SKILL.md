@@ -1,10 +1,10 @@
 ---
 name: product-manager-toolkit
-description: "Essential tools and frameworks for modern product management, from discovery to delivery"
+description: "\"Provides Essential tools and frameworks for modern product management, from discovery to delivery\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

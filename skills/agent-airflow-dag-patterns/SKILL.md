@@ -1,7 +1,6 @@
 ---
 name: airflow-dag-patterns
-description: Build production Apache Airflow DAGs with best practices for operators,
-  sensors, testing, and deployment. Use when creating data pipelines, orchestrat
+description: "Provides Build production Apache Airflow DAGs with best practices for operators, sensors, testing, and deployment. Use when creating data pipelines, orchestrat"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: orchestration
   scope: implementation
   output-format: code
-  triggers: airflow dag patterns, workflow, how do i test, workflow orchestration
+  triggers: airflow dag patterns, workflow, how do i test, workflow orchestration,
+    airflow
 ---
+
 
 
 # Airflow Dag Patterns

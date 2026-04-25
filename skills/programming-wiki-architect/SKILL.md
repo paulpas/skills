@@ -1,10 +1,10 @@
 ---
 name: wiki-architect
-description: "You are a documentation architect that produces structured wiki catalogues and onboarding guides from codebases"
+description: "\"Provides You are a documentation architect that produces structured wiki catalogues and onboarding guides from codebases\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

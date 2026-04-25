@@ -1,10 +1,10 @@
 ---
 name: azure-storage-queue-py
-description: "Azure Queue Storage SDK for Python. Use for reliable message queuing, task distribution, and asynchronous processing"
+description: "\"Provides Azure Queue Storage SDK for Python. Use for reliable message queuing, task distribution, and asynchronous processing\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: codebase-cleanup-deps-audit
-description: "You are a dependency security expert specializing in vulnerability scanning, license compliance, and supply chain security. Analyze project dependenci"
+description: "\"Provides You are a dependency security expert specializing in vulnerability scanning, license compliance, and supply chain security. Analyze project dependenci\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

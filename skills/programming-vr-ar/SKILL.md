@@ -1,10 +1,10 @@
 ---
 name: vr-ar
-description: "VR/AR development principles. Comfort, interaction, performance requirements"
+description: "\"Provides VR/AR development principles. Comfort, interaction, performance requirements\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

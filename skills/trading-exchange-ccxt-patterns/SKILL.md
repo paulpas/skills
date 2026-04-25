@@ -1,7 +1,6 @@
 ---
 name: trading-exchange-ccxt-patterns
-description: "Effective patterns for using CCXT library for exchange connectivity including"
-  error handling, rate limiting, and state management
+description: "\"Effective patterns for using CCXT library for exchange connectivity including\" error handling, rate limiting, and state management"
 license: MIT
 compatibility: opencode
 metadata:

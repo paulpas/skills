@@ -1,10 +1,10 @@
 ---
 name: frontend-slides
-description: "Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files"
+description: "\"Provides Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

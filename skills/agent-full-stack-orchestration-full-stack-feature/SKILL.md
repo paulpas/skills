@@ -1,15 +1,16 @@
 ---
 name: full-stack-orchestration-full-stack-feature
-description: "Use when working with full stack orchestration full stack feature"
+description: "\"Provides use when working with full stack orchestration full stack feature\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation
   output-format: code
-  triggers: full stack orchestration full stack feature, workflow, implementation guide
+  triggers: full stack orchestration full stack feature, workflow, implementation
+    guide
 ---
 
 # Full Stack Orchestration Full Stack Feature

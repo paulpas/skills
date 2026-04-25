@@ -1,10 +1,10 @@
 ---
 name: seo-sitemap
-description: "Analyze existing XML sitemaps or generate new ones with industry templates. Validates format, URLs, and structure. Use when user says"
+description: "\"Provides Analyze existing XML sitemaps or generate new ones with industry templates. Validates format, URLs, and structure. Use when user says\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

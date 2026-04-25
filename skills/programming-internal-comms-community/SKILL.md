@@ -1,10 +1,10 @@
 ---
 name: internal-comms-community
-description: "To write internal communications, use this skill for:"
+description: "'Provides to write internal communications, use this skill for: functionality and capabilities.'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

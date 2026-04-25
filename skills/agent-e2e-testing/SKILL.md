@@ -1,7 +1,6 @@
 ---
 name: e2e-testing
-description: End-to-end testing workflow with Playwright for browser automation, visual
-  regression, cross-browser testing, and CI/CD integration
+description: "Provides End-to-end testing workflow with Playwright for browser automation, visual regression, cross-browser testing, and CI/CD integration"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: e2e testing, granular, workflow, how do i test, selenium, unit tests
+  triggers: e2e testing, granular, workflow, how do i test, selenium, unit tests,
+    browser automation, testing
 ---
+
 
 
 # E2E Testing

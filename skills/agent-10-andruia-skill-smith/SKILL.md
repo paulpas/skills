@@ -1,10 +1,10 @@
 ---
 name: 10-andruia-skill-smith
-description: "Ingeniero de Sistemas de Andru.ia. Diseña, redacta y despliega nuevas habilidades (skills) dentro del repositorio siguiendo el Estándar de Diamante"
+description: "\"Provides Ingeniero de Sistemas de Andru.ia. Dise\xF1a, redacta y despliega\ \ nuevas habilidades (skills) dentro del repositorio siguiendo el Est\xE1ndar de\ \ Diamante\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

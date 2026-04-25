@@ -1,10 +1,10 @@
 ---
 name: iconsax-library
-description: "Extensive icon library and AI-driven icon generation skill for premium UI/UX design"
+description: "\"Provides Extensive icon library and AI-driven icon generation skill for premium UI/UX design\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

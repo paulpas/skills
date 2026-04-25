@@ -1,10 +1,10 @@
 ---
 name: azure-communication-callautomation-java
-description: "Build server-side call automation workflows including IVR systems, call routing, recording, and AI-powered interactions"
+description: "\"Provides Build server-side call automation workflows including IVR systems, call routing, recording, and AI-powered interactions\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

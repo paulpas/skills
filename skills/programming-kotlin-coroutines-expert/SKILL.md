@@ -1,10 +1,10 @@
 ---
 name: kotlin-coroutines-expert
-description: "Expert patterns for Kotlin Coroutines and Flow, covering structured concurrency, error handling, and testing"
+description: "\"Provides Expert patterns for Kotlin Coroutines and Flow, covering structured concurrency, error handling, and testing\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

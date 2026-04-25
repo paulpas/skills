@@ -1,10 +1,10 @@
 ---
 name: seo-audit
-description: "Diagnose and audit SEO issues affecting crawlability, indexation, rankings, and organic performance"
+description: "\"Provides Diagnose and audit SEO issues affecting crawlability, indexation, rankings, and organic performance\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

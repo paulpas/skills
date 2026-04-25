@@ -1,6 +1,6 @@
 ---
 name: cncf-dragonfly
-description: "Dragonfly in Cloud-Native Engineering - P2P file distribution"
+description: "\"Provides Dragonfly in Cloud-Native Engineering - P2P file distribution\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,7 +11,7 @@ metadata:
   output-format: manifests
   triggers: cloud-native, distribution, dragonfly, engineering, elb, load balancer,
     load balancing
-  related-skills: 
+  related-skills: null
 ---
 
 

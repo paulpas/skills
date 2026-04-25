@@ -1,16 +1,18 @@
 ---
 name: coding-ds-randomized-experiments
-description: "Designs and analyzes randomized controlled trials (RCTs), A/B tests, experimental blocking, and sample size calculations"
+description: "\"Provides Designs and analyzes randomized controlled trials (RCTs), A/B tests, experimental blocking, and sample size calculations\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: randomized experiments, RCT, experimental design, randomization, blocking, sample size
-  related-skills: coding-ds-ab-testing, coding-ds-causal-inference, coding-ds-intervention-analysis, coding-ds-observational-studies
+  triggers: randomized experiments, RCT, experimental design, randomization, blocking,
+    sample size
+  related-skills: coding-ds-ab-testing, coding-ds-causal-inference, coding-ds-intervention-analysis,
+    coding-ds-observational-studies
 ---
 
 # Randomized Experiments

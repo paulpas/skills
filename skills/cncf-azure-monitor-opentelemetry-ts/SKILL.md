@@ -1,10 +1,10 @@
 ---
 name: azure-monitor-opentelemetry-ts
-description: "Auto-instrument Node.js applications with distributed tracing, metrics, and logs"
+description: "\"Provides Auto-instrument Node.js applications with distributed tracing, metrics, and logs\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

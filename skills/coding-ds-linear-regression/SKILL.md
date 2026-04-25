@@ -1,6 +1,6 @@
 ---
 name: coding-ds-linear-regression
-description: "Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction"
+description: "\"Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: hig-components-dialogs
-description: "Apple HIG guidance for presentation components including alerts, action sheets, popovers, sheets, and digit entry views"
+description: "\"Provides Apple HIG guidance for presentation components including alerts, action sheets, popovers, sheets, and digit entry views\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: cncf-process-security-policy
-description: "Creates or updates SECURITY.md defining the vulnerability reporting process"
-  disclosure timeline, and supported versions for CNCF projects
+description: "\"Creates or updates SECURITY.md defining the vulnerability reporting process\" disclosure timeline, and supported versions for CNCF projects"
 license: MIT
 compatibility: opencode
 how_to_guide: https://contribute.cncf.io/projects/best-practices/security/

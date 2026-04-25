@@ -1,16 +1,17 @@
 ---
 name: coding-ds-model-selection
-description: "Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques"
+description: "\"Provides Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
   triggers: model selection, AIC, BIC, validation curves, learning curves, model comparison
-  related-skills: coding-ds-bias-variance-tradeoff, coding-ds-cross-validation, coding-ds-hyperparameter-tuning, coding-ds-regression-evaluation
+  related-skills: coding-ds-bias-variance-tradeoff, coding-ds-cross-validation, coding-ds-hyperparameter-tuning,
+    coding-ds-regression-evaluation
 ---
 
 # Model Selection

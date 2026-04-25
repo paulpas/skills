@@ -1,10 +1,10 @@
 ---
 name: videodb-skills
-description: "Upload, stream, search, edit, transcribe, and generate AI video and audio using the VideoDB SDK"
+description: "\"Provides Upload, stream, search, edit, transcribe, and generate AI video and audio using the VideoDB SDK\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

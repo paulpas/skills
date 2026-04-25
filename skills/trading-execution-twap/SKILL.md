@@ -1,7 +1,6 @@
 ---
 name: trading-execution-twap
-description: "Time-Weighted Average Price algorithm for executing large orders with"
-  minimal market impact
+description: "\"Time-Weighted Average Price algorithm for executing large orders with\" minimal market impact"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: drizzle-orm-expert
-description: "Expert in Drizzle ORM for TypeScript \u2014 schema design, relational\
-  \ queries, migrations, and serverless database integration. Use when building type-safe"
+description: "\"Provides Expert in Drizzle ORM for TypeScript \u2014 schema design,\ \ relational queries, migrations, and serverless database integration. Use when\ \ building type-safe\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: drizzle orm expert, database, data processing, spark
+  triggers: drizzle orm expert, database, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Drizzle Orm Expert

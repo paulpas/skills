@@ -1,7 +1,6 @@
 ---
 name: base
-description: Database management, forms, reports, and data operations with LibreOffice
-  Base
+description: "Provides Database management, forms, reports, and data operations with LibreOffice Base"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: base, database, processing, data processing, spark
+  triggers: base, database, processing, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Base

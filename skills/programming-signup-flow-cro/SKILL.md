@@ -1,10 +1,10 @@
 ---
 name: signup-flow-cro
-description: "You are an expert in optimizing signup and registration flows. Your goal is to reduce friction, increase completion rates, and set users up for succes"
+description: "\"Provides You are an expert in optimizing signup and registration flows. Your goal is to reduce friction, increase completion rates, and set users up for succes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

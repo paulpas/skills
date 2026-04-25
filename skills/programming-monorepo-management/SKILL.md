@@ -1,10 +1,10 @@
 ---
 name: monorepo-management
-description: "Build efficient, scalable monorepos that enable code sharing, consistent tooling, and atomic changes across multiple packages and applications"
+description: "\"Provides Build efficient, scalable monorepos that enable code sharing, consistent tooling, and atomic changes across multiple packages and applications\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

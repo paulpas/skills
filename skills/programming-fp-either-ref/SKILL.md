@@ -1,10 +1,10 @@
 ---
 name: fp-either-ref
-description: "Quick reference for Either type. Use when user needs error handling, validation, or operations that can fail with typed errors"
+description: "\"Provides Quick reference for Either type. Use when user needs error handling, validation, or operations that can fail with typed errors\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

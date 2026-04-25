@@ -1,10 +1,10 @@
 ---
 name: gitlab-ci-patterns
-description: "Comprehensive GitLab CI/CD pipeline patterns for automated testing, building, and deployment"
+description: "\"Provides Comprehensive GitLab CI/CD pipeline patterns for automated testing, building, and deployment\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

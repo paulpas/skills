@@ -1,6 +1,6 @@
 ---
 name: trading-data-validation
-description: "Data validation and quality assurance for trading data pipelines"
+description: "\"Provides Data validation and quality assurance for trading data pipelines\""
 license: MIT
 compatibility: opencode
 metadata:

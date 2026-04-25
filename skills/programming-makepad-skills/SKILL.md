@@ -1,10 +1,10 @@
 ---
 name: makepad-skills
-description: "Makepad UI development skills for Rust apps: setup, patterns, shaders, packaging, and troubleshooting"
+description: "'Provides Makepad UI development skills for Rust apps: setup, patterns, shaders, packaging, and troubleshooting'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

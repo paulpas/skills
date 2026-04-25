@@ -1,6 +1,6 @@
 ---
 name: cncf-kubevela
-description: "KubeVela in Cloud-Native Engineering - application platform"
+description: "\"Configures kubevela in cloud-native engineering - application platform for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:

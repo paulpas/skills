@@ -1,6 +1,6 @@
 ---
 name: trading-technical-support-resistance
-description: "Technical levels where price tends to pause or reverse"
+description: "\"Implements technical levels where price tends to pause or reverse for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

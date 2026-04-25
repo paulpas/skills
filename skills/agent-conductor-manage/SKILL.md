@@ -1,10 +1,10 @@
 ---
 name: conductor-manage
-description: "Manage track lifecycle: archive, restore, delete, rename, and cleanup"
+description: "'Provides Manage track lifecycle: archive, restore, delete, rename, and cleanup'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

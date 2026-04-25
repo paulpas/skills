@@ -1,10 +1,10 @@
 ---
 name: django-perf-review
-description: "Django performance code review. Use when asked to"
+description: "\"Implements django performance code review. use when asked to patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

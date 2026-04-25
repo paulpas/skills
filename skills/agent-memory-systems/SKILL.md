@@ -1,10 +1,10 @@
 ---
 name: memory-systems
-description: "Design short-term, long-term, and graph-based memory architectures. Use when building agents that must persist across sessions, needing to maintain en"
+description: "\"Provides Design short-term, long-term, and graph-based memory architectures. Use when building agents that must persist across sessions, needing to maintain en\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

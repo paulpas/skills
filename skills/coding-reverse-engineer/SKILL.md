@@ -1,7 +1,6 @@
 ---
 name: reverse-engineer
-description: Expert reverse engineer specializing in binary analysis, disassembly,
-  decompilation, and software analysis. Masters IDA Pro, Ghidra, radare2, x64dbg
+description: "\"Provides Expert reverse engineer specializing in binary analysis, disassembly, decompilation, and software analysis. Masters IDA Pro, Ghidra, radare2, x64dbg\""
 license: MIT
 compatibility: opencode
 metadata:

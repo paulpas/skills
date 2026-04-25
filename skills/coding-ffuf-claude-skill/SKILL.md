@@ -1,6 +1,6 @@
 ---
 name: ffuf-claude-skill
-description: Web fuzzing with ffuf
+description: "\"Implements web fuzzing with ffuf patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:

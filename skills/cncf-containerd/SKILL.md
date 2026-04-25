@@ -1,7 +1,6 @@
 ---
 name: cncf-containerd
-description: "Containerd in Cloud-Native Engineering - An open and reliable container"
-  runtime
+description: "\"Containerd in Cloud-Native Engineering - An open and reliable container\" runtime"
 license: MIT
 compatibility: opencode
 metadata:

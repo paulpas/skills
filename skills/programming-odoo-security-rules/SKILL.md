@@ -1,7 +1,6 @@
 ---
 name: odoo-security-rules
-description: 'Expert in Odoo access control: ir.model.access.csv, record rules (ir.rule),
-  groups, and multi-company security patterns'
+description: "'Provides Expert in Odoo access control: ir.model.access.csv, record rules (ir.rule), groups, and multi-company security patterns'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: odoo security rules, business, how do i secure, vulnerability scanning
+  triggers: odoo security rules, business, how do i secure, vulnerability scanning,
+    security
 ---
+
 
 
 # Odoo Security Rules

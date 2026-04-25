@@ -1,6 +1,6 @@
 ---
 name: trading-ai-synthetic-data
-description: "Generate synthetic financial data for training and testing trading models"
+description: "\"Provides Generate synthetic financial data for training and testing trading models\""
 license: MIT
 compatibility: opencode
 metadata:

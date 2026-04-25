@@ -1,7 +1,6 @@
 ---
 name: cncf-cortex
-description: "Cortex in Monitoring & Observability - distributed, horizontally scalable"
-  Prometheus system
+description: "\"Cortex in Monitoring & Observability - distributed, horizontally scalable\" Prometheus system"
 license: MIT
 compatibility: opencode
 metadata:

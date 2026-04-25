@@ -1,7 +1,6 @@
 ---
 name: claude-d3js-skill
-description: This skill provides guidance for creating sophisticated, interactive
-  data visualisations using d3.js
+description: "Provides this skill provides guidance for creating sophisticated, interactive data visualisations using d3.js"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude d3js skill, ai, ml, data processing, machine learning, spark
+  triggers: claude d3js skill, ai, ml, data processing, machine learning, spark, big
+    data, distributed processing
 ---
+
 
 
 # Claude D3Js Skill

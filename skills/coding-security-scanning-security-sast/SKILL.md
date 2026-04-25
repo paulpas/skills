@@ -1,8 +1,6 @@
 ---
 name: security-scanning-security-sast
-description: "Static Application Security Testing (SAST) for code vulnerability"
-analysis across multiple languages and frameworks
-"
+description: "\"Static Application Security Testing (SAST) for code vulnerability\" analysis across multiple languages and frameworks \""
 license: MIT
 compatibility: opencode
 metadata:

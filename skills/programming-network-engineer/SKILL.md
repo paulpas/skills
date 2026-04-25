@@ -1,10 +1,10 @@
 ---
 name: network-engineer
-description: "Expert network engineer specializing in modern cloud networking, security architectures, and performance optimization"
+description: "\"Provides Expert network engineer specializing in modern cloud networking, security architectures, and performance optimization\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

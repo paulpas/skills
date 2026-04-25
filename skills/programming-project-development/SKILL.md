@@ -1,7 +1,6 @@
 ---
 name: project-development
-description: This skill covers the principles for identifying tasks suited to LLM
-  processing, designing effective project architectures, and iterating rapidly usin
+description: "Provides this skill covers the principles for identifying tasks suited to llm processing, designing effective project architectures, and iterating rapidly usin"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: project development, ai, ml, implementation guide, machine learning
+  triggers: project development, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Project Development

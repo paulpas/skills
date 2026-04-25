@@ -1,10 +1,10 @@
 ---
 name: track-management
-description: "Use this skill when creating, managing, or working with Conductor tracks - the logical work units for features, bugs, and refactors. Applies to spec.m"
+description: "\"Provides use this skill when creating, managing, or working with conductor tracks - the logical work units for features, bugs, and refactors. applies to spec.m\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

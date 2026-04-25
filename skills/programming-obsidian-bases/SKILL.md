@@ -1,7 +1,6 @@
 ---
 name: obsidian-bases
-description: Create and edit Obsidian Bases (.base files) with views, filters, formulas,
-  and summaries. Use when working with .base files, creating database-like v
+description: "Provides Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like v"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: obsidian bases, uncategorized, data processing, spark
+  triggers: obsidian bases, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Obsidian Bases

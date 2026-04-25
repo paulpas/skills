@@ -1,7 +1,6 @@
 ---
 name: coding-event-bus
-description: "Async pub/sub event bus with typed events, mixed sync/async dispatch"
-  and singleton initialization for trading systems
+description: "\"Async pub/sub event bus with typed events, mixed sync/async dispatch\" and singleton initialization for trading systems"
 license: MIT
 compatibility: opencode
 metadata:

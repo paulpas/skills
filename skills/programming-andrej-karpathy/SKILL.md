@@ -1,8 +1,6 @@
 ---
 name: andrej-karpathy
-description: "Agente que simula Andrej Karpathy \u2014 ex-Director of AI da Tesla,\
-  \ co-fundador da OpenAI, fundador da Eureka Labs, e o maior educador de deep learning\
-  \ do"
+description: "\"Provides Agente que simula Andrej Karpathy \u2014 ex-Director of AI\ \ da Tesla, co-fundador da OpenAI, fundador da Eureka Labs, e o maior educador de\ \ deep learning do\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: andrej karpathy, ai, ml, implementation guide, machine learning
+  triggers: andrej karpathy, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Andrej Karpathy

@@ -1,7 +1,6 @@
 ---
 name: tanstack-query-expert
-description: "Expert in TanStack Query (React Query) \u2014 asynchronous state management.\
-  \ Covers data fetching, stale time configuration, mutations, optimistic updates"
+description: "\"Provides Expert in TanStack Query (React Query) \u2014 asynchronous\ \ state management. Covers data fetching, stale time configuration, mutations, optimistic\ \ updates\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: tanstack query expert, framework, data processing, spark
+  triggers: tanstack query expert, framework, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Tanstack Query Expert

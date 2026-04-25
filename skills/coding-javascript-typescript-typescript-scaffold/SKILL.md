@@ -1,15 +1,16 @@
 ---
 name: javascript-typescript-typescript-scaffold
-description: "You are a TypeScript project architecture expert specializing in scaffolding production-ready Node.js and frontend applications. Generate complete pro"
+description: "\"Provides You are a TypeScript project architecture expert specializing in scaffolding production-ready Node.js and frontend applications. Generate complete pro\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: javascript typescript typescript scaffold, app, builder, implementation guide
+  triggers: javascript typescript typescript scaffold, app, builder, implementation
+    guide
 ---
 
 # Javascript Typescript Typescript Scaffold

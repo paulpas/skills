@@ -1,10 +1,10 @@
 ---
 name: stitch-design-taste
-description: "Use when generating Google Stitch DESIGN.md systems for premium typography, color, layout, motion intent, and anti-generic UI rules"
+description: "\"Provides use when generating google stitch design.md systems for premium typography, color, layout, motion intent, and anti-generic ui rules\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

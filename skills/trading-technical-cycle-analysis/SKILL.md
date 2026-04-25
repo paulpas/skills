@@ -1,6 +1,6 @@
 ---
 name: trading-technical-cycle-analysis
-description: "Market cycles and periodic patterns in price movement"
+description: "\"Implements market cycles and periodic patterns in price movement for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

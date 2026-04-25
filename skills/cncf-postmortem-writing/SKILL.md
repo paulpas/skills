@@ -1,7 +1,6 @@
 ---
 name: postmortem-writing
-description: Comprehensive guide to writing effective, blameless postmortems that
-  drive organizational learning and prevent incident recurrence
+description: "Provides Comprehensive guide to writing effective, blameless postmortems that drive organizational learning and prevent incident recurrence"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: postmortem writing, reliability, implementation guide, linkerd
+  triggers: postmortem writing, reliability, implementation guide, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Postmortem Writing

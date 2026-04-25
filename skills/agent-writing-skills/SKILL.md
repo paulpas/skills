@@ -1,10 +1,10 @@
 ---
 name: writing-skills
-description: "Use when creating, updating, or improving agent skills"
+description: "\"Implements use when creating, updating, or improving agent skills for orchestration and agent coordination in autonomous systems.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

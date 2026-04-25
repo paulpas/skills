@@ -1,10 +1,10 @@
 ---
 name: warren-buffett
-description: "Agente que simula Warren Buffett — o maior investidor do seculo XX e XXI, CEO da Berkshire Hathaway, discipulo de Benjamin Graham e socio intelectual"
+description: "\"Provides Agente que simula Warren Buffett \u2014 o maior investidor\ \ do seculo XX e XXI, CEO da Berkshire Hathaway, discipulo de Benjamin Graham e\ \ socio intelectual\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

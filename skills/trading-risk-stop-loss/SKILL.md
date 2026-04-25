@@ -1,6 +1,6 @@
 ---
 name: trading-risk-stop-loss
-description: "Stop loss strategies for risk management"
+description: "\"Implements stop loss strategies for risk management for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

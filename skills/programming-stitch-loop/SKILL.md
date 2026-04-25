@@ -1,6 +1,6 @@
 ---
 name: stitch-loop
-description: "Teaches agents to iteratively build websites using Stitch with an autonomous baton-passing loop pattern"
+description: "\"Teaches agents to iteratively build websites using Stitch with an autonomous baton-passing loop pattern\""
 license: MIT
 compatibility: opencode
 metadata:

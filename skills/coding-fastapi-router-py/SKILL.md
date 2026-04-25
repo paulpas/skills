@@ -1,10 +1,10 @@
 ---
 name: fastapi-router-py
-description: "Create FastAPI routers following established patterns with proper authentication, response models, and HTTP status codes"
+description: "\"Provides Create FastAPI routers following established patterns with proper authentication, response models, and HTTP status codes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

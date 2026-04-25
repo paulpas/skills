@@ -1,6 +1,6 @@
 ---
 name: cncf-knative
-description: "Knative in Cloud-Native Engineering - serverless on Kubernetes"
+description: "\"Provides Knative in Cloud-Native Engineering - serverless on Kubernetes\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: rayden-code
-description: "Generate React code with Rayden UI components using correct props, tokens, and premium layout patterns"
+description: "\"Provides Generate React code with Rayden UI components using correct props, tokens, and premium layout patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

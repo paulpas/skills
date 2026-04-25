@@ -1,10 +1,10 @@
 ---
 name: algolia-search
-description: "Expert patterns for Algolia search implementation, indexing strategies, React InstantSearch, and relevance tuning"
+description: "\"Provides Expert patterns for Algolia search implementation, indexing strategies, React InstantSearch, and relevance tuning\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

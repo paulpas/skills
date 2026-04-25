@@ -1,7 +1,6 @@
 ---
 name: prompt-caching
-description: Caching strategies for LLM prompts including Anthropic prompt caching,
-  response caching, and CAG (Cache Augmented Generation)
+description: "Provides Caching strategies for LLM prompts including Anthropic prompt caching, response caching, and CAG (Cache Augmented Generation)"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: prompt caching, ai, ml, implementation guide, machine learning
+  triggers: prompt caching, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Prompt Caching

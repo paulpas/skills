@@ -1,7 +1,6 @@
 ---
 name: llm-structured-output
-description: "Get reliable JSON, enums, and typed objects from LLMs using response_format, tool_use, and schema-constrained decoding across OpenAI, Anthropic, and G"
-"
+description: "\"Get reliable JSON, enums, and typed objects from LLMs using response_format, tool_use, and schema-constrained decoding across OpenAI, Anthropic, and G\" \""
 license: MIT
 compatibility: opencode
 metadata:

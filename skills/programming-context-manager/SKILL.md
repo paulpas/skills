@@ -1,7 +1,6 @@
 ---
 name: context-manager
-description: Elite AI context engineering specialist mastering dynamic context management,
-  vector databases, knowledge graphs, and intelligent memory systems
+description: "Provides Elite AI context engineering specialist mastering dynamic context management, vector databases, knowledge graphs, and intelligent memory systems"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context manager, ai, ml, data processing, machine learning, spark
+  triggers: context manager, ai, ml, data processing, machine learning, spark, big
+    data, distributed processing
 ---
+
 
 
 # Context Manager

@@ -1,7 +1,6 @@
 ---
 name: app-builder
-description: Main application building orchestrator. Creates full-stack applications
-  from natural language requests. Determines project type, selects tech stack, c
+description: "Provides Main application building orchestrator. Creates full-stack applications from natural language requests. Determines project type, selects tech stack, c"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: app builder, ai, ml, implementation guide, machine learning
+  triggers: app builder, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # App Builder
