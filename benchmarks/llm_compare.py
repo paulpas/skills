@@ -11,12 +11,16 @@ Usage:
     python3 benchmarks/llm_compare.py --tier simple
     python3 benchmarks/llm_compare.py --tier simple --model gpt-4o
     python3 benchmarks/llm_compare.py --task "..." --output results/comparison.json
+    python3 benchmarks/llm_compare.py --tier simple --no-code-eval
 """
 
 import argparse
+import ast
 import json
 import os
+import subprocess
 import sys
+import tempfile
 import time
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
@@ -38,6 +42,7 @@ DEFAULT_LLAMACPP_URL = "http://localhost:8080/v1"
 DEFAULT_TEMPERATURE = 0.2
 DEFAULT_MAX_TOKENS = 2048
 HTTP_TIMEOUT_SECONDS = 30
+CODE_EXEC_TIMEOUT_SECONDS = 10
 
 # Path resolution
 _SCRIPT_DIR = Path(__file__).resolve().parent
@@ -66,6 +71,17 @@ class RunResult:
     skills_injected: list[str]  # Empty list for without-MCP run
     error: Optional[str] = None
     success: bool = True
+
+    # Code quality fields (None when no coding_challenge in exercise)
+    code_generated: Optional[str] = None  # Extracted code from LLM response
+    code_compiles: Optional[bool] = None
+    test_cases_passed: Optional[int] = None
+    test_cases_total: Optional[int] = None
+    correctness_pct: Optional[float] = None  # % test cases passed
+    cyclomatic_complexity: Optional[int] = None
+    has_error_handling: Optional[bool] = None
+    maintainability_score: Optional[float] = None  # 0-100
+    sloc: Optional[int] = None
 
 
 @dataclass
@@ -705,6 +721,390 @@ def build_mcp_system_prompt(router_url: str, skill_names: list[str]) -> str:
     return "\n\n---\n\n".join(skill_blocks)
 
 
+# ─── Code Quality Analysis ────────────────────────────────────────────────────
+
+
+def extract_code(response_text: str, language: str) -> Optional[str]:
+    """Extract code from an LLM response.
+
+    Search order:
+      1. Language-specific fenced block: ```python ... ``` or ```javascript ... ```
+      2. Generic fenced block: ``` ... ```
+      3. Whole response if it contains a top-level function declaration keyword.
+
+    Args:
+        response_text: Raw LLM response string.
+        language:      Target language (e.g. "python", "javascript").
+
+    Returns:
+        Extracted code string, or None if no code is detected.
+    """
+    if not response_text:
+        return None
+
+    # Strategy 1: language-specific fenced block
+    lang_lower = language.lower()
+    lang_fence_start = f"```{lang_lower}"
+    start_idx = response_text.lower().find(lang_fence_start)
+    if start_idx != -1:
+        # Find the actual fence start (with original case) then the closing ```
+        block_start = response_text.find("\n", start_idx) + 1
+        block_end = response_text.find("```", block_start)
+        if block_end != -1:
+            return response_text[block_start:block_end].strip()
+
+    # Strategy 2: generic fenced block
+    generic_start = response_text.find("```")
+    if generic_start != -1:
+        block_start = response_text.find("\n", generic_start) + 1
+        block_end = response_text.find("```", block_start)
+        if block_end != -1:
+            return response_text[block_start:block_end].strip()
+
+    # Strategy 3: whole response if it looks like raw code
+    function_keywords = {
+        "python": ["def ", "class "],
+        "javascript": ["function ", "const ", "let ", "var "],
+        "js": ["function ", "const "],
+        "go": ["func "],
+    }
+    keywords = function_keywords.get(lang_lower, ["def ", "function ", "func "])
+    if any(kw in response_text for kw in keywords):
+        return response_text.strip()
+
+    return None
+
+
+def _count_sloc(source_lines: list[str]) -> int:
+    """Count non-blank, non-comment source lines."""
+    count = 0
+    for line in source_lines:
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#"):
+            count += 1
+    return count
+
+
+def _compute_cyclomatic_complexity(tree: ast.AST) -> int:
+    """Walk AST and count decision points, plus 1 for the base path."""
+    decision_node_types = (
+        ast.If,
+        ast.For,
+        ast.While,
+        ast.ExceptHandler,
+        ast.With,
+    )
+    complexity = 1  # Base path
+    for node in ast.walk(tree):
+        if isinstance(node, decision_node_types):
+            complexity += 1
+        elif isinstance(node, ast.BoolOp):
+            # Each `and` / `or` adds a branch — count operands - 1
+            complexity += len(node.values) - 1
+    return complexity
+
+
+def _has_error_handling(tree: ast.AST) -> bool:
+    """Return True if the AST contains any try/except node."""
+    return any(isinstance(node, ast.Try) for node in ast.walk(tree))
+
+
+def _compute_maintainability_score(
+    correctness_pct: float,
+    cyclomatic_complexity: int,
+    has_error_handling_flag: bool,
+    sloc: int,
+) -> float:
+    """Score maintainability 0–100 based on four weighted dimensions.
+
+    Scoring breakdown:
+      - 40 pts: correctness (scaled by test pass rate)
+      - 30 pts: complexity (30 ≤5, 20 ≤10, 10 ≤15, 0 otherwise)
+      - 20 pts: error handling present
+      - 10 pts: SLOC in reasonable range
+    """
+    correctness_pts = correctness_pct * 0.40 * 100  # scales 0–40
+
+    if cyclomatic_complexity <= 5:
+        complexity_pts = 30.0
+    elif cyclomatic_complexity <= 10:
+        complexity_pts = 20.0
+    elif cyclomatic_complexity <= 15:
+        complexity_pts = 10.0
+    else:
+        complexity_pts = 0.0
+
+    error_handling_pts = 20.0 if has_error_handling_flag else 0.0
+
+    if 10 <= sloc <= 100:
+        sloc_pts = 10.0
+    elif 1 <= sloc <= 9 or 101 <= sloc <= 200:
+        sloc_pts = 5.0
+    else:
+        sloc_pts = 0.0
+
+    return correctness_pts + complexity_pts + error_handling_pts + sloc_pts
+
+
+def _run_single_test_case(
+    code: str,
+    test_case: dict,
+    timeout: int,
+) -> bool:
+    """Execute code in a subprocess and compare stdout to expected output.
+
+    Injects a runner that calls the first top-level function with the
+    test case input, then prints the result to stdout.
+
+    Args:
+        code:      Python source code to test.
+        test_case: Dict with 'input' and 'expected_output' keys.
+        timeout:   Seconds before subprocess is killed.
+
+    Returns:
+        True if stdout matches expected_output (as string), False otherwise.
+    """
+    test_input = test_case.get("input")
+    expected_output = str(test_case.get("expected_output", ""))
+
+    # Build a runner that discovers the first top-level function
+    runner_snippet = f"""
+import sys as _sys
+
+_input = {repr(test_input)}
+
+# Find first top-level callable and invoke it
+_candidates = [v for v in list(locals().values()) + list(globals().values())
+               if callable(v) and not v.__name__.startswith('_')]
+# Re-discover after exec context: parse the module for function names
+import ast as _ast, types as _types
+_src = open(__file__).read()
+_tree = _ast.parse(_src)
+_fn_names = [n.name for n in _ast.walk(_tree)
+             if isinstance(n, _ast.FunctionDef) and not n.name.startswith('_')]
+
+if not _fn_names:
+    print("__NO_FUNCTION__")
+    _sys.exit(0)
+
+_fn = globals().get(_fn_names[0])
+if _fn is None:
+    print("__FUNCTION_NOT_FOUND__")
+    _sys.exit(0)
+
+try:
+    if isinstance(_input, (list, tuple)):
+        _result = _fn(*_input)
+    else:
+        _result = _fn(_input)
+    print(_result)
+except Exception as _e:
+    print(f"__EXCEPTION__: {{_e}}")
+"""
+
+    full_source = code + "\n" + runner_snippet
+
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as tmp:
+            tmp.write(full_source)
+            tmp_path = tmp.name
+
+        result = subprocess.run(
+            ["python3", tmp_path],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+        actual_output = result.stdout.strip()
+        return actual_output == expected_output
+
+    except subprocess.TimeoutExpired:
+        return False
+    except Exception:
+        return False
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except Exception:
+            pass
+
+
+def analyze_python_code(
+    code: str,
+    test_cases: list,
+    timeout: int = CODE_EXEC_TIMEOUT_SECONDS,
+    run_tests: bool = True,
+) -> dict:
+    """Analyze Python code for quality metrics.
+
+    Performs:
+      - Syntax / compilation check via ast.parse
+      - Test case execution (if run_tests=True)
+      - Cyclomatic complexity via AST walk
+      - Error handling detection via AST walk
+      - Source lines of code count
+      - Maintainability score (0–100)
+
+    Args:
+        code:       Python source code string.
+        test_cases: List of {input, expected_output} dicts from exercise.
+        timeout:    Seconds per test case subprocess.
+        run_tests:  If False, skip subprocess execution.
+
+    Returns:
+        Dict with keys: compiles, test_cases_passed, test_cases_total,
+        correctness_pct, cyclomatic_complexity, has_error_handling,
+        sloc, maintainability_score.
+    """
+    # Guard: empty code produces zeroed metrics
+    if not code or not code.strip():
+        return {
+            "compiles": False,
+            "test_cases_passed": 0,
+            "test_cases_total": len(test_cases),
+            "correctness_pct": 0.0,
+            "cyclomatic_complexity": 0,
+            "has_error_handling": False,
+            "sloc": 0,
+            "maintainability_score": 0.0,
+        }
+
+    # ── Compilation check ──────────────────────────────────────────────────
+    try:
+        tree = ast.parse(code)
+        compiles = True
+    except SyntaxError:
+        return {
+            "compiles": False,
+            "test_cases_passed": 0,
+            "test_cases_total": len(test_cases),
+            "correctness_pct": 0.0,
+            "cyclomatic_complexity": 0,
+            "has_error_handling": False,
+            "sloc": _count_sloc(code.splitlines()),
+            "maintainability_score": 0.0,
+        }
+
+    # ── Static metrics (safe, no subprocess) ──────────────────────────────
+    cyclomatic_complexity = _compute_cyclomatic_complexity(tree)
+    error_handling = _has_error_handling(tree)
+    sloc = _count_sloc(code.splitlines())
+
+    # ── Test execution ─────────────────────────────────────────────────────
+    passed = 0
+    total = len(test_cases)
+
+    if run_tests and total > 0:
+        for test_case in test_cases:
+            try:
+                if _run_single_test_case(code, test_case, timeout):
+                    passed += 1
+            except Exception:
+                pass  # Never let a broken test crash the benchmark
+
+    correctness_pct = (passed / total) if total > 0 else 1.0
+
+    # ── Maintainability score ──────────────────────────────────────────────
+    maintainability = _compute_maintainability_score(
+        correctness_pct=correctness_pct,
+        cyclomatic_complexity=cyclomatic_complexity,
+        has_error_handling_flag=error_handling,
+        sloc=sloc,
+    )
+
+    return {
+        "compiles": compiles,
+        "test_cases_passed": passed,
+        "test_cases_total": total,
+        "correctness_pct": correctness_pct,
+        "cyclomatic_complexity": cyclomatic_complexity,
+        "has_error_handling": error_handling,
+        "sloc": sloc,
+        "maintainability_score": maintainability,
+    }
+
+
+def build_coding_challenge_prompt(exercise: dict) -> str:
+    """Build a user prompt that includes the coding challenge description.
+
+    Args:
+        exercise: Exercise dict containing 'task' and 'coding_challenge' keys.
+
+    Returns:
+        Formatted prompt string that instructs the LLM to return fenced code.
+    """
+    task = exercise.get("task", "")
+    challenge = exercise["coding_challenge"]
+    description = challenge.get("description", "")
+    language = challenge.get("language", "python")
+
+    return (
+        f"Task: {task}\n\n"
+        f"Coding Challenge: {description}\n"
+        f"Language: {language}\n\n"
+        f"Please provide working {language} code that solves the challenge.\n"
+        f"Return code in a ```{language} ... ``` fenced block."
+    )
+
+
+def apply_code_quality_to_result(
+    result: RunResult,
+    exercise: dict,
+    run_code_eval: bool,
+) -> None:
+    """Extract code from result and compute quality metrics in-place.
+
+    Only processes exercises with a 'coding_challenge' key.
+    Only runs Python quality analysis (non-Python languages get None fields).
+
+    Args:
+        result:        RunResult to annotate with quality fields.
+        exercise:      Exercise dict (may contain 'coding_challenge').
+        run_code_eval: If False, skip subprocess test execution.
+    """
+    challenge = exercise.get("coding_challenge")
+    if challenge is None:
+        return  # Not a coding exercise — leave all quality fields as None
+
+    language = challenge.get("language", "python").lower()
+    test_cases = challenge.get("success_criteria", {}).get("test_cases", [])
+
+    code = extract_code(result.response_text, language)
+    result.code_generated = code
+
+    if language != "python":
+        # Non-Python quality eval not supported yet
+        print(f"  ℹ️  Code quality eval not supported for language: {language}")
+        return
+
+    if code is None:
+        # No code found at all — mark as failed compilation
+        result.code_compiles = False
+        result.test_cases_passed = 0
+        result.test_cases_total = len(test_cases)
+        result.correctness_pct = 0.0
+        result.cyclomatic_complexity = 0
+        result.has_error_handling = False
+        result.maintainability_score = 0.0
+        result.sloc = 0
+        return
+
+    metrics = analyze_python_code(
+        code=code,
+        test_cases=test_cases,
+        run_tests=run_code_eval,
+    )
+
+    result.code_compiles = metrics["compiles"]
+    result.test_cases_passed = metrics["test_cases_passed"]
+    result.test_cases_total = metrics["test_cases_total"]
+    result.correctness_pct = metrics["correctness_pct"]
+    result.cyclomatic_complexity = metrics["cyclomatic_complexity"]
+    result.has_error_handling = metrics["has_error_handling"]
+    result.maintainability_score = metrics["maintainability_score"]
+    result.sloc = metrics["sloc"]
+
+
 # ─── Individual Runs ──────────────────────────────────────────────────────────
 
 
@@ -713,25 +1113,34 @@ def run_without_mcp(
     model_name: str,
     provider: str,
     llamacpp_url: str,
+    exercise: Optional[dict] = None,
+    run_code_eval: bool = True,
 ) -> RunResult:
     """Run the LLM with a generic system prompt (no MCP skill injection).
 
     Args:
-        task:         Task description sent as user message.
-        model_name:   LLM model identifier.
-        provider:     LLM provider string.
-        llamacpp_url: llama.cpp base URL (used only if provider='llamacpp').
+        task:          Task description sent as user message.
+        model_name:    LLM model identifier.
+        provider:      LLM provider string.
+        llamacpp_url:  llama.cpp base URL (used only if provider='llamacpp').
+        exercise:      Full exercise dict (used for coding_challenge prompt/eval).
+        run_code_eval: If False, skip subprocess code execution.
 
     Returns:
         RunResult populated with metrics and response.
     """
     print("  ⏳ Calling LLM (without MCP)...")
 
+    # Use enriched prompt when exercise has a coding challenge
+    user_message = task
+    if exercise and "coding_challenge" in exercise:
+        user_message = build_coding_challenge_prompt(exercise)
+
     try:
         text, prompt_tokens, completion_tokens, latency_ms = call_llm(
             model_name=model_name,
             system_prompt=GENERIC_SYSTEM_PROMPT,
-            user_message=task,
+            user_message=user_message,
             provider=provider,
             llamacpp_url=llamacpp_url,
         )
@@ -756,7 +1165,7 @@ def run_without_mcp(
 
     cost = calculate_cost(model_name, prompt_tokens, completion_tokens)
 
-    return RunResult(
+    result = RunResult(
         run_type="without_mcp",
         model=model_name,
         system_prompt_preview=GENERIC_SYSTEM_PROMPT[:80],
@@ -773,6 +1182,11 @@ def run_without_mcp(
         success=True,
     )
 
+    if exercise:
+        apply_code_quality_to_result(result, exercise, run_code_eval)
+
+    return result
+
 
 def run_with_mcp(
     task: str,
@@ -780,6 +1194,8 @@ def run_with_mcp(
     provider: str,
     llamacpp_url: str,
     router_url: str,
+    exercise: Optional[dict] = None,
+    run_code_eval: bool = True,
 ) -> RunResult:
     """Route task via MCP, inject SKILL.md as system prompt, call LLM.
 
@@ -789,11 +1205,13 @@ def run_with_mcp(
       3. Call LLM with skill content as system prompt
 
     Args:
-        task:         Task description.
-        model_name:   LLM model identifier.
-        provider:     LLM provider string.
-        llamacpp_url: llama.cpp base URL.
-        router_url:   MCP router base URL.
+        task:          Task description.
+        model_name:    LLM model identifier.
+        provider:      LLM provider string.
+        llamacpp_url:  llama.cpp base URL.
+        router_url:    MCP router base URL.
+        exercise:      Full exercise dict (used for coding_challenge prompt/eval).
+        run_code_eval: If False, skip subprocess code execution.
 
     Returns:
         RunResult populated with metrics, response, and skill info.
@@ -831,11 +1249,16 @@ def run_with_mcp(
 
     print(f"  ⏳ Calling LLM (with MCP, ~{system_prompt_tokens} system tokens)...")
 
+    # Use enriched prompt when exercise has a coding challenge
+    user_message = task
+    if exercise and "coding_challenge" in exercise:
+        user_message = build_coding_challenge_prompt(exercise)
+
     try:
         text, prompt_tokens, completion_tokens, llm_latency_ms = call_llm(
             model_name=model_name,
             system_prompt=system_prompt,
-            user_message=task,
+            user_message=user_message,
             provider=provider,
             llamacpp_url=llamacpp_url,
         )
@@ -861,7 +1284,7 @@ def run_with_mcp(
     cost = calculate_cost(model_name, prompt_tokens, completion_tokens)
     total_latency_ms = router_latency_ms + llm_latency_ms
 
-    return RunResult(
+    result = RunResult(
         run_type="with_mcp",
         model=model_name,
         system_prompt_preview=system_prompt[:80].replace("\n", " "),
@@ -877,6 +1300,11 @@ def run_with_mcp(
         skills_injected=skill_names,
         success=True,
     )
+
+    if exercise:
+        apply_code_quality_to_result(result, exercise, run_code_eval)
+
+    return result
 
 
 # ─── Display Formatting ───────────────────────────────────────────────────────
@@ -894,6 +1322,199 @@ def format_cost_delta(without_val: float, with_val: float) -> str:
     delta = with_val - without_val
     sign = "+" if delta >= 0 else ""
     return f"{sign}${delta:.4f}"
+
+
+def _has_quality_data(result: Optional[RunResult]) -> bool:
+    """Return True if result contains populated code quality metrics."""
+    return result is not None and result.code_compiles is not None
+
+
+def print_coding_quality_section(
+    w: Optional[RunResult],
+    m: Optional[RunResult],
+    thin: str,
+) -> None:
+    """Print the CODING QUALITY comparison section.
+
+    Only called when at least one run has quality data.
+
+    Args:
+        w:    without_mcp RunResult.
+        m:    with_mcp RunResult.
+        thin: Section separator string.
+    """
+    w_has = _has_quality_data(w)
+    m_has = _has_quality_data(m)
+
+    if not w_has and not m_has:
+        return
+
+    print("\nCODING QUALITY COMPARISON")
+    print(thin)
+
+    col = 18
+    header = (
+        f"{'Metric':<25} {'WITHOUT MCP':>{col}} {'WITH MCP':>{col}} {'Delta':>{col}}"
+    )
+    print(header)
+    print("─" * (25 + col * 3 + 3))
+
+    def fmt_bool(val: Optional[bool]) -> str:
+        if val is None:
+            return "N/A"
+        return "✅ Yes" if val else "❌ No"
+
+    def fmt_opt(val, fmt_str: str = "") -> str:
+        if val is None:
+            return "N/A"
+        if fmt_str:
+            return f"{val:{fmt_str}}"
+        return str(val)
+
+    # Compiles
+    w_compiles = fmt_bool(w.code_compiles if w_has else None)
+    m_compiles = fmt_bool(m.code_compiles if m_has else None)
+    compiles_delta = "—"
+    if w_has and m_has and w.code_compiles is not None and m.code_compiles is not None:
+        if w.code_compiles == m.code_compiles:
+            compiles_delta = "same"
+        elif m.code_compiles:
+            compiles_delta = "improved"
+        else:
+            compiles_delta = "regressed"
+    print(
+        f"{'Compiles':<25} {w_compiles:>{col}} {m_compiles:>{col}} {compiles_delta:>{col}}"
+    )
+
+    # Test cases passed
+    def fmt_tests(r: Optional[RunResult], has: bool) -> str:
+        if not has or r is None or r.test_cases_total is None:
+            return "N/A"
+        if r.test_cases_total == 0:
+            return "no tests"
+        pct = (r.correctness_pct or 0.0) * 100
+        return f"{r.test_cases_passed}/{r.test_cases_total} ({pct:.1f}%)"
+
+    w_tests = fmt_tests(w, w_has)
+    m_tests = fmt_tests(m, m_has)
+    tests_delta = "—"
+    if (
+        w_has
+        and m_has
+        and w is not None
+        and m is not None
+        and w.correctness_pct is not None
+        and m.correctness_pct is not None
+    ):
+        diff_pct = (m.correctness_pct - w.correctness_pct) * 100
+        sign = "+" if diff_pct >= 0 else ""
+        tests_delta = f"{sign}{diff_pct:.1f}%"
+    print(
+        f"{'Test cases passed':<25} {w_tests:>{col}} {m_tests:>{col}} {tests_delta:>{col}}"
+    )
+
+    # Cyclomatic complexity
+    w_cc = fmt_opt(w.cyclomatic_complexity if w_has else None)
+    m_cc = fmt_opt(m.cyclomatic_complexity if m_has else None)
+    cc_delta = "—"
+    if (
+        w_has
+        and m_has
+        and w is not None
+        and m is not None
+        and w.cyclomatic_complexity is not None
+        and m.cyclomatic_complexity is not None
+    ):
+        diff = m.cyclomatic_complexity - w.cyclomatic_complexity
+        sign = "+" if diff >= 0 else ""
+        direction = " (worse)" if diff > 0 else " (better)" if diff < 0 else ""
+        cc_delta = f"{sign}{diff}{direction}"
+    print(
+        f"{'Cyclomatic complexity':<25} {w_cc:>{col}} {m_cc:>{col}} {cc_delta:>{col}}"
+    )
+
+    # Error handling
+    w_eh = fmt_bool(w.has_error_handling if w_has else None)
+    m_eh = fmt_bool(m.has_error_handling if m_has else None)
+    eh_delta = "—"
+    if (
+        w_has
+        and m_has
+        and w is not None
+        and m is not None
+        and w.has_error_handling is not None
+        and m.has_error_handling is not None
+    ):
+        if w.has_error_handling == m.has_error_handling:
+            eh_delta = "same"
+        elif m.has_error_handling:
+            eh_delta = "improved"
+        else:
+            eh_delta = "regressed"
+    print(f"{'Error handling':<25} {w_eh:>{col}} {m_eh:>{col}} {eh_delta:>{col}}")
+
+    # Maintainability score
+    w_ms = fmt_opt(
+        f"{w.maintainability_score:.0f}/100"
+        if w_has and w is not None and w.maintainability_score is not None
+        else None
+    )
+    m_ms = fmt_opt(
+        f"{m.maintainability_score:.0f}/100"
+        if m_has and m is not None and m.maintainability_score is not None
+        else None
+    )
+    ms_delta = "—"
+    if (
+        w_has
+        and m_has
+        and w is not None
+        and m is not None
+        and w.maintainability_score is not None
+        and m.maintainability_score is not None
+    ):
+        diff = m.maintainability_score - w.maintainability_score
+        sign = "+" if diff >= 0 else ""
+        ms_delta = f"{sign}{diff:.0f} pts"
+    print(f"{'Maintainability':<25} {w_ms:>{col}} {m_ms:>{col}} {ms_delta:>{col}}")
+
+    # SLOC
+    w_sloc = fmt_opt(w.sloc if w_has else None)
+    m_sloc = fmt_opt(m.sloc if m_has else None)
+    sloc_delta = "—"
+    if (
+        w_has
+        and m_has
+        and w is not None
+        and m is not None
+        and w.sloc is not None
+        and m.sloc is not None
+    ):
+        diff = m.sloc - w.sloc
+        sign = "+" if diff >= 0 else ""
+        sloc_delta = f"{sign}{diff} lines"
+    print(f"{'SLOC':<25} {w_sloc:>{col}} {m_sloc:>{col}} {sloc_delta:>{col}}")
+
+    print(thin)
+
+    # Verdict
+    if (
+        w_has
+        and m_has
+        and w is not None
+        and m is not None
+        and w.maintainability_score is not None
+        and m.maintainability_score is not None
+    ):
+        w_score = w.maintainability_score
+        m_score = m.maintainability_score
+        if m_score > w_score:
+            verdict = f"WITH MCP wins ({m_score:.0f} vs {w_score:.0f})"
+        elif w_score > m_score:
+            verdict = f"WITHOUT MCP wins ({w_score:.0f} vs {m_score:.0f})"
+        else:
+            verdict = f"Tied ({w_score:.0f} vs {m_score:.0f})"
+        print(f"CODE QUALITY VERDICT: {verdict}")
 
 
 def print_comparison(comparison: ExerciseComparison) -> None:
@@ -1031,6 +1652,9 @@ def print_comparison(comparison: ExerciseComparison) -> None:
                 f"{label:<22} {without_val:>{col_w}} {with_val:>{col_w}} {delta:>{col_w}}"
             )
 
+        # ── CODING QUALITY SECTION ──
+        print_coding_quality_section(w, m, thin)
+
     print(sep)
 
 
@@ -1138,6 +1762,61 @@ def print_aggregate_summary(comparisons: list[ExerciseComparison]) -> None:
 
     print(sep)
 
+    # ── CODE QUALITY AGGREGATE ──────────────────────────────────────────────
+    coding_valid = [
+        c
+        for c in valid
+        if _has_quality_data(c.without_mcp) and _has_quality_data(c.with_mcp)
+    ]
+
+    if not coding_valid:
+        return  # No coding exercises in this run — skip quality aggregate
+
+    wo_correctness_values = [
+        c.without_mcp.correctness_pct * 100
+        for c in coding_valid
+        if c.without_mcp.correctness_pct is not None
+    ]
+    mcp_correctness_values = [
+        c.with_mcp.correctness_pct * 100
+        for c in coding_valid
+        if c.with_mcp.correctness_pct is not None
+    ]
+
+    avg_wo_correctness = avg(wo_correctness_values)
+    avg_mcp_correctness = avg(mcp_correctness_values)
+    quality_improvement = avg_mcp_correctness - avg_wo_correctness
+
+    # Count wins, losses, ties by maintainability score
+    mcp_wins = sum(
+        1
+        for c in coding_valid
+        if (c.with_mcp.maintainability_score or 0)
+        > (c.without_mcp.maintainability_score or 0)
+    )
+    wo_wins = sum(
+        1
+        for c in coding_valid
+        if (c.without_mcp.maintainability_score or 0)
+        > (c.with_mcp.maintainability_score or 0)
+    )
+    ties = len(coding_valid) - mcp_wins - wo_wins
+
+    total_coding = len(coding_valid)
+
+    print(f"\n{'CODE QUALITY AGGREGATE':}")
+    print("─" * 55)
+    print(f"Average correctness WITHOUT MCP: {avg_wo_correctness:.1f}%")
+    print(f"Average correctness WITH MCP:    {avg_mcp_correctness:.1f}%")
+    sign = "+" if quality_improvement >= 0 else ""
+    print(
+        f"Quality improvement:             {sign}{quality_improvement:.1f} percentage points"
+    )
+    print(f"Exercises where WITH MCP won:    {mcp_wins}/{total_coding}")
+    print(f"Exercises where WITHOUT MCP won: {wo_wins}/{total_coding}")
+    print(f"Exercises tied:                  {ties}/{total_coding}")
+    print(sep)
+
 
 # ─── Orchestration ────────────────────────────────────────────────────────────
 
@@ -1149,6 +1828,7 @@ def run_exercise_comparison(
     llamacpp_url: str,
     router_url: str,
     router_is_available: bool,
+    run_code_eval: bool = True,
 ) -> ExerciseComparison:
     """Execute both runs for a single exercise and return the comparison.
 
@@ -1159,6 +1839,7 @@ def run_exercise_comparison(
         llamacpp_url:         llama.cpp base URL.
         router_url:           MCP router base URL.
         router_is_available:  If False, skip the MCP run.
+        run_code_eval:        If False, skip subprocess code execution.
 
     Returns:
         Completed ExerciseComparison.
@@ -1177,12 +1858,18 @@ def run_exercise_comparison(
     print(f"\n▶ Exercise: {exercise_name}")
     print(f"  Task: {task[:100]}{'...' if len(task) > 100 else ''}")
 
+    if "coding_challenge" in exercise:
+        lang = exercise["coding_challenge"].get("language", "python")
+        print(f"  🧪 Coding challenge detected (language: {lang})")
+
     # Run 1: WITHOUT MCP
     comparison.without_mcp = run_without_mcp(
         task=task,
         model_name=model_name,
         provider=provider,
         llamacpp_url=llamacpp_url,
+        exercise=exercise,
+        run_code_eval=run_code_eval,
     )
 
     # Run 2: WITH MCP (skip gracefully if router is down)
@@ -1193,6 +1880,8 @@ def run_exercise_comparison(
             provider=provider,
             llamacpp_url=llamacpp_url,
             router_url=router_url,
+            exercise=exercise,
+            run_code_eval=run_code_eval,
         )
     else:
         comparison.router_error = "Router unavailable — MCP run skipped"
@@ -1232,6 +1921,9 @@ Examples:
 
   # Save JSON results
   python3 benchmarks/llm_compare.py --tier simple --output results/comparison.json
+
+  # Skip code execution (for restricted environments)
+  python3 benchmarks/llm_compare.py --tier simple --no-code-eval
 """,
     )
 
@@ -1283,6 +1975,12 @@ Examples:
         metavar="FILE",
         help="Save results as JSON to this file path",
     )
+    parser.add_argument(
+        "--no-code-eval",
+        action="store_true",
+        default=False,
+        help="Skip subprocess code execution (static analysis only)",
+    )
 
     return parser
 
@@ -1296,10 +1994,14 @@ def main() -> None:
     model_name = args.model or load_default_model()
     provider = detect_provider(model_name)
 
+    run_code_eval = not args.no_code_eval
+
     print(f"\n🤖 Model: {model_name}  (provider: {provider})")
     print(f"🌐 Router URL: {args.router_url}")
     if provider == "llamacpp":
         print(f"🖥️  llama.cpp URL: {args.llamacpp_url}")
+    if not run_code_eval:
+        print("⚠️  Code execution disabled (--no-code-eval)")
 
     # Check router availability once upfront
     print("\n🔍 Checking MCP router health...")
@@ -1331,6 +2033,7 @@ def main() -> None:
             llamacpp_url=args.llamacpp_url,
             router_url=args.router_url,
             router_is_available=router_available,
+            run_code_eval=run_code_eval,
         )
         comparisons.append(comparison)
         print_comparison(comparison)
