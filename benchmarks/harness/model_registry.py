@@ -25,6 +25,8 @@ class Provider(Enum):
     ANTHROPIC = "anthropic"
     GROQ = "groq"
     OLLAMA = "ollama"  # Local, no API key needed
+    LLAMACPP = "llamacpp"  # Local llama.cpp server, no API key needed
+    GOOGLE = "google"  # Google Gemini API
 
 
 @dataclass
@@ -54,7 +56,7 @@ class ModelInfo:
 
     def is_local(self) -> bool:
         """Check if this is a local model (no API key needed)."""
-        return self.provider == Provider.OLLAMA
+        return self.provider in (Provider.OLLAMA, Provider.LLAMACPP)
 
 
 class ModelRegistry:
@@ -255,6 +257,89 @@ class ModelRegistry:
             context_window=8192,
             max_output_tokens=8192,
             description="Local Google Gemma model (free)",
+        ),
+        # llama.cpp Models (local server)
+        "qwen3-coder-next-8_0": ModelInfo(
+            name="qwen3-coder-next-8_0",
+            provider=Provider.LLAMACPP,
+            api_key_env=None,
+            cost_input_per_mtok=0.0,
+            cost_output_per_mtok=0.0,
+            context_window=272000,
+            max_output_tokens=272000,
+            description="Qwen3 Coder Next (Q8_0 quantization) - Local llama.cpp server",
+        ),
+        "qwen2-72b": ModelInfo(
+            name="qwen2-72b",
+            provider=Provider.LLAMACPP,
+            api_key_env=None,
+            cost_input_per_mtok=0.0,
+            cost_output_per_mtok=0.0,
+            context_window=272000,
+            max_output_tokens=32768,
+            description="Qwen2 72B (Q8_0 quantization) - Local llama.cpp server",
+        ),
+        "nemotron-120b": ModelInfo(
+            name="nemotron-120b",
+            provider=Provider.LLAMACPP,
+            api_key_env=None,
+            cost_input_per_mtok=0.0,
+            cost_output_per_mtok=0.0,
+            context_window=272000,
+            max_output_tokens=32768,
+            description="NVIDIA Nemotron 3 Super 120B (UD-Q4_K_M) - Local llama.cpp server",
+        ),
+        "qwen35-27b": ModelInfo(
+            name="qwen35-27b",
+            provider=Provider.LLAMACPP,
+            api_key_env=None,
+            cost_input_per_mtok=0.0,
+            cost_output_per_mtok=0.0,
+            context_window=68096,
+            max_output_tokens=68096,
+            description="Qwen3.5 27B (Q4_K_M quantization) - Local llama.cpp server",
+        ),
+        # Ollama Models - Additional
+        "qwen3-coder-30b": ModelInfo(
+            name="qwen3-coder-30b",
+            provider=Provider.OLLAMA,
+            api_key_env=None,
+            cost_input_per_mtok=0.0,
+            cost_output_per_mtok=0.0,
+            context_window=32000,
+            max_output_tokens=8192,
+            description="Qwen3 Coder 30B - Local Ollama model (free)",
+        ),
+        "gpt-oss-20b": ModelInfo(
+            name="gpt-oss-20b",
+            provider=Provider.OLLAMA,
+            api_key_env=None,
+            cost_input_per_mtok=0.0,
+            cost_output_per_mtok=0.0,
+            context_window=32000,
+            max_output_tokens=8192,
+            description="GPT-OSS 20B - Local Ollama model (free)",
+        ),
+        # Google Gemini Models
+        "gemini-3-flash": ModelInfo(
+            name="gemini-3-flash",
+            provider=Provider.GOOGLE,
+            api_key_env="GEMINI_API_KEY",
+            cost_input_per_mtok=0.075,
+            cost_output_per_mtok=0.30,
+            context_window=1000000,
+            max_output_tokens=8192,
+            description="Google Gemini 3 Flash - Fast multimodal model",
+        ),
+        "gemini-2-5-flash": ModelInfo(
+            name="gemini-2-5-flash",
+            provider=Provider.GOOGLE,
+            api_key_env="GEMINI_API_KEY",
+            cost_input_per_mtok=0.075,
+            cost_output_per_mtok=0.30,
+            context_window=1000000,
+            max_output_tokens=8192,
+            description="Google Gemini 2.5 Flash - Updated fast model",
         ),
     }
 
