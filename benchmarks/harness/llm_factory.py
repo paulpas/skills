@@ -9,9 +9,11 @@ Provides:
 - Error handling and retries
 """
 
+import json
 import os
 import time
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Optional, Dict, Any, Tuple
 from dataclasses import dataclass
 from datetime import datetime
@@ -428,8 +430,252 @@ class OllamaClient(LLMClient):
         return max(1, len(text) // 4)
 
 
+class LlamaCppClient(LLMClient):
+    """Local llama.cpp server via OpenAI-compatible API (no API key needed)."""
+
+    def __init__(
+        self, model_info: ModelInfo, base_url: str = "http://localhost:8080/v1"
+    ):
+        """Initialize LlamaCppClient.
+
+        Args:
+            model_info: Model metadata from the registry.
+            base_url:   Base URL of the llama.cpp server (OpenAI-compatible /v1 endpoint).
+        """
+        super().__init__(model_info)
+        self.base_url = base_url
+
+        try:
+            import openai  # noqa: F401 — validate import at construction time
+        except ImportError:
+            raise ImportError(
+                "openai package required for LlamaCppClient. "
+                "Install with: pip install openai"
+            )
+
+    def generate(
+        self,
+        prompt: str,
+        temperature: float = 0.2,
+        max_tokens: Optional[int] = None,
+    ) -> LLMResponse:
+        """Generate a response from the locally-running llama.cpp server.
+
+        The server is OpenAI-API-compatible, so we use the openai client
+        pointed at the local base URL.  The model name sent in the request
+        is the short registry alias (e.g. 'qwen3-coder-next-8_0') — llama.cpp
+        ignores the model field and serves whatever model is currently loaded.
+
+        Args:
+            prompt:      User-facing prompt text.
+            temperature: Sampling temperature (0.0 = deterministic).
+            max_tokens:  Maximum tokens to generate; defaults to model max.
+
+        Returns:
+            LLMResponse with token counts and timing.
+
+        Raises:
+            RuntimeError: If the llama.cpp server is unreachable or returns an error.
+        """
+        import openai
+
+        if max_tokens is None:
+            max_tokens = self.model_info.max_output_tokens
+
+        start_time = time.time()
+
+        try:
+            client = openai.OpenAI(api_key="not-needed", base_url=self.base_url)
+            response = client.chat.completions.create(
+                model=self.model_name,  # Short alias — llama.cpp ignores it
+                messages=[{"role": "user", "content": prompt}],
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+
+            text = response.choices[0].message.content
+            input_tokens = (
+                response.usage.prompt_tokens
+                if response.usage
+                else self._count_tokens(prompt)
+            )
+            output_tokens = (
+                response.usage.completion_tokens
+                if response.usage
+                else self._count_tokens(text)
+            )
+            execution_time_ms = (time.time() - start_time) * 1000
+
+            # Update running stats (local = free)
+            self._call_count += 1
+            self._total_tokens += input_tokens + output_tokens
+
+            return LLMResponse(
+                text=text,
+                model=self.model_name,
+                provider=self.provider.value,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                execution_time_ms=execution_time_ms,
+                cost_usd=0.0,  # Local = free
+                timestamp=datetime.now(),
+            )
+
+        except Exception as e:
+            raise RuntimeError(
+                f"LlamaCpp API error (is the server running at {self.base_url}?): {e}"
+            )
+
+    def _count_tokens(self, text: str) -> int:
+        """Estimate token count (4 chars ≈ 1 token)."""
+        return max(1, len(text) // 4)
+
+
+class GoogleClient(LLMClient):
+    """Google Gemini models via the OpenAI-compatible Generative Language API."""
+
+    def __init__(
+        self,
+        model_info: ModelInfo,
+        base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/",
+    ):
+        """Initialize GoogleClient.
+
+        Args:
+            model_info: Model metadata from the registry.
+            base_url:   Google's OpenAI-compatible endpoint base URL.
+        """
+        super().__init__(model_info)
+        self.base_url = base_url
+
+        self._api_key = model_info.get_api_key()
+        if not self._api_key:
+            raise ValueError(
+                "GEMINI_API_KEY environment variable not set. "
+                "Export it before running Google model benchmarks."
+            )
+
+        try:
+            import openai  # noqa: F401
+        except ImportError:
+            raise ImportError(
+                "openai package required for GoogleClient. "
+                "Install with: pip install openai"
+            )
+
+    def generate(
+        self,
+        prompt: str,
+        temperature: float = 0.2,
+        max_tokens: Optional[int] = None,
+    ) -> LLMResponse:
+        """Generate a response from Google Gemini via the OpenAI-compatible endpoint.
+
+        Args:
+            prompt:      User-facing prompt text.
+            temperature: Sampling temperature.
+            max_tokens:  Maximum tokens to generate.
+
+        Returns:
+            LLMResponse with token counts, timing, and cost estimate.
+
+        Raises:
+            RuntimeError: If the Google API returns an error.
+        """
+        import openai
+
+        if max_tokens is None:
+            max_tokens = self.model_info.max_output_tokens
+
+        # Re-read API key at call time in case env var was updated after init
+        api_key = os.environ.get("GEMINI_API_KEY", self._api_key)
+
+        start_time = time.time()
+
+        try:
+            client = openai.OpenAI(api_key=api_key, base_url=self.base_url)
+            response = client.chat.completions.create(
+                model=self.model_name,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+
+            text = response.choices[0].message.content
+            input_tokens = (
+                response.usage.prompt_tokens
+                if response.usage
+                else self._count_tokens(prompt)
+            )
+            output_tokens = (
+                response.usage.completion_tokens
+                if response.usage
+                else self._count_tokens(text)
+            )
+            execution_time_ms = (time.time() - start_time) * 1000
+
+            cost = ModelRegistry.get_cost_estimate(
+                self.model_name, input_tokens, output_tokens
+            )
+            if cost is None:
+                cost = 0.0
+
+            self._call_count += 1
+            self._total_tokens += input_tokens + output_tokens
+            self._total_cost += cost
+
+            return LLMResponse(
+                text=text,
+                model=self.model_name,
+                provider=self.provider.value,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                execution_time_ms=execution_time_ms,
+                cost_usd=cost,
+                timestamp=datetime.now(),
+            )
+
+        except Exception as e:
+            raise RuntimeError(f"Google API error: {e}")
+
+    def _count_tokens(self, text: str) -> int:
+        """Estimate token count (4 chars ≈ 1 token)."""
+        return max(1, len(text) // 4)
+
+
 class LLMFactory:
     """Factory for creating LLM clients."""
+
+    @classmethod
+    def get_provider_base_url(cls, provider_name: str, default: str) -> str:
+        """Look up the baseURL for a provider from openconfig.json.
+
+        Reads ``provider.<provider_name>.options.baseURL`` from the config file.
+        Falls back to *default* if the provider or key is absent.  No
+        environment-variable substitution is performed on URL values — only
+        API key strings use the ``{env:…}`` pattern.
+
+        Args:
+            provider_name: Provider key as in openconfig.json (e.g. 'llamacpp').
+            default:       Fallback URL returned when config entry is missing.
+
+        Returns:
+            The configured baseURL string, or *default*.
+        """
+        provider_cfg = ModelRegistry.get_provider_config(provider_name)
+
+        # Guard: empty provider config → use default
+        if not provider_cfg:
+            return default
+
+        options = provider_cfg.get("options", {})
+        base_url = options.get("baseURL", "")
+
+        # Guard: missing or empty URL → use default
+        if not base_url:
+            return default
+
+        return base_url
 
     @staticmethod
     def create(model_name: str) -> LLMClient:
@@ -464,7 +710,21 @@ class LLMFactory:
         elif model_info.provider == Provider.GROQ:
             return GroqClient(model_info)
         elif model_info.provider == Provider.OLLAMA:
-            return OllamaClient(model_info)
+            base_url = LLMFactory.get_provider_base_url(
+                "ollama", "http://localhost:11434"
+            )
+            return OllamaClient(model_info, base_url=base_url)
+        elif model_info.provider == Provider.LLAMACPP:
+            base_url = LLMFactory.get_provider_base_url(
+                "llamacpp", "http://localhost:8080/v1"
+            )
+            return LlamaCppClient(model_info, base_url=base_url)
+        elif model_info.provider == Provider.GOOGLE:
+            base_url = LLMFactory.get_provider_base_url(
+                "google",
+                "https://generativelanguage.googleapis.com/v1beta/openai/",
+            )
+            return GoogleClient(model_info, base_url=base_url)
         else:
             raise ValueError(f"Unsupported provider: {model_info.provider}")
 
