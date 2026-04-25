@@ -72,6 +72,9 @@ class ModelRegistry:
     # Cached config (lazy-loaded)
     _config: Optional[Dict] = None
 
+    # Cached provider config block (lazy-loaded alongside _config)
+    _provider_config: Optional[Dict] = None
+
     # Complete model definitions with current pricing (2024-2025)
     MODELS: Dict[str, ModelInfo] = {
         # OpenAI Models
@@ -782,6 +785,7 @@ class ModelRegistry:
 
         # Guard: check if file exists
         if not config_file.exists():
+            cls._provider_config = {}
             cls._config = {
                 "default": cls._DEFAULT_MODEL,
                 "available": list(cls.MODELS.keys()),
@@ -810,6 +814,9 @@ class ModelRegistry:
             if default_model not in available_models:
                 available_models.append(default_model)
 
+            # Cache provider block if present (optional section)
+            cls._provider_config = raw_config.get("provider", {})
+
             cls._config = {"default": default_model, "available": available_models}
             return cls._config
 
@@ -836,6 +843,28 @@ class ModelRegistry:
         """
         config = cls.load_config()
         return config["available"]
+
+    @classmethod
+    def get_provider_config(cls, provider_name: str) -> Dict:
+        """Get the provider config block (options + models) for a named provider.
+
+        Reads from the 'provider' section of openconfig.json.  The config is
+        loaded lazily on first access — subsequent calls hit the in-memory cache.
+
+        Args:
+            provider_name: Provider key as it appears in openconfig.json
+                           (e.g. 'llamacpp', 'ollama', 'google', 'openai').
+
+        Returns:
+            Provider config dict with 'options' and 'models' sub-keys,
+            or an empty dict if the provider is not defined in the config.
+        """
+        # Ensure config (and provider cache) has been loaded
+        if cls._provider_config is None:
+            cls.load_config()
+
+        # Guard: unknown provider → return empty dict, never raise
+        return cls._provider_config.get(provider_name, {})  # type: ignore[return-value]
 
     @classmethod
     def print_config_models(cls):

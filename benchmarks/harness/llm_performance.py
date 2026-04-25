@@ -892,16 +892,27 @@ class LLMPerformanceBenchmark:
         self.analyzer = CodeQualityAnalyzer()
 
     def _create_generator(self) -> Optional[LLMCodeGenerator]:
-        """Create real code generator using actual API calls."""
+        """Create real code generator using actual API calls.
+
+        Falls through to mock mode (returns None) when:
+        - The model is not in the registry (ValueError)
+        - The required provider package is not installed (ImportError)
+        - The API key / server is not configured (ValueError from factory)
+
+        In mock mode, evaluate_exercise() returns synthetic scores so the
+        benchmark harness can still run for structure/routing tests.
+        """
         try:
             from llm_factory import LLMFactory
 
-            # Create real LLM client
+            # Create real LLM client — raises ValueError for unsupported models
             llm_client = LLMFactory.create(self.llm_model)
-            # Wrap it in code generator interface
             return RealLLMCodeGenerator(llm_client)
         except (ImportError, ValueError) as e:
-            print(f"⚠️  Could not create LLM client: {e}")
+            print(
+                f"⚠️  Could not create real LLM client for '{self.llm_model}': {e}\n"
+                f"   Falling back to mock mode (no real API calls will be made)."
+            )
             return None
 
     def evaluate_exercise(
