@@ -2,14 +2,17 @@
 """Real MCP benchmark system that calls the skill router HTTP API.
 
 This module provides actual HTTP-based benchmarking of the skill router,
-measuring real latency vs simulated routing and comparing performance
-with and without router usage.
+measuring real latency vs baseline (without router).
+
+What this benchmark measures:
+  - WITHOUT router: pure Python overhead (~0ms), no I/O, no HTTP calls.
+  - WITH router:    real HTTP POST to /route endpoint, actual network latency.
+  - Overhead:       with_router_time - without_router_time = pure router HTTP cost.
 """
 
 import asyncio
 import aiohttp
 import time
-import random
 import json
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
@@ -63,12 +66,14 @@ class ExecutionComparison:
     selected_skills: List[str]
     is_correct: bool
     expected_skills: List[str]
+    matched_skills: List[str]
 
 
 class RealMCPBenchmark:
     """Benchmark system that makes real HTTP calls to the skill router.
 
-    This system compares actual router performance vs baseline (without router).
+    Compares actual router HTTP latency vs baseline (no HTTP call).
+    Overhead = with_router_ms - without_router_ms = pure router HTTP cost.
     """
 
     def __init__(
@@ -100,12 +105,12 @@ class RealMCPBenchmark:
         """
         try:
             async with aiohttp.ClientSession() as session:
-                start = time.time()
+                start = time.perf_counter()
                 async with session.get(
                     f"{self.router_url}/health",
                     timeout=aiohttp.ClientTimeout(total=self.timeout),
                 ) as resp:
-                    latency_ms = (time.time() - start) * 1000
+                    latency_ms = (time.perf_counter() - start) * 1000
 
                     if resp.status == 200:
                         data = await resp.json()
@@ -141,12 +146,12 @@ class RealMCPBenchmark:
         """
         try:
             async with aiohttp.ClientSession() as session:
-                start = time.time()
+                start = time.perf_counter()
                 async with session.get(
                     f"{self.router_url}/stats",
                     timeout=aiohttp.ClientTimeout(total=self.timeout),
                 ) as resp:
-                    latency_ms = (time.time() - start) * 1000
+                    latency_ms = (time.perf_counter() - start) * 1000
 
                     if resp.status == 200:
                         data = await resp.json()
@@ -169,30 +174,6 @@ class RealMCPBenchmark:
 
         return None
 
-    async def _simulate_actual_work(self, exercise: Dict) -> None:
-        """Simulate the actual work (same for both paths).
-
-        This is the real work being done - e.g., LLM call, code analysis, etc.
-        It's the same regardless of whether router is used.
-
-        Args:
-            exercise: Exercise configuration dict
-        """
-        # In a real benchmark, this would be:
-        # - LLM API call (e.g., /v1/completions)
-        # - Code analysis engine
-        # - Database query
-        # - Real API call to an actual service
-
-        # For simulation, we use a minimal fixed delay that represents
-        # the underlying work that happens regardless of routing.
-        # This is realistic because most work (LLM calls, analysis) takes
-        # time independent of the router.
-
-        # Simple fixed overhead to represent "doing the work"
-        # In reality this would vary based on actual service latency
-        await asyncio.sleep(0.01)  # 10ms minimum work
-
     async def route_task(self, task_description: str) -> RoutingResult:
         """Call the router's /route endpoint to select skills for a task.
 
@@ -202,7 +183,7 @@ class RealMCPBenchmark:
         Returns:
             RoutingResult with selected skills and latency info
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
 
         try:
             async with aiohttp.ClientSession() as session:
@@ -212,18 +193,17 @@ class RealMCPBenchmark:
                     "constraints": {"maxSkills": 5},
                 }
 
-                http_start = time.time()
+                http_start = time.perf_counter()
                 async with session.post(
                     f"{self.router_url}/route",
                     json=payload,
                     timeout=aiohttp.ClientTimeout(total=self.timeout),
                 ) as resp:
-                    http_latency = (time.time() - http_start) * 1000
+                    http_latency = (time.perf_counter() - http_start) * 1000
 
                     if resp.status == 200:
                         data = await resp.json()
 
-                        # Extract skills from response
                         selected_skills = []
                         confidence_scores = {}
 
@@ -271,7 +251,7 @@ class RealMCPBenchmark:
                 selected_skills=[],
                 confidence_scores={},
                 router_latency_ms=0.0,
-                http_latency_ms=(time.time() - start_time) * 1000,
+                http_latency_ms=(time.perf_counter() - start_time) * 1000,
                 timestamp=datetime.now(),
                 success=False,
                 error=error,
@@ -288,7 +268,7 @@ class RealMCPBenchmark:
                 selected_skills=[],
                 confidence_scores={},
                 router_latency_ms=0.0,
-                http_latency_ms=(time.time() - start_time) * 1000,
+                http_latency_ms=(time.perf_counter() - start_time) * 1000,
                 timestamp=datetime.now(),
                 success=False,
                 error=error,
@@ -297,99 +277,85 @@ class RealMCPBenchmark:
             return result
 
     async def execute_without_router(self, exercise: Dict) -> Dict:
-        """Execute task WITHOUT router (baseline).
+        """Baseline: no routing, measure pure Python overhead only.
 
-        Measures real execution time WITHOUT calling the router.
-        This is the baseline to compare against router-enabled execution.
+        No HTTP calls. No I/O. No sleeps.
+        This is the true baseline — what an agent does when it skips routing
+        entirely and just uses the task description as-is.
 
         Args:
             exercise: Exercise configuration dict
 
         Returns:
-            Dict with execution metrics
+            Dict with execution metrics (without_router_ms is pure Python overhead)
         """
         exercise_name = exercise.get("name", "unknown")
         task_description = exercise.get("task_description", "")
 
-        # Simulate actual work (this is the same work done in both paths)
-        # In a real scenario, this would be calling an LLM, analyzing code, etc.
-        # For benchmark purposes, we measure the time to do the actual task
-        # WITHOUT the router overhead.
-        start = time.time()
-
-        # Simulate the actual work being done (e.g., LLM call, code analysis)
-        # This is intentionally simple to isolate router overhead
-        await self._simulate_actual_work(exercise)
-
-        actual_time_ms = (time.time() - start) * 1000
+        start = time.perf_counter()
+        # Trivial local operation: no I/O, no HTTP — just Python overhead
+        _ = len(task_description)
+        elapsed_ms = (time.perf_counter() - start) * 1000
 
         if self.verbose:
-            print(f"  WITHOUT router: {actual_time_ms:.1f}ms")
+            print(f"  WITHOUT router: {elapsed_ms:.4f}ms  (no HTTP call, baseline)")
 
         return {
             "exercise_name": exercise_name,
-            "without_router_ms": actual_time_ms,
+            "without_router_ms": elapsed_ms,
             "task_description": task_description,
         }
 
     async def execute_with_router(self, exercise: Dict) -> Dict:
-        """Execute task WITH router.
+        """WITH router: make real HTTP call to /route, measure actual latency.
 
-        Measures real execution time WITH router overhead.
-        - Calls router to select skills
-        - Then does the same actual work as without_router path
-        - Measures total time and calculates router overhead
+        The ONLY overhead is the HTTP POST to /route.
+        No simulated work, no sleeps — just the real network round-trip.
 
         Args:
             exercise: Exercise configuration dict
 
         Returns:
-            Dict with execution metrics including router overhead
+            Dict with execution metrics where with_router_ms = real HTTP latency
         """
         exercise_name = exercise.get("name", "unknown")
         task_description = exercise.get("task_description", "")
         expected_skills = exercise.get("required_skills", [])
 
-        start_total = time.time()
-
-        # Call the router FIRST (this is the overhead we measure)
+        # Make the real HTTP call — this is the ONLY thing we measure
         routing_result = await self.route_task(task_description)
-        router_time_ms = routing_result.http_latency_ms
 
-        # Check if routing was successful and correct
         selected_skills = routing_result.selected_skills
+        http_latency_ms = routing_result.http_latency_ms
+
+        matched_skills = [s for s in selected_skills if s in expected_skills]
         is_correct = set(selected_skills) == set(expected_skills)
-
-        # Do the SAME actual work as without router
-        # (skill selection doesn't change the work, just provides context)
-        await self._simulate_actual_work(exercise)
-
-        total_time_ms = (time.time() - start_total) * 1000
 
         if self.verbose:
             print(
-                f"  WITH router:  {total_time_ms:.1f}ms "
-                f"(routing: {router_time_ms:.1f}ms)"
+                f"  WITH router:   {http_latency_ms:.2f}ms  "
+                f"(real HTTP call to {self.router_url}/route)"
             )
 
         return {
             "exercise_name": exercise_name,
-            "with_router_ms": total_time_ms,
-            "router_latency_ms": router_time_ms,
+            "with_router_ms": http_latency_ms,
+            "router_latency_ms": http_latency_ms,
             "selected_skills": selected_skills,
+            "matched_skills": matched_skills,
             "expected_skills": expected_skills,
             "is_correct": is_correct,
             "task_description": task_description,
         }
 
     async def run_single_comparison(self, exercise: Dict) -> ExecutionComparison:
-        """Run a SINGLE exercise with and without router.
+        """Run a single exercise with and without router, report real numbers.
 
-        Executes the same exercise twice in the same run:
-        1. WITHOUT router (baseline)
-        2. WITH router (with overhead measurement)
+        Executes in order:
+        1. WITHOUT router — pure Python overhead (~0ms, no I/O)
+        2. WITH router    — real HTTP POST to /route (actual network latency)
 
-        Returns real latency numbers, not synthetic ones.
+        Overhead = with_router_ms - without_router_ms = pure router HTTP cost.
 
         Args:
             exercise: Single exercise configuration
@@ -401,26 +367,23 @@ class RealMCPBenchmark:
         task_desc = exercise.get("task_description", exercise_name)
         expected_skills = exercise.get("required_skills", [])
 
-        # Run WITHOUT router (baseline) - real latency
         baseline_result = await self.execute_without_router(exercise)
         without_router_ms = baseline_result["without_router_ms"]
 
-        # Run WITH router - real latency including router overhead
         with_router_result = await self.execute_with_router(exercise)
         with_router_ms = with_router_result["with_router_ms"]
         router_latency_ms = with_router_result["router_latency_ms"]
         selected_skills = with_router_result["selected_skills"]
+        matched_skills = with_router_result["matched_skills"]
         is_correct = with_router_result["is_correct"]
 
-        # Calculate REAL overhead (not synthetic)
-        # Overhead = Time with router - Time without router
+        # Overhead = actual HTTP cost (with_router is purely the HTTP latency)
         overhead_ms = with_router_ms - without_router_ms
         overhead_pct = (
             (overhead_ms / without_router_ms * 100) if without_router_ms > 0 else 0
         )
 
-        # Create comparison with real measurements
-        comparison = ExecutionComparison(
+        return ExecutionComparison(
             exercise_name=exercise_name,
             task_description=task_desc,
             with_router_ms=with_router_ms,
@@ -431,20 +394,17 @@ class RealMCPBenchmark:
             selected_skills=selected_skills,
             is_correct=is_correct,
             expected_skills=expected_skills,
+            matched_skills=matched_skills,
         )
-
-        return comparison
 
     async def compare_performance(
         self, exercises: List[Dict], run_both_paths: bool = True
     ) -> List[ExecutionComparison]:
-        """Compare performance with and without router.
+        """Compare real HTTP router latency against no-HTTP baseline.
 
-        Runs each exercise TWICE in the same session:
-        1. WITHOUT router (baseline)
-        2. WITH router (measures actual overhead)
-
-        Shows real latency numbers, not synthetic delays.
+        WITHOUT router: no I/O, ~0ms (pure Python overhead)
+        WITH router:    real HTTP POST to /route (actual network latency)
+        Overhead:       pure router HTTP cost
 
         Args:
             exercises: List of exercise configurations
@@ -452,21 +412,21 @@ class RealMCPBenchmark:
                            If False, only run WITH router.
 
         Returns:
-            List of ExecutionComparison objects with REAL measurements
+            List of ExecutionComparison objects with real measurements
         """
         print(f"\n{'=' * 80}")
-        print(f"REAL MCP BENCHMARK: Comparing {len(exercises)} exercises")
-        print(f"(WITH and WITHOUT router, same run, real latency)")
+        print(f"REAL MCP BENCHMARK: {len(exercises)} exercises")
+        print(f"WITHOUT router = no HTTP call (~0ms baseline)")
+        print(f"WITH router    = real HTTP POST to {self.router_url}/route")
+        print(f"Overhead       = pure router HTTP latency")
         print(f"{'=' * 80}")
 
-        # Check router health first
         is_healthy, error = await self.health_check()
         if not is_healthy:
             print(f"❌ Router is not available: {error}")
             if run_both_paths:
                 raise RuntimeError("Router required for real MCP benchmark")
 
-        # Get router stats
         if is_healthy:
             await self.get_router_stats()
 
@@ -477,27 +437,37 @@ class RealMCPBenchmark:
             print(f"\n[{i}/{len(exercises)}] {exercise_name}")
 
             if not run_both_paths or not is_healthy:
-                # Router unavailable - cannot run real comparison
                 print("  ⚠️  Router unavailable, skipping comparison")
                 continue
 
-            # Run comparison on this exercise
             try:
                 comparison = await self.run_single_comparison(exercise)
                 comparisons.append(comparison)
                 self.comparisons.append(comparison)
 
-                # Print real latency comparison
+                accuracy_label = (
+                    f"{len(comparison.matched_skills)}/{len(comparison.expected_skills)} expected skills matched"
+                    if comparison.expected_skills
+                    else "no expected skills defined"
+                )
                 status = "✅" if comparison.is_correct else "❌"
+
                 print(
-                    f"  {status} WITHOUT router:  {comparison.without_router_ms:.1f}ms (baseline)"
+                    f"  WITHOUT router:  {comparison.without_router_ms:.4f}ms"
+                    f"  (no HTTP call, baseline)"
                 )
-                print(f"  WITH router:    {comparison.with_router_ms:.1f}ms")
                 print(
-                    f"  Overhead:       {comparison.router_overhead_ms:.1f}ms ({comparison.overhead_pct:.1f}%)"
+                    f"  WITH router:    {comparison.with_router_ms:.2f}ms"
+                    f"  (real HTTP call to {self.router_url}/route)"
                 )
-                print(f"  Router latency: {comparison.router_latency_ms:.1f}ms")
-                print(f"  Skills:         {len(comparison.selected_skills)} selected")
+                print(
+                    f"  Overhead:       {comparison.router_overhead_ms:.2f}ms"
+                    f"  (pure router cost = actual HTTP latency)"
+                )
+                print(
+                    f"  Skills found:   {', '.join(comparison.selected_skills) or '(none)'}"
+                )
+                print(f"  Accuracy:       {status} {accuracy_label}")
 
             except Exception as e:
                 print(f"  ❌ Comparison failed: {e}")
@@ -509,7 +479,7 @@ class RealMCPBenchmark:
         return comparisons
 
     def print_summary(self, comparisons: List[ExecutionComparison] = None):
-        """Print summary of benchmark results (REAL measurements).
+        """Print summary of benchmark results with real measurements.
 
         Args:
             comparisons: List of comparisons to summarize.
@@ -523,38 +493,24 @@ class RealMCPBenchmark:
             return
 
         print(f"\n{'=' * 80}")
-        print("REAL MCP BENCHMARK SUMMARY (Actual Latency Measurements)")
+        print("REAL MCP BENCHMARK SUMMARY")
+        print("Overhead = pure router HTTP cost (no simulated work, no sleeps)")
         print(f"{'=' * 80}")
 
         total_exercises = len(comparisons)
         correct_count = sum(1 for c in comparisons if c.is_correct)
         accuracy = (correct_count / total_exercises * 100) if total_exercises > 0 else 0
 
-        # Timing statistics (REAL measurements)
         baseline_times = [c.without_router_ms for c in comparisons]
         with_router_times = [c.with_router_ms for c in comparisons]
         overhead_times = [c.router_overhead_ms for c in comparisons]
-
-        avg_baseline = (
-            sum(baseline_times) / len(baseline_times) if baseline_times else 0
-        )
-        avg_with_router = (
-            sum(with_router_times) / len(with_router_times) if with_router_times else 0
-        )
-        avg_overhead = (
-            sum(overhead_times) / len(overhead_times) if overhead_times else 0
-        )
-        avg_overhead_pct = (
-            sum(c.overhead_pct for c in comparisons) / len(comparisons)
-            if comparisons
-            else 0
-        )
-
-        # Router latency
         router_latencies = [c.router_latency_ms for c in comparisons]
-        avg_router_latency = (
-            sum(router_latencies) / len(router_latencies) if router_latencies else 0
-        )
+
+        avg_baseline = sum(baseline_times) / len(baseline_times)
+        avg_with_router = sum(with_router_times) / len(with_router_times)
+        avg_overhead = sum(overhead_times) / len(overhead_times)
+        avg_router_latency = sum(router_latencies) / len(router_latencies)
+        avg_overhead_pct = sum(c.overhead_pct for c in comparisons) / len(comparisons)
 
         print(f"\n📊 Exercises Tested: {total_exercises}")
         print(
@@ -562,33 +518,34 @@ class RealMCPBenchmark:
         )
 
         print(f"\n⏱️  REAL LATENCY MEASUREMENTS:")
-        print(f"  Baseline (WITHOUT router):  {avg_baseline:>8.1f}ms avg")
-        print(f"  WITH router:                {avg_with_router:>8.1f}ms avg")
         print(
-            f"  Router overhead:            {avg_overhead:>8.1f}ms avg ({avg_overhead_pct:.1f}%)"
+            f"  WITHOUT router (baseline):  {avg_baseline:>10.4f}ms avg  (pure Python, no I/O)"
         )
-        print(f"  Router API call:            {avg_router_latency:>8.1f}ms avg")
+        print(
+            f"  WITH router:                {avg_with_router:>10.2f}ms avg  (real HTTP POST /route)"
+        )
+        print(
+            f"  Router overhead:            {avg_overhead:>10.2f}ms avg  (pure router HTTP cost)"
+        )
+        print(f"  Router API call:            {avg_router_latency:>10.2f}ms avg")
 
-        # Show min/max for overhead (what users care about)
-        min_overhead = min(overhead_times) if overhead_times else 0
-        max_overhead = max(overhead_times) if overhead_times else 0
+        min_overhead = min(overhead_times)
+        max_overhead = max(overhead_times)
 
-        print(f"\n📈 Overhead Range:")
-        print(f"  Min: {min_overhead:>7.1f}ms")
-        print(f"  Max: {max_overhead:>7.1f}ms")
-        print(f"  Avg: {avg_overhead:>7.1f}ms ({avg_overhead_pct:.1f}%)")
+        print(f"\n📈 Router HTTP Overhead Range:")
+        print(f"  Min: {min_overhead:>9.2f}ms")
+        print(f"  Max: {max_overhead:>9.2f}ms")
+        print(f"  Avg: {avg_overhead:>9.2f}ms ({avg_overhead_pct:.1f}% vs baseline)")
 
-        # Router stats if available
         if self.router_stats:
             print(f"\n🔧 Router Stats:")
             print(f"  Total skills available: {self.router_stats.total_skills}")
             print(f"  Total requests handled: {self.router_stats.total_requests}")
 
         print(f"\n💡 INTERPRETATION:")
-        print(f"  • Baseline = time to execute task WITHOUT router")
-        print(f"  • WITH router = baseline + router overhead")
-        print(f"  • Overhead = actual latency added by router API call")
-        print(f"  • These are REAL measurements from actual HTTP calls")
+        print(f"  • Baseline    = Python overhead only, no HTTP call (~0ms)")
+        print(f"  • WITH router = real HTTP POST latency to /route endpoint")
+        print(f"  • Overhead    = actual cost of using the skill router")
 
     def export_results(self, filepath: str):
         """Export benchmark results to JSON.
@@ -599,6 +556,11 @@ class RealMCPBenchmark:
         results = {
             "timestamp": datetime.now().isoformat(),
             "router_url": self.router_url,
+            "methodology": {
+                "without_router": "pure Python overhead (no HTTP, no I/O, no sleep)",
+                "with_router": "real HTTP POST to /route endpoint",
+                "overhead": "with_router_ms - without_router_ms = pure router HTTP cost",
+            },
             "router_stats": {
                 "total_skills": self.router_stats.total_skills
                 if self.router_stats
@@ -620,6 +582,7 @@ class RealMCPBenchmark:
                     "overhead_pct": c.overhead_pct,
                     "selected_skills": c.selected_skills,
                     "expected_skills": c.expected_skills,
+                    "matched_skills": c.matched_skills,
                     "is_correct": c.is_correct,
                 }
                 for c in self.comparisons
