@@ -8,13 +8,14 @@ import argparse
 import time
 import random
 from pathlib import Path
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 from datetime import datetime, timezone
 
 # Add harness directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from metrics import ExerciseMetrics, MetricsCollector
+from llm_performance import create_llm_benchmark
 
 
 class BenchmarkRunner:
@@ -27,6 +28,9 @@ class BenchmarkRunner:
         iterations: int = 3,
         timeout: int = 30,
         baseline_enabled: bool = True,
+        with_llm: bool = False,
+        llm_model: str = "gpt-4",
+        llm_api_key: Optional[str] = None,
     ):
         """Initialize benchmark runner.
 
@@ -36,6 +40,9 @@ class BenchmarkRunner:
             iterations: Number of iterations per exercise
             timeout: Timeout per exercise in seconds
             baseline_enabled: Whether to measure baseline (no router)
+            with_llm: Whether to measure LLM code generation performance
+            llm_model: LLM model to use (gpt-4, claude-opus, etc.)
+            llm_api_key: API key for LLM service
         """
         if repo_root is None:
             # Find repo root by looking for benchmarks directory
@@ -55,6 +62,14 @@ class BenchmarkRunner:
         self.iterations = iterations
         self.timeout = timeout
         self.baseline_enabled = baseline_enabled
+
+        self.with_llm = with_llm
+        self.llm_model = llm_model
+        self.llm_api_key = llm_api_key
+        self.llm_benchmark = None
+
+        if with_llm:
+            self.llm_benchmark = create_llm_benchmark(llm_model, llm_api_key)
 
         self.collector = MetricsCollector()
 
@@ -170,15 +185,21 @@ class BenchmarkRunner:
 
         return selected, latency
 
-    def run_exercise(self, exercise: Dict, verbose: bool = False) -> ExerciseMetrics:
+    def run_exercise(
+        self,
+        exercise: Dict,
+        verbose: bool = False,
+        with_router_skills: Optional[List[str]] = None,
+    ) -> Tuple[ExerciseMetrics, Optional[Dict]]:
         """Run a single exercise and collect metrics.
 
         Args:
             exercise: Exercise configuration
             verbose: Whether to print detailed output
+            with_router_skills: Skills selected by router (for LLM context)
 
         Returns:
-            ExerciseMetrics object
+            (ExerciseMetrics object, llm_result dict or None)
         """
         name = exercise.get("name", "Unknown")
         tier = exercise.get("tier", "simple")
@@ -243,6 +264,20 @@ class BenchmarkRunner:
             iterations=self.iterations,
         )
 
+        # Evaluate LLM performance if enabled
+        llm_result = None
+        if self.with_llm and self.llm_benchmark and exercise.get("coding_challenge"):
+            llm_result = self.llm_benchmark.evaluate_exercise(
+                exercise, with_router_skills
+            )
+            if verbose and llm_result and "metrics" in llm_result:
+                print(
+                    f"  LLM Code Quality: {llm_result['metrics'].get('code_correctness_pct', 0):.1f}%"
+                )
+                print(
+                    f"  Complexity: {llm_result['metrics'].get('cyclomatic_complexity', 0)}"
+                )
+
         if verbose:
             status = "✅ PASS" if metric.correct else "❌ FAIL"
             print(f"  Result: {status}")
@@ -255,9 +290,11 @@ class BenchmarkRunner:
             print(f"  Selected: {', '.join(metric.actual_skills)}")
             print(f"  Precision: {metric.precision:.2f}, Recall: {metric.recall:.2f}")
 
-        return metric
+        return metric, llm_result
 
-    def run_tier(self, tier: str, verbose: bool = False) -> List[ExerciseMetrics]:
+    def run_tier(
+        self, tier: str, verbose: bool = False
+    ) -> Tuple[List[ExerciseMetrics], List[Dict]]:
         """Run all exercises in a tier.
 
         Args:
@@ -265,10 +302,11 @@ class BenchmarkRunner:
             verbose: Whether to print detailed output
 
         Returns:
-            List of metrics
+            (List of metrics, List of LLM results)
         """
         exercises = self.load_exercises(tier)
         metrics = []
+        llm_results = []
 
         print(f"\n{'=' * 70}")
         print(f"Running {tier.upper()} tier ({len(exercises)} exercises)")
@@ -276,9 +314,11 @@ class BenchmarkRunner:
 
         for i, exercise in enumerate(exercises, 1):
             try:
-                metric = self.run_exercise(exercise, verbose)
+                metric, llm_result = self.run_exercise(exercise, verbose)
                 self.collector.add_metric(metric)
                 metrics.append(metric)
+                if llm_result:
+                    llm_results.append(llm_result)
 
                 # Progress indicator
                 status = "✅" if metric.correct else "❌"
@@ -289,7 +329,7 @@ class BenchmarkRunner:
                     f"[{i}/{len(exercises)}] ❌ {exercise.get('name', 'Unknown')}: {e}"
                 )
 
-        return metrics
+        return metrics, llm_results
 
     def run_all(
         self, tier: str = "all", exercise_name: str = None, verbose: bool = False
@@ -316,13 +356,18 @@ class BenchmarkRunner:
         print(f"Exercises to run: {len(exercises)}")
         print(f"Iterations per exercise: {self.iterations}")
         print(f"Warmup runs: {self.warmup_runs}")
+        if self.with_llm:
+            print(f"LLM Model: {self.llm_model}")
 
         start_time = time.time()
+        all_llm_results = []
 
         for i, exercise in enumerate(exercises, 1):
             try:
-                metric = self.run_exercise(exercise, verbose)
+                metric, llm_result = self.run_exercise(exercise, verbose)
                 self.collector.add_metric(metric)
+                if llm_result:
+                    all_llm_results.append(llm_result)
 
                 status = "✅" if metric.correct else "❌"
                 print(f"[{i}/{len(exercises)}] {status} {metric.name}")
@@ -339,7 +384,14 @@ class BenchmarkRunner:
         print(f"Completed in {elapsed:.1f}s")
         self.collector.print_summary()
 
-        return self.collector.generate_report()
+        report = self.collector.generate_report()
+
+        # Add LLM results if available
+        if self.with_llm and all_llm_results:
+            report["llm_results"] = all_llm_results
+            report["llm_model"] = self.llm_model
+
+        return report
 
     def save_results(self, results: dict, output_path: str = None):
         """Save results to JSON file.
@@ -407,8 +459,31 @@ def main():
         action="store_true",
         help="Only measure baseline (no router)",
     )
+    parser.add_argument(
+        "--with-llm",
+        action="store_true",
+        help="Measure LLM code generation performance (requires API key)",
+    )
+    parser.add_argument(
+        "--llm-model",
+        type=str,
+        default="gpt-4",
+        help="LLM model to use (gpt-4, claude-opus, codellama, etc.)",
+    )
+    parser.add_argument(
+        "--llm-api-key",
+        type=str,
+        help="API key for LLM service (or set env var OPENAI_API_KEY or ANTHROPIC_API_KEY)",
+    )
 
     args = parser.parse_args()
+
+    # Get API key from argument or environment
+    llm_api_key = args.llm_api_key
+    if not llm_api_key and args.with_llm:
+        llm_api_key = os.environ.get("OPENAI_API_KEY") or os.environ.get(
+            "ANTHROPIC_API_KEY"
+        )
 
     # Create runner
     runner = BenchmarkRunner(
@@ -416,6 +491,9 @@ def main():
         iterations=args.iterations,
         timeout=args.timeout,
         baseline_enabled=not args.baseline_only,
+        with_llm=args.with_llm,
+        llm_model=args.llm_model,
+        llm_api_key=llm_api_key,
     )
 
     # Run benchmarks
