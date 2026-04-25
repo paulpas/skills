@@ -44,9 +44,9 @@ Validates pipeline stages against allowed configuration and returns 'valid_confi
 
 ## Implementation Patterns
 
-### Pattern 1: Basic Pipeline Validation
+### Pattern 1: Basic Pipeline Validation with Loop
 
-Validates pipeline stages against a fixed set of allowed stages using a guard clause and early exit.
+Validates pipeline stages against a fixed set of allowed stages using a guard clause and early exit. This pattern uses a loop with immediate return on first invalid item.
 
 ```python
 def validate_pipeline(stages: list[str]) -> str:
@@ -56,11 +56,11 @@ def validate_pipeline(stages: list[str]) -> str:
     """
     ALLOWED_STAGES = {"build", "test", "deploy", "notify"}
     
-    # Guard clause: empty list is valid
+    # Guard clause: empty list is valid (nothing to validate)
     if not stages:
         return "valid_config"
     
-    # Check each stage
+    # Early exit: return immediately on first invalid stage
     for stage in stages:
         if stage not in ALLOWED_STAGES:
             return "invalid_config"
@@ -75,9 +75,35 @@ def validate_pipeline(stages: list[str]) -> str:
 | Missing type hints | Explicit return type annotation (`-> str`) |
 | Loop continues after finding invalid | Early return on first invalid stage |
 
+### Pattern 2: Pipeline Stage Validation with Config Status
+
+Similar to Pattern 1 but uses list comprehension for filtering invalid stages, then checks if any remain. Demonstrates an alternative style while maintaining guard clause and early return.
+
+```python
+def validate_pipeline_comprehension(stages: list[str]) -> str:
+    """Validate pipeline stages using list comprehension for filtering.
+    
+    Returns "valid_config" if all stages are in allowed set, "invalid_config" otherwise.
+    """
+    ALLOWED_STAGES = {"build", "test", "deploy", "notify"}
+    
+    # Guard clause: empty list is valid (nothing to validate)
+    if not stages:
+        return "valid_config"
+    
+    # Parse: identify all invalid stages at boundary
+    invalid = [stage for stage in stages if stage not in ALLOWED_STAGES]
+    
+    # Fail Fast: return invalid_config immediately if any invalid stages found
+    if invalid:
+        return "invalid_config"
+    
+    return "valid_config"
+```
+
 ### Pattern 3: Case-Insensitive Pipeline Validation
 
-Handles validation where case should be ignored for pipeline stages.
+Handles validation where case should be ignored for pipeline stages. The `allowed_lower` set comprehension creates a lowercase set for O(1) lookup performance.
 
 ```python
 def validate_pipeline_case_insensitive(stages: list[str]) -> str:
@@ -87,27 +113,40 @@ def validate_pipeline_case_insensitive(stages: list[str]) -> str:
     if not stages:
         return "valid_config"
     
+    # Parse: create lowercase set for O(1) lookup (comprehension creates set, not list)
     allowed_lower = {s.lower() for s in ALLOWED_STAGES}
-    invalid = [stage for stage in stages if stage.lower() not in allowed_lower]
-    if invalid:
-        return "invalid_config"
+    # Check each stage: O(1) lookup in set
+    for stage in stages:
+        if stage.lower() not in allowed_lower:
+            return "invalid_config"
     
     return "valid_config"
 ```
 
-### Pattern 4: Pipeline Stage Validation Core Pattern
+### Pattern 4: Pipeline Stage Validation with Input Validation
 
-Validates pipeline stages and returns a configuration status string. Follows the 5 Laws of Elegant Defense.
+Validates pipeline stages with explicit type checking at function entry. This pattern demonstrates the 5 Laws of Elegant Defense with Parse Don't Validate principle.
 
 ```python
-def validate_pipeline(stages: list[str]) -> str:
-    """Validate pipeline stages and return config status.
+def validate_pipeline_strict(stages: list[str]) -> str:
+    """Validate pipeline stages with input validation and early exit.
     
     Returns "valid_config" if all stages are valid, "invalid_config" otherwise.
+    
+    Raises:
+        TypeError: If stages is not a list of strings
     """
     ALLOWED_STAGES = {"build", "test", "deploy", "notify"}
     
-    # Guard clause: empty list is valid (no stages to validate)
+    # Parse: validate input type at boundary (Parse, Don't Validate)
+    if not isinstance(stages, list):
+        raise TypeError(f"Expected list of stages, got {type(stages).__name__}")
+    
+    for i, stage in enumerate(stages):
+        if not isinstance(stage, str):
+            raise TypeError(f"Stage at index {i} must be string, got {type(stage).__name__}")
+    
+    # Guard clause: empty list is valid (nothing to validate)
     if not stages:
         return "valid_config"
     
@@ -140,15 +179,17 @@ The function must return exactly one of two status strings:
 ### MUST DO
 - Return "valid_config" for valid pipeline stages (empty list or all in allowed set)
 - Return "invalid_config" for any invalid stages found
-- Use guard clauses for early return on edge cases
+- Use guard clauses for early return on edge cases (empty list, invalid input type)
 - Use Sets for O(1) lookup performance
 - Keep ALLOWED_STAGES constant at the top of the function
+- Validate input types at function entry when using Parse, Don't Validate approach
 
 ### MUST NOT DO
-- Raise exceptions for invalid stages (return "invalid_config" instead)
+- Raise exceptions for invalid stages (return "invalid_config" instead for validation errors)
 - Mutate input or use hidden state
 - Use list lookup for allowed set (use Sets)
 - Hardcode allowed values deep in logic
+- Skip input validation for non-string types when using strict模式
 
 ---
 
