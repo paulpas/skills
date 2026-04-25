@@ -7,9 +7,12 @@ Provides:
 - Cost tracking (input/output tokens)
 - Model discovery and filtering
 - Provider availability checks
+- Config-driven model selection from openconfig.json
 """
 
 import os
+import json
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
@@ -55,7 +58,17 @@ class ModelInfo:
 
 
 class ModelRegistry:
-    """Central registry of all available LLM models."""
+    """Central registry of all available LLM models.
+
+    Supports config-driven model selection via openconfig.json.
+    Falls back to internal defaults if config not found.
+    """
+
+    # Default model name if config not available
+    _DEFAULT_MODEL = "llama3"
+
+    # Cached config (lazy-loaded)
+    _config: Optional[Dict] = None
 
     # Complete model definitions with current pricing (2024-2025)
     MODELS: Dict[str, ModelInfo] = {
@@ -358,6 +371,125 @@ class ModelRegistry:
                 print(f"  {status} {model_name:<25} {cost_str:<20} {model.description}")
 
         print("\n" + "=" * 100 + "\n")
+
+    @classmethod
+    def load_config(cls, config_path: str = "openconfig.json") -> Dict:
+        """Load model configuration from openconfig.json.
+
+        Args:
+            config_path: Path to openconfig.json (default: openconfig.json in cwd)
+
+        Returns:
+            Config dictionary with 'default' and 'available' keys
+            Falls back to internal defaults if file not found or invalid
+        """
+        if cls._config is not None:
+            return cls._config
+
+        config_file = Path(config_path)
+
+        # Guard: check if file exists
+        if not config_file.exists():
+            cls._config = {
+                "default": cls._DEFAULT_MODEL,
+                "available": list(cls.MODELS.keys()),
+            }
+            return cls._config
+
+        try:
+            with open(config_file, "r") as f:
+                raw_config = json.load(f)
+
+            # Guard: validate required fields
+            if "models" not in raw_config:
+                raise ValueError("Config missing 'models' key")
+
+            models = raw_config["models"]
+            if "default" not in models or "available" not in models:
+                raise ValueError(
+                    "Config 'models' must have 'default' and 'available' keys"
+                )
+
+            # Parse and validate
+            default_model = models["default"]
+            available_models = models["available"]
+
+            # Ensure default is in available list
+            if default_model not in available_models:
+                available_models.append(default_model)
+
+            cls._config = {"default": default_model, "available": available_models}
+            return cls._config
+
+        except (json.JSONDecodeError, IOError, ValueError) as e:
+            # Fail loud on parse errors
+            raise ValueError(f"Failed to load config from {config_path}: {e}") from e
+
+    @classmethod
+    def get_default_model(cls) -> str:
+        """Get default model from config.
+
+        Returns:
+            Name of default model (from config or internal fallback)
+        """
+        config = cls.load_config()
+        return config["default"]
+
+    @classmethod
+    def get_available_models(cls) -> List[str]:
+        """Get available models from config.
+
+        Returns:
+            List of available model names (from config or internal list)
+        """
+        config = cls.load_config()
+        return config["available"]
+
+    @classmethod
+    def print_config_models(cls):
+        """Print models from openconfig.json with default marked."""
+        try:
+            config = cls.load_config()
+            default_model = config["default"]
+            available_models = config["available"]
+        except (ValueError, KeyError):
+            # Fallback to internal defaults
+            default_model = cls._DEFAULT_MODEL
+            available_models = list(cls.MODELS.keys())
+
+        print("\n" + "=" * 100)
+        print("AVAILABLE MODELS (from openconfig.json)")
+        print("=" * 100 + "\n")
+
+        for model_name in sorted(available_models):
+            model_info = cls.MODELS.get(model_name)
+            if model_info is None:
+                continue
+
+            # Mark default with asterisk
+            marker = "* " if model_name == default_model else "  "
+            provider = model_info.provider.value.capitalize()
+
+            # Show cost
+            if model_info.is_local():
+                cost_str = "(Local)"
+            elif (
+                model_info.cost_input_per_mtok == 0
+                and model_info.cost_output_per_mtok == 0
+            ):
+                cost_str = "(Free)"
+            else:
+                cost_str = f"(${model_info.cost_input_per_mtok:.2f}/${model_info.cost_output_per_mtok:.2f}/1M)"
+
+            # Show default marker
+            default_marker = " [DEFAULT]" if model_name == default_model else ""
+
+            print(f"{marker}{model_name:<25} {provider:<12} {cost_str}{default_marker}")
+
+        print("\n" + "=" * 100)
+        print("Set default with:   edit openconfig.json → models.default")
+        print("Override with:      --model <name>")
+        print("=" * 100 + "\n")
 
     @classmethod
     def print_cost_comparison(cls):

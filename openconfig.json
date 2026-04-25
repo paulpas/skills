@@ -1,0 +1,13 @@
+{
+  "models": {
+    "default": "llama3",
+    "available": [
+      "llama3",
+      "gpt-4o",
+      "claude-3-opus",
+      "mixtral-8x7b",
+      "codellama",
+      "gpt-3.5-turbo"
+    ]
+  }
+}
