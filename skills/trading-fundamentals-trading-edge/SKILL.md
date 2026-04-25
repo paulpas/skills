@@ -1,6 +1,6 @@
 ---
 name: trading-fundamentals-trading-edge
-description: Finding and maintaining competitive advantage in trading systems.
+description: "Finding and maintaining competitive advantage in trading systems"
 license: MIT
 compatibility: opencode
 metadata:

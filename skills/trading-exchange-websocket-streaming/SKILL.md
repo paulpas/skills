@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-websocket-streaming
-description: Real-time market data streaming and processing
+description: "Real-time market data streaming and processing"
 license: MIT
 compatibility: opencode
 metadata:

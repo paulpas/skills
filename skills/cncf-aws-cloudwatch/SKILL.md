@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-cloudwatch
-description: Configures CloudWatch monitoring with metrics, logs, alarms, and dashboards
+description: "Configures CloudWatch monitoring with metrics, logs, alarms, and dashboards"
   for visibility into AWS resource performance, application health, and operational
   metrics.
 license: MIT

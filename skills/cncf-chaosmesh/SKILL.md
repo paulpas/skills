@@ -1,6 +1,6 @@
 ---
 name: cncf-chaosmesh
-description: "Chaos Mesh in Cloud-Native Engineering -\u6DF7\u6C8C\u5DE5\u7A0B\u5E73\
+description: "Chaos Mesh in Cloud-Native Engineering -\u6DF7\u6C8C\u5DE5\u7A0B\u5E73\"
   \u53F0 for Kubernetes"
 license: MIT
 compatibility: opencode

@@ -1,6 +1,7 @@
 ---
 name: cncf-gcp-firestore
-description: NoSQL document database with real-time sync, offline support, and automatic scaling.
+description: NoSQL document database with real-time sync, offline support, and automatic
+  scaling
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: firestore, nosql, document database, real-time sync, data synchronization
-  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-kms, cncf-gcp-cloud-monitoring, cncf-gcp-iam
+  triggers: firestore, nosql, document database, real-time sync, data synchronization,
+    mongodb
+  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-kms, cncf-gcp-cloud-monitoring,
+    cncf-gcp-iam
 ---
+
 
 
 # Google Firestore

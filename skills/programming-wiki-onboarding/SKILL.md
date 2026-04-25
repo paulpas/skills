@@ -1,0 +1,49 @@
+---
+name: wiki-onboarding
+description: "Generate two complementary onboarding documents that together give any engineer — from newcomer to principal — a complete understanding of a codebase"
+license: MIT
+compatibility: opencode
+metadata:
+  version: "1.0.0"
+  domain: programming
+  role: implementation
+  scope: implementation
+  output-format: code
+  triggers: wiki onboarding, content, implementation guide
+---
+
+# Wiki Onboarding
+
+Generate two complementary onboarding documents that together give any engineer — from newcomer to principal — a complete understanding of a codebase. Use when user asks for onboarding docs or getting-started guides, user runs /deep-wiki, or user wants to help new team members understand a codebase.
+
+## When to Use
+
+- When generate two complementary onboarding documents th...
+- Implementing this specific pattern or feature
+- Part of a larger architectural decision
+
+## When NOT to Use
+
+- For unrelated tasks
+- When a simpler approach would suffice
+- Without understanding the broader context
+
+## Core Workflow
+
+1. Identify the specific use case
+2. Apply the pattern or technique
+3. Validate and test the implementation
+4. Iterate based on results
+
+## Key Patterns
+
+This skill provides domain expertise for:
+
+- Implementation and architecture guidance
+- Best practices and standards compliance
+- Pattern recognition and application
+- Quality assurance and validation
+
+## Related Skills
+
+See the metadata for related skills in the same domain.

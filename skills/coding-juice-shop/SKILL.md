@@ -1,6 +1,6 @@
 ---
 name: coding-juice-shop
-description: 'OWASP Juice Shop guide: Web application security testing with intentionally
+description: "'OWASP Juice Shop guide: Web application security testing with intentionally"
   vulnerable Node.js/Express application for learning and practice'
 license: MIT
 compatibility: opencode

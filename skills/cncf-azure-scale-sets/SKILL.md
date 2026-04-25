@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-scale-sets
-description: Manages auto-scaling VM groups with load balancing and health management.
+description: "Manages auto-scaling VM groups with load balancing and health management"
 license: MIT
 compatibility: opencode
 metadata:

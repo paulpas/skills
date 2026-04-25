@@ -1,17 +1,20 @@
 ---
 name: coding-ds-data-profiling
-description: Extracts data profiles, schemas, metadata, and statistical summaries to understand data structure, quality, and characteristics at scale
+description: Extracts data profiles, schemas, metadata, and statistical summaries
+  to understand data structure, quality, and characteristics at scale
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: data profiling, metadata extraction, schema analysis, data schema, how do i profile data, data structure
+  triggers: data profiling, metadata extraction, schema analysis, data schema, how
+    do i profile data, data structure, performance analysis
   related-skills: coding-ds-data-quality, coding-ds-data-visualization, coding-ds-eda
 ---
+
 
 # Data Profiling
 

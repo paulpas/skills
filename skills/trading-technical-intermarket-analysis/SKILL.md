@@ -1,6 +1,6 @@
 ---
 name: trading-technical-intermarket-analysis
-description: Cross-market relationships and asset class correlations
+description: "Cross-market relationships and asset class correlations"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-cloud-tasks
-description: Manages task queues for asynchronous job execution with retry policies
+description: "Manages task queues for asynchronous job execution with retry policies"
   and rate limiting.
 license: MIT
 compatibility: opencode

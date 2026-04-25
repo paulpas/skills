@@ -1,6 +1,6 @@
 ---
 name: cncf-thanos
-description: Thanos in High availability Prometheus solution with long-term storage
+description: "Thanos in High availability Prometheus solution with long-term storage"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: cncf-flatcar-container-linux
-description: Flatcar Container Linux in Cloud-Native Engineering - container Linux
+description: "Flatcar Container Linux in Cloud-Native Engineering - container Linux"
 license: MIT
 compatibility: opencode
 metadata:

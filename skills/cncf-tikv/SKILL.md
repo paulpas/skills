@@ -1,6 +1,6 @@
 ---
 name: cncf-tikv
-description: TiKV in Distributed transactional key-value database inspired by Google
+description: "TiKV in Distributed transactional key-value database inspired by Google"
   Spanner
 license: MIT
 compatibility: opencode

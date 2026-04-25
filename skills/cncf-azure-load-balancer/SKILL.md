@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-load-balancer
-description: Distributes traffic across VMs with health probes and rule-based routing.
+description: Distributes traffic across VMs with health probes and rule-based routing
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +9,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: load balancer, load balancing, traffic distribution, health checks, routing
-  related-skills: cncf-azure-monitor, cncf-azure-scale-sets, cncf-azure-virtual-machines, cncf-azure-virtual-networks
+  triggers: load balancer, load balancing, traffic distribution, health checks, routing,
+    elb, route53
+  related-skills: cncf-azure-monitor, cncf-azure-scale-sets, cncf-azure-virtual-machines,
+    cncf-azure-virtual-networks
 ---
+
 
 
 # Azure Load Balancer

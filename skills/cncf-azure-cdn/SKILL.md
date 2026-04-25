@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-cdn
-description: Content delivery network for caching and global content distribution.
+description: Content delivery network for caching and global content distribution
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +9,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: cdn, content delivery, content distribution, caching, global delivery
-  related-skills: cncf-azure-blob-storage, cncf-azure-monitor, cncf-azure-virtual-machines, cncf-cni
+  triggers: cdn, content delivery, content distribution, caching, global delivery,
+    cloudfront, elasticache
+  related-skills: cncf-azure-blob-storage, cncf-azure-monitor, cncf-azure-virtual-machines,
+    cncf-cni
 ---
+
 
 
 # Azure CDN

@@ -1,6 +1,6 @@
 ---
 name: coding-ds-dimensionality-reduction
-description: Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency
+description: "Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency"
 license: MIT
 compatibility: opencode
 metadata:

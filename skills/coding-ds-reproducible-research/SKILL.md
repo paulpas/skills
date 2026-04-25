@@ -1,6 +1,6 @@
 ---
 name: coding-ds-reproducible-research
-description: Implements reproducible research practices including code organization, environment management, documentation, and experiment tracking
+description: "Implements reproducible research practices including code organization, environment management, documentation, and experiment tracking"
 license: MIT
 compatibility: opencode
 metadata:

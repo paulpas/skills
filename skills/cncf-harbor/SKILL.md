@@ -10,9 +10,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cloud-native, container, engineering, harbor, container images, private
-    registry, docker
-  related-skills: 
+    registry, docker, containerization
+  related-skills: null
 ---
+
 
 
 

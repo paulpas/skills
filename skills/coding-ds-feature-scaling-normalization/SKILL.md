@@ -1,6 +1,6 @@
 ---
 name: coding-ds-feature-scaling-normalization
-description: Scales and normalizes features using standardization, normalization, robust scaling, and other scaling methods for model compatibility
+description: "Scales and normalizes features using standardization, normalization, robust scaling, and other scaling methods for model compatibility"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: cncf-openfeature
-description: OpenFeature in Feature Flagging - cloud native architecture, patterns,
+description: "OpenFeature in Feature Flagging - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode

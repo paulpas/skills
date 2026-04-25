@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-trade-reporting
-description: Real-time trade reporting and execution analytics for monitoring and
+description: "Real-time trade reporting and execution analytics for monitoring and"
   optimization
 license: MIT
 compatibility: opencode

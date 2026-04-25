@@ -1,6 +1,6 @@
 ---
 name: coding-pydantic-models
-description: 'Pydantic frozen data models for trading: enums, annotated constraints,
+description: "'Pydantic frozen data models for trading: enums, annotated constraints"
   field/model validators, and computed properties'
 license: MIT
 compatibility: opencode

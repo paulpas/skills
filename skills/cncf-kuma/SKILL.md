@@ -1,6 +1,6 @@
 ---
 name: cncf-kuma
-description: Kuma in Service Mesh - cloud native architecture, patterns, pitfalls,
+description: "Kuma in Service Mesh - cloud native architecture, patterns, pitfalls"
   and best practices
 license: MIT
 compatibility: opencode

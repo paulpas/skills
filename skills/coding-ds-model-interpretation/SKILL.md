@@ -1,6 +1,6 @@
 ---
 name: coding-ds-model-interpretation
-description: Interprets models using SHAP values, LIME, feature importance, permutation importance, and other explainability techniques
+description: "Interprets models using SHAP values, LIME, feature importance, permutation importance, and other explainability techniques"
 license: MIT
 compatibility: opencode
 metadata:

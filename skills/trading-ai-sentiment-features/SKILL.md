@@ -1,6 +1,6 @@
 ---
 name: trading-ai-sentiment-features
-description: Extract market sentiment from news, social media, and analyst reports
+description: "Extract market sentiment from news, social media, and analyst reports"
 license: MIT
 compatibility: opencode
 metadata:

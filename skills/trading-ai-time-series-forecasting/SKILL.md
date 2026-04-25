@@ -1,6 +1,6 @@
 ---
 name: trading-ai-time-series-forecasting
-description: Time series forecasting for price prediction and market analysis
+description: "Time series forecasting for price prediction and market analysis"
 license: MIT
 compatibility: opencode
 metadata:

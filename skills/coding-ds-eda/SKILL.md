@@ -1,6 +1,6 @@
 ---
 name: coding-ds-eda
-description: Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristics
+description: "Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristic"
 license: MIT
 compatibility: opencode
 metadata:

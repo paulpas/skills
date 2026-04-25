@@ -1,6 +1,6 @@
 ---
 name: agent-goal-to-milestones
-description: Translates high-level goals into actionable milestones and tasks that
+description: "Translates high-level goals into actionable milestones and tasks that"
   can be executed by specialized skills, enabling goal-directed problem solving with
   measurable progress tracking.
 license: MIT

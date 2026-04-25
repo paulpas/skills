@@ -1,6 +1,6 @@
 ---
 name: cncf-kong
-description: Kong in API Gateway - cloud native architecture, patterns, pitfalls,
+description: "Kong in API Gateway - cloud native architecture, patterns, pitfalls"
   and best practices
 license: MIT
 compatibility: opencode

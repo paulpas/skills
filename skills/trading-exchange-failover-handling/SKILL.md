@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-failover-handling
-description: Automated failover and redundancy management for exchange connectivity
+description: "Automated failover and redundancy management for exchange connectivity"
 license: MIT
 compatibility: opencode
 metadata:

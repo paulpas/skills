@@ -1,6 +1,6 @@
 ---
 name: agent-regression-detector
-description: Detects performance and behavioral regressions by comparing agent execution
+description: "Detects performance and behavioral regressions by comparing agent execution"
   before and after code changes, identifying performance degradation and behavioral
   changes.
 license: MIT

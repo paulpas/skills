@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-monitor
-description: Monitoring and logging for Azure resources with alerting and observability.
+description: Monitoring and logging for Azure resources with alerting and observability
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +9,10 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: azure monitor, monitoring, logging, observability, metrics, alerts
+  triggers: azure monitor, monitoring, logging, observability, metrics, alerts, cloudwatch
   related-skills: cncf-azure-aks, cncf-azure-automation, cncf-azure-blob-storage
 ---
+
 
 
 # Azure Monitor

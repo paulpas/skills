@@ -1,17 +1,21 @@
 ---
 name: coding-ds-metrics-and-kpis
-description: Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making
+description: Defines, selects, and monitors key performance indicators (KPIs), business
+  metrics, and evaluation metrics for decision-making
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: metrics, KPI, key performance indicator, business metrics, metric definition, how do I choose metrics
-  related-skills: coding-ds-ab-testing, coding-ds-classification-metrics, coding-ds-online-experiments, coding-ds-regression-evaluation
+  triggers: metrics, KPI, key performance indicator, business metrics, metric definition,
+    how do I choose metrics, cloudwatch, optimization
+  related-skills: coding-ds-ab-testing, coding-ds-classification-metrics, coding-ds-online-experiments,
+    coding-ds-regression-evaluation
 ---
+
 
 # Metrics and KPIs
 

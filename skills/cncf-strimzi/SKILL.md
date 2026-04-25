@@ -1,6 +1,6 @@
 ---
 name: cncf-strimzi
-description: Strimzi in Kafka on Kubernetes - Apache Kafka for cloud-native environments
+description: "Strimzi in Kafka on Kubernetes - Apache Kafka for cloud-native environments"
 license: MIT
 compatibility: opencode
 metadata:

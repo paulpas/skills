@@ -1,6 +1,6 @@
 ---
 name: coding-ds-feature-selection
-description: Selects relevant features using univariate selection, recursive elimination, stability selection, and importance-based methods
+description: "Selects relevant features using univariate selection, recursive elimination, stability selection, and importance-based methods"
 license: MIT
 compatibility: opencode
 metadata:

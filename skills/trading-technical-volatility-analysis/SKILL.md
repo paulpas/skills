@@ -1,6 +1,6 @@
 ---
 name: trading-technical-volatility-analysis
-description: Volatility measurement, forecasting, and risk assessment
+description: "Volatility measurement, forecasting, and risk assessment"
 license: MIT
 compatibility: opencode
 metadata:

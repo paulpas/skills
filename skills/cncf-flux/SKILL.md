@@ -1,6 +1,6 @@
 ---
 name: cncf-flux
-description: Flux in Cloud-Native Engineering - GitOps for Kubernetes
+description: "Flux in Cloud-Native Engineering - GitOps for Kubernetes"
 license: MIT
 compatibility: opencode
 metadata:

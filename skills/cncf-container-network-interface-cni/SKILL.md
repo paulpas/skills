@@ -1,6 +1,6 @@
 ---
 name: cncf-container-network-interface-cni
-description: Container Network Interface in Cloud Native Network - cloud native architecture,
+description: "Container Network Interface in Cloud Native Network - cloud native architecture"
   patterns, pitfalls, and best practices
 license: MIT
 compatibility: opencode

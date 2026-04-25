@@ -1,17 +1,21 @@
 ---
 name: coding-ds-causal-inference
-description: Implements causal models, directed acyclic graphs (DAGs), confounding adjustment, and mediation analysis for causal discovery
+description: Implements causal models, directed acyclic graphs (DAGs), confounding
+  adjustment, and mediation analysis for causal discovery
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: causal inference, causality, causal models, DAG, confounding, how do i determine causation
-  related-skills: coding-ds-intervention-analysis, coding-ds-observational-studies, coding-ds-randomized-experiments, coding-ds-synthetic-control
+  triggers: causal inference, causality, causal models, DAG, confounding, how do i
+    determine causation, airflow
+  related-skills: coding-ds-intervention-analysis, coding-ds-observational-studies,
+    coding-ds-randomized-experiments, coding-ds-synthetic-control
 ---
+
 
 # Causal Inference
 

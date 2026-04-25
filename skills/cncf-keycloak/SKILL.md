@@ -1,6 +1,6 @@
 ---
 name: cncf-keycloak
-description: Keycloak in Cloud-Native Engineering - identity and access management
+description: "Keycloak in Cloud-Native Engineering - identity and access management"
 license: MIT
 compatibility: opencode
 metadata:

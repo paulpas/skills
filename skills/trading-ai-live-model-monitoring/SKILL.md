@@ -1,6 +1,6 @@
 ---
 name: trading-ai-live-model-monitoring
-description: Monitor production ML models for drift, decay, and performance degradation
+description: "Monitor production ML models for drift, decay, and performance degradation"
 license: MIT
 compatibility: opencode
 metadata:

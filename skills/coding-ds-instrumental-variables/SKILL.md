@@ -1,6 +1,6 @@
 ---
 name: coding-ds-instrumental-variables
-description: Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data
+description: "Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data"
 license: MIT
 compatibility: opencode
 metadata:

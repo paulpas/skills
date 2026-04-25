@@ -1,6 +1,6 @@
 ---
 name: coding-ds-data-versioning
-description: Implements data versioning, lineage tracking, provenance management, and reproducible data pipelines for experiment tracking and governance
+description: "Implements data versioning, lineage tracking, provenance management, and reproducible data pipelines for experiment tracking and governance"
 license: MIT
 compatibility: opencode
 metadata:

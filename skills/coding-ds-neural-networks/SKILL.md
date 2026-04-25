@@ -1,17 +1,21 @@
 ---
 name: coding-ds-neural-networks
-description: Implements deep neural networks, backpropagation, activation functions, architectures (CNN, RNN, Transformers), and training strategies
+description: Implements deep neural networks, backpropagation, activation functions,
+  architectures (CNN, RNN, Transformers), and training strategies
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: neural networks, deep learning, backpropagation, CNN, RNN, transformers, how do i use deep learning
-  related-skills: coding-ds-categorical-encoding, coding-ds-ensemble-methods, coding-ds-hyperparameter-tuning, coding-ds-tree-methods
+  triggers: neural networks, deep learning, backpropagation, CNN, RNN, transformers,
+    how do i use deep learning, hugging face
+  related-skills: coding-ds-categorical-encoding, coding-ds-ensemble-methods, coding-ds-hyperparameter-tuning,
+    coding-ds-tree-methods
 ---
+
 
 # Neural Networks
 

@@ -1,6 +1,6 @@
 ---
 name: cncf-kubernetes
-description: Kubernetes in Cloud-Native Engineering - Production-Grade Container Scheduling
+description: "Kubernetes in Cloud-Native Engineering - Production-Grade Container Scheduling"
   and Management
 license: MIT
 compatibility: opencode

@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-autoscaling
-description: Automatically scales compute resources based on metrics like CPU and custom signals.
+description: "Automatically scales compute resources based on metrics like CPU and custom signals"
 license: MIT
 compatibility: opencode
 metadata:

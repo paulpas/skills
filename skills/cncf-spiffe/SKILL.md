@@ -1,6 +1,6 @@
 ---
 name: cncf-spiffe
-description: SPIFFE in Secure Product Identity Framework for Applications
+description: "SPIFFE in Secure Product Identity Framework for Applications"
 license: MIT
 compatibility: opencode
 metadata:

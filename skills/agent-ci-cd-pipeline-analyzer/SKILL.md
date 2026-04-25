@@ -1,6 +1,6 @@
 ---
 name: agent-ci-cd-pipeline-analyzer
-description: Analyzes CI/CD pipelines for optimization opportunities, identifying
+description: "Analyzes CI/CD pipelines for optimization opportunities, identifying"
   bottlenecks and improving build throughput.
 license: MIT
 compatibility: opencode

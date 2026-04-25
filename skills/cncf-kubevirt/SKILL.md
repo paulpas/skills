@@ -1,6 +1,6 @@
 ---
 name: cncf-kubevirt
-description: KubeVirt in Cloud-Native Engineering - virtualization on Kubernetes
+description: "KubeVirt in Cloud-Native Engineering - virtualization on Kubernetes"
 license: MIT
 compatibility: opencode
 metadata:

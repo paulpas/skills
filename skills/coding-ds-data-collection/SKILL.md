@@ -1,6 +1,6 @@
 ---
 name: coding-ds-data-collection
-description: Implements data gathering strategies including APIs, web scraping, sensor data collection, and database queries for building machine learning datasets
+description: "Implements data gathering strategies including APIs, web scraping, sensor data collection, and database queries for building machine learning datasets"
 license: MIT
 compatibility: opencode
 metadata:

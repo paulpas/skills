@@ -1,6 +1,6 @@
 ---
 name: trading-backtest-drawdown-analysis
-description: Maximum Drawdown, Recovery Time, and Value-at-Risk Analysis
+description: "Maximum Drawdown, Recovery Time, and Value-at-Risk Analysis"
 license: MIT
 compatibility: opencode
 metadata:

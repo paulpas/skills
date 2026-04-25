@@ -1,6 +1,6 @@
 ---
 name: trading-fundamentals-risk-management-basics
-description: Position sizing, stop-loss implementation, and system-level risk controls
+description: "Position sizing, stop-loss implementation, and system-level risk controls"
   to preserve capital
 license: MIT
 compatibility: opencode

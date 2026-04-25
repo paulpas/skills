@@ -1,6 +1,6 @@
 ---
 name: coding-ds-intervention-analysis
-description: Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses
+description: "Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses"
 license: MIT
 compatibility: opencode
 metadata:

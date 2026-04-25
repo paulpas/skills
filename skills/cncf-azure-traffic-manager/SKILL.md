@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-traffic-manager
-description: DNS-based traffic routing with health checks and geographic distribution.
+description: DNS-based traffic routing with health checks and geographic distribution
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +9,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: traffic manager, dns, traffic routing, health checks, geographic routing
+  triggers: traffic manager, dns, traffic routing, health checks, geographic routing,
+    route53
   related-skills: cncf-azure-aks, cncf-azure-load-balancer, cncf-azure-monitor, cncf-azure-virtual-machines
 ---
+
 
 
 # Azure Traffic Manager

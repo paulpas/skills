@@ -1,6 +1,6 @@
 ---
 name: coding-ds-anomaly-detection
-description: Detects anomalies and outliers using isolation forests, local outlier factor (LOF), one-class SVM, and isolation-based methods
+description: "Detects anomalies and outliers using isolation forests, local outlier factor (LOF), one-class SVM, and isolation-based methods"
 license: MIT
 compatibility: opencode
 metadata:

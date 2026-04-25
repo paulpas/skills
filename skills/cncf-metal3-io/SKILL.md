@@ -1,6 +1,6 @@
 ---
 name: cncf-metal3-io
-description: metal3.io in Bare Metal Provisioning - cloud native architecture, patterns,
+description: "metal3.io in Bare Metal Provisioning - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode

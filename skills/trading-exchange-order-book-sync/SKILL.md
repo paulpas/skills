@@ -1,6 +1,6 @@
 ---
 name: trading-exchange-order-book-sync
-description: Order book synchronization and state management for accurate trading
+description: "Order book synchronization and state management for accurate trading"
 license: MIT
 compatibility: opencode
 metadata:

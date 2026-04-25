@@ -1,6 +1,6 @@
 ---
 name: trading-data-enrichment
-description: Data enrichment techniques for adding context to raw trading data
+description: "Data enrichment techniques for adding context to raw trading data"
 license: MIT
 compatibility: opencode
 metadata:

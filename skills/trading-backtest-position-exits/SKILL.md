@@ -1,6 +1,6 @@
 ---
 name: trading-backtest-position-exits
-description: Exit strategies, trailing stops, and take-profit mechanisms for trading
+description: "Exit strategies, trailing stops, and take-profit mechanisms for trading"
   systems.
 license: MIT
 compatibility: opencode

@@ -1,6 +1,6 @@
 ---
 name: trading-fundamentals-market-regimes
-description: Market regime detection and adaptation for trading systems across changing
+description: "Market regime detection and adaptation for trading systems across changing"
   market conditions.
 license: MIT
 compatibility: opencode

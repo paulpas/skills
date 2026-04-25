@@ -1,0 +1,49 @@
+---
+name: godot-gdscript-patterns
+description: "Master Godot 4 GDScript patterns including signals, scenes, state machines, and optimization. Use when building Godot games, implementing game systems"
+license: MIT
+compatibility: opencode
+metadata:
+  version: "1.0.0"
+  domain: programming
+  role: implementation
+  scope: implementation
+  output-format: code
+  triggers: godot gdscript patterns, game, development, implementation guide
+---
+
+# Godot Gdscript Patterns
+
+Master Godot 4 GDScript patterns including signals, scenes, state machines, and optimization. Use when building Godot games, implementing game systems, or learning GDScript best practices.
+
+## When to Use
+
+- When master godot 4 gdscript patterns including signals...
+- Implementing this specific pattern or feature
+- Part of a larger architectural decision
+
+## When NOT to Use
+
+- For unrelated tasks
+- When a simpler approach would suffice
+- Without understanding the broader context
+
+## Core Workflow
+
+1. Identify the specific use case
+2. Apply the pattern or technique
+3. Validate and test the implementation
+4. Iterate based on results
+
+## Key Patterns
+
+This skill provides domain expertise for:
+
+- Implementation and architecture guidance
+- Best practices and standards compliance
+- Pattern recognition and application
+- Quality assurance and validation
+
+## Related Skills
+
+See the metadata for related skills in the same domain.

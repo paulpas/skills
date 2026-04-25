@@ -1,6 +1,6 @@
 ---
 name: cncf-fluentd
-description: Fluentd unified logging layer for collecting, transforming, and routing
+description: "Fluentd unified logging layer for collecting, transforming, and routing"
   log data in cloud-native environments
 license: MIT
 compatibility: opencode

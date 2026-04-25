@@ -1,6 +1,6 @@
 ---
 name: coding-code-review
-description: Analyzes code diffs and files to identify bugs, security vulnerabilities,
+description: "Analyzes code diffs and files to identify bugs, security vulnerabilities"
   code smells, and architectural concerns, producing a structured review report with
   prioritized, actionable feedback
 license: MIT

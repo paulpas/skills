@@ -1,6 +1,6 @@
 ---
 name: trading-risk-liquidity-risk
-description: Liquidity assessment and trade execution risk
+description: "Liquidity assessment and trade execution risk"
 license: MIT
 compatibility: opencode
 metadata:

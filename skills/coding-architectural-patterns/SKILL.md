@@ -1,17 +1,20 @@
 ---
 name: coding-architectural-patterns
-description: Software architecture patterns including MVC, MVVM, microservices, event-driven, CQRS, DDD, hexagonal architecture, layered architecture, and pattern selection criteria
+description: Software architecture patterns including MVC, MVVM, microservices, event-driven,
+  CQRS, DDD, hexagonal architecture, layered architecture, and pattern
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: reference
   scope: implementation
   output-format: code
-  triggers: architectural patterns, system design, architecture, microservices, design patterns, CQRS, DDD, hexagonal architecture, MVC
+  triggers: architectural patterns, system design, architecture, microservices, design
+    patterns, CQRS, DDD, hexagonal architecture
   related-skills: coding-code-quality-policies
 ---
+
 
 # Software Architecture Patterns
 

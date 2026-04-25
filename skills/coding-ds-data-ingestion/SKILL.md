@@ -1,6 +1,6 @@
 ---
 name: coding-ds-data-ingestion
-description: Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow
+description: "Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow"
 license: MIT
 compatibility: opencode
 metadata:

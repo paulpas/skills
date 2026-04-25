@@ -1,6 +1,6 @@
 ---
 name: cncf-longhorn
-description: Longhorn in Cloud Native Storage - cloud native architecture, patterns,
+description: "Longhorn in Cloud Native Storage - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode

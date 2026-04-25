@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-event-hubs
-description: Event streaming platform for high-throughput data ingestion and processing.
+description: Event streaming platform for high-throughput data ingestion and processing
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +9,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: event hubs, event streaming, data ingestion, streaming, message streaming
+  triggers: event hubs, event streaming, data ingestion, streaming, message streaming,
+    kafka
   related-skills: cncf-azure-functions, cncf-azure-monitor, cncf-azure-service-bus
 ---
+
 
 
 # Azure Event Hubs

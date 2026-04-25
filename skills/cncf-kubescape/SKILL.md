@@ -1,6 +1,6 @@
 ---
 name: cncf-kubescape
-description: Kubescape in Cloud-Native Engineering - Kubernetes security
+description: "Kubescape in Cloud-Native Engineering - Kubernetes security"
 license: MIT
 compatibility: opencode
 metadata:

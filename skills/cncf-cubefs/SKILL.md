@@ -1,6 +1,6 @@
 ---
 name: cncf-cubefs
-description: CubeFS in Storage - distributed, high-performance file system
+description: "CubeFS in Storage - distributed, high-performance file system"
 license: MIT
 compatibility: opencode
 metadata:

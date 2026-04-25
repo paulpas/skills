@@ -1,6 +1,6 @@
 ---
 name: coding-ds-kernel-density
-description: Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions
+description: "Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: trading-ai-model-ensemble
-description: Combine multiple models for improved prediction accuracy and robustness
+description: "Combine multiple models for improved prediction accuracy and robustness"
 license: MIT
 compatibility: opencode
 metadata:

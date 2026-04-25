@@ -1,6 +1,6 @@
 ---
 name: coding-ds-observational-studies
-description: Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias
+description: "Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias"
 license: MIT
 compatibility: opencode
 metadata:

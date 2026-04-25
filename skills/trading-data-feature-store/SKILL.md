@@ -1,6 +1,6 @@
 ---
 name: trading-data-feature-store
-description: Feature storage and management for machine learning trading models
+description: "Feature storage and management for machine learning trading models"
 license: MIT
 compatibility: opencode
 metadata:

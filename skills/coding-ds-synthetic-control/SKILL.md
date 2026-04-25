@@ -1,6 +1,6 @@
 ---
 name: coding-ds-synthetic-control
-description: Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation
+description: "Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation"
 license: MIT
 compatibility: opencode
 metadata:

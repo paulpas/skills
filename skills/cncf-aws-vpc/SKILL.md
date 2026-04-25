@@ -1,6 +1,6 @@
 ---
 name: cncf-aws-vpc
-description: Configures Virtual Private Clouds with subnets, route tables, NAT gateways,
+description: "Configures Virtual Private Clouds with subnets, route tables, NAT gateways"
   security groups, and network ACLs for secure, isolated network infrastructure on
   AWS.
 license: MIT

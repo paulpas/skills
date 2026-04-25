@@ -1,6 +1,6 @@
 ---
 name: cncf-crossplane
-description: Crossplane in Platform Engineering - Kubernetes-native control plane
+description: "Crossplane in Platform Engineering - Kubernetes-native control plane"
   for multi-cloud infrastructure
 license: MIT
 compatibility: opencode

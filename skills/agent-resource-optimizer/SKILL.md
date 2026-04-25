@@ -1,6 +1,6 @@
 ---
 name: agent-resource-optimizer
-description: Optimizes resource allocation across distributed systems to minimize
+description: "Optimizes resource allocation across distributed systems to minimize"
   costs while maintaining performance SLAs.
 license: MIT
 compatibility: opencode

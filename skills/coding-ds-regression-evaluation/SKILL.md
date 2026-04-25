@@ -1,6 +1,6 @@
 ---
 name: coding-ds-regression-evaluation
-description: Evaluates regression models using MSE, RMSE, MAE, MAPE, R-squared, and other metrics for assessing predictive accuracy
+description: "Evaluates regression models using MSE, RMSE, MAE, MAPE, R-squared, and other metrics for assessing predictive accuracy"
 license: MIT
 compatibility: opencode
 metadata:

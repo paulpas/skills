@@ -1,6 +1,7 @@
 ---
 name: cncf-gcp-container-registry
-description: Stores and manages container images with integration to GKE and Cloud Build.
+description: Stores and manages container images with integration to GKE and Cloud
+  Build
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: container registry, gcr, container images, image registry, docker images
-  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-monitoring, cncf-gcp-gke, cncf-gcp-iam
+  triggers: container registry, gcr, container images, image registry, docker images,
+    containers, docker, docker hub
+  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-monitoring, cncf-gcp-gke,
+    cncf-gcp-iam
 ---
+
 
 
 # Google Container Registry

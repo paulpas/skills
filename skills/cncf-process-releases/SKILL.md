@@ -1,6 +1,6 @@
 ---
 name: cncf-process-releases
-description: Creates or updates RELEASES.md documenting the release process, versioning
+description: "Creates or updates RELEASES.md documenting the release process, versioning"
   policy, and release cadence for CNCF projects
 license: MIT
 compatibility: opencode

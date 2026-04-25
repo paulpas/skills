@@ -1,6 +1,7 @@
 ---
 name: cncf-gcp-cloud-sql
-description: Provides managed relational databases (MySQL, PostgreSQL) with automated backups, replication, and encryption.
+description: Provides managed relational databases (MySQL, PostgreSQL) with automated
+  backups, replication, and encryption
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: cloud sql, relational database, mysql, postgresql, managed database
+  triggers: cloud sql, relational database, mysql, postgresql, managed database, postgres,
+    sql database
   related-skills: cncf-gcp-cloud-kms, cncf-gcp-cloud-monitoring, cncf-gcp-iam, cncf-gcp-vpc
 ---
+
 
 
 # Google Cloud SQL

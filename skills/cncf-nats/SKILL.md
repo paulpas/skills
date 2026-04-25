@@ -1,6 +1,6 @@
 ---
 name: cncf-nats
-description: NATS in Cloud Native Messaging - cloud native architecture, patterns,
+description: "NATS in Cloud Native Messaging - cloud native architecture, patterns"
   pitfalls, and best practices
 license: MIT
 compatibility: opencode
