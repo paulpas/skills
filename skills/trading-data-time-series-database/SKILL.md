@@ -1,6 +1,6 @@
 ---
 name: trading-data-time-series-database
-description: "Time-series database queries and optimization for financial data"
+description: "\"Provides Time-series database queries and optimization for financial data\""
 license: MIT
 compatibility: opencode
 metadata:

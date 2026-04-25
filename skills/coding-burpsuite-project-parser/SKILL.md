@@ -1,7 +1,6 @@
 ---
 name: burpsuite-project-parser
-description: Searches and explores Burp Suite project files (.burp) from the command
-  line. Use when searching response headers or bodies with regex patterns, extra
+description: "\"Provides Searches and explores Burp Suite project files (.burp) from the command line. Use when searching response headers or bodies with regex patterns, extra\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,15 +1,16 @@
 ---
 name: coding-ds-ensemble-methods
-description: "Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness"
+description: "\"Provides Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ensemble methods, bagging, boosting, stacking, voting, blending, ensemble learning
+  triggers: ensemble methods, bagging, boosting, stacking, voting, blending, ensemble
+    learning
   related-skills: coding-ds-model-selection, coding-ds-neural-networks, coding-ds-tree-methods
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: agent-performance-profiler
-description: "Profiles code execution to identify performance bottlenecks and optimization"
-  opportunities across systems.
+description: "\"Profiles code execution to identify performance bottlenecks and optimization\" opportunities across systems."
 license: MIT
 compatibility: opencode
 metadata:

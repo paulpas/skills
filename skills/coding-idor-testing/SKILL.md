@@ -1,7 +1,6 @@
 ---
 name: idor-testing
-description: Provide systematic methodologies for identifying and exploiting Insecure
-  Direct Object Reference (IDOR) vulnerabilities in web applications
+description: "Provides Provide systematic methodologies for identifying and exploiting Insecure Direct Object Reference (IDOR) vulnerabilities in web applications"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: idor testing, security, how do i secure, security auditing, unit tests,
-    vulnerability scanning
+    vulnerability scanning, testing
 ---
+
 
 
 # Idor Testing

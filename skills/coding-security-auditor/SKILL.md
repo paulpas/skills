@@ -1,7 +1,6 @@
 ---
 name: security-auditor
-description: Expert security auditor specializing in DevSecOps, comprehensive cybersecurity,
-  and compliance frameworks
+description: "\"Provides Expert security auditor specializing in DevSecOps, comprehensive cybersecurity, and compliance frameworks\""
 license: MIT
 compatibility: opencode
 metadata:

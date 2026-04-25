@@ -1,7 +1,6 @@
 ---
 name: performance-testing-review-ai-review
-description: You are an expert AI-powered code review specialist combining automated
-  static analysis, intelligent pattern recognition, and modern DevOps practices
+description: "Provides You are an expert AI-powered code review specialist combining automated static analysis, intelligent pattern recognition, and modern DevOps practices"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: performance testing review ai review, development, how do i automate,
-    optimization, unit tests
+    optimization, unit tests, performance, testing
 ---
+
 
 
 # Performance Testing Review Ai Review

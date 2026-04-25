@@ -1,15 +1,16 @@
 ---
 name: frontend-mobile-development-component-scaffold
-description: "You are a React component architecture expert specializing in scaffolding production-ready, accessible, and performant components. Generate complete c"
+description: "\"Provides You are a React component architecture expert specializing in scaffolding production-ready, accessible, and performant components. Generate complete c\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: frontend mobile development component scaffold, app, builder, implementation guide
+  triggers: frontend mobile development component scaffold, app, builder, implementation
+    guide
 ---
 
 # Frontend Mobile Development Component Scaffold

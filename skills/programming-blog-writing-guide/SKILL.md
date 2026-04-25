@@ -1,10 +1,10 @@
 ---
 name: blog-writing-guide
-description: "This skill enforces Sentry's blog writing standards across every post — whether you're helping an engineer write their first blog post or a marketer d"
+description: "\"Provides this skill enforces sentry's blog writing standards across\ \ every post \u2014 whether you're helping an engineer write their first blog post\ \ or a marketer d\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

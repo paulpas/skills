@@ -1,7 +1,6 @@
 ---
 name: nosql-expert
-description: Expert guidance for distributed NoSQL databases (Cassandra, DynamoDB).
-  Focuses on mental models, query-first modeling, single-table design, and avoidi
+description: "Provides Expert guidance for distributed NoSQL databases (Cassandra, DynamoDB). Focuses on mental models, query-first modeling, single-table design, and avoidi"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: nosql expert, database, data processing, spark
+  triggers: nosql expert, database, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Nosql Expert

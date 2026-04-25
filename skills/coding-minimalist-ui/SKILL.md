@@ -1,10 +1,10 @@
 ---
 name: minimalist-ui
-description: "Use when creating clean editorial interfaces with warm monochrome palettes, crisp borders, restrained motion, and flat bento layouts"
+description: "\"Provides use when creating clean editorial interfaces with warm monochrome palettes, crisp borders, restrained motion, and flat bento layouts\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

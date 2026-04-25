@@ -1,7 +1,6 @@
 ---
 name: scanning-tools
-description: Master essential security scanning tools for network discovery, vulnerability
-  assessment, web application testing, wireless security, and compliance v
+description: "\"Provides Master essential security scanning tools for network discovery, vulnerability assessment, web application testing, wireless security, and compliance v\""
 license: MIT
 compatibility: opencode
 metadata:

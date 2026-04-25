@@ -1,7 +1,6 @@
 ---
 name: deployment-validation-config-validate
-description: You are a configuration management expert specializing in validating,
-  testing, and ensuring the correctness of application configurations. Create comp
+description: "Provides You are a configuration management expert specializing in validating, testing, and ensuring the correctness of application configurations. Create comp"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: deployment validation config validate, devops, how do i test, kubernetes
-    deployment
+    deployment, container orchestration, deployment
 ---
+
 
 
 # Deployment Validation Config Validate

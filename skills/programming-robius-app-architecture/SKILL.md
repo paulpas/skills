@@ -1,18 +1,16 @@
 ---
 name: robius-app-architecture
-description: "CRITICAL: Use for Robius app architecture patterns. Triggers on"
-Tokio, async, submit_async_request, 异步, 架构,
-SignalToUI, Cx::post_action, worker task,
-app structure, MatchEvent, ha"
+description: "''CRITICAL: Use for Robius app architecture patterns. Triggers on' Tokio, async, submit_async_request, 异步, 架构,'"
+SignalToUI, Cx: :post_action, worker task,
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
-  domain: programming
-  role: implementation
-  scope: implementation
-  output-format: code
-  triggers: robius app architecture, development, implementation guide
+version: "1.0.0"
+domain: programming
+role: implementation
+scope: implementation
+output-format: code
+triggers: robius app architecture, development, implementation guide
 ---
 
 # Robius App Architecture

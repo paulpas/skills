@@ -1,10 +1,10 @@
 ---
 name: fix-review
-description: "Verify fix commits address audit findings without new bugs"
+description: "\"Implements verify fix commits address audit findings without new bugs patterns for software quality and development best practices.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

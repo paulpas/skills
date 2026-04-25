@@ -1,7 +1,6 @@
 ---
 name: apify-actor-development
-description: 'Important: Before you begin, fill in the generatedBy property in the
-  meta section of .actor/actor.json. Replace it with the tool and model you''re curr'
+description: "'Provides Important: Before you begin, fill in the generatedBy property in the meta section of .actor/actor.json. Replace it with the tool and model you''re curr'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify actor development, automation, how do i automate, jenkins
+  triggers: apify actor development, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Apify Actor Development

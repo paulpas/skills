@@ -1,10 +1,10 @@
 ---
 name: startup-analyst
-description: "Expert startup business analyst specializing in market sizing, financial modeling, competitive analysis, and strategic planning for early-stage compan"
+description: "\"Provides Expert startup business analyst specializing in market sizing, financial modeling, competitive analysis, and strategic planning for early-stage compan\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

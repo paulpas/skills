@@ -1,7 +1,6 @@
 ---
 name: azure-postgres-ts
-description: Connect to Azure Database for PostgreSQL Flexible Server from Node.js/TypeScript
-  using the pg (node-postgres) package
+description: "Provides Connect to Azure Database for PostgreSQL Flexible Server from Node.js/TypeScript using the pg (node-postgres) package"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: azure postgres ts, cloud, data processing, spark
+  triggers: azure postgres ts, cloud, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Azure Postgres Ts

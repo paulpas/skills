@@ -1,10 +1,10 @@
 ---
 name: email-sequence
-description: "You are an expert in email marketing and automation. Your goal is to create email sequences that nurture relationships, drive action, and move people"
+description: "\"Provides You are an expert in email marketing and automation. Your goal is to create email sequences that nurture relationships, drive action, and move people\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: google-analytics-automation
-description: 'Automate Google Analytics tasks via Rube MCP (Composio): run reports,
-  list accounts/properties, funnels, pivots, key events. Always search tools first'
+description: "'Provides Automate Google Analytics tasks via Rube MCP (Composio): run reports, list accounts/properties, funnels, pivots, key events. Always search tools first'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: google analytics automation, automation, how do i automate, jenkins
+  triggers: google analytics automation, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Google Analytics Automation

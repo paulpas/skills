@@ -1,7 +1,6 @@
 ---
 name: claude-monitor
-description: Monitor de performance do Claude Code e sistema local. Diagnostica lentidao,
-  mede CPU/RAM/disco, verifica API latency e gera relatorios de saude do si
+description: "Provides Monitor de performance do Claude Code e sistema local. Diagnostica lentidao, mede CPU/RAM/disco, verifica API latency e gera relatorios de saude do si"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude monitor, ai, ml, implementation guide, machine learning
+  triggers: claude monitor, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Claude Monitor

@@ -1,10 +1,10 @@
 ---
 name: web-design-guidelines
-description: "Review files for compliance with Web Interface Guidelines"
+description: "\"Provides review files for compliance with web interface guidelines functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

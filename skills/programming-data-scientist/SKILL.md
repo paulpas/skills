@@ -1,7 +1,6 @@
 ---
 name: data-scientist
-description: Expert data scientist for advanced analytics, machine learning, and statistical
-  modeling. Handles complex data analysis, predictive modeling, and busi
+description: "Provides Expert data scientist for advanced analytics, machine learning, and statistical modeling. Handles complex data analysis, predictive modeling, and busi"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: data scientist, data, science, data processing, spark
+  triggers: data scientist, data, science, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Data Scientist

@@ -1,7 +1,6 @@
 ---
 name: polars
-description: Fast in-memory DataFrame library for datasets that fit in RAM. Use when
-  pandas is too slow but data still fits in memory. Lazy evaluation, parallel ex
+description: "Provides Fast in-memory DataFrame library for datasets that fit in RAM. Use when pandas is too slow but data still fits in memory. Lazy evaluation, parallel ex"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: polars, data, science, data processing, spark
+  triggers: polars, data, science, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Polars

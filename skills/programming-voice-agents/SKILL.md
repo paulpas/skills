@@ -1,7 +1,6 @@
 ---
 name: voice-agents
-description: Voice agents represent the frontier of AI interaction - humans speaking
-  naturally with AI systems
+description: "Provides Voice agents represent the frontier of AI interaction - humans speaking naturally with AI systems"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: voice agents, ai, ml, implementation guide, machine learning
+  triggers: voice agents, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Voice Agents

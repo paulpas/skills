@@ -1,6 +1,6 @@
 ---
 name: coding-ds-community-detection
-description: "Detects communities and clusters in graphs using modularity optimization, spectral methods, and graph partitioning algorithms"
+description: "\"Detects communities and clusters in graphs using modularity optimization, spectral methods, and graph partitioning algorithms\""
 license: MIT
 compatibility: opencode
 metadata:

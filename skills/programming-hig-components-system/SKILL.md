@@ -1,10 +1,10 @@
 ---
 name: hig-components-system
-description: "Apple HIG guidance for system experience components: widgets, live activities, notifications, complications, home screen quick actions, top shelf, wat"
+description: "'Provides Apple HIG guidance for system experience components: widgets, live activities, notifications, complications, home screen quick actions, top shelf, wat'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

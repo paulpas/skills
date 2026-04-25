@@ -1,10 +1,10 @@
 ---
 name: sred-work-summary
-description: "Go back through the previous year of work and create a Notion doc that groups relevant links into projects that can then be documented as SRED project"
+description: "\"Provides Go back through the previous year of work and create a Notion doc that groups relevant links into projects that can then be documented as SRED project\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

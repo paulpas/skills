@@ -1,7 +1,6 @@
 ---
 name: fixing-metadata
-description: Audit and fix HTML metadata including page titles, meta descriptions,
-  canonical URLs, Open Graph tags, Twitter cards, favicons, JSON-LD structured dat
+description: "Provides Audit and fix HTML metadata including page titles, meta descriptions, canonical URLs, Open Graph tags, Twitter cards, favicons, JSON-LD structured dat"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fixing metadata, front, end, data processing, spark
+  triggers: fixing metadata, front, end, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Fixing Metadata

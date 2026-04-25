@@ -1,6 +1,6 @@
 ---
 name: cncf-spire
-description: "SPIRE in SPIFFE Implementation for Real-World Deployments"
+description: "\"Configures spire in spiffe implementation for real-world deployments for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:

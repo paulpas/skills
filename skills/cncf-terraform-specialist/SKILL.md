@@ -1,7 +1,6 @@
 ---
 name: terraform-specialist
-description: Expert Terraform/OpenTofu specialist mastering advanced IaC automation,
-  state management, and enterprise infrastructure patterns
+description: "Provides Expert Terraform/OpenTofu specialist mastering advanced IaC automation, state management, and enterprise infrastructure patterns"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: terraform specialist, devops, how do i deploy, infrastructure as code
+  triggers: terraform specialist, devops, how do i deploy, infrastructure as code,
+    cloudformation
 ---
+
 
 
 # Terraform Specialist

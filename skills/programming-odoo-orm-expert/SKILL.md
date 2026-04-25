@@ -1,10 +1,10 @@
 ---
 name: odoo-orm-expert
-description: "Master Odoo ORM patterns: search, browse, create, write, domain filters, computed fields, and performance-safe query techniques"
+description: "'Provides Master Odoo ORM patterns: search, browse, create, write, domain filters, computed fields, and performance-safe query techniques'"
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

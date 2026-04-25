@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-cloud-operations
-description: Systems management including monitoring, logging, error reporting, and
-  diagnostics
+description: "\"Provides Systems management including monitoring, logging, error reporting, and diagnostics\""
 license: MIT
 compatibility: opencode
 metadata:

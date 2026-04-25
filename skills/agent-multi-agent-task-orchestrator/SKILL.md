@@ -1,10 +1,10 @@
 ---
 name: multi-agent-task-orchestrator
-description: "Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring"
+description: "\"Provides Route tasks to specialized AI agents with anti-duplication, quality gates, and 30-minute heartbeat monitoring\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

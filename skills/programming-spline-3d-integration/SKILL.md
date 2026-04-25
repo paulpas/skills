@@ -1,10 +1,10 @@
 ---
 name: spline-3d-integration
-description: "Use when adding interactive 3D scenes from Spline.design to web projects, including React embedding and runtime control API"
+description: "\"Provides use when adding interactive 3d scenes from spline.design to web projects, including react embedding and runtime control api\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

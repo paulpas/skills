@@ -1,10 +1,10 @@
 ---
 name: github-actions-templates
-description: "Production-ready GitHub Actions workflow patterns for testing, building, and deploying applications"
+description: "\"Provides Production-ready GitHub Actions workflow patterns for testing, building, and deploying applications\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

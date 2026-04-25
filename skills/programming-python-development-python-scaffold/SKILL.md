@@ -1,10 +1,10 @@
 ---
 name: python-development-python-scaffold
-description: "You are a Python project architecture expert specializing in scaffolding production-ready Python applications. Generate complete project structures wi"
+description: "\"Provides You are a Python project architecture expert specializing in scaffolding production-ready Python applications. Generate complete project structures wi\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

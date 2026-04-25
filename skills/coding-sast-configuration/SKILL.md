@@ -1,7 +1,6 @@
 ---
 name: sast-configuration
-description: Static Application Security Testing (SAST) tool setup, configuration,
-  and custom rule creation for comprehensive security scanning across multiple pro
+description: "Provides Static Application Security Testing (SAST) tool setup, configuration, and custom rule creation for comprehensive security scanning across multiple pro"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: sast configuration, security, how do i test, security auditing, static
-    analysis, vulnerability scanning
+    analysis, vulnerability scanning, linting
 ---
+
 
 
 # Sast Configuration

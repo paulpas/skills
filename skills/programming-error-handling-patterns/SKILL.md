@@ -1,10 +1,10 @@
 ---
 name: error-handling-patterns
-description: "Build resilient applications with robust error handling strategies that gracefully handle failures and provide excellent debugging experiences"
+description: "\"Provides Build resilient applications with robust error handling strategies that gracefully handle failures and provide excellent debugging experiences\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

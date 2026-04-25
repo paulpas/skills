@@ -1,7 +1,6 @@
 ---
 name: scikit-learn
-description: Machine learning in Python with scikit-learn. Use for classification,
-  regression, clustering, model evaluation, and ML pipelines
+description: "Provides Machine learning in Python with scikit-learn. Use for classification, regression, clustering, model evaluation, and ML pipelines"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: scikit learn, ai, ml, implementation guide, machine learning
+  triggers: scikit learn, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Scikit Learn

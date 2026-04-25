@@ -1,10 +1,10 @@
 ---
 name: blockrun
-description: "BlockRun works with Claude Code and Google Antigravity"
+description: "\"Provides blockrun works with claude code and google antigravity functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

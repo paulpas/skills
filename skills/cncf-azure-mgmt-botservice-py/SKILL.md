@@ -1,10 +1,10 @@
 ---
 name: azure-mgmt-botservice-py
-description: "Azure Bot Service Management SDK for Python. Use for creating, managing, and configuring Azure Bot Service resources"
+description: "\"Provides Azure Bot Service Management SDK for Python. Use for creating, managing, and configuring Azure Bot Service resources\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: hybrid-search-implementation
-description: Combine vector and keyword search for improved retrieval. Use when implementing
-  RAG systems, building search engines, or when neither approach alone p
+description: "Provides Combine vector and keyword search for improved retrieval. Use when implementing RAG systems, building search engines, or when neither approach alone p"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hybrid search implementation, ai, ml, implementation guide, machine learning
+  triggers: hybrid search implementation, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Hybrid Search Implementation

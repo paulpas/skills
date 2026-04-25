@@ -1,6 +1,6 @@
 ---
 name: yann-lecun-filosofia
-description: "Sub-skill filos\xF3fica e pedag\xF3gica de Yann LeCun"
+description: "\"Provides sub-skill filos\xF3fica e pedag\xF3gica de yann lecun functionality\ \ and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: yann lecun filosofia, ai, ml, implementation guide, machine learning
+  triggers: yann lecun filosofia, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Yann Lecun Filosofia

@@ -1,6 +1,6 @@
 ---
 name: expo-deployment
-description: Deploy Expo apps to production
+description: "Provides deploy expo apps to production functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: expo deployment, mobile, how do i deploy, kubernetes deployment
+  triggers: expo deployment, mobile, how do i deploy, kubernetes deployment, container
+    orchestration, deployment
 ---
+
 
 
 # Expo Deployment

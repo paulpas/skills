@@ -1,7 +1,6 @@
 ---
 name: seek-and-analyze-video
-description: Seek and analyze video content using Memories.ai Large Visual Memory
-  Model for persistent video intelligence
+description: "Provides Seek and analyze video content using Memories.ai Large Visual Memory Model for persistent video intelligence"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: seek and analyze video, data, ai, data processing, machine learning, spark
+  triggers: seek and analyze video, data, ai, data processing, machine learning, spark,
+    big data, distributed processing
 ---
+
 
 
 # Seek And Analyze Video

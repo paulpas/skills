@@ -1,10 +1,10 @@
 ---
 name: uv-package-manager
-description: "Comprehensive guide to using uv, an extremely fast Python package installer and resolver written in Rust, for modern Python project management and dep"
+description: "\"Provides Comprehensive guide to using uv, an extremely fast Python package installer and resolver written in Rust, for modern Python project management and dep\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

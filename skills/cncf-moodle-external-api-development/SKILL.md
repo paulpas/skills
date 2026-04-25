@@ -1,10 +1,10 @@
 ---
 name: moodle-external-api-development
-description: "This skill guides you through creating custom external web service APIs for Moodle LMS, following Moodle's external API framework and coding standards"
+description: "\"Provides this skill guides you through creating custom external web service apis for moodle lms, following moodle's external api framework and coding standards\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

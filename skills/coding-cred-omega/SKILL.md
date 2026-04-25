@@ -1,6 +1,6 @@
 ---
 name: cred-omega
-description: CISO operacional enterprise para gestao total de credenciais e segredos
+description: "\"Provides CISO operacional enterprise para gestao total de credenciais e segredos\""
 license: MIT
 compatibility: opencode
 metadata:

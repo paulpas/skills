@@ -1,10 +1,10 @@
 ---
 name: viboscope
-description: "Psychological compatibility matching — find cofounders, collaborators, and friends through validated psychometrics"
+description: "\"Provides Psychological compatibility matching \u2014 find cofounders,\ \ collaborators, and friends through validated psychometrics\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

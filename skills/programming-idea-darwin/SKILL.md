@@ -1,10 +1,10 @@
 ---
 name: idea-darwin
-description: "Darwinian idea evolution engine — toss rough ideas onto an evolution island, let them compete, crossbreed, and mutate through structured rounds to sur"
+description: "\"Provides Darwinian idea evolution engine \u2014 toss rough ideas onto\ \ an evolution island, let them compete, crossbreed, and mutate through structured\ \ rounds to sur\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

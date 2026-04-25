@@ -1,10 +1,10 @@
 ---
 name: api-documentation
-description: "API documentation workflow for generating OpenAPI specs, creating developer guides, and maintaining comprehensive API documentation"
+description: "\"Provides API documentation workflow for generating OpenAPI specs, creating developer guides, and maintaining comprehensive API documentation\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

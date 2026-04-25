@@ -1,7 +1,6 @@
 ---
 name: apify-actorization
-description: Actorization converts existing software into reusable serverless applications
-  compatible with the Apify platform. Actors are programs packaged as Dock
+description: "Provides Actorization converts existing software into reusable serverless applications compatible with the Apify platform. Actors are programs packaged as Dock"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify actorization, automation, how do i automate, jenkins
+  triggers: apify actorization, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Apify Actorization

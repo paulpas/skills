@@ -1,10 +1,10 @@
 ---
 name: changelog-automation
-description: "Automate changelog generation from commits, PRs, and releases following Keep a Changelog format. Use when setting up release workflows, generating rel"
+description: "\"Provides Automate changelog generation from commits, PRs, and releases following Keep a Changelog format. Use when setting up release workflows, generating rel\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

@@ -1,6 +1,6 @@
 ---
 name: cncf-dapr
-description: "Dapr in Cloud-Native Engineering - distributed application runtime"
+description: "\"Provides Dapr in Cloud-Native Engineering - distributed application runtime\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cloud-native, dapr, distributed, engineering
-  related-skills: 
+  related-skills: null
 ---
 
 # Dapr in Cloud-Native Engineering

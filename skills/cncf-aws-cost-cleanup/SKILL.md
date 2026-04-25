@@ -1,10 +1,10 @@
 ---
 name: aws-cost-cleanup
-description: "Automated cleanup of unused AWS resources to reduce costs"
+description: "\"Configures automated cleanup of unused aws resources to reduce costs for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: android-jetpack-compose-expert
-description: "Expert guidance for building modern Android UIs with Jetpack Compose, covering state management, navigation, performance, and Material Design 3"
+description: "\"Provides Expert guidance for building modern Android UIs with Jetpack Compose, covering state management, navigation, performance, and Material Design 3\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

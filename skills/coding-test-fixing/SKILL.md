@@ -1,10 +1,10 @@
 ---
 name: test-fixing
-description: "Systematically identify and fix all failing tests using smart grouping strategies. Use when explicitly asks to fix tests ("
+description: "\"Provides Systematically identify and fix all failing tests using smart grouping strategies. Use when explicitly asks to fix tests (\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

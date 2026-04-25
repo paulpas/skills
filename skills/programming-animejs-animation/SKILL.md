@@ -1,10 +1,10 @@
 ---
 name: animejs-animation
-description: "Advanced JavaScript animation library skill for creating complex, high-performance web animations"
+description: "\"Provides Advanced JavaScript animation library skill for creating complex, high-performance web animations\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

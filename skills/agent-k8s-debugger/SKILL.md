@@ -1,7 +1,6 @@
 ---
 name: agent-k8s-debugger
-description: "Diagnoses Kubernetes cluster issues, debug pods, deployments, and cluster"
-  components using structured debugging workflows.
+description: "\"Diagnoses Kubernetes cluster issues, debug pods, deployments, and cluster\" components using structured debugging workflows."
 license: MIT
 compatibility: opencode
 metadata:

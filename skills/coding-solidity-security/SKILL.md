@@ -1,7 +1,6 @@
 ---
 name: solidity-security
-description: Master smart contract security best practices, vulnerability prevention,
-  and secure Solidity development patterns
+description: "\"Provides Master smart contract security best practices, vulnerability prevention, and secure Solidity development patterns\""
 license: MIT
 compatibility: opencode
 metadata:

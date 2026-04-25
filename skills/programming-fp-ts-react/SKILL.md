@@ -1,7 +1,6 @@
 ---
 name: fp-ts-react
-description: Practical patterns for using fp-ts with React - hooks, state, forms,
-  data fetching. Use when building React apps with functional programming patterns
+description: "Provides Practical patterns for using fp-ts with React - hooks, state, forms, data fetching. Use when building React apps with functional programming patterns"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fp ts react, development, data processing, spark
+  triggers: fp ts react, development, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Fp Ts React

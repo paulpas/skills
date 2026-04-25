@@ -1,10 +1,10 @@
 ---
 name: cncf-artifact-hub
-description: "Artifact Hub in Cloud-Native Engineering - Repository for Kubernetes Helm, Falco, OPA, and more"
+description: "\"Provides Artifact Hub in Cloud-Native Engineering - Repository for Kubernetes Helm, Falco, OPA, and more\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: reference
   scope: infrastructure

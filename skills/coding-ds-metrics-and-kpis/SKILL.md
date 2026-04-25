@@ -1,7 +1,6 @@
 ---
 name: coding-ds-metrics-and-kpis
-description: Defines, selects, and monitors key performance indicators (KPIs), business
-  metrics, and evaluation metrics for decision-making
+description: "\"Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: latex-paper-conversion
-description: "This skill should be used when the user asks to convert an academic paper in LaTeX from one format (e.g., Springer, IPOL) to another format (e.g., MDP"
+description: "\"Provides this skill should be used when the user asks to convert an academic paper in latex from one format (e.g., springer, ipol) to another format (e.g., mdp\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

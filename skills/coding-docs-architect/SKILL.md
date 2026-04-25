@@ -1,6 +1,6 @@
 ---
 name: docs-architect
-description: "Creates comprehensive technical documentation from existing codebases. Analyzes architecture, design patterns, and implementation details to produce l"
+description: "\"Creates comprehensive technical documentation from existing codebases. Analyzes architecture, design patterns, and implementation details to produce l\""
 license: MIT
 compatibility: opencode
 metadata:

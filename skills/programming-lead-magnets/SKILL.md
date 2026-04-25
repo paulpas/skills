@@ -1,10 +1,10 @@
 ---
 name: lead-magnets
-description: "Plan and optimize lead magnets for email capture and lead generation. Use when designing gated content, checklists, templates, downloadable resources"
+description: "\"Provides Plan and optimize lead magnets for email capture and lead generation. Use when designing gated content, checklists, templates, downloadable resources\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: wiki-researcher
-description: "You are an expert software engineer and systems analyst. Use when user asks"
+description: "\"Provides You are an expert software engineer and systems analyst. Use when user asks\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

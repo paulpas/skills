@@ -1,7 +1,6 @@
 ---
 name: coding-ds-model-robustness
-description: Improves model robustness including adversarial robustness, out-of-distribution
-  detection, and uncertainty quantification
+description: "Improves model robustness including adversarial robustness, out-of-distribution detection, and uncertainty quantification"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,10 +10,11 @@ metadata:
   scope: implementation
   output-format: code
   triggers: model robustness, adversarial robustness, out-of-distribution, OOD detection,
-    robustness testing, unit tests
+    robustness testing, unit tests, testing
   related-skills: coding-ds-anomaly-detection, coding-ds-explainability, coding-ds-model-fairness,
     coding-ds-reproducible-research
 ---
+
 
 
 # Model Robustness

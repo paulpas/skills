@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-cloud-cdn
-description: Content delivery network for caching and globally distributing content
-  with low latency
+description: "Provides Content delivery network for caching and globally distributing content with low latency"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,10 +10,11 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cloud cdn, cdn, content delivery, caching, global distribution, cloudfront,
-    elasticache
+    elasticache, redis
   related-skills: cncf-gcp-cloud-load-balancing, cncf-gcp-cloud-monitoring, cncf-gcp-cloud-storage,
     cncf-gcp-compute-engine
 ---
+
 
 
 

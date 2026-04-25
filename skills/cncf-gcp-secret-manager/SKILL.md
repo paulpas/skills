@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-secret-manager
-description: "Stores and rotates secrets with encryption and audit logging for sensitive data"
+description: "\"Provides Stores and rotates secrets with encryption and audit logging for sensitive data\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: secret manager, secrets, secret storage, credential management, secret rotation
-  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-kms, cncf-gcp-compute-engine, cncf-gcp-iam
+  triggers: secret manager, secrets, secret storage, credential management, secret
+    rotation
+  related-skills: cncf-gcp-cloud-functions, cncf-gcp-cloud-kms, cncf-gcp-compute-engine
 ---
 
 

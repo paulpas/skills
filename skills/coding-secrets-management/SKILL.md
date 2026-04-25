@@ -1,7 +1,6 @@
 ---
 name: secrets-management
-description: Secure secrets management practices for CI/CD pipelines using Vault,
-  AWS Secrets Manager, and other tools
+description: "Provides Secure secrets management practices for CI/CD pipelines using Vault, AWS Secrets Manager, and other tools"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: secrets management, security, how do i secure, security auditing, vault,
-    vulnerability scanning
+    vulnerability scanning, credential storage
 ---
+
 
 
 # Secrets Management

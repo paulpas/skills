@@ -1,6 +1,6 @@
 ---
 name: cncf-keda
-description: "KEDA in Cloud-Native Engineering - event-driven autoscaling"
+description: "\"Configures keda in cloud-native engineering - event-driven autoscaling for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,7 +11,7 @@ metadata:
   output-format: manifests
   triggers: cloud-native, engineering, event-driven, keda, eventbridge, event bus,
     event routing
-  related-skills: 
+  related-skills: null
 ---
 
 

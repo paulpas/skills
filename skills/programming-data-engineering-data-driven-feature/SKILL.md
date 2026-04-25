@@ -1,10 +1,10 @@
 ---
 name: data-engineering-data-driven-feature
-description: "Build features guided by data insights, A/B testing, and continuous measurement using specialized agents for analysis, implementation, and experimenta"
+description: "\"Provides Build features guided by data insights, A/B testing, and continuous measurement using specialized agents for analysis, implementation, and experimenta\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

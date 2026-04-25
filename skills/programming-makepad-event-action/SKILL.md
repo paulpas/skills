@@ -1,8 +1,6 @@
 ---
 name: makepad-event-action
-description: "CRITICAL: Use for Makepad event and action handling. Triggers on"
-makepad event, makepad action, Event enum, ActionTrait, handle_event,
-MouseDown, KeyDown, TouchUpdate, Hit, Finger"
+description: "\"CRITICAL: Use for Makepad event and action handling. Triggers on\" makepad event, makepad action, Event enum, ActionTrait, handle_event, MouseDown, KeyDown, TouchUpdate, Hit, Finger\""
 license: MIT
 compatibility: opencode
 metadata:

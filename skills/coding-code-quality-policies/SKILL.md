@@ -1,15 +1,16 @@
 ---
 name: coding-code-quality-policies
-description: "Establishing policies for maintaining a clean codebase including code standards, linting, formatting, testing requirements, cyclomatic complexity limi"
+description: "\"Provides Establishing policies for maintaining a clean codebase including code standards, linting, formatting, testing requirements, cyclomatic complexity limi\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: code quality, clean code, linting, code formatting, testing policies, cyclomatic complexity, code standards, automated enforcement
+  triggers: code quality, clean code, linting, code formatting, testing policies,
+    cyclomatic complexity, code standards, automated enforcement
   related-skills: coding-git-advanced, coding-architectural-patterns
 ---
 

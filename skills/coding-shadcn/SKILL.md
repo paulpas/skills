@@ -1,6 +1,6 @@
 ---
 name: shadcn
-description: "Manages shadcn/ui components and projects, providing context, documentation, and usage patterns for building modern design systems"
+description: "\"Manages shadcn/ui components and projects, providing context, documentation, and usage patterns for building modern design systems\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: render-automation
-description: 'Automate Render tasks via Rube MCP (Composio): services, deployments,
-  projects. Always search tools first for current schemas'
+description: "'Provides Automate Render tasks via Rube MCP (Composio): services, deployments, projects. Always search tools first for current schemas'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: render automation, automation, how do i deploy, jenkins
+  triggers: render automation, automation, how do i deploy, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Render Automation

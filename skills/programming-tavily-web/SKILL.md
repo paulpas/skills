@@ -1,7 +1,6 @@
 ---
 name: tavily-web
-description: Web search, content extraction, crawling, and research capabilities using
-  Tavily API. Use when you need to search the web for current information, ext
+description: "Provides Web search, content extraction, crawling, and research capabilities using Tavily API. Use when you need to search the web for current information, ext"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: tavily web, data, ai, data processing, machine learning, spark
+  triggers: tavily web, data, ai, data processing, machine learning, spark, big data,
+    distributed processing
 ---
+
 
 
 # Tavily Web

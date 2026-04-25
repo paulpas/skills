@@ -1,10 +1,10 @@
 ---
 name: azure-identity-py
-description: "Azure Identity SDK for Python authentication. Use for DefaultAzureCredential, managed identity, service principals, and token caching"
+description: "\"Provides Azure Identity SDK for Python authentication. Use for DefaultAzureCredential, managed identity, service principals, and token caching\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

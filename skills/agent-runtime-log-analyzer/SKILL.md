@@ -1,7 +1,6 @@
 ---
 name: agent-runtime-log-analyzer
-description: "Analyzes runtime logs from agent execution to identify patterns, detect"
-  anomalies, and extract actionable insights for system optimization.
+description: "\"Analyzes runtime logs from agent execution to identify patterns, detect\" anomalies, and extract actionable insights for system optimization."
 license: MIT
 compatibility: opencode
 metadata:

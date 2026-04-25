@@ -1,10 +1,10 @@
 ---
 name: git-advanced-workflows
-description: "Master advanced Git techniques to maintain clean history, collaborate effectively, and recover from any situation with confidence"
+description: "\"Provides Master advanced Git techniques to maintain clean history, collaborate effectively, and recover from any situation with confidence\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: rag-implementation
-description: RAG (Retrieval-Augmented Generation) implementation workflow covering
-  embedding selection, vector database setup, chunking strategies, and retrieval o
+description: "Provides RAG (Retrieval-Augmented Generation) implementation workflow covering embedding selection, vector database setup, chunking strategies, and retrieval o"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: rag implementation, granular, workflow, data processing, spark
+  triggers: rag implementation, granular, workflow, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Rag Implementation

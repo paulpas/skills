@@ -1,6 +1,6 @@
 ---
 name: trading-technical-statistical-arbitrage
-description: "Pair trading and cointegration-based arbitrage strategies"
+description: "\"Implements pair trading and cointegration-based arbitrage strategies for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

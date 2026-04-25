@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-gke
-description: "Managed Kubernetes cluster with automatic scaling, networking, and GCP service integration"
+description: "\"Provides Managed Kubernetes cluster with automatic scaling, networking, and GCP service integration\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,8 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: gke, kubernetes, container orchestration, k8s, managed kubernetes
-  related-skills: cncf-gcp-cloud-monitoring, cncf-gcp-container-registry, cncf-gcp-iam, cncf-gcp-vpc
+  related-skills: cncf-gcp-autoscaling, cncf-gcp-cloud-monitoring, cncf-gcp-container-registry,
+    cncf-gcp-vpc
 ---
 
 

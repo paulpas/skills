@@ -1,7 +1,6 @@
 ---
 name: ai-wrapper-product
-description: Expert in building products that wrap AI APIs (OpenAI, Anthropic, etc.
-  ) into focused tools people will pay for. Not just
+description: "Provides Expert in building products that wrap AI APIs (OpenAI, Anthropic, etc. ) into focused tools people will pay for. Not just"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai wrapper product, ai, ml, implementation guide, machine learning
+  triggers: ai wrapper product, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ai Wrapper Product

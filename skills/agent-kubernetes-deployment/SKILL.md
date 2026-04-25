@@ -1,7 +1,6 @@
 ---
 name: kubernetes-deployment
-description: Kubernetes deployment workflow for container orchestration, Helm charts,
-  service mesh, and production-ready K8s configurations
+description: "Provides Kubernetes deployment workflow for container orchestration, Helm charts, service mesh, and production-ready K8s configurations"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: kubernetes deployment, granular, workflow, how do i deploy, container
-    orchestration, deployment
+    orchestration, deployment, kubernetes, rolling updates
 ---
+
 
 
 # Kubernetes Deployment

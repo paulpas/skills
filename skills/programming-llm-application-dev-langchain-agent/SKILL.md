@@ -1,7 +1,6 @@
 ---
 name: llm-application-dev-langchain-agent
-description: You are an expert LangChain agent developer specializing in production-grade
-  AI systems using LangChain 0.1+ and LangGraph
+description: "Provides You are an expert LangChain agent developer specializing in production-grade AI systems using LangChain 0.1+ and LangGraph"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: llm application dev langchain agent, ai, ml, implementation guide, machine
-    learning
+    learning, scikit-learn
 ---
+
 
 
 # Llm Application Dev Langchain Agent

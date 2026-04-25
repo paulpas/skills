@@ -1,10 +1,10 @@
 ---
 name: kotler-macro-analyzer
-description: "Professional PESTEL/SWOT analysis agent based on Kotler's methodology for strategic market audits"
+description: "\"Provides Professional PESTEL/SWOT analysis agent based on Kotler's methodology for strategic market audits\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

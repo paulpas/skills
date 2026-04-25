@@ -1,7 +1,6 @@
 ---
 name: memory-forensics
-description: Comprehensive techniques for acquiring, analyzing, and extracting artifacts
-  from memory dumps for incident response and malware analysis
+description: "\"Provides Comprehensive techniques for acquiring, analyzing, and extracting artifacts from memory dumps for incident response and malware analysis\""
 license: MIT
 compatibility: opencode
 metadata:

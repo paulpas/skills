@@ -1,7 +1,6 @@
 ---
 name: cc-skill-security-review
-description: This skill ensures all code follows security best practices and identifies
-  potential vulnerabilities. Use when implementing authentication or authoriz
+description: "Provides this skill ensures all code follows security best practices and identifies potential vulnerabilities. use when implementing authentication or authoriz"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: cc skill security review, meta, how do i secure, vulnerability scanning
+  triggers: cc skill security review, meta, how do i secure, vulnerability scanning,
+    security
 ---
+
 
 
 # Cc Skill Security Review

@@ -1,7 +1,6 @@
 ---
 name: intercom-automation
-description: 'Automate Intercom tasks via Rube MCP (Composio): conversations, contacts,
-  companies, segments, admins. Always search tools first for current schemas'
+description: "'Provides Automate Intercom tasks via Rube MCP (Composio): conversations, contacts, companies, segments, admins. Always search tools first for current schemas'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: intercom automation, automation, how do i automate, jenkins
+  triggers: intercom automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Intercom Automation

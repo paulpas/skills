@@ -1,7 +1,6 @@
 ---
 name: context-agent
-description: Agente de contexto para continuidade entre sessoes. Salva resumos, decisoes,
-  tarefas pendentes e carrega briefing automatico na sessao seguinte
+description: "Provides Agente de contexto para continuidade entre sessoes. Salva resumos, decisoes, tarefas pendentes e carrega briefing automatico na sessao seguinte"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context agent, ai, ml, how do i automate, machine learning
+  triggers: context agent, ai, ml, how do i automate, machine learning, scikit-learn
 ---
+
 
 
 # Context Agent

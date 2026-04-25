@@ -1,10 +1,10 @@
 ---
 name: backend-dev-guidelines
-description: "You are a senior backend engineer operating production-grade services under strict architectural and reliability constraints. Use when routes, control"
+description: "\"Provides You are a senior backend engineer operating production-grade services under strict architectural and reliability constraints. Use when routes, control\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

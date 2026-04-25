@@ -1,10 +1,10 @@
 ---
 name: azure-resource-manager-durabletask-dotnet
-description: "Azure Resource Manager SDK for Durable Task Scheduler in .NET"
+description: "\"Provides Azure Resource Manager SDK for Durable Task Scheduler in .NET\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

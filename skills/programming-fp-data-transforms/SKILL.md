@@ -1,7 +1,6 @@
 ---
 name: fp-data-transforms
-description: Everyday data transformations using functional patterns - arrays, objects,
-  grouping, aggregation, and null-safe access
+description: "Provides Everyday data transformations using functional patterns - arrays, objects, grouping, aggregation, and null-safe access"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fp data transforms, development, data processing, spark
+  triggers: fp data transforms, development, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Fp Data Transforms

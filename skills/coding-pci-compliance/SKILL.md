@@ -1,7 +1,6 @@
 ---
 name: pci-compliance
-description: Master PCI DSS (Payment Card Industry Data Security Standard) compliance
-  for secure payment processing and handling of cardholder data
+description: "\"Provides Master PCI DSS (Payment Card Industry Data Security Standard) compliance for secure payment processing and handling of cardholder data\""
 license: MIT
 compatibility: opencode
 metadata:

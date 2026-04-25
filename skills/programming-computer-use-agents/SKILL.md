@@ -1,7 +1,6 @@
 ---
 name: computer-use-agents
-description: Build AI agents that interact with computers like humans do - viewing
-  screens, moving cursors, clicking buttons, and typing text. Covers Anthropic's C
+description: "Provides Build AI agents that interact with computers like humans do - viewing screens, moving cursors, clicking buttons, and typing text. Covers Anthropic's C"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: computer use agents, ai, ml, implementation guide, machine learning
+  triggers: computer use agents, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Computer Use Agents

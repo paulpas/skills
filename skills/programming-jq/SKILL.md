@@ -1,10 +1,10 @@
 ---
 name: jq
-description: "Expert jq usage for JSON querying, filtering, transformation, and pipeline integration. Practical patterns for real shell workflows"
+description: "\"Provides Expert jq usage for JSON querying, filtering, transformation, and pipeline integration. Practical patterns for real shell workflows\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

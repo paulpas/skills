@@ -1,10 +1,10 @@
 ---
 name: observability-monitoring-monitor-setup
-description: "You are a monitoring and observability expert specializing in implementing comprehensive monitoring solutions. Set up metrics collection, distributed"
+description: "\"Provides You are a monitoring and observability expert specializing in implementing comprehensive monitoring solutions. Set up metrics collection, distributed\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: ui-component
-description: "Generate a new UI component that follows StyleSeed Toss conventions for structure, tokens, accessibility, and component ergonomics"
+description: "\"Provides Generate a new UI component that follows StyleSeed Toss conventions for structure, tokens, accessibility, and component ergonomics\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

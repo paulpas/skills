@@ -1,7 +1,6 @@
 ---
 name: code-refactoring-refactor-clean
-description: You are a code refactoring expert specializing in clean code principles,
-  SOLID design patterns, and modern software engineering best practices. Analyz
+description: "Provides You are a code refactoring expert specializing in clean code principles, SOLID design patterns, and modern software engineering best practices. Analyz"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: code refactoring refactor clean, code, quality, implementation guide,
-    code improvement
+    code improvement, refactoring
 ---
+
 
 
 # Code Refactoring Refactor Clean

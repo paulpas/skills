@@ -1,7 +1,6 @@
 ---
 name: azure-ai-document-intelligence-ts
-description: Extract text, tables, and structured data from documents using prebuilt
-  and custom models
+description: "Provides Extract text, tables, and structured data from documents using prebuilt and custom models"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: azure ai document intelligence ts, cloud, data processing, spark
+  triggers: azure ai document intelligence ts, cloud, data processing, spark, big
+    data, distributed processing
 ---
+
 
 
 # Azure Ai Document Intelligence Ts

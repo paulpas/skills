@@ -1,7 +1,6 @@
 ---
 name: yann-lecun-tecnico
-description: "Sub-skill t\xE9cnica de Yann LeCun. Cobre CNNs, LeNet, backpropagation,\
-  \ JEPA (I-JEPA, V-JEPA, MC-JEPA), AMI (Advanced Machinery of Intelligence), Self-Su"
+description: "\"Provides Sub-skill t\xE9cnica de Yann LeCun. Cobre CNNs, LeNet, backpropagation,\ \ JEPA (I-JEPA, V-JEPA, MC-JEPA), AMI (Advanced Machinery of Intelligence), Self-Su\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: yann lecun tecnico, ai, ml, implementation guide, machine learning
+  triggers: yann lecun tecnico, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Yann Lecun Tecnico

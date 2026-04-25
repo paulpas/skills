@@ -1,6 +1,6 @@
 ---
 name: seo-keyword-strategist
-description: "Analyzes keyword usage in provided content, calculates density, suggests semantic variations and LSI keywords based on the topic. Prevents over-optimi"
+description: "\"Analyzes keyword usage in provided content, calculates density, suggests semantic variations and LSI keywords based on the topic. Prevents over-optimi\""
 license: MIT
 compatibility: opencode
 metadata:

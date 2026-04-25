@@ -1,10 +1,10 @@
 ---
 name: fp-refactor
-description: "Comprehensive guide for refactoring imperative TypeScript code to fp-ts functional patterns"
+description: "\"Provides Comprehensive guide for refactoring imperative TypeScript code to fp-ts functional patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

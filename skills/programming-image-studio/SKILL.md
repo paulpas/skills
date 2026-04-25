@@ -1,10 +1,10 @@
 ---
 name: image-studio
-description: "Studio de geracao de imagens inteligente — roteamento automatico entre ai-studio-image (fotos humanizadas/influencer) e stability-ai (arte/ ilustracao"
+description: "\"Provides Studio de geracao de imagens inteligente \u2014 roteamento\ \ automatico entre ai-studio-image (fotos humanizadas/influencer) e stability-ai\ \ (arte/ ilustracao\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

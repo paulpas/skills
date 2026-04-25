@@ -1,10 +1,10 @@
 ---
 name: conductor-status
-description: "Display project status, active tracks, and next actions"
+description: "\"Implements display project status, active tracks, and next actions for orchestration and agent coordination in autonomous systems.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

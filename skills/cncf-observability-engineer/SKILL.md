@@ -1,7 +1,6 @@
 ---
 name: observability-engineer
-description: Build production-ready monitoring, logging, and tracing systems. Implements
-  comprehensive observability strategies, SLI/SLO management, and incident r
+description: "Provides Build production-ready monitoring, logging, and tracing systems. Implements comprehensive observability strategies, SLI/SLO management, and incident r"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: observability engineer, reliability, implementation guide, linkerd
+  triggers: observability engineer, reliability, implementation guide, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Observability Engineer

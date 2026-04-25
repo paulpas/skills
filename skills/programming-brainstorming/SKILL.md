@@ -1,10 +1,10 @@
 ---
 name: brainstorming
-description: "Use before creative or constructive work (features, architecture, behavior). Transforms vague ideas into validated designs through disciplined reasoni"
+description: "\"Provides use before creative or constructive work (features, architecture, behavior). transforms vague ideas into validated designs through disciplined reasoni\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

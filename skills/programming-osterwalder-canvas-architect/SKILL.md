@@ -1,10 +1,10 @@
 ---
 name: osterwalder-canvas-architect
-description: "Iterative consultant agent for building and validating logically consistent 9-block Business Model Canvases"
+description: "\"Provides Iterative consultant agent for building and validating logically consistent 9-block Business Model Canvases\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

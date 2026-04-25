@@ -1,7 +1,6 @@
 ---
 name: fixing-motion-performance
-description: Audit and fix animation performance issues including layout thrashing,
-  compositor properties, scroll-linked motion, and blur effects. Use when animati
+description: "Provides Audit and fix animation performance issues including layout thrashing, compositor properties, scroll-linked motion, and blur effects. Use when animati"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fixing motion performance, front, end, implementation guide, optimization
+  triggers: fixing motion performance, front, end, implementation guide, optimization,
+    performance
 ---
+
 
 
 # Fixing Motion Performance

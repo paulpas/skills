@@ -1,6 +1,6 @@
 ---
 name: coding-ds-hyperparameter-tuning
-description: "Optimizes hyperparameters using grid search, random search, Bayesian optimization, and evolutionary methods for model improvement"
+description: "\"Optimizes hyperparameters using grid search, random search, Bayesian optimization, and evolutionary methods for model improvement\""
 license: MIT
 compatibility: opencode
 metadata:

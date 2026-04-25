@@ -1,10 +1,10 @@
 ---
 name: writer
-description: "Document creation, format conversion (ODT/DOCX/PDF), mail merge, and automation with LibreOffice Writer"
+description: "\"Provides Document creation, format conversion (ODT/DOCX/PDF), mail merge, and automation with LibreOffice Writer\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

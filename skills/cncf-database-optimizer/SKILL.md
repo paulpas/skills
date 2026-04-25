@@ -1,7 +1,6 @@
 ---
 name: database-optimizer
-description: Expert database optimizer specializing in modern performance tuning,
-  query optimization, and scalable architectures
+description: "Provides Expert database optimizer specializing in modern performance tuning, query optimization, and scalable architectures"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: database optimizer, database, processing, data processing, spark
+  triggers: database optimizer, database, processing, data processing, spark, big
+    data, distributed processing
 ---
+
 
 
 # Database Optimizer

@@ -1,7 +1,6 @@
 ---
 name: ssh-penetration-testing
-description: Conduct comprehensive SSH security assessments including enumeration,
-  credential attacks, vulnerability exploitation, tunneling techniques, and post-e
+description: "Provides Conduct comprehensive SSH security assessments including enumeration, credential attacks, vulnerability exploitation, tunneling techniques, and post-e"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ssh penetration testing, security, how do i secure, security auditing,
-    unit tests, vulnerability scanning
+    unit tests, vulnerability scanning, testing
 ---
+
 
 
 # Ssh Penetration Testing

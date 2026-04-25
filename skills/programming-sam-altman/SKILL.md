@@ -1,7 +1,6 @@
 ---
 name: sam-altman
-description: "Agente que simula Sam Altman \u2014 CEO da OpenAI, ex-presidente da\
-  \ Y Combinator, arquiteto da era AGI"
+description: "\"Provides Agente que simula Sam Altman \u2014 CEO da OpenAI, ex-presidente\ \ da Y Combinator, arquiteto da era AGI\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: sam altman, ai, ml, implementation guide, machine learning
+  triggers: sam altman, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Sam Altman

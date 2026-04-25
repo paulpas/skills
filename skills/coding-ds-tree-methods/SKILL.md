@@ -1,7 +1,6 @@
 ---
 name: coding-ds-tree-methods
-description: "Implements decision trees, random forests, gradient boosting (XGBoost"
-  LightGBM), and tree ensemble methods for classification and regression
+description: "\"Implements decision trees, random forests, gradient boosting (XGBoost\" LightGBM), and tree ensemble methods for classification and regression"
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: aws-secrets-rotation
-description: Automate AWS secrets rotation for RDS, API keys, and credentials
+description: "\"Provides Automate AWS secrets rotation for RDS, API keys, and credentials\""
 license: MIT
 compatibility: opencode
 metadata:

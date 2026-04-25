@@ -1,10 +1,10 @@
 ---
 name: python-pptx-generator
-description: "Generate complete Python scripts that build polished PowerPoint decks with python-pptx and real slide content"
+description: "\"Provides Generate complete Python scripts that build polished PowerPoint decks with python-pptx and real slide content\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

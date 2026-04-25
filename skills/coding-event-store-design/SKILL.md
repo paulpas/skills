@@ -1,10 +1,10 @@
 ---
 name: event-store-design
-description: "Design and implement event stores for event-sourced systems. Use when building event sourcing infrastructure, choosing event store technologies, or im"
+description: "\"Provides Design and implement event stores for event-sourced systems. Use when building event sourcing infrastructure, choosing event store technologies, or im\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

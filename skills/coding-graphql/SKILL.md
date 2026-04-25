@@ -1,7 +1,6 @@
 ---
 name: graphql
-description: GraphQL gives clients exactly the data they need - no more, no less.
-  One endpoint, typed schema, introspection. But the flexibility that makes it powe
+description: "Provides GraphQL gives clients exactly the data they need - no more, no less. One endpoint, typed schema, introspection. But the flexibility that makes it powe"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: graphql, backend, data processing, spark
+  triggers: graphql, backend, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Graphql

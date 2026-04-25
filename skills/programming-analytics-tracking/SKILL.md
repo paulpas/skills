@@ -1,7 +1,6 @@
 ---
 name: analytics-tracking
-description: Design, audit, and improve analytics tracking systems that produce reliable,
-  decision-ready data
+description: "Provides Design, audit, and improve analytics tracking systems that produce reliable, decision-ready data"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: analytics tracking, data, data processing, spark
+  triggers: analytics tracking, data, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Analytics Tracking

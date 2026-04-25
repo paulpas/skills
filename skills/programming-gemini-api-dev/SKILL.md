@@ -1,7 +1,6 @@
 ---
 name: gemini-api-dev
-description: 'The Gemini API provides access to Google''s most advanced AI models.
-  Key capabilities include:'
+description: "'Provides the gemini api provides access to google''s most advanced ai models. key capabilities include:'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: gemini api dev, ai, ml, implementation guide, machine learning
+  triggers: gemini api dev, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Gemini Api Dev

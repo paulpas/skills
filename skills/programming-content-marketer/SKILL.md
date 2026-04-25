@@ -1,7 +1,6 @@
 ---
 name: content-marketer
-description: Elite content marketing strategist specializing in AI-powered content
-  creation, omnichannel distribution, SEO optimization, and data-driven performanc
+description: "Provides Elite content marketing strategist specializing in AI-powered content creation, omnichannel distribution, SEO optimization, and data-driven performanc"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: content marketer, content, data processing, spark
+  triggers: content marketer, content, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Content Marketer

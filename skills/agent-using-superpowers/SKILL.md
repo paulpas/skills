@@ -1,10 +1,10 @@
 ---
 name: using-superpowers
-description: "Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying"
+description: "\"Provides use when starting any conversation - establishes how to find and use skills, requiring skill tool invocation before any response including clarifying\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

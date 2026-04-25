@@ -1,8 +1,6 @@
 ---
 name: claude-api
-description: 'Build apps with the Claude API or Anthropic SDK. TRIGGER when: code
-  imports `anthropic`/`@anthropic-ai/sdk`/`claude_agent_sdk`, or user asks to use
-  Cl'
+description: "'Provides Build apps with the Claude API or Anthropic SDK. TRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`/`claude_agent_sdk`, or user asks to use Cl'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude api, ai, ml, implementation guide, machine learning
+  triggers: claude api, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Claude Api

@@ -1,6 +1,6 @@
 ---
 name: claude-win11-speckit-update-skill
-description: Windows 11 system management
+description: "Provides windows 11 system management functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: claude win11 speckit update skill, ai, ml, implementation guide, machine
-    learning
+    learning, scikit-learn
 ---
+
 
 
 # Claude Win11 Speckit Update Skill

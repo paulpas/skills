@@ -1,10 +1,10 @@
 ---
 name: azure-communication-chat-java
-description: "Build real-time chat applications with thread management, messaging, participants, and read receipts"
+description: "\"Provides Build real-time chat applications with thread management, messaging, participants, and read receipts\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

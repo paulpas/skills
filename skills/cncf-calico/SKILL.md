@@ -1,7 +1,6 @@
 ---
 name: cncf-calico
-description: "Calico in Cloud Native Security - cloud native architecture, patterns"
-  pitfalls, and best practices
+description: "\"Calico in Cloud Native Security - cloud native architecture, patterns\" pitfalls, and best practices"
 license: MIT
 compatibility: opencode
 metadata:

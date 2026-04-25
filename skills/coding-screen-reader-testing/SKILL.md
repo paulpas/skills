@@ -1,7 +1,6 @@
 ---
 name: screen-reader-testing
-description: Practical guide to testing web applications with screen readers for comprehensive
-  accessibility validation
+description: "\"Provides Practical guide to testing web applications with screen readers for comprehensive accessibility validation\""
 license: MIT
 compatibility: opencode
 metadata:

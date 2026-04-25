@@ -1,10 +1,10 @@
 ---
 name: daily-gift
-description: "Relationship-aware daily gift engine with five-stage creative pipeline — editorial judgment, synthesis, concept generation, visual strategy, and rende"
+description: "\"Provides Relationship-aware daily gift engine with five-stage creative\ \ pipeline \u2014 editorial judgment, synthesis, concept generation, visual strategy,\ \ and rende\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

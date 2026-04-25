@@ -1,7 +1,6 @@
 ---
 name: browser-automation
-description: Browser automation powers web testing, scraping, and AI agent interactions.
-  The difference between a flaky script and a reliable system comes down to
+description: "Provides Browser automation powers web testing, scraping, and AI agent interactions. The difference between a flaky script and a reliable system comes down to"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: browser automation, test, automation, how do i test, jenkins, selenium
+  triggers: browser automation, test, automation, how do i test, jenkins, selenium,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Browser Automation

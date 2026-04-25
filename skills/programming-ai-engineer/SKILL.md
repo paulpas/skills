@@ -1,7 +1,6 @@
 ---
 name: ai-engineer
-description: Build production-ready LLM applications, advanced RAG systems, and intelligent
-  agents. Implements vector search, multimodal AI, agent orchestration, a
+description: "Provides Build production-ready LLM applications, advanced RAG systems, and intelligent agents. Implements vector search, multimodal AI, agent orchestration, a"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai engineer, ai, ml, implementation guide, machine learning
+  triggers: ai engineer, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ai Engineer

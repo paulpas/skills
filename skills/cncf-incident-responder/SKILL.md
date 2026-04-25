@@ -1,7 +1,6 @@
 ---
 name: incident-responder
-description: Expert SRE incident responder specializing in rapid problem resolution,
-  modern observability, and comprehensive incident management
+description: "Provides Expert SRE incident responder specializing in rapid problem resolution, modern observability, and comprehensive incident management"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: incident responder, reliability, implementation guide, linkerd
+  triggers: incident responder, reliability, implementation guide, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Incident Responder

@@ -1,7 +1,6 @@
 ---
 name: ai-md
-description: Convert human-written CLAUDE.md into AI-native structured-label format.
-  Battle-tested across 4 models. Same rules, fewer tokens, higher compliance
+description: "Provides Convert human-written CLAUDE.md into AI-native structured-label format. Battle-tested across 4 models. Same rules, fewer tokens, higher compliance"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai md, ai, ml, how do i test, machine learning
+  triggers: ai md, ai, ml, how do i test, machine learning, scikit-learn
 ---
+
 
 
 # Ai Md

@@ -1,10 +1,10 @@
 ---
 name: remotion
-description: "Generate walkthrough videos from Stitch projects using Remotion with smooth transitions, zooming, and text overlays"
+description: "\"Provides Generate walkthrough videos from Stitch projects using Remotion with smooth transitions, zooming, and text overlays\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

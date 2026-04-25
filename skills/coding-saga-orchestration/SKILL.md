@@ -1,10 +1,10 @@
 ---
 name: saga-orchestration
-description: "Patterns for managing distributed transactions and long-running business processes"
+description: "\"Provides Patterns for managing distributed transactions and long-running business processes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

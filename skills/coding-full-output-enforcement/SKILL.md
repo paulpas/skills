@@ -1,10 +1,10 @@
 ---
 name: full-output-enforcement
-description: "Use when a task requires exhaustive unabridged output, complete files, or strict prevention of placeholders and skipped code"
+description: "\"Provides use when a task requires exhaustive unabridged output, complete files, or strict prevention of placeholders and skipped code\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

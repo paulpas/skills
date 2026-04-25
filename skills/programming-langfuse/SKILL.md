@@ -1,7 +1,6 @@
 ---
 name: langfuse
-description: Expert in Langfuse - the open-source LLM observability platform. Covers
-  tracing, prompt management, evaluation, datasets, and integration with LangCha
+description: "Provides Expert in Langfuse - the open-source LLM observability platform. Covers tracing, prompt management, evaluation, datasets, and integration with LangCha"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: langfuse, uncategorized, data processing, spark
+  triggers: langfuse, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Langfuse

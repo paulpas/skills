@@ -1,10 +1,10 @@
 ---
 name: notion-template-business
-description: "Expert in building and selling Notion templates as a business - not just making templates, but building a sustainable digital product business. Covers"
+description: "\"Provides Expert in building and selling Notion templates as a business - not just making templates, but building a sustainable digital product business. Covers\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: using-git-worktrees
-description: "Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching"
+description: "\"Provides Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

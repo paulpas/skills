@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-functions
-description: Serverless computing with event-driven functions and automatic scaling
+description: "Provides Serverless computing with event-driven functions and automatic scaling"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,9 +10,11 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: azure functions, serverless, function app, event-driven, function deployment,
-    eventbridge, kubernetes deployment
-  related-skills: cncf-azure-cosmos-db, cncf-azure-monitor, cncf-azure-rbac, cncf-azure-service-bus
+    eventbridge, kubernetes deployment, container orchestration
+  related-skills: cncf-azure-container-registry, cncf-azure-cosmos-db, cncf-azure-event-hubs,
+    cncf-azure-keyvault-secrets
 ---
+
 
 
 

@@ -1,10 +1,10 @@
 ---
 name: workflow-patterns
-description: "Use this skill when implementing tasks according to Conductor's TDD workflow, handling phase checkpoints, managing git commits for tasks, or understan"
+description: "\"Provides use this skill when implementing tasks according to conductor's tdd workflow, handling phase checkpoints, managing git commits for tasks, or understan\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

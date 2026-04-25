@@ -1,7 +1,6 @@
 ---
 name: zendesk-automation
-description: 'Automate Zendesk tasks via Rube MCP (Composio): tickets, users, organizations,
-  replies. Always search tools first for current schemas'
+description: "'Provides Automate Zendesk tasks via Rube MCP (Composio): tickets, users, organizations, replies. Always search tools first for current schemas'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: zendesk automation, automation, how do i automate, jenkins
+  triggers: zendesk automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Zendesk Automation

@@ -1,7 +1,6 @@
 ---
 name: backend-security-coder
-description: Expert in secure backend coding practices specializing in input validation,
-  authentication, and API security. Use PROACTIVELY for backend security imp
+description: "Provides Expert in secure backend coding practices specializing in input validation, authentication, and API security. Use PROACTIVELY for backend security imp"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: backend security coder, backend, how do i secure, vulnerability scanning
+  triggers: backend security coder, backend, how do i secure, vulnerability scanning,
+    security
 ---
+
 
 
 # Backend Security Coder

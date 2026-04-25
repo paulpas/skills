@@ -1,6 +1,6 @@
 ---
 name: trading-technical-momentum-indicators
-description: "RSI, MACD, Stochastic oscillators and momentum analysis"
+description: "\"Implements rsi, macd, stochastic oscillators and momentum analysis for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

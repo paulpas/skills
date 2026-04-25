@@ -1,10 +1,10 @@
 ---
 name: ui-tokens
-description: "List, add, and update StyleSeed design tokens while keeping JSON sources, CSS variables, and dark-mode values in sync"
+description: "\"Provides List, add, and update StyleSeed design tokens while keeping JSON sources, CSS variables, and dark-mode values in sync\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

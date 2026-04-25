@@ -1,10 +1,10 @@
 ---
 name: 20-andruia-niche-intelligence
-description: "Estratega de Inteligencia de Dominio de Andru.ia. Analiza el nicho específico de un proyecto para inyectar conocimientos, regulaciones y estándares ún"
+description: "\"Provides Estratega de Inteligencia de Dominio de Andru.ia. Analiza el\ \ nicho espec\xEDfico de un proyecto para inyectar conocimientos, regulaciones y\ \ est\xE1ndares \xFAn\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

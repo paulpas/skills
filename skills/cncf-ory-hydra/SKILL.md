@@ -1,7 +1,6 @@
 ---
 name: cncf-ory-hydra
-description: "ORY Hydra in Security & Compliance - cloud native architecture, patterns"
-  pitfalls, and best practices
+description: "\"ORY Hydra in Security & Compliance - cloud native architecture, patterns\" pitfalls, and best practices"
 license: MIT
 compatibility: opencode
 metadata:

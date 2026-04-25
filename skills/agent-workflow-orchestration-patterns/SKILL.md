@@ -1,10 +1,10 @@
 ---
 name: workflow-orchestration-patterns
-description: "Master workflow orchestration architecture with Temporal, covering fundamental design decisions, resilience patterns, and best practices for building"
+description: "\"Provides Master workflow orchestration architecture with Temporal, covering fundamental design decisions, resilience patterns, and best practices for building\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

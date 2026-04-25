@@ -1,7 +1,6 @@
 ---
 name: cncf-process-incident-response
-description: "Creates or updates an incident response plan covering detection, triage"
-  communication, and post-incident review for CNCF projects
+description: "\"Creates or updates an incident response plan covering detection, triage\" communication, and post-incident review for CNCF projects"
 license: MIT
 compatibility: opencode
 how_to_guide: https://contribute.cncf.io/projects/best-practices/security/

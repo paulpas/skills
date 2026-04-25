@@ -1,7 +1,6 @@
 ---
 name: apify-brand-reputation-monitoring
-description: Scrape reviews, ratings, and brand mentions from multiple platforms using
-  Apify Actors
+description: "Provides Scrape reviews, ratings, and brand mentions from multiple platforms using Apify Actors"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify brand reputation monitoring, automation, how do i automate, jenkins
+  triggers: apify brand reputation monitoring, automation, how do i automate, jenkins,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Apify Brand Reputation Monitoring

@@ -1,10 +1,10 @@
 ---
 name: lex
-description: "Centralized 'Truth Engine' for cross-jurisdictional legal context (US, EU, CA) and contract scaffolding"
+description: "\"Provides Centralized 'Truth Engine' for cross-jurisdictional legal context (US, EU, CA) and contract scaffolding\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

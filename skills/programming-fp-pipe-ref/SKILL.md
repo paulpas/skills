@@ -1,7 +1,6 @@
 ---
 name: fp-pipe-ref
-description: Quick reference for pipe and flow. Use when user needs to chain functions,
-  compose operations, or build data pipelines in fp-ts
+description: "Provides Quick reference for pipe and flow. Use when user needs to chain functions, compose operations, or build data pipelines in fp-ts"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fp pipe ref, development, data processing, spark
+  triggers: fp pipe ref, development, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Fp Pipe Ref

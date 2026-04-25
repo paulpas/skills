@@ -1,7 +1,6 @@
 ---
 name: cncf-grpc
-description: "gRPC in Remote Procedure Call - cloud native architecture, patterns"
-  pitfalls, and best practices
+description: "\"gRPC in Remote Procedure Call - cloud native architecture, patterns\" pitfalls, and best practices"
 license: MIT
 compatibility: opencode
 metadata:

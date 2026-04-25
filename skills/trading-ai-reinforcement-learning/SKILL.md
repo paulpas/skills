@@ -1,6 +1,6 @@
 ---
 name: trading-ai-reinforcement-learning
-description: "Reinforcement Learning for automated trading agents and policy optimization"
+description: "\"Provides Reinforcement Learning for automated trading agents and policy optimization\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: postgresql
-description: Design a PostgreSQL-specific schema. Covers best-practices, data types,
-  indexing, constraints, performance patterns, and advanced features
+description: "Provides Design a PostgreSQL-specific schema. Covers best-practices, data types, indexing, constraints, performance patterns, and advanced features"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: postgresql, database, data processing, postgres, relational database,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Postgresql

@@ -1,10 +1,10 @@
 ---
 name: mmx-cli
-description: "Use mmx to generate text, images, video, speech, and music via the MiniMax AI platform. Use when the user wants to create media content, chat with Min"
+description: "\"Provides use mmx to generate text, images, video, speech, and music via the minimax ai platform. use when the user wants to create media content, chat with min\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

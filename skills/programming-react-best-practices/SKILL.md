@@ -1,10 +1,10 @@
 ---
 name: react-best-practices
-description: "Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Use when writing new React components or Next.j"
+description: "\"Provides Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Use when writing new React components or Next.j\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

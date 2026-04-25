@@ -1,7 +1,6 @@
 ---
 name: laravel-security-audit
-description: Security auditor for Laravel applications. Analyzes code for vulnerabilities,
-  misconfigurations, and insecure practices using OWASP standards and Lara
+description: "\"Provides Security auditor for Laravel applications. Analyzes code for vulnerabilities, misconfigurations, and insecure practices using OWASP standards and Lara\""
 license: MIT
 compatibility: opencode
 metadata:

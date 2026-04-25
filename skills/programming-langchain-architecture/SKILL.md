@@ -1,7 +1,6 @@
 ---
 name: langchain-architecture
-description: Master the LangChain framework for building sophisticated LLM applications
-  with agents, chains, memory, and tool integration
+description: "Provides Master the LangChain framework for building sophisticated LLM applications with agents, chains, memory, and tool integration"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: langchain architecture, ai, ml, implementation guide, machine learning
+  triggers: langchain architecture, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Langchain Architecture

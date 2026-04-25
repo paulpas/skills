@@ -1,7 +1,6 @@
 ---
 name: nft-standards
-description: Master ERC-721 and ERC-1155 NFT standards, metadata best practices, and
-  advanced NFT features
+description: "Provides Master ERC-721 and ERC-1155 NFT standards, metadata best practices, and advanced NFT features"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: nft standards, uncategorized, data processing, spark
+  triggers: nft standards, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Nft Standards

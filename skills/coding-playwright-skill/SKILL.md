@@ -1,7 +1,6 @@
 ---
 name: playwright-skill
-description: 'IMPORTANT - Path Resolution: This skill can be installed in different
-  locations (plugin system, manual installation, global, or project-specific). Bef'
+description: "'Provides IMPORTANT - Path Resolution: This skill can be installed in different locations (plugin system, manual installation, global, or project-specific). Bef'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: playwright skill, test, automation, how do i test, jenkins
+  triggers: playwright skill, test, automation, how do i test, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Playwright Skill

@@ -1,7 +1,6 @@
 ---
 name: database-design
-description: Database design principles and decision-making. Schema design, indexing
-  strategy, ORM selection, serverless databases
+description: "Provides Database design principles and decision-making. Schema design, indexing strategy, ORM selection, serverless databases"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: database design, database, processing, data processing, spark
+  triggers: database design, database, processing, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Database Design

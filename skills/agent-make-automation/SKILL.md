@@ -1,7 +1,6 @@
 ---
 name: make-automation
-description: 'Automate Make (Integromat) tasks via Rube MCP (Composio): operations,
-  enums, language and timezone lookups. Always search tools first for current sche'
+description: "'Provides Automate Make (Integromat) tasks via Rube MCP (Composio): operations, enums, language and timezone lookups. Always search tools first for current sche'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: make automation, automation, how do i automate, jenkins
+  triggers: make automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Make Automation

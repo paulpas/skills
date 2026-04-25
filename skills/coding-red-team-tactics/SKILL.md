@@ -1,7 +1,6 @@
 ---
 name: red-team-tactics
-description: Red team tactics principles based on MITRE ATT&CK. Attack phases, detection
-  evasion, reporting
+description: "\"Provides Red team tactics principles based on MITRE ATT&CK. Attack phases, detection evasion, reporting\""
 license: MIT
 compatibility: opencode
 metadata:

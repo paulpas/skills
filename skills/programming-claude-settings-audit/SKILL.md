@@ -1,7 +1,6 @@
 ---
 name: claude-settings-audit
-description: Analyze a repository to generate recommended Claude Code settings.json
-  permissions. Use when setting up a new project, auditing existing settings, or
+description: "Provides Analyze a repository to generate recommended Claude Code settings.json permissions. Use when setting up a new project, auditing existing settings, or"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude settings audit, ai, ml, implementation guide, machine learning
+  triggers: claude settings audit, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Claude Settings Audit

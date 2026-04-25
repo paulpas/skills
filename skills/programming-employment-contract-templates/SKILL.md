@@ -1,10 +1,10 @@
 ---
 name: employment-contract-templates
-description: "Templates and patterns for creating legally sound employment documentation including contracts, offer letters, and HR policies"
+description: "\"Provides Templates and patterns for creating legally sound employment documentation including contracts, offer letters, and HR policies\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

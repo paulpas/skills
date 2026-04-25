@@ -1,7 +1,6 @@
 ---
 name: fp-option-ref
-description: Quick reference for Option type. Use when user needs to handle nullable
-  values, optional data, or wants to avoid null checks
+description: "Provides Quick reference for Option type. Use when user needs to handle nullable values, optional data, or wants to avoid null checks"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fp option ref, development, data processing, spark
+  triggers: fp option ref, development, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Fp Option Ref

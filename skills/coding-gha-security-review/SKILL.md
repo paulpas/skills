@@ -1,8 +1,6 @@
 ---
 name: gha-security-review
-description: "Find exploitable vulnerabilities in GitHub Actions workflows. Every\
-  \ finding MUST include a concrete exploitation scenario \u2014 if you can't build\
-  \ the att"
+description: "\"Provides Find exploitable vulnerabilities in GitHub Actions workflows.\ \ Every finding MUST include a concrete exploitation scenario \u2014 if you can't\ \ build the att\""
 license: MIT
 compatibility: opencode
 metadata:

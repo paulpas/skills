@@ -1,7 +1,6 @@
 ---
 name: linkerd-patterns
-description: Production patterns for Linkerd service mesh - the lightweight, security-first
-  service mesh for Kubernetes
+description: "Provides Production patterns for Linkerd service mesh - the lightweight, security-first service mesh for Kubernetes"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: linkerd patterns, uncategorized, how do i secure, service mesh
+  triggers: linkerd patterns, uncategorized, how do i secure, service mesh, istio,
+    kubernetes service
 ---
+
 
 
 # Linkerd Patterns

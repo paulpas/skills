@@ -1,10 +1,10 @@
 ---
 name: create-issue-gate
-description: "Use when starting a new implementation task and an issue must be created with strict acceptance criteria gating before execution"
+description: "\"Provides use when starting a new implementation task and an issue must be created with strict acceptance criteria gating before execution\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

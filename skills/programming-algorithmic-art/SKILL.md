@@ -1,10 +1,10 @@
 ---
 name: algorithmic-art
-description: "Algorithmic philosophies are computational aesthetic movements that are then expressed through code. Output .md files (philosophy), .html files (inter"
+description: "\"Provides Algorithmic philosophies are computational aesthetic movements that are then expressed through code. Output .md files (philosophy), .html files (inter\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

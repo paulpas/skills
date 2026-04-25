@@ -1,7 +1,6 @@
 ---
 name: deployment-procedures
-description: Production deployment principles and decision-making. Safe deployment
-  workflows, rollback strategies, and verification. Teaches thinking, not scripts
+description: "Provides Production deployment principles and decision-making. Safe deployment workflows, rollback strategies, and verification. Teaches thinking, not scripts"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: deployment procedures, devops, how do i deploy, kubernetes deployment
+  triggers: deployment procedures, devops, how do i deploy, kubernetes deployment,
+    container orchestration, deployment
 ---
+
 
 
 # Deployment Procedures

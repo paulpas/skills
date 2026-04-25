@@ -1,8 +1,6 @@
 ---
 name: multi-advisor
-description: "Conselho de especialistas \u2014 consulta multiplos agentes do ecossistema\
-  \ em paralelo para analise multi-perspectiva de qualquer topico. Ativa personas,\
-  \ e"
+description: "\"Provides Conselho de especialistas \u2014 consulta multiplos agentes\ \ do ecossistema em paralelo para analise multi-perspectiva de qualquer topico.\ \ Ativa personas, e\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: multi advisor, ai, agents, implementation guide, machine learning
+  triggers: multi advisor, ai, agents, implementation guide, machine learning, ml,
+    scikit-learn
 ---
+
 
 
 # Multi Advisor

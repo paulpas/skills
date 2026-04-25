@@ -1,7 +1,6 @@
 ---
 name: trading-execution-slippage-modeling
-description: "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution"
-  Analysis
+description: "\"Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution\" Analysis"
 license: MIT
 compatibility: opencode
 metadata:

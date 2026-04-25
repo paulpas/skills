@@ -1,6 +1,6 @@
 ---
 name: trading-ai-order-flow-analysis
-description: "Analyze order flow to detect market pressure and anticipate price moves"
+description: "\"Provides Analyze order flow to detect market pressure and anticipate price moves\""
 license: MIT
 compatibility: opencode
 metadata:

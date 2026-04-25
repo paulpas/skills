@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-cloud-load-balancing
-description: Distributes traffic across instances with automatic failover and health
-  checking
+description: "\"Provides Distributes traffic across instances with automatic failover and health checking\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -12,8 +11,7 @@ metadata:
   output-format: manifests
   triggers: load balancing, traffic distribution, load balancer, health checks, traffic
     routing, elb
-  related-skills: cncf-gcp-cloud-monitoring, cncf-gcp-compute-engine, cncf-gcp-gke,
-    cncf-gcp-vpc
+  related-skills: cncf-gcp-autoscaling, cncf-gcp-cloud-cdn, cncf-gcp-cloud-dns, cncf-gcp-cloud-monitoring
 ---
 
 

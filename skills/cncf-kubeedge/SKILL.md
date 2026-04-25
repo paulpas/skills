@@ -1,6 +1,6 @@
 ---
 name: cncf-kubeedge
-description: "KubeEdge in Cloud-Native Engineering - edge computing"
+description: "\"Configures kubeedge in cloud-native engineering - edge computing for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,8 +1,6 @@
 ---
 name: startup-business-analyst-financial-projections
-description: "Create detailed 3-5 year financial model with revenue, costs, cash"
-flow, and scenarios
-"
+description: "\"Create detailed 3-5 year financial model with revenue, costs, cash\" flow, and scenarios \""
 license: MIT
 compatibility: opencode
 metadata:

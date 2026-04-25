@@ -1,7 +1,6 @@
 ---
 name: web-scraper
-description: Web scraping inteligente multi-estrategia. Extrai dados estruturados
-  de paginas web (tabelas, listas, precos). Paginacao, monitoramento e export CSV/J
+description: "Provides Web scraping inteligente multi-estrategia. Extrai dados estruturados de paginas web (tabelas, listas, precos). Paginacao, monitoramento e export CSV/J"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: web scraper, data, data processing, spark
+  triggers: web scraper, data, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Web Scraper

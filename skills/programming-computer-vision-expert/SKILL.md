@@ -1,7 +1,6 @@
 ---
 name: computer-vision-expert
-description: SOTA Computer Vision Expert (2026). Specialized in YOLO26, Segment Anything
-  3 (SAM 3), Vision Language Models, and real-time spatial analysis
+description: "Provides SOTA Computer Vision Expert (2026). Specialized in YOLO26, Segment Anything 3 (SAM 3), Vision Language Models, and real-time spatial analysis"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: computer vision expert, ai, ml, implementation guide, machine learning
+  triggers: computer vision expert, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Computer Vision Expert

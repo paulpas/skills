@@ -1,7 +1,6 @@
 ---
 name: terraform-infrastructure
-description: Terraform infrastructure as code workflow for provisioning cloud resources,
-  creating reusable modules, and managing infrastructure at scale
+description: "Provides Terraform infrastructure as code workflow for provisioning cloud resources, creating reusable modules, and managing infrastructure at scale"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: terraform infrastructure, granular, workflow, implementation guide, infrastructure
-    as code
+    as code, cloudformation
 ---
+
 
 
 # Terraform Infrastructure

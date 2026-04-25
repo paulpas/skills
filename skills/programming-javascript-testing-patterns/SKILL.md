@@ -1,7 +1,6 @@
 ---
 name: javascript-testing-patterns
-description: Comprehensive guide for implementing robust testing strategies in JavaScript/TypeScript
-  applications using modern testing frameworks and best practice
+description: "Provides Comprehensive guide for implementing robust testing strategies in JavaScript/TypeScript applications using modern testing frameworks and best practice"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: javascript testing patterns, development, how do i test, unit tests
+  triggers: javascript testing patterns, development, how do i test, unit tests, testing
 ---
+
 
 
 # Javascript Testing Patterns

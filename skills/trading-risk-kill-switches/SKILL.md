@@ -1,7 +1,6 @@
 ---
 name: trading-risk-kill-switches
-description: "Implementing multi-layered kill switches at account, strategy, market"
-  and infrastructure levels to prevent catastrophic losses and system failures
+description: "\"Implementing multi-layered kill switches at account, strategy, market\" and infrastructure levels to prevent catastrophic losses and system failures"
 license: MIT
 compatibility: opencode
 metadata:

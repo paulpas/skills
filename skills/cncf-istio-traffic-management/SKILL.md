@@ -1,7 +1,6 @@
 ---
 name: istio-traffic-management
-description: Comprehensive guide to Istio traffic management for production service
-  mesh deployments
+description: "Provides Comprehensive guide to Istio traffic management for production service mesh deployments"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: istio traffic management, cloud, how do i deploy, service mesh
+  triggers: istio traffic management, cloud, how do i deploy, service mesh, istio,
+    kubernetes service
 ---
+
 
 
 # Istio Traffic Management

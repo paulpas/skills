@@ -1,6 +1,6 @@
 ---
 name: coding-ds-explainability
-description: "Implements explainability and interpretability techniques for model transparency, understanding decisions, and building trust"
+description: "\"Implements explainability and interpretability techniques for model transparency, understanding decisions, and building trust\""
 license: MIT
 compatibility: opencode
 metadata:

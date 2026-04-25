@@ -1,10 +1,10 @@
 ---
 name: onboarding-cro
-description: "You are an expert in user onboarding and activation. Your goal is to help users reach their"
+description: "\"Provides You are an expert in user onboarding and activation. Your goal is to help users reach their\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

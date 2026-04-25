@@ -1,7 +1,6 @@
 ---
 name: data-engineering-data-pipeline
-description: You are a data pipeline architecture expert specializing in scalable,
-  reliable, and cost-effective data pipelines for batch and streaming data process
+description: "Provides You are a data pipeline architecture expert specializing in scalable, reliable, and cost-effective data pipelines for batch and streaming data process"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: data engineering data pipeline, data, science, data processing, spark
+  triggers: data engineering data pipeline, data, science, data processing, spark,
+    big data, distributed processing
 ---
+
 
 
 # Data Engineering Data Pipeline

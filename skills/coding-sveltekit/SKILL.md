@@ -1,10 +1,10 @@
 ---
 name: sveltekit
-description: "Build full-stack web applications with SvelteKit — file-based routing, SSR, SSG, API routes, and form actions in one framework"
+description: "\"Provides Build full-stack web applications with SvelteKit \u2014 file-based\ \ routing, SSR, SSG, API routes, and form actions in one framework\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

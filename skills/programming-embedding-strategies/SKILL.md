@@ -1,7 +1,6 @@
 ---
 name: embedding-strategies
-description: Guide to selecting and optimizing embedding models for vector search
-  applications
+description: "Provides Guide to selecting and optimizing embedding models for vector search applications"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: embedding strategies, data, ai, data processing, machine learning, spark
+  triggers: embedding strategies, data, ai, data processing, machine learning, spark,
+    big data, distributed processing
 ---
+
 
 
 # Embedding Strategies

@@ -1,7 +1,6 @@
 ---
 name: tdd-workflows-tdd-red
-description: Generate failing tests for the TDD red phase to define expected behavior
-  and edge cases
+description: "\"Provides Generate failing tests for the TDD red phase to define expected behavior and edge cases\""
 license: MIT
 compatibility: opencode
 metadata:

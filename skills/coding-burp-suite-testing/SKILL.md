@@ -1,7 +1,6 @@
 ---
 name: burp-suite-testing
-description: Execute comprehensive web application security testing using Burp Suite's
-  integrated toolset, including HTTP traffic interception and modification, re
+description: "Provides Execute comprehensive web application security testing using Burp Suite's integrated toolset, including HTTP traffic interception and modification, re"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: burp suite testing, security, how do i test, security auditing, unit tests,
-    vulnerability scanning
+    vulnerability scanning, testing
 ---
+
 
 
 # Burp Suite Testing

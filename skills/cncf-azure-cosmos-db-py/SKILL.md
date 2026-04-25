@@ -1,10 +1,10 @@
 ---
 name: azure-cosmos-db-py
-description: "Build production-grade Azure Cosmos DB NoSQL services following clean code, security best practices, and TDD principles"
+description: "\"Provides Build production-grade Azure Cosmos DB NoSQL services following clean code, security best practices, and TDD principles\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

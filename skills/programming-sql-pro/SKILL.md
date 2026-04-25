@@ -1,7 +1,6 @@
 ---
 name: sql-pro
-description: Master modern SQL with cloud-native databases, OLTP/OLAP optimization,
-  and advanced query techniques. Expert in performance tuning, data modeling, and
+description: "Provides Master modern SQL with cloud-native databases, OLTP/OLAP optimization, and advanced query techniques. Expert in performance tuning, data modeling, and"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: sql pro, data, data processing, spark
+  triggers: sql pro, data, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Sql Pro

@@ -1,7 +1,6 @@
 ---
 name: agentphone
-description: Build AI phone agents with AgentPhone API. Use when the user wants to
-  make phone calls, send/receive SMS, manage phone numbers, create voice agents, s
+description: "Provides Build AI phone agents with AgentPhone API. Use when the user wants to make phone calls, send/receive SMS, manage phone numbers, create voice agents, s"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agentphone, ai, ml, implementation guide, machine learning
+  triggers: agentphone, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Agentphone

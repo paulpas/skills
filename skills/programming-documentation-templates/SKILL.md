@@ -1,10 +1,10 @@
 ---
 name: documentation-templates
-description: "Documentation templates and structure guidelines. README, API docs, code comments, and AI-friendly documentation"
+description: "\"Provides Documentation templates and structure guidelines. README, API docs, code comments, and AI-friendly documentation\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

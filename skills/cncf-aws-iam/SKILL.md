@@ -1,7 +1,6 @@
 ---
 name: cncf-aws-iam
-description: "Configures identity and access management with IAM users, roles, policies"
-  and MFA for secure, least-privilege access control across AWS resources and services.
+description: "\"Configures identity and access management with IAM users, roles, policies\" and MFA for secure, least-privilege access control across AWS resources and services."
 license: MIT
 compatibility: opencode
 metadata:

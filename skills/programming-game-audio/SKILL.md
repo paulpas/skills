@@ -1,10 +1,10 @@
 ---
 name: game-audio
-description: "Game audio principles. Sound design, music integration, adaptive audio systems"
+description: "\"Provides Game audio principles. Sound design, music integration, adaptive audio systems\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

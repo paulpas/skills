@@ -1,7 +1,6 @@
 ---
 name: multi-agent-brainstorming
-description: Simulate a structured peer-review process using multiple specialized
-  agents to validate designs, surface hidden assumptions, and identify failure mode
+description: "Provides Simulate a structured peer-review process using multiple specialized agents to validate designs, surface hidden assumptions, and identify failure mode"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: multi agent brainstorming, ai, ml, implementation guide, machine learning
+  triggers: multi agent brainstorming, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Multi Agent Brainstorming

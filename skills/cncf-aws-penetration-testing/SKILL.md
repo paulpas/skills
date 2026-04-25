@@ -1,7 +1,6 @@
 ---
 name: aws-penetration-testing
-description: Provide comprehensive techniques for penetration testing AWS cloud environments.
-  Covers IAM enumeration, privilege escalation, SSRF to metadata endpoi
+description: "Provides Provide comprehensive techniques for penetration testing AWS cloud environments. Covers IAM enumeration, privilege escalation, SSRF to metadata endpoi"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: aws penetration testing, cloud, how do i test, unit tests
+  triggers: aws penetration testing, cloud, how do i test, unit tests, testing
 ---
+
 
 
 # Aws Penetration Testing

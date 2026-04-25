@@ -1,7 +1,6 @@
 ---
 name: hugging-face-dataset-viewer
-description: Query Hugging Face datasets through the Dataset Viewer API for splits,
-  rows, search, filters, and parquet links
+description: "Provides Query Hugging Face datasets through the Dataset Viewer API for splits, rows, search, filters, and parquet links"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: hugging face dataset viewer, ai, ml, data processing, machine learning,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Hugging Face Dataset Viewer

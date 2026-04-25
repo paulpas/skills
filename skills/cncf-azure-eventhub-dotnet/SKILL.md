@@ -1,10 +1,10 @@
 ---
 name: azure-eventhub-dotnet
-description: "Azure Event Hubs SDK for .NET"
+description: "\"Configures azure event hubs sdk for .net for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

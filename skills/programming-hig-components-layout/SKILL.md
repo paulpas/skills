@@ -1,10 +1,10 @@
 ---
 name: hig-components-layout
-description: "Apple Human Interface Guidelines for layout and navigation components"
+description: "\"Provides Apple Human Interface Guidelines for layout and navigation components\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

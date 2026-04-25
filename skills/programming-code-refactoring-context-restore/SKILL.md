@@ -1,6 +1,6 @@
 ---
 name: code-refactoring-context-restore
-description: Use when working with code refactoring context restore
+description: "Provides use when working with code refactoring context restore functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: code refactoring context restore, development, implementation guide, code
-    improvement
+    improvement, refactoring
 ---
+
 
 
 # Code Refactoring Context Restore

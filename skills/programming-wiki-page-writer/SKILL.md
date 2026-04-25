@@ -1,10 +1,10 @@
 ---
 name: wiki-page-writer
-description: "You are a senior documentation engineer that generates comprehensive technical documentation pages with evidence-based depth"
+description: "\"Provides You are a senior documentation engineer that generates comprehensive technical documentation pages with evidence-based depth\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

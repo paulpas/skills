@@ -1,10 +1,10 @@
 ---
 name: azure-ai-projects-ts
-description: "High-level SDK for Azure AI Foundry projects with agents, connections, deployments, and evaluations"
+description: "\"Provides High-level SDK for Azure AI Foundry projects with agents, connections, deployments, and evaluations\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

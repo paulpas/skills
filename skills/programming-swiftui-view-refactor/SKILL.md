@@ -1,7 +1,6 @@
 ---
 name: swiftui-view-refactor
-description: Refactor SwiftUI views into smaller components with stable, explicit
-  data flow
+description: "Provides Refactor SwiftUI views into smaller components with stable, explicit data flow"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: swiftui view refactor, mobile, data processing, spark
+  triggers: swiftui view refactor, mobile, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Swiftui View Refactor

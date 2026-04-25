@@ -1,7 +1,6 @@
 ---
 name: postgresql-optimization
-description: PostgreSQL database optimization workflow for query tuning, indexing
-  strategies, performance analysis, and production database management
+description: "Provides PostgreSQL database optimization workflow for query tuning, indexing strategies, performance analysis, and production database management"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: postgresql optimization, granular, workflow, data processing, postgres,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Postgresql Optimization

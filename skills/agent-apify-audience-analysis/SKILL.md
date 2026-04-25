@@ -1,7 +1,6 @@
 ---
 name: apify-audience-analysis
-description: Understand audience demographics, preferences, behavior patterns, and
-  engagement quality across Facebook, Instagram, YouTube, and TikTok
+description: "Provides Understand audience demographics, preferences, behavior patterns, and engagement quality across Facebook, Instagram, YouTube, and TikTok"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify audience analysis, automation, how do i automate, jenkins
+  triggers: apify audience analysis, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Apify Audience Analysis

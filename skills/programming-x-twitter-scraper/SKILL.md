@@ -1,7 +1,6 @@
 ---
 name: x-twitter-scraper
-description: "X (Twitter) data platform skill \u2014 tweet search, user lookup, follower\
-  \ extraction, engagement metrics, giveaway draws, monitoring, webhooks, 19 extract"
+description: "\"Provides X (Twitter) data platform skill \u2014 tweet search, user lookup,\ \ follower extraction, engagement metrics, giveaway draws, monitoring, webhooks,\ \ 19 extract\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: x twitter scraper, data, data processing, spark
+  triggers: x twitter scraper, data, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # X Twitter Scraper

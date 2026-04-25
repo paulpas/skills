@@ -1,7 +1,6 @@
 ---
 name: trading-fundamentals-trading-psychology
-description: "Emotional discipline, cognitive bias awareness, and maintaining operational"
-  integrity in trading
+description: "\"Emotional discipline, cognitive bias awareness, and maintaining operational\" integrity in trading"
 license: MIT
 compatibility: opencode
 metadata:

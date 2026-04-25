@@ -1,10 +1,10 @@
 ---
 name: create-branch
-description: "Create a git branch following Sentry naming conventions. Use when asked to"
+description: "\"Provides Create a git branch following Sentry naming conventions. Use when asked to\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

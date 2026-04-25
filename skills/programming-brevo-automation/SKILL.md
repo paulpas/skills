@@ -1,10 +1,10 @@
 ---
 name: brevo-automation
-description: "Automate Brevo (formerly Sendinblue) email marketing operations through Composio's Brevo toolkit via Rube MCP"
+description: "\"Provides Automate Brevo (formerly Sendinblue) email marketing operations through Composio's Brevo toolkit via Rube MCP\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

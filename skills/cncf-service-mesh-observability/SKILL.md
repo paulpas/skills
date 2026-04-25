@@ -1,7 +1,6 @@
 ---
 name: service-mesh-observability
-description: Complete guide to observability patterns for Istio, Linkerd, and service
-  mesh deployments
+description: "Provides Complete guide to observability patterns for Istio, Linkerd, and service mesh deployments"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: service mesh observability, devops, how do i deploy, kubernetes service
+  triggers: service mesh observability, devops, how do i deploy, kubernetes service,
+    container orchestration, service
 ---
+
 
 
 # Service Mesh Observability

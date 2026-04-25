@@ -1,7 +1,6 @@
 ---
 name: slo-implementation
-description: Framework for defining and implementing Service Level Indicators (SLIs),
-  Service Level Objectives (SLOs), and error budgets
+description: "Provides Framework for defining and implementing Service Level Indicators (SLIs), Service Level Objectives (SLOs), and error budgets"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: slo implementation, reliability, implementation guide, linkerd
+  triggers: slo implementation, reliability, implementation guide, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Slo Implementation

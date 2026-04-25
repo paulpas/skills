@@ -1,7 +1,6 @@
 ---
 name: binary-analysis-patterns
-description: Comprehensive patterns and techniques for analyzing compiled binaries,
-  understanding assembly code, and reconstructing program logic
+description: "\"Provides Comprehensive patterns and techniques for analyzing compiled binaries, understanding assembly code, and reconstructing program logic\""
 license: MIT
 compatibility: opencode
 metadata:

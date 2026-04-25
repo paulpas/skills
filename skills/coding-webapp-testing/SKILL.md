@@ -1,6 +1,6 @@
 ---
 name: webapp-testing
-description: To test local web applications, write native Python Playwright scripts
+description: "Provides To test local web applications, write native Python Playwright scripts"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: webapp testing, test, automation, how do i test, jenkins, unit tests
+  triggers: webapp testing, test, automation, how do i test, jenkins, unit tests,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Webapp Testing

@@ -1,10 +1,10 @@
 ---
 name: startup-metrics-framework
-description: "Comprehensive guide to tracking, calculating, and optimizing key performance metrics for different startup business models from seed through Series A"
+description: "\"Provides Comprehensive guide to tracking, calculating, and optimizing key performance metrics for different startup business models from seed through Series A\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

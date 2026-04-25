@@ -1,7 +1,6 @@
 ---
 name: kubernetes-architect
-description: Expert Kubernetes architect specializing in cloud-native infrastructure,
-  advanced GitOps workflows (ArgoCD/Flux), and enterprise container orchestrati
+description: "Provides Expert Kubernetes architect specializing in cloud-native infrastructure, advanced GitOps workflows (ArgoCD/Flux), and enterprise container orchestrati"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: kubernetes architect, devops, how do i deploy, container orchestration
+  triggers: kubernetes architect, devops, how do i deploy, container orchestration,
+    kubernetes
 ---
+
 
 
 # Kubernetes Architect

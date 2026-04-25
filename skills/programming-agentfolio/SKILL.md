@@ -1,7 +1,6 @@
 ---
 name: agentfolio
-description: Skill for discovering and researching autonomous AI agents, tools, and
-  ecosystems using the AgentFolio directory
+description: "Provides Skill for discovering and researching autonomous AI agents, tools, and ecosystems using the AgentFolio directory"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agentfolio, ai, ml, implementation guide, machine learning
+  triggers: agentfolio, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Agentfolio

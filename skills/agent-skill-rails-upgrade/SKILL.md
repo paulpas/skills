@@ -1,10 +1,10 @@
 ---
 name: skill-rails-upgrade
-description: "Analyze Rails apps and provide upgrade assessments"
+description: "\"Implements analyze rails apps and provide upgrade assessments for orchestration and agent coordination in autonomous systems.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

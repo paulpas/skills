@@ -1,10 +1,10 @@
 ---
 name: x-article-publisher-skill
-description: "Publish articles to X/Twitter"
+description: "\"Provides publish articles to x/twitter functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

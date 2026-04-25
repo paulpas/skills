@@ -1,10 +1,10 @@
 ---
 name: avalonia-zafiro-development
-description: "Mandatory skills, conventions, and behavioral rules for Avalonia UI development using the Zafiro toolkit"
+description: "\"Provides Mandatory skills, conventions, and behavioral rules for Avalonia UI development using the Zafiro toolkit\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

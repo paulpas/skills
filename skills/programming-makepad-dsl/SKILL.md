@@ -1,8 +1,6 @@
 ---
 name: makepad-dsl
-description: "CRITICAL: Use for Makepad DSL syntax and inheritance. Triggers on"
-makepad dsl, live_design, makepad inheritance, makepad prototype,
-"<Widget>", "Foo = { }", makepad object, makepa"
+description: "\"CRITICAL: Use for Makepad DSL syntax and inheritance. Triggers on\" makepad dsl, live_design, makepad inheritance, makepad prototype, \"<Widget>\", \"Foo = { }\", makepad object, makepa\""
 license: MIT
 compatibility: opencode
 metadata:

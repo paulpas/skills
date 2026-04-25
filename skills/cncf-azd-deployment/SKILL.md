@@ -1,7 +1,6 @@
 ---
 name: azd-deployment
-description: Deploy containerized frontend + backend applications to Azure Container
-  Apps with remote builds, managed identity, and idempotent infrastructure
+description: "Provides Deploy containerized frontend + backend applications to Azure Container Apps with remote builds, managed identity, and idempotent infrastructure"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: azd deployment, cloud, how do i deploy, kubernetes deployment
+  triggers: azd deployment, cloud, how do i deploy, kubernetes deployment, container
+    orchestration, deployment
 ---
+
 
 
 # Azd Deployment

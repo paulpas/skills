@@ -1,10 +1,10 @@
 ---
 name: product-inventor
-description: "Product Inventor e Design Alchemist de nivel maximo — combina Product Thinking, Design Systems, UI Engineering, Psicologia Cognitiva, Storytelling e e"
+description: "\"Provides Product Inventor e Design Alchemist de nivel maximo \u2014\ \ combina Product Thinking, Design Systems, UI Engineering, Psicologia Cognitiva,\ \ Storytelling e e\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

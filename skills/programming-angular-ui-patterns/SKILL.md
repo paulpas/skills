@@ -1,7 +1,6 @@
 ---
 name: angular-ui-patterns
-description: Modern Angular UI patterns for loading states, error handling, and data
-  display. Use when building UI components, handling async data, or managing com
+description: "Provides Modern Angular UI patterns for loading states, error handling, and data display. Use when building UI components, handling async data, or managing com"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: angular ui patterns, web, development, data processing, spark
+  triggers: angular ui patterns, web, development, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Angular Ui Patterns

@@ -1,8 +1,6 @@
 ---
 name: robius-event-action
-description: "CRITICAL: Use for Robius event and action patterns. Triggers on"
-custom action, MatchEvent, post_action, cx.widget_action,
-handle_actions, DefaultNone, widget action, event handlin"
+description: "\"CRITICAL: Use for Robius event and action patterns. Triggers on\" custom action, MatchEvent, post_action, cx.widget_action, handle_actions, DefaultNone, widget action, event handlin\""
 license: MIT
 compatibility: opencode
 metadata:

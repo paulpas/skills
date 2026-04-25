@@ -1,7 +1,6 @@
 ---
 name: ai-agents-architect
-description: Expert in designing and building autonomous AI agents. Masters tool use,
-  memory systems, planning strategies, and multi-agent orchestration
+description: "Provides Expert in designing and building autonomous AI agents. Masters tool use, memory systems, planning strategies, and multi-agent orchestration"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai agents architect, ai, agents, implementation guide, machine learning
+  triggers: ai agents architect, ai, agents, implementation guide, machine learning,
+    ml, scikit-learn
 ---
+
 
 
 # Ai Agents Architect

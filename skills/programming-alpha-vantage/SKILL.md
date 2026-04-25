@@ -1,7 +1,6 @@
 ---
 name: alpha-vantage
-description: 'Access 20+ years of global financial data: equities, options, forex,
-  crypto, commodities, economic indicators, and 50+ technical indicators'
+description: "'Provides Access 20+ years of global financial data: equities, options, forex, crypto, commodities, economic indicators, and 50+ technical indicators'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: alpha vantage, data, data processing, spark
+  triggers: alpha vantage, data, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Alpha Vantage

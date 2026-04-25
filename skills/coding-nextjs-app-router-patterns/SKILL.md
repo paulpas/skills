@@ -1,10 +1,10 @@
 ---
 name: nextjs-app-router-patterns
-description: "Comprehensive patterns for Next.js 14+ App Router architecture, Server Components, and modern full-stack React development"
+description: "\"Provides Comprehensive patterns for Next.js 14+ App Router architecture, Server Components, and modern full-stack React development\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

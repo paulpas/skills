@@ -1,10 +1,10 @@
 ---
 name: gitops-workflow
-description: "Complete guide to implementing GitOps workflows with ArgoCD and Flux for automated Kubernetes deployments"
+description: "\"Provides Complete guide to implementing GitOps workflows with ArgoCD and Flux for automated Kubernetes deployments\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

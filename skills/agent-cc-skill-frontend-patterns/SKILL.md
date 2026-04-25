@@ -1,10 +1,10 @@
 ---
 name: cc-skill-frontend-patterns
-description: "Frontend development patterns for React, Next.js, state management, performance optimization, and UI best practices"
+description: "\"Provides Frontend development patterns for React, Next.js, state management, performance optimization, and UI best practices\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

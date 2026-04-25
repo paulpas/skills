@@ -1,7 +1,6 @@
 ---
 name: cc-skill-backend-patterns
-description: Backend architecture patterns, API design, database optimization, and
-  server-side best practices for Node.js, Express, and Next.js API routes
+description: "Provides Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js, Express, and Next.js API routes"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: cc skill backend patterns, meta, data processing, spark
+  triggers: cc skill backend patterns, meta, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Cc Skill Backend Patterns

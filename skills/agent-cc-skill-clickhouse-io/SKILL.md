@@ -1,7 +1,6 @@
 ---
 name: cc-skill-clickhouse-io
-description: ClickHouse database patterns, query optimization, analytics, and data
-  engineering best practices for high-performance analytical workloads
+description: "Provides ClickHouse database patterns, query optimization, analytics, and data engineering best practices for high-performance analytical workloads"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: cc skill clickhouse io, meta, data processing, spark
+  triggers: cc skill clickhouse io, meta, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Cc Skill Clickhouse Io

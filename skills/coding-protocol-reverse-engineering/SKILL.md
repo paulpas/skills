@@ -1,7 +1,6 @@
 ---
 name: protocol-reverse-engineering
-description: Comprehensive techniques for capturing, analyzing, and documenting network
-  protocols for security research, interoperability, and debugging
+description: "\"Provides Comprehensive techniques for capturing, analyzing, and documenting network protocols for security research, interoperability, and debugging\""
 license: MIT
 compatibility: opencode
 metadata:

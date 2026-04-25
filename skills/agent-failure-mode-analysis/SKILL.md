@@ -1,7 +1,6 @@
 ---
 name: agent-failure-mode-analysis
-description: "Performs failure mode analysis by identifying potential failure points"
-  in agent systems, assessing failure impact, and generating mitigation strategies.
+description: "\"Performs failure mode analysis by identifying potential failure points\" in agent systems, assessing failure impact, and generating mitigation strategies."
 license: MIT
 compatibility: opencode
 metadata:

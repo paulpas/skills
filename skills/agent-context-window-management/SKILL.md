@@ -1,10 +1,10 @@
 ---
 name: context-window-management
-description: "Strategies for managing LLM context windows including summarization, trimming, routing, and avoiding context rot"
+description: "\"Provides Strategies for managing LLM context windows including summarization, trimming, routing, and avoiding context rot\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

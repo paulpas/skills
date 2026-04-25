@@ -1,10 +1,10 @@
 ---
 name: dotnet-backend
-description: "Build ASP.NET Core 8+ backend services with EF Core, auth, background jobs, and production API patterns"
+description: "\"Provides Build ASP.NET Core 8+ backend services with EF Core, auth, background jobs, and production API patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: gdpr-data-handling
-description: Practical implementation guide for GDPR-compliant data processing, consent
-  management, and privacy controls
+description: "\"Provides Practical implementation guide for GDPR-compliant data processing, consent management, and privacy controls\""
 license: MIT
 compatibility: opencode
 metadata:

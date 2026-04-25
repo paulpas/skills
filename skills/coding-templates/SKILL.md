@@ -1,10 +1,10 @@
 ---
 name: templates
-description: "Project scaffolding templates for new applications. Use when creating new projects from scratch. Contains 12 templates for various tech stacks"
+description: "\"Provides Project scaffolding templates for new applications. Use when creating new projects from scratch. Contains 12 templates for various tech stacks\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: expo-tailwind-setup
-description: "Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling"
+description: "\"Provides Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

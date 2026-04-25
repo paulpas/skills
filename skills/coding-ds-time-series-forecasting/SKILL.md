@@ -1,6 +1,6 @@
 ---
 name: coding-ds-time-series-forecasting
-description: "Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction"
+description: "\"Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: avalonia-viewmodels-zafiro
-description: "Optimal ViewModel and Wizard creation patterns for Avalonia using Zafiro and ReactiveUI"
+description: "\"Provides Optimal ViewModel and Wizard creation patterns for Avalonia using Zafiro and ReactiveUI\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

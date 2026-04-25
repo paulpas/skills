@@ -1,7 +1,6 @@
 ---
 name: api-security-testing
-description: API security testing workflow for REST and GraphQL APIs covering authentication,
-  authorization, rate limiting, input validation, and security best pra
+description: "Provides API security testing workflow for REST and GraphQL APIs covering authentication, authorization, rate limiting, input validation, and security best pra"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: api security testing, granular, workflow, how do i test, unit tests, vulnerability
-    scanning
+    scanning, security, testing
 ---
+
 
 
 # Api Security Testing

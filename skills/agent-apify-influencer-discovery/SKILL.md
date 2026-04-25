@@ -1,7 +1,6 @@
 ---
 name: apify-influencer-discovery
-description: Find and evaluate influencers for brand partnerships, verify authenticity,
-  and track collaboration performance across Instagram, Facebook, YouTube, an
+description: "Provides Find and evaluate influencers for brand partnerships, verify authenticity, and track collaboration performance across Instagram, Facebook, YouTube, an"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify influencer discovery, automation, how do i automate, jenkins
+  triggers: apify influencer discovery, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # Apify Influencer Discovery

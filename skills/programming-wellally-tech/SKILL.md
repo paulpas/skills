@@ -1,7 +1,6 @@
 ---
 name: wellally-tech
-description: Integrate multiple digital health data sources, connect to [WellAlly.tech](https://www.wellally.tech/)
-  knowledge base, providing data import and knowl
+description: "Provides Integrate multiple digital health data sources, connect to [WellAlly.tech](https://www.wellally.tech/) knowledge base, providing data import and knowl"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: wellally tech, uncategorized, data processing, spark
+  triggers: wellally tech, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Wellally Tech

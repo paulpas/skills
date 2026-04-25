@@ -1,8 +1,6 @@
 ---
 name: makepad-font
-description: "CRITICAL: Use for Makepad font and text rendering. Triggers on"
-makepad font, makepad text, makepad glyph, makepad typography,
-font atlas, text layout, font family, font size, text"
+description: "\"CRITICAL: Use for Makepad font and text rendering. Triggers on\" makepad font, makepad text, makepad glyph, makepad typography, font atlas, text layout, font family, font size, text\""
 license: MIT
 compatibility: opencode
 metadata:

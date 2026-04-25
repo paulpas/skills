@@ -1,10 +1,10 @@
 ---
 name: ui-ux-pro-max
-description: "Comprehensive design guide for web and mobile applications. Use when designing new UI components or pages, choosing color palettes and typography, or"
+description: "\"Provides Comprehensive design guide for web and mobile applications. Use when designing new UI components or pages, choosing color palettes and typography, or\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

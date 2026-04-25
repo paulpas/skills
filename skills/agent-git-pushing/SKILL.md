@@ -1,10 +1,10 @@
 ---
 name: git-pushing
-description: "Stage all changes, create a conventional commit, and push to the remote branch. Use when explicitly asks to push changes ("
+description: "\"Provides Stage all changes, create a conventional commit, and push to the remote branch. Use when explicitly asks to push changes (\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

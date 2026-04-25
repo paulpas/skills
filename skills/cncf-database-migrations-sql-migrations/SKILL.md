@@ -1,7 +1,6 @@
 ---
 name: database-migrations-sql-migrations
-description: SQL database migrations with zero-downtime strategies for PostgreSQL,
-  MySQL, and SQL Server. Focus on data integrity and rollback plans
+description: "Provides SQL database migrations with zero-downtime strategies for PostgreSQL, MySQL, and SQL Server. Focus on data integrity and rollback plans"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: database migrations sql migrations, database, data processing, spark
+  triggers: database migrations sql migrations, database, data processing, spark,
+    big data, distributed processing
 ---
+
 
 
 # Database Migrations Sql Migrations

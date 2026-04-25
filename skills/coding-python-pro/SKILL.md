@@ -1,10 +1,10 @@
 ---
 name: python-pro
-description: "Master Python 3.12+ with modern features, async programming, performance optimization, and production-ready practices. Expert in the latest Python eco"
+description: "\"Provides Master Python 3.12+ with modern features, async programming, performance optimization, and production-ready practices. Expert in the latest Python eco\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

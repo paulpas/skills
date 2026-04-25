@@ -1,6 +1,6 @@
 ---
 name: trading-ai-news-embedding
-description: "Process news text using NLP embeddings for trading signals"
+description: "\"Implements process news text using nlp embeddings for trading signals for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

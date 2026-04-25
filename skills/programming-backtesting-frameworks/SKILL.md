@@ -1,10 +1,10 @@
 ---
 name: backtesting-frameworks
-description: "Build robust, production-grade backtesting systems that avoid common pitfalls and produce reliable strategy performance estimates"
+description: "\"Provides Build robust, production-grade backtesting systems that avoid common pitfalls and produce reliable strategy performance estimates\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

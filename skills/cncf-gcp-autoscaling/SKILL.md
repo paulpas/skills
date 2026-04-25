@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-autoscaling
-description: "Automatically scales compute resources based on metrics like CPU and custom signals"
+description: "\"Provides Automatically scales compute resources based on metrics like CPU and custom signals\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,8 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: autoscaling, auto-scaling, scaling, horizontal scaling, vertical scaling
-  related-skills: cncf-gcp-cloud-load-balancing, cncf-gcp-cloud-monitoring, cncf-gcp-compute-engine, cncf-gcp-gke
+  related-skills: cncf-gcp-cloud-load-balancing, cncf-gcp-cloud-monitoring, cncf-gcp-compute-engine,
+    cncf-gcp-gke
 ---
 
 

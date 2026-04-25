@@ -1,10 +1,10 @@
 ---
 name: domain-driven-design
-description: "Plan and route Domain-Driven Design work from strategic modeling to tactical implementation and evented architecture patterns"
+description: "\"Provides Plan and route Domain-Driven Design work from strategic modeling to tactical implementation and evented architecture patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

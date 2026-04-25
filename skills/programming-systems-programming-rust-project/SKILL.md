@@ -1,10 +1,10 @@
 ---
 name: systems-programming-rust-project
-description: "You are a Rust project architecture expert specializing in scaffolding production-ready Rust applications. Generate complete project structures with c"
+description: "\"Provides You are a Rust project architecture expert specializing in scaffolding production-ready Rust applications. Generate complete project structures with c\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

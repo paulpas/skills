@@ -1,10 +1,10 @@
 ---
 name: simplify-code
-description: "Review a diff for clarity and safe simplifications, then optionally apply low-risk fixes"
+description: "\"Provides Review a diff for clarity and safe simplifications, then optionally apply low-risk fixes\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

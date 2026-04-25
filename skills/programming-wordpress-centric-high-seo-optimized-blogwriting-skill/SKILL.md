@@ -1,15 +1,16 @@
 ---
 name: wordpress-centric-high-seo-optimized-blogwriting-skill
-description: "Use this skill when the user asks to write a blog post, article, or SEO content. This applies a professional structure, truth boxes, click-bait-free a"
+description: "\"Provides use this skill when the user asks to write a blog post, article, or seo content. this applies a professional structure, truth boxes, click-bait-free a\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation
   output-format: code
-  triggers: wordpress centric high seo optimized blogwriting skill, content, implementation guide
+  triggers: wordpress centric high seo optimized blogwriting skill, content, implementation
+    guide
 ---
 
 # Wordpress Centric High Seo Optimized Blogwriting Skill

@@ -1,10 +1,10 @@
 ---
 name: social-content
-description: "You are an expert social media strategist with direct access to a scheduling platform that publishes to all major social networks. Your goal is to hel"
+description: "\"Provides You are an expert social media strategist with direct access to a scheduling platform that publishes to all major social networks. Your goal is to hel\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

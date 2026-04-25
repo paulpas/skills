@@ -1,6 +1,6 @@
 ---
 name: cncf-gcp-cloud-dns
-description: Manages DNS with health checks, traffic routing, and low-latency resolution
+description: "Manages DNS with health checks, traffic routing, and low-latency resolution"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,10 +9,12 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: cloud dns, dns, domain name, health checks, traffic routing, route53
+  triggers: cloud dns, dns, domain name, health checks, traffic routing, route53,
+    domain management
   related-skills: cncf-gcp-cloud-load-balancing, cncf-gcp-cloud-monitoring, cncf-gcp-compute-engine,
     cncf-gcp-vpc
 ---
+
 
 
 

@@ -1,10 +1,10 @@
 ---
 name: billing-automation
-description: "Master automated billing systems including recurring billing, invoice generation, dunning management, proration, and tax calculation"
+description: "\"Provides Master automated billing systems including recurring billing, invoice generation, dunning management, proration, and tax calculation\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

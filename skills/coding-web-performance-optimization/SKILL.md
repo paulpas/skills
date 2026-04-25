@@ -1,7 +1,6 @@
 ---
 name: web-performance-optimization
-description: Optimize website and web application performance including loading speed,
-  Core Web Vitals, bundle size, caching strategies, and runtime performance
+description: "Provides Optimize website and web application performance including loading speed, Core Web Vitals, bundle size, caching strategies, and runtime performance"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: web performance optimization, front, end, implementation guide, optimization
+  triggers: web performance optimization, front, end, implementation guide, optimization,
+    performance
 ---
+
 
 
 # Web Performance Optimization

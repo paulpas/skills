@@ -1,10 +1,10 @@
 ---
 name: inngest
-description: "Inngest expert for serverless-first background jobs, event-driven workflows, and durable execution without managing queues or workers"
+description: "\"Provides Inngest expert for serverless-first background jobs, event-driven workflows, and durable execution without managing queues or workers\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: azure-containerregistry-py
-description: "Azure Container Registry SDK for Python. Use for managing container images, artifacts, and repositories"
+description: "\"Provides Azure Container Registry SDK for Python. Use for managing container images, artifacts, and repositories\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

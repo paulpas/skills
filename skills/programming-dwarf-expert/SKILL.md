@@ -1,6 +1,6 @@
 ---
 name: dwarf-expert
-description: "Provides expertise for analyzing DWARF debug files and understanding the DWARF debug format/standard (v3-v5). Triggers when understanding DWARF inform"
+description: "\"Provides expertise for analyzing DWARF debug files and understanding the DWARF debug format/standard (v3-v5). Triggers when understanding DWARF inform\""
 license: MIT
 compatibility: opencode
 metadata:

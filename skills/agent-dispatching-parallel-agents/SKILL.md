@@ -1,7 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing 2+ independent tasks that can be worked on without shared
-  state or sequential dependencies
+description: "Provides use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: dispatching parallel agents, ai, agents, implementation guide, machine
-    learning
+    learning, ml, scikit-learn
 ---
+
 
 
 # Dispatching Parallel Agents

@@ -1,6 +1,6 @@
 ---
 name: cncf-falco
-description: "Falco in Cloud-Native Engineering - Cloud Native Runtime Security"
+description: "\"Provides Falco in Cloud-Native Engineering - Cloud Native Runtime Security\""
 license: MIT
 compatibility: opencode
 metadata:

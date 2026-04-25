@@ -1,7 +1,6 @@
 ---
 name: odoo-docker-deployment
-description: Production-ready Docker and docker-compose setup for Odoo with PostgreSQL,
-  persistent volumes, environment-based configuration, and Nginx reverse prox
+description: "Provides Production-ready Docker and docker-compose setup for Odoo with PostgreSQL, persistent volumes, environment-based configuration, and Nginx reverse prox"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: odoo docker deployment, business, implementation guide, containers, kubernetes
-    deployment
+    deployment, container orchestration, deployment, docker
 ---
+
 
 
 # Odoo Docker Deployment

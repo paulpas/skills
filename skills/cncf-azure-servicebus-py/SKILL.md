@@ -1,10 +1,10 @@
 ---
 name: azure-servicebus-py
-description: "Azure Service Bus SDK for Python messaging. Use for queues, topics, subscriptions, and enterprise messaging patterns"
+description: "\"Provides Azure Service Bus SDK for Python messaging. Use for queues, topics, subscriptions, and enterprise messaging patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

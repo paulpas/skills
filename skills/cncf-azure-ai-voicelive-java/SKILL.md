@@ -1,10 +1,10 @@
 ---
 name: azure-ai-voicelive-java
-description: "Azure AI VoiceLive SDK for Java. Real-time bidirectional voice conversations with AI assistants using WebSocket"
+description: "\"Provides Azure AI VoiceLive SDK for Java. Real-time bidirectional voice conversations with AI assistants using WebSocket\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

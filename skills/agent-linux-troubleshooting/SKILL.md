@@ -1,10 +1,10 @@
 ---
 name: linux-troubleshooting
-description: "Linux system troubleshooting workflow for diagnosing and resolving system issues, performance problems, and service failures"
+description: "\"Provides Linux system troubleshooting workflow for diagnosing and resolving system issues, performance problems, and service failures\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

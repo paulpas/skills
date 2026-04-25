@@ -1,16 +1,18 @@
 ---
 name: coding-ds-dimensionality-reduction
-description: "Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency"
+description: "\"Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do i reduce dimensions
-  related-skills: coding-ds-clustering, coding-ds-community-detection, coding-ds-eda, coding-ds-feature-engineering
+  triggers: dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do
+    i reduce dimensions
+  related-skills: coding-ds-clustering, coding-ds-community-detection, coding-ds-eda,
+    coding-ds-feature-engineering
 ---
 
 # Dimensionality Reduction

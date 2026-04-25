@@ -1,7 +1,6 @@
 ---
 name: coding-security-review
-description: "Security-focused code review identifying vulnerabilities like injection"
-  XSS, insecure deserialization, and misconfigurations, with remediation guidance
+description: "\"Security-focused code review identifying vulnerabilities like injection\" XSS, insecure deserialization, and misconfigurations, with remediation guidance"
 license: MIT
 compatibility: opencode
 metadata:

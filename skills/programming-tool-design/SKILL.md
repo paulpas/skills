@@ -1,7 +1,6 @@
 ---
 name: tool-design
-description: Build tools that agents can use effectively, including architectural
-  reduction patterns. Use when creating new tools for agent systems, debugging tool
+description: "Provides Build tools that agents can use effectively, including architectural reduction patterns. Use when creating new tools for agent systems, debugging tool"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: tool design, ai, ml, implementation guide, machine learning
+  triggers: tool design, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Tool Design

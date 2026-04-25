@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-keyvault-secrets
-description: "Secret management and rotation for sensitive credentials and configuration"
+description: "\"Provides Secret management and rotation for sensitive credentials and configuration\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: secrets, secret management, secret rotation, credential management, password
-  related-skills: cncf-azure-functions, cncf-azure-key-vault, cncf-azure-rbac, cncf-azure-virtual-machines
+  related-skills: cncf-azure-functions
 ---
 
 

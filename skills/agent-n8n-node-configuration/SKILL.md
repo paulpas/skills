@@ -1,7 +1,6 @@
 ---
 name: n8n-node-configuration
-description: Operation-aware node configuration guidance. Use when configuring nodes,
-  understanding property dependencies, determining required fields, choosing be
+description: "Provides Operation-aware node configuration guidance. Use when configuring nodes, understanding property dependencies, determining required fields, choosing be"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: n8n node configuration, automation, how do i automate, jenkins
+  triggers: n8n node configuration, automation, how do i automate, jenkins, ci/cd
+    pipeline, continuous integration
 ---
+
 
 
 # N8N Node Configuration

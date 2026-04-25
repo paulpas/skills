@@ -1,8 +1,6 @@
 ---
 name: cncf-aws-dynamodb
-description: "Deploys managed NoSQL databases with DynamoDB for scalable, low-latency"
-  key-value storage, streams, and global tables with high availability and automatic
-  replication.
+description: "\"Deploys managed NoSQL databases with DynamoDB for scalable, low-latency\" key-value storage, streams, and global tables with high availability and automatic replication."
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: julia-pro
-description: "Master Julia 1.10+ with modern features, performance optimization, multiple dispatch, and production-ready practices"
+description: "\"Provides Master Julia 1.10+ with modern features, performance optimization, multiple dispatch, and production-ready practices\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

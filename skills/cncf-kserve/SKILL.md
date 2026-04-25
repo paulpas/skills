@@ -1,6 +1,6 @@
 ---
 name: cncf-kserve
-description: "KServe in Cloud-Native Engineering - model serving"
+description: "\"Configures kserve in cloud-native engineering - model serving for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cloud-native, engineering, kserve, model
-  related-skills: 
+  related-skills: null
 ---
 
 # KServe in Cloud-Native Engineering

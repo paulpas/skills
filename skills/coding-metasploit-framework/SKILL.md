@@ -1,7 +1,6 @@
 ---
 name: metasploit-framework
-description: "\u26A0\uFE0F AUTHORIZED USE ONLY > This skill is for educational purposes\
-  \ or authorized security assessments only. > You must have explicit, written permission"
+description: "\"Provides \u26A0\uFE0F AUTHORIZED USE ONLY > This skill is for educational\ \ purposes or authorized security assessments only. > You must have explicit, written\ \ permission\""
 license: MIT
 compatibility: opencode
 metadata:

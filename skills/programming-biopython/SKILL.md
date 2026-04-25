@@ -1,10 +1,10 @@
 ---
 name: biopython
-description: "Biopython is a comprehensive set of freely available Python tools for biological computation. It provides functionality for sequence manipulation, fil"
+description: "\"Provides Biopython is a comprehensive set of freely available Python tools for biological computation. It provides functionality for sequence manipulation, fil\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

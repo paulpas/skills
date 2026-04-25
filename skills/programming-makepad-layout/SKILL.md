@@ -1,9 +1,6 @@
 ---
 name: makepad-layout
-description: "CRITICAL: Use for Makepad layout system. Triggers on"
-makepad layout, makepad width, makepad height, makepad flex,
-makepad padding, makepad margin, makepad flow, makepad align,
-Fit"
+description: "\"CRITICAL: Use for Makepad layout system. Triggers on\" makepad layout, makepad width, makepad height, makepad flex, makepad padding, makepad margin, makepad flow, makepad align, Fit\""
 license: MIT
 compatibility: opencode
 metadata:

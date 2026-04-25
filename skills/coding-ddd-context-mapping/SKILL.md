@@ -1,10 +1,10 @@
 ---
 name: ddd-context-mapping
-description: "Map relationships between bounded contexts and define integration contracts using DDD context mapping patterns"
+description: "\"Provides Map relationships between bounded contexts and define integration contracts using DDD context mapping patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

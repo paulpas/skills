@@ -1,10 +1,10 @@
 ---
 name: readme
-description: "You are an expert technical writer creating comprehensive project documentation. Your goal is to write a README.md that is absurdly thorough—the kind"
+description: "\"Provides You are an expert technical writer creating comprehensive project\ \ documentation. Your goal is to write a README.md that is absurdly thorough\u2014\ the kind\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

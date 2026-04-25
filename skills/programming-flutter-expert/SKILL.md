@@ -1,10 +1,10 @@
 ---
 name: flutter-expert
-description: "Master Flutter development with Dart 3, advanced widgets, and multi-platform deployment"
+description: "\"Provides Master Flutter development with Dart 3, advanced widgets, and multi-platform deployment\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

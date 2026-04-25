@@ -1,10 +1,10 @@
 ---
 name: personal-tool-builder
-description: "Expert in building custom tools that solve your own problems first. The best products often start as personal tools - scratch your own itch, build for"
+description: "\"Provides Expert in building custom tools that solve your own problems first. The best products often start as personal tools - scratch your own itch, build for\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

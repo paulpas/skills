@@ -1,16 +1,18 @@
 ---
 name: coding-ds-experimental-design
-description: "Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning"
+description: "\"Provides Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: experimental design, DOE, factorial design, randomization, blocking, how do I design experiments
-  related-skills: coding-ds-ab-testing, coding-ds-online-experiments, coding-ds-randomized-experiments, coding-ds-statistical-power
+  triggers: experimental design, DOE, factorial design, randomization, blocking, how
+    do I design experiments
+  related-skills: coding-ds-ab-testing, coding-ds-online-experiments, coding-ds-randomized-experiments,
+    coding-ds-statistical-power
 ---
 
 # Experimental Design

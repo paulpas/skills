@@ -1,9 +1,6 @@
 ---
 name: robius-matrix-integration
-description: "CRITICAL: Use for Matrix SDK integration with Makepad. Triggers on"
-Matrix SDK, sliding sync, MatrixRequest, timeline,
-matrix-sdk, matrix client, robrix, matrix room,
-Matrix 集成, 聊天"
+description: "\"CRITICAL: Use for Matrix SDK integration with Makepad. Triggers on\" Matrix SDK, sliding sync, MatrixRequest, timeline, matrix-sdk, matrix client, robrix, matrix room, Matrix 集成, 聊天\""
 license: MIT
 compatibility: opencode
 metadata:

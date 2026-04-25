@@ -1,10 +1,10 @@
 ---
 name: cqrs-implementation
-description: "Implement Command Query Responsibility Segregation for scalable architectures. Use when separating read and write models, optimizing query performance"
+description: "\"Provides Implement Command Query Responsibility Segregation for scalable architectures. Use when separating read and write models, optimizing query performance\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

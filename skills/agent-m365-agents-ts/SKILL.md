@@ -1,6 +1,6 @@
 ---
 name: m365-agents-ts
-description: Microsoft 365 Agents SDK for TypeScript/Node.js
+description: "Implements microsoft 365 agents sdk for typescript/node.js for orchestration and agent coordination in autonomous systems."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: m365 agents ts, ai, agents, implementation guide, machine learning
+  triggers: m365 agents ts, ai, agents, implementation guide, machine learning, ml,
+    scikit-learn
 ---
+
 
 
 # M365 Agents Ts

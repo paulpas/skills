@@ -1,10 +1,10 @@
 ---
 name: protect-mcp-governance
-description: "Agent governance skill for MCP tool calls — Cedar policy authoring, shadow-to-enforce rollout, and Ed25519 receipt verification"
+description: "\"Provides Agent governance skill for MCP tool calls \u2014 Cedar policy\ \ authoring, shadow-to-enforce rollout, and Ed25519 receipt verification\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

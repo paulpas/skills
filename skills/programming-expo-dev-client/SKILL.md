@@ -1,10 +1,10 @@
 ---
 name: expo-dev-client
-description: "Build and distribute Expo development clients locally or via TestFlight"
+description: "\"Provides Build and distribute Expo development clients locally or via TestFlight\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

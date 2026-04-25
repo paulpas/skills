@@ -1,7 +1,6 @@
 ---
 name: hosted-agents
-description: Build background agents in sandboxed environments. Use for hosted coding
-  agents, sandboxed VMs, Modal sandboxes, and remote coding environments
+description: "Provides Build background agents in sandboxed environments. Use for hosted coding agents, sandboxed VMs, Modal sandboxes, and remote coding environments"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hosted agents, ai, agents, implementation guide, machine learning
+  triggers: hosted agents, ai, agents, implementation guide, machine learning, ml,
+    scikit-learn
 ---
+
 
 
 # Hosted Agents

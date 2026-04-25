@@ -1,7 +1,6 @@
 ---
 name: cncf-fluid
-description: "Fluid in A Kubernetes-native data acceleration layer for data-intensive"
-  applications
+description: "\"Fluid in A Kubernetes-native data acceleration layer for data-intensive\" applications"
 license: MIT
 compatibility: opencode
 metadata:

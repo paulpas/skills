@@ -1,8 +1,6 @@
 ---
 name: agent-task-decomposition-engine
-description: "Decomposes complex tasks into smaller, manageable subtasks that can be"
-  executed by appropriate specialized skills, enabling problem-solving for complex
-  multi-step operations.
+description: "\"Decomposes complex tasks into smaller, manageable subtasks that can be\" executed by appropriate specialized skills, enabling problem-solving for complex multi-step operations."
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: monte-carlo-validation-notebook
-description: Generates SQL validation notebooks for dbt PR changes with before/after
-  comparison queries
+description: "Generates SQL validation notebooks for dbt PR changes with before/after comparison queries"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: monte carlo validation notebook, data, data processing, spark
+  triggers: monte carlo validation notebook, data, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # Monte Carlo Validation Notebook

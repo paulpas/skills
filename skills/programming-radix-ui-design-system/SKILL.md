@@ -1,10 +1,10 @@
 ---
 name: radix-ui-design-system
-description: "Build accessible design systems with Radix UI primitives. Headless component customization, theming strategies, and compound component patterns for pr"
+description: "\"Provides Build accessible design systems with Radix UI primitives. Headless component customization, theming strategies, and compound component patterns for pr\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: agent-memory-mcp
-description: A hybrid memory system that provides persistent, searchable knowledge
-  management for AI agents (Architecture, Patterns, Decisions)
+description: "Provides a hybrid memory system that provides persistent, searchable knowledge management for ai agents (architecture, patterns, decisions)"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agent memory mcp, ai, ml, implementation guide, machine learning
+  triggers: agent memory mcp, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Agent Memory Mcp

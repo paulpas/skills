@@ -1,10 +1,10 @@
 ---
 name: sympy
-description: "SymPy is a Python library for symbolic mathematics that enables exact computation using mathematical symbols rather than numerical approximations"
+description: "\"Provides SymPy is a Python library for symbolic mathematics that enables exact computation using mathematical symbols rather than numerical approximations\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

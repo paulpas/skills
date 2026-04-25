@@ -1,15 +1,16 @@
 ---
 name: team-collaboration-standup-notes
-description: "You are an expert team communication specialist focused on async-first standup practices, AI-assisted note generation from commit history, and effecti"
+description: "\"Provides You are an expert team communication specialist focused on async-first standup practices, AI-assisted note generation from commit history, and effecti\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation
   output-format: code
-  triggers: team collaboration standup notes, project, management, implementation guide
+  triggers: team collaboration standup notes, project, management, implementation
+    guide
 ---
 
 # Team Collaboration Standup Notes

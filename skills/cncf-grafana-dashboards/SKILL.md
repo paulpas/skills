@@ -1,7 +1,6 @@
 ---
 name: grafana-dashboards
-description: Create and manage production-ready Grafana dashboards for comprehensive
-  system observability
+description: "Provides Create and manage production-ready Grafana dashboards for comprehensive system observability"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: grafana dashboards, devops, how do i deploy, dashboards
+  triggers: grafana dashboards, devops, how do i deploy, dashboards, grafana
 ---
+
 
 
 # Grafana Dashboards

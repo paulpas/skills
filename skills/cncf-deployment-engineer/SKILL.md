@@ -1,7 +1,6 @@
 ---
 name: deployment-engineer
-description: Expert deployment engineer specializing in modern CI/CD pipelines, GitOps
-  workflows, and advanced deployment automation
+description: "Provides Expert deployment engineer specializing in modern CI/CD pipelines, GitOps workflows, and advanced deployment automation"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: deployment engineer, devops, how do i deploy, kubernetes deployment
+  triggers: deployment engineer, devops, how do i deploy, kubernetes deployment, container
+    orchestration, deployment
 ---
+
 
 
 # Deployment Engineer

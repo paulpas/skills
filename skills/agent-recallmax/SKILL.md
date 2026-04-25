@@ -1,10 +1,10 @@
 ---
 name: recallmax
-description: "FREE — God-tier long-context memory for AI agents. Injects 500K-1M clean tokens, auto-summarizes with tone/intent preservation, compresses 14-turn his"
+description: "\"Provides FREE \u2014 God-tier long-context memory for AI agents. Injects\ \ 500K-1M clean tokens, auto-summarizes with tone/intent preservation, compresses\ \ 14-turn his\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

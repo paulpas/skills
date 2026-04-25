@@ -1,6 +1,6 @@
 ---
 name: claude-scientific-skills
-description: Scientific research and analysis skills
+description: "Provides scientific research and analysis skills functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claude scientific skills, ai, ml, implementation guide, machine learning
+  triggers: claude scientific skills, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Claude Scientific Skills

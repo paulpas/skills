@@ -1,7 +1,6 @@
 ---
 name: helpdesk-automation
-description: 'Automate HelpDesk tasks via Rube MCP (Composio): list tickets, manage
-  views, use canned responses, and configure custom fields. Always search tools fi'
+description: "'Provides Automate HelpDesk tasks via Rube MCP (Composio): list tickets, manage views, use canned responses, and configure custom fields. Always search tools fi'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: helpdesk automation, automation, how do i automate, jenkins
+  triggers: helpdesk automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Helpdesk Automation

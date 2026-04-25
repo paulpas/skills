@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-cloud-pubsub
-description: "Asynchronous messaging service for event streaming and decoupled application"
-  integration.
+description: "\"Asynchronous messaging service for event streaming and decoupled application\" integration."
 license: MIT
 compatibility: opencode
 metadata:

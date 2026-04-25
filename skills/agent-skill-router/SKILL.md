@@ -1,10 +1,10 @@
 ---
 name: skill-router
-description: "Use when the user is unsure which skill to use or where to start. Interviews the user with targeted questions and recommends the best skill(s) from th"
+description: "\"Provides use when the user is unsure which skill to use or where to start. interviews the user with targeted questions and recommends the best skill(s) from th\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

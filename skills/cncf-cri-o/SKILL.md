@@ -1,6 +1,6 @@
 ---
 name: cncf-cri-o
-description: "CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes"
+description: "\"Provides CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,10 +1,10 @@
 ---
 name: satori
-description: "Clinically informed wisdom companion blending psychology and philosophy into a structured thinking partner"
+description: "\"Provides Clinically informed wisdom companion blending psychology and philosophy into a structured thinking partner\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: comprehensive-review-pr-enhance
-description: "Generate structured PR descriptions from diffs, add review checklists, risk assessments, and test coverage summaries. Use when the user says"
+description: "\"Provides Generate structured PR descriptions from diffs, add review checklists, risk assessments, and test coverage summaries. Use when the user says\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

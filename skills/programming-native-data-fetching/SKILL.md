@@ -1,7 +1,6 @@
 ---
 name: native-data-fetching
-description: Use when implementing or debugging ANY network request, API call, or
-  data fetching. Covers fetch API, React Query, SWR, error handling, caching, offli
+description: "Provides use when implementing or debugging any network request, api call, or data fetching. covers fetch api, react query, swr, error handling, caching, offli"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: native data fetching, development, data processing, spark
+  triggers: native data fetching, development, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Native Data Fetching

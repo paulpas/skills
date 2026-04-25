@@ -1,6 +1,6 @@
 ---
 name: fal-upscale
-description: Upscale and enhance image and video resolution using AI
+description: "Provides upscale and enhance image and video resolution using ai functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fal upscale, ai, ml, implementation guide, machine learning
+  triggers: fal upscale, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Fal Upscale

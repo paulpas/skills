@@ -1,10 +1,10 @@
 ---
 name: product-marketing-context
-description: "Create or update a reusable product marketing context document with positioning, audience, ICP, use cases, and messaging. Use at the start of a projec"
+description: "\"Provides Create or update a reusable product marketing context document with positioning, audience, ICP, use cases, and messaging. Use at the start of a projec\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

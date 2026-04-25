@@ -1,10 +1,10 @@
 ---
 name: openclaw-github-repo-commander
-description: "7-stage super workflow for GitHub repo audit, cleanup, PR review, and competitor analysis"
+description: "\"Provides 7-stage super workflow for GitHub repo audit, cleanup, PR review, and competitor analysis\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

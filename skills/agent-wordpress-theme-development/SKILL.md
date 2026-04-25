@@ -1,10 +1,10 @@
 ---
 name: wordpress-theme-development
-description: "WordPress theme development workflow covering theme architecture, template hierarchy, custom post types, block editor support, responsive design, and"
+description: "\"Provides WordPress theme development workflow covering theme architecture, template hierarchy, custom post types, block editor support, responsive design, and\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

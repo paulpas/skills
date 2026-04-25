@@ -1,10 +1,10 @@
 ---
 name: popup-cro
-description: "Create and optimize popups, modals, overlays, slide-ins, and banners to increase conversions without harming user experience or brand trust"
+description: "\"Provides Create and optimize popups, modals, overlays, slide-ins, and banners to increase conversions without harming user experience or brand trust\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

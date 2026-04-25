@@ -1,6 +1,6 @@
 ---
 name: trading-data-backfill-strategy
-description: "Strategic data backfill for populating historical data in trading systems"
+description: "\"Provides Strategic data backfill for populating historical data in trading systems\""
 license: MIT
 compatibility: opencode
 metadata:

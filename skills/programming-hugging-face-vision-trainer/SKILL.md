@@ -1,7 +1,6 @@
 ---
 name: hugging-face-vision-trainer
-description: Train or fine-tune vision models on Hugging Face Jobs for detection,
-  classification, and SAM or SAM2 segmentation
+description: "Provides Train or fine-tune vision models on Hugging Face Jobs for detection, classification, and SAM or SAM2 segmentation"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face vision trainer, ai, ml, implementation guide, machine learning
+  triggers: hugging face vision trainer, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Hugging Face Vision Trainer

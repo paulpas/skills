@@ -1,7 +1,6 @@
 ---
 name: keyword-extractor
-description: "Extracts up to 50 highly relevant SEO keywords from text. Use when user wants to generate or extract keywords for given text"
-"
+description: "\"Extracts up to 50 highly relevant SEO keywords from text. Use when user wants to generate or extract keywords for given text\" \""
 license: MIT
 compatibility: opencode
 metadata:

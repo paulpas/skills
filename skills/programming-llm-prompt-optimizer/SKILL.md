@@ -1,7 +1,6 @@
 ---
 name: llm-prompt-optimizer
-description: Use when improving prompts for any LLM. Applies proven prompt engineering
-  techniques to boost output quality, reduce hallucinations, and cut token usa
+description: "Provides use when improving prompts for any llm. applies proven prompt engineering techniques to boost output quality, reduce hallucinations, and cut token usa"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: llm prompt optimizer, ai, ml, implementation guide, machine learning
+  triggers: llm prompt optimizer, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Llm Prompt Optimizer

@@ -1,10 +1,10 @@
 ---
 name: micro-saas-launcher
-description: "Expert in launching small, focused SaaS products fast - the indie hacker approach to building profitable software. Covers idea validation, MVP develop"
+description: "\"Provides Expert in launching small, focused SaaS products fast - the indie hacker approach to building profitable software. Covers idea validation, MVP develop\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

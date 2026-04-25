@@ -1,10 +1,10 @@
 ---
 name: trpc-fullstack
-description: "Build end-to-end type-safe APIs with tRPC — routers, procedures, middleware, subscriptions, and Next.js/React integration patterns"
+description: "\"Provides Build end-to-end type-safe APIs with tRPC \u2014 routers, procedures,\ \ middleware, subscriptions, and Next.js/React integration patterns\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

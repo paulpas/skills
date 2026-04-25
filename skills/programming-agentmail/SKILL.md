@@ -1,7 +1,6 @@
 ---
 name: agentmail
-description: Email infrastructure for AI agents. Create accounts, send/receive emails,
-  manage webhooks, and check karma balance via the AgentMail API
+description: "Provides Email infrastructure for AI agents. Create accounts, send/receive emails, manage webhooks, and check karma balance via the AgentMail API"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agentmail, ai, ml, implementation guide, machine learning
+  triggers: agentmail, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Agentmail

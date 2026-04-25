@@ -1,10 +1,10 @@
 ---
 name: ab-test-setup
-description: "Structured guide for setting up A/B tests with mandatory gates for hypothesis, metrics, and execution readiness"
+description: "\"Provides Structured guide for setting up A/B tests with mandatory gates for hypothesis, metrics, and execution readiness\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: earllm-build
-description: "Build, maintain, and extend the EarLLM One Android project — a Kotlin/Compose app that connects Bluetooth earbuds to an LLM via voice pipeline"
+description: "\"Provides Build, maintain, and extend the EarLLM One Android project\ \ \u2014 a Kotlin/Compose app that connects Bluetooth earbuds to an LLM via voice\ \ pipeline\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,15 +1,16 @@
 ---
 name: sankhya-dashboard-html-jsp-custom-best-pratices
-description: "This skill should be used when the user asks for patterns, best practices, creation, or fixing of Sankhya dashboards using HTML, JSP, Java, and SQL"
+description: "\"Provides this skill should be used when the user asks for patterns, best practices, creation, or fixing of sankhya dashboards using html, jsp, java, and sql\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: sankhya dashboard html jsp custom best pratices, code, implementation guide
+  triggers: sankhya dashboard html jsp custom best pratices, code, implementation
+    guide
 ---
 
 # Sankhya Dashboard Html Jsp Custom Best Pratices

@@ -1,10 +1,10 @@
 ---
 name: linux-shell-scripting
-description: "Provide production-ready shell script templates for common Linux system administration tasks including backups, monitoring, user management, log analy"
+description: "\"Provides Provide production-ready shell script templates for common Linux system administration tasks including backups, monitoring, user management, log analy\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

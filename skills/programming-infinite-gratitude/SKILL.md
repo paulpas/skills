@@ -1,7 +1,6 @@
 ---
 name: infinite-gratitude
-description: Multi-agent research skill for parallel research execution (10 agents,
-  battle-tested with real case studies)
+description: "Provides Multi-agent research skill for parallel research execution (10 agents, battle-tested with real case studies)"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: infinite gratitude, ai, ml, how do i test, machine learning
+  triggers: infinite gratitude, ai, ml, how do i test, machine learning, scikit-learn
 ---
+
 
 
 # Infinite Gratitude

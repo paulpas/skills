@@ -1,10 +1,10 @@
 ---
 name: code-simplifier
-description: "Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Use when asked to"
+description: "\"Provides Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Use when asked to\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

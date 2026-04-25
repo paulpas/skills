@@ -1,7 +1,6 @@
 ---
 name: agent-code-correctness-verifier
-description: "Verifies code correctness by analyzing syntax, semantics, and type consistency"
-  across all code artifacts in the codebase.
+description: "\"Verifies code correctness by analyzing syntax, semantics, and type consistency\" across all code artifacts in the codebase."
 license: MIT
 compatibility: opencode
 metadata:

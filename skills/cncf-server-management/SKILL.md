@@ -1,7 +1,6 @@
 ---
 name: server-management
-description: Server management principles and decision-making. Process management,
-  monitoring strategy, and scaling decisions. Teaches thinking, not commands
+description: "Provides Server management principles and decision-making. Process management, monitoring strategy, and scaling decisions. Teaches thinking, not commands"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: server management, reliability, implementation guide, linkerd
+  triggers: server management, reliability, implementation guide, linkerd, observability,
+    service mesh
 ---
+
 
 
 # Server Management

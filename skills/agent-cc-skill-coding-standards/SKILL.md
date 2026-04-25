@@ -1,10 +1,10 @@
 ---
 name: cc-skill-coding-standards
-description: "Universal coding standards, best practices, and patterns for TypeScript, JavaScript, React, and Node.js development"
+description: "\"Provides Universal coding standards, best practices, and patterns for TypeScript, JavaScript, React, and Node.js development\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

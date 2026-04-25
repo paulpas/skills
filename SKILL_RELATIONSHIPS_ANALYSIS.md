@@ -1,149 +1,162 @@
 # Skill Relationship Analysis Report
 
-**Generated:** 2026-04-25 08:06:47
-**Total Skills Analyzed:** 1582
+**Generated:** 2026-04-25 09:35:54
+**Total Skills Analyzed:** 1736
 
 ## 📊 Quick Statistics
 
-- **Total Skills:** 1582
-- **Orphaned Skills** (0-1 relationships): 1426 (90.1%)
-- **Reciprocal Failures:** 243
-- **Average Relations per Skill:** 0.30
+- **Total Skills:** 1736
+- **Orphaned Skills** (0-1 relationships): 1481 (85.3%)
+- **Reciprocal Failures:** 377
+- **Average Relations per Skill:** 0.47
 
 ## 🏢 Skills by Domain
 
 | Domain | Count | Avg Relations | Orphaned | Target |
 |--------|-------|---------------|----------|--------|
-| agent | 192 | 0.00 | 192 | 2+ |
-| cncf | 270 | 0.48 | 237 | 2+ |
-| coding | 298 | 0.70 | 237 | 2+ |
-| programming | 760 | 0.00 | 760 | 2+ |
-| trading | 62 | 2.27 | 0 | 2+ |
+| agent | 221 | 0.51 | 193 | 2+ |
+| cncf | 340 | 0.84 | 261 | 2+ |
+| coding | 304 | 0.71 | 241 | 2+ |
+| programming | 788 | 0.01 | 786 | 2+ |
+| trading | 83 | 2.31 | 0 | 2+ |
 
 ## ❌ Reciprocal Failures
 
-Found **243** relationships that are not reciprocated.
+Found **377** relationships that are not reciprocated.
 
-### cncf-azure-aks
+### agent-diff-quality-analyzer
 
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-autoscaling-advisor** (No reciprocal relationship)
+- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-automation
+### agent-dynamic-replanner
 
-- → **cncf-azure-key-vault** (Referenced skill does not exist)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-blob-storage
+### agent-error-trace-explainer
 
-- → **cncf-azure-key-vault** (Referenced skill does not exist)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-cdn
+### agent-failure-mode-analysis
 
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
-- → **cncf-cni** (Referenced skill does not exist)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-autoscaling-advisor** (No reciprocal relationship)
+- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-container-registry
+### agent-goal-to-milestones
 
-- → **cncf-azure-functions** (No reciprocal relationship)
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-cosmos-db
+### agent-infra-drift-detector
 
-- → **cncf-azure-key-vault** (Referenced skill does not exist)
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
 
-### cncf-azure-event-hubs
+### agent-k8s-debugger
 
-- → **cncf-azure-functions** (No reciprocal relationship)
-- → **cncf-azure-monitor** (No reciprocal relationship)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **agent-multi-skill-executor** (No reciprocal relationship)
 
-### cncf-azure-functions
+### agent-memory-usage-analyzer
 
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-autoscaling-advisor** (No reciprocal relationship)
+- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-keyvault-secrets
+### agent-multi-skill-executor
 
-- → **cncf-azure-functions** (No reciprocal relationship)
-- → **cncf-azure-key-vault** (Referenced skill does not exist)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
 
-### cncf-azure-load-balancer
+### agent-network-diagnostics
 
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
-- → **cncf-azure-virtual-networks** (No reciprocal relationship)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-autoscaling-advisor** (No reciprocal relationship)
+- → **agent-ci-cd-pipeline-analyzer** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
 
-### cncf-azure-resource-manager
+### agent-parallel-skill-runner
 
-- → **cncf-azure-aks** (No reciprocal relationship)
-- → **cncf-azure-sql-database** (No reciprocal relationship)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
-- → **cncf-azure-virtual-networks** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-dynamic-replanner** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **agent-multi-skill-executor** (No reciprocal relationship)
 
-### cncf-azure-scale-sets
+### agent-performance-profiler
 
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
-- → **cncf-azure-virtual-networks** (No reciprocal relationship)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
 
-### cncf-azure-service-bus
+### agent-query-optimizer
 
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
 
-### cncf-azure-sql-database
+### agent-regression-detector
 
-- → **cncf-azure-key-vault** (Referenced skill does not exist)
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-rbac** (Referenced skill does not exist)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **agent-hot-path-detector** (No reciprocal relationship)
 
-### cncf-azure-traffic-manager
+### agent-resource-optimizer
 
-- → **cncf-azure-aks** (No reciprocal relationship)
-- → **cncf-azure-load-balancer** (No reciprocal relationship)
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
 
-### cncf-azure-virtual-networks
+### agent-runtime-log-analyzer
 
-- → **cncf-azure-monitor** (No reciprocal relationship)
-- → **cncf-azure-virtual-machines** (Referenced skill does not exist)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **agent-k8s-debugger** (No reciprocal relationship)
 
-### cncf-gcp-autoscaling
+### agent-schema-inference-engine
 
-- → **cncf-gcp-cloud-load-balancing** (No reciprocal relationship)
-- → **cncf-gcp-cloud-monitoring** (No reciprocal relationship)
-- → **cncf-gcp-gke** (No reciprocal relationship)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **agent-multi-skill-executor** (No reciprocal relationship)
 
-### cncf-gcp-cloud-cdn
+### agent-self-critique-engine
 
-- → **cncf-gcp-cloud-load-balancing** (No reciprocal relationship)
-- → **cncf-gcp-cloud-monitoring** (No reciprocal relationship)
-- → **cncf-gcp-compute-engine** (No reciprocal relationship)
+- → **agent-add-new-skill** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-goal-to-milestones** (No reciprocal relationship)
+- → **agent-multi-skill-executor** (No reciprocal relationship)
 
-### cncf-gcp-cloud-dns
+### agent-stacktrace-root-cause
 
-- → **cncf-gcp-cloud-load-balancing** (No reciprocal relationship)
-- → **cncf-gcp-cloud-monitoring** (No reciprocal relationship)
-- → **cncf-gcp-compute-engine** (No reciprocal relationship)
-- → **cncf-gcp-vpc** (No reciprocal relationship)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
+- → **agent-k8s-debugger** (No reciprocal relationship)
 
-### cncf-gcp-cloud-functions
+### agent-task-decomposition-engine
 
-- → **cncf-gcp-cloud-pubsub** (Referenced skill does not exist)
-- → **cncf-gcp-cloud-tasks** (Referenced skill does not exist)
-- → **cncf-gcp-iam** (Referenced skill does not exist)
+- → **agent-code-correctness-verifier** (No reciprocal relationship)
+- → **agent-confidence-based-selector** (No reciprocal relationship)
+- → **agent-dynamic-replanner** (No reciprocal relationship)
+- → **agent-error-trace-explainer** (No reciprocal relationship)
 
 ## 🏜️ Orphaned Skills
 
-Found **1426** skills with 0-1 relationships.
+Found **1481** skills with 0-1 relationships.
 
 - **00-andruia-consultant** (agent): (none)
 - **007** (coding): (none)
@@ -176,7 +189,7 @@ Found **1426** skills with 0-1 relationships.
 - **agentflow** (programming): (none)
 - **agentfolio** (programming): (none)
 
-... and 1396 more
+... and 1451 more
 
 ## 💡 Suggested New Relationships
 
@@ -186,200 +199,200 @@ Based on domain and semantic similarity analysis, here are **50** suggested rela
    - Similarity Score: 0.91
    - Rationale: Same domain (programming) with semantic similarity
 
-2. **code-review-ai-ai-review** → **performance-testing-review-ai-review**
+2. **code-documentation-doc-generate** → **documentation-generation-doc-generate**
    - Similarity Score: 0.90
    - Rationale: Same domain (programming) with semantic similarity
 
-3. **code-documentation-doc-generate** → **documentation-generation-doc-generate**
+3. **error-debugging-error-trace** → **error-diagnostics-error-trace**
+   - Similarity Score: 0.90
+   - Rationale: Same domain (programming) with semantic similarity
+
+4. **hig-components-controls** → **hig-components-menus**
    - Similarity Score: 0.89
    - Rationale: Same domain (programming) with semantic similarity
 
-4. **error-debugging-error-trace** → **error-diagnostics-error-trace**
+5. **hig-components-controls** → **hig-inputs**
    - Similarity Score: 0.89
    - Rationale: Same domain (programming) with semantic similarity
 
-5. **hig-components-controls** → **hig-components-menus**
+6. **hig-components-controls** → **hig-technologies**
    - Similarity Score: 0.89
    - Rationale: Same domain (programming) with semantic similarity
 
-6. **hig-components-controls** → **hig-inputs**
+7. **hig-components-menus** → **hig-inputs**
    - Similarity Score: 0.89
    - Rationale: Same domain (programming) with semantic similarity
 
-7. **hig-components-controls** → **hig-technologies**
+8. **hig-components-menus** → **hig-technologies**
    - Similarity Score: 0.89
    - Rationale: Same domain (programming) with semantic similarity
 
-8. **hig-components-menus** → **hig-inputs**
+9. **hig-inputs** → **hig-technologies**
    - Similarity Score: 0.89
    - Rationale: Same domain (programming) with semantic similarity
 
-9. **hig-components-menus** → **hig-technologies**
-   - Similarity Score: 0.89
+10. **awareness-stage-mapper** → **brand-perception-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-10. **hig-inputs** → **hig-technologies**
-   - Similarity Score: 0.89
+11. **awareness-stage-mapper** → **copywriting-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-11. **awareness-stage-mapper** → **brand-perception-psychologist**
-   - Similarity Score: 0.86
+12. **awareness-stage-mapper** → **customer-psychographic-profiler**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-12. **awareness-stage-mapper** → **copywriting-psychologist**
-   - Similarity Score: 0.86
+13. **awareness-stage-mapper** → **emotional-arc-designer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-13. **awareness-stage-mapper** → **customer-psychographic-profiler**
-   - Similarity Score: 0.86
+14. **awareness-stage-mapper** → **headline-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-14. **awareness-stage-mapper** → **emotional-arc-designer**
-   - Similarity Score: 0.86
+15. **awareness-stage-mapper** → **identity-mirror**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-15. **awareness-stage-mapper** → **headline-psychologist**
-   - Similarity Score: 0.86
+16. **awareness-stage-mapper** → **jobs-to-be-done-analyst**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-16. **awareness-stage-mapper** → **identity-mirror**
-   - Similarity Score: 0.86
+17. **awareness-stage-mapper** → **loss-aversion-designer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-17. **awareness-stage-mapper** → **jobs-to-be-done-analyst**
-   - Similarity Score: 0.86
+18. **awareness-stage-mapper** → **objection-preemptor**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-18. **awareness-stage-mapper** → **loss-aversion-designer**
-   - Similarity Score: 0.86
+19. **awareness-stage-mapper** → **onboarding-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-19. **awareness-stage-mapper** → **objection-preemptor**
-   - Similarity Score: 0.86
+20. **awareness-stage-mapper** → **pitch-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-20. **awareness-stage-mapper** → **onboarding-psychologist**
-   - Similarity Score: 0.86
+21. **awareness-stage-mapper** → **price-psychology-strategist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-21. **awareness-stage-mapper** → **pitch-psychologist**
-   - Similarity Score: 0.86
+22. **awareness-stage-mapper** → **scarcity-urgency-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-22. **awareness-stage-mapper** → **price-psychology-strategist**
-   - Similarity Score: 0.86
+23. **awareness-stage-mapper** → **sequence-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-23. **awareness-stage-mapper** → **scarcity-urgency-psychologist**
-   - Similarity Score: 0.86
+24. **awareness-stage-mapper** → **social-proof-architect**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-24. **awareness-stage-mapper** → **sequence-psychologist**
-   - Similarity Score: 0.86
+25. **awareness-stage-mapper** → **subject-line-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-25. **awareness-stage-mapper** → **social-proof-architect**
-   - Similarity Score: 0.86
+26. **awareness-stage-mapper** → **trust-calibrator**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-26. **awareness-stage-mapper** → **subject-line-psychologist**
-   - Similarity Score: 0.86
+27. **awareness-stage-mapper** → **ux-persuasion-engineer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-27. **awareness-stage-mapper** → **trust-calibrator**
-   - Similarity Score: 0.86
+28. **awareness-stage-mapper** → **visual-emotion-engineer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-28. **awareness-stage-mapper** → **ux-persuasion-engineer**
-   - Similarity Score: 0.86
+29. **brand-perception-psychologist** → **copywriting-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-29. **awareness-stage-mapper** → **visual-emotion-engineer**
-   - Similarity Score: 0.86
+30. **brand-perception-psychologist** → **customer-psychographic-profiler**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-30. **brand-guidelines-anthropic** → **brand-guidelines-community**
-   - Similarity Score: 0.86
+31. **brand-perception-psychologist** → **emotional-arc-designer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-31. **brand-perception-psychologist** → **copywriting-psychologist**
-   - Similarity Score: 0.86
+32. **brand-perception-psychologist** → **headline-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-32. **brand-perception-psychologist** → **customer-psychographic-profiler**
-   - Similarity Score: 0.86
+33. **brand-perception-psychologist** → **identity-mirror**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-33. **brand-perception-psychologist** → **emotional-arc-designer**
-   - Similarity Score: 0.86
+34. **brand-perception-psychologist** → **jobs-to-be-done-analyst**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-34. **brand-perception-psychologist** → **headline-psychologist**
-   - Similarity Score: 0.86
+35. **brand-perception-psychologist** → **loss-aversion-designer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-35. **brand-perception-psychologist** → **identity-mirror**
-   - Similarity Score: 0.86
+36. **brand-perception-psychologist** → **objection-preemptor**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-36. **brand-perception-psychologist** → **jobs-to-be-done-analyst**
-   - Similarity Score: 0.86
+37. **brand-perception-psychologist** → **onboarding-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-37. **brand-perception-psychologist** → **loss-aversion-designer**
-   - Similarity Score: 0.86
+38. **brand-perception-psychologist** → **pitch-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-38. **brand-perception-psychologist** → **objection-preemptor**
-   - Similarity Score: 0.86
+39. **brand-perception-psychologist** → **price-psychology-strategist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-39. **brand-perception-psychologist** → **onboarding-psychologist**
-   - Similarity Score: 0.86
+40. **brand-perception-psychologist** → **scarcity-urgency-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-40. **brand-perception-psychologist** → **pitch-psychologist**
-   - Similarity Score: 0.86
+41. **brand-perception-psychologist** → **sequence-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-41. **brand-perception-psychologist** → **price-psychology-strategist**
-   - Similarity Score: 0.86
+42. **brand-perception-psychologist** → **social-proof-architect**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-42. **brand-perception-psychologist** → **scarcity-urgency-psychologist**
-   - Similarity Score: 0.86
+43. **brand-perception-psychologist** → **subject-line-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-43. **brand-perception-psychologist** → **sequence-psychologist**
-   - Similarity Score: 0.86
+44. **brand-perception-psychologist** → **trust-calibrator**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-44. **brand-perception-psychologist** → **social-proof-architect**
-   - Similarity Score: 0.86
+45. **brand-perception-psychologist** → **ux-persuasion-engineer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-45. **brand-perception-psychologist** → **subject-line-psychologist**
-   - Similarity Score: 0.86
+46. **brand-perception-psychologist** → **visual-emotion-engineer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-46. **brand-perception-psychologist** → **trust-calibrator**
-   - Similarity Score: 0.86
+47. **copywriting-psychologist** → **customer-psychographic-profiler**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-47. **brand-perception-psychologist** → **ux-persuasion-engineer**
-   - Similarity Score: 0.86
+48. **copywriting-psychologist** → **emotional-arc-designer**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-48. **brand-perception-psychologist** → **visual-emotion-engineer**
-   - Similarity Score: 0.86
+49. **copywriting-psychologist** → **headline-psychologist**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
-49. **copywriting-psychologist** → **customer-psychographic-profiler**
-   - Similarity Score: 0.86
-   - Rationale: Same domain (programming) with semantic similarity
-
-50. **copywriting-psychologist** → **emotional-arc-designer**
-   - Similarity Score: 0.86
+50. **copywriting-psychologist** → **identity-mirror**
+   - Similarity Score: 0.88
    - Rationale: Same domain (programming) with semantic similarity
 
 ## 🎯 Recommendations
@@ -387,8 +400,8 @@ Based on domain and semantic similarity analysis, here are **50** suggested rela
 1. **Reduce Orphaned Skills:** Target at least 2-3 relationships per skill for discovery
 2. **Fix Reciprocals:** All relationships should be bidirectional for consistency
 3. **Domain-Specific Goals:**
-   - **agent:** Increase from 0.0 to 2+ relations/skill
-   - **cncf:** Increase from 0.5 to 2+ relations/skill
+   - **agent:** Increase from 0.5 to 2+ relations/skill
+   - **cncf:** Increase from 0.8 to 2+ relations/skill
    - **coding:** Increase from 0.7 to 2+ relations/skill
    - **programming:** Increase from 0.0 to 2+ relations/skill
    - **trading:** Increase from 2.3 to 2+ relations/skill

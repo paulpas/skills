@@ -1,7 +1,6 @@
 ---
 name: smtp-penetration-testing
-description: Conduct comprehensive security assessments of SMTP (Simple Mail Transfer
-  Protocol) servers to identify vulnerabilities including open relays, user enu
+description: "Provides Conduct comprehensive security assessments of SMTP (Simple Mail Transfer Protocol) servers to identify vulnerabilities including open relays, user enu"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: smtp penetration testing, security, how do i secure, security auditing,
-    unit tests, vulnerability scanning
+    unit tests, vulnerability scanning, testing
 ---
+
 
 
 # Smtp Penetration Testing

@@ -1,7 +1,6 @@
 ---
 name: react-ui-patterns
-description: Modern React UI patterns for loading states, error handling, and data
-  fetching. Use when building UI components, handling async data, or managing UI s
+description: "Provides Modern React UI patterns for loading states, error handling, and data fetching. Use when building UI components, handling async data, or managing UI s"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: react ui patterns, web, development, data processing, spark
+  triggers: react ui patterns, web, development, data processing, spark, big data,
+    distributed processing
 ---
+
 
 
 # React Ui Patterns

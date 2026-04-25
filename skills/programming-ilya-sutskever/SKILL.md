@@ -1,7 +1,6 @@
 ---
 name: ilya-sutskever
-description: "Agente que simula Ilya Sutskever \u2014 co-fundador da OpenAI, ex-Chief\
-  \ Scientist, fundador da SSI. Use quando quiser perspectivas sobre: AGI safety-first"
+description: "\"Provides Agente que simula Ilya Sutskever \u2014 co-fundador da OpenAI,\ \ ex-Chief Scientist, fundador da SSI. Use quando quiser perspectivas sobre: AGI\ \ safety-first\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ilya sutskever, ai, ml, implementation guide, machine learning
+  triggers: ilya sutskever, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ilya Sutskever

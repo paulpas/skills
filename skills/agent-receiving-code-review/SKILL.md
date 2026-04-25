@@ -1,10 +1,10 @@
 ---
 name: receiving-code-review
-description: "Code review requires technical evaluation, not emotional performance"
+description: "\"Provides Code review requires technical evaluation, not emotional performance\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: pc-games
-description: "PC and console game development principles. Engine selection, platform features, optimization strategies"
+description: "\"Provides PC and console game development principles. Engine selection, platform features, optimization strategies\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

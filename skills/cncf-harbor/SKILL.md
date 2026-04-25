@@ -1,6 +1,6 @@
 ---
 name: cncf-harbor
-description: Harbor in Cloud-Native Engineering - container registry
+description: "\"Configures harbor in cloud-native engineering - container registry for cloud-native deployment and infrastructure management.\""
 license: MIT
 compatibility: opencode
 metadata:

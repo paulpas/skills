@@ -1,6 +1,6 @@
 ---
 name: context-management-context-save
-description: Use when working with context management context save
+description: "Provides use when working with context management context save functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: context management context save, ai, ml, implementation guide, machine
-    learning
+    learning, scikit-learn
 ---
+
 
 
 # Context Management Context Save

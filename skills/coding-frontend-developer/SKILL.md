@@ -1,10 +1,10 @@
 ---
 name: frontend-developer
-description: "Build React components, implement responsive layouts, and handle client-side state management. Masters React 19, Next.js 15, and modern frontend archi"
+description: "\"Provides Build React components, implement responsive layouts, and handle client-side state management. Masters React 19, Next.js 15, and modern frontend archi\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

@@ -1,15 +1,16 @@
 ---
 name: coding-ds-instrumental-variables
-description: "Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data"
+description: "\"Provides Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: instrumental variables, IV, 2SLS, endogeneity, causal effect, how do i handle endogeneity
+  triggers: instrumental variables, IV, 2SLS, endogeneity, causal effect, how do i
+    handle endogeneity
   related-skills: coding-ds-causal-inference, coding-ds-linear-regression, coding-ds-observational-studies
 ---
 

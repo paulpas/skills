@@ -1,10 +1,10 @@
 ---
 name: core-components
-description: "Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library"
+description: "\"Provides Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

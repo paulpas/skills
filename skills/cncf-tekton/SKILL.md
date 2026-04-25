@@ -1,6 +1,6 @@
 ---
 name: cncf-tekton
-description: "Tekton in Cloud-Native Engineering - A cloud-native Pipeline resource"
+description: "\"Provides Tekton in Cloud-Native Engineering - A cloud-native Pipeline resource\""
 license: MIT
 compatibility: opencode
 metadata:

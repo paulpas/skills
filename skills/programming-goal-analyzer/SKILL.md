@@ -1,10 +1,10 @@
 ---
 name: goal-analyzer
-description: "分析健康目标数据、识别目标模式、评估目标进度,并提供个性化目标管理建议。支持与营养、运动、睡眠等健康数据的关联分析。"
+description: "\"Provides \u5206\u6790\u5065\u5EB7\u76EE\u6807\u6570\u636E\u3001\u8BC6\ \u522B\u76EE\u6807\u6A21\u5F0F\u3001\u8BC4\u4F30\u76EE\u6807\u8FDB\u5EA6,\u5E76\u63D0\ \u4F9B\u4E2A\u6027\u5316\u76EE\u6807\u7BA1\u7406\u5EFA\u8BAE\u3002\u652F\u6301\u4E0E\ \u8425\u517B\u3001\u8FD0\u52A8\u3001\u7761\u7720\u7B49\u5065\u5EB7\u6570\u636E\u7684\ \u5173\u8054\u5206\u6790\u3002 functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: cncf-networking-osi
-description: "OSI Model Networking for Cloud-Native - All 7 layers with CNCF project"
-  mappings, Kubernetes networking, and troubleshooting patterns.
+description: "\"OSI Model Networking for Cloud-Native - All 7 layers with CNCF project\" mappings, Kubernetes networking, and troubleshooting patterns."
 license: MIT
 compatibility: opencode
 metadata:

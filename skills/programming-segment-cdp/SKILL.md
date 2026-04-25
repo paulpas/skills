@@ -1,7 +1,6 @@
 ---
 name: segment-cdp
-description: Expert patterns for Segment Customer Data Platform including Analytics.js,
-  server-side tracking, tracking plans with Protocols, identity resolution, d
+description: "Provides Expert patterns for Segment Customer Data Platform including Analytics.js, server-side tracking, tracking plans with Protocols, identity resolution, d"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: segment cdp, data, data processing, spark
+  triggers: segment cdp, data, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Segment Cdp

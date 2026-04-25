@@ -1,16 +1,18 @@
 ---
 name: coding-ds-categorical-encoding
-description: "Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies"
+description: "\"Provides Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: categorical encoding, one-hot encoding, target encoding, ordinal encoding, categorical variables
-  related-skills: coding-ds-feature-engineering, coding-ds-feature-scaling-normalization, coding-ds-neural-networks
+  triggers: categorical encoding, one-hot encoding, target encoding, ordinal encoding,
+    categorical variables
+  related-skills: coding-ds-feature-engineering, coding-ds-feature-scaling-normalization,
+    coding-ds-neural-networks
 ---
 
 # Categorical Encoding

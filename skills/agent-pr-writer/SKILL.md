@@ -1,10 +1,10 @@
 ---
 name: pr-writer
-description: "Create pull requests following Sentry's engineering practices"
+description: "\"Provides Create pull requests following Sentry's engineering practices\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: orchestration
   scope: implementation

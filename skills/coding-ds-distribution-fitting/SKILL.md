@@ -1,15 +1,16 @@
 ---
 name: coding-ds-distribution-fitting
-description: "Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods"
+description: "\"Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: distribution fitting, goodness-of-fit, fitting distributions, distribution selection, how do i fit
+  triggers: distribution fitting, goodness-of-fit, fitting distributions, distribution
+    selection, how do i fit
   related-skills: coding-ds-kernel-density, coding-ds-maximum-likelihood, coding-ds-monte-carlo
 ---
 

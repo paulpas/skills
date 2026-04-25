@@ -1,7 +1,6 @@
 ---
 name: similarity-search-patterns
-description: Implement efficient similarity search with vector databases. Use when
-  building semantic search, implementing nearest neighbor queries, or optimizing r
+description: "Provides Implement efficient similarity search with vector databases. Use when building semantic search, implementing nearest neighbor queries, or optimizing r"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: similarity search patterns, data, ai, data processing, machine learning,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Similarity Search Patterns

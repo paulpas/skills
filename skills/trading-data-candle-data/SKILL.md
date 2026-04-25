@@ -1,7 +1,6 @@
 ---
 name: trading-data-candle-data
-description: "OHLCV candle data processing, timeframe management, and validation for"
-  trading algorithms
+description: "\"OHLCV candle data processing, timeframe management, and validation for\" trading algorithms"
 license: MIT
 compatibility: opencode
 metadata:

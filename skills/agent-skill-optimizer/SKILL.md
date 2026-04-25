@@ -1,7 +1,6 @@
 ---
 name: skill-optimizer
-description: Diagnose and optimize Agent Skills (SKILL.md) with real session data
-  and research-backed static analysis. Works with Claude Code, Codex, and any Agent
+description: "Provides Diagnose and optimize Agent Skills (SKILL.md) with real session data and research-backed static analysis. Works with Claude Code, Codex, and any Agent"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: skill optimizer, meta, data processing, spark
+  triggers: skill optimizer, meta, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Skill Optimizer

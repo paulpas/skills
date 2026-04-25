@@ -1,10 +1,10 @@
 ---
 name: search-specialist
-description: "Expert web researcher using advanced search techniques and"
+description: "\"Provides expert web researcher using advanced search techniques and functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

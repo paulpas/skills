@@ -1,7 +1,6 @@
 ---
 name: exa-search
-description: Semantic search, similar content discovery, and structured research using
-  Exa API. Use when you need semantic/embeddings-based search, finding similar
+description: "Provides Semantic search, similar content discovery, and structured research using Exa API. Use when you need semantic/embeddings-based search, finding similar"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: exa search, data, ai, data processing, machine learning, spark
+  triggers: exa search, data, ai, data processing, machine learning, spark, big data,
+    distributed processing
 ---
+
 
 
 # Exa Search

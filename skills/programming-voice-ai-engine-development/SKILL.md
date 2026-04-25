@@ -1,7 +1,6 @@
 ---
 name: voice-ai-engine-development
-description: Build real-time conversational AI voice engines using async worker pipelines,
-  streaming transcription, LLM agents, and TTS synthesis with interrupt ha
+description: "Provides Build real-time conversational AI voice engines using async worker pipelines, streaming transcription, LLM agents, and TTS synthesis with interrupt ha"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: voice ai engine development, ai, ml, implementation guide, machine learning
+  triggers: voice ai engine development, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Voice Ai Engine Development

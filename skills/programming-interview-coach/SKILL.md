@@ -1,10 +1,10 @@
 ---
 name: interview-coach
-description: "Full job search coaching system — JD decoding, resume, storybank, mock interviews, transcript analysis, comp negotiation. 23 commands, persistent stat"
+description: "\"Provides Full job search coaching system \u2014 JD decoding, resume,\ \ storybank, mock interviews, transcript analysis, comp negotiation. 23 commands,\ \ persistent stat\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

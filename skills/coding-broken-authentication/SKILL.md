@@ -1,7 +1,6 @@
 ---
 name: broken-authentication
-description: Identify and exploit authentication and session management vulnerabilities
-  in web applications. Broken authentication consistently ranks in the OWASP
+description: "\"Provides Identify and exploit authentication and session management vulnerabilities in web applications. Broken authentication consistently ranks in the OWASP\""
 license: MIT
 compatibility: opencode
 metadata:

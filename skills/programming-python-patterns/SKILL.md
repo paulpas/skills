@@ -1,10 +1,10 @@
 ---
 name: python-patterns
-description: "Python development principles and decision-making. Framework selection, async patterns, type hints, project structure. Teaches thinking, not copying"
+description: "\"Provides Python development principles and decision-making. Framework selection, async patterns, type hints, project structure. Teaches thinking, not copying\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

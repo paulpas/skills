@@ -1,10 +1,10 @@
 ---
 name: axiom
-description: "First-principles assumption auditor. Classifies each hidden assumption (fact / convention / belief / interest-driven), ranks by fragility × impact, an"
+description: "\"Provides First-principles assumption auditor. Classifies each hidden\ \ assumption (fact / convention / belief / interest-driven), ranks by fragility\ \ \xD7 impact, an\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

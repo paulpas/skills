@@ -1,7 +1,6 @@
 ---
 name: performance-optimizer
-description: Identifies and fixes performance bottlenecks in code, databases, and
-  APIs. Measures before and after to prove improvements
+description: "Provides Identifies and fixes performance bottlenecks in code, databases, and APIs. Measures before and after to prove improvements"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: performance optimizer, development, data processing, optimization, spark
+  triggers: performance optimizer, development, data processing, optimization, spark,
+    big data, distributed processing, performance
 ---
+
 
 
 # Performance Optimizer

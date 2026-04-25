@@ -1,6 +1,6 @@
 ---
 name: coding-ds-bayesian-inference
-description: "Applies Bayesian methods for prior selection, posterior estimation, and probabilistic inference in machine learning models"
+description: "\"Applies Bayesian methods for prior selection, posterior estimation, and probabilistic inference in machine learning models\""
 license: MIT
 compatibility: opencode
 metadata:

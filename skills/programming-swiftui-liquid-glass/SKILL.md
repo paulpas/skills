@@ -1,10 +1,10 @@
 ---
 name: swiftui-liquid-glass
-description: "Implement or review SwiftUI Liquid Glass APIs with correct fallbacks and modifier order"
+description: "\"Provides Implement or review SwiftUI Liquid Glass APIs with correct fallbacks and modifier order\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

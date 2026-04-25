@@ -1,7 +1,6 @@
 ---
 name: html-injection-testing
-description: Identify and exploit HTML injection vulnerabilities that allow attackers
-  to inject malicious HTML content into web applications. This vulnerability en
+description: "Provides Identify and exploit HTML injection vulnerabilities that allow attackers to inject malicious HTML content into web applications. This vulnerability en"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: html injection testing, security, how do i secure, security auditing,
-    unit tests, vulnerability scanning
+    unit tests, vulnerability scanning, testing
 ---
+
 
 
 # Html Injection Testing

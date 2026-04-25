@@ -1,7 +1,6 @@
 ---
 name: test-automator
-description: Master AI-powered test automation with modern frameworks, self-healing
-  tests, and comprehensive quality engineering. Build scalable testing strategies
+description: "Provides Master AI-powered test automation with modern frameworks, self-healing tests, and comprehensive quality engineering. Build scalable testing strategies"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: review
   scope: implementation
   output-format: code
-  triggers: test automator, test, automation, how do i test, jenkins
+  triggers: test automator, test, automation, how do i test, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Test Automator

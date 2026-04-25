@@ -1,7 +1,6 @@
 ---
 name: ai-engineering-toolkit
-description: '6 production-ready AI engineering workflows: prompt evaluation (8-dimension
-  scoring), context budget planning, RAG pipeline design, agent security aud'
+description: "'Provides 6 production-ready AI engineering workflows: prompt evaluation (8-dimension scoring), context budget planning, RAG pipeline design, agent security aud'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai engineering toolkit, data, ai, how do i secure, machine learning
+  triggers: ai engineering toolkit, data, ai, how do i secure, machine learning, ml,
+    scikit-learn
 ---
+
 
 
 # Ai Engineering Toolkit

@@ -1,7 +1,6 @@
 ---
 name: cncf-aws-auto-scaling
-description: "Configures automatic scaling of compute resources (EC2, RDS, DynamoDB"
-  Lambda) based on demand metrics with scaling policies and lifecycle hooks.
+description: "\"Configures automatic scaling of compute resources (EC2, RDS, DynamoDB\" Lambda) based on demand metrics with scaling policies and lifecycle hooks."
 license: MIT
 compatibility: opencode
 metadata:

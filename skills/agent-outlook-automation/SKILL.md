@@ -1,7 +1,6 @@
 ---
 name: outlook-automation
-description: 'Automate Outlook tasks via Rube MCP (Composio): emails, calendar, contacts,
-  folders, attachments. Always search tools first for current schemas'
+description: "'Provides Automate Outlook tasks via Rube MCP (Composio): emails, calendar, contacts, folders, attachments. Always search tools first for current schemas'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: outlook automation, automation, how do i automate, jenkins
+  triggers: outlook automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Outlook Automation

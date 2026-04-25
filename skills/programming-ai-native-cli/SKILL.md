@@ -1,7 +1,6 @@
 ---
 name: ai-native-cli
-description: Design spec with 98 rules for building CLI tools that AI agents can safely
-  use. Covers structured JSON output, error handling, input contracts, safety
+description: "Provides Design spec with 98 rules for building CLI tools that AI agents can safely use. Covers structured JSON output, error handling, input contracts, safety"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai native cli, ai, ml, implementation guide, machine learning
+  triggers: ai native cli, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ai Native Cli

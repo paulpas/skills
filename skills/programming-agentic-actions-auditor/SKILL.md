@@ -1,7 +1,6 @@
 ---
 name: agentic-actions-auditor
-description: Audits GitHub Actions workflows for security vulnerabilities in AI agent
-  integrations  including Claude Code Action,  Gemini CLI, OpenAI Codex, and Gi
+description: "Audits GitHub Actions workflows for security vulnerabilities in AI agent integrations  including Claude Code Action,  Gemini CLI, OpenAI Codex, and Gi"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agentic actions auditor, ai, ml, how do i secure, machine learning
+  triggers: agentic actions auditor, ai, ml, how do i secure, machine learning, scikit-learn
 ---
+
 
 
 # Agentic Actions Auditor

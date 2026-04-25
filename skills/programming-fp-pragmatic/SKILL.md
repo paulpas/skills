@@ -1,10 +1,10 @@
 ---
 name: fp-pragmatic
-description: "A practical, jargon-free guide to functional programming - the 80/20 approach that gets results without the academic overhead"
+description: "\"Provides a practical, jargon-free guide to functional programming - the 80/20 approach that gets results without the academic overhead\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

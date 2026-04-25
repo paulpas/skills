@@ -1,6 +1,6 @@
 ---
 name: trading-technical-price-action-patterns
-description: "Analysis of candlestick and chart patterns for price movement prediction"
+description: "\"Provides Analysis of candlestick and chart patterns for price movement prediction\""
 license: MIT
 compatibility: opencode
 metadata:

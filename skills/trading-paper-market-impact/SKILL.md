@@ -1,6 +1,6 @@
 ---
 name: trading-paper-market-impact
-description: "Market Impact Modeling and Order Book Simulation"
+description: "\"Implements market impact modeling and order book simulation for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

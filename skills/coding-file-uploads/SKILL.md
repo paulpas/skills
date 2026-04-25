@@ -1,7 +1,6 @@
 ---
 name: file-uploads
-description: Expert at handling file uploads and cloud storage. Covers S3, Cloudflare
-  R2, presigned URLs, multipart uploads, and image optimization. Knows how to h
+description: "\"Provides Expert at handling file uploads and cloud storage. Covers S3, Cloudflare R2, presigned URLs, multipart uploads, and image optimization. Knows how to h\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: cncf-lima
-description: "Lima in Container Runtime - cloud native architecture, patterns, pitfalls"
-  and best practices
+description: "\"Lima in Container Runtime - cloud native architecture, patterns, pitfalls\" and best practices"
 license: MIT
 compatibility: opencode
 metadata:

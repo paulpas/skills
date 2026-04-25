@@ -1,7 +1,6 @@
 ---
 name: agent-network-diagnostics
-description: "Diagnoses network connectivity issues, identifies bottlenecks, and provides"
-  actionable resolution strategies for distributed systems.
+description: "\"Diagnoses network connectivity issues, identifies bottlenecks, and provides\" actionable resolution strategies for distributed systems."
 license: MIT
 compatibility: opencode
 metadata:

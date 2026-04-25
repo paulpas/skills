@@ -1,15 +1,16 @@
 ---
 name: coding-ds-data-ingestion
-description: "Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow"
+description: "\"Provides Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ETL pipeline, data ingestion, streaming data, batch processing, pipeline, how do i ingest data
+  triggers: ETL pipeline, data ingestion, streaming data, batch processing, pipeline,
+    how do i ingest data
   related-skills: coding-ds-data-collection, coding-ds-data-quality, coding-ds-data-versioning
 ---
 

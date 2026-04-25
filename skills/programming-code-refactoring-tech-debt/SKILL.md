@@ -1,7 +1,6 @@
 ---
 name: code-refactoring-tech-debt
-description: You are a technical debt expert specializing in identifying, quantifying,
-  and prioritizing technical debt in software projects. Analyze the codebase t
+description: "Provides You are a technical debt expert specializing in identifying, quantifying, and prioritizing technical debt in software projects. Analyze the codebase t"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: code refactoring tech debt, development, implementation guide, code improvement
+  triggers: code refactoring tech debt, development, implementation guide, code improvement,
+    refactoring
 ---
+
 
 
 # Code Refactoring Tech Debt

@@ -1,6 +1,6 @@
 ---
 name: trading-risk-stress-testing
-description: "Stress test scenarios and portfolio resilience analysis"
+description: "\"Implements stress test scenarios and portfolio resilience analysis for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

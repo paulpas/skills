@@ -1,10 +1,10 @@
 ---
 name: skill-developer
-description: "Comprehensive guide for creating and managing skills in Claude Code with auto-activation system, following Anthropic's official best practices includi"
+description: "\"Provides Comprehensive guide for creating and managing skills in Claude Code with auto-activation system, following Anthropic's official best practices includi\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

@@ -1,7 +1,6 @@
 ---
 name: hugging-face-jobs
-description: Run workloads on Hugging Face Jobs with managed CPUs, GPUs, TPUs, secrets,
-  and Hub persistence
+description: "Provides Run workloads on Hugging Face Jobs with managed CPUs, GPUs, TPUs, secrets, and Hub persistence"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face jobs, ai, ml, implementation guide, machine learning
+  triggers: hugging face jobs, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Hugging Face Jobs

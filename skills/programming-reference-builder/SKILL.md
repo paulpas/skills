@@ -1,6 +1,6 @@
 ---
 name: reference-builder
-description: "Creates exhaustive technical references and API documentation. Generates comprehensive parameter listings, configuration guides, and searchable refere"
+description: "\"Creates exhaustive technical references and API documentation. Generates comprehensive parameter listings, configuration guides, and searchable refere\""
 license: MIT
 compatibility: opencode
 metadata:

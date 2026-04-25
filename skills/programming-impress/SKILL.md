@@ -1,10 +1,10 @@
 ---
 name: impress
-description: "Presentation creation, format conversion (ODP/PPTX/PDF), slide automation with LibreOffice Impress"
+description: "\"Provides Presentation creation, format conversion (ODP/PPTX/PDF), slide automation with LibreOffice Impress\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

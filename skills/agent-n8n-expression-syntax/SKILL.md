@@ -1,7 +1,6 @@
 ---
 name: n8n-expression-syntax
-description: Validate n8n expression syntax and fix common errors. Use when writing
-  n8n expressions, using {{}} syntax, accessing $json/$node variables, troublesho
+description: "Provides Validate n8n expression syntax and fix common errors. Use when writing n8n expressions, using {{}} syntax, accessing $json/$node variables, troublesho"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: n8n expression syntax, automation, how do i automate, jenkins
+  triggers: n8n expression syntax, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # N8N Expression Syntax

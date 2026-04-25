@@ -1,8 +1,6 @@
 ---
 name: notebooklm
-description: Interact with Google NotebookLM to query documentation with Gemini's
-  source-grounded answers. Each question opens a fresh browser session, retrieves
-  t
+description: "Provides Interact with Google NotebookLM to query documentation with Gemini's source-grounded answers. Each question opens a fresh browser session, retrieves t"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: notebooklm, data, ai, data processing, machine learning, spark
+  triggers: notebooklm, data, ai, data processing, machine learning, spark, big data,
+    distributed processing
 ---
+
 
 
 # Notebooklm

@@ -1,7 +1,6 @@
 ---
 name: aws-security-audit
-description: Comprehensive AWS security posture assessment using AWS CLI and security
-  best practices
+description: "\"Provides Comprehensive AWS security posture assessment using AWS CLI and security best practices\""
 license: MIT
 compatibility: opencode
 metadata:

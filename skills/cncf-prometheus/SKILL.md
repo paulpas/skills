@@ -1,7 +1,6 @@
 ---
 name: cncf-prometheus
-description: "Prometheus in Cloud-Native Engineering - The Prometheus monitoring system"
-  and time series database.
+description: "\"Prometheus in Cloud-Native Engineering - The Prometheus monitoring system\" and time series database."
 license: MIT
 compatibility: opencode
 metadata:

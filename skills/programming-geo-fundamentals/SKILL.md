@@ -1,10 +1,10 @@
 ---
 name: geo-fundamentals
-description: "Generative Engine Optimization for AI search engines (ChatGPT, Claude, Perplexity)"
+description: "\"Provides Generative Engine Optimization for AI search engines (ChatGPT, Claude, Perplexity)\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

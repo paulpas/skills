@@ -1,7 +1,6 @@
 ---
 name: airtable-automation
-description: 'Automate Airtable tasks via Rube MCP (Composio): records, bases, tables,
-  fields, views. Always search tools first for current schemas'
+description: "'Provides Automate Airtable tasks via Rube MCP (Composio): records, bases, tables, fields, views. Always search tools first for current schemas'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: airtable automation, automation, how do i automate, jenkins
+  triggers: airtable automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Airtable Automation

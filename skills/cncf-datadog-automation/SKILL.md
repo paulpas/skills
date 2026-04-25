@@ -1,7 +1,6 @@
 ---
 name: datadog-automation
-description: 'Automate Datadog tasks via Rube MCP (Composio): query metrics, search
-  logs, manage monitors/dashboards, create events and downtimes. Always search too'
+description: "'Provides Automate Datadog tasks via Rube MCP (Composio): query metrics, search logs, manage monitors/dashboards, create events and downtimes. Always search too'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: datadog automation, reliability, how do i automate, apm, linkerd
+  triggers: datadog automation, reliability, how do i automate, apm, linkerd, datadog,
+    observability, service mesh
 ---
+
 
 
 # Datadog Automation

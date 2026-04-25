@@ -1,10 +1,10 @@
 ---
 name: game-development
-description: "Game development orchestrator. Routes to platform-specific skills based on project needs"
+description: "\"Provides Game development orchestrator. Routes to platform-specific skills based on project needs\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

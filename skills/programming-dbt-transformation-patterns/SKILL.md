@@ -1,10 +1,10 @@
 ---
 name: dbt-transformation-patterns
-description: "Production-ready patterns for dbt (data build tool) including model organization, testing strategies, documentation, and incremental processing"
+description: "\"Provides Production-ready patterns for dbt (data build tool) including model organization, testing strategies, documentation, and incremental processing\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

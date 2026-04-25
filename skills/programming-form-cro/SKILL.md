@@ -1,10 +1,10 @@
 ---
 name: form-cro
-description: "Optimize any form that is NOT signup or account registration — including lead capture, contact, demo request, application, survey, quote, and checkout"
+description: "\"Provides Optimize any form that is NOT signup or account registration\ \ \u2014 including lead capture, contact, demo request, application, survey, quote,\ \ and checkout\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

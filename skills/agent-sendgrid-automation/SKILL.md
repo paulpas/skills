@@ -1,7 +1,6 @@
 ---
 name: sendgrid-automation
-description: Automate SendGrid email delivery workflows including marketing campaigns
-  (Single Sends), contact and list management, sender identity setup, and email
+description: "Provides Automate SendGrid email delivery workflows including marketing campaigns (Single Sends), contact and list management, sender identity setup, and email"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: sendgrid automation, automation, how do i automate, jenkins
+  triggers: sendgrid automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Sendgrid Automation

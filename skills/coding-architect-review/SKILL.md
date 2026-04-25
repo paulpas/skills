@@ -1,10 +1,10 @@
 ---
 name: architect-review
-description: "Master software architect specializing in modern architecture"
+description: "\"Provides Master software architect specializing in modern architecture\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

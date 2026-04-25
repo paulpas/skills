@@ -1,7 +1,6 @@
 ---
 name: ai-seo
-description: Optimize content for AI search and LLM citations across AI Overviews,
-  ChatGPT, Perplexity, Claude, Gemini, and similar systems. Use when improving AI
+description: "Provides Optimize content for AI search and LLM citations across AI Overviews, ChatGPT, Perplexity, Claude, Gemini, and similar systems. Use when improving AI"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai seo, ai, ml, implementation guide, machine learning
+  triggers: ai seo, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ai Seo

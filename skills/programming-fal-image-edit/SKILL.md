@@ -1,6 +1,6 @@
 ---
 name: fal-image-edit
-description: AI-powered image editing with style transfer and object removal
+description: "Provides AI-powered image editing with style transfer and object removal"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: fal image edit, ai, ml, implementation guide, machine learning
+  triggers: fal image edit, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Fal Image Edit

@@ -1,6 +1,6 @@
 ---
 name: trading-backtest-sharpe-ratio
-description: "Sharpe Ratio Calculation and Risk-Adjusted Performance Metrics"
+description: "\"Provides Sharpe Ratio Calculation and Risk-Adjusted Performance Metrics\""
 license: MIT
 compatibility: opencode
 metadata:

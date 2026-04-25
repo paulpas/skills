@@ -1,10 +1,10 @@
 ---
 name: web-games
-description: "Web browser game development principles. Framework selection, WebGPU, optimization, PWA"
+description: "\"Provides Web browser game development principles. Framework selection, WebGPU, optimization, PWA\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

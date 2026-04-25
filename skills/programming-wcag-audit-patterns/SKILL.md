@@ -1,10 +1,10 @@
 ---
 name: wcag-audit-patterns
-description: "Comprehensive guide to auditing web content against WCAG 2.2 guidelines with actionable remediation strategies"
+description: "\"Provides Comprehensive guide to auditing web content against WCAG 2.2 guidelines with actionable remediation strategies\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

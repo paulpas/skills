@@ -1,6 +1,6 @@
 ---
 name: n8n-validation-expert
-description: Expert guide for interpreting and fixing n8n validation errors
+description: "Provides Expert guide for interpreting and fixing n8n validation errors"
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: n8n validation expert, automation, how do i automate, jenkins
+  triggers: n8n validation expert, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # N8N Validation Expert

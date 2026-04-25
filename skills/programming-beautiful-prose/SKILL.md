@@ -1,10 +1,10 @@
 ---
 name: beautiful-prose
-description: "A hard-edged writing style contract for timeless, forceful English prose without modern AI tics. Use when users ask for prose or rewrites that must be"
+description: "\"Provides a hard-edged writing style contract for timeless, forceful english prose without modern ai tics. use when users ask for prose or rewrites that must be\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

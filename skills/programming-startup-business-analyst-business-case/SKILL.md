@@ -1,8 +1,6 @@
 ---
 name: startup-business-analyst-business-case
-description: "Generate comprehensive investor-ready business case document with"
-market, solution, financials, and strategy
-"
+description: "\"Generate comprehensive investor-ready business case document with\" market, solution, financials, and strategy \""
 license: MIT
 compatibility: opencode
 metadata:

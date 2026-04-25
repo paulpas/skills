@@ -1,7 +1,6 @@
 ---
 name: context-driven-development
-description: Guide for implementing and maintaining context as a managed artifact
-  alongside code, enabling consistent AI interactions and team alignment through st
+description: "Provides Guide for implementing and maintaining context as a managed artifact alongside code, enabling consistent AI interactions and team alignment through st"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: context driven development, ai, ml, implementation guide, machine learning
+  triggers: context driven development, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Context Driven Development

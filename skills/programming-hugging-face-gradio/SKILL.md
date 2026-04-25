@@ -1,7 +1,6 @@
 ---
 name: hugging-face-gradio
-description: Build or edit Gradio apps, layouts, components, and chat interfaces in
-  Python
+description: "Provides Build or edit Gradio apps, layouts, components, and chat interfaces in Python"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face gradio, ai, ml, implementation guide, machine learning
+  triggers: hugging face gradio, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Hugging Face Gradio

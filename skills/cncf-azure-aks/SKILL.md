@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-aks
-description: "Managed Kubernetes cluster with automatic scaling and Azure service integration"
+description: "\"Provides Managed Kubernetes cluster with automatic scaling and Azure service integration\""
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,7 +10,8 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: aks, kubernetes, container orchestration, k8s, managed kubernetes
-  related-skills: cncf-azure-container-registry, cncf-azure-monitor, cncf-azure-rbac, cncf-azure-virtual-networks
+  related-skills: cncf-azure-container-registry, cncf-azure-monitor, cncf-azure-resource-manager,
+    cncf-azure-traffic-manager
 ---
 
 

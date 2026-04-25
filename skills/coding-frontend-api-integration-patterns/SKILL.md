@@ -1,10 +1,10 @@
 ---
 name: frontend-api-integration-patterns
-description: "Production-ready patterns for integrating frontend applications with backend APIs, including race condition handling, request cancellation, retry stra"
+description: "\"Provides Production-ready patterns for integrating frontend applications with backend APIs, including race condition handling, request cancellation, retry stra\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

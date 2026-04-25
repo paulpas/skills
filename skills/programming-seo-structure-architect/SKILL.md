@@ -1,6 +1,6 @@
 ---
 name: seo-structure-architect
-description: "Analyzes and optimizes content structure including header hierarchy, suggests schema markup, and internal linking opportunities. Creates search-friend"
+description: "\"Analyzes and optimizes content structure including header hierarchy, suggests schema markup, and internal linking opportunities. Creates search-friend\""
 license: MIT
 compatibility: opencode
 metadata:

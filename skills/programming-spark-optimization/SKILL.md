@@ -1,7 +1,6 @@
 ---
 name: spark-optimization
-description: Optimize Apache Spark jobs with partitioning, caching, shuffle optimization,
-  and memory tuning. Use when improving Spark performance, debugging slow j
+description: "Provides Optimize Apache Spark jobs with partitioning, caching, shuffle optimization, and memory tuning. Use when improving Spark performance, debugging slow j"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: spark optimization, data, data processing, distributed processing, spark
+  triggers: spark optimization, data, data processing, distributed processing, spark,
+    big data
 ---
+
 
 
 # Spark Optimization

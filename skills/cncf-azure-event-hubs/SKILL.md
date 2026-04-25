@@ -1,6 +1,6 @@
 ---
 name: cncf-azure-event-hubs
-description: Event streaming platform for high-throughput data ingestion and processing
+description: "\"Provides Event streaming platform for high-throughput data ingestion and processing\""
 license: MIT
 compatibility: opencode
 metadata:

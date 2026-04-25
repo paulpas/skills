@@ -1,10 +1,10 @@
 ---
 name: hig-components-status
-description: "Apple HIG guidance for status and progress UI components including progress indicators, status bars, and activity rings"
+description: "\"Provides Apple HIG guidance for status and progress UI components including progress indicators, status bars, and activity rings\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

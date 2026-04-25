@@ -1,7 +1,6 @@
 ---
 name: cicd-automation-workflow-automate
-description: You are a workflow automation expert specializing in creating efficient
-  CI/CD pipelines, GitHub Actions workflows, and automated development processes
+description: "Provides You are a workflow automation expert specializing in creating efficient CI/CD pipelines, GitHub Actions workflows, and automated development processes"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: cicd automation workflow automate, automation, how do i automate, jenkins
+  triggers: cicd automation workflow automate, automation, how do i automate, jenkins,
+    ci/cd pipeline, continuous integration
 ---
+
 
 
 # Cicd Automation Workflow Automate

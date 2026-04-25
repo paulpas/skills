@@ -1,6 +1,6 @@
 ---
 name: coding-ds-correlation-analysis
-description: "Analyzes correlation, covariance, and multivariate relationships between variables using statistical methods and visualization techniques"
+description: "\"Analyzes correlation, covariance, and multivariate relationships between variables using statistical methods and visualization techniques\""
 license: MIT
 compatibility: opencode
 metadata:

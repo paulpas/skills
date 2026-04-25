@@ -1,7 +1,6 @@
 ---
 name: service-mesh-expert
-description: Expert service mesh architect specializing in Istio, Linkerd, and cloud-native
-  networking patterns. Masters traffic management, security policies, obs
+description: "Provides Expert service mesh architect specializing in Istio, Linkerd, and cloud-native networking patterns. Masters traffic management, security policies, obs"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: service mesh expert, reliability, how do i secure, kubernetes service,
-    linkerd
+    linkerd, container orchestration, observability, service
 ---
+
 
 
 # Service Mesh Expert

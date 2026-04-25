@@ -1,6 +1,6 @@
 ---
 name: food-database-query
-description: Food Database Query
+description: "Provides food database query functionality and capabilities."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: food database query, health, data processing, spark
+  triggers: food database query, health, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Food Database Query

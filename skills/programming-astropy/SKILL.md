@@ -1,7 +1,6 @@
 ---
 name: astropy
-description: Astropy is the core Python package for astronomy, providing essential
-  functionality for astronomical research and data analysis
+description: "Provides Astropy is the core Python package for astronomy, providing essential functionality for astronomical research and data analysis"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: astropy, science, data processing, spark
+  triggers: astropy, science, data processing, spark, big data, distributed processing
 ---
+
 
 
 # Astropy

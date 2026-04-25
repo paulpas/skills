@@ -1,7 +1,6 @@
 ---
 name: apify-market-research
-description: Analyze market conditions, geographic opportunities, pricing, consumer
-  behavior, and product validation across Google Maps, Facebook, Instagram, Booki
+description: "Provides Analyze market conditions, geographic opportunities, pricing, consumer behavior, and product validation across Google Maps, Facebook, Instagram, Booki"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: apify market research, automation, how do i automate, jenkins
+  triggers: apify market research, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Apify Market Research

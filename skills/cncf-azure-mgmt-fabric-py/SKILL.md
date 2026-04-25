@@ -1,10 +1,10 @@
 ---
 name: azure-mgmt-fabric-py
-description: "Azure Fabric Management SDK for Python. Use for managing Microsoft Fabric capacities and resources"
+description: "\"Provides Azure Fabric Management SDK for Python. Use for managing Microsoft Fabric capacities and resources\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

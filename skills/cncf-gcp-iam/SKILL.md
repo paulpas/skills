@@ -1,7 +1,6 @@
 ---
 name: cncf-gcp-iam
-description: "Manages identity and access control with service accounts, roles, and"
-  fine-grained permissions.
+description: "\"Manages identity and access control with service accounts, roles, and\" fine-grained permissions."
 license: MIT
 compatibility: opencode
 metadata:

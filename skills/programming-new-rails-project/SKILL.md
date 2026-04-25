@@ -1,10 +1,10 @@
 ---
 name: new-rails-project
-description: "Create a new Rails project"
+description: "\"Provides create a new rails project functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

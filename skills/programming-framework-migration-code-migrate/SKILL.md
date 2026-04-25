@@ -1,10 +1,10 @@
 ---
 name: framework-migration-code-migrate
-description: "You are a code migration expert specializing in transitioning codebases between frameworks, languages, versions, and platforms. Generate comprehensive"
+description: "\"Provides You are a code migration expert specializing in transitioning codebases between frameworks, languages, versions, and platforms. Generate comprehensive\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

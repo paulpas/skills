@@ -1,7 +1,6 @@
 ---
 name: unity-ecs-patterns
-description: Production patterns for Unity's Data-Oriented Technology Stack (DOTS)
-  including Entity Component System, Job System, and Burst Compiler
+description: "Provides Production patterns for Unity's Data-Oriented Technology Stack (DOTS) including Entity Component System, Job System, and Burst Compiler"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: unity ecs patterns, game, development, data processing, container services,
-    spark
+    spark, big data, distributed processing
 ---
+
 
 
 # Unity Ecs Patterns

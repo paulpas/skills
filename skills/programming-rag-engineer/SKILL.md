@@ -1,7 +1,6 @@
 ---
 name: rag-engineer
-description: Expert in building Retrieval-Augmented Generation systems. Masters embedding
-  models, vector databases, chunking strategies, and retrieval optimization
+description: "Provides Expert in building Retrieval-Augmented Generation systems. Masters embedding models, vector databases, chunking strategies, and retrieval optimization"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: rag engineer, data, ai, data processing, machine learning, spark
+  triggers: rag engineer, data, ai, data processing, machine learning, spark, big
+    data, distributed processing
 ---
+
 
 
 # Rag Engineer

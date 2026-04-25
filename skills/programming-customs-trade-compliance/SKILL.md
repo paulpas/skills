@@ -1,10 +1,10 @@
 ---
 name: customs-trade-compliance
-description: "Codified expertise for customs documentation, tariff classification, duty optimisation, restricted party screening, and regulatory compliance across m"
+description: "\"Provides Codified expertise for customs documentation, tariff classification, duty optimisation, restricted party screening, and regulatory compliance across m\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: zod-validation-expert
-description: "Expert in Zod — TypeScript-first schema validation. Covers parsing, custom errors, refinements, type inference, and integration with React Hook Form"
+description: "\"Provides Expert in Zod \u2014 TypeScript-first schema validation. Covers\ \ parsing, custom errors, refinements, type inference, and integration with React\ \ Hook Form\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

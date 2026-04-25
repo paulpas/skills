@@ -1,10 +1,10 @@
 ---
 name: golang-pro
-description: "Master Go 1.21+ with modern patterns, advanced concurrency, performance optimization, and production-ready microservices"
+description: "\"Provides Master Go 1.21+ with modern patterns, advanced concurrency, performance optimization, and production-ready microservices\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

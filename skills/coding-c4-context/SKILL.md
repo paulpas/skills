@@ -1,10 +1,10 @@
 ---
 name: c4-context
-description: "Expert C4 Context-level documentation specialist. Creates high-level system context diagrams, documents personas, user journeys, system features, and"
+description: "\"Provides Expert C4 Context-level documentation specialist. Creates high-level system context diagrams, documents personas, user journeys, system features, and\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

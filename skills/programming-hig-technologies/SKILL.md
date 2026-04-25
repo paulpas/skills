@@ -1,10 +1,10 @@
 ---
 name: hig-technologies
-description: "Check for .claude/apple-design-context.md before asking questions. Use existing context and only ask for information not already covered"
+description: "\"Provides Check for .claude/apple-design-context.md before asking questions. Use existing context and only ask for information not already covered\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

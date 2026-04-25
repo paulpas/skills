@@ -1,6 +1,6 @@
 ---
 name: trading-technical-market-microstructure
-description: "Order book dynamics and order flow analysis"
+description: "\"Implements order book dynamics and order flow analysis for risk management and algorithmic trading execution.\""
 license: MIT
 compatibility: opencode
 metadata:

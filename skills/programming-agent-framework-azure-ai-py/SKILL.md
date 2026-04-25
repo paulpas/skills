@@ -1,7 +1,6 @@
 ---
 name: agent-framework-azure-ai-py
-description: Build persistent agents on Azure AI Foundry using the Microsoft Agent
-  Framework Python SDK
+description: "Provides Build persistent agents on Azure AI Foundry using the Microsoft Agent Framework Python SDK"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: agent framework azure ai py, ai, ml, implementation guide, machine learning
+  triggers: agent framework azure ai py, ai, ml, implementation guide, machine learning,
+    scikit-learn
 ---
+
 
 
 # Agent Framework Azure Ai Py

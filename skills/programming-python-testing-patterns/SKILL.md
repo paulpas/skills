@@ -1,7 +1,6 @@
 ---
 name: python-testing-patterns
-description: Implement comprehensive testing strategies with pytest, fixtures, mocking,
-  and test-driven development. Use when writing Python tests, setting up test
+description: "Provides Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development. Use when writing Python tests, setting up test"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: python testing patterns, development, how do i test, unit tests
+  triggers: python testing patterns, development, how do i test, unit tests, testing
 ---
+
 
 
 # Python Testing Patterns

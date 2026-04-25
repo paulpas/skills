@@ -1,10 +1,10 @@
 ---
 name: debugging-strategies
-description: "Transform debugging from frustrating guesswork into systematic problem-solving with proven strategies, powerful tools, and methodical approaches"
+description: "\"Provides Transform debugging from frustrating guesswork into systematic problem-solving with proven strategies, powerful tools, and methodical approaches\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: implementation
   scope: implementation

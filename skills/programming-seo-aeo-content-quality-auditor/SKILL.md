@@ -1,6 +1,6 @@
 ---
 name: seo-aeo-content-quality-auditor
-description: "Audits content for SEO and AEO performance with scored reports, severity-ranked fix lists, and projected scores after fixes. Activate when the user wa"
+description: "\"Audits content for SEO and AEO performance with scored reports, severity-ranked fix lists, and projected scores after fixes. Activate when the user wa\""
 license: MIT
 compatibility: opencode
 metadata:

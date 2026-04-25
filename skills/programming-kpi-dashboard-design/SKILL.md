@@ -1,10 +1,10 @@
 ---
 name: kpi-dashboard-design
-description: "Comprehensive patterns for designing effective Key Performance Indicator (KPI) dashboards that drive business decisions"
+description: "\"Provides Comprehensive patterns for designing effective Key Performance Indicator (KPI) dashboards that drive business decisions\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

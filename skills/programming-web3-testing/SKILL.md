@@ -1,7 +1,6 @@
 ---
 name: web3-testing
-description: Master comprehensive testing strategies for smart contracts using Hardhat,
-  Foundry, and advanced testing patterns
+description: "Provides Master comprehensive testing strategies for smart contracts using Hardhat, Foundry, and advanced testing patterns"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: web3 testing, blockchain, how do i test, unit tests
+  triggers: web3 testing, blockchain, how do i test, unit tests, testing
 ---
+
 
 
 # Web3 Testing

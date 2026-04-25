@@ -1,7 +1,6 @@
 ---
 name: manage-skills
-description: Discover, list, create, edit, toggle, copy, move, and delete AI agent
-  skills across 11 tools (Cursor, Claude, Agents, Windsurf, Copilot, Codex, Cline
+description: "Provides Discover, list, create, edit, toggle, copy, move, and delete AI agent skills across 11 tools (Cursor, Claude, Agents, Windsurf, Copilot, Codex, Cline"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: manage skills, ai, ml, implementation guide, machine learning
+  triggers: manage skills, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Manage Skills

@@ -1,7 +1,6 @@
 ---
 name: xss-html-injection
-description: Execute comprehensive client-side injection vulnerability assessments
-  on web applications to identify XSS and HTML injection flaws, demonstrate exploi
+description: "\"Provides Execute comprehensive client-side injection vulnerability assessments on web applications to identify XSS and HTML injection flaws, demonstrate exploi\""
 license: MIT
 compatibility: opencode
 metadata:

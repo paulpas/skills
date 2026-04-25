@@ -1,7 +1,6 @@
 ---
 name: circleci-automation
-description: 'Automate CircleCI tasks via Rube MCP (Composio): trigger pipelines,
-  monitor workflows/jobs, retrieve artifacts and test metadata. Always search tools'
+description: "'Provides Automate CircleCI tasks via Rube MCP (Composio): trigger pipelines, monitor workflows/jobs, retrieve artifacts and test metadata. Always search tools'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: circleci automation, automation, how do i test, continuous integration,
-    jenkins
+    jenkins, ci/cd pipeline
 ---
+
 
 
 # Circleci Automation

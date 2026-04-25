@@ -1,7 +1,6 @@
 ---
 name: clickup-automation
-description: Automate ClickUp project management including tasks, spaces, folders,
-  lists, comments, and team operations via Rube MCP (Composio). Always search tool
+description: "Provides Automate ClickUp project management including tasks, spaces, folders, lists, comments, and team operations via Rube MCP (Composio). Always search tool"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: clickup automation, automation, how do i automate, jenkins
+  triggers: clickup automation, automation, how do i automate, jenkins, ci/cd pipeline,
+    continuous integration
 ---
+
 
 
 # Clickup Automation

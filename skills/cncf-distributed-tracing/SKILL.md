@@ -1,7 +1,6 @@
 ---
 name: distributed-tracing
-description: Implement distributed tracing with Jaeger and Tempo for request flow
-  visibility across microservices
+description: "Provides Implement distributed tracing with Jaeger and Tempo for request flow visibility across microservices"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: distributed tracing, reliability, implementation guide, linkerd, xray
+  triggers: distributed tracing, reliability, implementation guide, linkerd, xray,
+    observability, service mesh, tracing
 ---
+
 
 
 # Distributed Tracing

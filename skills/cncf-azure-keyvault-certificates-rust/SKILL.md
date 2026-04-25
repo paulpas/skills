@@ -1,10 +1,10 @@
 ---
 name: azure-keyvault-certificates-rust
-description: "Azure Key Vault Certificates SDK for Rust. Use for creating, importing, and managing certificates"
+description: "\"Provides Azure Key Vault Certificates SDK for Rust. Use for creating, importing, and managing certificates\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: cncf
   role: implementation
   scope: implementation

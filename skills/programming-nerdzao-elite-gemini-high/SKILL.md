@@ -1,10 +1,10 @@
 ---
 name: nerdzao-elite-gemini-high
-description: "Modo Elite Coder + UX Pixel-Perfect otimizado especificamente para Gemini 3.1 Pro High. Workflow completo com foco em qualidade máxima e eficiência de"
+description: "\"Provides Modo Elite Coder + UX Pixel-Perfect otimizado especificamente\ \ para Gemini 3.1 Pro High. Workflow completo com foco em qualidade m\xE1xima e\ \ efici\xEAncia de\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

@@ -1,10 +1,10 @@
 ---
 name: wiki-qa
-description: "Answer repository questions grounded entirely in source code evidence. Use when user asks a question about the codebase, user wants to understand a sp"
+description: "\"Provides Answer repository questions grounded entirely in source code evidence. Use when user asks a question about the codebase, user wants to understand a sp\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

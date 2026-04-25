@@ -1,7 +1,6 @@
 ---
 name: odoo-performance-tuner
-description: 'Expert guide for diagnosing and fixing Odoo performance issues: slow
-  queries, worker configuration, memory limits, PostgreSQL tuning, and profiling to'
+description: "'Provides Expert guide for diagnosing and fixing Odoo performance issues: slow queries, worker configuration, memory limits, PostgreSQL tuning, and profiling to'"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: odoo performance tuner, business, implementation guide, optimization
+  triggers: odoo performance tuner, business, implementation guide, optimization,
+    performance
 ---
+
 
 
 # Odoo Performance Tuner

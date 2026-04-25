@@ -1,7 +1,6 @@
 ---
 name: hugging-face-datasets
-description: Create and manage datasets on Hugging Face Hub. Supports initializing
-  repos, defining configs/system prompts, streaming row updates, and SQL-based dat
+description: "Provides Create and manage datasets on Hugging Face Hub. Supports initializing repos, defining configs/system prompts, streaming row updates, and SQL-based dat"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: hugging face datasets, ai, ml, data processing, machine learning, spark
+  triggers: hugging face datasets, ai, ml, data processing, machine learning, spark,
+    big data, distributed processing
 ---
+
 
 
 # Hugging Face Datasets

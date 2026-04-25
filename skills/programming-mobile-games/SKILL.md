@@ -1,10 +1,10 @@
 ---
 name: mobile-games
-description: "Mobile game development principles. Touch input, battery, performance, app stores"
+description: "\"Provides Mobile game development principles. Touch input, battery, performance, app stores\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

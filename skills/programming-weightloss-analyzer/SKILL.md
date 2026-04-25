@@ -1,10 +1,10 @@
 ---
 name: weightloss-analyzer
-description: "分析减肥数据、计算代谢率、追踪能量缺口、管理减肥阶段"
+description: "\"Provides \u5206\u6790\u51CF\u80A5\u6570\u636E\u3001\u8BA1\u7B97\u4EE3\ \u8C22\u7387\u3001\u8FFD\u8E2A\u80FD\u91CF\u7F3A\u53E3\u3001\u7BA1\u7406\u51CF\u80A5\ \u9636\u6BB5 functionality and capabilities.\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: programming
   role: implementation
   scope: implementation

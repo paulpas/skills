@@ -1,7 +1,6 @@
 ---
 name: cncf-opentelemetry
-description: "OpenTelemetry in Observability framework for tracing, metrics, and logs"
-  with vendor-neutral APIs
+description: "\"OpenTelemetry in Observability framework for tracing, metrics, and logs\" with vendor-neutral APIs"
 license: MIT
 compatibility: opencode
 metadata:

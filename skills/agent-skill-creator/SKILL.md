@@ -1,10 +1,10 @@
 ---
 name: skill-creator
-description: "To create new CLI skills following Anthropic's official best practices with zero manual configuration. This skill automates brainstorming, template ap"
+description: "\"Provides To create new CLI skills following Anthropic's official best practices with zero manual configuration. This skill automates brainstorming, template ap\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: agent
   role: implementation
   scope: implementation

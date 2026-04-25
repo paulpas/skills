@@ -1,6 +1,6 @@
 ---
 name: coding-ds-bias-variance-tradeoff
-description: "Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model generalization"
+description: "\"Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model generalization\""
 license: MIT
 compatibility: opencode
 metadata:

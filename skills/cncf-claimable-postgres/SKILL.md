@@ -1,7 +1,6 @@
 ---
 name: claimable-postgres
-description: Provision instant temporary Postgres databases via Claimable Postgres
-  by Neon (pg.new). No login or credit card required. Use for quick Postgres envir
+description: "Provides Provision instant temporary Postgres databases via Claimable Postgres by Neon (pg.new). No login or credit card required. Use for quick Postgres envir"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: claimable postgres, database, data processing, spark
+  triggers: claimable postgres, database, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Claimable Postgres

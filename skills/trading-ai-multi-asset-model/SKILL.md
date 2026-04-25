@@ -1,6 +1,6 @@
 ---
 name: trading-ai-multi-asset-model
-description: "Model inter-asset relationships for portfolio and cross-asset strategies"
+description: "\"Provides Model inter-asset relationships for portfolio and cross-asset strategies\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: file-path-traversal
-description: Identify and exploit file path traversal (directory traversal) vulnerabilities
-  that allow attackers to read arbitrary files on the server, potentially
+description: "\"Provides Identify and exploit file path traversal (directory traversal) vulnerabilities that allow attackers to read arbitrary files on the server, potentially\""
 license: MIT
 compatibility: opencode
 metadata:

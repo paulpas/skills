@@ -1,6 +1,6 @@
 ---
 name: azure-resource-manager-redis-dotnet
-description: Azure Resource Manager SDK for Redis in .NET
+description: "Configures azure resource manager sdk for redis in .net for cloud-native deployment and infrastructure management."
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: azure resource manager redis dotnet, cloud, implementation guide, caching
+  triggers: azure resource manager redis dotnet, cloud, implementation guide, caching,
+    elasticache
 ---
+
 
 
 # Azure Resource Manager Redis Dotnet

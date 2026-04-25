@@ -1,7 +1,6 @@
 ---
 name: helium-mcp
-description: Connect to Helium's MCP server for news research, media bias analysis,
-  balanced perspectives, stock/options data, and semantic meme search across 3.2M
+description: "Provides Connect to Helium's MCP server for news research, media bias analysis, balanced perspectives, stock/options data, and semantic meme search across 3.2M"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,10 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: helium mcp, uncategorized, data processing, spark
+  triggers: helium mcp, uncategorized, data processing, spark, big data, distributed
+    processing
 ---
+
 
 
 # Helium Mcp

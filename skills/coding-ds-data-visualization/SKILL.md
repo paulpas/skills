@@ -1,6 +1,6 @@
 ---
 name: coding-ds-data-visualization
-description: "Creates effective visualizations including plots, charts, dashboards, and interactive visualizations for data insight and storytelling"
+description: "\"Creates effective visualizations including plots, charts, dashboards, and interactive visualizations for data insight and storytelling\""
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: cncf-aws-secrets-manager
-description: "Manages sensitive data with automatic encryption, rotation, and fine-grained"
-  access control for database passwords, API keys, and credentials.
+description: "\"Manages sensitive data with automatic encryption, rotation, and fine-grained\" access control for database passwords, API keys, and credentials."
 license: MIT
 compatibility: opencode
 metadata:

@@ -1,7 +1,6 @@
 ---
 name: distributed-debugging-debug-trace
-description: You are a debugging expert specializing in setting up comprehensive debugging
-  environments, distributed tracing, and diagnostic tools. Configure debug
+description: "Provides You are a debugging expert specializing in setting up comprehensive debugging environments, distributed tracing, and diagnostic tools. Configure debug"
 license: MIT
 compatibility: opencode
 metadata:
@@ -11,8 +10,9 @@ metadata:
   scope: implementation
   output-format: code
   triggers: distributed debugging debug trace, reliability, implementation guide,
-    linkerd
+    linkerd, observability, service mesh
 ---
+
 
 
 # Distributed Debugging Debug Trace

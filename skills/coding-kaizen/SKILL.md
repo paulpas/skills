@@ -1,10 +1,10 @@
 ---
 name: kaizen
-description: "Guide for continuous improvement, error proofing, and standardization. Use this skill when the user wants to improve code quality, refactor, or discus"
+description: "\"Provides Guide for continuous improvement, error proofing, and standardization. Use this skill when the user wants to improve code quality, refactor, or discus\""
 license: MIT
 compatibility: opencode
 metadata:
-  version: "1.0.0"
+  version: 1.0.0
   domain: coding
   role: review
   scope: implementation

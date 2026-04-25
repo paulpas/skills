@@ -1,7 +1,6 @@
 ---
 name: ai-product
-description: Every product will be AI-powered. The question is whether you'll build
-  it right or ship a demo that falls apart in production
+description: "Provides Every product will be AI-powered. The question is whether you'll build it right or ship a demo that falls apart in production"
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,8 +9,9 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  triggers: ai product, ai, ml, implementation guide, machine learning
+  triggers: ai product, ai, ml, implementation guide, machine learning, scikit-learn
 ---
+
 
 
 # Ai Product
