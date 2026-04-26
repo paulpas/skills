@@ -17,6 +17,7 @@ const LLMSkillCompressor_js_1 = require("./LLMSkillCompressor.js");
 const DiskCompressionCache_js_1 = require("./DiskCompressionCache.js");
 const InMemoryCompressionCache_js_1 = require("./InMemoryCompressionCache.js");
 const CompressionDeduplicator_js_1 = require("./CompressionDeduplicator.js");
+const EmbeddingService_js_1 = require("../embedding/EmbeddingService.js");
 /**
  * Skill Registry - manages all available skills
  */
@@ -45,6 +46,8 @@ class SkillRegistry {
     HOT_SKILLS_COUNT = 100;
     HOT_SKILL_TTL_MS = 30 * 60 * 1000; // 30 minutes for hot skills
     COLD_SKILL_TTL_MS = 60 * 60 * 1000; // 1 hour for cold skills
+    // Embedding service for generating vector embeddings
+    embeddingService;
     constructor(config) {
         this.config = {
             cacheDirectory: './.skill-cache',
@@ -59,6 +62,9 @@ class SkillRegistry {
         this.maxCacheSizeBytes = this.config.maxCacheSizeBytes || (1024 * 1024 * 1024);
         this.compressor = new SkillCompressor_js_1.SkillCompressor();
         this.logger = new Logger_js_1.Logger('SkillRegistry');
+        this.embeddingService = new EmbeddingService_js_1.EmbeddingService({
+            cacheDirectory: this.config.cacheDirectory,
+        });
         // Initialize metrics with max cache size
         const metrics = CompressionMetrics_js_1.CompressionMetrics.getInstance();
         metrics.setMaxCacheSize(this.maxCacheSizeBytes);
@@ -133,7 +139,7 @@ class SkillRegistry {
             : [this.config.skillsDirectory];
         for (const dir of localPaths) {
             // Try domain/skillname structure first, then fallback to flat structure
-            const DOMAINS = ['agent', 'cncf', 'coding', 'programming', 'trading'];
+            const DOMAINS = ['agent', 'cncf', 'swe', 'programming', 'trading'];
             for (const domain of DOMAINS) {
                 const localFile = path_1.default.join(dir, domain, name, 'SKILL.md');
                 try {
@@ -708,12 +714,51 @@ class SkillRegistry {
         });
     }
     /**
-     * Generate embeddings for skills that don't have them
-     * Note: Embedding service is not currently available, so this is a no-op
+     * Generate embeddings for skills that don't have them.
+     * Processes skills in batches to avoid rate limiting.
+     * Uses caching to skip re-generating existing embeddings.
      */
     async generateMissingEmbeddings() {
-        // Embedding service not available - skip
-        return;
+        const allSkills = Array.from(this.skills.values());
+        const skillsNeedingEmbeddings = allSkills.filter((s) => !s.metadata?.embedding);
+        if (skillsNeedingEmbeddings.length === 0) {
+            this.logger.info('✅ All skills have embeddings', { total: allSkills.length });
+            return;
+        }
+        this.logger.info(`📊 Generating embeddings for ${skillsNeedingEmbeddings.length} skills...`, { total: allSkills.length });
+        // Process in batches to avoid rate limiting
+        const BATCH_SIZE = 50;
+        let completed = 0;
+        for (let i = 0; i < skillsNeedingEmbeddings.length; i += BATCH_SIZE) {
+            const batch = skillsNeedingEmbeddings.slice(i, i + BATCH_SIZE);
+            const batchPromises = batch.map(async (skill) => {
+                try {
+                    // Combine key fields for embedding context
+                    // Name, description, and tags provide the most semantic value
+                    const text = [
+                        skill.metadata.name,
+                        skill.metadata.description,
+                        skill.metadata.tags?.join(' ') || '',
+                    ]
+                        .filter(Boolean)
+                        .join(' ');
+                    const embedding = await this.embeddingService.generateEmbedding(text);
+                    skill.metadata.embedding = embedding.embedding;
+                }
+                catch (error) {
+                    this.logger.warn(`⚠️ Failed to embed ${skill.metadata.name}`, {
+                        error: error instanceof Error ? error.message : String(error),
+                    });
+                }
+            });
+            await Promise.all(batchPromises);
+            completed += batch.length;
+            const percentage = Math.round((completed / skillsNeedingEmbeddings.length) * 100);
+            this.logger.info(`  [${completed}/${skillsNeedingEmbeddings.length}] (${percentage}%)`);
+        }
+        this.logger.info('✅ Embedding generation complete', {
+            generated: skillsNeedingEmbeddings.length,
+        });
     }
     /**
      * Get a skill by name
