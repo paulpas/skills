@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Pre-commit hook: validates all staged SKILL.md files against stub detection rules.
+# Install: bash scripts/install_hooks.sh
+# Skip validation: SKIP_SKILL_VALIDATE=1 git commit ...
+
+set -euo pipefail
+
+# Allow bypassing for bulk/emergency commits
+if [ "${SKIP_SKILL_VALIDATE:-0}" = "1" ]; then
+    echo "⚠️  SKIP_SKILL_VALIDATE=1 set — skipping skill validation"
+    exit 0
+fi
+
+# Find staged SKILL.md files (added or modified, not deleted)
+STAGED_SKILLS=$(git diff --cached --name-only --diff-filter=ACM | grep 'SKILL\.md$' || true)
+
+if [ -z "$STAGED_SKILLS" ]; then
+    exit 0  # No skill files staged, nothing to do
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+VALIDATOR="$REPO_ROOT/scripts/validate_skill.sh"
+
+if [ ! -x "$VALIDATOR" ]; then
+    echo "⚠️  Validator not found at $VALIDATOR — skipping skill validation" >&2
+    exit 0
+fi
+
+skill_count=$(echo "$STAGED_SKILLS" | wc -l | tr -d ' ')
+echo ""
+echo "🔍 Validating ${skill_count} staged SKILL.md file(s)..."
+echo ""
+
+FAILED=false
+FAILED_FILES=()
+
+while IFS= read -r skill_file; do
+    if [ -z "$skill_file" ]; then
+        continue
+    fi
+
+    if ! "$VALIDATOR" "$skill_file"; then
+        FAILED=true
+        FAILED_FILES+=("$skill_file")
+    fi
+done <<< "$STAGED_SKILLS"
+
+echo ""
+
+if [ "$FAILED" = true ]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "❌ COMMIT BLOCKED — the following skills failed quality checks:"
+    for f in "${FAILED_FILES[@]}"; do
+        echo "   • $f"
+    done
+    echo ""
+    echo "Fix the issues above, then re-commit."
+    echo "See SKILL_FORMAT_SPEC.md for requirements."
+    echo ""
+    echo "To bypass (emergency only): SKIP_SKILL_VALIDATE=1 git commit ..."
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    exit 1
+fi
+
+echo "✅ All skill files passed validation — proceeding with commit"
+echo ""
+exit 0
