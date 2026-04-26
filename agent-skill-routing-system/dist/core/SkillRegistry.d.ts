@@ -51,6 +51,7 @@ export declare class SkillRegistry {
     private readonly HOT_SKILLS_COUNT;
     private readonly HOT_SKILL_TTL_MS;
     private readonly COLD_SKILL_TTL_MS;
+    private embeddingService;
     constructor(config: SkillRegistryConfig);
     /**
      * Fetch the lightweight skills-index.json from a remote URL and populate the
@@ -121,8 +122,9 @@ export declare class SkillRegistry {
      */
     private addSkill;
     /**
-     * Generate embeddings for skills that don't have them
-     * Note: Embedding service is not currently available, so this is a no-op
+     * Generate embeddings for skills that don't have them.
+     * Processes skills in batches to avoid rate limiting.
+     * Uses caching to skip re-generating existing embeddings.
      */
     private generateMissingEmbeddings;
     /**

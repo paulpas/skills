@@ -13,6 +13,7 @@ import { LLMSkillCompressor } from './LLMSkillCompressor.js';
 import { DiskCompressionCache } from './DiskCompressionCache.js';
 import { InMemoryCompressionCache } from './InMemoryCompressionCache.js';
 import { CompressionDeduplicator } from './CompressionDeduplicator.js';
+import { EmbeddingService } from '../embedding/EmbeddingService.js';
 
 /**
  * Cached skill content entry with LRU metadata
@@ -75,6 +76,9 @@ export class SkillRegistry {
   private readonly HOT_SKILL_TTL_MS = 30 * 60 * 1000; // 30 minutes for hot skills
   private readonly COLD_SKILL_TTL_MS = 60 * 60 * 1000; // 1 hour for cold skills
 
+  // Embedding service for generating vector embeddings
+  private embeddingService: EmbeddingService;
+
   constructor(config: SkillRegistryConfig) {
     this.config = {
       cacheDirectory: './.skill-cache',
@@ -89,6 +93,9 @@ export class SkillRegistry {
     this.maxCacheSizeBytes = this.config.maxCacheSizeBytes || (1024 * 1024 * 1024);
     this.compressor = new SkillCompressor();
     this.logger = new Logger('SkillRegistry');
+    this.embeddingService = new EmbeddingService({
+      cacheDirectory: this.config.cacheDirectory,
+    });
     
     // Initialize metrics with max cache size
     const metrics = CompressionMetrics.getInstance();
@@ -180,7 +187,7 @@ export class SkillRegistry {
 
     for (const dir of localPaths) {
       // Try domain/skillname structure first, then fallback to flat structure
-      const DOMAINS = ['agent', 'cncf', 'coding', 'programming', 'trading'];
+      const DOMAINS = ['agent', 'cncf', 'swe', 'programming', 'trading'];
       
       for (const domain of DOMAINS) {
         const localFile = path.join(dir, domain, name, 'SKILL.md');
@@ -824,12 +831,65 @@ export class SkillRegistry {
   }
 
   /**
-   * Generate embeddings for skills that don't have them
-   * Note: Embedding service is not currently available, so this is a no-op
+   * Generate embeddings for skills that don't have them.
+   * Processes skills in batches to avoid rate limiting.
+   * Uses caching to skip re-generating existing embeddings.
    */
   private async generateMissingEmbeddings(): Promise<void> {
-    // Embedding service not available - skip
-    return;
+    const allSkills = Array.from(this.skills.values());
+    const skillsNeedingEmbeddings = allSkills.filter(
+      (s) => !s.metadata?.embedding
+    );
+
+    if (skillsNeedingEmbeddings.length === 0) {
+      this.logger.info('✅ All skills have embeddings', { total: allSkills.length });
+      return;
+    }
+
+    this.logger.info(
+      `📊 Generating embeddings for ${skillsNeedingEmbeddings.length} skills...`,
+      { total: allSkills.length }
+    );
+
+    // Process in batches to avoid rate limiting
+    const BATCH_SIZE = 50;
+    let completed = 0;
+
+    for (let i = 0; i < skillsNeedingEmbeddings.length; i += BATCH_SIZE) {
+      const batch = skillsNeedingEmbeddings.slice(i, i + BATCH_SIZE);
+      const batchPromises = batch.map(async (skill) => {
+        try {
+          // Combine key fields for embedding context
+          // Name, description, and tags provide the most semantic value
+          const text = [
+            skill.metadata.name,
+            skill.metadata.description,
+            skill.metadata.tags?.join(' ') || '',
+          ]
+            .filter(Boolean)
+            .join(' ');
+
+          const embedding = await this.embeddingService.generateEmbedding(text);
+          skill.metadata.embedding = embedding.embedding;
+        } catch (error) {
+          this.logger.warn(`⚠️ Failed to embed ${skill.metadata.name}`, {
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
+      });
+
+      await Promise.all(batchPromises);
+      completed += batch.length;
+
+      const percentage = Math.round((completed / skillsNeedingEmbeddings.length) * 100);
+      this.logger.info(
+        `  [${completed}/${skillsNeedingEmbeddings.length}] (${percentage}%)`
+      );
+    }
+
+    this.logger.info('✅ Embedding generation complete', {
+      generated: skillsNeedingEmbeddings.length,
+    });
   }
 
   /**
