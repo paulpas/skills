@@ -227,12 +227,35 @@ export class Router {
 
   /**
    * Apply deterministic filtering to ranked skills
+   * Includes quality gate to filter out stub skills (draft: true)
    */
   private applyDeterministicFilter(
     rankedSkills: SelectedSkill[],
     constraints?: RouteRequest['constraints']
   ): SelectedSkill[] {
     let filtered = rankedSkills;
+
+    // Quality gate: filter out stub/draft skills
+    const allSkills = this.skillRegistry.getAllSkills();
+    const draftSkillSet = new Set(
+      allSkills
+        .filter((s) => s.metadata.draft === true)
+        .map((s) => s.metadata.name)
+    );
+
+    const beforeDraftFilter = filtered.length;
+    filtered = filtered.filter((skill) => !draftSkillSet.has(skill.name));
+    const draftFiltered = beforeDraftFilter - filtered.length;
+
+    if (draftFiltered > 0) {
+      this.logger.info('Filtered out stub skills', {
+        draftFiltered,
+        remaining: filtered.length,
+        filteredNames: rankedSkills
+          .filter((s) => draftSkillSet.has(s.name))
+          .map((s) => s.name),
+      });
+    }
 
     // Filter by max skills
     const maxSkills = constraints?.maxSkills || 5;

@@ -54,6 +54,7 @@ export declare class Router {
     routeTask(request: RouteRequest): Promise<RouteResponse>;
     /**
      * Apply deterministic filtering to ranked skills
+     * Includes quality gate to filter out stub skills (draft: true)
      */
     private applyDeterministicFilter;
     /**
