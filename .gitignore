@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build & Distribution
+dist/
+build/
+*.tsbuildinfo
+
+# Cache & Temporary
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*$py.class
+.embedding-cache/
+.cache/
+
+# Logs
+*.log
+logs/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.env.local
+.env.*.local
+
+# Testing
+.nyc_output/
+coverage/
+.pytest_cache/
+
+# OS
+Thumbs.db
