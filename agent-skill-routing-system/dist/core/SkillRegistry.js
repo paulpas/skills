@@ -79,6 +79,26 @@ class SkillRegistry {
         this.loadPersistedContentCache();
     }
     /**
+     * Quality gate: detect if a skill is a stub/template with minimal actionable content.
+     * Stubs contain boilerplate text with no real implementation or guidance.
+     *
+     * Detection criteria:
+     * - Content is below minimum threshold (3KB of actual content)
+     * - Contains stub sentinel string: "Implementing this specific pattern or feature"
+     *
+     * Guard: early return on empty content
+     */
+    isStubSkill(content) {
+        // Guard: early exit on empty content
+        if (!content || content.length === 0) {
+            return true;
+        }
+        const MIN_CONTENT_BYTES = 3000;
+        const STUB_SENTINEL = 'Implementing this specific pattern or feature';
+        const isStub = content.length < MIN_CONTENT_BYTES && content.includes(STUB_SENTINEL);
+        return isStub;
+    }
+    /**
      * Fetch the lightweight skills-index.json from a remote URL and populate the
      * registry with metadata only (no content). Content is fetched on-demand.
      * Falls back gracefully — callers should catch errors and fall back to loadSkills().
@@ -589,6 +609,15 @@ class SkillRegistry {
                 this.logger.warn(`Invalid skill metadata in ${filePath}`);
                 return null;
             }
+            // Quality gate: detect and mark stub skills
+            const isStub = this.isStubSkill(content);
+            if (isStub) {
+                metadata.draft = true;
+                this.logger.debug(`Marked skill as stub: ${metadata.name}`, {
+                    file: filePath,
+                    contentBytes: content.length,
+                });
+            }
             return { metadata, sourceFile: filePath, rawContent: content };
         }
         catch (error) {
@@ -820,11 +849,15 @@ class SkillRegistry {
      */
     getStats() {
         const skillsWithoutEmbeddings = Array.from(this.skills.values()).filter((s) => !s.metadata.embedding).length;
+        const stubSkills = Array.from(this.skills.values()).filter((s) => s.metadata.draft === true).length;
+        const realSkills = this.skills.size - stubSkills;
         return {
             totalSkills: this.skills.size,
             categories: this.skillsByCategory.size,
             tags: this.skillsByTag.size,
             skillsWithoutEmbeddings,
+            stubSkills,
+            realSkills,
         };
     }
     /**

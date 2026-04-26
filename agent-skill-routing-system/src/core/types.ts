@@ -14,6 +14,7 @@ export interface SkillMetadata {
   input_schema: unknown;
   output_schema: unknown;
   embedding?: number[];
+  draft?: boolean; // Quality gate: true if skill is a stub/template
   performance?: {
     averageLatencyMs: number;
     successRate: number;
@@ -127,7 +128,9 @@ export interface RouteResponse {
   candidatePool: string[];
   routingScores: Record<string, number>;
   latencyMs: number;
+  attributionFooter?: string;
 }
+
 
 /**
  * Execution request

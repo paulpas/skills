@@ -54,6 +54,17 @@ export declare class SkillRegistry {
     private embeddingService;
     constructor(config: SkillRegistryConfig);
     /**
+     * Quality gate: detect if a skill is a stub/template with minimal actionable content.
+     * Stubs contain boilerplate text with no real implementation or guidance.
+     *
+     * Detection criteria:
+     * - Content is below minimum threshold (3KB of actual content)
+     * - Contains stub sentinel string: "Implementing this specific pattern or feature"
+     *
+     * Guard: early return on empty content
+     */
+    private isStubSkill;
+    /**
      * Fetch the lightweight skills-index.json from a remote URL and populate the
      * registry with metadata only (no content). Content is fetched on-demand.
      * Falls back gracefully — callers should catch errors and fall back to loadSkills().
@@ -163,6 +174,8 @@ export declare class SkillRegistry {
         categories: number;
         tags: number;
         skillsWithoutEmbeddings: number;
+        stubSkills?: number;
+        realSkills?: number;
     };
     /**
      * Lenient line-by-line frontmatter extractor for YAML that strict parsers reject.
