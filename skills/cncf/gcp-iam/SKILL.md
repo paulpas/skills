@@ -10,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: iam, identity access management, service account, roles, permissions
+  triggers: iam, identity access management, service account, roles, permissions,
+    access control, kubernetes service
   related-skills: azure-rbac, gcp-cloud-kms, gcp-cloud-sql, gcp-compute-engine
 ---
+
 
 
 

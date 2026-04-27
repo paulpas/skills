@@ -11,8 +11,9 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: cloud-native, connect, engineering, istio, service mesh, traffic management,
-    kubernetes service
+    kubernetes service, container orchestration
 ---
+
 
 
   related-skills: cncf-argo, cncf-artifact-hub, cncf-aws-eks, cncf-azure-aks

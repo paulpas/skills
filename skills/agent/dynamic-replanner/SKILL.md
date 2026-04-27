@@ -1,678 +1,322 @@
 ---
-name: replanner
-description: '"Dynamically adjusts execution plans based on real-time feedback, changing"
-  conditions, and emerging information, enabling adaptive problem solving in uncertain
-  environments.'
+name: dynamic-replanner
+description: Implements intelligent dynamic replanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
 license: MIT
 compatibility: opencode
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   domain: agent
+  triggers: dynamic-replanner, dynamic replanner, how do i dynamic-replanner, orchestrate dynamic-replanner, automate dynamic-replanner, agent dynamic-replanner
   role: orchestration
   scope: orchestration
   output-format: analysis
-  triggers: adjusts, dynamic replanner, dynamic-replanner, dynamically, execution
-  related-skills: code-correctness-verifier, confidence-based-selector, error-trace-explainer,
-    multi-skill-executor
+  related-skills: agent-task-routing, agent-confidence-based-selector
 ---
 
+# Dynamic Replanner
 
-
-
-# Dynamic Replanner (Agent Adaptive Planning)
-
-> **Load this skill** when designing or modifying agent planning systems that require dynamic adjustment of execution strategies based on feedback, changing conditions, and new information.
+Orchestrates intelligent skill selection and execution for dynamic replanner workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
 
 ## TL;DR Checklist
 
-When implementing dynamic replanning:
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-- [ ] Define planning trigger conditions
-- [ ] Monitor execution progress and outcomes
-- [ ] Detect deviations from plan
-- [ ] Generate alternative plans efficiently
-- [ ] Select best alternative based on current state
-- [ ] Handle replanning frequency and overhead
-- [ ] Support partial replanning for efficiency
-- [ ] Follow the 5 Laws of Elegant Defense from code-philosophy
 
----
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                              Orchestration Flow                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+  User Request
+      ↓
+┌─────────────────┐
+│  Parse Request  │
+│  & Extract      │
+│  Features       │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Evaluate Available Skills                                │
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
+│  │ Skill A      │  │ Skill B      │  │ Skill C      │              │
+│  │ - Match Score│  │ - Match Score│  │ - Match Score│              │
+│  │ - Confidence │  │ - Confidence │  │ - Confidence │              │
+│  │ - History    │  │ - History    │  │ - History    │              │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘              │
+│         │                 │                 │                       │
+│         └─────────────────┴─────────────────┘                       │
+│                          ↓                                          │
+│                   Select Best Skill                               │
+└─────────────────────────────────────────────────────────────────────┘
+         ↓
+┌─────────────────┐
+│  Execute Skill  │
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│  Handle Result  │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Error Handling & Fallback                                  │
+│                                                                     │
+│  Success? ────────► Return Result                                  │
+│                                                                     │
+│  Fail? ────────┐                                                    │
+│                ↓                                                    │
+│  ┌──────────────────────────────────────────────────────────┐      │
+│  │               Fallback Chain                                    │      │
+│  │                                                             │      │
+│  │  1. Retry with adjusted parameters                          │      │
+│  │  2. Try Alternative Skill (if available)                    │      │
+│  │  3. Defer to Human Operator (if critical)                   │      │
+│  │  4. Log & Return Error                                      │      │
+│  └──────────────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────────────┘
 
 ## When to Use
 
-Use the Dynamic Replanner when:
+Use this skill when:
 
-- Execution conditions change unexpectedly (market shifts, resource changes)
-- Need to adapt to new information during execution
-- Plan execution encounters obstacles or failures
-- Building adaptive agents that respond to feedback
-- Implementing robust systems that handle uncertainty
-- Managing long-running tasks with evolving requirements
-
----
+- Orchestrating multi-step workflows that require skill delegation
+- Implementing adaptive skill routing based on confidence scores
+- Building fallback mechanisms for failed skill executions
+- Creating intelligent task decomposition and parallel execution
+- Designing skill dependency graphs with automatic resolution
+- Implementing skill selection with historical performance weighting
+- Building agent systems that need to self-organize around tasks
 
 ## When NOT to Use
 
-Avoid using this skill for:
+Avoid this skill for:
 
-- Stable, predictable execution environments (static plans are sufficient)
-- Real-time systems with strict latency requirements (replanning overhead)
-- Single-step tasks without uncertainty
-- Situations where plan changes are costly or disruptive
+- Direct task execution without orchestration needs - use individual skills instead
+- High-frequency trading scenarios where latency must be minimized - the selection overhead may be prohibitive
+- Simple linear workflows without branching or fallback requirements
+- Cases where skill metadata is unavailable or unreliable
 
----
 
-## Core Concepts
+## Core Workflow
 
-### Replanning Triggers
+1. **Parse and Analyze Request** - Extract intent, entities, and constraints from user input.
+   **Checkpoint:** All required parameters must be present and in valid format before proceeding.
 
-Replanning is triggered by:
+2. **Score Available Skills** - Calculate match scores using multi-factor algorithm:
+   - Text similarity between request and skill triggers
+   - Historical success rate for similar tasks
+   - Skill availability and health status
+   - Required dependencies and their availability
+   
+   **Checkpoint:** Skip to fallback if no skill scores above threshold.
 
-```python
-{
-    "trigger": "failure|deviation|timeout|new_info|resource_change",
-    "timestamp": datetime,
-    "details": {...},
-    "confidence": 0.85
-}
-```
+3. **Select Optimal Skill** - Choose skill with highest score that meets minimum confidence.
+   **Checkpoint:** Verify skill has not been disabled or deprecated.
 
-### Plan Revision Strategies
+4. **Execute with Fallback** - Run skill execution wrapped in retry and fallback logic.
+   **Checkpoint:** Log all execution attempts for audit trail.
 
-#### 1. Local Revision
-
-Modify only affected parts:
-
-```
-Original Plan: [A] -> [B] -> [C] -> [D]
-                ↓ Failure at B
-Revised Plan:  [A] -> [B'] -> [C] -> [D]
-```
-
-#### 2. Partial Replanning
-
-Replan from point of failure:
-
-```
-Original Plan: [A] -> [B] -> [C] -> [D]
-                ↓ Failure at B
-Revised Plan:  [A] -> [B'] -> [C'] -> [D']
-```
-
-#### 3. Global Replanning
-
-Generate completely new plan:
-
-```
-Original Plan: [A] -> [B] -> [C] -> [D]
-                ↓ Major deviation
-Revised Plan:  [A'] -> [B'] -> [C'] -> [D']
-```
-
-#### 4. Fallback Plan
-
-Switch to pre-defined alternative:
-
-```
-Original Plan: [A] -> [B] -> [C] -> [D]
-                ↓ Failure at B
-Revised Plan:  [A] -> [B_fallback] -> [D]
-```
-
-### Plan Metrics
-
-Track plan quality with metrics:
-
-```python
-{
-    "plan_id": "uuid",
-    "quality": {
-        "estimated_success_rate": 0.85,
-        "estimated_completion_time": 3600,
-        "resource_cost": 500.00
-    },
-    "actual": {
-        "success_rate": 0.90,
-        "completion_time": 4200,
-        "resource_cost": 520.00
-    },
-    "deviation": {
-        "time": 600,  # 10 minutes over
-        "cost": 20.00,  # $20 over
-        "success_rate": 0.05  # 5% better
-    }
-}
-```
-
-### Replanning State Machine
-
-```
-Active Plan → Monitor → Detect Issue → Generate Alternatives → Select → Execute New Plan
-```
-
----
+5. **Return or Fallback** - Either return successful result or apply fallback chain:
+   - Retry with adjusted parameters
+   - Try alternative skill from `related-skills`
+   - Defer to human operator for critical tasks
+   
+   **Checkpoint:** Record outcome with timing and confidence metadata.
 
 ## Implementation Patterns
 
-### Pattern 1: Failure-Driven Replanning
-
-Replan when execution fails:
+### Pattern 1: Skill Selection Logic
 
 ```python
-from apex.agents.replanner import DynamicReplanner
+def select_skill(
+    task_description: str,
+    available_skills: List[Dict],
+    min_confidence: float = 0.7
+) -> Optional[Dict]:
+    """Select the most appropriate skill for a given task.
+    
+    Uses a multi-factor scoring algorithm that considers:
+    - Text similarity between task and skill triggers
+    - Historical success rate for similar tasks
+    - Current system load and skill availability
+    
+    Args:
+        task_description: Natural language description of the task
+        available_skills: List of skill metadata dictionaries
+        min_confidence: Minimum confidence threshold (0.0-1.0)
+        
+    Returns:
+        Selected skill dictionary or None if no match meets threshold
+        
+    Raises:
+        ValueError: If task_description is empty or available_skills is empty
+    """
+    # Guard clause - Early Exit (Law 1)
+    if not task_description or not task_description.strip():
+        raise ValueError("Task description cannot be empty")
+        
+    if not available_skills:
+        raise ValueError("No skills available for selection")
+    
+    # Parse input - Make Illegal States Unrepresentable (Law 2)
+    task_features = _extract_task_features(task_description)
+    
+    best_skill = None
+    best_score = 0.0
+    
+    for skill in available_skills:
+        score = _calculate_skill_score(task_features, skill)
+        
+        if score > best_score and score >= min_confidence:
+            best_score = score
+            best_skill = skill
+    
+    if best_skill is None:
+        return None
+    
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate
+    result = dict(best_skill)
+    result["selected_confidence"] = best_score
+    result["selection_timestamp"] = time.time()
+    return result
+```
 
 
-def execute_with_replanning(task: Task) -> Result:
-    """Execute task with failure-driven replanning."""
+### Pattern 2: Execution with Fallback
+
+```python
+def execute_with_fallback(
+    skill: Dict,
+    task_context: Dict,
+    max_retries: int = 2
+) -> Dict:
+    """Execute a skill with fallback chain for resilience.
     
-    replanner = DynamicReplanner(
-        max_replans=3,
-        fallback_strategies=["local_revision", "fallback_plan"]
-    )
+    Implements the Fail Fast, Fail Loud principle (Law 4):
+    - Invalid states halt immediately with descriptive errors
+    - No silent failures or partial results
     
-    # Initial plan
-    plan = replanner.generate_plan(task)
+    Fallback chain:
+    1. Retry with original parameters
+    2. Retry with adjusted parameters (if applicable)
+    3. Try alternative skill from related skills list
+    4. Defer to human operator (for critical tasks)
     
-    while True:
+    Args:
+        skill: Selected skill metadata
+        task_context: Execution context including inputs
+        max_retries: Maximum retry attempts before fallback
+        
+    Returns:
+        Execution result with metadata (success, timing, confidence)
+        
+    Raises:
+        SkillExecutionError: If all retries and fallbacks exhausted
+    """
+    # Guard clause - validate skill (Early Exit)
+    if not _is_skill_valid(skill):
+        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    
+    # Parse context - Ensure trusted state (Law 2)
+    validated_context = _validate_and_parse_context(task_context, skill)
+    
+    for attempt in range(max_retries + 1):
         try:
-            result = plan.execute()
-            return result
-        except ExecutionFailure as e:
-            if replanner.should_replan(e, plan):
-                plan = replanner.replan(plan, failure_reason=e)
-            else:
-                raise e
-```
-
-### Pattern 2: Deviation-Based Replanning
-
-Replan when metrics deviate:
-
-```python
-def monitor_and_replan(plan: Plan) -> Plan:
-    """Monitor plan execution and replan on deviation."""
+            result = _execute_skill_direct(skill, validated_context)
+            
+            # Success - Atomic Predictability (Law 3)
+            return {
+                "success": True,
+                "skill_executed": skill["name"],
+                "result": result,
+                "attempts": attempt + 1,
+                "latency_ms": _calculate_latency()
+            }
+            
+        except InvalidStateError as e:
+            # Fail Fast - Don't try to patch bad data (Law 4)
+            raise SkillExecutionError(
+                f"Invalid state in {skill['name']}: {str(e)}"
+            ) from e
+            
+        except TransientError as e:
+            # Transient error - try fallback
+            if attempt == max_retries:
+                return _apply_fallback_chain(skill, validated_context)
     
-    replanner = DynamicReplanner(
-        threshold={
-            "time_deviation": 0.2,  # 20% over estimate
-            "cost_deviation": 0.15,  # 15% over budget
-            "success_rate_deviation": 0.1  # 10% drop
-        }
+    # All retries exhausted - Fail Loud (Law 4)
+    raise SkillExecutionError(
+        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
     )
-    
-    # Monitor execution
-    while not plan.is_complete():
-        progress = plan.get_progress()
-        deviation = replanner.calculate_deviation(plan, progress)
-        
-        if replanner.should_replan(deviation):
-            plan = replanner.replan(plan, reason="metric_deviation")
-        
-        time.sleep(MONITOR_INTERVAL)
-    
-    return plan
 ```
 
-### Pattern 3: Context-Aware Replanning
+### MUST DO
+- Always validate skill metadata before selection (Early Exit)
+- Implement fallback chain with at least 2 levels (Fallback Skill + Human)
+- Log all skill selections with full context for auditability
+- Return new data structures instead of mutating inputs (Atomic Predictability)
+- Fail immediately with descriptive errors on invalid states
+- Update confidence scores after each execution for adaptive routing
+- Reference `code-philosophy` (5 Laws of Elegant Defense) in all logic
 
-Replan based on changing context:
 
-```python
-def context_aware_replanning(
-    plan: Plan,
-    context_stream: Iterator[Context]
-) -> Plan:
-    """Replan based on changing external context."""
-    
-    replanner = DynamicReplanner(
-        context_sensitive=True,
-        context_weights={
-            "market_conditions": 0.4,
-            "resource_availability": 0.3,
-            "priority_changes": 0.3
-        }
-    )
-    
-    for new_context in context_stream:
-        if replanner.should_replan_context(plan, new_context):
-            plan = replanner.replan_plan(plan, new_context)
-    
-    return plan
-```
+### MUST NOT DO
+- Select skills based on a single factor (e.g., only confidence score)
+- Disable fallback mechanisms "temporarily" - this creates fragile systems
+- Skip validation of skill dependencies before execution
+- Return partial results - either complete success or clear failure
+- Use magic numbers for confidence thresholds - make them configurable
+- Cache skill selections without considering context changes
 
-### Pattern 4: Partial Replanning
 
-Optimize by replanning only affected sections:
+## TL;DR Checklist
 
-```python
-def partial_replanning(
-    plan: Plan,
-    failed_step: Step,
-    step_index: int
-) -> Plan:
-    """Replan only from failed step onwards."""
-    
-    replanner = DynamicReplanner(
-        strategy="partial",
-        preserve_prefix=True
-    )
-    
-    # Preserve steps before failure
-    prefix = plan.steps[:step_index]
-    
-    # Replan from failure
-    suffix = replanner.replan_from(plan, step_index)
-    
-    # Combine
-    revised_plan = Plan(
-        id=plan.id,
-        steps=prefix + suffix,
-        context=plan.context
-    )
-    
-    return revised_plan
-```
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-### Pattern 5: Fallback Plan Selection
 
-Switch to pre-defined fallback plans:
+## TL;DR for Code Generation
 
-```python
-def select_fallback_plan(
-    failed_plan: Plan,
-    failure_type: str
-) -> Plan:
-    """Select appropriate fallback plan."""
-    
-    replanner = DynamicReplanner(
-        fallback_plans={
-            "resource_failure": "resource_aware_plan",
-            "data_failure": "robust_data_plan",
-            "skill_failure": "fallback_skill_plan",
-            "timeout": "optimized_plan"
-        },
-        fallback_priority=["robustness", "speed", "cost"]
-    )
-    
-    fallback_name = replanner.get_fallback(failure_type)
-    fallback_plan = replanner.load_fallback(fallback_name)
-    
-    # Adapt fallback to current context
-    adapted_plan = replanner.adapt_fallback(fallback_plan, failed_plan)
-    
-    return adapted_plan
-```
+- Use guard clauses - return early on invalid input before doing work
+- Return simple types (dict, str, int, bool, list) - avoid complex nested objects
+- Cyclomatic complexity < 10 per function - split anything larger
+- Handle null/empty cases explicitly at function top (Early Exit)
+- Never mutate input parameters - return new dicts/objects
+- Fail fast with descriptive errors - don't try to "patch" bad data
+- Reference code-philosophy laws in comments for complex logic
+- Include timing and confidence metadata in all return values
 
----
 
-## Common Patterns
+## Output Template
 
-### Pattern 1: Replanning Triggers Configuration
+When applying this skill, produce:
 
-Define when replanning should occur:
+1. **Selected Skills** - List of skill names with confidence scores
+2. **Selection Rationale** - Why each skill was chosen (match score, history, availability)
+3. **Execution Plan** - Order of execution with dependencies
+4. **Fallback Strategy** - Which fallback skills will be tried and in what order
+5. **Risk Assessment** - Any potential failure points and their impact
+6. **Timing Estimates** - Expected latency including fallback scenarios
 
-```python
-replanning_triggers = {
-    "failure": {
-        "any_failure": True,
-        "recoverable_failures_only": True,
-        "max_consecutive_failures": 3
-    },
-    "deviation": {
-        "time_threshold": 0.2,  # 20% over estimate
-        "cost_threshold": 0.15,  # 15% over budget
-        "quality_threshold": 0.1  # 10% quality drop
-    },
-    "external": {
-        "new_data_available": True,
-        "market_conditions_changed": True,
-        "priority_changed": True
-    },
-    "frequency": {
-        "min_interval": 60,  # Seconds between replans
-        "max_replans": 5,  # Maximum replans per task
-        "cooldown_period": 300  # Seconds after failure
-    }
-}
-```
 
-### Pattern 2: Quality Assessment
-
-Assess plan quality for replanning:
-
-```python
-def assess_plan_quality(plan: Plan) -> dict:
-    """Assess current plan quality."""
-    
-    return {
-        "success_rate_estimate": calculate_success_rate(plan),
-        "completion_time_estimate": estimate_completion_time(plan),
-        "resource_cost_estimate": estimate_resource_cost(plan),
-        "risk_score": calculate_risk_score(plan),
-        "flexibility_score": calculate_flexibility(plan),
-        "overall_quality": calculate_overall_quality(plan)
-    }
-```
-
-### Pattern 3: Alternative Generation
-
-Generate alternative plans efficiently:
-
-```python
-def generate_alternatives(plan: Plan) -> list[Plan]:
-    """Generate alternative execution plans."""
-    
-    alternatives = []
-    
-    # Local revision: Modify single steps
-    for i, step in enumerate(plan.steps):
-        revised_step = revise_step(step)
-        alternatives.append(
-            Plan(
-                id=f"{plan.id}_alt_{i}",
-                steps=plan.steps[:i] + [revised_step] + plan.steps[i+1:],
-                context=plan.context
-            )
-        )
-    
-    # Fallback: Replace with known alternatives
-    for fallback_name, fallback in get_fallback_plans(plan).items():
-        alternatives.append(fallback)
-    
-    # Partial replan: Replan from failure point
-    for failure_point in find_failure_points(plan):
-        alternatives.append(
-            partial_replan(plan, failure_point)
-        )
-    
-    return alternatives
-```
-
----
-
-## Common Mistakes
-
-### Mistake 1: Excessive Replanning
-
-**Wrong:**
-```python
-# ❌ Replans too frequently, causing overhead
-replanner = DynamicReplanner(
-    min_replan_interval=0,  # Replan on every observation
-    max_replans=100  # Unlimited replans
-)
-```
-
-**Correct:**
-```python
-# ✅ Appropriate replanning frequency
-replanner = DynamicReplanner(
-    min_replan_interval=60,  # Minimum 60s between replans
-    max_replans=5,  # Maximum 5 replans per task
-    threshold={"deviation": 0.2}  # Only replan on significant deviations
-)
-```
-
-### Mistake 2: Not Handling Cycle Detection
-
-**Wrong:**
-```python
-# ❌ Can get stuck in replanning loop
-while True:
-    result = plan.execute()
-    if replanner.should_replan(result):
-        plan = replanner.replan(plan)  # May create same plan again
-```
-
-**Correct:**
-```python
-# ✅ Detect and prevent replanning loops
-seen_plans = set()
-while replanner.should_replan(result):
-    plan = replanner.replan(plan)
-    plan_hash = hash_plan(plan)
-    if plan_hash in seen_plans:
-        raise ReplanningCycleDetected("Plan oscillating between states")
-    seen_plans.add(plan_hash)
-```
-
-### Mistake 3: Ignoring Replanning Cost
-
-**Wrong:**
-```python
-# ❌ Replanning may be more expensive than original plan
-current_cost = plan.estimated_cost
-replan_cost = replanner.estimate_replan_cost(plan)
-if replan_cost > current_cost * 2:
-    # ❌ Continue with poor plan instead of replanning
-    pass
-```
-
-**Correct:**
-```python
-# ✅ Consider replanning cost vs benefit
-current_cost = plan.estimated_cost
-replan_cost = replanner.estimate_replan_cost(plan)
-revised_plan = replanner.replan(plan)
-
-expected_improvement = calculate_expected_improvement(revised_plan)
-if expected_improvement > replan_cost * REPLAN_THRESHOLD:
-    plan = revised_plan
-else:
-    # Continue with original plan
-    pass
-```
-
-### Mistake 4: Not Preserving Valid Plan Sections
-
-**Wrong:**
-```python
-# ❌ Discards valid execution progress
-plan = generate_initial_plan()
-plan.execute_step(1)  # Step 1 complete
-plan.execute_step(2)  # Step 2 fails
-plan = replanner.replan(plan)  # ❌ May discard step 1 progress
-```
-
-**Correct:**
-```python
-# ✅ Preserve completed steps
-completed = plan.get_completed_steps()
-pending = plan.get_pending_steps()
-revised_pending = replanner.replan(pending)
-plan = Plan(steps=completed + revised_pending)
-```
-
-### Mistake 5: Not Handling Partial Success
-
-**Wrong:**
-```python
-# ❌ Treats partial success as total failure
-result = plan.execute()
-if not result.success:
-    plan = replanner.replan(plan)  # May be unnecessary
-```
-
-**Correct:**
-```python
-# ✅ Handles partial success gracefully
-result = plan.execute()
-if result.status == "partial":
-    plan = replanner.partial_replan(plan, result.completed_steps)
-elif result.status == "failed":
-    plan = replanner.replan(plan)
-```
-
----
-
-## Adherence Checklist
-
-### Code Review
-
-- [ ] **Guard Clauses:** Replanning validates inputs
-- [ ] **Parsed State:** Execution data parsed at boundary
-- [ ] **Purity:** Replanning logic is stateless where possible
-- [ ] **Fail Loud:** Invalid plans throw clear errors
-- [ ] **Readability:** Replanning strategy reads clearly
-
-### Testing
-
-- [ ] Unit tests for each replanning strategy
-- [ ] Integration tests for execution monitoring
-- [ ] Cycle detection tests
-- [ ] Cost-benefit tests
-- [ ] Performance tests for replanning overhead
-
-### Security
-
-- [ ] Plan parameters validated before replanning
-- [ ] No arbitrary code execution in replanning
-- [ ] Input sanitization for all execution data
-- [ ] Replanning limits enforced
-- [ ] Fallback plan validation
-
-### Performance
-
-- [ ] Replanning cached where appropriate
-- [ ] Memory usage monitored for complex plans
-- [ ] Execution monitoring optimized
-- [ ] Alternative generation efficient
-
----
-
-## References
-
-### Related Skills
+## Related Skills
 
 | Skill | Purpose |
-|-------|---------|
-| `goal-to-milestones` | Initial goal-to-plan translation |
-| `task-decomposition-engine` | Task breakdown for plans |
-| `multi-skill-executor` | Sequential plan execution |
-| `confidence-based-selector` | Skill selection for plans |
-| `code-philosophy` | Core logic patterns |
-
-### Core Dependencies
-
-- **Monitor:** Tracks plan execution
-- **Analyzer:** Detects deviations and failures
-- **Generator:** Creates alternative plans
-- **Selector:** Chooses best alternative
-- **Validator:** Ensures plan quality
-
-### External Resources
-
-- [Adaptive Planning](https://example.com/adaptive-planning) - Adaptive planning techniques
-- [Reactive Planning](https://example.com/reactive-planning) - Reactive planning systems
-- [Plan Repair](https://example.com/plan-repair) - Plan repair algorithms
-
----
-
-## Implementation Tracking
-
-### Agent Dynamic Replanner - Core Patterns
-
-| Task | Status |
-|------|--------|
-| Failure-driven replanning | ✅ Complete |
-| Deviation-based replanning | ✅ Complete |
-| Context-aware replanning | ✅ Complete |
-| Partial replanning | ✅ Complete |
-| Fallback plan selection | ✅ Complete |
-| Cycle detection | ✅ Complete |
-| Cost-benefit analysis | ✅ Complete |
-
----
-
-## Version History
-
-### 1.0.0 (Initial)
-- Failure-driven replanning
-- Deviation-based replanning
-- Partial replanning support
-- Fallback plan selection
-- Cycle detection
-
-### 1.1.0 (Planned)
-- Context-aware replanning
-- Partial success handling
-- Cost-benefit optimization
-- Performance profiling
-
-### 2.0.0 (Future)
-- Learning from replanning
-- Distributed replanning
-- Multi-agent replanning
-- Advanced failure prediction
-
----
-
-## Implementation Prompt (Execution Layer)
-
-When implementing the Dynamic Replanner, use this prompt for code generation:
-
-```
-Create a Dynamic Replanner implementation following these requirements:
-
-1. Core Class: `DynamicReplanner`
-   - Monitor plan execution and detect issues
-   - Generate alternative execution plans
-   - Select best alternative based on criteria
-   - Handle partial replanning efficiently
-
-2. Key Methods:
-   - `should_replan(plan, issue)`: Check if replanning needed
-   - `replan(plan, issue)`: Generate revised plan
-   - `replan_from(plan, step_index)`: Partial replanning
-   - `generate_alternatives(plan)`: Create plan alternatives
-   - `assess_plan_quality(plan)`: Evaluate plan quality
-
-3. Replanning Triggers:
-   - `failure`: Execution failure detected
-   - `deviation`: Metrics deviate from plan
-   - `timeout`: Step exceeds time limit
-   - `new_info`: New information available
-   - `resource_change`: Resources changed
-
-4. Replanning Strategies:
-   - `local_revision`: Modify single steps
-   - `partial_replan`: Replan from failure point
-   - `global_replan`: Generate new plan
-   - `fallback_plan`: Use pre-defined alternatives
-   - `hybrid`: Combine multiple strategies
-
-5. Configuration Options:
-   - `max_replans`: Maximum replans per task
-   - `min_replan_interval`: Minimum time between replans
-   - `thresholds`: Deviation thresholds for replanning
-   - `fallback_plans`: Pre-defined fallback plans
-   - `preservation_mode`: Preserve completed steps
-
-6. Plan Quality Assessment:
-   - Success rate estimation
-   - Completion time estimation
-   - Resource cost estimation
-   - Risk score calculation
-   - Overall quality scoring
-
-7. Alternative Generation:
-   - Local step revision
-   - Fallback plan adaptation
-   - Partial replanning
-   - Constraint relaxation
-   - Skill substitution
-
-8. Safety Features:
-   - Cycle detection
-   - Maximum replanning limit
-   - Replanning cost estimation
-   - Plan versioning
-   - Rollback capability
-
-Follow the 5 Laws of Elegant Defense:
-- Guard clauses for plan validation
-- Parse execution data at boundary
-- Pure replanning functions
-- Fail fast on invalid plans
-- Clear names for all replanning components
-```
+|---|---|
+| `agent-dynamic-replanner` | Replans execution when conditions change |
+| `agent-parallel-skill-runner` | Executes independent skills in parallel |
+| `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
+| `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
+| `agent-confidence-based-selector` | Alternative confidence-based routing approach

@@ -11,9 +11,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: firestore, nosql, document database, real-time sync, data synchronization,
-    mongodb, nosql database
+    mongodb, nosql database, dynamodb
   related-skills: gcp-cloud-functions, gcp-cloud-kms, gcp-cloud-monitoring
 ---
+
 
 
 

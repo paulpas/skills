@@ -11,9 +11,10 @@ metadata:
   scope: implementation
   output-format: code
   triggers: model robustness, adversarial robustness, out-of-distribution, OOD detection,
-    robustness testing, unit tests, testing
+    robustness testing, unit tests, testing, test automation
   related-skills: ds-anomaly-detection, ds-explainability, ds-model-fairness, ds-reproducible-research
 ---
+
 
 
 

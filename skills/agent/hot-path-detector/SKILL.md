@@ -1,840 +1,322 @@
 ---
-name: path-detector
-description: '"Identifies critical execution paths (hot paths) in code that impact
-  most" performance, reliability, and resource usage.'
+name: hot-path-detector
+description: Implements intelligent hot path detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
 license: MIT
 compatibility: opencode
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   domain: agent
-  role: debugging
-  scope: analysis
+  triggers: hot-path-detector, hot path detector, how do i hot-path-detector, orchestrate hot-path-detector, automate hot-path-detector, agent hot-path-detector
+  role: orchestration
+  scope: orchestration
   output-format: analysis
-  triggers: critical, execution, hot path detector, hot-path-detector, identifies
-  related-skills: code-correctness-verifier, error-trace-explainer, goal-to-milestones,
-    infra-drift-detector
+  related-skills: agent-task-routing, agent-confidence-based-selector
 ---
 
+# Hot Path Detector
 
-
-
-# Hot Path Detector (Execution Criticality Analysis)
-
-> **Load this skill** when designing or modifying hot path detection pipelines that identify the most critical execution paths affecting system performance, reliability, and resource consumption.
+Orchestrates intelligent skill selection and execution for hot path detector workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
 
 ## TL;DR Checklist
 
-When detecting hot paths in code:
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-- [ ] Analyze execution traces for frequency and duration
-- [ ] Calculate path impact based on time, resources, and failure risk
-- [ ] Identify bottleneck paths that affect throughput
-- [ ] Map hot paths to business-critical operations
-- [ ] Track hot path changes across versions
-- [ ] Suggest optimization targets for identified paths
-- [ ] Generate visual representations (flame graphs)
-- [ ] Follow the 5 Laws of Elegant Defense from code-philosophy
 
----
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                              Orchestration Flow                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+  User Request
+      ↓
+┌─────────────────┐
+│  Parse Request  │
+│  & Extract      │
+│  Features       │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Evaluate Available Skills                                │
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
+│  │ Skill A      │  │ Skill B      │  │ Skill C      │              │
+│  │ - Match Score│  │ - Match Score│  │ - Match Score│              │
+│  │ - Confidence │  │ - Confidence │  │ - Confidence │              │
+│  │ - History    │  │ - History    │  │ - History    │              │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘              │
+│         │                 │                 │                       │
+│         └─────────────────┴─────────────────┘                       │
+│                          ↓                                          │
+│                   Select Best Skill                               │
+└─────────────────────────────────────────────────────────────────────┘
+         ↓
+┌─────────────────┐
+│  Execute Skill  │
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│  Handle Result  │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Error Handling & Fallback                                  │
+│                                                                     │
+│  Success? ────────► Return Result                                  │
+│                                                                     │
+│  Fail? ────────┐                                                    │
+│                ↓                                                    │
+│  ┌──────────────────────────────────────────────────────────┐      │
+│  │               Fallback Chain                                    │      │
+│  │                                                             │      │
+│  │  1. Retry with adjusted parameters                          │      │
+│  │  2. Try Alternative Skill (if available)                    │      │
+│  │  3. Defer to Human Operator (if critical)                   │      │
+│  │  4. Log & Return Error                                      │      │
+│  └──────────────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────────────┘
 
 ## When to Use
 
-Use the Hot Path Detector when:
+Use this skill when:
 
-- Optimizing system performance by focusing on critical paths
-- Identifying which code paths affect most user experience
-- Analyzing resource usage patterns for capacity planning
-- Prioritizing optimization efforts based on impact
-- Detecting unexpected hot paths in production
-- Mapping execution flow for debugging complex issues
-
----
+- Orchestrating multi-step workflows that require skill delegation
+- Implementing adaptive skill routing based on confidence scores
+- Building fallback mechanisms for failed skill executions
+- Creating intelligent task decomposition and parallel execution
+- Designing skill dependency graphs with automatic resolution
+- Implementing skill selection with historical performance weighting
+- Building agent systems that need to self-organize around tasks
 
 ## When NOT to Use
 
-Avoid using this skill for:
+Avoid this skill for:
 
-- Single-function hot path analysis (use performance-profiler)
-- Real-time hot path monitoring (use monitoring systems)
-- Analyzing code without execution traces
-- Systems where all paths are equally critical
+- Direct task execution without orchestration needs - use individual skills instead
+- High-frequency trading scenarios where latency must be minimized - the selection overhead may be prohibitive
+- Simple linear workflows without branching or fallback requirements
+- Cases where skill metadata is unavailable or unreliable
 
----
 
-## Core Concepts
+## Core Workflow
 
-### Hot Path Identification
+1. **Parse and Analyze Request** - Extract intent, entities, and constraints from user input.
+   **Checkpoint:** All required parameters must be present and in valid format before proceeding.
 
-Hot paths are identified using execution frequency and duration:
+2. **Score Available Skills** - Calculate match scores using multi-factor algorithm:
+   - Text similarity between request and skill triggers
+   - Historical success rate for similar tasks
+   - Skill availability and health status
+   - Required dependencies and their availability
+   
+   **Checkpoint:** Skip to fallback if no skill scores above threshold.
 
-```
-Execution Trace
-├── Path A: freq=1000/s, duration=10ms, impact=0.5
-├── Path B: freq=500/s, duration=100ms, impact=0.3
-└── Path C: freq=100/s, duration=500ms, impact=0.2
-```
+3. **Select Optimal Skill** - Choose skill with highest score that meets minimum confidence.
+   **Checkpoint:** Verify skill has not been disabled or deprecated.
 
-### Impact Calculation
+4. **Execute with Fallback** - Run skill execution wrapped in retry and fallback logic.
+   **Checkpoint:** Log all execution attempts for audit trail.
 
-```python
-impact = (frequency * duration * weight) / total_throughput
-
-weights = {
-    "time": 0.5,
-    "resources": 0.3,
-    "failure_risk": 0.2
-}
-```
-
-### Path Classification
-
-#### 1. Critical Path
-
-High frequency, high duration, high impact:
-
-```
-┌─────────────────────────────────┐
-│  User Request                    │
-├─────────────────────────────────┤
-│  ├── Authentication (10ms)       │
-│  ├── Authorization (5ms)         │
-│  ├── Database Query (100ms)      │ ← HOT PATH
-│  └── Response Serialization (5ms)│
-└─────────────────────────────────┘
-```
-
-#### 2. Support Path
-
-Normal frequency and duration:
-
-```
-┌─────────────────────────────────┐
-│  Background Job                  │
-├─────────────────────────────────┤
-│  ├── Setup (5ms)                 │
-│  ├── Processing (50ms)           │ ← SUPPORT PATH
-│  └── Cleanup (5ms)               │
-└─────────────────────────────────┘
-```
-
-#### 3. Cold Path
-
-Low frequency, high duration:
-
-```
-┌─────────────────────────────────┐
-│  Admin Operation                 │
-├─────────────────────────────────┤
-│  ├── Validation (10ms)           │
-│  ├── Data Migration (10s)        │ ← COLD PATH
-│  └── Notification (5ms)          │
-└─────────────────────────────────┘
-```
-
----
+5. **Return or Fallback** - Either return successful result or apply fallback chain:
+   - Retry with adjusted parameters
+   - Try alternative skill from `related-skills`
+   - Defer to human operator for critical tasks
+   
+   **Checkpoint:** Record outcome with timing and confidence metadata.
 
 ## Implementation Patterns
 
-### Pattern 1: Basic Hot Path Detection
-
-Detect hot paths from execution traces:
+### Pattern 1: Skill Selection Logic
 
 ```python
-from dataclasses import dataclass
-from typing import List, Dict, Optional
-from collections import defaultdict
-
-
-@dataclass
-class PathNode:
-    function: str
-    frequency: int
-    total_duration: float
-    max_duration: float
-    min_duration: float
-    children: List["PathNode"]
+def select_skill(
+    task_description: str,
+    available_skills: List[Dict],
+    min_confidence: float = 0.7
+) -> Optional[Dict]:
+    """Select the most appropriate skill for a given task.
     
-    def avg_duration(self) -> float:
-        return self.total_duration / max(self.frequency, 1)
+    Uses a multi-factor scoring algorithm that considers:
+    - Text similarity between task and skill triggers
+    - Historical success rate for similar tasks
+    - Current system load and skill availability
     
-    def impact_score(self, weights: Dict[str, float] = None) -> float:
-        """Calculate hot path impact score."""
-        if weights is None:
-            weights = {"time": 0.5, "resources": 0.3, "failure_risk": 0.2}
+    Args:
+        task_description: Natural language description of the task
+        available_skills: List of skill metadata dictionaries
+        min_confidence: Minimum confidence threshold (0.0-1.0)
         
-        # Base impact from frequency and duration
-        base_impact = self.frequency * self.avg_duration()
+    Returns:
+        Selected skill dictionary or None if no match meets threshold
         
-        # Failure risk factor (simulated)
-        failure_risk = 0.1  # Would be calculated from error rates
-        resource_cost = 0.1  # Would be calculated from resource usage
+    Raises:
+        ValueError: If task_description is empty or available_skills is empty
+    """
+    # Guard clause - Early Exit (Law 1)
+    if not task_description or not task_description.strip():
+        raise ValueError("Task description cannot be empty")
         
-        return (
-            weights["time"] * base_impact +
-            weights["resources"] * resource_cost +
-            weights["failure_risk"] * failure_risk
-        )
-
-
-def detect_hot_paths(traces: List[Dict], threshold: float = 0.8) -> List[PathNode]:
-    """Detect hot paths from execution traces."""
+    if not available_skills:
+        raise ValueError("No skills available for selection")
     
-    # Build call frequency map
-    call_counts = defaultdict(int)
-    call_durations = defaultdict(list)
+    # Parse input - Make Illegal States Unrepresentable (Law 2)
+    task_features = _extract_task_features(task_description)
     
-    for trace in traces:
-        for call in trace["calls"]:
-            call_counts[call["function"]] += 1
-            call_durations[call["function"]].append(call["duration"])
+    best_skill = None
+    best_score = 0.0
     
-    # Calculate impact scores
-    path_scores = []
-    for func, count in call_counts.items():
-        durations = call_durations[func]
-        path_scores.append(PathNode(
-            function=func,
-            frequency=count,
-            total_duration=sum(durations),
-            max_duration=max(durations),
-            min_duration=min(durations),
-            children=[]
-        ))
+    for skill in available_skills:
+        score = _calculate_skill_score(task_features, skill)
+        
+        if score > best_score and score >= min_confidence:
+            best_score = score
+            best_skill = skill
     
-    # Filter by impact threshold
-    total_impact = sum(p.impact_score() for p in path_scores)
-    hot_paths = [
-        p for p in path_scores
-        if p.impact_score() / max(total_impact, 1e-10) > threshold
-    ]
+    if best_skill is None:
+        return None
     
-    return sorted(hot_paths, key=lambda p: p.impact_score(), reverse=True)
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate
+    result = dict(best_skill)
+    result["selected_confidence"] = best_score
+    result["selection_timestamp"] = time.time()
+    return result
 ```
 
-### Pattern 2: Recursive Path Analysis
 
-Analyze paths recursively to identify nested hot paths:
-
-```python
-def analyze_path_recursively(
-    trace: Dict,
-    path: List[str] = None,
-    depth: int = 0
-) -> List[Dict]:
-    """Analyze execution paths recursively."""
-    
-    if path is None:
-        path = []
-    
-    results = []
-    
-    for call in trace.get("calls", []):
-        current_path = path + [call["function"]]
-        
-        results.append({
-            "path": current_path.copy(),
-            "frequency": call.get("frequency", 1),
-            "total_duration": call.get("total_duration", 0),
-            "depth": depth,
-            "impact": call.get("duration", 0) * call.get("frequency", 1)
-        })
-        
-        # Recurse into children
-        if "children" in call:
-            for child in call["children"]:
-                child_trace = {
-                    "calls": [child],
-                    "duration": child.get("duration", 0)
-                }
-                results.extend(analyze_path_recursively(child_trace, current_path, depth + 1))
-    
-    return results
-
-
-def identify_hot_sub_paths(traces: List[Dict], threshold: float = 0.9) -> List[Dict]:
-    """Identify hot sub-paths within execution traces."""
-    
-    all_paths = []
-    for trace in traces:
-        paths = analyze_path_recursively(trace)
-        all_paths.extend(paths)
-    
-    # Aggregate by path
-    path_aggregates = defaultdict(lambda: {"count": 0, "total_duration": 0})
-    for path_data in all_paths:
-        path_key = tuple(path_data["path"])
-        path_aggregates[path_key]["count"] += path_data["frequency"]
-        path_aggregates[path_key]["total_duration"] += path_data["total_duration"]
-    
-    # Calculate total impact
-    total_impact = sum(
-        data["count"] * (data["total_duration"] / max(data["count"], 1))
-        for data in path_aggregates.values()
-    )
-    
-    # Filter hot paths
-    hot_paths = [
-        {
-            **data,
-            "path": list(path_key),
-            "avg_duration": data["total_duration"] / max(data["count"], 1),
-            "impact": data["count"] * (data["total_duration"] / max(data["count"], 1)),
-            "impact_ratio": (data["count"] * (data["total_duration"] / max(data["count"], 1))) / max(total_impact, 1e-10)
-        }
-        for path_key, data in path_aggregates.items()
-        if (data["count"] * (data["total_duration"] / max(data["count"], 1))) / max(total_impact, 1e-10) > threshold
-    ]
-    
-    return sorted(hot_paths, key=lambda x: x["impact_ratio"], reverse=True)
-```
-
-### Pattern 3: Path Visualization Generation
-
-Generate visualization data for hot paths:
+### Pattern 2: Execution with Fallback
 
 ```python
-def generate_flamegraph_data(paths: List[PathNode]) -> Dict:
-    """Generate flamegraph-compatible data."""
+def execute_with_fallback(
+    skill: Dict,
+    task_context: Dict,
+    max_retries: int = 2
+) -> Dict:
+    """Execute a skill with fallback chain for resilience.
     
-    def node_to_flame(node: PathNode, parent_time: float = 0) -> Dict:
-        avg_duration = node.avg_duration()
+    Implements the Fail Fast, Fail Loud principle (Law 4):
+    - Invalid states halt immediately with descriptive errors
+    - No silent failures or partial results
+    
+    Fallback chain:
+    1. Retry with original parameters
+    2. Retry with adjusted parameters (if applicable)
+    3. Try alternative skill from related skills list
+    4. Defer to human operator (for critical tasks)
+    
+    Args:
+        skill: Selected skill metadata
+        task_context: Execution context including inputs
+        max_retries: Maximum retry attempts before fallback
         
-        return {
-            "name": node.function,
-            "value": node.frequency,  # Frequency represents stack depth
-            "time": avg_duration * node.frequency,
-            "self": avg_duration * node.frequency,  # Will be adjusted
-            "children": [
-                node_to_flame(child, avg_duration)
-                for child in node.children
-            ]
-        }
-    
-    # Calculate self time (total - children)
-    def adjust_self_times(node: Dict, parent_time: float = 0) -> Dict:
-        children_time = sum(child["time"] for child in node.get("children", []))
-        node["self"] = max(parent_time - children_time, 0)
+    Returns:
+        Execution result with metadata (success, timing, confidence)
         
-        for child in node.get("children", []):
-            adjust_self_times(child, node["time"])
-        
-        return node
+    Raises:
+        SkillExecutionError: If all retries and fallbacks exhausted
+    """
+    # Guard clause - validate skill (Early Exit)
+    if not _is_skill_valid(skill):
+        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
     
-    # Build flamegraph
-    root = {
-        "name": "root",
-        "value": 1,
-        "time": sum(p.impact_score() for p in paths),
-        "self": 0,
-        "children": [node_to_flame(p) for p in paths]
-    }
+    # Parse context - Ensure trusted state (Law 2)
+    validated_context = _validate_and_parse_context(task_context, skill)
     
-    return adjust_self_times(root)
-
-
-def generate_timeline_data(traces: List[Dict]) -> List[Dict]:
-    """Generate timeline visualization data."""
-    
-    timeline = []
-    
-    for trace in traces:
-        current_time = 0
-        for call in trace.get("calls", []):
-            timeline.append({
-                "name": call["function"],
-                "start": current_time,
-                "duration": call.get("duration", 0),
-                "depth": call.get("depth", 0)
-            })
-            current_time += call.get("duration", 0)
-    
-    return timeline
-```
-
-### Pattern 4: Hot Path Comparison
-
-Compare hot paths across different versions:
-
-```python
-def compare_hot_paths(
-    baseline_paths: List[PathNode],
-    current_paths: List[PathNode]
-) -> List[Dict]:
-    """Compare hot paths between versions."""
-    
-    baseline_map = {p.function: p for p in baseline_paths}
-    current_map = {p.function: p for p in current_paths}
-    
-    comparisons = []
-    
-    # Check current hot paths
-    for func, current in current_map.items():
-        if func in baseline_map:
-            baseline = baseline_map[func]
+    for attempt in range(max_retries + 1):
+        try:
+            result = _execute_skill_direct(skill, validated_context)
             
-            # Calculate changes
-            duration_change = (current.avg_duration() - baseline.avg_duration()) / max(baseline.avg_duration(), 1e-10)
-            frequency_change = (current.frequency - baseline.frequency) / max(baseline.frequency, 1e-10)
+            # Success - Atomic Predictability (Law 3)
+            return {
+                "success": True,
+                "skill_executed": skill["name"],
+                "result": result,
+                "attempts": attempt + 1,
+                "latency_ms": _calculate_latency()
+            }
             
-            comparisons.append({
-                "function": func,
-                "baseline_impact": baseline.impact_score(),
-                "current_impact": current.impact_score(),
-                "impact_change": current.impact_score() - baseline.impact_score(),
-                "duration_change_pct": duration_change * 100,
-                "frequency_change_pct": frequency_change * 100,
-                "regression": duration_change > 0.1  # 10% increase is regression
-            })
-        else:
-            comparisons.append({
-                "function": func,
-                "baseline_impact": 0,
-                "current_impact": current.impact_score(),
-                "impact_change": current.impact_score(),
-                "duration_change_pct": 0,
-                "frequency_change_pct": 0,
-                "regression": False,
-                "new": True
-            })
+        except InvalidStateError as e:
+            # Fail Fast - Don't try to patch bad data (Law 4)
+            raise SkillExecutionError(
+                f"Invalid state in {skill['name']}: {str(e)}"
+            ) from e
+            
+        except TransientError as e:
+            # Transient error - try fallback
+            if attempt == max_retries:
+                return _apply_fallback_chain(skill, validated_context)
     
-    # Check for removed paths
-    for func, baseline in baseline_map.items():
-        if func not in current_map:
-            comparisons.append({
-                "function": func,
-                "baseline_impact": baseline.impact_score(),
-                "current_impact": 0,
-                "impact_change": -baseline.impact_score(),
-                "duration_change_pct": 0,
-                "frequency_change_pct": 0,
-                "removed": True
-            })
-    
-    # Sort by impact change
-    comparisons.sort(key=lambda x: abs(x["impact_change"]), reverse=True)
-    
-    return comparisons
-```
-
-### Pattern 5: Hot Path Optimization Suggestions
-
-Generate optimization suggestions for hot paths:
-
-```python
-def suggest_hot_path_optimizations(paths: List[PathNode]) -> List[Dict]:
-    """Generate optimization suggestions for hot paths."""
-    
-    suggestions = []
-    
-    for path in paths:
-        # High duration
-        if path.avg_duration() > 100:  # 100ms threshold
-            suggestions.append({
-                "type": "duration_reduction",
-                "function": path.function,
-                "current_avg": path.avg_duration(),
-                "suggestions": [
-                    "Consider caching for repeated computations",
-                    "Evaluate algorithmic complexity improvements",
-                    "Look for I/O optimization opportunities",
-                    "Consider parallelization for independent operations"
-                ]
-            })
-        
-        # High frequency
-        if path.frequency > 10000:  # 10k calls threshold
-            suggestions.append({
-                "type": "call_reduction",
-                "function": path.function,
-                "call_count": path.frequency,
-                "suggestions": [
-                    "Consider batching operations",
-                    "Cache results for identical inputs",
-                    "Eliminate redundant calls",
-                    "Move calculation to event-driven model"
-                ]
-            })
-        
-        # High variance
-        if path.max_duration > 10 * path.min_duration:  # 10x variance
-            suggestions.append({
-                "type": "variability_reduction",
-                "function": path.function,
-                "max_duration": path.max_duration,
-                "min_duration": path.min_duration,
-                "suggestions": [
-                    "Investigate inconsistent execution paths",
-                    "Check for external dependencies causing variance",
-                    "Add retry logic with exponential backoff",
-                    "Consider timeout and circuit breaker patterns"
-                ]
-            })
-    
-    # Prioritize by impact
-    suggestions.sort(
-        key=lambda x: -len(x["suggestions"])  # Simple priority
-    )
-    
-    return suggestions
-```
-
----
-
-## Common Patterns
-
-### Pattern 1: Hot Path Threshold Tuning
-
-Automatically tune hot path detection thresholds:
-
-```python
-def tune_hot_path_threshold(traces: List[Dict], target_coverage: float = 0.8) -> float:
-    """Automatically tune hot path threshold."""
-    
-    all_paths = detect_hot_paths(traces, threshold=0.0)
-    
-    # Binary search for threshold
-    low, high = 0.0, 1.0
-    best_threshold = 0.5
-    
-    for _ in range(20):  # Binary search iterations
-        threshold = (low + high) / 2
-        hot_paths = [p for p in all_paths if p.impact_score() > threshold]
-        
-        total_impact = sum(p.impact_score() for p in all_paths)
-        hot_impact = sum(p.impact_score() for p in hot_paths)
-        
-        coverage = hot_impact / max(total_impact, 1e-10)
-        
-        if coverage >= target_coverage:
-            best_threshold = threshold
-            low = threshold
-        else:
-            high = threshold
-    
-    return best_threshold
-```
-
-### Pattern 2: Dynamic Hot Path Tracking
-
-Track hot path changes over time:
-
-```python
-class HotPathTracker:
-    """Track hot path changes across versions."""
-    
-    def __init__(self):
-        self.history: List[Dict] = []
-    
-    def add_snapshot(self, version: str, paths: List[PathNode]):
-        """Add a version snapshot."""
-        self.history.append({
-            "version": version,
-            "paths": paths,
-            "timestamp": datetime.now()
-        })
-    
-    def get_hot_path_evolution(self, function: str) -> List[Dict]:
-        """Get evolution of a specific path."""
-        
-        evolution = []
-        for snapshot in self.history:
-            path = next((p for p in snapshot["paths"] if p.function == function), None)
-            if path:
-                evolution.append({
-                    "version": snapshot["version"],
-                    "impact": path.impact_score(),
-                    "avg_duration": path.avg_duration(),
-                    "frequency": path.frequency
-                })
-        
-        return evolution
-    
-    def detect_hot_path_regression(self, current_paths: List[PathNode]) -> List[Dict]:
-        """Detect hot path regressions vs baseline."""
-        
-        if len(self.history) < 2:
-            return []
-        
-        baseline = self.history[0]["paths"]
-        return compare_hot_paths(baseline, current_paths)
-```
-
----
-
-## Common Mistakes
-
-### Mistake 1: Only Looking at Duration
-
-**Wrong:**
-```python
-# ❌ Only considering duration, not frequency
-hot_paths = sorted(paths, key=lambda p: p.max_duration, reverse=True)
-# Misses high-frequency, low-duration paths
-```
-
-**Correct:**
-```python
-# ✅ Consider both frequency and duration
-hot_paths = sorted(paths, key=lambda p: p.frequency * p.avg_duration(), reverse=True)
-```
-
-### Mistake 2: Ignoring Call Context
-
-**Wrong:**
-```python
-# ❌ Treating all calls equally
-path_impact = path.frequency * path.avg_duration()
-# Doesn't account for path depth or nested impact
-```
-
-**Correct:**
-```python
-# ✅ Consider call context
-def calculate_contextual_impact(path: PathNode, depth: int = 0) -> float:
-    base_impact = path.frequency * path.avg_duration()
-    # Deeper paths have higher impact
-    return base_impact * (1 + depth * 0.1)
-```
-
-### Mistake 3: Not Handling Multithreading
-
-**Wrong:**
-```python
-# ❌ Single-threaded analysis on multithreaded code
-hot_paths = detect_hot_paths(single_trace)
-# Misses concurrent paths
-```
-
-**Correct:**
-```python
-# ✅ Thread-aware analysis
-def detect_hot_paths_threaded(traces: List[Dict]) -> List[PathNode]:
-    all_paths = []
-    for trace in traces:
-        all_paths.extend(detect_hot_paths([trace]))
-    
-    # Aggregate across threads
-    return aggregate_paths(all_paths)
-```
-
-### Mistake 4: Static Thresholds
-
-**Wrong:**
-```python
-# ❌ Fixed threshold for all systems
-HOT_PATH_THRESHOLD = 0.8
-hot_paths = [p for p in paths if p.impact_ratio > HOT_PATH_THRESHOLD]
-# Doesn't adapt to different system characteristics
-```
-
-**Correct:**
-```python
-# ✅ Adaptive threshold
-def adaptive_threshold(paths: List[PathNode]) -> float:
-    if not paths:
-        return 0.0
-    
-    impacts = [p.impact_score() for p in paths]
-    mean = statistics.mean(impacts)
-    std = statistics.stdev(impacts) if len(impacts) > 1 else 0
-    
-    return mean - std  # Include paths within 1 std of mean
-```
-
-### Mistake 5: Not Normalizing Across Runs
-
-**Wrong:**
-```python
-# ❌ Comparing profiles from different run conditions
-baseline = load_profile("production_run_1")
-current = load_profile("production_run_2")
-# Different traffic patterns, data sizes
-```
-
-**Correct:**
-```python
-# ✅ Normalize for fair comparison
-def normalize_for_comparison(profile: PathNode, normalize_to: int = 1000) -> PathNode:
-    """Normalize profile to standard throughput."""
-    current_frequency = profile.frequency
-    
-    if current_frequency == 0:
-        return profile
-    
-    scale = normalize_to / current_frequency
-    
-    return PathNode(
-        function=profile.function,
-        frequency=normalize_to,
-        total_duration=profile.total_duration * scale,
-        max_duration=profile.max_duration,
-        min_duration=profile.min_duration,
-        children=[
-            normalize_for_comparison(child, normalize_to)
-            for child in profile.children
-        ]
+    # All retries exhausted - Fail Loud (Law 4)
+    raise SkillExecutionError(
+        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
     )
 ```
 
----
+### MUST DO
+- Always validate skill metadata before selection (Early Exit)
+- Implement fallback chain with at least 2 levels (Fallback Skill + Human)
+- Log all skill selections with full context for auditability
+- Return new data structures instead of mutating inputs (Atomic Predictability)
+- Fail immediately with descriptive errors on invalid states
+- Update confidence scores after each execution for adaptive routing
+- Reference `code-philosophy` (5 Laws of Elegant Defense) in all logic
 
-## Adherence Checklist
 
-### Code Review
+### MUST NOT DO
+- Select skills based on a single factor (e.g., only confidence score)
+- Disable fallback mechanisms "temporarily" - this creates fragile systems
+- Skip validation of skill dependencies before execution
+- Return partial results - either complete success or clear failure
+- Use magic numbers for confidence thresholds - make them configurable
+- Cache skill selections without considering context changes
 
-- [ ] **Guard Clauses:** Threshold validation before path analysis
-- [ ] **Parsed State:** Raw traces parsed into path structures
-- [ ] **Purity:** Impact calculations are deterministic
-- [ ] **Fail Loud:** Invalid trace formats throw clear errors
-- [ ] **Readability:** Analysis results read like performance report
 
-### Testing
+## TL;DR Checklist
 
-- [ ] Unit tests for hot path detection
-- [ ] Integration tests for trace parsing
-- [ ] Comparison tests for version changes
-- [ ] Edge case tests (empty traces, single calls)
-- [ ] Visualization generation tests
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-### Security
 
-- [ ] Trace data sanitized before processing
-- [ ] No arbitrary code execution in trace parsing
-- [ ] Access control for sensitive paths
-- [ ] Profile data encrypted at rest
-- [ ] Audit logging for path analysis
+## TL;DR for Code Generation
 
-### Performance
+- Use guard clauses - return early on invalid input before doing work
+- Return simple types (dict, str, int, bool, list) - avoid complex nested objects
+- Cyclomatic complexity < 10 per function - split anything larger
+- Handle null/empty cases explicitly at function top (Early Exit)
+- Never mutate input parameters - return new dicts/objects
+- Fail fast with descriptive errors - don't try to "patch" bad data
+- Reference code-philosophy laws in comments for complex logic
+- Include timing and confidence metadata in all return values
 
-- [ ] Profiling overhead measured
-- [ ] Hot path analysis optimized for large traces
-- [ ] Memory usage monitored for trace accumulation
-- [ ] Real-time detection latency acceptable
 
----
+## Output Template
 
-## References
+When applying this skill, produce:
 
-### Related Skills
+1. **Selected Skills** - List of skill names with confidence scores
+2. **Selection Rationale** - Why each skill was chosen (match score, history, availability)
+3. **Execution Plan** - Order of execution with dependencies
+4. **Fallback Strategy** - Which fallback skills will be tried and in what order
+5. **Risk Assessment** - Any potential failure points and their impact
+6. **Timing Estimates** - Expected latency including fallback scenarios
+
+
+## Related Skills
 
 | Skill | Purpose |
-|-------|---------|
-| `performance-profiler` | Detailed performance measurement |
-| `memory-usage-analyzer` | Track memory allocation patterns |
-| `latency-analyzer` | Analyze latency distributions |
-| `code-philosophy` | Performance-aware design patterns |
-| `resource-optimizer` | Optimize resource usage |
-
-### Core Dependencies
-
-- **Trace Parser:** Parses execution traces
-- **Path Analyzer:** Identifies hot paths
-- **Impact Calculator:** Calculates path impact scores
-- **Comparator:** Compares paths across versions
-
-### External Resources
-
-- [Flame Graphs](https://www.brendangregg.com/flamegraphs.html) - Visual profiling
-- [Bottleneck Detection](https://example.com/bottleneck) - Performance analysis
-- [Path Analysis](https://example.com/path-analysis) - Execution tracing
-
----
-
-## Implementation Tracking
-
-### Agent Hot Path Detector - Core Patterns
-
-| Task | Status |
-|------|--------|
-| Basic path detection | ✅ Complete |
-| Recursive analysis | ✅ Complete |
-| Visualization generation | ✅ Complete |
-| Path comparison | ✅ Complete |
-| Optimization suggestions | ✅ Complete |
-| Threshold tuning | ✅ Complete |
-| Multi-threading support | ✅ Complete |
-
----
-
-## Version History
-
-### 1.0.0 (Initial)
-- Basic hot path detection
-- Recursive path analysis
-- Flame graph generation
-- Path comparison across versions
-- Optimization suggestions
-
-### 1.1.0 (Planned)
-- Dynamic threshold tuning
-- Multi-threading support
-- Integration with tracing systems
-- Real-time hot path monitoring
-
-### 2.0.0 (Future)
-- ML-based path prediction
-- Predictive hotspot detection
-- Cross-service path analysis
-- Automated path optimization
-
----
-
-## Implementation Prompt (Execution Layer)
-
-When implementing the Hot Path Detector, use this prompt for code generation:
-
-```
-Create a Hot Path Detector implementation following these requirements:
-
-1. Core Classes:
-   - `PathNode`: Stores path data (function, frequency, duration)
-   - `HotPathAnalyzer`: Main analysis engine
-   - `HotPathTracker`: Track changes across versions
-
-2. Key Methods:
-   - `detect_hot_paths(traces, threshold)`: Find hot paths
-   - `analyze_path_recursively(trace, path, depth)`: Recursive analysis
-   - `generate_flamegraph_data(paths)`: Visualization data
-   - `compare_hot_paths(baseline, current)`: Version comparison
-   - `suggest_hot_path_optimizations(paths)`: Optimization hints
-
-3. Impact Calculation:
-   - Frequency-based scoring
-   - Duration weighting
-   - Resource cost factors
-   - Failure risk factors
-
-4. Path Classification:
-   - Critical path (high frequency + high duration)
-   - Support path (normal metrics)
-   - Cold path (low frequency, high duration)
-
-5. Data Structures:
-   - PathNode with impact_score() method
-   - Flamegraph data format
-   - Timeline visualization data
-
-6. Configuration Options:
-   - threshold: Impact threshold for hot paths
-   - weights: Relative importance of factors
-   - depth_limit: Maximum recursion depth
-   - normalization: Target throughput for comparison
-
-7. Output Features:
-   - Human-readable hot path report
-   - Flame graph data generation
-   - Comparison reports across versions
-   - Optimization suggestions
-
-8. Thread Handling:
-   - Multi-threading support
-   - Per-thread path tracking
-   - Cross-thread aggregation
-
-Follow the 5 Laws of Elegant Defense:
-- Guard clauses for trace validation
-- Parse traces into typed structures
-- Pure calculation functions
-- Fail fast on invalid traces
-- Clear names for all components
-```
+|---|---|
+| `agent-dynamic-replanner` | Replans execution when conditions change |
+| `agent-parallel-skill-runner` | Executes independent skills in parallel |
+| `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
+| `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
+| `agent-confidence-based-selector` | Alternative confidence-based routing approach

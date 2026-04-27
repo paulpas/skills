@@ -16,8 +16,9 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: openyurt, extending, kubernetes, computing
+  triggers: openyurt, extending, kubernetes, computing, container orchestration, k8s
 ---
+
 
 
   related-skills: cncf-argo, cncf-artifact-hub, cncf-aws-eks, cncf-azure-aks
