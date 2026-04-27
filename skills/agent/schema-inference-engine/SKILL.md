@@ -1,1051 +1,322 @@
 ---
-name: inference-engine
-description: '"Inferences data schemas from actual data samples, generatingtyped data"
-  structures and validation rules for data pipelines.'
+name: schema-inference-engine
+description: Implements intelligent schema inference engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
 license: MIT
 compatibility: opencode
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   domain: agent
-  role: data
-  scope: schema
-  output-format: schema
-  triggers: data schema, schema discovery, schema inference, schema-inference-engine
-  related-skills: add-new-skill, confidence-based-selector, goal-to-milestones, multi-skill-executor
+  triggers: schema-inference-engine, schema inference engine, how do i schema-inference-engine, orchestrate schema-inference-engine, automate schema-inference-engine, agent schema-inference-engine
+  role: orchestration
+  scope: orchestration
+  output-format: analysis
+  related-skills: agent-task-routing, agent-confidence-based-selector
 ---
 
+# Schema Inference Engine
 
-
-
-# Schema Inference Engine (Data Schema Discovery)
-
-> **Load this skill** when designing or modifying schema inference pipelines that analyze data samples to discover, infer, and validate data schemas for pipelines.
+Orchestrates intelligent skill selection and execution for schema inference engine workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
 
 ## TL;DR Checklist
 
-When inferring data schemas:
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-- [ ] Analyze data samples to identify field types and patterns
-- [ ] Handle missing and null values appropriately
-- [ ] Detect nested structures and arrays
-- [ ] Infer constraints (min/max, patterns, enums)
-- [ ] Generate typed data structures with validation
-- [ ] Create schema validation rules and documentation
-- [ ] Track schema evolution over time
-- [ ] Follow the 5 Laws of Elegant Defense from code-philosophy
 
----
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                              Orchestration Flow                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+  User Request
+      ↓
+┌─────────────────┐
+│  Parse Request  │
+│  & Extract      │
+│  Features       │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Evaluate Available Skills                                │
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
+│  │ Skill A      │  │ Skill B      │  │ Skill C      │              │
+│  │ - Match Score│  │ - Match Score│  │ - Match Score│              │
+│  │ - Confidence │  │ - Confidence │  │ - Confidence │              │
+│  │ - History    │  │ - History    │  │ - History    │              │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘              │
+│         │                 │                 │                       │
+│         └─────────────────┴─────────────────┘                       │
+│                          ↓                                          │
+│                   Select Best Skill                               │
+└─────────────────────────────────────────────────────────────────────┘
+         ↓
+┌─────────────────┐
+│  Execute Skill  │
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│  Handle Result  │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Error Handling & Fallback                                  │
+│                                                                     │
+│  Success? ────────► Return Result                                  │
+│                                                                     │
+│  Fail? ────────┐                                                    │
+│                ↓                                                    │
+│  ┌──────────────────────────────────────────────────────────┐      │
+│  │               Fallback Chain                                    │      │
+│  │                                                             │      │
+│  │  1. Retry with adjusted parameters                          │      │
+│  │  2. Try Alternative Skill (if available)                    │      │
+│  │  3. Defer to Human Operator (if critical)                   │      │
+│  │  4. Log & Return Error                                      │      │
+│  └──────────────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────────────┘
 
 ## When to Use
 
-Use Schema Inference Engine when:
+Use this skill when:
 
-- Discovering schemas from unknown data sources
-- Generating types from API responses
-- Validating incoming data against inferred schema
-- Documenting data structures for pipelines
-- Converting unstructured data to typed structures
-
----
+- Orchestrating multi-step workflows that require skill delegation
+- Implementing adaptive skill routing based on confidence scores
+- Building fallback mechanisms for failed skill executions
+- Creating intelligent task decomposition and parallel execution
+- Designing skill dependency graphs with automatic resolution
+- Implementing skill selection with historical performance weighting
+- Building agent systems that need to self-organize around tasks
 
 ## When NOT to Use
 
-Avoid using Schema Inference Engine for:
+Avoid this skill for:
 
-- Known schemas with strict requirements
-- Schema migration tasks
-- Environments without data samples
-- Tasks where schema is manually defined
-- Real-time schema validation (use compiled schemas)
+- Direct task execution without orchestration needs - use individual skills instead
+- High-frequency trading scenarios where latency must be minimized - the selection overhead may be prohibitive
+- Simple linear workflows without branching or fallback requirements
+- Cases where skill metadata is unavailable or unreliable
 
----
 
-## Core Concepts
+## Core Workflow
 
-### Schema Inference Pipeline
+1. **Parse and Analyze Request** - Extract intent, entities, and constraints from user input.
+   **Checkpoint:** All required parameters must be present and in valid format before proceeding.
 
-```
-Schema Inference Pipeline
-├── Data Ingestion
-│   ├── Sample Collection
-│   ├── Data Parsing
-│   └── Null Handling
-├── Type Inference
-│   ├── Primitive Types
-│   ├── Nested Objects
-│   └── Arrays/Lists
-├── Constraint Inference
-│   ├── Min/Max Values
-│   ├── Pattern Matching
-│   ├── Enum Values
-│   └── Required Fields
-├── Schema Generation
-│   ├── Type Definitions
-│   ├── Validation Rules
-│   └── Documentation
-└── Schema Validation
-    ├── Schema Test
-    ├── Data Validation
-    └── Evolution Tracking
-```
+2. **Score Available Skills** - Calculate match scores using multi-factor algorithm:
+   - Text similarity between request and skill triggers
+   - Historical success rate for similar tasks
+   - Skill availability and health status
+   - Required dependencies and their availability
+   
+   **Checkpoint:** Skip to fallback if no skill scores above threshold.
 
-### Inferred Types
+3. **Select Optimal Skill** - Choose skill with highest score that meets minimum confidence.
+   **Checkpoint:** Verify skill has not been disabled or deprecated.
 
-#### 1. Primitive Types
+4. **Execute with Fallback** - Run skill execution wrapped in retry and fallback logic.
+   **Checkpoint:** Log all execution attempts for audit trail.
 
-```
-String: Text data
-Number: Integer or floating-point
-Boolean: True/false values
-Null: Null/none values
-```
-
-#### 2. Complex Types
-
-```
-Object: Key-value pairs with properties
-Array: Ordered list of values
-Union: One of multiple possible types
-Optional: May be present or absent
-```
-
-#### 3. Constraint Types
-
-```
-MinLength/MaxLength: String length limits
-Minimum/Maximum: Numeric bounds
-Pattern: Regex patterns
-Enum: Limited set of values
-Required: Field presence requirements
-Unique: Array uniqueness
-```
-
-### Inference Strategies
-
-#### 1. Heuristic-Based
-```
-Analyze data patterns → Apply heuristics → Infer types
-Useful for: Quick inference, unknown data
-```
-
-#### 2. Statistical
-```
-Sample large dataset → Compute statistics → Infer types
-Useful for: Large datasets, probability-based
-```
-
-#### 3. Hybrid
-```
-Combine heuristic and statistical approaches
-Useful for: Most production scenarios
-```
-
----
+5. **Return or Fallback** - Either return successful result or apply fallback chain:
+   - Retry with adjusted parameters
+   - Try alternative skill from `related-skills`
+   - Defer to human operator for critical tasks
+   
+   **Checkpoint:** Record outcome with timing and confidence metadata.
 
 ## Implementation Patterns
 
-### Pattern 1: Primitive Type Inference
-
-Infer primitive types from data samples:
+### Pattern 1: Skill Selection Logic
 
 ```python
-from dataclasses import dataclass
-from typing import Any, List, Optional
-from datetime import datetime
-import re
-
-
-@dataclass
-class InferredType:
-    type: str  # string, number, boolean, null, object, array
-    nullable: bool
-    constraints: dict
-    samples: List[Any]
-
-
-def infer_primitive_type(values: List[Any]) -> InferredType:
-    """Infer primitive type from a list of values."""
-    if not values:
-        return InferredType(
-            type="null",
-            nullable=True,
-            constraints={},
-            samples=[]
-        )
+def select_skill(
+    task_description: str,
+    available_skills: List[Dict],
+    min_confidence: float = 0.7
+) -> Optional[Dict]:
+    """Select the most appropriate skill for a given task.
     
-    # Remove nulls for type detection
-    non_null_values = [v for v in values if v is not None]
-    has_nulls = len(non_null_values) < len(values)
+    Uses a multi-factor scoring algorithm that considers:
+    - Text similarity between task and skill triggers
+    - Historical success rate for similar tasks
+    - Current system load and skill availability
     
-    if not non_null_values:
-        return InferredType(
-            type="null",
-            nullable=True,
-            constraints={},
-            samples=values
-        )
-    
-    # Try to infer type
-    inferred = infer_single_type(non_null_values[0])
-    
-    # Validate against all values
-    for value in non_null_values:
-        if not is_compatible(value, inferred):
-            inferred = "string"  # Fall back to string for mixed types
-    
-    return InferredType(
-        type=inferred,
-        nullable=has_nulls,
-        constraints=infer_constraints(non_null_values, inferred),
-        samples=values
-    )
-
-
-def infer_single_type(value: Any) -> str:
-    """Infer type for a single value."""
-    if value is None:
-        return "null"
-    
-    if isinstance(value, bool):
-        return "boolean"
-    
-    if isinstance(value, (int, float)):
-        return "number"
-    
-    if isinstance(value, str):
-        return "string"
-    
-    if isinstance(value, (list, tuple)):
-        return "array"
-    
-    if isinstance(value, dict):
-        return "object"
-    
-    return "string"
-
-
-def is_compatible(value: Any, target_type: str) -> bool:
-    """Check if value is compatible with target type."""
-    if value is None:
-        return True
-    
-    if target_type == "boolean":
-        return isinstance(value, bool)
-    
-    if target_type == "number":
-        return isinstance(value, (int, float))
-    
-    if target_type == "string":
-        return isinstance(value, str)
-    
-    if target_type == "array":
-        return isinstance(value, (list, tuple))
-    
-    if target_type == "object":
-        return isinstance(value, dict)
-    
-    return True
-```
-
-### Pattern 2: Nested Object Inference
-
-Infer schemas for nested objects:
-
-```python
-from dataclasses import dataclass
-from typing import Dict, List
-
-
-@dataclass
-class Property:
-    name: str
-    type_info: InferredType
-    required: bool
-    description: str = ""
-
-
-@dataclass
-class ObjectSchema:
-    type: str = "object"
-    properties: Dict[str, Property]
-    required: List[str]
-
-
-def infer_object_schema(objects: List[dict]) -> ObjectSchema:
-    """Infer schema for nested objects."""
-    if not objects:
-        return ObjectSchema(properties={}, required=[])
-    
-    # Collect all keys
-    all_keys = set()
-    for obj in objects:
-        all_keys.update(obj.keys())
-    
-    # Infer types for each key
-    properties = {}
-    for key in all_keys:
-        values = [obj.get(key) for obj in objects]
-        type_info = infer_primitive_type(values)
+    Args:
+        task_description: Natural language description of the task
+        available_skills: List of skill metadata dictionaries
+        min_confidence: Minimum confidence threshold (0.0-1.0)
         
-        # Check if key is required (present in all objects)
-        required = all(key in obj for obj in objects)
+    Returns:
+        Selected skill dictionary or None if no match meets threshold
         
-        properties[key] = Property(
-            name=key,
-            type_info=type_info,
-            required=required
-        )
-    
-    required_keys = [k for k, p in properties.items() if p.required]
-    
-    return ObjectSchema(
-        properties=properties,
-        required=required_keys
-    )
-
-
-def infer_nested_schema(data: Any) -> Any:
-    """Recursively infer schema for nested data."""
-    if data is None:
-        return {"type": "null", "nullable": True}
-    
-    if isinstance(data, bool):
-        return {"type": "boolean"}
-    
-    if isinstance(data, (int, float)):
-        return {"type": "number", "subtype": "integer" if isinstance(data, int) else "float"}
-    
-    if isinstance(data, str):
-        return {"type": "string"}
-    
-    if isinstance(data, list):
-        if not data:
-            return {"type": "array", "items": {"type": "any"}}
+    Raises:
+        ValueError: If task_description is empty or available_skills is empty
+    """
+    # Guard clause - Early Exit (Law 1)
+    if not task_description or not task_description.strip():
+        raise ValueError("Task description cannot be empty")
         
-        # Infer items type
-        item_types = [infer_nested_schema(item) for item in data[:10]]  # Sample items
+    if not available_skills:
+        raise ValueError("No skills available for selection")
+    
+    # Parse input - Make Illegal States Unrepresentable (Law 2)
+    task_features = _extract_task_features(task_description)
+    
+    best_skill = None
+    best_score = 0.0
+    
+    for skill in available_skills:
+        score = _calculate_skill_score(task_features, skill)
         
-        # Find common type
-        common_type = find_common_type(item_types)
-        
-        return {"type": "array", "items": common_type}
+        if score > best_score and score >= min_confidence:
+            best_score = score
+            best_skill = skill
     
-    if isinstance(data, dict):
-        properties = {}
-        required = []
-        
-        for key, value in data.items():
-            properties[key] = infer_nested_schema(value)
-            if value is not None:
-                required.append(key)
-        
-        return {
-            "type": "object",
-            "properties": properties,
-            "required": required
-        }
+    if best_skill is None:
+        return None
     
-    return {"type": "unknown"}
-```
-
-### Pattern 3: Constraint Inference
-
-Infer validation constraints from data:
-
-```python
-from dataclasses import dataclass
-from typing import List, Optional
-import re
-
-
-@dataclass
-class Constraints:
-    min_length: Optional[int] = None
-    max_length: Optional[int] = None
-    minimum: Optional[float] = None
-    maximum: Optional[float] = None
-    pattern: Optional[str] = None
-    enum: Optional[List[str]] = None
-    unique: bool = False
-    min_items: Optional[int] = None
-    max_items: Optional[int] = None
-
-
-def infer_constraints(values: List[Any], type_hint: str = None) -> Constraints:
-    """Infer constraints from data samples."""
-    constraints = Constraints()
-    
-    if not values:
-        return constraints
-    
-    non_null_values = [v for v in values if v is not None]
-    
-    if not non_null_values:
-        return constraints
-    
-    if type_hint == "string" or isinstance(non_null_values[0], str):
-        constraints.min_length = min(len(str(v)) for v in non_null_values)
-        constraints.max_length = max(len(str(v)) for v in non_null_values)
-        
-        # Check for pattern (email, URL, etc.)
-        patterns = [
-            (r'^[\w\.-]+@[\w\.-]+\.\w+$', 'email'),
-            (r'^(https?://)?([\w\-]+\.)+[\w\-]+(/[\w\-./?%&=]*)?$', 'url'),
-        ]
-        for pattern, name in patterns:
-            if all(re.match(pattern, str(v)) for v in non_null_values):
-                constraints.pattern = pattern
-                break
-        
-        # Check for enum (only if few unique values)
-        unique_values = set(str(v) for v in non_null_values)
-        if len(unique_values) <= 10 and len(unique_values) < len(non_null_values) * 0.5:
-            constraints.enum = sorted(list(unique_values))
-    
-    elif type_hint == "number" or isinstance(non_null_values[0], (int, float)):
-        constraints.minimum = min(non_null_values)
-        constraints.maximum = max(non_null_values)
-        
-        # Check if all are integers
-        if all(isinstance(v, int) for v in non_null_values):
-            constraints.subtype = "integer"
-    
-    elif isinstance(non_null_values[0], list):
-        constraints.min_items = min(len(v) for v in non_null_values)
-        constraints.max_items = max(len(v) for v in non_null_values)
-        
-        # Check for unique arrays
-        if all(len(set(v)) == len(v) for v in non_null_values):
-            constraints.unique = True
-    
-    return constraints
-```
-
-### Pattern 4: Schema Validation
-
-Validate data against inferred schema:
-
-```python
-from dataclasses import dataclass
-from typing import List, Optional
-
-
-@dataclass
-class ValidationError:
-    field: str
-    message: str
-    value: Any
-    expected_type: str
-
-
-def validate_data(
-    data: dict,
-    schema: ObjectSchema
-) -> List[ValidationError]:
-    """Validate data against schema."""
-    errors = []
-    
-    # Check required fields
-    for field in schema.required:
-        if field not in data:
-            errors.append(ValidationError(
-                field=field,
-                message="Required field missing",
-                value=None,
-                expected_type="any"
-            ))
-    
-    # Validate each field
-    for field, prop in schema.properties.items():
-        if field in data:
-            value = data[field]
-            type_info = prop.type_info
-            
-            # Type check
-            if not is_valid_type(value, type_info.type, type_info.constraints):
-                errors.append(ValidationError(
-                    field=field,
-                    message=f"Expected {type_info.type}",
-                    value=value,
-                    expected_type=type_info.type
-                ))
-            
-            # Constraint checks
-            if type_info.type == "string" and isinstance(value, str):
-                if type_info.constraints.get("min_length") and len(value) < type_info.constraints["min_length"]:
-                    errors.append(ValidationError(
-                        field=field,
-                        message="String too short",
-                        value=value,
-                        expected_type=f"min_length={type_info.constraints['min_length']}"
-                    ))
-                
-                if type_info.constraints.get("max_length") and len(value) > type_info.constraints["max_length"]:
-                    errors.append(ValidationError(
-                        field=field,
-                        message="String too long",
-                        value=value,
-                        expected_type=f"max_length={type_info.constraints['max_length']}"
-                    ))
-                
-                if type_info.constraints.get("pattern") and not re.match(type_info.constraints["pattern"], value):
-                    errors.append(ValidationError(
-                        field=field,
-                        message="Does not match pattern",
-                        value=value,
-                        expected_type=f"pattern={type_info.constraints['pattern']}"
-                    ))
-                
-                if type_info.constraints.get("enum") and value not in type_info.constraints["enum"]:
-                    errors.append(ValidationError(
-                        field=field,
-                        message="Invalid enum value",
-                        value=value,
-                        expected_type=f"enum={type_info.constraints['enum']}"
-                    ))
-            
-            elif type_info.type == "number" and isinstance(value, (int, float)):
-                if type_info.constraints.get("minimum") and value < type_info.constraints["minimum"]:
-                    errors.append(ValidationError(
-                        field=field,
-                        message="Value below minimum",
-                        value=value,
-                        expected_type=f"minimum={type_info.constraints['minimum']}"
-                    ))
-                
-                if type_info.constraints.get("maximum") and value > type_info.constraints["maximum"]:
-                    errors.append(ValidationError(
-                        field=field,
-                        message="Value above maximum",
-                        value=value,
-                        expected_type=f"maximum={type_info.constraints['maximum']}"
-                    ))
-    
-    return errors
-
-
-def is_valid_type(value: Any, type_hint: str, constraints: dict) -> bool:
-    """Check if value matches type hint."""
-    if value is None:
-        return constraints.get("nullable", False)
-    
-    if type_hint == "string":
-        return isinstance(value, str)
-    
-    if type_hint == "number":
-        return isinstance(value, (int, float))
-    
-    if type_hint == "boolean":
-        return isinstance(value, bool)
-    
-    if type_hint == "array":
-        return isinstance(value, (list, tuple))
-    
-    if type_hint == "object":
-        return isinstance(value, dict)
-    
-    if type_hint == "null":
-        return value is None
-    
-    return True
-```
-
-### Pattern 5: Schema Documentation Generator
-
-Generate documentation for inferred schemas:
-
-```python
-from dataclasses import dataclass
-from typing import List, Dict
-
-
-@dataclass
-class SchemaDocumentation:
-    title: str
-    description: str
-    schema: dict
-    examples: List[dict]
-    constraints: List[dict]
-
-
-def generate_documentation(
-    schema: ObjectSchema,
-    sample_data: List[dict],
-    title: str = "Data Schema Documentation",
-    description: str = "Automatically generated schema documentation"
-) -> SchemaDocumentation:
-    """Generate human-readable schema documentation."""
-    schema_dict = object_to_json_schema(schema)
-    
-    # Find good examples (valid, representative)
-    examples = find_representative_examples(sample_data, schema, max_examples=3)
-    
-    return SchemaDocumentation(
-        title=title,
-        description=description,
-        schema=schema_dict,
-        examples=examples,
-        constraints=collect_all_constraints(schema)
-    )
-
-
-def object_to_json_schema(schema: ObjectSchema) -> dict:
-    """Convert schema to JSON Schema format."""
-    properties = {}
-    
-    for name, prop in schema.properties.items():
-        prop_schema = type_info_to_json_schema(prop.type_info)
-        if prop.required:
-            properties[name] = prop_schema
-        else:
-            properties[name] = prop_schema
-            # Mark as optional
-            properties[f"{name}_optional"] = {"anyOf": [prop_schema, {"type": "null"}]}
-    
-    result = {
-        "type": "object",
-        "properties": properties,
-        "required": schema.required
-    }
-    
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate
+    result = dict(best_skill)
+    result["selected_confidence"] = best_score
+    result["selection_timestamp"] = time.time()
     return result
-
-
-def type_info_to_json_schema(type_info: InferredType) -> dict:
-    """Convert InferredType to JSON Schema."""
-    schema = {"type": type_info.type}
-    
-    if type_info.constraints:
-        for key, value in type_info.constraints.items():
-            if key in ("min_length", "max_length", "minimum", "maximum", "pattern", "enum"):
-                schema[key] = value
-    
-    if type_info.type == "array" and "items" in type_info.constraints:
-        schema["items"] = {"type": type_info.constraints["items"]}
-    
-    return schema
-
-
-def collect_all_constraints(schema: ObjectSchema) -> List[dict]:
-    """Collect all constraints from schema."""
-    constraints = []
-    
-    for name, prop in schema.properties.items():
-        if prop.type_info.constraints:
-            for constraint, value in prop.type_info.constraints.items():
-                constraints.append({
-                    "field": name,
-                    "constraint": constraint,
-                    "value": value
-                })
-    
-    return constraints
-
-
-def find_representative_examples(
-    data: List[dict],
-    schema: ObjectSchema,
-    max_examples: int = 3
-) -> List[dict]:
-    """Find representative examples from data."""
-    valid_examples = []
-    
-    for item in data:
-        errors = validate_data(item, schema)
-        if not errors:
-            valid_examples.append(item)
-            if len(valid_examples) >= max_examples:
-                break
-    
-    return valid_examples[:max_examples]
 ```
 
----
 
-## Common Patterns
-
-### Pattern 1: Schema Comparison
-
-Compare schemas for evolution tracking:
+### Pattern 2: Execution with Fallback
 
 ```python
-def compare_schemas(
-    old_schema: ObjectSchema,
-    new_schema: ObjectSchema
-) -> List[dict]:
-    """Compare two schemas for changes."""
-    changes = []
+def execute_with_fallback(
+    skill: Dict,
+    task_context: Dict,
+    max_retries: int = 2
+) -> Dict:
+    """Execute a skill with fallback chain for resilience.
     
-    old_props = {k: v for k, v in old_schema.properties.items()}
-    new_props = {k: v for k, v in new_schema.properties.items()}
+    Implements the Fail Fast, Fail Loud principle (Law 4):
+    - Invalid states halt immediately with descriptive errors
+    - No silent failures or partial results
     
-    # Check for removed fields
-    for key in old_props:
-        if key not in new_props:
-            changes.append({
-                "type": "removed",
-                "field": key,
-                "old_type": old_props[key].type_info.type
-            })
+    Fallback chain:
+    1. Retry with original parameters
+    2. Retry with adjusted parameters (if applicable)
+    3. Try alternative skill from related skills list
+    4. Defer to human operator (for critical tasks)
     
-    # Check for added fields
-    for key in new_props:
-        if key not in old_props:
-            changes.append({
-                "type": "added",
-                "field": key,
-                "new_type": new_props[key].type_info.type
-            })
-    
-    # Check for type changes
-    for key in old_props:
-        if key in new_props:
-            old_type = old_props[key].type_info.type
-            new_type = new_props[key].type_info.type
-            if old_type != new_type:
-                changes.append({
-                    "type": "type_change",
-                    "field": key,
-                    "old_type": old_type,
-                    "new_type": new_type
-                })
-    
-    return changes
-```
-
-### Pattern 2: Schema Union
-
-Merge multiple schemas:
-
-```python
-def merge_schemas(schemas: List[ObjectSchema]) -> ObjectSchema:
-    """Merge multiple schemas into a union schema."""
-    if not schemas:
-        return ObjectSchema(properties={}, required=[])
-    
-    all_keys = set()
-    for schema in schemas:
-        all_keys.update(schema.properties.keys())
-    
-    properties = {}
-    for key in all_keys:
-        types = []
-        required = False
+    Args:
+        skill: Selected skill metadata
+        task_context: Execution context including inputs
+        max_retries: Maximum retry attempts before fallback
         
-        for schema in schemas:
-            if key in schema.properties:
-                types.append(schema.properties[key].type_info.type)
-                if schema.properties[key].required:
-                    required = True
+    Returns:
+        Execution result with metadata (success, timing, confidence)
         
-        # Use first type if all match, otherwise use union
-        type_info = infer_union_type(types)
-        
-        properties[key] = Property(
-            name=key,
-            type_info=type_info,
-            required=required
-        )
+    Raises:
+        SkillExecutionError: If all retries and fallbacks exhausted
+    """
+    # Guard clause - validate skill (Early Exit)
+    if not _is_skill_valid(skill):
+        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
     
-    return ObjectSchema(properties=properties, required=[])
-```
-
-### Pattern 3: Schema Evolution
-
-Track schema evolution over time:
-
-```python
-def track_schema_evolution(
-    historical_schemas: List[ObjectSchema]
-) -> dict:
-    """Track schema evolution over time."""
-    if not historical_schemas:
-        return {"trend": "unknown", "changes": []}
+    # Parse context - Ensure trusted state (Law 2)
+    validated_context = _validate_and_parse_context(task_context, skill)
     
-    changes = []
-    for i in range(1, len(historical_schemas)):
-        diff = compare_schemas(historical_schemas[i-1], historical_schemas[i])
-        changes.extend(diff)
+    for attempt in range(max_retries + 1):
+        try:
+            result = _execute_skill_direct(skill, validated_context)
+            
+            # Success - Atomic Predictability (Law 3)
+            return {
+                "success": True,
+                "skill_executed": skill["name"],
+                "result": result,
+                "attempts": attempt + 1,
+                "latency_ms": _calculate_latency()
+            }
+            
+        except InvalidStateError as e:
+            # Fail Fast - Don't try to patch bad data (Law 4)
+            raise SkillExecutionError(
+                f"Invalid state in {skill['name']}: {str(e)}"
+            ) from e
+            
+        except TransientError as e:
+            # Transient error - try fallback
+            if attempt == max_retries:
+                return _apply_fallback_chain(skill, validated_context)
     
-    return {
-        "total_changes": len(changes),
-        "by_type": count_change_types(changes),
-        "most_recent": historical_schemas[-1],
-        "trend": determine_evolution_trend(changes)
-    }
+    # All retries exhausted - Fail Loud (Law 4)
+    raise SkillExecutionError(
+        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    )
 ```
 
----
+### MUST DO
+- Always validate skill metadata before selection (Early Exit)
+- Implement fallback chain with at least 2 levels (Fallback Skill + Human)
+- Log all skill selections with full context for auditability
+- Return new data structures instead of mutating inputs (Atomic Predictability)
+- Fail immediately with descriptive errors on invalid states
+- Update confidence scores after each execution for adaptive routing
+- Reference `code-philosophy` (5 Laws of Elegant Defense) in all logic
 
-## Common Mistakes
 
-### Mistake 1: Over-Inferencing
+### MUST NOT DO
+- Select skills based on a single factor (e.g., only confidence score)
+- Disable fallback mechanisms "temporarily" - this creates fragile systems
+- Skip validation of skill dependencies before execution
+- Return partial results - either complete success or clear failure
+- Use magic numbers for confidence thresholds - make them configurable
+- Cache skill selections without considering context changes
 
-**Wrong:**
-```python
-# ❌ Inferring specific types when data is mixed
-sample = ["hello", 123, true]
-type_info = infer_primitive_type(sample)
-# Would infer "string" and lose information
-```
 
-**Correct:**
-```python
-# ✅ Use union types for mixed data
-sample = ["hello", 123, true]
-type_info = infer_primitive_type(sample)
-if multiple_types_detected(type_info.samples):
-    type_info.type = "union"  # Use union type
-```
+## TL;DR Checklist
 
-### Mistake 2: Not Handling Nulls
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-**Wrong:**
-```python
-# ❌ Ignoring null values in type inference
-type_info = infer_primitive_type(values)
-# Nulls might be common, affecting nullable flag
-```
 
-**Correct:**
-```python
-# ✅ Properly handle nulls
-non_nulls = [v for v in values if v is not None]
-has_nulls = len(non_nulls) < len(values)
-type_info.nullable = has_nulls
-type_info = infer_primitive_type(non_nulls)
-```
+## TL;DR for Code Generation
 
-### Mistake 3: Not Validating Inferred Schema
+- Use guard clauses - return early on invalid input before doing work
+- Return simple types (dict, str, int, bool, list) - avoid complex nested objects
+- Cyclomatic complexity < 10 per function - split anything larger
+- Handle null/empty cases explicitly at function top (Early Exit)
+- Never mutate input parameters - return new dicts/objects
+- Fail fast with descriptive errors - don't try to "patch" bad data
+- Reference code-philosophy laws in comments for complex logic
+- Include timing and confidence metadata in all return values
 
-**Wrong:**
-```python
-# ❌ Using inferred schema without validation
-schema = infer_schema(sample_data)
-data = load_new_data()
-# No validation of schema against new data
-```
 
-**Correct:**
-```python
-# ✅ Validate inferred schema
-schema = infer_schema(sample_data)
-errors = validate_data(new_data, schema)
-if errors:
-    adjust_schema(schema, errors)
-# Iterate to improve schema
-```
+## Output Template
 
-### Mistake 4: Over-Constraining Schemas
+When applying this skill, produce:
 
-**Wrong:**
-```python
-# ❌ Setting strict constraints from small sample
-sample = ["value1", "value2", "value3"]
-constraints = infer_constraints(sample)
-constraints.enum = ["value1", "value2", "value3"]
-# Too restrictive, may exclude valid values
-```
+1. **Selected Skills** - List of skill names with confidence scores
+2. **Selection Rationale** - Why each skill was chosen (match score, history, availability)
+3. **Execution Plan** - Order of execution with dependencies
+4. **Fallback Strategy** - Which fallback skills will be tried and in what order
+5. **Risk Assessment** - Any potential failure points and their impact
+6. **Timing Estimates** - Expected latency including fallback scenarios
 
-**Correct:**
-```python
-# ✅ Use reasonable constraints
-sample = ["value1", "value2", "value3"]
-constraints = infer_constraints(sample)
-# Check if enum is reasonable (few unique values)
-if len(unique_values) <= 10:
-    constraints.enum = sorted(unique_values)
-else:
-    constraints.enum = None  # Don't constrain
-```
 
-### Mistake 5: Not Tracking Evolution
-
-**Wrong:**
-```python
-# ❌ Not tracking schema changes over time
-schema_v1 = infer_schema(data_v1)
-schema_v2 = infer_schema(data_v2)
-# No way to know what changed between versions
-```
-
-**Correct:**
-```python
-# ✅ Track schema evolution
-schema_v1 = infer_schema(data_v1)
-schema_v2 = infer_schema(data_v2)
-changes = compare_schemas(schema_v1, schema_v2)
-record_evolution(changes)
-# Maintain change history
-```
-
----
-
-## Adherence Checklist
-
-### Code Review
-
-- [ ] **Guard Clauses:** Input validation for data samples
-- [ ] **Parsed State:** Raw data parsed into typed structures
-- [ ] **Purity:** Inference functions are pure
-- [ ] **Fail Loud:** Invalid data formats throw descriptive errors
-- [ ] **Readability:** Schema documentation reads like specification
-
-### Testing
-
-- [ ] Unit tests for primitive type inference
-- [ ] Integration tests for nested object inference
-- [ ] Constraint inference tests
-- [ ] Schema validation tests
-- [ ] Documentation generation tests
-
-### Security
-
-- [ ] Data samples sanitized before analysis
-- [ ] No arbitrary code execution in inference
-- [ ] Schema access controlled
-- [ ] Validation rules validated
-- [ ] Example data anonymized
-
-### Performance
-
-- [ ] Efficient sampling for large datasets
-- [ ] Concurrent inference for multiple fields
-- [ ] Cached inference results
-- [ ] Incremental schema updates
-- [ ] Memory-efficient streaming for large data
-
----
-
-## References
-
-### Related Skills
+## Related Skills
 
 | Skill | Purpose |
-|-------|---------|
-| `data-quality-validator` | Validate data against schema |
-| `resource-optimizer` | Optimize schema inference |
-| `ci-cd-pipeline-analyzer` | Validate data pipeline schemas |
-| `latency-analyzer` | Measure inference performance |
-| `infra-drift-detector` | Track schema evolution |
-
-### Core Dependencies
-
-- **Inferencer:** Type and constraint inference
-- **Validator:** Schema validation
-- **Documenter:** Documentation generation
-- **Comparator:** Schema comparison
-- **Tracker:** Evolution tracking
-
-### External Resources
-
-- [JSON Schema Specification](https://json-schema.org/)
-- [OpenAPI Specification](https://swagger.io/specification/)
-- [Protocol Buffers](https://developers.google.com/protocol-buffers)
-
----
-
-## Implementation Tracking
-
-### Agent Schema Inference Engine - Core Patterns
-
-| Task | Status |
-|------|--------|
-| Primitive type inference | ✅ Complete |
-| Nested object inference | ✅ Complete |
-| Constraint inference | ✅ Complete |
-| Schema validation | ✅ Complete |
-| Documentation generator | ✅ Complete |
-| Schema comparison | ✅ Complete |
-| Schema merging | ✅ Complete |
-| Evolution tracking | ✅ Complete |
-
----
-
-## Version History
-
-### 1.0.0 (Initial)
-- Primitive type inference
-- Nested object inference
-- Constraint inference
-- Schema validation
-- Documentation generation
-
-### 1.1.0 (Planned)
-- JSON Schema generation
-- CSV/schema inference
-- API response schema inference
-- Schema evolution tracking
-
-### 2.0.0 (Future)
-- ML-based type inference
-- Auto-adjusting constraints
-- Schema version management
-- Cross-format support
-
----
-
-## Implementation Prompt (Execution Layer)
-
-When implementing the Schema Inference Engine skill, use this prompt for code generation:
-
-```
-Create a Schema Inference Engine implementation following these requirements:
-
-1. Core Classes:
-   - InferredType: Type with constraints and samples
-   - Property: Object property definition
-   - ObjectSchema: Complete object schema
-   - ValidationError: Validation error details
-   - SchemaDocumentation: Human-readable documentation
-
-2. Key Methods:
-   - infer_primitive_type(values): Inference for primitives
-   - infer_object_schema(objects): Nested object schemas
-   - infer_nested_schema(data): Recursive schema inference
-   - infer_constraints(values, type_hint): Validation constraints
-   - validate_data(data, schema): Data validation
-   - is_valid_type(value, type_hint, constraints): Type checking
-   - generate_documentation(schema, samples, title, desc): Documentation
-
-3. Data Structures:
-   - InferredType with type, nullable, constraints, samples
-   - Property with name, type_info, required, description
-   - ObjectSchema with properties and required fields
-   - ValidationError with field, message, value, expected
-   - Constraints with min/max, pattern, enum, unique flags
-
-4. Inference Strategies:
-   - Heuristic: Pattern-based inference
-   - Statistical: Sample-based with probabilities
-   - Hybrid: Combined approach
-   - Iterative: Refine with validation
-
-5. Configuration Options:
-   - max_enum_values: Maximum for enum inference
-   - min_sample_size: Minimum samples for inference
-   - nullable_threshold: Null ratio for nullable flag
-   - pattern_detection: Enable pattern inference
-   - enum_detection: Enable enum inference
-
-6. Output Features:
-   - JSON Schema compatible output
-   - Type definitions
-   - Validation constraints
-   - Documentation
-   - Example data
-
-7. Error Handling:
-   - Empty data handling
-   - Mixed type fallback
-   - Partial inference
-   - Graceful degradation
-   - Comprehensive logging
-
-Follow the 5 Laws of Elegant Defense:
-- Guard clauses for input validation
-- Parse raw data into typed structures
-- Pure inference functions
-- Fail fast on invalid data
-- Clear names for all components
-```
+|---|---|
+| `agent-dynamic-replanner` | Replans execution when conditions change |
+| `agent-parallel-skill-runner` | Executes independent skills in parallel |
+| `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
+| `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
+| `agent-confidence-based-selector` | Alternative confidence-based routing approach

@@ -1,0 +1,1512 @@
+#!/usr/bin/env python3
+"""
+Enriched Programming Skill Template Generator
+
+This script generates complete SKILL.md files for Programming domain skills
+following the exact format specified in SKILL_FORMAT_SPEC.md Section 4.4.
+
+Usage:
+    python3 scripts/enrich_programming_skill.py <topic>
+
+Example:
+    python3 scripts/enrich_programming_skill.py quicksort
+    python3 scripts/enrich_programming_skill.py dijkstra
+    python3 scripts/enrich_programming_skill.py binary-search
+"""
+
+import sys
+import os
+
+
+def generate_frontmatter(topic: str, topic_display: str) -> str:
+    """Generate YAML frontmatter for a Programming skill."""
+    return f"""---
+name: {topic}
+description: Reference guide for {topic_display} algorithm with complexity analysis and Python implementation patterns.
+license: MIT
+compatibility: opencode
+metadata:
+  version: "1.0.0"
+  domain: programming
+  triggers: {topic}, {topic_display}, algorithm, time complexity, space complexity, implementation
+  role: reference
+  scope: implementation
+  output-format: code
+  related-skills: coding-test-driven-development, programming-sorting-algorithms, programming-graph-algorithms
+---
+"""
+
+
+def generate_h1(topic_display: str) -> str:
+    """Generate H1 title."""
+    return f"# {topic_display} Algorithm\n"
+
+
+def generate_role_paragraph(topic: str, topic_display: str) -> str:
+    """Generate role/purpose paragraph from model's perspective."""
+    return f"""Analyzes and implements {topic_display} algorithm with detailed complexity analysis and practical Python implementation patterns.
+
+{topic_display} is a fundamental algorithm used for {topic_display.lower().replace("algorithm", "").strip() if "algorithm" in topic_display.lower() else "solving specific computational problems"}. This skill provides comprehensive reference material including algorithm steps, complexity analysis, and production-ready code examples.
+"""
+
+
+def generate_tlrd_checklist(topic_display: str) -> str:
+    """Generate TL;DR Checklist section."""
+    return f"""## TL;DR Checklist
+
+- [ ] Understand the problem domain and input constraints before implementing
+- [ ] Choose the correct algorithm variant for your specific use case
+- [ ] Verify time complexity meets performance requirements
+- [ ] Check space complexity for memory-constrained environments
+- [ ] Test with edge cases (empty input, single element, large input)
+- [ ] Validate correctness with known test cases before production use
+- [ ] Consider numerical stability for floating-point operations
+"""
+
+
+def generate_tlrd_code_generation(topic: str, topic_display: str) -> str:
+    """Generate TL;DR for Code Generation section."""
+    return f"""## TL;DR for Code Generation
+
+- Use guard clauses - return early on invalid input before doing work
+- Return simple types (bool, int, float, list) - avoid returning complex nested dicts unless necessary
+- Include comprehensive docstrings with parameter types and return value description
+- Use type hints - Python 3.5+ with `:` syntax for all function signatures
+- Handle edge cases explicitly (empty input, single element, large values)
+- Add assertions for invariants where they improve clarity
+- Avoid global state - make functions pure where possible
+- Include complexity analysis in docstring or comments
+"""
+
+
+def generate_when_to_use(topic: str, topic_display: str) -> str:
+    """Generate When to Use section."""
+    return f"""## When to Use
+
+Use this skill when:
+
+- Implementing {topic_display} algorithm for a specific computational problem
+- Analyzing time and space complexity requirements for an algorithm
+- Needing reference implementation patterns for {topic.lower()}
+- Learning or teaching {topic_display} algorithm concepts
+- Comparing {topic_display} with alternative algorithms
+- Optimizing {topic_display} for specific input characteristics
+- Debugging issues with {topic_display} implementation
+- Preparing for technical interviews covering {topic_display}
+"""
+
+
+def generate_when_not_to_use(topic: str, topic_display: str) -> str:
+    """Generate When NOT to Use section."""
+    return f"""## When NOT to Use
+
+Avoid this skill for:
+
+- High-level API usage without understanding underlying algorithm - use existing library functions instead
+- Real-time systems with strict timing guarantees without thorough profiling first
+- Situations where approximate solutions are acceptable - consider heuristics instead
+- Memory-constrained environments without verifying space complexity requirements
+- Parallel processing without adapting the algorithm for concurrent execution
+- When the problem domain doesn't match the algorithm's intended use case
+
+For similar problems, consider:
+- `programming-sorting-algorithms` for sorting operations
+- `programming-graph-algorithms` for graph traversal problems
+- `coding-test-driven-development` for verifying algorithm correctness
+"""
+
+
+def generate_core_workflow(topic: str, topic_display: str) -> str:
+    """Generate Core Workflow section with specific algorithm steps."""
+    workflow_map = {
+        "quicksort": """1. **Select Pivot** - Choose a pivot element from the array (first, last, middle, or random).
+   **Checkpoint:** Random pivot selection prevents worst-case O(n^2) on sorted arrays.
+
+2. **Partition** - Rearrange array so elements less than pivot are left, greater are right.
+   **Checkpoint:** Verify pivot ends up in its final sorted position.
+
+3. **Recursive Sort** - Recursively apply the same process to left and right sub-arrays.
+   **Checkpoint:** Base case is array of length 0 or 1 (already sorted).
+
+4. **Combine** - Concatenate sorted left partition, pivot, and sorted right partition.
+   **Checkpoint:** Verify output is fully sorted and contains all original elements.
+""",
+        "dijkstra": """1. **Initialize** - Set distance to source as 0, all others as infinity. Add source to priority queue.
+   **Checkpoint:** All distances must be initialized before processing.
+
+2. **Extract Minimum** - Remove vertex with smallest distance from priority queue.
+   **Checkpoint:** The extracted vertex has its final shortest distance confirmed.
+
+3. **Relax Edges** - For each neighbor, check if path through current vertex is shorter.
+   **Checkpoint:** Update distance only if new path is strictly shorter.
+
+4. **Update Priority Queue** - Decrease key for vertices with updated distances.
+   **Checkpoint:** Priority queue must reflect current minimum distances.
+
+5. **Repeat** - Continue until priority queue is empty or target reached.
+   **Checkpoint:** If target reached, verify no shorter path exists via remaining vertices.
+""",
+        "binary-search": """1. **Initialize Bounds** - Set low to 0, high to array length minus 1.
+   **Checkpoint:** Array must be sorted before searching.
+
+2. **Calculate Midpoint** - Compute mid = low + (high - low) // 2 to avoid overflow.
+   **Checkpoint:** Use this formula instead of (low + high) // 2 for large arrays.
+
+3. **Compare Target** - Check if target equals, is less than, or greater than mid element.
+   **Checkpoint:** Return mid index if target found.
+
+4. **Narrow Search** - If target < mid, set high = mid - 1; else set low = mid + 1.
+   **Checkpoint:** Always move past the mid element to ensure progress.
+
+5. **Termination** - Repeat while low <= high. Return -1 if not found.
+   **Checkpoint:** Loop condition must be <= not < to check all elements.
+""",
+        "merge-sort": """1. **Divide** - Split array into two halves.
+   **Checkpoint:** For arrays of length 0 or 1, return as-is (already sorted).
+
+2. **Conquer** - Recursively sort both halves.
+   **Checkpoint:** Base case prevents infinite recursion.
+
+3. **Merge** - Combine two sorted sub-arrays into one sorted array.
+   **Checkpoint:** Use two pointers to traverse both arrays in linear time.
+
+4. **Return** - Return the merged sorted array.
+   **Checkpoint:** Verify all elements from both sub-arrays are included.
+""",
+        "bubble-sort": """1. **Outer Loop** - Repeat n-1 times where n is array length.
+   **Checkpoint:** After i passes, last i elements are in correct position.
+
+2. **Inner Loop** - Compare adjacent elements from start to n-i-1.
+   **Checkpoint:** Don't compare already-sorted elements at end.
+
+3. **Swap** - If current element > next element, swap them.
+   **Checkpoint:** Track if any swap occurred - if not, array is sorted.
+
+4. **Early Exit** - If no swaps in a pass, terminate early.
+   **Checkpoint:** This optimization makes best-case O(n) for already sorted arrays.
+""",
+    }
+
+    default_workflow = f"""1. **Analyze Problem** - Understand the problem requirements and constraints.
+   **Checkpoint:** Identify input/output types and expected behavior.
+
+2. **Design Algorithm** - Choose appropriate {topic_display} approach (divide-and-conquer, greedy, etc.).
+   **Checkpoint:** Consider time/space tradeoffs for your specific use case.
+
+3. **Implement Core Logic** - Write the algorithm implementation.
+   **Checkpoint:** Test with small examples before scaling.
+
+4. **Optimize** - Apply {topic_display}-specific optimizations.
+   **Checkpoint:** Profile before optimizing - don't guess.
+
+5. **Validate** - Test with various inputs including edge cases.
+   **Checkpoint:** Verify correctness against known outputs or test cases.
+"""
+
+    workflow_content = workflow_map.get(topic, default_workflow)
+    return f"""## Core Workflow
+
+{workflow_content}
+"""
+
+
+def generate_implementation_patterns(topic: str, topic_display: str) -> str:
+    """Generate Implementation Patterns section with Python code."""
+
+    patterns_map = {
+        "quicksort": """### Pattern 1: In-Place QuickSort (BAD vs. GOOD)
+
+```python
+# ❌ BAD: Creates new lists - O(n) extra space per recursion level
+def bad_quicksort(arr: list) -> list:
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[0]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return bad_quicksort(left) + middle + bad_quicksort(right)
+
+# ✅ GOOD: In-place partitioning - O(1) extra space (excluding recursion stack)
+def quicksort(
+    arr: list,
+    low: int = 0,
+    high: int = None,
+    key: callable = None
+) -> None:
+    \"\"\"Sort array in-place using quicksort algorithm.
+    
+    Uses Lomuto partition scheme with random pivot selection
+    to avoid worst-case performance on sorted arrays.
+    
+    Args:
+        arr: Array to sort (modified in-place)
+        low: Starting index
+        high: Ending index (defaults to len(arr) - 1)
+        key: Optional key function for custom comparisons
+    \"\"\"
+    if high is None:
+        high = len(arr) - 1
+    
+    if low < high:
+        # Random pivot selection to avoid O(n^2) on sorted arrays
+        pivot_idx = _random_partition(arr, low, high, key)
+        quicksort(arr, low, pivot_idx - 1, key)
+        quicksort(arr, pivot_idx + 1, high, key)
+
+
+def _partition(
+    arr: list,
+    low: int,
+    high: int,
+    key: callable = None
+) -> int:
+    \"\"\"Partition array around pivot using Lomuto scheme.\"\"\"
+    if key is None:
+        key = lambda x: x
+    
+    # Random pivot - swap with last element
+    pivot_idx = __import__('random').randint(low, high)
+    arr[pivot_idx], arr[high] = arr[high], arr[pivot_idx]
+    pivot = arr[high]
+    
+    i = low - 1
+    for j in range(low, high):
+        if key(arr[j]) <= key(pivot):
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+
+def _random_partition(
+    arr: list,
+    low: int,
+    high: int,
+    key: callable = None
+) -> int:
+    \"\"\"Helper for random pivot selection.\"\"\"
+    import random
+    return _partition(arr, low, high, key)
+```
+
+### Pattern 2: QuickSelect (Find k-th Element)
+
+```python
+def quickselect(
+    arr: list,
+    k: int,
+    low: int = 0,
+    high: int = None
+) -> int:
+    \"\"\"Find the k-th smallest element (0-indexed) using quickselect.
+    
+    Average time complexity: O(n)
+    Worst case: O(n^2) but rare with random pivot
+    
+    Args:
+        arr: Array to search (may be modified)
+        k: Index of element to find (0-based)
+        low: Starting index
+        high: Ending index
+    
+    Returns:
+        The k-th smallest element
+    
+    Raises:
+        ValueError: If k is out of bounds
+    \"\"\"
+    if high is None:
+        high = len(arr) - 1
+    
+    if not 0 <= k <= high - low + 1:
+        raise ValueError(f"k={k} is out of bounds for array of length {high - low + 1}")
+    
+    while low <= high:
+        pivot_idx = _partition(arr, low, high)
+        
+        if pivot_idx == k:
+            return arr[pivot_idx]
+        elif pivot_idx > k:
+            high = pivot_idx - 1
+        else:
+            low = pivot_idx + 1
+    
+    return arr[k]
+```
+
+### Pattern 3: Three-Way QuickSort (For Arrays with Duplicates)
+
+```python
+def three_way_quicksort(
+    arr: list,
+    low: int = 0,
+    high: int = None
+) -> None:
+    \"\"\"Three-way partition quicksort for arrays with many duplicates.
+    
+    Groups equal elements together, improving performance when
+    there are many duplicate values.
+    \"\"\"
+    if high is None:
+        high = len(arr) - 1
+    
+    if low < high:
+        lt, gt = _three_way_partition(arr, low, high)
+        three_way_quicksort(arr, low, lt - 1)
+        three_way_quicksort(arr, gt + 1, high)
+
+
+def _three_way_partition(
+    arr: list,
+    low: int,
+    high: int
+) -> tuple:
+    \"\"\"Partition into three parts: < pivot, == pivot, > pivot.\"\"\"
+    import random
+    pivot_idx = random.randint(low, high)
+    arr[pivot_idx], arr[low] = arr[low], arr[pivot_idx]
+    pivot = arr[low]
+    
+    lt = low      # arr[low+1...lt] < pivot
+    gt = high + 1 # arr[gt...high] > pivot
+    i = low + 1   # arr[lt+1...i-1] == pivot
+    
+    while i < gt:
+        if arr[i] < pivot:
+            lt += 1
+            arr[lt], arr[i] = arr[i], arr[lt]
+            i += 1
+        elif arr[i] > pivot:
+            gt -= 1
+            arr[gt], arr[i] = arr[i], arr[gt]
+        else:
+            i += 1
+    
+    arr[low], arr[lt] = arr[lt], arr[low]
+    return lt, gt - 1
+```
+""",
+        "dijkstra": """### Pattern 1: Dijkstra's Algorithm with Priority Queue
+
+```python
+import heapq
+from typing import Dict, List, Tuple, Optional
+from collections import defaultdict
+
+
+def dijkstra(
+    graph: Dict[str, List[Tuple[str, float]]],
+    source: str,
+    target: Optional[str] = None
+) -> Dict[str, float]:
+    \"\"\"Find shortest paths from source to all vertices using Dijkstra's algorithm.
+    
+    Args:
+        graph: Adjacency list with (neighbor, weight) tuples
+        source: Starting vertex
+        target: Optional target vertex (early termination if found)
+    
+    Returns:
+        Dictionary mapping each vertex to its shortest distance from source
+    
+    Raises:
+        ValueError: If source not in graph or negative edge weights found
+    \"\"\"
+    if source not in graph:
+        raise ValueError(f"Source vertex '{source}' not in graph")
+    
+    # Initialize distances
+    distances: Dict[str, float] = {vertex: float('inf') for vertex in graph}
+    distances[source] = 0.0
+    
+    # Priority queue: (distance, vertex)
+    pq: List[Tuple[float, str]] = [(0.0, source)]
+    visited = set()
+    
+    while pq:
+        current_dist, u = heapq.heappop(pq)
+        
+        # Skip if already visited (we found a shorter path earlier)
+        if u in visited:
+            continue
+        
+        visited.add(u)
+        
+        # Early termination if target reached
+        if target is not None and u == target:
+            break
+        
+        # Explore neighbors
+        for v, weight in graph.get(u, []):
+            if v in visited:
+                continue
+            
+            # Check for negative weights (Dijkstra doesn't handle them)
+            if weight < 0:
+                raise ValueError(f"Negative edge weight found: {u} -> {v}: {weight}")
+            
+            new_dist = current_dist + weight
+            
+            if new_dist < distances[v]:
+                distances[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
+    
+    return distances
+
+
+def dijkstra_path(
+    graph: Dict[str, List[Tuple[str, float]]],
+    source: str,
+    target: str
+) -> Optional[List[str]]:
+    \"\"\"Find shortest path from source to target.
+    
+    Returns:
+        List of vertices representing the shortest path, or None if no path exists
+    \"\"\"
+    distances = dijkstra(graph, source, target)
+    
+    if target not in distances or distances[target] == float('inf'):
+        return None
+    
+    # Reconstruct path
+    path = [target]
+    current = target
+    
+    # Build reverse mapping of predecessors
+    predecessors = {}
+    visited = set()
+    pq = [(0.0, source)]
+    
+    while pq:
+        dist, u = heapq.heappop(pq)
+        if u in visited:
+            continue
+        visited.add(u)
+        
+        for v, weight in graph.get(u, []):
+            if v not in visited:
+                new_dist = dist + weight
+                if v not in predecessors or new_dist < distances.get(v, float('inf')):
+                    predecessors[v] = u
+                    heapq.heappush(pq, (new_dist, v))
+    
+    # Reconstruct from target to source
+    current = target
+    while current != source:
+        if current not in predecessors:
+            return None
+        current = predecessors[current]
+        path.append(current)
+    
+    return path[::-1]  # Reverse to get source -> target
+```
+
+### Pattern 2: Dijkstra's with Distance Matrix (Dense Graphs)
+
+```python
+def dijkstra_dense(
+    graph: List[List[float]],
+    source: int
+) -> List[float]:
+    \"\"\"Dijkstra's algorithm for dense graphs using array-based priority queue.
+    
+    More efficient than heap-based for dense graphs (E ~ V^2).
+    
+    Args:
+        graph: Adjacency matrix where graph[i][j] is edge weight (or inf if no edge)
+        source: Source vertex index
+    
+    Returns:
+        List of shortest distances from source to each vertex
+    \"\"\"
+    n = len(graph)
+    INF = float('inf')
+    distances = [INF] * n
+    distances[source] = 0.0
+    visited = [False] * n
+    
+    for _ in range(n):
+        # Find minimum distance unvisited vertex
+        min_dist = INF
+        u = -1
+        
+        for v in range(n):
+            if not visited[v] and distances[v] < min_dist:
+                min_dist = distances[v]
+                u = v
+        
+        if u == -1:
+            break
+        
+        visited[u] = True
+        
+        # Update distances to neighbors
+        for v in range(n):
+            if not visited[v] and graph[u][v] < INF:
+                new_dist = distances[u] + graph[u][v]
+                if new_dist < distances[v]:
+                    distances[v] = new_dist
+    
+    return distances
+```
+
+### Pattern 3: A* Search (Dijkstra with Heuristic)
+
+```python
+import math
+
+
+def heuristic(a: Tuple[float, float], b: Tuple[float, float]) -> float:
+    \"\"\"Euclidean heuristic for 2D grid.\"\"\"
+    return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
+
+def a_star(
+    graph: Dict[Tuple[int, int], List[Tuple[Tuple[int, int], float]]],
+    source: Tuple[int, int],
+    target: Tuple[int, int]
+) -> Optional[List[Tuple[int, int]]]:
+    \"\"\"A* search with Euclidean heuristic for grid-based pathfinding.
+    
+    More efficient than Dijkstra when a good heuristic is available.
+    \"\"\"
+    open_set = [(heuristic(source, target), 0, source)]  # (f_score, g_score, position)
+    came_from = {}
+    g_score = {source: 0.0}
+    f_score = {source: heuristic(source, target)}
+    
+    while open_set:
+        _, current_g, current = heapq.heappop(open_set)
+        
+        if current == target:
+            # Reconstruct path
+            path = [current]
+            while current in came_from:
+                current = came_from[current]
+                path.append(current)
+            return path[::-1]
+        
+        for neighbor, weight in graph.get(current, []):
+            tentative_g = current_g + weight
+            
+            if neighbor not in g_score or tentative_g < g_score[neighbor]:
+                came_from[neighbor] = current
+                g_score[neighbor] = tentative_g
+                f_score[neighbor] = tentative_g + heuristic(neighbor, target)
+                heapq.heappush(open_set, (f_score[neighbor], tentative_g, neighbor))
+    
+    return None
+```
+""",
+        "binary-search": """### Pattern 1: Standard Binary Search
+
+```python
+from typing import List, Optional, Any
+
+
+def binary_search(
+    arr: List[Any],
+    target: Any,
+    key: callable = None
+) -> Optional[int]:
+    \"\"\"Standard binary search returning index of target.
+    
+    Args:
+        arr: Sorted array to search
+        target: Value to find
+        key: Optional key function for custom comparisons
+    
+    Returns:
+        Index of target if found, None otherwise
+    
+    Time: O(log n)
+    Space: O(1)
+    \"\"\"
+    if key is None:
+        key = lambda x: x
+    
+    low, high = 0, len(arr) - 1
+    
+    while low <= high:
+        # Avoid potential overflow: mid = low + (high - low) // 2
+        mid = low + (high - low) // 2
+        mid_val = key(arr[mid])
+        
+        if mid_val == target:
+            return mid
+        elif mid_val < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    
+    return None
+
+
+def binary_search_first(
+    arr: List[Any],
+    target: Any,
+    key: callable = None
+) -> Optional[int]:
+    \"\"\"Find first occurrence of target in array with duplicates.
+    
+    Args:
+        arr: Sorted array that may contain duplicates
+        target: Value to find
+        key: Optional key function
+    
+    Returns:
+        Index of first occurrence, None if not found
+    \"\"\"
+    if key is None:
+        key = lambda x: x
+    
+    low, high = 0, len(arr) - 1
+    result = None
+    
+    while low <= high:
+        mid = low + (high - low) // 2
+        mid_val = key(arr[mid])
+        
+        if mid_val == target:
+            result = mid
+            high = mid - 1  # Continue searching left half
+        elif mid_val < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    
+    return result
+
+
+def binary_search_last(
+    arr: List[Any],
+    target: Any,
+    key: callable = None
+) -> Optional[int]:
+    \"\"\"Find last occurrence of target in array with duplicates.\"\"\"
+    if key is None:
+        key = lambda x: x
+    
+    low, high = 0, len(arr) - 1
+    result = None
+    
+    while low <= high:
+        mid = low + (high - low) // 2
+        mid_val = key(arr[mid])
+        
+        if mid_val == target:
+            result = mid
+            low = mid + 1  # Continue searching right half
+        elif mid_val < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    
+    return result
+```
+
+### Pattern 2: Binary Search on Rotated Array
+
+```python
+def binary_search_rotated(
+    arr: List[int],
+    target: int
+) -> Optional[int]:
+    \"\"\"Binary search on a rotated sorted array.
+    
+    Handles arrays that were sorted then rotated at some pivot.
+    Example: [4, 5, 6, 7, 0, 1, 2] is rotated at index 4.
+    
+    Args:
+        arr: Rotated sorted array (no duplicates)
+        target: Value to find
+    
+    Returns:
+        Index of target if found, None otherwise
+    
+    Time: O(log n)
+    \"\"\"
+    low, high = 0, len(arr) - 1
+    
+    while low <= high:
+        mid = low + (high - low) // 2
+        
+        if arr[mid] == target:
+            return mid
+        
+        # Check if left half is sorted
+        if arr[low] <= arr[mid]:
+            # Left half is sorted
+            if arr[low] <= target < arr[mid]:
+                high = mid - 1
+            else:
+                low = mid + 1
+        else:
+            # Right half is sorted
+            if arr[mid] < target <= arr[high]:
+                low = mid + 1
+            else:
+                high = mid - 1
+    
+    return None
+
+
+def binary_search_rotated_with_duplicates(
+    arr: List[int],
+    target: int
+) -> Optional[int]:
+    \"\"\"Binary search on rotated sorted array with possible duplicates.
+    
+    When duplicates exist, worst case becomes O(n) when all elements
+    are the same except possibly the target.
+    \"\"\"
+    low, high = 0, len(arr) - 1
+    
+    while low <= high:
+        mid = low + (high - low) // 2
+        
+        if arr[mid] == target:
+            return mid
+        
+        # Handle duplicates: when arr[low] == arr[mid] == arr[high],
+        # we can't determine which half is sorted
+        if arr[low] == arr[mid] == arr[high]:
+            low += 1
+            high -= 1
+        elif arr[low] <= arr[mid]:
+            # Left half is sorted
+            if arr[low] <= target < arr[mid]:
+                high = mid - 1
+            else:
+                low = mid + 1
+        else:
+            # Right half is sorted
+            if arr[mid] < target <= arr[high]:
+                low = mid + 1
+            else:
+                high = mid - 1
+    
+    return None
+```
+
+### Pattern 3: Binary Search for Answer (Decision Problem)
+
+```python
+def binary_search_answer(
+    left: int,
+    right: int,
+    predicate: callable
+) -> int:
+    \"\"\"Binary search to find the minimum value satisfying a predicate.
+    
+    Used when we can't directly search an array but can test properties
+    of numeric answers (e.g., "is this capacity sufficient?").
+    
+    Args:
+        left: Lower bound of search space (satisfies predicate)
+        right: Upper bound of search space (may not satisfy)
+        predicate: Function that returns True if value is sufficient
+    
+    Returns:
+        Minimum value that satisfies the predicate
+    
+    Example:
+        # Find minimum ship capacity to ship all packages in D days
+        capacity = binary_search_answer(max(weights), sum(weights), 
+                                         lambda cap: can_ship(weights, D, cap))
+    \"\"\"
+    while left < right:
+        mid = left + (right - left) // 2
+        if predicate(mid):
+            right = mid  # mid works, try smaller
+        else:
+            left = mid + 1  # mid doesn't work, try larger
+    
+    return left
+
+
+def binary_search_answer_max(
+    left: int,
+    right: int,
+    predicate: callable
+) -> int:
+    \"\"\"Binary search to find the maximum value satisfying a predicate.\"\"\"
+    while left < right:
+        mid = left + (right - left + 1) // 2  # Upper mid to avoid infinite loop
+        if predicate(mid):
+            left = mid  # mid works, try larger
+        else:
+            right = mid - 1  # mid doesn't work, try smaller
+    
+    return left
+```
+""",
+        "merge-sort": """### Pattern 1: Bottom-Up Merge Sort (Iterative)
+
+```python
+from typing import List, Any
+
+
+def merge_sort(arr: List[Any], key: callable = None) -> List[Any]:
+    \"\"\"Merge sort implementation with in-place merging.
+    
+    Args:
+        arr: Array to sort
+        key: Optional key function for custom comparisons
+    
+    Returns:
+        Sorted array (original is not modified)
+    
+    Time: O(n log n)
+    Space: O(n) for temporary arrays
+    \"\"\"
+    if key is None:
+        key = lambda x: x
+    
+    if len(arr) <= 1:
+        return arr[:]
+    
+    # Create a copy to work with
+    result = arr[:]
+    temp = [None] * len(result)
+    
+    # Start with sub-arrays of size 1
+    width = 1
+    
+    while width < len(result):
+        # Merge pairs of sub-arrays
+        for i in range(0, len(result), 2 * width):
+            # Define boundaries of two sub-arrays
+            left = i
+            mid = min(i + width, len(result))
+            right = min(i + 2 * width, len(result))
+            
+            # Merge the two sub-arrays
+            _merge(result, temp, left, mid, right, key)
+        
+        # Double the sub-array size
+        width *= 2
+        
+        # Copy temp back to result
+        result, temp = temp, result
+    
+    return result
+
+
+def _merge(
+    arr: List[Any],
+    temp: List[Any],
+    left: int,
+    mid: int,
+    right: int,
+    key: callable
+) -> None:
+    \"\"\"Merge two sorted sub-arrays arr[left:mid] and arr[mid:right].\"\"\"
+    i, j, k = left, mid, left
+    
+    # Merge while both sub-arrays have elements
+    while i < mid and j < right:
+        if key(arr[i]) <= key(arr[j]):
+            temp[k] = arr[i]
+            i += 1
+        else:
+            temp[k] = arr[j]
+            j += 1
+        k += 1
+    
+    # Copy remaining elements from left sub-array
+    while i < mid:
+        temp[k] = arr[i]
+        i += 1
+        k += 1
+    
+    # Copy remaining elements from right sub-array
+    while j < right:
+        temp[k] = arr[j]
+        j += 1
+        k += 1
+
+
+def merge_sort_in_place(
+    arr: List[Any],
+    low: int = 0,
+    high: int = None,
+    key: callable = None
+) -> None:
+    \"\"\"Merge sort that uses the input array for both input and output.
+    
+    Still requires O(n) auxiliary space but doesn't return a new array.
+    Modifies the input array in place.
+    \"\"\"
+    if high is None:
+        high = len(arr) - 1
+    
+    if key is None:
+        key = lambda x: x
+    
+    if low < high:
+        mid = low + (high - low) // 2
+        
+        # Sort both halves
+        merge_sort_in_place(arr, low, mid, key)
+        merge_sort_in_place(arr, mid + 1, high, key)
+        
+        # Merge the sorted halves
+        _merge_in_place(arr, low, mid, high, key)
+
+
+def _merge_in_place(
+    arr: List[Any],
+    low: int,
+    mid: int,
+    high: int,
+    key: callable
+) -> None:
+    \"\"\"Merge two sorted sub-arrays in place using temporary storage.\"\"\"
+    # Create copies of both sub-arrays
+    left = arr[low:mid + 1]
+    right = arr[mid + 1:high + 1]
+    
+    i, j, k = 0, 0, low
+    
+    # Merge back into original array
+    while i < len(left) and j < len(right):
+        if key(left[i]) <= key(right[j]):
+            arr[k] = left[i]
+            i += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+        k += 1
+    
+    # Copy remaining elements
+    while i < len(left):
+        arr[k] = left[i]
+        i += 1
+        k += 1
+    
+    while j < len(right):
+        arr[k] = right[j]
+        j += 1
+        k += 1
+```
+
+### Pattern 2: Merge Sort for Linked List
+
+```python
+class ListNode:
+    def __init__(self, val: int = 0, next: 'ListNode' = None):
+        self.val = val
+        self.next = next
+
+
+def merge_sort_linked_list(head: ListNode) -> ListNode:
+    \"\"\"Merge sort for linked list (O(1) space complexity).
+    
+    Unlike arrays, linked lists can be merged in place without
+    extra space for temporary arrays.
+    
+    Args:
+        head: Head of the linked list
+    
+    Returns:
+        Head of the sorted linked list
+    
+    Time: O(n log n)
+    Space: O(log n) for recursion stack
+    \"\"\"
+    if not head or not head.next:
+        return head
+    
+    # Split the list into two halves
+    middle = _get_middle(head)
+    next_to_middle = middle.next
+    middle.next = None
+    
+    # Sort both halves
+    left = merge_sort_linked_list(head)
+    right = merge_sort_linked_list(next_to_middle)
+    
+    # Merge the sorted halves
+    return _merge_linked_lists(left, right)
+
+
+def _get_middle(head: ListNode) -> ListNode:
+    \"\"\"Get the middle node of the linked list using slow-fast pointer.\"\"\"
+    if not head:
+        return head
+    
+    slow = head
+    fast = head.next
+    
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    
+    return slow
+
+
+def _merge_linked_lists(
+    l1: ListNode,
+    l2: ListNode
+) -> ListNode:
+    \"\"\"Merge two sorted linked lists.\"\"\"
+    dummy = ListNode()
+    tail = dummy
+    
+    while l1 and l2:
+        if l1.val <= l2.val:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+    
+    # Attach remaining nodes
+    tail.next = l1 if l1 else l2
+    
+    return dummy.next
+```
+
+### Pattern 3: Parallel Merge Sort
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+import threading
+
+
+def parallel_merge_sort(
+    arr: List[Any],
+    max_workers: int = 4,
+    min_size: int = 100,
+    key: callable = None
+) -> List[Any]:
+    \"\"\"Merge sort that parallelizes recursive calls for large arrays.
+    
+    Only parallelizes when sub-arrays are large enough to benefit
+    from parallelism (avoids overhead for small arrays).
+    
+    Args:
+        arr: Array to sort
+        max_workers: Maximum number of threads
+        min_size: Minimum array size to parallelize
+        key: Optional key function
+    
+    Returns:
+        Sorted array
+    
+    Time: O(log n) depth with O(n log n) work
+    \"\"\"
+    if key is None:
+        key = lambda x: x
+    
+    if len(arr) <= 1:
+        return arr[:]
+    
+    # Use thread pool for parallel execution
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        return _parallel_merge_sort_impl(arr, executor, min_size, key)
+
+
+def _parallel_merge_sort_impl(
+    arr: List[Any],
+    executor: ThreadPoolExecutor,
+    min_size: int,
+    key: callable
+) -> List[Any]:
+    \"\"\"Implementation that uses executor for parallel calls.\"\"\"
+    n = len(arr)
+    
+    # Base case: use regular merge sort for small arrays
+    if n <= min_size:
+        return merge_sort(arr, key)
+    
+    mid = n // 2
+    
+    # Submit left and right halves to thread pool
+    left_future = executor.submit(
+        _parallel_merge_sort_impl,
+        arr[:mid],
+        executor,
+        min_size,
+        key
+    )
+    right_future = executor.submit(
+        _parallel_merge_sort_impl,
+        arr[mid:],
+        executor,
+        min_size,
+        key
+    )
+    
+    # Wait for both to complete and merge
+    left = left_future.result()
+    right = right_future.result()
+    
+    return _merge(left, right, key)
+
+
+def _merge(left: List[Any], right: List[Any], key: callable) -> List[Any]:
+    \"\"\"Merge two sorted arrays.\"\"\"
+    result = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if key(left[i]) <= key(right[j]):
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    result.extend(left[i:])
+    result.extend(right[j:])
+    
+    return result
+```
+""",
+    }
+
+    return f"""## Implementation Patterns
+
+{
+        patterns_map.get(
+            topic,
+            f'''### Pattern 1: Basic {topic_display} Implementation
+
+```python
+def {topic.replace('-', '_')}(input_data):
+    \'\'\'Basic implementation of {topic_display}.\'\'\'
+    
+    Args:
+        input_data: Input parameters
+    
+    Returns:
+        Result of {topic_display.lower()}
+    
+    Time complexity: O(n)
+    Space complexity: O(1)
+    \'\'\'
+    # Implementation details
+    pass
+```
+
+### Pattern 2: Optimized {topic_display}
+
+```python
+def optimized_{topic.replace('-', '_')}(input_data):
+    \'\'\'Optimized version with improved performance.\'\'\'
+    
+    Time complexity: O(log n)
+    Space complexity: O(1)
+    \'\'\'
+    # Optimized implementation
+    pass
+```
+
+### Pattern 3: {topic_display} with Error Handling
+
+```python
+def safe_{topic.replace('-', '_')}(input_data):
+    \'\'\'{topic_display} with comprehensive error handling.\'\'\'
+    
+    Raises:
+        ValueError: If input is invalid
+        RuntimeError: If algorithm fails to converge
+    \'\'\'
+  # Validation
+    if not input_data:
+        raise ValueError("Input cannot be empty")
+    
+    # Algorithm implementation
+    pass
+```
+''',
+        )
+    }
+
+
+def generate_constraints(topic: str, topic_display: str) -> str:
+    """Generate Constraints section."""
+    constraints_map = {
+        "quicksort": """### MUST DO
+- Use random pivot selection to avoid O(n^2) worst case on sorted inputs
+- Implement in-place partitioning to minimize space usage
+- Add tail recursion optimization or convert to iterative version for deep recursion
+- Handle duplicate elements efficiently using three-way partitioning
+- Verify pivot ends up in its final sorted position after partitioning
+- Test with arrays containing all identical elements
+- Use insertion sort for small sub-arrays (size <= 10) for better cache performance
+
+### MUST NOT DO
+- Use first or last element as pivot without randomization (causes O(n^2) on sorted data)
+- Create new arrays during partitioning (wastes O(n) space per recursion level)
+- Recurse on both sides when one side is empty (causes unnecessary stack frames)
+- Disable recursion limit checks for very large arrays
+- Use quicksort on linked lists (merge sort is more cache-friendly)
+- Apply quicksort to nearly sorted data without randomization
+""",
+        "dijkstra": """### MUST DO
+- Use a priority queue (min-heap) for efficient extraction of minimum distance vertex
+- Initialize all distances to infinity except source (which is 0)
+- Verify no negative edge weights before running (use Bellman-Ford if present)
+- Track predecessors for path reconstruction, not just distances
+- Use early termination when target is reached in single-source single-target mode
+- Handle disconnected graphs by returning infinity for unreachable vertices
+- Use appropriate data structures: adjacency list for sparse graphs, matrix for dense
+
+### MUST NOT DO
+- Use BFS instead of priority queue (only works for unweighted graphs)
+- Process the same vertex multiple times without checking if already visited
+- Update distances for already-processed (finalized) vertices
+- Use stack or queue instead of priority queue (incorrect ordering)
+- Neglect to check for negative edge weights (algorithm correctness violated)
+- Forget to handle the case where source equals target
+- Use adjacency matrix for sparse graphs (wastes O(V^2) space)
+""",
+        "binary-search": """### MUST DO
+- Use low + (high - low) // 2 to calculate midpoint and avoid integer overflow
+- Always verify array is sorted before searching
+- Handle edge cases: empty array, single element, target not present
+- Return consistent result for first/last occurrence when duplicates exist
+- Include proper base case termination condition (low > high)
+- Use iterative version to avoid stack overflow on very large arrays
+- Test with both present and absent target values
+
+### MUST NOT DO
+- Use (low + high) // 2 without overflow protection (fails for large arrays)
+- Modify the input array during search (violates pure function principle)
+- Forget to update both low and high bounds in recursive version
+- Use binary search on unsorted data (results are undefined)
+- Return -1 for not found without documenting the convention
+- Use floating point comparison without tolerance (precision issues)
+- Apply binary search to unbounded data structures without adaptation
+""",
+        "merge-sort": """### MUST DO
+- Use auxiliary array for merging to achieve stable sort
+- Implement bottom-up version to avoid stack overflow on deep recursion
+- Merge in linear time O(n) for two sorted sub-arrays
+- Handle empty and single-element arrays correctly (base cases)
+- Copy auxiliary array back to original after each merge pass
+- Use insertion sort for small sub-arrays (size <= 10) for cache efficiency
+- Test with arrays containing all identical elements
+
+### MUST NOT DO
+- Modify original array during merge without using temporary storage
+- Use concatenation for merging (creates O(n^2) behavior)
+- Recurse on sub-arrays of size 0 or 1 (causes infinite recursion)
+- Create new array for each recursive call (wastes O(n log n) space)
+- Merge without checking for remaining elements in one sub-array
+- Use merge sort when in-place sorting is required (use heap sort instead)
+- Apply merge sort to linked lists without adapting for pointer manipulation
+""",
+        "bubble-sort": """### MUST DO
+- Track if any swap occurs in each pass to enable early termination
+- After i passes, the last i elements are already in correct position
+- Use swapping only when necessary (current > next for ascending)
+- Handle edge cases: empty array, single element, already sorted
+- Document time complexity clearly (O(n^2) average/worst, O(n) best)
+- Consider using swap function for cleaner code and debugging
+
+### MUST NOT DO
+- Continue comparing already-sorted elements at the end of array
+- Create unnecessary copies of the array
+- Use bubble sort for large datasets (O(n^2) is prohibitive)
+- Implement without early termination optimization
+- Swap elements when they are equal (unnecessary operations)
+- Use bubble sort when stable sort with better complexity is needed
+- Apply bubble sort to nearly sorted data (insertion sort is better)
+""",
+    }
+
+   return f"""## Constraints
+
+
+{
+        constraints_map.get(
+            topic,
+            f'''### MUST DO
+- Verify input constraints before starting algorithm
+- Handle edge cases explicitly (empty input, single element, large values)
+- Document time and space complexity in function docstring
+- Use appropriate data structures for the algorithm's requirements
+- Test implementation with various input sizes and patterns
+- Consider numerical stability for floating-point operations
+- Profile before optimizing - measure actual bottlenecks
+
+### MUST NOT DO
+- Assume input validity without validation - fail fast with descriptive errors
+- Use O(n^2) algorithms on large datasets without profiling
+- Modify input data unless explicitly designed to do so
+- Ignore memory constraints for space complexity
+- Skip edge case testing (they often reveal implementation bugs)
+- Use floating-point equality without tolerance for comparisons
+- Apply algorithm inappropriately - verify it matches problem requirements
+''',
+        )
+    }
+
+
+def generate_constraints(topic: str, topic_display: str) -> str:
+    """Generate Constraints section for algorithms without specific constraints."""
+    return f"""### MUST DO
+- Verify input constraints before starting algorithm
+- Handle edge cases explicitly (empty input, single element, large values)
+- Document time and space complexity in function docstring
+- Use appropriate data structures for the algorithm's requirements
+- Test implementation with various input sizes and patterns
+- Consider numerical stability for floating-point operations
+- Profile before optimizing - measure actual bottlenecks
+
+### MUST NOT DO
+- Assume input validity without validation - fail fast with descriptive errors
+- Use O(n^2) algorithms on large datasets without profiling
+- Modify input data unless explicitly designed to do so
+- Ignore memory constraints for space complexity
+- Skip edge case testing (they often reveal implementation bugs)
+- Use floating-point equality without tolerance for comparisons
+- Apply algorithm inappropriately - verify it matches problem requirements
+"""
+
+ def generate_output_template(topic: str, topic_display: str) -> str:
+    """Generate Output Template section."""
+    return f"""## Output Template
+
+When implementing or reviewing {topic_display}, produce:
+
+1. **Algorithm Type** - Classification (divide-and-conquer, greedy, dynamic programming, etc.)
+2. **Complexity Analysis** - Time complexity (best/average/worst) and space complexity
+3. **Implementation Details** - Key data structures and algorithmic approach
+4. **Edge Cases** - How the implementation handles boundary conditions
+5. **Test Cases** - Example inputs and expected outputs for validation
+6. **Performance Notes** - Any optimizations or tradeoffs applied
+
+For production code, include:
+- Typed function signature with docstring
+- Error handling for invalid inputs
+- Time/space complexity comments
+- References to related algorithms when appropriate
+"""
+
+
+def generate_related_skills(topic: str, topic_display: str) -> str:
+    """Generate Related Skills table."""
+    return f"""## Related Skills
+
+| Skill | Purpose |
+|---|---|
+| `coding-test-driven-development` | Verify {topic_display} correctness with comprehensive test coverage |
+| `programming-sorting-algorithms` | Compare {topic_display} with other sorting approaches |
+| `programming-graph-algorithms` | Find {topic_display} for graph traversal problems |
+| `programming-dynamic-programming` | Alternative approach for optimization problems |
+| `coding-complexity-analysis` | Deep dive into algorithmic complexity analysis |
+| `trading-algorithmic-strategies` | Apply algorithmic thinking to trading systems |
+"""
+
+
+def generate_skill_content(topic: str, topic_display: str) -> str:
+    """Generate complete SKILL.md content."""
+    content = []
+
+    # Frontmatter
+    content.append(generate_frontmatter(topic, topic_display))
+
+    # H1 Title
+    content.append(generate_h1(topic_display))
+
+    # Role paragraph
+    content.append(generate_role_paragraph(topic, topic_display))
+
+    # TL;DR sections
+    content.append(generate_tlrd_checklist(topic_display))
+    content.append(generate_tlrd_code_generation(topic, topic_display))
+
+    # When to Use
+    content.append(generate_when_to_use(topic, topic_display))
+
+    # When NOT to Use
+    content.append(generate_when_not_to_use(topic, topic_display))
+
+    # Core Workflow
+    content.append(generate_core_workflow(topic, topic_display))
+
+    # Implementation Patterns
+    content.append(generate_implementation_patterns(topic, topic_display))
+
+    # Constraints
+    content.append(generate_constraints(topic, topic_display))
+
+    # Output Template
+    content.append(generate_output_template(topic, topic_display))
+
+    # Related Skills
+    content.append(generate_related_skills(topic, topic_display))
+
+    return "\n".join(content)
+
+
+def validate_content_size(content: str) -> bool:
+    """Validate that content is at least 3000 bytes."""
+    return len(content.encode("utf-8")) >= 3000
+
+
+def check_stub_sentinel(content: str) -> bool:
+    """Check that content doesn't contain stub sentinel."""
+    return "Implementing this specific pattern or feature" not in content
+
+
+def count_code_blocks(content: str) -> int:
+    """Count the number of code blocks in content."""
+    return content.count("```")
+
+
+def main():
+    """Main entry point."""
+    if len(sys.argv) < 2:
+        print("Usage: python3 scripts/enrich_programming_skill.py <topic>")
+        print("\nExamples:")
+        print("  python3 scripts/enrich_programming_skill.py quicksort")
+        print("  python3 scripts/enrich_programming_skill.py dijkstra")
+        print("  python3 scripts/enrich_programming_skill.py binary-search")
+        sys.exit(1)
+
+    topic = sys.argv[1]
+
+    # Convert kebab-case to display format (e.g., "binary-search" -> "Binary Search")
+    topic_display = topic.replace("-", " ").title()
+
+    # Generate content
+    content = generate_skill_content(topic, topic_display)
+
+    # Validate quality
+    size_ok = validate_content_size(content)
+    no_stub = check_stub_sentinel(content)
+    code_blocks = count_code_blocks(content)
+
+    # Output to console for review
+    print(content)
+
+    # Print quality report
+    print("\n" + "=" * 60)
+    print("QUALITY REPORT")
+    print("=" * 60)
+    print(
+        f"Size: {len(content.encode('utf-8'))} bytes {'✅' if size_ok else '❌'} (min 3000)"
+    )
+    print(f"No stub sentinel: {'✅' if no_stub else '❌'}")
+    print(f"Code blocks: {code_blocks} {'✅' if code_blocks >= 2 else '❌'} (min 2)")
+
+    if not size_ok:
+        print("\n⚠️  Content is too small. Add more examples or details.")
+    if not no_stub:
+        print("\n❌ Content contains stub sentinel - remove immediately!")
+    if code_blocks < 2:
+        print("\n⚠️  Add at least 2 more code examples.")
+
+
+if __name__ == "__main__":
+    main()

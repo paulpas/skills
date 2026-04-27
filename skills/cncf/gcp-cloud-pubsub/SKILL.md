@@ -10,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: pubsub, messaging, event streaming, message queue, asynchronous messaging
+  triggers: pubsub, messaging, event streaming, message queue, asynchronous messaging,
+    kafka, sns, sqs
   related-skills: gcp-cloud-functions, gcp-cloud-monitoring, gcp-cloud-tasks
 ---
+
 
 
 

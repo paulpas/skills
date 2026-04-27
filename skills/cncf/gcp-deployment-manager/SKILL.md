@@ -10,9 +10,11 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: deployment manager, infrastructure as code, iac, templates, yaml
+  triggers: deployment manager, infrastructure as code, iac, templates, yaml, cloudformation,
+    kubernetes deployment
   related-skills: azure-resource-manager, gcp-cloud-sql
 ---
+
 
 
 

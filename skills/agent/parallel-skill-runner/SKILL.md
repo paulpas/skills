@@ -1,686 +1,322 @@
 ---
-name: skill-runner
-description: '"Executes multiple skill specifications concurrently, managing parallel"
-  workers, synchronization, and result collection for performance-optimized multi-skill
-  operations.'
+name: parallel-skill-runner
+description: Implements intelligent parallel skill runner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
 license: MIT
 compatibility: opencode
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   domain: agent
+  triggers: parallel-skill-runner, parallel skill runner, how do i parallel-skill-runner, orchestrate parallel-skill-runner, automate parallel-skill-runner, agent parallel-skill-runner
   role: orchestration
   scope: orchestration
   output-format: analysis
-  triggers: executes, multiple, parallel skill runner, parallel-skill-runner, specifications
-  related-skills: confidence-based-selector, dynamic-replanner, error-trace-explainer,
-    multi-skill-executor
+  related-skills: agent-task-routing, agent-confidence-based-selector
 ---
 
+# Parallel Skill Runner
 
-
-
-# Parallel Skill Runner (Agent Skill Concurrency)
-
-> **Load this skill** when designing or modifying agent skill orchestration patterns that require executing multiple skills concurrently with proper synchronization and result coordination.
+Orchestrates intelligent skill selection and execution for parallel skill runner workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
 
 ## TL;DR Checklist
 
-When executing parallel skill operations:
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-- [ ] Define parallel groups with independent tasks
-- [ ] Ensure skill independence to avoid race conditions
-- [ ] Implement result collection with proper aggregation
-- [ ] Handle partial failures in parallel execution
-- [ ] Configure worker pool size based on resource constraints
-- [ ] Implement timeouts for parallel operations
-- [ ] Validate skills are idempotent and stateless
-- [ ] Follow the 5 Laws of Elegant Defense from code-philosophy
 
----
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                              Orchestration Flow                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+  User Request
+      ↓
+┌─────────────────┐
+│  Parse Request  │
+│  & Extract      │
+│  Features       │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Evaluate Available Skills                                │
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
+│  │ Skill A      │  │ Skill B      │  │ Skill C      │              │
+│  │ - Match Score│  │ - Match Score│  │ - Match Score│              │
+│  │ - Confidence │  │ - Confidence │  │ - Confidence │              │
+│  │ - History    │  │ - History    │  │ - History    │              │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘              │
+│         │                 │                 │                       │
+│         └─────────────────┴─────────────────┘                       │
+│                          ↓                                          │
+│                   Select Best Skill                               │
+└─────────────────────────────────────────────────────────────────────┘
+         ↓
+┌─────────────────┐
+│  Execute Skill  │
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│  Handle Result  │
+└────────┬────────┘
+         ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Error Handling & Fallback                                  │
+│                                                                     │
+│  Success? ────────► Return Result                                  │
+│                                                                     │
+│  Fail? ────────┐                                                    │
+│                ↓                                                    │
+│  ┌──────────────────────────────────────────────────────────┐      │
+│  │               Fallback Chain                                    │      │
+│  │                                                             │      │
+│  │  1. Retry with adjusted parameters                          │      │
+│  │  2. Try Alternative Skill (if available)                    │      │
+│  │  3. Defer to Human Operator (if critical)                   │      │
+│  │  4. Log & Return Error                                      │      │
+│  └──────────────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────────────┘
 
 ## When to Use
 
-Use the Parallel Skill Runner when:
+Use this skill when:
 
-- Executing independent skills that don't depend on each other's results
-- Need to optimize execution time through concurrent processing
-- Processing multiple inputs with the same skill chain
-- Building distributed skill execution across multiple workers
-- Implementing map-reduce patterns for skill execution
-- Need to scale skill execution across available resources
-
----
+- Orchestrating multi-step workflows that require skill delegation
+- Implementing adaptive skill routing based on confidence scores
+- Building fallback mechanisms for failed skill executions
+- Creating intelligent task decomposition and parallel execution
+- Designing skill dependency graphs with automatic resolution
+- Implementing skill selection with historical performance weighting
+- Building agent systems that need to self-organize around tasks
 
 ## When NOT to Use
 
-Avoid using this skill for:
+Avoid this skill for:
 
-- Sequential skill dependencies (use multi-skill-executor instead)
-- Skills that share mutable state
-- Real-time operations requiring strict ordering
-- Single-skill execution (direct invocation is faster)
+- Direct task execution without orchestration needs - use individual skills instead
+- High-frequency trading scenarios where latency must be minimized - the selection overhead may be prohibitive
+- Simple linear workflows without branching or fallback requirements
+- Cases where skill metadata is unavailable or unreliable
 
----
 
-## Core Concepts
+## Core Workflow
 
-### Parallel Execution Model
+1. **Parse and Analyze Request** - Extract intent, entities, and constraints from user input.
+   **Checkpoint:** All required parameters must be present and in valid format before proceeding.
 
-The runner implements a map-reduce pattern for parallel skill execution:
+2. **Score Available Skills** - Calculate match scores using multi-factor algorithm:
+   - Text similarity between request and skill triggers
+   - Historical success rate for similar tasks
+   - Skill availability and health status
+   - Required dependencies and their availability
+   
+   **Checkpoint:** Skip to fallback if no skill scores above threshold.
 
-```
-Inputs → [Map Phase: Parallel Skills] → [Reduce Phase: Aggregate Results]
-               ↓         ↓         ↓
-           Skill1  Skill2  Skill3
-```
+3. **Select Optimal Skill** - Choose skill with highest score that meets minimum confidence.
+   **Checkpoint:** Verify skill has not been disabled or deprecated.
 
-### Execution Strategies
+4. **Execute with Fallback** - Run skill execution wrapped in retry and fallback logic.
+   **Checkpoint:** Log all execution attempts for audit trail.
 
-#### 1. Unbounded Parallelism
-
-All skills execute simultaneously:
-
-```python
-runner = ParallelSkillRunner(max_workers=None)
-results = runner.execute(parallel_tasks)
-```
-
-#### 2. Bounded Parallelism
-
-Fixed number of concurrent workers:
-
-```python
-runner = ParallelSkillRunner(max_workers=4)
-results = runner.execute(parallel_tasks)
-```
-
-#### 3. Grouped Execution
-
-Execute skills in batches:
-
-```python
-runner = ParallelSkillRunner(group_size=3)
-results = runner.execute_with_groups(tasks)
-```
-
-### Worker Pool Management
-
-The runner maintains a pool of worker threads/processes:
-
-```python
-{
-    "worker_id": {
-        "status": "idle|running|completed|failed",
-        "current_task": None,
-        "result": None,
-        "execution_time": None
-    }
-}
-```
-
-### Result Collection Patterns
-
-#### 1. List Aggregation
-
-Collect results in order:
-
-```python
-results = [
-    {"skill": "skill_a", "result": {...}},
-    {"skill": "skill_b", "result": {...}},
-    ...
-]
-```
-
-#### 2. Dictionary Aggregation
-
-Group by skill name:
-
-```python
-results = {
-    "skill_a": {...},
-    "skill_b": {...},
-    ...
-}
-```
-
-#### 3. Map Aggregation
-
-Key results by input:
-
-```python
-results = {
-    "input_a": {"skill": "...", "result": {...}},
-    "input_b": {"skill": "...", "result": {...}},
-    ...
-}
-```
-
----
+5. **Return or Fallback** - Either return successful result or apply fallback chain:
+   - Retry with adjusted parameters
+   - Try alternative skill from `related-skills`
+   - Defer to human operator for critical tasks
+   
+   **Checkpoint:** Record outcome with timing and confidence metadata.
 
 ## Implementation Patterns
 
-### Pattern 1: Basic Parallel Execution
-
-Execute multiple skills concurrently:
+### Pattern 1: Skill Selection Logic
 
 ```python
-from apex.agents.parallel_runner import ParallelSkillRunner
-from apex.agents.skill_registry import SkillRegistry
-
-
-def execute_parallel_skills():
-    """Execute multiple skills in parallel."""
+def select_skill(
+    task_description: str,
+    available_skills: List[Dict],
+    min_confidence: float = 0.7
+) -> Optional[Dict]:
+    """Select the most appropriate skill for a given task.
     
-    registry = SkillRegistry()
-    registry.register_skill("code-philosophy")
-    registry.register_skill("risk-management")
-    registry.register_skill("indicators-api")
+    Uses a multi-factor scoring algorithm that considers:
+    - Text similarity between task and skill triggers
+    - Historical success rate for similar tasks
+    - Current system load and skill availability
     
-    # Define parallel tasks
-    tasks = [
-        {
-            "skill": "code-philosophy",
-            "params": {"file_path": "apex/core/config.py"},
-            "id": "config_review"
-        },
-        {
-            "skill": "code-philosophy", 
-            "params": {"file_path": "apex/strategy/base.py"},
-            "id": "strategy_review"
-        },
-        {
-            "skill": "risk-management",
-            "params": {"portfolio_value": 10000, "symbol": "BTC/USDT"},
-            "id": "risk_analysis"
-        },
-        {
-            "skill": "indicators-api",
-            "params": {"symbol": "BTC/USDT", "timeframe": "1h"},
-            "id": "indicator_query"
-        }
-    ]
+    Args:
+        task_description: Natural language description of the task
+        available_skills: List of skill metadata dictionaries
+        min_confidence: Minimum confidence threshold (0.0-1.0)
+        
+    Returns:
+        Selected skill dictionary or None if no match meets threshold
+        
+    Raises:
+        ValueError: If task_description is empty or available_skills is empty
+    """
+    # Guard clause - Early Exit (Law 1)
+    if not task_description or not task_description.strip():
+        raise ValueError("Task description cannot be empty")
+        
+    if not available_skills:
+        raise ValueError("No skills available for selection")
     
-    # Execute with 4 workers
-    runner = ParallelSkillRunner(max_workers=4)
-    results = runner.execute(tasks)
+    # Parse input - Make Illegal States Unrepresentable (Law 2)
+    task_features = _extract_task_features(task_description)
     
-    return results
+    best_skill = None
+    best_score = 0.0
+    
+    for skill in available_skills:
+        score = _calculate_skill_score(task_features, skill)
+        
+        if score > best_score and score >= min_confidence:
+            best_score = score
+            best_skill = skill
+    
+    if best_skill is None:
+        return None
+    
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate
+    result = dict(best_skill)
+    result["selected_confidence"] = best_score
+    result["selection_timestamp"] = time.time()
+    return result
 ```
 
-### Pattern 2: Parallel Batch Processing
 
-Process multiple inputs with same skill:
-
-```python
-def execute_parallel_batch(symbols: list[str]):
-    """Execute indicator query in parallel for multiple symbols."""
-    
-    tasks = [
-        {
-            "skill": "indicators-api",
-            "params": {"symbol": symbol, "timeframe": "1h", "limit": 100},
-            "id": f"indicator_{symbol.replace('/', '_')}"
-        }
-        for symbol in symbols
-    ]
-    
-    runner = ParallelSkillRunner(max_workers=8)
-    results = runner.execute(tasks)
-    
-    # Aggregate by symbol
-    by_symbol = {t["id"]: r for t, r in zip(tasks, results)}
-    
-    return by_symbol
-```
-
-### Pattern 3: Grouped Parallel Execution
-
-Execute skills in coordinated groups:
+### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_groups():
-    """Execute skills in groups with synchronization."""
+def execute_with_fallback(
+    skill: Dict,
+    task_context: Dict,
+    max_retries: int = 2
+) -> Dict:
+    """Execute a skill with fallback chain for resilience.
     
-    # Group 1: Analysis skills (can run in parallel)
-    group1 = [
-        {"skill": "indicators-api", "params": {"symbol": "BTC/USDT"}},
-        {"skill": "indicators-api", "params": {"symbol": "ETH/USDT"}},
-        {"skill": "indicators-api", "params": {"symbol": "SOL/USDT"}}
-    ]
+    Implements the Fail Fast, Fail Loud principle (Law 4):
+    - Invalid states halt immediately with descriptive errors
+    - No silent failures or partial results
     
-    # Group 2: Risk analysis (depends on group 1 results)
-    group2 = [
-        {"skill": "risk-management", "params": {"symbol": "BTC/USDT"}},
-        {"skill": "risk-management", "params": {"symbol": "ETH/USDT"}},
-        {"skill": "risk-management", "params": {"symbol": "SOL/USDT"}}
-    ]
+    Fallback chain:
+    1. Retry with original parameters
+    2. Retry with adjusted parameters (if applicable)
+    3. Try alternative skill from related skills list
+    4. Defer to human operator (for critical tasks)
     
-    runner = ParallelSkillRunner(max_workers=4)
+    Args:
+        skill: Selected skill metadata
+        task_context: Execution context including inputs
+        max_retries: Maximum retry attempts before fallback
+        
+    Returns:
+        Execution result with metadata (success, timing, confidence)
+        
+    Raises:
+        SkillExecutionError: If all retries and fallbacks exhausted
+    """
+    # Guard clause - validate skill (Early Exit)
+    if not _is_skill_valid(skill):
+        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
     
-    # Execute groups sequentially
-    results1 = runner.execute(group1)
-    results2 = runner.execute(group2, context={"indicators": results1})
+    # Parse context - Ensure trusted state (Law 2)
+    validated_context = _validate_and_parse_context(task_context, skill)
     
-    return {"group1": results1, "group2": results2}
-```
-
-### Pattern 4: Map-Reduce Pattern
-
-Distribute work and aggregate results:
-
-```python
-def execute_map_reduce(symbols: list[str], indicators: list[str]):
-    """Execute map-reduce across symbols and indicators."""
+    for attempt in range(max_retries + 1):
+        try:
+            result = _execute_skill_direct(skill, validated_context)
+            
+            # Success - Atomic Predictability (Law 3)
+            return {
+                "success": True,
+                "skill_executed": skill["name"],
+                "result": result,
+                "attempts": attempt + 1,
+                "latency_ms": _calculate_latency()
+            }
+            
+        except InvalidStateError as e:
+            # Fail Fast - Don't try to patch bad data (Law 4)
+            raise SkillExecutionError(
+                f"Invalid state in {skill['name']}: {str(e)}"
+            ) from e
+            
+        except TransientError as e:
+            # Transient error - try fallback
+            if attempt == max_retries:
+                return _apply_fallback_chain(skill, validated_context)
     
-    # Map phase: Generate tasks
-    tasks = []
-    for symbol in symbols:
-        for indicator in indicators:
-            tasks.append({
-                "skill": "indicators-api",
-                "params": {"symbol": symbol, "indicator_name": indicator},
-                "id": f"{symbol}_{indicator}"
-            })
-    
-    # Execute in parallel
-    runner = ParallelSkillRunner(max_workers=16)
-    map_results = runner.execute(tasks)
-    
-    # Reduce phase: Aggregate by symbol
-    aggregated = {}
-    for task, result in zip(tasks, map_results):
-        symbol = task["id"].split("_")[0]
-        if symbol not in aggregated:
-            aggregated[symbol] = {}
-        indicator = "_".join(task["id"].split("_")[1:])
-        aggregated[symbol][indicator] = result
-    
-    return aggregated
-```
-
-### Pattern 5: Fault Tolerant Execution
-
-Handle partial failures in parallel execution:
-
-```python
-def execute_with_fault_tolerance():
-    """Execute with fault tolerance for individual tasks."""
-    
-    tasks = [
-        {"skill": "indicators-api", "params": {"symbol": "BTC/USDT"}},
-        {"skill": "indicators-api", "params": {"symbol": "ETH/USDT"}},
-        {"skill": "indicators-api", "params": {"symbol": "INVALID_SYMBOL"}},  # Will fail
-        {"skill": "indicators-api", "params": {"symbol": "SOL/USDT"}}
-    ]
-    
-    runner = ParallelSkillRunner(
-        max_workers=4,
-        continue_on_error=True,
-        retry_attempts=2,
-        timeout=30
+    # All retries exhausted - Fail Loud (Law 4)
+    raise SkillExecutionError(
+        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
     )
-    
-    results = runner.execute(tasks)
-    
-    # Results contain both success and error information
-    success_count = sum(1 for r in results if not r.get("error"))
-    failure_count = len(results) - success_count
-    
-    return {
-        "total": len(results),
-        "success": success_count,
-        "failed": failure_count,
-        "details": results
-    }
 ```
 
----
+### MUST DO
+- Always validate skill metadata before selection (Early Exit)
+- Implement fallback chain with at least 2 levels (Fallback Skill + Human)
+- Log all skill selections with full context for auditability
+- Return new data structures instead of mutating inputs (Atomic Predictability)
+- Fail immediately with descriptive errors on invalid states
+- Update confidence scores after each execution for adaptive routing
+- Reference `code-philosophy` (5 Laws of Elegant Defense) in all logic
 
-## Common Patterns
 
-### Pattern 1: Worker Pool Configuration
+### MUST NOT DO
+- Select skills based on a single factor (e.g., only confidence score)
+- Disable fallback mechanisms "temporarily" - this creates fragile systems
+- Skip validation of skill dependencies before execution
+- Return partial results - either complete success or clear failure
+- Use magic numbers for confidence thresholds - make them configurable
+- Cache skill selections without considering context changes
 
-Configure worker pool based on workload:
 
-```python
-# I/O bound tasks: More workers
-runner = ParallelSkillRunner(max_workers=os.cpu_count() * 2)
+## TL;DR Checklist
 
-# CPU bound tasks: Fewer workers
-runner = ParallelSkillRunner(max_workers=os.cpu_count() - 1)
+- [ ] Parse all inputs at boundary before processing (Law 2)
+- [ ] Handle edge cases with early returns at function top (Law 1)
+- [ ] Fail immediately with descriptive errors on invalid states (Law 4)
+- [ ] Return new data structures, never mutate inputs (Law 3)
+- [ ] Implement minimum 2-level fallback chain for all skill executions
+- [ ] Log all skill selections with context for full audit trail
+- [ ] Validate skill metadata and dependencies before selection
+- [ ] Update confidence scores after each execution for learning
 
-# Memory constrained: Limit concurrent tasks
-runner = ParallelSkillRunner(max_workers=2)
-```
 
-### Pattern 2: Result Aggregation Strategies
+## TL;DR for Code Generation
 
-Different aggregation methods for different use cases:
+- Use guard clauses - return early on invalid input before doing work
+- Return simple types (dict, str, int, bool, list) - avoid complex nested objects
+- Cyclomatic complexity < 10 per function - split anything larger
+- Handle null/empty cases explicitly at function top (Early Exit)
+- Never mutate input parameters - return new dicts/objects
+- Fail fast with descriptive errors - don't try to "patch" bad data
+- Reference code-philosophy laws in comments for complex logic
+- Include timing and confidence metadata in all return values
 
-```python
-# Method 1: List (preserves order)
-results = runner.execute(tasks, aggregate="list")
 
-# Method 2: Dict (access by skill ID)
-results = runner.execute(tasks, aggregate="dict", key="id")
+## Output Template
 
-# Method 3: Grouped by skill type
-results = runner.execute(tasks, aggregate="grouped", group_by="skill")
+When applying this skill, produce:
 
-# Method 4: Custom aggregation function
-results = runner.execute(tasks, aggregate="custom", aggregator=my_aggregator)
-```
+1. **Selected Skills** - List of skill names with confidence scores
+2. **Selection Rationale** - Why each skill was chosen (match score, history, availability)
+3. **Execution Plan** - Order of execution with dependencies
+4. **Fallback Strategy** - Which fallback skills will be tried and in what order
+5. **Risk Assessment** - Any potential failure points and their impact
+6. **Timing Estimates** - Expected latency including fallback scenarios
 
-### Pattern 3: Progress Monitoring
 
-Track parallel execution progress:
-
-```python
-def execute_with_progress(tasks):
-    """Execute with progress tracking."""
-    
-    total = len(tasks)
-    completed = 0
-    
-    def progress_callback(result, task):
-        nonlocal completed
-        completed += 1
-        progress = (completed / total) * 100
-        print(f"Progress: {progress:.1f}% ({completed}/{total})")
-    
-    runner = ParallelSkillRunner(
-        max_workers=4,
-        callbacks={"on_result": progress_callback}
-    )
-    
-    results = runner.execute(tasks)
-    return results
-```
-
----
-
-## Common Mistakes
-
-### Mistake 1: Sharing Mutable State Between Skills
-
-**Wrong:**
-```python
-shared_data = {"count": 0}
-
-def shared_state_skill(params):
-    # ❌ Race condition on shared_data
-    shared_data["count"] += 1
-    return shared_data
-
-tasks = [{"skill": shared_state_skill} for _ in range(10)]
-# Results will be unpredictable
-```
-
-**Correct:**
-```python
-def stateless_skill(params):
-    # ✅ Returns new data, no shared state
-    return {"count": 1}
-
-tasks = [{"skill": stateless_skill} for _ in range(10)]
-# Each task independent, results predictable
-```
-
-### Mistake 2: Not Configuring Worker Pool Appropriately
-
-**Wrong:**
-```python
-# ❌ Too few workers for I/O bound tasks
-runner = ParallelSkillRunner(max_workers=1)
-# ❌ Too many workers for CPU bound tasks
-runner = ParallelSkillRunner(max_workers=100)
-```
-
-**Correct:**
-```python
-import os
-import multiprocessing
-
-# I/O bound: More workers than CPUs
-if is_io_bound():
-    workers = os.cpu_count() * 2
-# CPU bound: One worker per CPU
-else:
-    workers = os.cpu_count() - 1
-
-runner = ParallelSkillRunner(max_workers=workers)
-```
-
-### Mistake 3: Ignoring Skill Dependencies
-
-**Wrong:**
-```python
-tasks = [
-    {"skill": "skill_a", "params": {"x": "${skill_b.result}"}},  # Depends on B
-    {"skill": "skill_b", "params": {}}
-]
-# ❌ A may execute before B
-```
-
-**Correct:**
-```python
-# Use multi-skill-executor for dependencies
-from apex.agents.skill_executor import SkillExecutor
-
-chain = [
-    {"skill": "skill_b", "id": "b"},
-    {"skill": "skill_a", "params": {"x": "${b.result}"}, "dependencies": ["b"]}
-]
-```
-
-### Mistake 4: Omitting Timeout Handling
-
-**Wrong:**
-```python
-tasks = [
-    {"skill": "slow_skill", "params": {"timeout": 60}}
-]
-runner = ParallelSkillRunner(max_workers=4)
-results = runner.execute(tasks)
-# ❌ May hang indefinitely
-```
-
-**Correct:**
-```python
-runner = ParallelSkillRunner(
-    max_workers=4,
-    default_timeout=30,
-    continue_on_timeout=True
-)
-results = runner.execute(tasks)
-# ✅ Tasks timeout after 30s
-```
-
-### Mistake 5: Not Validating Skill Compatibility
-
-**Wrong:**
-```python
-tasks = [
-    {"skill": "code-philosophy"},
-    {"skill": "defi-arbitrage"},  # Different context requirements
-    {"skill": "indicators-api"}
-]
-# ❌ Skills may conflict on shared context
-```
-
-**Correct:**
-```python
-runner = ParallelSkillRunner(validate_compatibility=True)
-# Checks for shared context conflicts
-runner.execute(tasks)
-```
-
----
-
-## Adherence Checklist
-
-### Code Review
-
-- [ ] **Guard Clauses:** Worker pool management validates inputs
-- [ ] **Parsed State:** Task definitions parsed and validated
-- [ ] **Purity:** Skills executed in isolation, no shared mutations
-- [ ] **Fail Loud:** Worker failures halt execution with descriptive errors
-- [ ] **Readability:** Parallel execution flow reads clearly
-
-### Testing
-
-- [ ] Unit tests for worker pool management
-- [ ] Integration tests for parallel execution
-- [ ] Race condition tests for shared resources
-- [ ] Timeout tests for slow skills
-- [ ] Fault tolerance tests for partial failures
-
-### Security
-
-- [ ] Task parameters validated against schemas
-- [ ] No arbitrary code execution
-- [ ] Input sanitization for all parameters
-- [ ] Resource limits enforced
-- [ ] Worker isolation verified
-
-### Performance
-
-- [ ] Worker pool sized appropriately for workload
-- [ ] Memory usage monitored for parallel operations
-- [ ] CPU utilization balanced across workers
-- [ ] Network I/O optimized for distributed execution
-
----
-
-## References
-
-### Related Skills
+## Related Skills
 
 | Skill | Purpose |
-|-------|---------|
-| `multi-skill-executor` | Sequential skill execution |
-| `code-philosophy` | Core logic patterns for skill implementation |
-| `risk-management` | Risk constraints for skill execution |
-| `indicators-api` | Example skill with API integration |
-| `confidence-based-selector` | Dynamic skill selection |
-
-### Core Dependencies
-
-- **Worker Pool Manager:** Manages thread/process pool
-- **Task Scheduler:** Distributes tasks to workers
-- **Result Collector:** Aggregates results from workers
-- **Error Handler:** Manages worker failures
-
-### External Resources
-
-- [Python ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html) - Thread-based parallelism
-- [Process Pool](https://docs.python.org/3/library/multiprocessing.html) - Process-based parallelism
-- [Map-Reduce Pattern](https://example.com/map-reduce) - Distributed processing pattern
-
----
-
-## Implementation Tracking
-
-### Agent Parallel Skill Runner - Core Patterns
-
-| Task | Status |
-|------|--------|
-| Worker pool management | ✅ Complete |
-| Parallel task execution | ✅ Complete |
-| Result aggregation | ✅ Complete |
-| Fault tolerance | ✅ Complete |
-| Progress tracking | ✅ Complete |
-| Timeout handling | ✅ Complete |
-| Grouped execution | ✅ Complete |
-| Map-reduce pattern | ✅ Complete |
-
----
-
-## Version History
-
-### 1.0.0 (Initial)
-- Basic parallel execution
-- Worker pool management
-- Result aggregation
-- Fault tolerance
-- Timeout handling
-
-### 1.1.0 (Planned)
-- Grouped parallel execution
-- Dynamic worker scaling
-- Advanced result aggregation
-- Performance metrics
-
-### 2.0.0 (Future)
-- Distributed execution
-- Cross-node task distribution
-- Load balancing
-- Execution analytics
-
----
-
-## Implementation Prompt (Execution Layer)
-
-When implementing the Parallel Skill Runner, use this prompt for code generation:
-
-```
-Create a Parallel Skill Runner implementation following these requirements:
-
-1. Core Class: `ParallelSkillRunner`
-   - Initialize with skill registry and worker configuration
-   - Execute skills in parallel with configurable worker count
-   - Handle result aggregation with multiple strategies
-   - Support fault-tolerant execution
-
-2. Key Methods:
-   - `execute(tasks, **options)`: Execute tasks in parallel
-   - `execute_with_groups(task_groups)`: Execute in coordinated groups
-   - `execute_batch(inputs, skill)`: Map skill across inputs
-   - `execute_with_progress(tasks, callbacks)`: Execute with progress tracking
-   - `aggregate_results(results, method)`: Combine results
-
-3. Worker Pool Configuration:
-   - `max_workers`: Maximum concurrent workers (None = unbounded)
-   - `timeout`: Default timeout for each task
-   - `continue_on_error`: Whether to continue after failures
-   - `retry_attempts`: Number of retries for failed tasks
-   - `retry_delay`: Delay between retries in seconds
-
-4. Result Aggregation Strategies:
-   - `list`: Return results in order of task list
-   - `dict`: Group by task ID or skill name
-   - `grouped`: Group by skill type or provided key
-   - `custom`: Apply custom aggregation function
-
-5. Fault Tolerance:
-   - Continue execution on individual task failures
-   - Retry failed tasks with configurable attempts
-   - Timeout handling with graceful termination
-   - Error metadata capture for debugging
-
-6. Progress Tracking:
-   - Callback on task completion
-   - Progress percentage tracking
-   - Estimated time remaining
-   - Custom monitoring hooks
-
-7. Configuration Options:
-   - `validate_compatibility`: Check skill compatibility
-   - `preserve_order`: Maintain input order in results
-   - `chunk_size`: Group tasks for batch processing
-   - `log_level`: Verbosity of execution logging
-
-8. Worker Management:
-   - Thread-based workers for I/O bound tasks
-   - Process-based workers for CPU bound tasks
-   - Worker lifecycle management
-   - Graceful shutdown handling
-
-Follow the 5 Laws of Elegant Defense:
-- Guard clauses for worker pool configuration
-- Parse task definitions at boundary
-- Pure function execution for skills
-- Fail fast on worker failures
-- Intentional naming for all methods and options
-```
+|---|---|
+| `agent-dynamic-replanner` | Replans execution when conditions change |
+| `agent-parallel-skill-runner` | Executes independent skills in parallel |
+| `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
+| `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
+| `agent-confidence-based-selector` | Alternative confidence-based routing approach

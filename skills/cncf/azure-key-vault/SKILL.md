@@ -11,9 +11,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: key vault, key management, secrets, certificate management, encryption
-    keys
+    keys, acm, kms, secrets management
   related-skills: azure-automation, azure-blob-storage, azure-functions
 ---
+
 
 
 

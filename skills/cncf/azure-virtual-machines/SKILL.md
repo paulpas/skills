@@ -10,9 +10,10 @@ metadata:
   role: reference
   scope: infrastructure
   output-format: manifests
-  triggers: virtual machines, vm, azure vm, compute, instance types, scaling
+  triggers: virtual machines, vm, azure vm, compute, instance types, scaling, ec2
   related-skills: azure-automation, azure-monitor, azure-rbac, azure-scale-sets
 ---
+
 
 
 

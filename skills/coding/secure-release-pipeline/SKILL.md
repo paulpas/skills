@@ -9,12 +9,13 @@ metadata:
   version: 1.0.0
   domain: coding
   triggers: secure release, CVE scanning, security audit, version management, quality
-    gates, dependency security, semantic versioning, incident response, patch management
+    gates, dependency security, semantic versioning, incident response
   role: implementation
   scope: implementation
   output-format: code
   related-skills: code-review, risk-management
 ---
+
 
 
 # Secure Release Pipeline Manager
