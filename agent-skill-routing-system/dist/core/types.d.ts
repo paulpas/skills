@@ -13,6 +13,9 @@ export interface SkillMetadata {
     output_schema: unknown;
     embedding?: number[];
     draft?: boolean;
+    maturity?: 'draft' | 'beta' | 'stable';
+    completeness?: number;
+    exampleCount?: number;
     performance?: {
         averageLatencyMs: number;
         successRate: number;
@@ -69,6 +72,23 @@ export interface SelectedSkill {
     score: number;
     role: 'primary' | 'supporting' | 'fallback';
     reasoning?: string;
+}
+/**
+ * Skill ranking result with token usage information
+ */
+export interface SkillRankingResult extends SelectedSkill {
+    /**
+     * Token usage for this specific skill ranking (undefined since tokens are for entire request)
+     * Per-skill token breakdown is not available from LLM API responses
+     */
+    inputTokens?: number;
+    outputTokens?: number;
+    /**
+     * Total token usage for the entire ranking request (all skills)
+     * This represents the combined input/output tokens for the LLM call
+     */
+    totalInputTokens: number;
+    totalOutputTokens: number;
 }
 /**
  * Execution step in a plan
@@ -149,24 +169,6 @@ export interface ExecuteResponse {
     confidence: number;
 }
 /**
- * MCP Tool result
- */
-export interface ToolResult {
-    success: boolean;
-    output?: unknown;
-    error?: string;
-    latencyMs: number;
-    metadata?: Record<string, unknown>;
-}
-/**
- * MCP Tool specification
- */
-export interface ToolSpec {
-    name: string;
-    description: string;
-    parameters: Record<string, unknown>;
-}
-/**
  * Observability log entry
  */
 export interface LogEntry {
@@ -176,6 +178,9 @@ export interface LogEntry {
     category: string;
     message: string;
     data?: Record<string, unknown>;
+    modelName?: string;
+    inputTokens?: number;
+    outputTokens?: number;
 }
 /**
  * Embedding request/response
@@ -188,5 +193,7 @@ export interface EmbeddingResponse {
     embedding: number[];
     dimensions: number;
     model: string;
+    inputTokens?: number;
+    batchTokenCount?: number;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -77,9 +77,9 @@ export class Logger {
     this.log('error', message, data);
   }
 
-  /**
-   * Main log function
-   */
+ /**
+    * Main log function
+    */
   private log(level: LogLevel, message: string, data?: Record<string, unknown>): void {
     // Check if level is enabled
     if (!this.isLevelEnabled(level)) {
@@ -93,6 +93,9 @@ export class Logger {
       category: this.category,
       message,
       data: this.config.includePayloads ? data : undefined,
+      modelName: data?.model as string | undefined,
+      inputTokens: data?.inputTokens as number | undefined,
+      outputTokens: data?.outputTokens as number | undefined,
     };
 
     // Format log entry
@@ -131,9 +134,9 @@ export class Logger {
     return JSON.stringify(entry);
   }
 
-  /**
-   * Write to console
-   */
+ /**
+    * Write to console
+    */
   private writeToConsole(entry: LogEntry): void {
     const color = this.getColorForLevel(entry.level);
     const reset = '\x1b[0m';
@@ -141,7 +144,10 @@ export class Logger {
     const dataStr = entry.data && Object.keys(entry.data).length > 0
       ? '  ' + JSON.stringify(entry.data)
       : '';
-    console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${dataStr}${reset}`);
+    const modelInfo = entry.modelName
+      ? ` [model: ${entry.modelName}, input: ${entry.inputTokens ?? 0} tokens, output: ${entry.outputTokens ?? 0} tokens]`
+      : '';
+    console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${dataStr}${modelInfo}${reset}`);
   }
 
   /**

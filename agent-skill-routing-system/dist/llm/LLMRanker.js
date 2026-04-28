@@ -7,6 +7,8 @@ class LLMRanker {
     config;
     logger;
     rankingCache = new Map();
+    inputTokens = 0;
+    outputTokens = 0;
     constructor(config = {}) {
         const provider = process.env.LLM_PROVIDER || config.provider || 'openai';
         this.config = {
@@ -84,11 +86,24 @@ class LLMRanker {
             rankedCount: rankings.length,
             rankings: rankings.map(r => ({ skill: r.skillName, score: r.score, reason: r.reason?.slice(0, 80) })),
         });
+        // Log token usage
+        this.logger.debug('LLM token usage', {
+            inputTokens: this.inputTokens,
+            outputTokens: this.outputTokens,
+        });
+        // Track total tokens for the entire ranking request
+        const totalInputTokens = this.inputTokens;
+        const totalOutputTokens = this.outputTokens;
         const result = rankings.map((ranking, index) => ({
             name: ranking.skillName,
             score: ranking.score,
             role: (index === 0 ? 'primary' : 'supporting'),
             reasoning: ranking.reason,
+            // Per-skill token counts are undefined since the tokens are for the entire request
+            inputTokens: undefined,
+            outputTokens: undefined,
+            totalInputTokens,
+            totalOutputTokens,
         }));
         this.rankingCache.set(cacheKey, result);
         this.logger.info('[CACHE STORE] LLM ranking cached', {
@@ -165,6 +180,10 @@ Rules:
             throw new Error(`${baseUrl} API error ${response.status}: ${err}`);
         }
         const data = await response.json();
+        // Track token usage
+        const usage = data.usage || {};
+        this.inputTokens = usage.prompt_tokens ?? 0;
+        this.outputTokens = usage.completion_tokens ?? 0;
         return data.choices[0].message.content;
     }
     /** Anthropic Messages API */
@@ -188,6 +207,10 @@ Rules:
             throw new Error(`Anthropic API error ${response.status}: ${err}`);
         }
         const data = await response.json();
+        // Track token usage
+        const usage = data.usage || {};
+        this.inputTokens = usage.input_tokens ?? 0;
+        this.outputTokens = usage.output_tokens ?? 0;
         const textBlock = data.content.find(b => b.type === 'text');
         if (!textBlock)
             throw new Error('Anthropic response contained no text block');
@@ -224,6 +247,15 @@ Rules:
     }
     getModel() { return this.config.model; }
     getProvider() { return this.config.provider; }
+    getInputTokens() { return this.inputTokens; }
+    getOutputTokens() { return this.outputTokens; }
+    /**
+     * Reset token counters - useful for testing or fresh sessions
+     */
+    resetTokenCounters() {
+        this.inputTokens = 0;
+        this.outputTokens = 0;
+    }
 }
 exports.LLMRanker = LLMRanker;
 //# sourceMappingURL=LLMRanker.js.map

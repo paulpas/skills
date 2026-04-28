@@ -83,6 +83,24 @@ export interface SelectedSkill {
 }
 
 /**
+ * Skill ranking result with token usage information
+ */
+export interface SkillRankingResult extends SelectedSkill {
+  /**
+   * Token usage for this specific skill ranking (undefined since tokens are for entire request)
+   * Per-skill token breakdown is not available from LLM API responses
+   */
+  inputTokens?: number;
+  outputTokens?: number;
+  /**
+   * Total token usage for the entire ranking request (all skills)
+   * This represents the combined input/output tokens for the LLM call
+   */
+  totalInputTokens: number;
+  totalOutputTokens: number;
+}
+
+/**
  * Execution step in a plan
  */
 export interface ExecutionStep {
@@ -170,26 +188,6 @@ export interface ExecuteResponse {
 }
 
 /**
- * MCP Tool result
- */
-export interface ToolResult {
-  success: boolean;
-  output?: unknown;
-  error?: string;
-  latencyMs: number;
-  metadata?: Record<string, unknown>;
-}
-
-/**
- * MCP Tool specification
- */
-export interface ToolSpec {
-  name: string;
-  description: string;
-  parameters: Record<string, unknown>;
-}
-
-/**
  * Observability log entry
  */
 export interface LogEntry {
@@ -199,6 +197,9 @@ export interface LogEntry {
   category: string;
   message: string;
   data?: Record<string, unknown>;
+  modelName?: string;
+  inputTokens?: number;
+  outputTokens?: number;
 }
 
 /**
@@ -213,4 +214,6 @@ export interface EmbeddingResponse {
   embedding: number[];
   dimensions: number;
   model: string;
+  inputTokens?: number;
+  batchTokenCount?: number;
 }

@@ -8,6 +8,14 @@ import { Logger } from '../observability/Logger.js';
 export type EmbeddingProvider = 'openai' | 'llamacpp';
 
 /**
+ * Result of batch embedding generation with token information
+ */
+interface EmbeddingsWithTokens {
+  embeddings: number[][];
+  inputTokens?: number;
+}
+
+/**
  * Configuration for the embedding service
  */
 export interface EmbeddingServiceConfig {
@@ -56,12 +64,13 @@ export class EmbeddingService {
       for (const file of files) {
         try {
           const raw = fs.readFileSync(path.join(cacheDir, file), 'utf-8');
-          const entry = JSON.parse(raw) as { text: string; embedding: number[] };
+          const entry = JSON.parse(raw) as { text: string; embedding: number[]; inputTokens?: number };
           if (entry.text && Array.isArray(entry.embedding)) {
             this.cache.set(entry.text, {
               embedding: entry.embedding,
               dimensions: entry.embedding.length,
               model: this.config.model,
+              inputTokens: entry.inputTokens,
             });
             loaded++;
           }
@@ -157,7 +166,11 @@ export class EmbeddingService {
 
     // Generate embeddings for uncached texts
     if (uncachedTexts.length > 0) {
-      const embeddings = await this.generateEmbeddingsFromAPI(uncachedTexts);
+      const embeddingsWithTokens = await this.generateEmbeddingsFromAPI(uncachedTexts);
+      const embeddings = embeddingsWithTokens.embeddings;
+
+      // Extract token info from structured return value
+      const batchTokenCount = embeddingsWithTokens.inputTokens;
 
       for (let i = 0; i < embeddings.length; i++) {
         const text = uncachedTexts[i];
@@ -166,6 +179,10 @@ export class EmbeddingService {
           embedding,
           dimensions: this.config.dimensions,
           model: this.config.model,
+          // Don't assign inputTokens for batch results - total batch count stored separately
+          inputTokens: undefined,
+          // Store total batch token count for accumulation by caller
+          batchTokenCount: typeof batchTokenCount === 'number' ? batchTokenCount : undefined,
         };
 
         this.cache.set(text, result);
@@ -209,9 +226,15 @@ export class EmbeddingService {
         throw new Error(`Embedding API error ${response.status}: ${errorData}`);
       }
 
-      const data = await response.json() as { data: { embedding: number[] }[] };
+      const data = await response.json() as { data: { embedding: number[] }[]; usage?: { prompt_tokens?: number; input_tokens?: number } };
       const embedding = data.data[0].embedding;
-      return { embedding, dimensions: embedding.length, model: this.config.model };
+      const inputTokens = data.usage?.input_tokens ?? data.usage?.prompt_tokens;
+      return { 
+        embedding, 
+        dimensions: embedding.length, 
+        model: this.config.model,
+        inputTokens: typeof inputTokens === 'number' ? inputTokens : undefined
+      };
     } catch (error) {
       // If API fails, generate a deterministic placeholder embedding
       // This allows the system to work without API keys for testing
@@ -225,51 +248,71 @@ export class EmbeddingService {
         embedding: placeholder,
         dimensions: this.config.dimensions,
         model: this.config.model,
+        inputTokens: 0,
       };
     }
   }
 
   /**
-   * Generate embeddings from API in batch (OpenAI or llama.cpp)
-   */
-  private async generateEmbeddingsFromAPI(
-    texts: string[]
-  ): Promise<number[][]> {
-    try {
-      const baseUrl = this.config.provider === 'llamacpp'
-        ? this.config.llamacppBaseUrl
-        : 'https://api.openai.com';
+    * Generate embeddings from API in batch (OpenAI or llama.cpp)
+    */
+   private async generateEmbeddingsFromAPI(
+     texts: string[]
+   ): Promise<EmbeddingsWithTokens> {
+     try {
+       const baseUrl = this.config.provider === 'llamacpp'
+         ? this.config.llamacppBaseUrl
+         : 'https://api.openai.com';
 
-      const apiKey = this.config.provider === 'llamacpp'
-        ? (this.config.apiKey || 'no-key')
-        : this.config.apiKey;
+       const apiKey = this.config.provider === 'llamacpp'
+         ? (this.config.apiKey || 'no-key')
+         : this.config.apiKey;
 
-      const response = await fetch(`${baseUrl}/v1/embeddings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({ model: this.config.model, input: texts }),
-      });
+       const response = await fetch(`${baseUrl}/v1/embeddings`, {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${apiKey}`,
+         },
+         body: JSON.stringify({ model: this.config.model, input: texts }),
+       });
 
-      if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(`Embedding API error ${response.status}: ${errorData}`);
-      }
+       if (!response.ok) {
+         const errorData = await response.text();
+         throw new Error(`Embedding API error ${response.status}: ${errorData}`);
+       }
 
-      const data = await response.json() as { data: { embedding: number[] }[] };
-      return data.data.map((item) => item.embedding);
-    } catch (error) {
-      this.logger.warn('Failed to generate batch embeddings from API', {
-        provider: this.config.provider,
-        error: error instanceof Error ? error.message : String(error),
-        count: texts.length,
-      });
+       const data = await response.json() as { data: { embedding: number[] }[]; usage?: { prompt_tokens?: number; total_tokens?: number } };
+       
+       // Extract token info for batch (usage.total_tokens represents total input tokens for the batch)
+       const batchInputTokens = data.usage?.total_tokens ?? data.usage?.prompt_tokens;
+       
+       // For batch processing, distribute tokens evenly per text if total is available
+       // Otherwise return without token info (will be set to 0 by caller)
+       const tokensPerText = typeof batchInputTokens === 'number' && texts.length > 0
+         ? Math.floor(batchInputTokens / texts.length)
+         : undefined;
 
-      return texts.map((text) => this.generatePlaceholderEmbedding(text));
-    }
-  }
+       const embeddings = data.data.map((item) => item.embedding);
+       
+       return {
+         embeddings,
+         inputTokens: tokensPerText,
+       };
+     } catch (error) {
+       this.logger.warn('Failed to generate batch embeddings from API', {
+         provider: this.config.provider,
+         error: error instanceof Error ? error.message : String(error),
+         count: texts.length,
+       });
+
+       const placeholders = texts.map((text) => this.generatePlaceholderEmbedding(text));
+       return {
+         embeddings: placeholders,
+         inputTokens: 0,
+       };
+     }
+   }
 
   /**
    * Generate a deterministic placeholder embedding for testing
@@ -299,8 +342,8 @@ export class EmbeddingService {
   }
 
   /**
-   * Save embedding to cache file
-   */
+    * Save embedding to cache file
+    */
   private async saveToCacheFile(
     text: string,
     result: EmbeddingResponse,
@@ -316,9 +359,18 @@ export class EmbeddingService {
       const textHash = this.hashString(text);
       const cacheFile = path.join(cacheDir, `${textHash}.json`);
 
+      const cacheEntry: { text: string; embedding: number[]; inputTokens?: number } = {
+        text,
+        embedding: result.embedding,
+      };
+
+      if (typeof result.inputTokens === 'number') {
+        cacheEntry.inputTokens = result.inputTokens;
+      }
+
       await fs.promises.writeFile(
         cacheFile,
-        JSON.stringify({ text, embedding: result.embedding })
+        JSON.stringify(cacheEntry)
       );
     } catch (error) {
       this.logger.warn('Failed to save embedding to cache file', {

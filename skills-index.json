@@ -1,17 +1,18 @@
 {
-  "generatedAt": "2026-04-27T21:22:39.568855Z",
-  "totalSkills": 535,
+  "generatedAt": "2026-04-28T22:16:35.232063Z",
+  "totalSkills": 537,
   "domains": {
     "agent": 220,
     "cncf": 149,
-    "coding": 80,
+    "coding": 82,
     "programming": 3,
     "trading": 83
   },
   "roles": {
     "orchestration": 220,
     "reference": 154,
-    "implementation": 161
+    "implementation": 162,
+    "review": 1
   },
   "skills": [
     {
@@ -275,7 +276,8 @@
         "how do i airflow-dag-patterns",
         "orchestrate airflow-dag-patterns",
         "automate airflow-dag-patterns",
-        "agent airflow-dag-patterns"
+        "agent airflow-dag-patterns",
+        "workflow orchestration"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -580,7 +582,9 @@
         "how do i api-security-testing",
         "orchestrate api-security-testing",
         "automate api-security-testing",
-        "agent api-security-testing"
+        "agent api-security-testing",
+        "unit tests",
+        "vulnerability scanning"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -1212,7 +1216,8 @@
         "how do i bdistill-behavioral-xray",
         "orchestrate bdistill-behavioral-xray",
         "automate bdistill-behavioral-xray",
-        "agent bdistill-behavioral-xray"
+        "agent bdistill-behavioral-xray",
+        "distributed tracing"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -1695,7 +1700,8 @@
         "how do i cc-skill-security-review",
         "orchestrate cc-skill-security-review",
         "automate cc-skill-security-review",
-        "agent cc-skill-security-review"
+        "agent cc-skill-security-review",
+        "vulnerability scanning"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -1893,7 +1899,8 @@
         "how do i circleci-automation",
         "orchestrate circleci-automation",
         "automate circleci-automation",
-        "agent circleci-automation"
+        "agent circleci-automation",
+        "continuous integration"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -2174,7 +2181,10 @@
         "messaging",
         "event streaming",
         "message queue",
-        "asynchronous messaging"
+        "asynchronous messaging",
+        "kafka",
+        "sns",
+        "sqs"
       ],
       "relatedSkills": [
         "gcp-cloud-functions",
@@ -3484,7 +3494,9 @@
         "infrastructure as code",
         "iac",
         "templates",
-        "yaml"
+        "yaml",
+        "cloudformation",
+        "kubernetes deployment"
       ],
       "relatedSkills": [
         "azure-resource-manager",
@@ -3753,6 +3765,31 @@
       "source": "skills/coding/test-driven-development/SKILL.md"
     },
     {
+      "name": "dry-principles",
+      "domain": "coding",
+      "description": "Implements DRY (Don't Repeat Yourself) principle enforcement through pattern recognition, code duplication detection, and refactoring guidance for clean maintainable codebases",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "dry principle",
+        "don't repeat yourself",
+        "code duplication",
+        "refactoring",
+        "code duplication detection",
+        "refactoring guidance",
+        "maintainable code",
+        "code reuse"
+      ],
+      "relatedSkills": [
+        "clean-code",
+        "code-refactoring-refactor-clean",
+        "code-review"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/dry-principles/SKILL.md"
+    },
+    {
       "name": "dynamic-replanner",
       "domain": "agent",
       "description": "Implements intelligent dynamic replanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -3813,7 +3850,9 @@
         "how do i e2e-testing",
         "orchestrate e2e-testing",
         "automate e2e-testing",
-        "agent e2e-testing"
+        "agent e2e-testing",
+        "selenium",
+        "unit tests"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -4491,7 +4530,8 @@
         "real-time sync",
         "data synchronization",
         "mongodb",
-        "nosql database"
+        "nosql database",
+        "dynamodb"
       ],
       "relatedSkills": [
         "gcp-cloud-functions",
@@ -5283,6 +5323,34 @@
       "source": "skills/agent/hubspot-automation/SKILL.md"
     },
     {
+      "name": "humanizer",
+      "domain": "coding",
+      "description": "Detects and removes AI writing patterns to produce natural human writing through two-pass editing process",
+      "role": "review",
+      "scope": "review",
+      "outputFormat": "analysis",
+      "triggers": [
+        "humanize text",
+        "remove AI writing",
+        "edit for natural",
+        "avoid AI patterns",
+        "write like human",
+        "writing edit",
+        "text review",
+        "code documentation",
+        "comments",
+        "technical writing",
+        "readability",
+        "code clarity"
+      ],
+      "relatedSkills": [
+        "code-review",
+        "markdown-best-practices"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/humanizer/SKILL.md"
+    },
+    {
       "name": "hydra",
       "domain": "cncf",
       "description": "\"ORY Hydra in Security & Compliance - cloud native architecture, patterns\" pitfalls, and best practices",
@@ -5415,7 +5483,9 @@
         "identity access management",
         "service account",
         "roles",
-        "permissions"
+        "permissions",
+        "access control",
+        "kubernetes service"
       ],
       "relatedSkills": [
         "azure-rbac",
@@ -5700,7 +5770,8 @@
         "istio",
         "service mesh",
         "traffic management",
-        "kubernetes service"
+        "kubernetes service",
+        "container orchestration"
       ],
       "relatedSkills": [],
       "version": "1.0.0",
@@ -5762,7 +5833,8 @@
         "how do i k8s-debugger",
         "orchestrate k8s-debugger",
         "automate k8s-debugger",
-        "agent k8s-debugger"
+        "agent k8s-debugger",
+        "kubernetes"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -5842,7 +5914,10 @@
         "key management",
         "secrets",
         "certificate management",
-        "encryption keys"
+        "encryption keys",
+        "acm",
+        "kms",
+        "secrets management"
       ],
       "relatedSkills": [
         "azure-automation",
@@ -6113,7 +6188,9 @@
         "how do i kubernetes-deployment",
         "orchestrate kubernetes-deployment",
         "automate kubernetes-deployment",
-        "agent kubernetes-deployment"
+        "agent kubernetes-deployment",
+        "container orchestration",
+        "deployment"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -6282,7 +6359,8 @@
         "how do i lambda-lang",
         "orchestrate lambda-lang",
         "automate lambda-lang",
-        "agent lambda-lang"
+        "agent lambda-lang",
+        "serverless functions"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -7096,7 +7174,8 @@
         "OOD detection",
         "robustness testing",
         "unit tests",
-        "testing"
+        "testing",
+        "test automation"
       ],
       "relatedSkills": [
         "ds-anomaly-detection",
@@ -7880,7 +7959,9 @@
         "openyurt",
         "extending",
         "kubernetes",
-        "computing"
+        "computing",
+        "container orchestration",
+        "k8s"
       ],
       "relatedSkills": [],
       "version": "1.0.0",
@@ -8205,7 +8286,8 @@
         "how do i performance-profiler",
         "orchestrate performance-profiler",
         "automate performance-profiler",
-        "agent performance-profiler"
+        "agent performance-profiler",
+        "optimization"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -8386,7 +8468,8 @@
         "how do i postgresql-optimization",
         "orchestrate postgresql-optimization",
         "automate postgresql-optimization",
-        "agent postgresql-optimization"
+        "agent postgresql-optimization",
+        "postgres"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -8968,8 +9051,7 @@
         "quality gates",
         "dependency security",
         "semantic versioning",
-        "incident response",
-        "patch management"
+        "incident response"
       ],
       "relatedSkills": [
         "code-review",
@@ -9385,7 +9467,8 @@
         "how do i security-audit",
         "orchestrate security-audit",
         "automate security-audit",
-        "agent security-audit"
+        "agent security-audit",
+        "vulnerability scanning"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -10499,7 +10582,8 @@
         "how do i terraform-infrastructure",
         "orchestrate terraform-infrastructure",
         "automate terraform-infrastructure",
-        "agent terraform-infrastructure"
+        "agent terraform-infrastructure",
+        "infrastructure as code"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -10521,7 +10605,8 @@
         "how do i test-oracle-generator",
         "orchestrate test-oracle-generator",
         "automate test-oracle-generator",
-        "agent test-oracle-generator"
+        "agent test-oracle-generator",
+        "enterprise database"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -10543,7 +10628,8 @@
         "how do i testing-qa",
         "orchestrate testing-qa",
         "automate testing-qa",
-        "agent testing-qa"
+        "agent testing-qa",
+        "unit tests"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -11174,7 +11260,8 @@
         "azure vm",
         "compute",
         "instance types",
-        "scaling"
+        "scaling",
+        "ec2"
       ],
       "relatedSkills": [
         "azure-automation",
@@ -11459,7 +11546,9 @@
         "how do i web-security-testing",
         "orchestrate web-security-testing",
         "automate web-security-testing",
-        "agent web-security-testing"
+        "agent web-security-testing",
+        "unit tests",
+        "vulnerability scanning"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -11611,7 +11700,8 @@
         "how do i workflow-automation",
         "orchestrate workflow-automation",
         "automate workflow-automation",
-        "agent workflow-automation"
+        "agent workflow-automation",
+        "github actions"
       ],
       "relatedSkills": [
         "agent-task-routing",

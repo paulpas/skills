@@ -85,9 +85,9 @@ class Router {
             throw new Error(`Safety validation failed: ${safetyResult.errorMessage}`);
         }
         // Generate task embedding
-        const taskEmbedding = await this.embeddingService.generateEmbedding(request.task);
+        const taskEmbeddingResponse = await this.embeddingService.generateEmbedding(request.task);
         // Search for candidates
-        const candidates = await this.vectorDatabase.search(taskEmbedding.embedding, 20);
+        const candidates = await this.vectorDatabase.search(taskEmbeddingResponse.embedding, 20);
         this.logger.info('Vector search candidates', {
             taskId,
             candidateCount: candidates.length,
@@ -113,7 +113,15 @@ class Router {
                 role: s.role,
                 reasoning: s.reasoning?.slice(0, 100),
             })),
+            embeddingModel: taskEmbeddingResponse.model,
+            embeddingInputTokens: taskEmbeddingResponse.inputTokens,
+            llmModel: this.llmRanker.getModel(),
+            llmInputTokens: this.llmRanker.getInputTokens(),
+            llmOutputTokens: this.llmRanker.getOutputTokens(),
         });
+        // Add LLM tokens to VectorDatabase counters
+        this.vectorDatabase.addInputTokens(this.llmRanker.getInputTokens());
+        this.vectorDatabase.addOutputTokens(this.llmRanker.getOutputTokens());
         this.logger.debug('Filtered skills', {
             taskId,
             filteredCount: filteredSkills.length,
@@ -138,7 +146,15 @@ class Router {
             selectedSkills: filteredSkills.length,
             confidence,
             latencyMs: response.latencyMs,
+            embeddingModel: taskEmbeddingResponse.model,
+            embeddingInputTokens: taskEmbeddingResponse.inputTokens,
+            llmModel: this.llmRanker.getModel(),
+            llmInputTokens: this.llmRanker.getInputTokens(),
+            llmOutputTokens: this.llmRanker.getOutputTokens(),
         });
+        // Add LLM tokens to VectorDatabase counters
+        this.vectorDatabase.addInputTokens(this.llmRanker.getInputTokens());
+        this.vectorDatabase.addOutputTokens(this.llmRanker.getOutputTokens());
         return response;
     }
     /**

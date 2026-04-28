@@ -37,8 +37,8 @@ export declare class Logger {
      */
     error(message: string, data?: Record<string, unknown>): void;
     /**
-     * Main log function
-     */
+       * Main log function
+       */
     private log;
     /**
      * Check if log level is enabled
@@ -53,8 +53,8 @@ export declare class Logger {
      */
     private formatEntry;
     /**
-     * Write to console
-     */
+       * Write to console
+       */
     private writeToConsole;
     /**
      * Get ANSI color code for log level

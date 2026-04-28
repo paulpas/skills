@@ -1,6 +1,6 @@
 // LLM Ranker - ranks skill candidates using OpenAI, Anthropic, or llama.cpp
 
-import type { SkillDefinition, SkillRanking, SelectedSkill } from '../core/types.js';
+import type { SkillDefinition, SkillRanking, SelectedSkill, SkillRankingResult } from '../core/types.js';
 import { Logger } from '../observability/Logger.js';
 
 export type LLMProvider = 'openai' | 'anthropic' | 'llamacpp';
@@ -22,7 +22,9 @@ export interface LLMRankerConfig {
 export class LLMRanker {
   private config: Required<LLMRankerConfig>;
   private logger: Logger;
-  private rankingCache: Map<string, SelectedSkill[]> = new Map();
+  private rankingCache: Map<string, SkillRankingResult[]> = new Map();
+  private inputTokens: number = 0;
+  private outputTokens: number = 0;
 
   constructor(config: Partial<LLMRankerConfig> = {}) {
     const provider = (process.env.LLM_PROVIDER as LLMProvider) || config.provider || 'openai';
@@ -63,7 +65,7 @@ export class LLMRanker {
     }
   }
 
-  async rankCandidates(task: string, candidates: SkillDefinition[]): Promise<SelectedSkill[]> {
+  async rankCandidates(task: string, candidates: SkillDefinition[]): Promise<SkillRankingResult[]> {
     if (candidates.length === 0) return [];
 
     const limited = candidates.slice(0, this.config.maxCandidates);
@@ -112,11 +114,26 @@ export class LLMRanker {
       rankings: rankings.map(r => ({ skill: r.skillName, score: r.score, reason: r.reason?.slice(0, 80) })),
     });
 
-    const result: SelectedSkill[] = rankings.map((ranking, index) => ({
+    // Log token usage
+    this.logger.debug('LLM token usage', {
+      inputTokens: this.inputTokens,
+      outputTokens: this.outputTokens,
+    });
+
+    // Track total tokens for the entire ranking request
+    const totalInputTokens = this.inputTokens;
+    const totalOutputTokens = this.outputTokens;
+
+    const result: SkillRankingResult[] = rankings.map((ranking, index) => ({
       name: ranking.skillName,
       score: ranking.score,
       role: (index === 0 ? 'primary' : 'supporting') as SelectedSkill['role'],
       reasoning: ranking.reason,
+      // Per-skill token counts are undefined since the tokens are for the entire request
+      inputTokens: undefined,
+      outputTokens: undefined,
+      totalInputTokens,
+      totalOutputTokens,
     }));
 
     this.rankingCache.set(cacheKey, result);
@@ -200,7 +217,16 @@ Rules:
       throw new Error(`${baseUrl} API error ${response.status}: ${err}`);
     }
 
-    const data = await response.json() as { choices: { message: { content: string } }[] };
+    const data = await response.json() as { 
+      choices: { message: { content: string } }[];
+      usage?: { prompt_tokens?: number; completion_tokens?: number };
+    };
+    
+    // Track token usage
+    const usage = data.usage || {};
+    this.inputTokens = usage.prompt_tokens ?? 0;
+    this.outputTokens = usage.completion_tokens ?? 0;
+    
     return data.choices[0].message.content;
   }
 
@@ -226,7 +252,16 @@ Rules:
       throw new Error(`Anthropic API error ${response.status}: ${err}`);
     }
 
-    const data = await response.json() as { content: { type: string; text: string }[] };
+    const data = await response.json() as { 
+      content: { type: string; text: string }[];
+      usage?: { input_tokens?: number; output_tokens?: number };
+    };
+    
+    // Track token usage
+    const usage = data.usage || {};
+    this.inputTokens = usage.input_tokens ?? 0;
+    this.outputTokens = usage.output_tokens ?? 0;
+    
     const textBlock = data.content.find(b => b.type === 'text');
     if (!textBlock) throw new Error('Anthropic response contained no text block');
     return textBlock.text;
@@ -265,4 +300,15 @@ Rules:
 
   getModel(): string { return this.config.model; }
   getProvider(): LLMProvider { return this.config.provider; }
+
+  getInputTokens(): number { return this.inputTokens; }
+  getOutputTokens(): number { return this.outputTokens; }
+
+  /**
+   * Reset token counters - useful for testing or fresh sessions
+   */
+  resetTokenCounters(): void {
+    this.inputTokens = 0;
+    this.outputTokens = 0;
+  }
 }

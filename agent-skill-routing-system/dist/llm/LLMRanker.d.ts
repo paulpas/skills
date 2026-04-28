@@ -1,4 +1,4 @@
-import type { SkillDefinition, SelectedSkill } from '../core/types.js';
+import type { SkillDefinition, SkillRankingResult } from '../core/types.js';
 export type LLMProvider = 'openai' | 'anthropic' | 'llamacpp';
 export interface LLMRankerConfig {
     provider?: LLMProvider;
@@ -17,6 +17,8 @@ export declare class LLMRanker {
     private config;
     private logger;
     private rankingCache;
+    private inputTokens;
+    private outputTokens;
     constructor(config?: Partial<LLMRankerConfig>);
     /**
      * Deterministic hash key for a task + candidate set combination.
@@ -24,7 +26,7 @@ export declare class LLMRanker {
      */
     private hashKey;
     private defaultModel;
-    rankCandidates(task: string, candidates: SkillDefinition[]): Promise<SelectedSkill[]>;
+    rankCandidates(task: string, candidates: SkillDefinition[]): Promise<SkillRankingResult[]>;
     private buildRankingPrompt;
     private callLLM;
     /** OpenAI-compatible endpoint (used for both openai and llamacpp) */
@@ -35,5 +37,11 @@ export declare class LLMRanker {
     private fallbackRanking;
     getModel(): string;
     getProvider(): LLMProvider;
+    getInputTokens(): number;
+    getOutputTokens(): number;
+    /**
+     * Reset token counters - useful for testing or fresh sessions
+     */
+    resetTokenCounters(): void;
 }
 //# sourceMappingURL=LLMRanker.d.ts.map

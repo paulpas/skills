@@ -49,6 +49,7 @@ class EmbeddingService {
                             embedding: entry.embedding,
                             dimensions: entry.embedding.length,
                             model: this.config.model,
+                            inputTokens: entry.inputTokens,
                         });
                         loaded++;
                     }
@@ -129,7 +130,10 @@ class EmbeddingService {
         }
         // Generate embeddings for uncached texts
         if (uncachedTexts.length > 0) {
-            const embeddings = await this.generateEmbeddingsFromAPI(uncachedTexts);
+            const embeddingsWithTokens = await this.generateEmbeddingsFromAPI(uncachedTexts);
+            const embeddings = embeddingsWithTokens.embeddings;
+            // Extract token info from structured return value
+            const batchTokenCount = embeddingsWithTokens.inputTokens;
             for (let i = 0; i < embeddings.length; i++) {
                 const text = uncachedTexts[i];
                 const embedding = embeddings[i];
@@ -137,6 +141,10 @@ class EmbeddingService {
                     embedding,
                     dimensions: this.config.dimensions,
                     model: this.config.model,
+                    // Don't assign inputTokens for batch results - total batch count stored separately
+                    inputTokens: undefined,
+                    // Store total batch token count for accumulation by caller
+                    batchTokenCount: typeof batchTokenCount === 'number' ? batchTokenCount : undefined,
                 };
                 this.cache.set(text, result);
                 results.push(result);
@@ -172,7 +180,13 @@ class EmbeddingService {
             }
             const data = await response.json();
             const embedding = data.data[0].embedding;
-            return { embedding, dimensions: embedding.length, model: this.config.model };
+            const inputTokens = data.usage?.input_tokens ?? data.usage?.prompt_tokens;
+            return {
+                embedding,
+                dimensions: embedding.length,
+                model: this.config.model,
+                inputTokens: typeof inputTokens === 'number' ? inputTokens : undefined
+            };
         }
         catch (error) {
             // If API fails, generate a deterministic placeholder embedding
@@ -186,12 +200,13 @@ class EmbeddingService {
                 embedding: placeholder,
                 dimensions: this.config.dimensions,
                 model: this.config.model,
+                inputTokens: 0,
             };
         }
     }
     /**
-     * Generate embeddings from API in batch (OpenAI or llama.cpp)
-     */
+      * Generate embeddings from API in batch (OpenAI or llama.cpp)
+      */
     async generateEmbeddingsFromAPI(texts) {
         try {
             const baseUrl = this.config.provider === 'llamacpp'
@@ -213,7 +228,18 @@ class EmbeddingService {
                 throw new Error(`Embedding API error ${response.status}: ${errorData}`);
             }
             const data = await response.json();
-            return data.data.map((item) => item.embedding);
+            // Extract token info for batch (usage.total_tokens represents total input tokens for the batch)
+            const batchInputTokens = data.usage?.total_tokens ?? data.usage?.prompt_tokens;
+            // For batch processing, distribute tokens evenly per text if total is available
+            // Otherwise return without token info (will be set to 0 by caller)
+            const tokensPerText = typeof batchInputTokens === 'number' && texts.length > 0
+                ? Math.floor(batchInputTokens / texts.length)
+                : undefined;
+            const embeddings = data.data.map((item) => item.embedding);
+            return {
+                embeddings,
+                inputTokens: tokensPerText,
+            };
         }
         catch (error) {
             this.logger.warn('Failed to generate batch embeddings from API', {
@@ -221,7 +247,11 @@ class EmbeddingService {
                 error: error instanceof Error ? error.message : String(error),
                 count: texts.length,
             });
-            return texts.map((text) => this.generatePlaceholderEmbedding(text));
+            const placeholders = texts.map((text) => this.generatePlaceholderEmbedding(text));
+            return {
+                embeddings: placeholders,
+                inputTokens: 0,
+            };
         }
     }
     /**
@@ -248,15 +278,22 @@ class EmbeddingService {
         return embedding.map((val) => val / magnitude);
     }
     /**
-     * Save embedding to cache file
-     */
+      * Save embedding to cache file
+      */
     async saveToCacheFile(text, result, subdirectory) {
         try {
             const cacheDir = path_1.default.join(this.config.cacheDirectory, subdirectory || 'default');
             await fs_1.default.promises.mkdir(cacheDir, { recursive: true });
             const textHash = this.hashString(text);
             const cacheFile = path_1.default.join(cacheDir, `${textHash}.json`);
-            await fs_1.default.promises.writeFile(cacheFile, JSON.stringify({ text, embedding: result.embedding }));
+            const cacheEntry = {
+                text,
+                embedding: result.embedding,
+            };
+            if (typeof result.inputTokens === 'number') {
+                cacheEntry.inputTokens = result.inputTokens;
+            }
+            await fs_1.default.promises.writeFile(cacheFile, JSON.stringify(cacheEntry));
         }
         catch (error) {
             this.logger.warn('Failed to save embedding to cache file', {
