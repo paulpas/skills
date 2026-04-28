@@ -5,6 +5,7 @@ import type {
   RouteRequest,
   RouteResponse,
   SelectedSkill,
+  EmbeddingResponse,
 } from '../core/types.js';
 import { SkillRegistry } from '../core/SkillRegistry.js';
 import { VectorDatabase } from '../embedding/VectorDatabase.js';
@@ -141,13 +142,13 @@ export class Router {
     }
 
     // Generate task embedding
-    const taskEmbedding = await this.embeddingService.generateEmbedding(
+    const taskEmbeddingResponse: EmbeddingResponse = await this.embeddingService.generateEmbedding(
       request.task
     );
 
     // Search for candidates
     const candidates = await this.vectorDatabase.search(
-      taskEmbedding.embedding,
+      taskEmbeddingResponse.embedding,
       20
     );
 
@@ -186,7 +187,16 @@ export class Router {
         role: s.role,
         reasoning: s.reasoning?.slice(0, 100),
       })),
+      embeddingModel: taskEmbeddingResponse.model,
+      embeddingInputTokens: taskEmbeddingResponse.inputTokens,
+      llmModel: this.llmRanker.getModel(),
+      llmInputTokens: this.llmRanker.getInputTokens(),
+      llmOutputTokens: this.llmRanker.getOutputTokens(),
     });
+
+    // Add LLM tokens to VectorDatabase counters
+    this.vectorDatabase.addInputTokens(this.llmRanker.getInputTokens());
+    this.vectorDatabase.addOutputTokens(this.llmRanker.getOutputTokens());
 
     this.logger.debug('Filtered skills', {
       taskId,
@@ -220,7 +230,16 @@ export class Router {
       selectedSkills: filteredSkills.length,
       confidence,
       latencyMs: response.latencyMs,
+      embeddingModel: taskEmbeddingResponse.model,
+      embeddingInputTokens: taskEmbeddingResponse.inputTokens,
+      llmModel: this.llmRanker.getModel(),
+      llmInputTokens: this.llmRanker.getInputTokens(),
+      llmOutputTokens: this.llmRanker.getOutputTokens(),
     });
+
+    // Add LLM tokens to VectorDatabase counters
+    this.vectorDatabase.addInputTokens(this.llmRanker.getInputTokens());
+    this.vectorDatabase.addOutputTokens(this.llmRanker.getOutputTokens());
 
     return response;
   }

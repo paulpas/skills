@@ -58,8 +58,8 @@ class Logger {
         this.log('error', message, data);
     }
     /**
-     * Main log function
-     */
+       * Main log function
+       */
     log(level, message, data) {
         // Check if level is enabled
         if (!this.isLevelEnabled(level)) {
@@ -72,6 +72,9 @@ class Logger {
             category: this.category,
             message,
             data: this.config.includePayloads ? data : undefined,
+            modelName: data?.model,
+            inputTokens: data?.inputTokens,
+            outputTokens: data?.outputTokens,
         };
         // Format log entry
         const formatted = this.formatEntry(entry);
@@ -104,8 +107,8 @@ class Logger {
         return JSON.stringify(entry);
     }
     /**
-     * Write to console
-     */
+       * Write to console
+       */
     writeToConsole(entry) {
         const color = this.getColorForLevel(entry.level);
         const reset = '\x1b[0m';
@@ -113,7 +116,10 @@ class Logger {
         const dataStr = entry.data && Object.keys(entry.data).length > 0
             ? '  ' + JSON.stringify(entry.data)
             : '';
-        console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${dataStr}${reset}`);
+        const modelInfo = entry.modelName
+            ? ` [model: ${entry.modelName}, input: ${entry.inputTokens ?? 0} tokens, output: ${entry.outputTokens ?? 0} tokens]`
+            : '';
+        console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${dataStr}${modelInfo}${reset}`);
     }
     /**
      * Get ANSI color code for log level

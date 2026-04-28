@@ -742,8 +742,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-04-27 16:36:05 UTC  
-> **Total skills:** 535
+> **Last updated:** 2026-04-28 17:16:40 UTC  
+> **Total skills:** 537
 
 ## Skills by Domain
 
@@ -1129,7 +1129,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](../../skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture,... | cdn, container... |
 
 
-### Coding (80 skills)
+### Coding (82 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -1165,6 +1165,7 @@ MIT — All skills are freely available and redistributable.
 | [distribution-fitting](../../skills/coding/distribution-fitting/SKILL.md) | "Provides Fits statistical distributions to data using... | distribution fitting, goodness-of-fit... |
 | [driven-architecture](../../skills/coding/driven-architecture/SKILL.md) | "'Event-driven architecture for real-time trading systems:... | event driven architecture, event-driven... |
 | [driven-development](../../skills/coding/driven-development/SKILL.md) | "Test-Driven Development (TDD) and Behavior-Driven... | behavior-driven, patterns... |
+| [dry-principles](../../skills/coding/dry-principles/SKILL.md) | Implements DRY (Don't Repeat Yourself) principle... | dry principle, don't repeat yourself... |
 | [eda](../../skills/coding/eda/SKILL.md) | "Provides Performs exploratory data analysis using summary... | exploratory data analysis, EDA... |
 | [ensemble-methods](../../skills/coding/ensemble-methods/SKILL.md) | "Provides Combines multiple models using bagging, boosting,... | ensemble methods, bagging... |
 | [experimental-design](../../skills/coding/experimental-design/SKILL.md) | "Provides Designs experiments using design of experiments... | experimental design, DOE... |
@@ -1173,6 +1174,7 @@ MIT — All skills are freely available and redistributable.
 | [feature-interaction](../../skills/coding/feature-interaction/SKILL.md) | "Provides Discovers and engineers feature interactions... | feature interaction, interaction terms... |
 | [feature-scaling-normalization](../../skills/coding/feature-scaling-normalization/SKILL.md) | "Provides Scales and normalizes features using... | feature scaling, normalization... |
 | [feature-selection](../../skills/coding/feature-selection/SKILL.md) | "Selects relevant features using univariate selection,... | feature selection, feature importance... |
+| [humanizer](../../skills/coding/humanizer/SKILL.md) | Detects and removes AI writing patterns to produce natural... | humanize text, remove AI writing... |
 | [hyperparameter-tuning](../../skills/coding/hyperparameter-tuning/SKILL.md) | "Optimizes hyperparameters using grid search, random... | hyperparameter tuning, grid search... |
 | [hypothesis-testing](../../skills/coding/hypothesis-testing/SKILL.md) | Implements hypothesis testing including t-tests, chi-square... | hypothesis testing, t-test... |
 | [instrumental-variables](../../skills/coding/instrumental-variables/SKILL.md) | "Provides Uses instrumental variables (IV), two-stage least... | instrumental variables, IV... |
@@ -1315,7 +1317,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (161 skills)
+### Implementation (Build Features) (162 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1360,6 +1362,7 @@ MIT — All skills are freely available and redistributable.
 | [drawdown-control](../../skills/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity... |
 | [driven-architecture](../../skills/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems:... |
 | [driven-development](../../skills/driven-development/SKILL.md) | Coding | "Test-Driven Development (TDD) and Behavior-Driven... |
+| [dry-principles](../../skills/dry-principles/SKILL.md) | Coding | Implements DRY (Don't Repeat Yourself) principle... |
 | [eda](../../skills/eda/SKILL.md) | Coding | "Provides Performs exploratory data analysis using summary... |
 | [enrichment](../../skills/enrichment/SKILL.md) | Trading | "Provides Data enrichment techniques for adding context to... |
 | [ensemble-methods](../../skills/ensemble-methods/SKILL.md) | Coding | "Provides Combines multiple models using bagging, boosting,... |
@@ -1867,6 +1870,13 @@ MIT — All skills are freely available and redistributable.
 | [zipai-optimizer](../../skills/zipai-optimizer/SKILL.md) | Agent | Implements intelligent zipai optimizer with multi-factor... |
 | [zoom-automation](../../skills/zoom-automation/SKILL.md) | Agent | Implements intelligent zoom automation with multi-factor... |
 
+
+### Review (Audit & Validate) (1 skills)
+
+| Skill Name | Domain | Description |
+|---|---|---|
+| [humanizer](../../skills/humanizer/SKILL.md) | Coding | Detects and removes AI writing patterns to produce natural... |
+
 ## Complete Skills Index
 
 | Skill Name | Domain | Description | Role |
@@ -2040,6 +2050,7 @@ MIT — All skills are freely available and redistributable.
 | [drawdown-control](../../skills/trading/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity... | Implementation |
 | [driven-architecture](../../skills/coding/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems:... | Implementation |
 | [driven-development](../../skills/coding/driven-development/SKILL.md) | Coding | "Test-Driven Development (TDD) and Behavior-Driven... | Implementation |
+| [dry-principles](../../skills/coding/dry-principles/SKILL.md) | Coding | Implements DRY (Don't Repeat Yourself) principle... | Implementation |
 | [dynamic-replanner](../../skills/agent/dynamic-replanner/SKILL.md) | Agent | Implements intelligent dynamic replanner with multi-factor... | Orchestration |
 | [dynamodb](../../skills/cncf/dynamodb/SKILL.md) | Cncf | "Deploys managed NoSQL databases with DynamoDB for... | Reference |
 | [e2e-testing](../../skills/agent/e2e-testing/SKILL.md) | Agent | Implements intelligent e2e testing with multi-factor skill... | Orchestration |
@@ -2109,6 +2120,7 @@ MIT — All skills are freely available and redistributable.
 | [hot-path-detector](../../skills/agent/hot-path-detector/SKILL.md) | Agent | Implements intelligent hot path detector with multi-factor... | Orchestration |
 | [hub](../../skills/cncf/hub/SKILL.md) | Cncf | "Provides Artifact Hub in Cloud-Native Engineering -... | Reference |
 | [hubspot-automation](../../skills/agent/hubspot-automation/SKILL.md) | Agent | Implements intelligent hubspot automation with multi-factor... | Orchestration |
+| [humanizer](../../skills/coding/humanizer/SKILL.md) | Coding | Detects and removes AI writing patterns to produce natural... | Review |
 | [hydra](../../skills/cncf/hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native... | Reference |
 | [hyperparameter-tuning](../../skills/coding/hyperparameter-tuning/SKILL.md) | Coding | "Optimizes hyperparameters using grid search, random... | Implementation |
 | [hyperparameter-tuning](../../skills/trading/hyperparameter-tuning/SKILL.md) | Trading | "Implements optimize model configurations for trading... | Implementation |

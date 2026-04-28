@@ -6,6 +6,7 @@ export interface VectorDatabaseConfig {
     cacheDirectory?: string;
     maxResults?: number;
     similarityThreshold?: number;
+    useKDTree?: boolean;
 }
 /**
  * Vector database for skill retrieval
@@ -15,6 +16,10 @@ export declare class VectorDatabase {
     private config;
     private indexLoaded;
     private logger;
+    private kdTree;
+    private embeddingDimension;
+    private totalInputTokens;
+    private totalOutputTokens;
     constructor(config?: VectorDatabaseConfig);
     /**
      * Add skills to the database
@@ -29,6 +34,10 @@ export declare class VectorDatabase {
      */
     search(queryEmbedding: number[], topN?: number): Promise<SkillSearchResult[]>;
     /**
+     * Search using KD-tree for O(log n) nearest neighbor search
+     */
+    private searchWithKDTree;
+    /**
      * Calculate similarity between query and all skills
      */
     private calculateSimilarity;
@@ -36,6 +45,39 @@ export declare class VectorDatabase {
      * Calculate cosine similarity between two vectors
      */
     private cosineSimilarity;
+    /**
+     * Normalize a vector to unit length (L2 normalization)
+     * @param vector Input vector
+     * @returns Normalized vector or null if magnitude is zero
+     */
+    private normalizeVector;
+    /**
+     * Rebuild KD-tree from skill embeddings
+     * Normalizes embeddings to unit vectors before building.
+     *
+     * For unit vectors, Euclidean distance is equivalent to cosine distance:
+     * ||a - b||^2 = ||a||^2 + ||b||^2 - 2*a.b = 2 - 2*cos(theta) when ||a||=||b||=1
+     *
+     * This means ranking by Euclidean distance on normalized vectors gives the same
+     * result as ranking by cosine similarity, but KD-tree is optimized for Euclidean.
+     */
+    private rebuildKDTree;
+    /**
+     * Add input tokens to the tracker
+     */
+    addInputTokens(count: number): void;
+    /**
+     * Add output tokens to the tracker
+     */
+    addOutputTokens(count: number): void;
+    /**
+     * Get token statistics
+     */
+    getTokenStats(): {
+        input: number;
+        output: number;
+        total: number;
+    };
     /**
      * Save the vector index to disk
      */

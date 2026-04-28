@@ -42,16 +42,16 @@ export declare class EmbeddingService {
      */
     private generateEmbeddingFromAPI;
     /**
-     * Generate embeddings from API in batch (OpenAI or llama.cpp)
-     */
+      * Generate embeddings from API in batch (OpenAI or llama.cpp)
+      */
     private generateEmbeddingsFromAPI;
     /**
      * Generate a deterministic placeholder embedding for testing
      */
     private generatePlaceholderEmbedding;
     /**
-     * Save embedding to cache file
-     */
+      * Save embedding to cache file
+      */
     private saveToCacheFile;
     /**
      * Get cache directory path

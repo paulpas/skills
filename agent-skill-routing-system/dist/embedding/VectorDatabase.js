@@ -8,6 +8,7 @@ exports.VectorDatabase = void 0;
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
 const Logger_js_1 = require("../observability/Logger.js");
+const KDTree_js_1 = require("./KDTree.js");
 /**
  * Vector database for skill retrieval
  */
@@ -16,11 +17,16 @@ class VectorDatabase {
     config;
     indexLoaded = false;
     logger;
+    kdTree = null;
+    embeddingDimension = 1536;
+    totalInputTokens = 0;
+    totalOutputTokens = 0;
     constructor(config = {}) {
         this.config = {
             cacheDirectory: './.vector-cache',
             maxResults: 20,
             similarityThreshold: 0.3,
+            useKDTree: true,
             ...config,
         };
         this.logger = new Logger_js_1.Logger('VectorDatabase', {
@@ -34,6 +40,8 @@ class VectorDatabase {
     addSkills(skills) {
         this.skills.push(...skills);
         this.indexLoaded = true;
+        // Rebuild KD-tree for efficient nearest neighbor search
+        this.rebuildKDTree();
     }
     /**
      * Set skills from an array
@@ -41,6 +49,8 @@ class VectorDatabase {
     setSkills(skills) {
         this.skills = skills;
         this.indexLoaded = true;
+        // Rebuild KD-tree for efficient nearest neighbor search
+        this.rebuildKDTree();
     }
     /**
      * Search for similar skills based on embedding
@@ -49,10 +59,61 @@ class VectorDatabase {
         if (!this.indexLoaded) {
             return [];
         }
+        // Use KD-tree for efficient search if enabled and available
+        if (this.config.useKDTree && this.kdTree) {
+            return this.searchWithKDTree(queryEmbedding, topN);
+        }
         const results = await this.calculateSimilarity(queryEmbedding);
         const sorted = results.sort((a, b) => b.score - a.score);
         const limited = sorted.slice(0, topN ?? this.config.maxResults);
         return limited.filter((result) => result.score >= this.config.similarityThreshold);
+    }
+    /**
+     * Search using KD-tree for O(log n) nearest neighbor search
+     */
+    async searchWithKDTree(queryEmbedding, topN) {
+        // Fail fast: validate query dimension matches KD-tree dimension
+        if (queryEmbedding.length !== this.embeddingDimension) {
+            this.logger.error('Query embedding dimension mismatch', {
+                queryDimension: queryEmbedding.length,
+                expectedDimension: this.embeddingDimension,
+            });
+            return [];
+        }
+        // Early exit: empty KD-tree
+        if (!this.kdTree || this.skills.length === 0) {
+            return [];
+        }
+        // Normalize query embedding to unit vector for consistent distance calculation
+        const normalizedQuery = this.normalizeVector(queryEmbedding);
+        if (!normalizedQuery) {
+            this.logger.error('Failed to normalize query embedding (zero magnitude)', {
+                queryLength: queryEmbedding.length,
+            });
+            return [];
+        }
+        // Find nearest neighbors using KD-tree
+        // KD-tree was built with normalized unit vectors, so Euclidean distance
+        // is equivalent to cosine distance. The ranking is already correct.
+        const k = topN ?? this.config.maxResults;
+        const nearestResults = this.kdTree.nearest(normalizedQuery, k);
+        // Map KD-tree indices back to skill search results
+        const results = [];
+        for (const result of nearestResults) {
+            const skill = this.skills[result.index];
+            if (!skill || !skill.metadata.embedding) {
+                continue;
+            }
+            // Calculate cosine similarity for the final score
+            // Using the original (non-normalized) embedding for accurate cosine value
+            const score = this.cosineSimilarity(queryEmbedding, skill.metadata.embedding);
+            results.push({
+                skill,
+                score,
+            });
+        }
+        // Sort by score (descending) for consistent output
+        return results.sort((a, b) => b.score - a.score);
     }
     /**
      * Calculate similarity between query and all skills
@@ -94,6 +155,172 @@ class VectorDatabase {
         return dotProduct / (magnitudeA * magnitudeB);
     }
     /**
+     * Normalize a vector to unit length (L2 normalization)
+     * @param vector Input vector
+     * @returns Normalized vector or null if magnitude is zero
+     */
+    normalizeVector(vector) {
+        // Parse: validate input is array
+        if (!Array.isArray(vector)) {
+            return null;
+        }
+        // Calculate L2 magnitude
+        let magnitude = 0;
+        for (let i = 0; i < vector.length; i++) {
+            const val = vector[i];
+            if (typeof val !== 'number' || isNaN(val)) {
+                return null;
+            }
+            magnitude += val * val;
+        }
+        magnitude = Math.sqrt(magnitude);
+        // Fail fast: zero magnitude vector cannot be normalized
+        if (magnitude === 0) {
+            return null;
+        }
+        // Normalize each component
+        const normalized = [];
+        for (let i = 0; i < vector.length; i++) {
+            normalized.push(vector[i] / magnitude);
+        }
+        return normalized;
+    }
+    /**
+     * Rebuild KD-tree from skill embeddings
+     * Normalizes embeddings to unit vectors before building.
+     *
+     * For unit vectors, Euclidean distance is equivalent to cosine distance:
+     * ||a - b||^2 = ||a||^2 + ||b||^2 - 2*a.b = 2 - 2*cos(theta) when ||a||=||b||=1
+     *
+     * This means ranking by Euclidean distance on normalized vectors gives the same
+     * result as ranking by cosine similarity, but KD-tree is optimized for Euclidean.
+     */
+    rebuildKDTree() {
+        // Early exit: KD-tree disabled
+        if (!this.config.useKDTree) {
+            this.kdTree = null;
+            return;
+        }
+        // Early exit: no skills to index
+        if (this.skills.length === 0) {
+            this.kdTree = null;
+            return;
+        }
+        // Parse and validate embeddings at boundary, normalize to unit vectors
+        const points = [];
+        let validatedDimension = this.embeddingDimension;
+        for (const skill of this.skills) {
+            if (!skill.metadata.embedding) {
+                continue;
+            }
+            const embedding = skill.metadata.embedding;
+            // Validate embedding is array
+            if (!Array.isArray(embedding)) {
+                this.logger.warn('Invalid embedding format, skipping skill', {
+                    skillName: skill.metadata.name,
+                });
+                continue;
+            }
+            // Validate dimension consistency - fail fast on mismatch
+            if (embedding.length !== validatedDimension) {
+                this.logger.warn('Dimension mismatch in embedding, skipping skill', {
+                    skillName: skill.metadata.name,
+                    expectedDimension: validatedDimension,
+                    actualDimension: embedding.length,
+                });
+                continue;
+            }
+            // Validate all coordinates are valid numbers
+            let isValid = true;
+            let magnitude = 0;
+            for (let i = 0; i < embedding.length; i++) {
+                if (typeof embedding[i] !== 'number' || isNaN(embedding[i])) {
+                    this.logger.warn('Invalid coordinate in embedding, skipping skill', {
+                        skillName: skill.metadata.name,
+                        dimension: i,
+                    });
+                    isValid = false;
+                    break;
+                }
+                magnitude += embedding[i] * embedding[i];
+            }
+            if (!isValid) {
+                continue;
+            }
+            // Calculate magnitude and normalize to unit vector
+            magnitude = Math.sqrt(magnitude);
+            if (magnitude === 0) {
+                this.logger.warn('Zero-magnitude embedding, skipping skill', {
+                    skillName: skill.metadata.name,
+                });
+                continue;
+            }
+            // Store normalized (unit vector) copy
+            const normalizedPoint = [];
+            for (let i = 0; i < embedding.length; i++) {
+                normalizedPoint.push(embedding[i] / magnitude);
+            }
+            points.push(normalizedPoint);
+        }
+        // Fail fast: no valid embeddings found
+        if (points.length === 0) {
+            this.kdTree = null;
+            this.logger.warn('No valid embeddings found for KD-tree build');
+            return;
+        }
+        // Update embedding dimension based on validated data
+        this.embeddingDimension = validatedDimension;
+        try {
+            // Build KD-tree with normalized unit vectors
+            this.kdTree = new KDTree_js_1.KDTree(this.embeddingDimension);
+            this.kdTree.build(points);
+            this.logger.info('KD-tree built successfully', {
+                skillCount: points.length,
+                dimension: this.embeddingDimension,
+                normalization: 'unit vectors (cosine equivalence)',
+            });
+        }
+        catch (error) {
+            this.logger.error('Failed to build KD-tree', {
+                error: error instanceof Error ? error.message : String(error),
+            });
+            this.kdTree = null;
+        }
+    }
+    /**
+     * Add input tokens to the tracker
+     */
+    addInputTokens(count) {
+        // Parse: ensure count is a valid positive number
+        if (typeof count !== 'number' || count < 0 || isNaN(count)) {
+            this.logger.warn('Invalid token count for input tracking', { count });
+            return;
+        }
+        this.totalInputTokens += count;
+    }
+    /**
+     * Add output tokens to the tracker
+     */
+    addOutputTokens(count) {
+        // Parse: ensure count is a valid positive number
+        if (typeof count !== 'number' || count < 0 || isNaN(count)) {
+            this.logger.warn('Invalid token count for output tracking', { count });
+            return;
+        }
+        this.totalOutputTokens += count;
+    }
+    /**
+     * Get token statistics
+     */
+    getTokenStats() {
+        // Atomic: return fresh object, don't expose internal state
+        return {
+            input: this.totalInputTokens,
+            output: this.totalOutputTokens,
+            total: this.totalInputTokens + this.totalOutputTokens,
+        };
+    }
+    /**
      * Save the vector index to disk
      */
     async saveIndex() {
@@ -105,6 +332,10 @@ class VectorDatabase {
                     category: s.metadata.category,
                     embedding: s.metadata.embedding,
                 })),
+                tokenStats: {
+                    inputTokens: this.totalInputTokens,
+                    outputTokens: this.totalOutputTokens,
+                },
                 savedAt: new Date().toISOString(),
             };
             const indexFile = path_1.default.join(this.config.cacheDirectory, 'vector-index.json');
@@ -137,7 +368,14 @@ class VectorDatabase {
                 sourceFile: '',
                 rawContent: '',
             }));
+            // Restore token stats if present
+            if (indexData.tokenStats) {
+                this.totalInputTokens = indexData.tokenStats.inputTokens || 0;
+                this.totalOutputTokens = indexData.tokenStats.outputTokens || 0;
+            }
             this.indexLoaded = true;
+            // Rebuild KD-tree after loading
+            this.rebuildKDTree();
         }
         catch (error) {
             this.logger.error('Failed to load vector index:', {
@@ -163,6 +401,9 @@ class VectorDatabase {
     clear() {
         this.skills = [];
         this.indexLoaded = false;
+        this.kdTree = null;
+        this.totalInputTokens = 0;
+        this.totalOutputTokens = 0;
     }
     /**
      * Filter skills by category
