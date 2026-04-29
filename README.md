@@ -45,6 +45,87 @@ Restart OpenCode. Every task automatically routes to the most relevant skill.
 
 ---
 
+## Model Setup Guide
+
+The Skill Router supports multiple LLM providers. Choose the one that fits your setup.
+
+### OpenAI (Default)
+
+```bash
+./install-skill-router.sh --openai-key sk-...
+```
+
+Or set environment variable:
+```bash
+export OPENAI_API_KEY=sk-...
+./install-skill-router.sh
+```
+
+**Default model:** `gpt-4o-mini` (used for embedding and ranking)
+**Custom model:** Add `--model gpt-4o` to override
+
+---
+
+### Anthropic
+
+```bash
+./install-skill-router.sh \
+  --provider anthropic \
+  --anthropic-key sk-ant-... \
+  --model claude-3-5-haiku-20241022
+```
+
+**Supported models:** `claude-3-5-haiku`, `claude-3-5-sonnet`, `claude-3-opus`
+
+---
+
+### Local llama.cpp (No API Keys)
+
+```bash
+./install-skill-router.sh \
+  --provider llamacpp \
+  --embedding-provider llamacpp \
+  --llamacpp-url http://localhost:8080
+```
+
+**Requirements:**
+- llama.cpp server running with both `/v1/chat/completions` and `/v1/embeddings` endpoints
+- Compatible with OpenAI-compatible API format
+
+**Common setup:**
+```bash
+# Start llama.cpp with embedding support
+./server -m models/llama-3-8b.Q4_K_M.gguf \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --embedding
+```
+
+---
+
+### Choosing a Model
+
+| Use Case | Recommended Model | Why |
+|----------|-------------------|-----|
+| **Default/OpenAI** | `gpt-4o-mini` | Fast, cheap, good accuracy |
+| **Budget-conscious** | `claude-3-5-haiku` | Lower cost, good performance |
+| **High accuracy** | `gpt-4o`, `claude-3-opus` | Better ranking quality |
+| **Offline/local** | llama-3-8b or mistral-7b | No API keys needed |
+
+---
+
+### Configuration Reference
+
+| Flag | Environment Variable | Purpose |
+|------|---------------------|---------|
+| `--provider` | `LLM_PROVIDER` | `openai`, `anthropic`, `llamacpp` |
+| `--model` | `LLM_MODEL` | Model name (uses provider default if omitted) |
+| `--embedding-provider` | `EMBEDDING_PROVIDER` | `openai`, `llamacpp` |
+| `--llamacpp-url` | `LLAMACPP_URL` | llama.cpp server URL |
+| `--anthropic-key` | `ANTHROPIC_API_KEY` | Anthropic API key |
+
+---
+
 ## Directory Structure
 
 All skills live in `skills/` organized by domain:

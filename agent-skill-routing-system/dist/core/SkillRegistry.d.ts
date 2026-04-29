@@ -24,11 +24,32 @@ export interface SkillRegistryConfig {
     warmupSkillsCount?: number;
     adaptiveTTL?: boolean;
     compressionBatchSize?: number;
+    /**
+     * Markdown link following configuration
+     * Controls how the system follows markdown links when loading skills
+     */
+    markdownLinkFollowing?: {
+        /** Enable following links in markdown files (default: false) */
+        enabled: boolean;
+        /** Allow following external links (default: false) */
+        allowExternalLinks: boolean;
+        /** Maximum depth to follow links (default: 2) */
+        maxDepth: number;
+    };
+}
+/**
+ * Extended SkillRegistry interface with compression methods
+ * Used for type-safe access to compression-aware methods
+ */
+export interface SkillRegistryWithCompression extends SkillRegistry {
+    /** Get skill content with cache layering (memory → disk → original) */
+    getSkillContentWithCompression(skillName: string, domain: string, versionHint?: 'brief' | 'moderate' | 'detailed'): Promise<string>;
 }
 /**
  * Skill Registry - manages all available skills
+ * Implements SkillRegistryWithCompression interface for type-safe access to compression methods
  */
-export declare class SkillRegistry {
+export declare class SkillRegistry implements SkillRegistryWithCompression {
     private skills;
     private skillsByCategory;
     private skillsByTag;
@@ -52,6 +73,7 @@ export declare class SkillRegistry {
     private readonly HOT_SKILL_TTL_MS;
     private readonly COLD_SKILL_TTL_MS;
     private embeddingService;
+    private markdownLinkConfig;
     constructor(config: SkillRegistryConfig);
     /**
      * Quality gate: detect if a skill is a stub/template with minimal actionable content.
@@ -206,5 +228,27 @@ export declare class SkillRegistry {
      * Tracks access within 30-minute windows
      */
     private incrementAccessCounter;
+    /**
+     * Update markdown link following configuration at runtime with partial updates
+     * Only updates fields that are provided in the partial config
+     *
+     * @param partialConfig - Partial configuration object with only the fields to update
+     * @throws Error if configuration update fails or validation fails
+     */
+    updateMarkdownLinkConfig(partialConfig: {
+        enabled?: boolean;
+        allowExternalLinks?: boolean;
+        maxDepth?: number;
+    }): void;
+    /**
+     * Get the current markdown link following configuration
+     *
+     * @returns The current configuration object
+     */
+    getMarkdownLinkConfig(): {
+        enabled: boolean;
+        allowExternalLinks: boolean;
+        maxDepth: number;
+    };
 }
 //# sourceMappingURL=SkillRegistry.d.ts.map
