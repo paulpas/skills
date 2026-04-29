@@ -231,7 +231,7 @@ class AgentSkillRoutingApp {
             const domain = request.query.domain || 'programming'; // Phase 6: domain parameter
             const compressionVersion = request.query.compression || 'moderate'; // Phase 6: compression version
             try {
-                // Phase 6: Call new compression-aware method
+                // Phase 6: Call new compression-aware method with proper type
                 const registry = this.router.getRegistry();
                 const content = await registry.getSkillContentWithCompression?.(name, domain, compressionVersion) ||
                     await registry.getSkillContent(name);
@@ -248,6 +248,123 @@ class AgentSkillRoutingApp {
                 reply.status(404).send({
                     error: `Skill not found: ${name}`,
                     detail: error instanceof Error ? error.message : String(error),
+                });
+            }
+        });
+        // ── /config/link-following — markdown link following configuration ──────
+        /**
+         * Update markdown link following configuration at runtime
+         *
+         * @remarks
+         * Updates the configuration for following markdown links in skill definitions.
+         * Allows runtime adjustment of link depth limits without server restart.
+         *
+         * @bodySchema LinkFollowingConfigUpdate
+         * @returns Updated configuration object with maxDepth, enabled, and allowExternalLinks fields
+         * @throws 400 Bad Request - if max_depth is outside valid range (1-10)
+         * @throws 500 Internal Server Error - if configuration update fails
+         */
+        this.app.post('/config/link-following', {
+            schema: {
+                body: {
+                    type: 'object',
+                    properties: {
+                        max_depth: { type: 'number', minimum: 1, maximum: 10 },
+                        link_following_enabled: { type: 'boolean' },
+                        allow_external_links: { type: 'boolean' },
+                    },
+                    additionalProperties: false,
+                },
+                response: {
+                    200: {
+                        type: 'object',
+                        properties: {
+                            enabled: { type: 'boolean' },
+                            allowExternalLinks: { type: 'boolean' },
+                            maxDepth: { type: 'number' },
+                        },
+                        required: ['enabled', 'allowExternalLinks', 'maxDepth'],
+                    },
+                },
+            },
+        }, async (request, reply) => {
+            if (!this.ready) {
+                return reply.code(503).send({ error: 'Service unavailable', message: 'Skills are still loading' });
+            }
+            try {
+                const { max_depth, link_following_enabled, allow_external_links } = request.body;
+                // Guard: validate request body structure (fail fast)
+                if (!request.body || typeof request.body !== 'object' || Array.isArray(request.body)) {
+                    return reply.code(400).send({ error: 'Invalid request', message: 'Request body must be a JSON object', updatedAt: new Date().toISOString() });
+                }
+                // Guard: explicit type check before bounds validation (fail fast, fail loud)
+                if (max_depth !== undefined) {
+                    if (typeof max_depth !== 'number') {
+                        reply.code(400).send({
+                            error: 'Invalid request',
+                            message: `max_depth must be a number, got: ${typeof max_depth}`,
+                            updatedAt: new Date().toISOString(),
+                        });
+                        return;
+                    }
+                    if (max_depth < 1 || max_depth > 10) {
+                        reply.code(400).send({
+                            error: 'Invalid request',
+                            message: `max_depth must be between 1 and 10 (inclusive), got: ${max_depth}`,
+                            updatedAt: new Date().toISOString(),
+                        });
+                        return;
+                    }
+                }
+                // Guard: validate boolean types for other fields with timestamp
+                if (link_following_enabled !== undefined && typeof link_following_enabled !== 'boolean') {
+                    reply.code(400).send({
+                        error: 'Invalid request',
+                        message: 'link_following_enabled must be a boolean value',
+                        updatedAt: new Date().toISOString(),
+                    });
+                    return;
+                }
+                if (allow_external_links !== undefined && typeof allow_external_links !== 'boolean') {
+                    reply.code(400).send({
+                        error: 'Invalid request',
+                        message: 'allow_external_links must be a boolean value',
+                        updatedAt: new Date().toISOString(),
+                    });
+                    return;
+                }
+                // Build partial config from request body
+                const partialConfig = {};
+                if (max_depth !== undefined) {
+                    partialConfig.maxDepth = max_depth;
+                }
+                if (link_following_enabled !== undefined) {
+                    partialConfig.enabled = link_following_enabled;
+                }
+                if (allow_external_links !== undefined) {
+                    partialConfig.allowExternalLinks = allow_external_links;
+                }
+                // Update the configuration
+                this.router.getRegistry().updateMarkdownLinkConfig(partialConfig);
+                // Get and return the updated configuration with timestamp
+                const updatedConfig = this.router.getRegistry().getMarkdownLinkConfig();
+                reply.code(200).send({
+                    ...updatedConfig,
+                    updatedAt: new Date().toISOString(),
+                });
+            }
+            catch (error) {
+                this.logger.error('Config update failed', {
+                    error: error instanceof Error ? error.message : String(error),
+                    request: {
+                        body: request.body,
+                        timestamp: new Date().toISOString(),
+                    },
+                });
+                reply.code(500).send({
+                    error: 'Configuration update failed',
+                    message: error instanceof Error ? error.message : String(error),
+                    updatedAt: new Date().toISOString(),
                 });
             }
         });

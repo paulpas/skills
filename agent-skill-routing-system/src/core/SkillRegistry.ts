@@ -41,12 +41,38 @@ export interface SkillRegistryConfig {
   warmupSkillsCount?: number; // Number of top skills to warm on startup (default: 100)
   adaptiveTTL?: boolean; // Enable adaptive TTL for hot/cold skills (default: true)
   compressionBatchSize?: number; // Skills to compress per batch (default: 10)
+  /**
+   * Markdown link following configuration
+   * Controls how the system follows markdown links when loading skills
+   */
+  markdownLinkFollowing?: {
+    /** Enable following links in markdown files (default: false) */
+    enabled: boolean;
+    /** Allow following external links (default: false) */
+    allowExternalLinks: boolean;
+    /** Maximum depth to follow links (default: 2) */
+    maxDepth: number;
+  };
+}
+
+/**
+ * Extended SkillRegistry interface with compression methods
+ * Used for type-safe access to compression-aware methods
+ */
+export interface SkillRegistryWithCompression extends SkillRegistry {
+  /** Get skill content with cache layering (memory → disk → original) */
+  getSkillContentWithCompression(
+    skillName: string,
+    domain: string,
+    versionHint?: 'brief' | 'moderate' | 'detailed'
+  ): Promise<string>;
 }
 
 /**
  * Skill Registry - manages all available skills
+ * Implements SkillRegistryWithCompression interface for type-safe access to compression methods
  */
-export class SkillRegistry {
+export class SkillRegistry implements SkillRegistryWithCompression {
   private skills: Map<string, SkillDefinition> = new Map();
   private skillsByCategory: Map<string, string[]> = new Map();
   private skillsByTag: Map<string, string[]> = new Map();
@@ -79,6 +105,13 @@ export class SkillRegistry {
   // Embedding service for generating vector embeddings
   private embeddingService: EmbeddingService;
 
+  // Runtime markdown link following configuration
+  private markdownLinkConfig: {
+    enabled: boolean;
+    allowExternalLinks: boolean;
+    maxDepth: number;
+  };
+
   constructor(config: SkillRegistryConfig) {
     this.config = {
       cacheDirectory: './.skill-cache',
@@ -89,6 +122,14 @@ export class SkillRegistry {
       adaptiveTTL: true,
       compressionBatchSize: 10,
       ...config,
+    };
+
+    // Initialize markdown link following config with defaults
+    const mlc = config.markdownLinkFollowing;
+    this.markdownLinkConfig = {
+      enabled: mlc?.enabled ?? false,
+      allowExternalLinks: mlc?.allowExternalLinks ?? false,
+      maxDepth: mlc?.maxDepth ?? 2,
     };
     this.maxCacheSizeBytes = this.config.maxCacheSizeBytes || (1024 * 1024 * 1024);
     this.compressor = new SkillCompressor();
@@ -1243,5 +1284,64 @@ export class SkillRegistry {
       entry.count = 1;
       entry.window = new Date();
     }
+  }
+
+  /**
+   * Update markdown link following configuration at runtime with partial updates
+   * Only updates fields that are provided in the partial config
+   * 
+   * @param partialConfig - Partial configuration object with only the fields to update
+   * @throws Error if configuration update fails or validation fails
+   */
+  updateMarkdownLinkConfig(partialConfig: {
+    enabled?: boolean;
+    allowExternalLinks?: boolean;
+    maxDepth?: number;
+  }): void {
+    // Guard: early exit on empty config (fail fast, fail loud)
+    if (!partialConfig || Object.keys(partialConfig).length === 0) {
+      this.logger.warn('Markdown link config update ignored: empty config');
+      return;
+    }
+
+    const { enabled, allowExternalLinks, maxDepth } = partialConfig;
+    const { enabled: currentEnabled, allowExternalLinks: currentAllowExternalLinks, maxDepth: currentMaxDepth } = this.markdownLinkConfig;
+
+    // Guard: explicit type check before bounds validation (fail fast, fail loud)
+    if (maxDepth !== undefined) {
+      if (typeof maxDepth !== 'number') {
+        throw new Error(`Invalid maxDepth: ${maxDepth}. Must be a number.`);
+      }
+      if (maxDepth < 1 || maxDepth > 10) {
+        throw new Error(`Invalid maxDepth: ${maxDepth}. Must be between 1 and 10 (inclusive).`);
+      }
+    }
+
+    // Immutable update: create new config object instead of mutating
+    const newConfig = {
+      enabled: enabled !== undefined ? enabled : currentEnabled,
+      allowExternalLinks: allowExternalLinks !== undefined ? allowExternalLinks : currentAllowExternalLinks,
+      maxDepth: maxDepth !== undefined ? maxDepth : currentMaxDepth,
+    };
+
+    // Update the instance with the new config
+    this.markdownLinkConfig = newConfig;
+
+    this.logger.info('Markdown link following config updated', {
+      config: this.markdownLinkConfig,
+    });
+  }
+
+  /**
+   * Get the current markdown link following configuration
+   * 
+   * @returns The current configuration object
+   */
+  getMarkdownLinkConfig(): {
+    enabled: boolean;
+    allowExternalLinks: boolean;
+    maxDepth: number;
+  } {
+    return this.markdownLinkConfig;
   }
 }

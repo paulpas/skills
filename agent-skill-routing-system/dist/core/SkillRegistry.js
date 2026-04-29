@@ -20,6 +20,7 @@ const CompressionDeduplicator_js_1 = require("./CompressionDeduplicator.js");
 const EmbeddingService_js_1 = require("../embedding/EmbeddingService.js");
 /**
  * Skill Registry - manages all available skills
+ * Implements SkillRegistryWithCompression interface for type-safe access to compression methods
  */
 class SkillRegistry {
     skills = new Map();
@@ -48,6 +49,8 @@ class SkillRegistry {
     COLD_SKILL_TTL_MS = 60 * 60 * 1000; // 1 hour for cold skills
     // Embedding service for generating vector embeddings
     embeddingService;
+    // Runtime markdown link following configuration
+    markdownLinkConfig;
     constructor(config) {
         this.config = {
             cacheDirectory: './.skill-cache',
@@ -58,6 +61,13 @@ class SkillRegistry {
             adaptiveTTL: true,
             compressionBatchSize: 10,
             ...config,
+        };
+        // Initialize markdown link following config with defaults
+        const mlc = config.markdownLinkFollowing;
+        this.markdownLinkConfig = {
+            enabled: mlc?.enabled ?? false,
+            allowExternalLinks: mlc?.allowExternalLinks ?? false,
+            maxDepth: mlc?.maxDepth ?? 2,
         };
         this.maxCacheSizeBytes = this.config.maxCacheSizeBytes || (1024 * 1024 * 1024);
         this.compressor = new SkillCompressor_js_1.SkillCompressor();
@@ -1052,6 +1062,50 @@ class SkillRegistry {
             entry.count = 1;
             entry.window = new Date();
         }
+    }
+    /**
+     * Update markdown link following configuration at runtime with partial updates
+     * Only updates fields that are provided in the partial config
+     *
+     * @param partialConfig - Partial configuration object with only the fields to update
+     * @throws Error if configuration update fails or validation fails
+     */
+    updateMarkdownLinkConfig(partialConfig) {
+        // Guard: early exit on empty config (fail fast, fail loud)
+        if (!partialConfig || Object.keys(partialConfig).length === 0) {
+            this.logger.warn('Markdown link config update ignored: empty config');
+            return;
+        }
+        const { enabled, allowExternalLinks, maxDepth } = partialConfig;
+        const { enabled: currentEnabled, allowExternalLinks: currentAllowExternalLinks, maxDepth: currentMaxDepth } = this.markdownLinkConfig;
+        // Guard: explicit type check before bounds validation (fail fast, fail loud)
+        if (maxDepth !== undefined) {
+            if (typeof maxDepth !== 'number') {
+                throw new Error(`Invalid maxDepth: ${maxDepth}. Must be a number.`);
+            }
+            if (maxDepth < 1 || maxDepth > 10) {
+                throw new Error(`Invalid maxDepth: ${maxDepth}. Must be between 1 and 10 (inclusive).`);
+            }
+        }
+        // Immutable update: create new config object instead of mutating
+        const newConfig = {
+            enabled: enabled !== undefined ? enabled : currentEnabled,
+            allowExternalLinks: allowExternalLinks !== undefined ? allowExternalLinks : currentAllowExternalLinks,
+            maxDepth: maxDepth !== undefined ? maxDepth : currentMaxDepth,
+        };
+        // Update the instance with the new config
+        this.markdownLinkConfig = newConfig;
+        this.logger.info('Markdown link following config updated', {
+            config: this.markdownLinkConfig,
+        });
+    }
+    /**
+     * Get the current markdown link following configuration
+     *
+     * @returns The current configuration object
+     */
+    getMarkdownLinkConfig() {
+        return this.markdownLinkConfig;
     }
 }
 exports.SkillRegistry = SkillRegistry;
