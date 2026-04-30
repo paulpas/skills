@@ -1249,12 +1249,44 @@ export class SkillRegistry implements SkillRegistryWithCompression {
       }
     }
 
-    // 3. Fallback: return original content
-    this.logger.debug('Serving original content (no compression)', {
+    // 3. Fallback: get original content and apply version-based compression
+    this.logger.debug('Serving compressed content (no cache hit)', {
       skillName,
       version,
     });
-    return await this.getSkillContent(skillName);
+
+    // Map version hint to compression level
+    const levelMap: Record<string, number> = {
+      brief: 1,
+      moderate: 5,
+      detailed: 8,
+    };
+    const compressionLevel = levelMap[version] ?? 5;
+
+    try {
+      // Get original content (no compression level applied)
+      const originalContent = await this.getSkillContent(skillName, 0);
+      
+      // Apply version-based compression
+      const compressed = this.compressor.compress(originalContent, compressionLevel);
+      
+      this.logger.info('Applied version-based compression', {
+        skillName,
+        version,
+        compressionLevel,
+        tokensSaved: compressed.tokensSaved,
+        ratio: compressed.ratio.toFixed(2),
+      });
+      
+      return compressed.content;
+    } catch (error) {
+      // Fail fast: if compression fails, return original content
+      this.logger.warn('Compression failed, returning original content', {
+        skillName,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return await this.getSkillContent(skillName, 0);
+    }
   }
 
   /**

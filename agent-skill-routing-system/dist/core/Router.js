@@ -31,11 +31,11 @@ class Router {
         });
         this.vectorDatabase = new VectorDatabase_js_1.VectorDatabase();
         this.embeddingService = new EmbeddingService_js_1.EmbeddingService({
-            model: config.embedding?.model || 'text-embedding-3-small',
+            model: config.embedding?.model,
             dimensions: config.embedding?.dimensions || 1536,
         });
         this.llmRanker = new LLMRanker_js_1.LLMRanker({
-            model: config.llm?.model || 'gpt-4o-mini',
+            model: config.llm?.model,
             maxCandidates: config.llm?.maxCandidates || 10,
         });
         this.executionPlanner = new ExecutionPlanner_js_1.ExecutionPlanner({
