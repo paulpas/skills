@@ -1,6 +1,6 @@
 // MCP Tool: File Operations
 
-import { BaseMCPTool, IMCPTool } from '../types.js';
+import { BaseMCPTool, IMCPTool } from '../types';
 import { promises as fs } from 'fs';
 import path from 'path';
 

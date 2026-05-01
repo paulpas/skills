@@ -5,15 +5,15 @@ import fs from 'fs';
 import path from 'path';
 import { glob } from 'glob';
 import YAML from 'yaml';
-import type { SkillMetadata, SkillDefinition } from './types.js';
-import { Logger } from '../observability/Logger.js';
-import { SkillCompressor } from './SkillCompressor.js';
-import { CompressionMetrics } from '../utils/CompressionMetrics.js';
-import { LLMSkillCompressor } from './LLMSkillCompressor.js';
-import { DiskCompressionCache } from './DiskCompressionCache.js';
-import { InMemoryCompressionCache } from './InMemoryCompressionCache.js';
-import { CompressionDeduplicator } from './CompressionDeduplicator.js';
-import { EmbeddingService } from '../embedding/EmbeddingService.js';
+import type { SkillMetadata, SkillDefinition } from './types';
+import { Logger } from '../observability/Logger';
+import { SkillCompressor } from './SkillCompressor';
+import { CompressionMetrics } from '../utils/CompressionMetrics';
+import { LLMSkillCompressor } from './LLMSkillCompressor';
+import { DiskCompressionCache } from './DiskCompressionCache';
+import { InMemoryCompressionCache } from './InMemoryCompressionCache';
+import { CompressionDeduplicator } from './CompressionDeduplicator';
+import { EmbeddingService } from '../embedding/EmbeddingService';
 
 /**
  * Cached skill content entry with LRU metadata

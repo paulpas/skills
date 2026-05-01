@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createWriteStream, WriteStream } from 'fs';
-import { LogEntry } from '../core/types.js';
+import { LogEntry } from '../core/types';
 
 /**
  * Log level

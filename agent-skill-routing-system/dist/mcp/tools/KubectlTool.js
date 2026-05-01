@@ -2,14 +2,14 @@
 // MCP Tool: Kubectl Command Execution
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KubectlTool = void 0;
-const types_js_1 = require("../types.js");
+const types_1 = require("../types");
 const child_process_1 = require("child_process");
 const util_1 = require("util");
 const execAsync = (0, util_1.promisify)(child_process_1.exec);
 /**
  * Kubectl Tool for executing kubectl commands
  */
-class KubectlTool extends types_js_1.BaseMCPTool {
+class KubectlTool extends types_1.BaseMCPTool {
     constructor(timeoutMs = 30000) {
         super('run_kubectl_command', 'Execute kubectl commands for Kubernetes cluster management. Supports commands like get, describe, logs, apply, delete, etc.', timeoutMs);
     }

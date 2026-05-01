@@ -1,4 +1,4 @@
-import type { RouteRequest, ExecuteRequest } from '../core/types.js';
+import type { RouteRequest, ExecuteRequest } from '../core/types';
 /**
  * Configuration for the safety layer
  */

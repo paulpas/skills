@@ -1,13 +1,13 @@
 // MCP Bridge - central abstraction for all MCP tools
 
-import { IMCPTool } from './types.js';
-import { ShellCommandTool } from './tools/ShellCommandTool.js';
-import { FileTool } from './tools/FileTool.js';
-import { HTTPTool } from './tools/HTTPTool.js';
-import { KubectlTool } from './tools/KubectlTool.js';
-import { LogFetchTool } from './tools/LogFetchTool.js';
-import { ToolResult, ToolSpec } from '../core/types.js';
-import { Logger } from '../observability/Logger.js';
+import { IMCPTool } from './types';
+import { ShellCommandTool } from './tools/ShellCommandTool';
+import { FileTool } from './tools/FileTool';
+import { HTTPTool } from './tools/HTTPTool';
+import { KubectlTool } from './tools/KubectlTool';
+import { LogFetchTool } from './tools/LogFetchTool';
+import { ToolResult, ToolSpec } from '../core/types';
+import { Logger } from '../observability/Logger';
 
 /**
  * Configuration for MCP Bridge

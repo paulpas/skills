@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileTool = void 0;
-const types_js_1 = require("../types.js");
+const types_1 = require("../types");
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
 /**
  * File Tool for reading and writing files
  */
-class FileTool extends types_js_1.BaseMCPTool {
+class FileTool extends types_1.BaseMCPTool {
     allowedDirectories = [];
     constructor(timeoutMs = 30000) {
         super('file_operations', 'Read and write files with security validations', timeoutMs);

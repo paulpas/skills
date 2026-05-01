@@ -7,8 +7,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VectorDatabase = void 0;
 const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
-const Logger_js_1 = require("../observability/Logger.js");
-const KDTree_js_1 = require("./KDTree.js");
+const Logger_1 = require("../observability/Logger");
+const KDTree_1 = require("./KDTree");
 /**
  * Vector database for skill retrieval
  */
@@ -29,7 +29,7 @@ class VectorDatabase {
             useKDTree: true,
             ...config,
         };
-        this.logger = new Logger_js_1.Logger('VectorDatabase', {
+        this.logger = new Logger_1.Logger('VectorDatabase', {
             level: 'info',
             includePayloads: false,
         });
@@ -272,7 +272,7 @@ class VectorDatabase {
         this.embeddingDimension = validatedDimension;
         try {
             // Build KD-tree with normalized unit vectors
-            this.kdTree = new KDTree_js_1.KDTree(this.embeddingDimension);
+            this.kdTree = new KDTree_1.KDTree(this.embeddingDimension);
             this.kdTree.build(points);
             this.logger.info('KD-tree built successfully', {
                 skillCount: points.length,

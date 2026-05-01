@@ -1,3 +1,0 @@
-# Moderate
-
-Medium version

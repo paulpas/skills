@@ -1,6 +1,6 @@
 // Execution Plan Generator - creates execution plans from skill candidates
 
-import { ExecutionStrategy, ExecutionStep, SelectedSkill } from '../core/types.js';
+import { ExecutionStrategy, ExecutionStep, SelectedSkill } from '../core/types';
 
 /**
  * Configuration for the execution planner

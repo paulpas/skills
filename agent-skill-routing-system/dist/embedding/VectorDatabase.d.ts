@@ -1,4 +1,4 @@
-import type { SkillDefinition, SkillSearchResult } from '../core/types.js';
+import type { SkillDefinition, SkillSearchResult } from '../core/types';
 /**
  * Configuration for the vector database
  */

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmbeddingService = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const Logger_js_1 = require("../observability/Logger.js");
+const Logger_1 = require("../observability/Logger");
 /**
  * Embedding service supporting OpenAI and llama.cpp providers
  */
@@ -26,7 +26,7 @@ class EmbeddingService {
             batchSize: config.batchSize || 100,
             cacheDirectory: config.cacheDirectory || './.embedding-cache',
         };
-        this.logger = new Logger_js_1.Logger('EmbeddingService');
+        this.logger = new Logger_1.Logger('EmbeddingService');
         this.loadCacheFromDisk();
     }
     /**

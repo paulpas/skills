@@ -1,6 +1,6 @@
 // MCP Tool: HTTP Request Execution
 
-import { BaseMCPTool, IMCPTool } from '../types.js';
+import { BaseMCPTool, IMCPTool } from '../types';
 
 // undici is a runtime dependency, not a type-only import
 // This file requires undici at runtime

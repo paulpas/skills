@@ -2,10 +2,10 @@
 
 import { promisify } from 'util';
 import { setTimeout } from 'timers';
-import { SkillExecutionResult, SelectedSkill } from '../core/types.js';
-import { SafetyLayer } from './SafetyLayer.js';
-import { IMCPTool } from '../mcp/types.js';
-import { Logger } from '../observability/Logger.js';
+import { SkillExecutionResult, SelectedSkill } from '../core/types';
+import { SafetyLayer } from './SafetyLayer';
+import { IMCPTool } from '../mcp/types';
+import { Logger } from '../observability/Logger';
 
 /**
  * Configuration for the execution engine

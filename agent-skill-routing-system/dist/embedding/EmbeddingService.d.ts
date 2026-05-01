@@ -1,4 +1,4 @@
-import { EmbeddingResponse } from '../core/types.js';
+import { EmbeddingResponse } from '../core/types';
 export type EmbeddingProvider = 'openai' | 'llamacpp';
 /**
  * Configuration for the embedding service

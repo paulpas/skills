@@ -1,6 +1,6 @@
 // MCP Tool Interface and Base Class
 
-import { ToolResult, ToolSpec } from '../core/types.js';
+import { ToolResult, ToolSpec } from '../core/types';
 
 /**
  * Base interface for all MCP tools

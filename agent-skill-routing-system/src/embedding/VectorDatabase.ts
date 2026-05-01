@@ -2,9 +2,9 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { SkillDefinition, SkillSearchResult } from '../core/types.js';
-import { Logger } from '../observability/Logger.js';
-import { KDTree } from './KDTree.js';
+import type { SkillDefinition, SkillSearchResult } from '../core/types';
+import { Logger } from '../observability/Logger';
+import { KDTree } from './KDTree';
 
 /**
  * Configuration for the vector database

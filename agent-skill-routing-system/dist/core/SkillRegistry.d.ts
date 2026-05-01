@@ -1,4 +1,4 @@
-import type { SkillDefinition } from './types.js';
+import type { SkillDefinition } from './types';
 /**
  * Cached skill content entry with LRU metadata
  */

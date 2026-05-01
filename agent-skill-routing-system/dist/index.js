@@ -21,25 +21,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgentSkillRoutingApp = void 0;
 exports.createApp = createApp;
 const fastify_1 = __importDefault(require("fastify"));
-const Router_js_1 = require("./core/Router.js");
-const MCPBridge_js_1 = require("./mcp/MCPBridge.js");
-const Logger_js_1 = require("./observability/Logger.js");
-const GitHubSkillLoader_js_1 = require("./skills/GitHubSkillLoader.js");
-const CompressionMetrics_js_1 = require("./utils/CompressionMetrics.js");
-__exportStar(require("./core/types.js"), exports);
-__exportStar(require("./core/Router.js"), exports);
-__exportStar(require("./core/ExecutionEngine.js"), exports);
-__exportStar(require("./core/ExecutionPlanner.js"), exports);
-__exportStar(require("./core/SafetyLayer.js"), exports);
-__exportStar(require("./core/SkillCompressor.js"), exports);
-__exportStar(require("./mcp/MCPBridge.js"), exports);
+const Router_1 = require("./core/Router");
+const MCPBridge_1 = require("./mcp/MCPBridge");
+const Logger_1 = require("./observability/Logger");
+const GitHubSkillLoader_1 = require("./skills/GitHubSkillLoader");
+const CompressionMetrics_1 = require("./utils/CompressionMetrics");
+__exportStar(require("./core/types"), exports);
+__exportStar(require("./core/Router"), exports);
+__exportStar(require("./core/ExecutionEngine"), exports);
+__exportStar(require("./core/ExecutionPlanner"), exports);
+__exportStar(require("./core/SafetyLayer"), exports);
+__exportStar(require("./core/SkillCompressor"), exports);
+__exportStar(require("./mcp/MCPBridge"), exports);
 // DO NOT export mcp/types.js to avoid duplicate ToolResult/ToolSpec exports
-__exportStar(require("./embedding/EmbeddingService.js"), exports);
-__exportStar(require("./embedding/VectorDatabase.js"), exports);
-__exportStar(require("./llm/LLMRanker.js"), exports);
-__exportStar(require("./observability/Logger.js"), exports);
-__exportStar(require("./skills/GitHubSkillLoader.js"), exports);
-__exportStar(require("./utils/CompressionMetrics.js"), exports);
+__exportStar(require("./embedding/EmbeddingService"), exports);
+__exportStar(require("./embedding/VectorDatabase"), exports);
+__exportStar(require("./llm/LLMRanker"), exports);
+__exportStar(require("./observability/Logger"), exports);
+__exportStar(require("./skills/GitHubSkillLoader"), exports);
+__exportStar(require("./utils/CompressionMetrics"), exports);
 /**
  * Main application class
  */
@@ -54,7 +54,7 @@ class AgentSkillRoutingApp {
     compressionLevel = 0; // Compression level (0=off by default)
     accessLog = [];
     constructor(config = {}, compressionLevel = 0) {
-        this.logger = new Logger_js_1.Logger('Main', {
+        this.logger = new Logger_1.Logger('Main', {
             level: config.observability?.level || 'info',
         });
         this.config = config;
@@ -380,7 +380,7 @@ class AgentSkillRoutingApp {
         });
         // ── /metrics — compression metrics and statistics ────────────────────────
         this.app.get('/metrics', async (_request, reply) => {
-            const metrics = CompressionMetrics_js_1.CompressionMetrics.getInstance();
+            const metrics = CompressionMetrics_1.CompressionMetrics.getInstance();
             reply.send({
                 timestamp: new Date().toISOString(),
                 compression: metrics.getStats(),
@@ -463,7 +463,7 @@ Use --help for configuration options.
         const skillsDirs = [localSkillsDir];
         const githubEnabled = process.env.GITHUB_SKILLS_ENABLED !== 'false';
         // Initialize MCP Bridge
-        this.mcpBridge = new MCPBridge_js_1.MCPBridge({
+        this.mcpBridge = new MCPBridge_1.MCPBridge({
             enabledTools: this.config.enabledTools,
             disableTools: this.config.disableTools,
             defaultTimeoutMs: this.config.defaultTimeoutMs,
@@ -480,7 +480,7 @@ Use --help for configuration options.
             adaptiveTTL: compressionAdaptiveTTL,
         });
         // Initialize Router with all skill directories (used for local-scan fallback)
-        this.router = new Router_js_1.Router({
+        this.router = new Router_1.Router({
             ...this.config,
             skillsDirectory: skillsDirs,
             compression: {
@@ -534,7 +534,7 @@ Use --help for configuration options.
                 const syncIntervalMs = parseInt(process.env.SKILL_SYNC_INTERVAL || '3600', 10) * 1000;
                 const githubToken = process.env.GITHUB_TOKEN || '';
                 const repoUrl = process.env.GITHUB_SKILLS_REPO || 'https://github.com/paulpas/skills';
-                this.githubLoader = new GitHubSkillLoader_js_1.GitHubSkillLoader({ repoUrl, cacheDir, syncIntervalMs, githubToken });
+                this.githubLoader = new GitHubSkillLoader_1.GitHubSkillLoader({ repoUrl, cacheDir, syncIntervalMs, githubToken });
                 try {
                     await this.githubLoader.initialize();
                     skillsDirs.push(this.githubLoader.getSkillsDir());

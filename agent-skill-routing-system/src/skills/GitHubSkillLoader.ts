@@ -4,7 +4,7 @@ import { execFile } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
-import { Logger } from '../observability/Logger.js';
+import { Logger } from '../observability/Logger';
 
 const execFileAsync = promisify(execFile);
 

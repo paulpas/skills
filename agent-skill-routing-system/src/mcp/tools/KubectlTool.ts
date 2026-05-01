@@ -1,6 +1,6 @@
 // MCP Tool: Kubectl Command Execution
 
-import { BaseMCPTool, IMCPTool } from '../types.js';
+import { BaseMCPTool, IMCPTool } from '../types';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 

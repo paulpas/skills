@@ -10,14 +10,14 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const glob_1 = require("glob");
 const yaml_1 = __importDefault(require("yaml"));
-const Logger_js_1 = require("../observability/Logger.js");
-const SkillCompressor_js_1 = require("./SkillCompressor.js");
-const CompressionMetrics_js_1 = require("../utils/CompressionMetrics.js");
-const LLMSkillCompressor_js_1 = require("./LLMSkillCompressor.js");
-const DiskCompressionCache_js_1 = require("./DiskCompressionCache.js");
-const InMemoryCompressionCache_js_1 = require("./InMemoryCompressionCache.js");
-const CompressionDeduplicator_js_1 = require("./CompressionDeduplicator.js");
-const EmbeddingService_js_1 = require("../embedding/EmbeddingService.js");
+const Logger_1 = require("../observability/Logger");
+const SkillCompressor_1 = require("./SkillCompressor");
+const CompressionMetrics_1 = require("../utils/CompressionMetrics");
+const LLMSkillCompressor_1 = require("./LLMSkillCompressor");
+const DiskCompressionCache_1 = require("./DiskCompressionCache");
+const InMemoryCompressionCache_1 = require("./InMemoryCompressionCache");
+const CompressionDeduplicator_1 = require("./CompressionDeduplicator");
+const EmbeddingService_1 = require("../embedding/EmbeddingService");
 /**
  * Skill Registry - manages all available skills
  * Implements SkillRegistryWithCompression interface for type-safe access to compression methods
@@ -70,21 +70,21 @@ class SkillRegistry {
             maxDepth: mlc?.maxDepth ?? 2,
         };
         this.maxCacheSizeBytes = this.config.maxCacheSizeBytes || (1024 * 1024 * 1024);
-        this.compressor = new SkillCompressor_js_1.SkillCompressor();
-        this.logger = new Logger_js_1.Logger('SkillRegistry');
-        this.embeddingService = new EmbeddingService_js_1.EmbeddingService({
+        this.compressor = new SkillCompressor_1.SkillCompressor();
+        this.logger = new Logger_1.Logger('SkillRegistry');
+        this.embeddingService = new EmbeddingService_1.EmbeddingService({
             cacheDirectory: this.config.cacheDirectory,
         });
         // Initialize metrics with max cache size
-        const metrics = CompressionMetrics_js_1.CompressionMetrics.getInstance();
+        const metrics = CompressionMetrics_1.CompressionMetrics.getInstance();
         metrics.setMaxCacheSize(this.maxCacheSizeBytes);
         // Initialize LLM-based compression caches (Phase 3-5)
         const skillsDir = Array.isArray(this.config.skillsDirectory)
             ? this.config.skillsDirectory[0]
             : this.config.skillsDirectory;
-        this.diskCache = new DiskCompressionCache_js_1.DiskCompressionCache(skillsDir);
-        this.memoryCache = new InMemoryCompressionCache_js_1.InMemoryCompressionCache(60); // 1 hour TTL
-        this.deduplicator = new CompressionDeduplicator_js_1.CompressionDeduplicator();
+        this.diskCache = new DiskCompressionCache_1.DiskCompressionCache(skillsDir);
+        this.memoryCache = new InMemoryCompressionCache_1.InMemoryCompressionCache(60); // 1 hour TTL
+        this.deduplicator = new CompressionDeduplicator_1.CompressionDeduplicator();
         // llmCompressor: will be initialized when LLM client becomes available
         this.loadPersistedContentCache();
     }
@@ -223,7 +223,7 @@ class SkillRegistry {
      * Implements adaptive TTL: hot skills 30min, cold skills 1 hour
      */
     getFromCompressionCache(name, level) {
-        const metrics = CompressionMetrics_js_1.CompressionMetrics.getInstance();
+        const metrics = CompressionMetrics_1.CompressionMetrics.getInstance();
         const key = `${name}@L${level}`;
         const entry = this.compressionCache.get(key);
         // Guard: early return on cache miss
@@ -278,7 +278,7 @@ class SkillRegistry {
      * Apply compression and cache the result
      */
     applyCompressionAndCache(name, content, level) {
-        const metrics = CompressionMetrics_js_1.CompressionMetrics.getInstance();
+        const metrics = CompressionMetrics_1.CompressionMetrics.getInstance();
         try {
             // Check if compression is worthwhile
             if (!this.compressor.shouldCompress(content)) {
@@ -362,7 +362,7 @@ class SkillRegistry {
      * Early Exit: guard on empty cache
      */
     evictLRUEntry() {
-        const metrics = CompressionMetrics_js_1.CompressionMetrics.getInstance();
+        const metrics = CompressionMetrics_1.CompressionMetrics.getInstance();
         if (this.compressionCache.size === 0) {
             return; // Guard: nothing to evict
         }
@@ -931,7 +931,7 @@ class SkillRegistry {
             this.logger.warn('Attempted to set null LLM client');
             return;
         }
-        this.llmCompressor = new LLMSkillCompressor_js_1.LLMSkillCompressor(llmClient);
+        this.llmCompressor = new LLMSkillCompressor_1.LLMSkillCompressor(llmClient);
         this.logger.info('LLM compressor initialized');
     }
     /**
