@@ -6,14 +6,14 @@ import type {
   RouteResponse,
   SelectedSkill,
   EmbeddingResponse,
-} from '../core/types.js';
-import { SkillRegistry } from '../core/SkillRegistry.js';
-import { VectorDatabase } from '../embedding/VectorDatabase.js';
-import { EmbeddingService } from '../embedding/EmbeddingService.js';
-import { LLMRanker } from '../llm/LLMRanker.js';
-import { ExecutionPlanner } from '../core/ExecutionPlanner.js';
-import { SafetyLayer } from '../core/SafetyLayer.js';
-import { Logger } from '../observability/Logger.js';
+} from '../core/types';
+import { SkillRegistry } from '../core/SkillRegistry';
+import { VectorDatabase } from '../embedding/VectorDatabase';
+import { EmbeddingService } from '../embedding/EmbeddingService';
+import { LLMRanker } from '../llm/LLMRanker';
+import { ExecutionPlanner } from '../core/ExecutionPlanner';
+import { SafetyLayer } from '../core/SafetyLayer';
+import { Logger } from '../observability/Logger';
 
 /**
  * Configuration for the Router

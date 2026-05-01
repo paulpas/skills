@@ -1,12 +1,12 @@
 // Agent Skill Routing System - Main Entry Point
 
 import fastify, { FastifyInstance } from 'fastify';
-import { Router, RouterConfig } from './core/Router.js';
-import { MCPBridge, MCPBridgeConfig } from './mcp/MCPBridge.js';
-import { Logger } from './observability/Logger.js';
-import { GitHubSkillLoader } from './skills/GitHubSkillLoader.js';
-import { CompressionMetrics } from './utils/CompressionMetrics.js';
-import { SkillRegistryWithCompression } from './core/SkillRegistry.js';
+import { Router, RouterConfig } from './core/Router';
+import { MCPBridge, MCPBridgeConfig } from './mcp/MCPBridge';
+import { Logger } from './observability/Logger';
+import { GitHubSkillLoader } from './skills/GitHubSkillLoader';
+import { CompressionMetrics } from './utils/CompressionMetrics';
+import { SkillRegistryWithCompression } from './core/SkillRegistry';
 
 /**
  * Route request body
@@ -40,20 +40,20 @@ interface LinkFollowingConfigUpdate {
   allow_external_links?: boolean;
 }
 
-export * from './core/types.js';
-export * from './core/Router.js';
-export * from './core/ExecutionEngine.js';
-export * from './core/ExecutionPlanner.js';
-export * from './core/SafetyLayer.js';
-export * from './core/SkillCompressor.js';
-export * from './mcp/MCPBridge.js';
+export * from './core/types';
+export * from './core/Router';
+export * from './core/ExecutionEngine';
+export * from './core/ExecutionPlanner';
+export * from './core/SafetyLayer';
+export * from './core/SkillCompressor';
+export * from './mcp/MCPBridge';
 // DO NOT export mcp/types.js to avoid duplicate ToolResult/ToolSpec exports
-export * from './embedding/EmbeddingService.js';
-export * from './embedding/VectorDatabase.js';
-export * from './llm/LLMRanker.js';
-export * from './observability/Logger.js';
-export * from './skills/GitHubSkillLoader.js';
-export * from './utils/CompressionMetrics.js';
+export * from './embedding/EmbeddingService';
+export * from './embedding/VectorDatabase';
+export * from './llm/LLMRanker';
+export * from './observability/Logger';
+export * from './skills/GitHubSkillLoader';
+export * from './utils/CompressionMetrics';
 
 /**
  * Main application class

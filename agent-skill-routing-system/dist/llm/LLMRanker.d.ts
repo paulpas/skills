@@ -1,4 +1,4 @@
-import type { SkillDefinition, SkillRankingResult } from '../core/types.js';
+import type { SkillDefinition, SkillRankingResult } from '../core/types';
 export type LLMProvider = 'openai' | 'anthropic' | 'llamacpp';
 export interface LLMRankerConfig {
     provider?: LLMProvider;

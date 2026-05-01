@@ -2,11 +2,11 @@
 // MCP Tool: HTTP Request Execution
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HTTPTool = void 0;
-const types_js_1 = require("../types.js");
+const types_1 = require("../types");
 /**
  * HTTP Tool for making HTTP requests
  */
-class HTTPTool extends types_js_1.BaseMCPTool {
+class HTTPTool extends types_1.BaseMCPTool {
     constructor(timeoutMs = 30000) {
         super('http_request', 'Make HTTP requests (GET, POST, PUT, DELETE, PATCH) with JSON payload support', timeoutMs);
     }

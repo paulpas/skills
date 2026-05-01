@@ -2,12 +2,12 @@
 // MCP Bridge - central abstraction for all MCP tools
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MCPBridge = void 0;
-const ShellCommandTool_js_1 = require("./tools/ShellCommandTool.js");
-const FileTool_js_1 = require("./tools/FileTool.js");
-const HTTPTool_js_1 = require("./tools/HTTPTool.js");
-const KubectlTool_js_1 = require("./tools/KubectlTool.js");
-const LogFetchTool_js_1 = require("./tools/LogFetchTool.js");
-const Logger_js_1 = require("../observability/Logger.js");
+const ShellCommandTool_1 = require("./tools/ShellCommandTool");
+const FileTool_1 = require("./tools/FileTool");
+const HTTPTool_1 = require("./tools/HTTPTool");
+const KubectlTool_1 = require("./tools/KubectlTool");
+const LogFetchTool_1 = require("./tools/LogFetchTool");
+const Logger_1 = require("../observability/Logger");
 /**
  * MCP Bridge - manages all MCP tools
  */
@@ -16,7 +16,7 @@ class MCPBridge {
     config;
     logger;
     constructor(config = {}) {
-        this.logger = new Logger_js_1.Logger('MCPBridge', {
+        this.logger = new Logger_1.Logger('MCPBridge', {
             level: 'info',
             includePayloads: false,
         });
@@ -41,11 +41,11 @@ class MCPBridge {
             : ['shell', 'file', 'http', 'kubectl', 'log_fetch'];
         const disabledTools = new Set(this.config.disableTools || []);
         const toolFactories = {
-            shell: () => new ShellCommandTool_js_1.ShellCommandTool(this.config.defaultTimeoutMs),
-            file: () => new FileTool_js_1.FileTool(this.config.defaultTimeoutMs),
-            http: () => new HTTPTool_js_1.HTTPTool(this.config.defaultTimeoutMs),
-            kubectl: () => new KubectlTool_js_1.KubectlTool(this.config.defaultTimeoutMs),
-            log_fetch: () => new LogFetchTool_js_1.LogFetchTool(this.config.defaultTimeoutMs),
+            shell: () => new ShellCommandTool_1.ShellCommandTool(this.config.defaultTimeoutMs),
+            file: () => new FileTool_1.FileTool(this.config.defaultTimeoutMs),
+            http: () => new HTTPTool_1.HTTPTool(this.config.defaultTimeoutMs),
+            kubectl: () => new KubectlTool_1.KubectlTool(this.config.defaultTimeoutMs),
+            log_fetch: () => new LogFetchTool_1.LogFetchTool(this.config.defaultTimeoutMs),
         };
         for (const [name, factory] of Object.entries(toolFactories)) {
             if (disabledTools.has(name)) {

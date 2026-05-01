@@ -3,13 +3,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Router = void 0;
 const uuid_1 = require("uuid");
-const SkillRegistry_js_1 = require("../core/SkillRegistry.js");
-const VectorDatabase_js_1 = require("../embedding/VectorDatabase.js");
-const EmbeddingService_js_1 = require("../embedding/EmbeddingService.js");
-const LLMRanker_js_1 = require("../llm/LLMRanker.js");
-const ExecutionPlanner_js_1 = require("../core/ExecutionPlanner.js");
-const SafetyLayer_js_1 = require("../core/SafetyLayer.js");
-const Logger_js_1 = require("../observability/Logger.js");
+const SkillRegistry_1 = require("../core/SkillRegistry");
+const VectorDatabase_1 = require("../embedding/VectorDatabase");
+const EmbeddingService_1 = require("../embedding/EmbeddingService");
+const LLMRanker_1 = require("../llm/LLMRanker");
+const ExecutionPlanner_1 = require("../core/ExecutionPlanner");
+const SafetyLayer_1 = require("../core/SafetyLayer");
+const Logger_1 = require("../observability/Logger");
 /**
  * Router - orchestrates skill routing
  */
@@ -22,31 +22,31 @@ class Router {
     safetyLayer;
     logger;
     constructor(config) {
-        this.skillRegistry = new SkillRegistry_js_1.SkillRegistry({
+        this.skillRegistry = new SkillRegistry_1.SkillRegistry({
             skillsDirectory: config.skillsDirectory,
             maxCacheSizeBytes: config.compression?.maxCacheSizeBytes,
             warmupSkillsCount: config.compression?.warmupSkillsCount,
             compressionBatchSize: config.compression?.compressionBatchSize,
             adaptiveTTL: config.compression?.adaptiveTTL,
         });
-        this.vectorDatabase = new VectorDatabase_js_1.VectorDatabase();
-        this.embeddingService = new EmbeddingService_js_1.EmbeddingService({
+        this.vectorDatabase = new VectorDatabase_1.VectorDatabase();
+        this.embeddingService = new EmbeddingService_1.EmbeddingService({
             model: config.embedding?.model,
             dimensions: config.embedding?.dimensions || 1536,
         });
-        this.llmRanker = new LLMRanker_js_1.LLMRanker({
+        this.llmRanker = new LLMRanker_1.LLMRanker({
             model: config.llm?.model,
             maxCandidates: config.llm?.maxCandidates || 10,
         });
-        this.executionPlanner = new ExecutionPlanner_js_1.ExecutionPlanner({
+        this.executionPlanner = new ExecutionPlanner_1.ExecutionPlanner({
             maxSkillsPerPlan: config.execution?.maxSkills || 5,
             defaultTimeoutMs: config.execution?.timeoutMs || 30000,
         });
-        this.safetyLayer = new SafetyLayer_js_1.SafetyLayer({
+        this.safetyLayer = new SafetyLayer_1.SafetyLayer({
             enablePromptInjectionFilter: config.safety?.enablePromptInjectionFilter ?? true,
             requireSchemaValidation: config.safety?.requireSchemaValidation ?? true,
         });
-        this.logger = new Logger_js_1.Logger('Router', {
+        this.logger = new Logger_1.Logger('Router', {
             level: config.observability?.level || 'info',
         });
     }

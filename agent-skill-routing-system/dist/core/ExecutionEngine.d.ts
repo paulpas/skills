@@ -1,5 +1,5 @@
-import { SkillExecutionResult, SelectedSkill } from '../core/types.js';
-import { IMCPTool } from '../mcp/types.js';
+import { SkillExecutionResult, SelectedSkill } from '../core/types';
+import { IMCPTool } from '../mcp/types';
 /**
  * Configuration for the execution engine
  */

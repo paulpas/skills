@@ -1,4 +1,4 @@
-import { ExecutionStrategy, ExecutionStep, SelectedSkill } from '../core/types.js';
+import { ExecutionStrategy, ExecutionStep, SelectedSkill } from '../core/types';
 /**
  * Configuration for the execution planner
  */

@@ -2,7 +2,7 @@
 // LLM Ranker - ranks skill candidates using OpenAI, Anthropic, or llama.cpp
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LLMRanker = void 0;
-const Logger_js_1 = require("../observability/Logger.js");
+const Logger_1 = require("../observability/Logger");
 class LLMRanker {
     config;
     logger;
@@ -21,7 +21,7 @@ class LLMRanker {
             maxTokens: config.maxTokens ?? 400,
             maxCandidates: config.maxCandidates ?? 10,
         };
-        this.logger = new Logger_js_1.Logger('LLMRanker');
+        this.logger = new Logger_1.Logger('LLMRanker');
         this.logger.info(`LLMRanker initialized`, { provider: this.config.provider, model: this.config.model });
     }
     /**

@@ -1,6 +1,6 @@
 // Safety Layer - input validation, prompt injection filtering, skill allowlisting
 
-import type { RouteRequest, ExecuteRequest } from '../core/types.js';
+import type { RouteRequest, ExecuteRequest } from '../core/types';
 
 /**
  * Whether to run in strict mode: block on any single injection signal.

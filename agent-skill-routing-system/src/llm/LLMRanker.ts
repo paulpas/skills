@@ -1,7 +1,7 @@
 // LLM Ranker - ranks skill candidates using OpenAI, Anthropic, or llama.cpp
 
-import type { SkillDefinition, SkillRanking, SelectedSkill, SkillRankingResult } from '../core/types.js';
-import { Logger } from '../observability/Logger.js';
+import type { SkillDefinition, SkillRanking, SelectedSkill, SkillRankingResult } from '../core/types';
+import { Logger } from '../observability/Logger';
 
 export type LLMProvider = 'openai' | 'anthropic' | 'llamacpp';
 

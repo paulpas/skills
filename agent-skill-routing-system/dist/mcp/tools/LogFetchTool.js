@@ -2,12 +2,12 @@
 // MCP Tool: Log File Fetching
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogFetchTool = void 0;
-const types_js_1 = require("../types.js");
+const types_1 = require("../types");
 const fs_1 = require("fs");
 /**
  * Log Fetch Tool for reading log files
  */
-class LogFetchTool extends types_js_1.BaseMCPTool {
+class LogFetchTool extends types_1.BaseMCPTool {
     constructor(timeoutMs = 30000) {
         super('fetch_log_file', 'Read and tail log files with filtering and search capabilities', timeoutMs);
     }

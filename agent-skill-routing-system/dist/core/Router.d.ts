@@ -1,5 +1,5 @@
-import type { RouteRequest, RouteResponse } from '../core/types.js';
-import { SkillRegistry } from '../core/SkillRegistry.js';
+import type { RouteRequest, RouteResponse } from '../core/types';
+import { SkillRegistry } from '../core/SkillRegistry';
 /**
  * Configuration for the Router
  */
@@ -80,7 +80,7 @@ export declare class Router {
     /**
      * Get all loaded skill definitions (delegates to registry)
      */
-    getAllSkills(): import("../core/types.js").SkillDefinition[];
+    getAllSkills(): import("../core/types").SkillDefinition[];
     /**
      * Expose the registry so HTTP endpoints can call on-demand methods
      * (e.g. getSkillContent, loadFromRemoteIndex).

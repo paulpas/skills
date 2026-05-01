@@ -2,14 +2,14 @@
 // MCP Tool: Shell Command Execution
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ShellCommandTool = void 0;
-const types_js_1 = require("../types.js");
+const types_1 = require("../types");
 const child_process_1 = require("child_process");
 const util_1 = require("util");
 const execAsync = (0, util_1.promisify)(child_process_1.exec);
 /**
  * Shell Command Tool for executing shell commands
  */
-class ShellCommandTool extends types_js_1.BaseMCPTool {
+class ShellCommandTool extends types_1.BaseMCPTool {
     constructor(timeoutMs = 30000) {
         super('run_shell_command', 'Execute shell commands in a bash environment. Supports commands like ls, cd, cat, grep, find, npm, git, etc.', timeoutMs);
     }

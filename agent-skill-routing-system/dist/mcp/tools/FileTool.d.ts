@@ -1,4 +1,4 @@
-import { BaseMCPTool, IMCPTool } from '../types.js';
+import { BaseMCPTool, IMCPTool } from '../types';
 /**
  * MCP Tool result
  */

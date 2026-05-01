@@ -1,5 +1,5 @@
-import { IMCPTool } from './types.js';
-import { ToolResult, ToolSpec } from '../core/types.js';
+import { IMCPTool } from './types';
+import { ToolResult, ToolSpec } from '../core/types';
 /**
  * Configuration for MCP Bridge
  */

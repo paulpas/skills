@@ -1,7 +1,6 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  roots: ['<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js', 'json'],
   collectCoverageFrom: [
@@ -13,9 +12,9 @@ module.exports = {
     '^.+\\.tsx?$': ['ts-jest', {
       useESM: false,
       tsconfig: {
-        module: 'commonjs',
-        moduleResolution: 'node',
-        target: 'ES2020',
+        module: 'NodeNext',
+        moduleResolution: 'NodeNext',
+        target: 'ES2022',
       },
     }],
   },

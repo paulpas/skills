@@ -9,7 +9,7 @@ const child_process_1 = require("child_process");
 const util_1 = require("util");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const Logger_js_1 = require("../observability/Logger.js");
+const Logger_1 = require("../observability/Logger");
 const execFileAsync = (0, util_1.promisify)(child_process_1.execFile);
 class GitHubSkillLoader {
     repoUrl;
@@ -23,7 +23,7 @@ class GitHubSkillLoader {
         this.cacheDir = config.cacheDir;
         this.syncIntervalMs = config.syncIntervalMs ?? 3600000;
         this.githubToken = config.githubToken ?? '';
-        this.logger = new Logger_js_1.Logger('GitHubSkillLoader');
+        this.logger = new Logger_1.Logger('GitHubSkillLoader');
     }
     /** Clone the repo if needed, pull if already cloned. Call on startup. */
     async initialize() {

@@ -2,8 +2,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import { EmbeddingResponse } from '../core/types.js';
-import { Logger } from '../observability/Logger.js';
+import { EmbeddingResponse } from '../core/types';
+import { Logger } from '../observability/Logger';
 
 export type EmbeddingProvider = 'openai' | 'llamacpp';
 

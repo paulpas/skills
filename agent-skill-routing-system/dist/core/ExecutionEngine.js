@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExecutionEngine = void 0;
 const util_1 = require("util");
 const timers_1 = require("timers");
-const SafetyLayer_js_1 = require("./SafetyLayer.js");
-const Logger_js_1 = require("../observability/Logger.js");
+const SafetyLayer_1 = require("./SafetyLayer");
+const Logger_1 = require("../observability/Logger");
 /**
  * Execution engine for running skills
  */
@@ -22,8 +22,8 @@ class ExecutionEngine {
             fallbackEnabled: true,
             ...config,
         };
-        this.safetyLayer = new SafetyLayer_js_1.SafetyLayer();
-        this.logger = new Logger_js_1.Logger('ExecutionEngine');
+        this.safetyLayer = new SafetyLayer_1.SafetyLayer();
+        this.logger = new Logger_1.Logger('ExecutionEngine');
     }
     /**
      * Execute a single skill
