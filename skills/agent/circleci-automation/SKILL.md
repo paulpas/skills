@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: circleci-automation, circleci automation, how do i circleci-automation,
     orchestrate circleci-automation, automate circleci-automation, agent circleci-automation,
-    continuous integration
+    continuous integration, jenkins
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Circleci Automation

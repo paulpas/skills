@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-04-28T22:16:35.232063Z",
+  "generatedAt": "2026-04-30T22:54:38.397226Z",
   "totalSkills": 537,
   "domains": {
     "agent": 220,
     "cncf": 149,
-    "coding": 82,
+    "coding": 81,
     "programming": 3,
-    "trading": 83
+    "trading": 83,
+    "writing": 1
   },
   "roles": {
     "orchestration": 220,
@@ -277,7 +278,8 @@
         "orchestrate airflow-dag-patterns",
         "automate airflow-dag-patterns",
         "agent airflow-dag-patterns",
-        "workflow orchestration"
+        "workflow orchestration",
+        "airflow"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -1217,7 +1219,8 @@
         "orchestrate bdistill-behavioral-xray",
         "automate bdistill-behavioral-xray",
         "agent bdistill-behavioral-xray",
-        "distributed tracing"
+        "distributed tracing",
+        "xray"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -1701,7 +1704,8 @@
         "orchestrate cc-skill-security-review",
         "automate cc-skill-security-review",
         "agent cc-skill-security-review",
-        "vulnerability scanning"
+        "vulnerability scanning",
+        "security"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -1900,7 +1904,8 @@
         "orchestrate circleci-automation",
         "automate circleci-automation",
         "agent circleci-automation",
-        "continuous integration"
+        "continuous integration",
+        "jenkins"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -3496,7 +3501,8 @@
         "templates",
         "yaml",
         "cloudformation",
-        "kubernetes deployment"
+        "kubernetes deployment",
+        "container orchestration"
       ],
       "relatedSkills": [
         "azure-resource-manager",
@@ -5324,7 +5330,7 @@
     },
     {
       "name": "humanizer",
-      "domain": "coding",
+      "domain": "writing",
       "description": "Detects and removes AI writing patterns to produce natural human writing through two-pass editing process",
       "role": "review",
       "scope": "review",
@@ -5348,7 +5354,7 @@
         "markdown-best-practices"
       ],
       "version": "1.0.0",
-      "source": "skills/coding/humanizer/SKILL.md"
+      "source": "skills/writing/humanizer/SKILL.md"
     },
     {
       "name": "hydra",
@@ -5485,7 +5491,8 @@
         "roles",
         "permissions",
         "access control",
-        "kubernetes service"
+        "kubernetes service",
+        "container orchestration"
       ],
       "relatedSkills": [
         "azure-rbac",
@@ -5834,7 +5841,8 @@
         "orchestrate k8s-debugger",
         "automate k8s-debugger",
         "agent k8s-debugger",
-        "kubernetes"
+        "kubernetes",
+        "container orchestration"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -6360,7 +6368,8 @@
         "orchestrate lambda-lang",
         "automate lambda-lang",
         "agent lambda-lang",
-        "serverless functions"
+        "serverless functions",
+        "lambda"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -8287,7 +8296,8 @@
         "orchestrate performance-profiler",
         "automate performance-profiler",
         "agent performance-profiler",
-        "optimization"
+        "optimization",
+        "performance"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -8469,7 +8479,8 @@
         "orchestrate postgresql-optimization",
         "automate postgresql-optimization",
         "agent postgresql-optimization",
-        "postgres"
+        "postgres",
+        "postgresql"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -9468,7 +9479,8 @@
         "orchestrate security-audit",
         "automate security-audit",
         "agent security-audit",
-        "vulnerability scanning"
+        "vulnerability scanning",
+        "security"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -10583,7 +10595,8 @@
         "orchestrate terraform-infrastructure",
         "automate terraform-infrastructure",
         "agent terraform-infrastructure",
-        "infrastructure as code"
+        "infrastructure as code",
+        "cloudformation"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -10606,7 +10619,8 @@
         "orchestrate test-oracle-generator",
         "automate test-oracle-generator",
         "agent test-oracle-generator",
-        "enterprise database"
+        "enterprise database",
+        "oracle"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -10629,7 +10643,8 @@
         "orchestrate testing-qa",
         "automate testing-qa",
         "agent testing-qa",
-        "unit tests"
+        "unit tests",
+        "testing"
       ],
       "relatedSkills": [
         "agent-task-routing",
@@ -11261,7 +11276,8 @@
         "compute",
         "instance types",
         "scaling",
-        "ec2"
+        "ec2",
+        "servers"
       ],
       "relatedSkills": [
         "azure-automation",
@@ -11701,7 +11717,8 @@
         "orchestrate workflow-automation",
         "automate workflow-automation",
         "agent workflow-automation",
-        "github actions"
+        "github actions",
+        "ci/cd"
       ],
       "relatedSkills": [
         "agent-task-routing",

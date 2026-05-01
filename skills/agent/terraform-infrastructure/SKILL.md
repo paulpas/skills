@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: terraform-infrastructure, terraform infrastructure, how do i terraform-infrastructure,
     orchestrate terraform-infrastructure, automate terraform-infrastructure, agent
-    terraform-infrastructure, infrastructure as code
+    terraform-infrastructure, infrastructure as code, cloudformation
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Terraform Infrastructure

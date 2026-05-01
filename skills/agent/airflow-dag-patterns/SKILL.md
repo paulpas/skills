@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: airflow-dag-patterns, airflow dag patterns, how do i airflow-dag-patterns,
     orchestrate airflow-dag-patterns, automate airflow-dag-patterns, agent airflow-dag-patterns,
-    workflow orchestration
+    workflow orchestration, airflow
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Airflow Dag Patterns

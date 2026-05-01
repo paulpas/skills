@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: performance-profiler, performance profiler, how do i performance-profiler,
     orchestrate performance-profiler, automate performance-profiler, agent performance-profiler,
-    optimization
+    optimization, performance
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Performance Profiler

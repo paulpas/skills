@@ -11,9 +11,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: iam, identity access management, service account, roles, permissions,
-    access control, kubernetes service
+    access control, kubernetes service, container orchestration
   related-skills: azure-rbac, gcp-cloud-kms, gcp-cloud-sql, gcp-compute-engine
 ---
+
 
 
 

@@ -8,12 +8,13 @@ metadata:
   version: 1.0.0
   domain: agent
   triggers: k8s-debugger, k8s debugger, how do i k8s-debugger, orchestrate k8s-debugger,
-    automate k8s-debugger, agent k8s-debugger, kubernetes
+    automate k8s-debugger, agent k8s-debugger, kubernetes, container orchestration
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # K8S Debugger

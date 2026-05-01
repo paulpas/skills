@@ -11,9 +11,10 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: deployment manager, infrastructure as code, iac, templates, yaml, cloudformation,
-    kubernetes deployment
+    kubernetes deployment, container orchestration
   related-skills: azure-resource-manager, gcp-cloud-sql
 ---
+
 
 
 

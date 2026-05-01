@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: postgresql-optimization, postgresql optimization, how do i postgresql-optimization,
     orchestrate postgresql-optimization, automate postgresql-optimization, agent postgresql-optimization,
-    postgres
+    postgres, postgresql
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Postgresql Optimization

@@ -8,12 +8,13 @@ metadata:
   version: 1.0.0
   domain: agent
   triggers: security-audit, security audit, how do i security-audit, orchestrate security-audit,
-    automate security-audit, agent security-audit, vulnerability scanning
+    automate security-audit, agent security-audit, vulnerability scanning, security
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Security Audit
