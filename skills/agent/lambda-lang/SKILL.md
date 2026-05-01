@@ -8,12 +8,13 @@ metadata:
   version: 1.0.0
   domain: agent
   triggers: lambda-lang, lambda lang, how do i lambda-lang, orchestrate lambda-lang,
-    automate lambda-lang, agent lambda-lang, serverless functions
+    automate lambda-lang, agent lambda-lang, serverless functions, lambda
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Lambda Lang

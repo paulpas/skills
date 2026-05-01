@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: test-oracle-generator, test oracle generator, how do i test-oracle-generator,
     orchestrate test-oracle-generator, automate test-oracle-generator, agent test-oracle-generator,
-    enterprise database
+    enterprise database, oracle
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Test Oracle Generator

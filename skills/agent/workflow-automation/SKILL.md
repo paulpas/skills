@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: workflow-automation, workflow automation, how do i workflow-automation,
     orchestrate workflow-automation, automate workflow-automation, agent workflow-automation,
-    github actions
+    github actions, ci/cd
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Workflow Automation

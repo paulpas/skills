@@ -8,12 +8,13 @@ metadata:
   version: 1.0.0
   domain: agent
   triggers: testing-qa, testing qa, how do i testing-qa, orchestrate testing-qa, automate
-    testing-qa, agent testing-qa, unit tests
+    testing-qa, agent testing-qa, unit tests, testing
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Testing Qa

@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: bdistill-behavioral-xray, bdistill behavioral xray, how do i bdistill-behavioral-xray,
     orchestrate bdistill-behavioral-xray, automate bdistill-behavioral-xray, agent
-    bdistill-behavioral-xray, distributed tracing
+    bdistill-behavioral-xray, distributed tracing, xray
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Bdistill Behavioral Xray

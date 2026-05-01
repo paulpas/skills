@@ -9,12 +9,13 @@ metadata:
   domain: agent
   triggers: cc-skill-security-review, cc skill security review, how do i cc-skill-security-review,
     orchestrate cc-skill-security-review, automate cc-skill-security-review, agent
-    cc-skill-security-review, vulnerability scanning
+    cc-skill-security-review, vulnerability scanning, security
   role: orchestration
   scope: orchestration
   output-format: analysis
   related-skills: agent-task-routing, agent-confidence-based-selector
 ---
+
 
 
 # Cc Skill Security Review
