@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-30T22:54:38.397226Z",
-  "totalSkills": 537,
+  "generatedAt": "2026-05-03T03:30:08.049717Z",
+  "totalSkills": 547,
   "domains": {
-    "agent": 220,
-    "cncf": 149,
+    "agent": 226,
+    "cncf": 153,
     "coding": 81,
     "programming": 3,
     "trading": 83,
@@ -11,8 +11,8 @@
   },
   "roles": {
     "orchestration": 220,
+    "implementation": 172,
     "reference": 154,
-    "implementation": 162,
     "review": 1
   },
   "skills": [
@@ -1865,6 +1865,31 @@
       "source": "skills/agent/cicd-automation-workflow-automate/SKILL.md"
     },
     {
+      "name": "cicd-pipeline-troubleshooting",
+      "domain": "agent",
+      "description": "Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "ci cd troubleshooting",
+        "pipeline failure",
+        "build cache",
+        "parallel build",
+        "artifact resolution",
+        "github actions",
+        "gitlab ci",
+        "how do i debug pipelines"
+      ],
+      "relatedSkills": [
+        "cncf-tekton",
+        "cncf-argocd",
+        "cncf-flux"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/cicd-pipeline-troubleshooting/SKILL.md"
+    },
+    {
       "name": "cilium",
       "domain": "cncf",
       "description": "\"Cilium in Cloud Native Network - cloud native architecture, patterns\" pitfalls, and best practices",
@@ -3065,6 +3090,29 @@
       "source": "skills/cncf/azure-cosmos-db/SKILL.md"
     },
     {
+      "name": "cost-optimization",
+      "domain": "cncf",
+      "description": "Implements cloud cost optimization strategies (right-sizing, reserved instances, spot instances, multi-cloud comparison) for Kubernetes and cloud-native deployments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "cost optimization",
+        "right sizing",
+        "reserved instances",
+        "spot instances",
+        "multi cloud costs",
+        "aws cost analysis",
+        "azure cost",
+        "gcp billing"
+      ],
+      "relatedSkills": [
+        "cncf-opencost"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/cost-optimization/SKILL.md"
+    },
+    {
       "name": "create-branch",
       "domain": "agent",
       "description": "Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -3442,6 +3490,30 @@
       "source": "skills/agent/database/SKILL.md"
     },
     {
+      "name": "database-admin",
+      "domain": "agent",
+      "description": "Implements database administration best practices (PostgreSQL tuning, MySQL replication, MongoDB sharding, Redis optimization) with real operational commands and query analysis patterns.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "database administration",
+        "postgresql tuning",
+        "connection pooling",
+        "query optimization",
+        "vacuuming",
+        "mysql replication",
+        "mongodb sharding",
+        "redis memory"
+      ],
+      "relatedSkills": [
+        "cncf-postgresql",
+        "cncf-azure-managed-database"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/database-admin/SKILL.md"
+    },
+    {
       "name": "dependency-graph-builder",
       "domain": "agent",
       "description": "Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -3602,6 +3674,29 @@
       "source": "skills/coding/ds-dimensionality-reduction/SKILL.md"
     },
     {
+      "name": "disaster-recovery",
+      "domain": "cncf",
+      "description": "Implements comprehensive disaster recovery planning for Kubernetes clusters with backup strategies, recovery procedures, cross-region replication, RPO/RTO planning, and validation workflows.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "disaster recovery",
+        "backup strategy",
+        "recovery procedures",
+        "cross region replication",
+        "rpo rto",
+        "backup validation",
+        "how do i plan dr"
+      ],
+      "relatedSkills": [
+        "cncf-velero",
+        "cncf-argocd"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/disaster-recovery/SKILL.md"
+    },
+    {
       "name": "dispatching-parallel-agents",
       "domain": "agent",
       "description": "Implements intelligent dispatching parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -3644,6 +3739,29 @@
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-distribution-fitting/SKILL.md"
+    },
+    {
+      "name": "docker-debugging",
+      "domain": "agent",
+      "description": "Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "docker debugging",
+        "container crash",
+        "oom error",
+        "network troubleshooting",
+        "docker compose",
+        "container logs",
+        "how do i debug docker",
+        "volume mount"
+      ],
+      "relatedSkills": [
+        "agent-network-troubleshooting"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/docker-debugging/SKILL.md"
     },
     {
       "name": "documentation",
@@ -4980,6 +5098,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/gitlab-ci-patterns/SKILL.md"
+    },
+    {
+      "name": "gitops-troubleshooting",
+      "domain": "agent",
+      "description": "Diagnoses and resolves GitOps synchronization failures, drift detection issues, and reconciliation problems for ArgoCD and Flux deployments with actionable debugging commands.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "gitops troubleshooting",
+        "sync failure",
+        "drift detection",
+        "reconciliation",
+        "kustomize",
+        "argocd",
+        "flux",
+        "how do i debug gitops"
+      ],
+      "relatedSkills": [
+        "cncf-argocd",
+        "cncf-flux",
+        "cncf-tekton"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/gitops-troubleshooting/SKILL.md"
     },
     {
       "name": "gke",
@@ -7031,6 +7174,29 @@
       "source": "skills/agent/memory-usage-analyzer/SKILL.md"
     },
     {
+      "name": "message-queue-troubleshooting",
+      "domain": "agent",
+      "description": "Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic commands, dead letter handling, and backlog resolution",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "message queue troubleshooting",
+        "kafka cluster",
+        "rabbitmq queues",
+        "dead letter",
+        "sqs visibility",
+        "message backlog",
+        "nats streaming",
+        "how do i debug queues"
+      ],
+      "relatedSkills": [
+        "agent-nats"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/message-queue-troubleshooting/SKILL.md"
+    },
+    {
       "name": "metrics-and-kpis",
       "domain": "coding",
       "description": "\"Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making\"",
@@ -7644,6 +7810,29 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/container-network-interface-cni/SKILL.md"
+    },
+    {
+      "name": "network-troubleshooting",
+      "domain": "agent",
+      "description": "Diagnoses and resolves network connectivity issues including firewall rules, DNS resolution, load balancer configuration, container networking, VPN connectivity, and network policy debugging for Docker, Kubernetes, and cloud-native environments",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "network troubleshooting",
+        "iptables",
+        "dns resolution",
+        "firewall rules",
+        "load balancer",
+        "calico",
+        "cni",
+        "how do i debug network"
+      ],
+      "relatedSkills": [
+        "agent-docker-debugging"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/network-troubleshooting/SKILL.md"
     },
     {
       "name": "neural-networks",
@@ -8622,6 +8811,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/prompt-engineer/SKILL.md"
+    },
+    {
+      "name": "pulumi",
+      "domain": "cncf",
+      "description": "Implements Pulumi infrastructure as code using Python, TypeScript, and Go for cloud provisioning with state management, stacks, backends, and cross-cloud provisioning",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "pulumi",
+        "iac",
+        "infrastructure as code",
+        "pulumi python",
+        "pulumi typescript",
+        "how do i deploy infrastructure",
+        "crossplane",
+        "cloudformation"
+      ],
+      "relatedSkills": [
+        "cncf-terraform",
+        "cncf-aws-cloudformation",
+        "cncf-helm"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/pulumi/SKILL.md"
     },
     {
       "name": "pydantic-ai",
@@ -10580,6 +10794,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/temporal-python-pro/SKILL.md"
+    },
+    {
+      "name": "terraform",
+      "domain": "cncf",
+      "description": "Implements Terraform infrastructure as code for cloud provisioning with state management, modules, remote backends, and troubleshooting",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "terraform",
+        "iac",
+        "infrastructure as code",
+        "terraform state",
+        "modules",
+        "remote backends",
+        "plan apply",
+        "terraform troubleshooting"
+      ],
+      "relatedSkills": [
+        "cncf-pulumi",
+        "cncf-aws-cloudformation",
+        "cncf-helm"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/terraform/SKILL.md"
     },
     {
       "name": "terraform-infrastructure",
