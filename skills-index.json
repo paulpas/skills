@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-05-03T03:30:08.049717Z",
-  "totalSkills": 547,
+  "generatedAt": "2026-05-04T17:38:39.904424Z",
+  "totalSkills": 559,
   "domains": {
-    "agent": 226,
-    "cncf": 153,
-    "coding": 81,
+    "agent": 228,
+    "cncf": 162,
+    "coding": 82,
     "programming": 3,
     "trading": 83,
     "writing": 1
   },
   "roles": {
     "orchestration": 220,
-    "implementation": 172,
+    "implementation": 184,
     "reference": 154,
     "review": 1
   },
@@ -1865,6 +1865,31 @@
       "source": "skills/agent/cicd-automation-workflow-automate/SKILL.md"
     },
     {
+      "name": "cicd-pipeline-debugging",
+      "domain": "agent",
+      "description": "Debugging patterns for GitHub Actions, GitLab CI, Jenkins and other CI/CD systems including log analysis, runner issues, cache problems, and workflow optimization",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "github actions debugging",
+        "gitlab ci troubleshooting",
+        "jenkins pipeline",
+        "ci cd failures",
+        "build errors",
+        "workflow debugging",
+        "pipeline logs",
+        "runner issues"
+      ],
+      "relatedSkills": [
+        "cicd-pipeline-troubleshooting",
+        "cncf-tekton",
+        "cncf-argocd"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/cicd-pipeline-debugging/SKILL.md"
+    },
+    {
       "name": "cicd-pipeline-troubleshooting",
       "domain": "agent",
       "description": "Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns.",
@@ -3111,6 +3136,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/cost-optimization/SKILL.md"
+    },
+    {
+      "name": "cost-optimization-analysis",
+      "domain": "cncf",
+      "description": "Cloud cost optimization analysis including AWS Cost Explorer, Azure Cost Management, and GCP Billing with right-sizing recommendations and optimization strategies for multi-cloud environments",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "aws cost explorer",
+        "azure cost analysis",
+        "gcp billing",
+        "cloud cost optimization",
+        "right-sizing recommendations",
+        "spot instance strategy",
+        "reserved instance optimization",
+        "cost allocation"
+      ],
+      "relatedSkills": [
+        "cncf-cost-optimization",
+        "cncf-kubernetes-debugging",
+        "agent-database-admin"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/cost-optimization-analysis/SKILL.md"
     },
     {
       "name": "create-branch",
@@ -5257,6 +5307,31 @@
       "source": "skills/cncf/grpc/SKILL.md"
     },
     {
+      "name": "grpc-patterns",
+      "domain": "coding",
+      "description": "Implements gRPC development patterns including protocol buffer definitions, unary/streaming RPCs, error handling, and debugging techniques for cloud-native microservices",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "grpc development",
+        "grpc debugging",
+        "protocol buffers",
+        "rpc services",
+        "grpc errors",
+        "stream handling",
+        "unary calls",
+        "grpc gateway"
+      ],
+      "relatedSkills": [
+        "coding-fastapi-patterns",
+        "coding-rest-api-patterns",
+        "agent-docker-debugging"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/grpc-patterns/SKILL.md"
+    },
+    {
       "name": "harbor",
       "domain": "cncf",
       "description": "\"Configures harbor in cloud-native engineering - container registry for cloud-native deployment and infrastructure management.\"",
@@ -5299,6 +5374,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/trading/exchange-health/SKILL.md"
+    },
+    {
+      "name": "health-check-patterns",
+      "domain": "cncf",
+      "description": "Implements comprehensive health check patterns for cloud-native applications including Kubernetes probes, HTTP health endpoints, database checks, and circuit breaker patterns",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "health checks",
+        "liveness probes",
+        "readiness probes",
+        "health monitoring",
+        "health endpoint",
+        "service health",
+        "health check implementation",
+        "health check testing"
+      ],
+      "relatedSkills": [
+        "cncf-kubernetes-debugging",
+        "agent-docker-debugging",
+        "coding-fastapi-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/health-check-patterns/SKILL.md"
     },
     {
       "name": "helm",
@@ -5663,6 +5763,31 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/cncf/process-incident-response/SKILL.md"
+    },
+    {
+      "name": "incident-response-runbooks",
+      "domain": "cncf",
+      "description": "Implements incident response runbooks with detection, triage, communication, resolution, and post-incident procedures for Kubernetes and cloud-native environments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "incident response",
+        "runbook creation",
+        "incident procedures",
+        "escalation procedures",
+        "incident command",
+        "postmortem",
+        "blameless postmortem",
+        "incident documentation"
+      ],
+      "relatedSkills": [
+        "cncf-kubernetes-debugging",
+        "cncf-security-compliance",
+        "agent-database-admin"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/incident-response-runbooks/SKILL.md"
     },
     {
       "name": "indicator-confluence",
@@ -6325,6 +6450,56 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/cncf/kubernetes/SKILL.md"
+    },
+    {
+      "name": "kubernetes-api-patterns",
+      "domain": "cncf",
+      "description": "Kubernetes API patterns including CRD development, webhook implementation, API groups, client library usage, and debugging techniques for custom API extensions",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "kubernetes api",
+        "k8s api",
+        "crd development",
+        "api groups",
+        "subresources",
+        "watch api",
+        "admission webhooks",
+        "client libraries"
+      ],
+      "relatedSkills": [
+        "cncf-kubernetes-debugging",
+        "coding-grpc-patterns",
+        "cncf-tekton"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/kubernetes-api-patterns/SKILL.md"
+    },
+    {
+      "name": "kubernetes-debugging",
+      "domain": "cncf",
+      "description": "Implements comprehensive Kubernetes debugging workflow with pod inspection, log analysis, resource debugging, network troubleshooting, and common failure pattern diagnosis using kubectl commands.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "kubernetes debugging",
+        "k8s troubleshooting",
+        "pod crashes",
+        "node failures",
+        "cluster debugging",
+        "kubectl debug",
+        "container logs",
+        "k8s errors"
+      ],
+      "relatedSkills": [
+        "agent-docker-debugging",
+        "agent-network-troubleshooting",
+        "cncf-prometheus"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/kubernetes-debugging/SKILL.md"
     },
     {
       "name": "kubernetes-deployment",
@@ -7174,6 +7349,31 @@
       "source": "skills/agent/memory-usage-analyzer/SKILL.md"
     },
     {
+      "name": "message-queue-debugging",
+      "domain": "agent",
+      "description": "Debugs Kafka, RabbitMQ, and SQS message queues with consumer lag analysis, dead letter handling, and message flow troubleshooting for distributed systems",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "kafka troubleshooting",
+        "rabbitmq debugging",
+        "sqs issues",
+        "message queue problems",
+        "dead letter queues",
+        "consumer lag",
+        "message backlog",
+        "queue monitoring"
+      ],
+      "relatedSkills": [
+        "agent-message-queue-troubleshooting",
+        "agent-database-admin",
+        "cncf-kubernetes-debugging"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/message-queue-debugging/SKILL.md"
+    },
+    {
       "name": "message-queue-troubleshooting",
       "domain": "agent",
       "description": "Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic commands, dead letter handling, and backlog resolution",
@@ -7833,6 +8033,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/network-troubleshooting/SKILL.md"
+    },
+    {
+      "name": "networking-troubleshooting",
+      "domain": "cncf",
+      "description": "Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "iptables debugging",
+        "dns issues",
+        "load balancer problems",
+        "network policies",
+        "kubernetes networking",
+        "container networking",
+        "vpn troubleshooting",
+        "firewall rules"
+      ],
+      "relatedSkills": [
+        "agent-network-troubleshooting",
+        "agent-docker-debugging",
+        "cncf-service-mesh-debugging"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/networking-troubleshooting/SKILL.md"
     },
     {
       "name": "neural-networks",
@@ -9481,6 +9706,31 @@
       "source": "skills/trading/fundamentals-risk-management-basics/SKILL.md"
     },
     {
+      "name": "rollback-procedures",
+      "domain": "cncf",
+      "description": "Implements comprehensive rollback procedures including deployment rollback, version rollback, database rollback, and rollback testing for Kubernetes and cloud-native applications",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "rollback strategies",
+        "deployment rollback",
+        "version rollback",
+        "rollback procedures",
+        "rollback testing",
+        "rollback automation",
+        "rollback validation",
+        "rollback procedures"
+      ],
+      "relatedSkills": [
+        "cncf-kubernetes-debugging",
+        "cncf-deployment-patterns",
+        "cncf-argocd"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/rollback-procedures/SKILL.md"
+    },
+    {
       "name": "rook",
       "domain": "cncf",
       "description": "\"Configures rook in cloud-native storage orchestration for kubernetes for cloud-native deployment and infrastructure management.\"",
@@ -9704,6 +9954,31 @@
       "source": "skills/agent/security-audit/SKILL.md"
     },
     {
+      "name": "security-compliance",
+      "domain": "cncf",
+      "description": "Implements security compliance frameworks (SOC2, HIPAA, PCI-DSS) with implementation patterns, audit procedures, and compliance automation for Kubernetes and cloud environments",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "soc2 compliance",
+        "hipaa security",
+        "pci dss requirements",
+        "security auditing",
+        "compliance framework",
+        "regulatory requirements",
+        "audit trails",
+        "security controls"
+      ],
+      "relatedSkills": [
+        "cncf-kubernetes-debugging",
+        "agent-network-troubleshooting",
+        "agent-database-admin"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/security-compliance/SKILL.md"
+    },
+    {
       "name": "security-policy",
       "domain": "cncf",
       "description": "\"Creates or updates SECURITY.md defining the vulnerability reporting process\" disclosure timeline, and supported versions for CNCF projects",
@@ -9834,6 +10109,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-service-bus/SKILL.md"
+    },
+    {
+      "name": "service-mesh-debugging",
+      "domain": "cncf",
+      "description": "Implements comprehensive debugging workflows for Istio and Linkerd service meshes including mTLS validation, sidecar injection issues, traffic routing problems, and mesh observability for microservices.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "istio debugging",
+        "linkerd troubleshooting",
+        "service mesh issues",
+        "envoy errors",
+        "mTLS problems",
+        "traffic routing",
+        "sidecar injection",
+        "mesh monitoring"
+      ],
+      "relatedSkills": [
+        "cncf-kubernetes-debugging",
+        "agent-network-troubleshooting",
+        "cncf-istio"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/service-mesh-debugging/SKILL.md"
     },
     {
       "name": "sharpe-ratio",
