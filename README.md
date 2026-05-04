@@ -102,13 +102,13 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-02 22:30:11 UTC  
-> **Total skills:** 546
+> **Last updated:** 2026-05-04 12:38:47 UTC  
+> **Total skills:** 558
 
 ## Skills by Domain
 
 
-### Agent (226 skills)
+### Agent (228 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -164,6 +164,7 @@ MIT — All skills are freely available and redistributable.
 | [changelog-automation](../../skills/agent/changelog-automation/SKILL.md) | Implements intelligent changelog automation with... | changelog-automation, changelog automation... |
 | [ci-cd-pipeline-analyzer](../../skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Implements intelligent ci cd pipeline analyzer with... | ci-cd-pipeline-analyzer, ci cd pipeline analyzer... |
 | [cicd-automation-workflow-automate](../../skills/agent/cicd-automation-workflow-automate/SKILL.md) | Implements intelligent cicd automation workflow automate... | cicd-automation-workflow-automate, cicd automation workflow automate... |
+| [cicd-pipeline-debugging](../../skills/agent/cicd-pipeline-debugging/SKILL.md) | Debugging patterns for GitHub Actions, GitLab CI, Jenkins... | github actions debugging, gitlab ci troubleshooting... |
 | [cicd-pipeline-troubleshooting](../../skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Diagnoses and resolves CI/CD pipeline failures with... | ci cd troubleshooting, pipeline failure... |
 | [circleci-automation](../../skills/agent/circleci-automation/SKILL.md) | Implements intelligent circleci automation with... | circleci-automation, circleci automation... |
 | [clickup-automation](../../skills/agent/clickup-automation/SKILL.md) | Implements intelligent clickup automation with multi-factor... | clickup-automation, clickup automation... |
@@ -248,6 +249,7 @@ MIT — All skills are freely available and redistributable.
 | [mcp-builder-ms](../../skills/agent/mcp-builder-ms/SKILL.md) | Implements intelligent mcp builder ms with multi-factor... | mcp-builder-ms, mcp builder ms... |
 | [memory-systems](../../skills/agent/memory-systems/SKILL.md) | Implements intelligent memory systems with multi-factor... | memory-systems, memory systems... |
 | [memory-usage-analyzer](../../skills/agent/memory-usage-analyzer/SKILL.md) | Implements intelligent memory usage analyzer with... | memory-usage-analyzer, memory usage analyzer... |
+| [message-queue-debugging](../../skills/agent/message-queue-debugging/SKILL.md) | Debugs Kafka, RabbitMQ, and SQS message queues with... | kafka troubleshooting, rabbitmq debugging... |
 | [message-queue-troubleshooting](../../skills/agent/message-queue-troubleshooting/SKILL.md) | Implements intelligent message queue troubleshooting for... | message queue troubleshooting, kafka cluster... |
 | [ml-pipeline-workflow](../../skills/agent/ml-pipeline-workflow/SKILL.md) | Implements intelligent ml pipeline workflow with... | ml-pipeline-workflow, ml pipeline workflow... |
 | [multi-advisor](../../skills/agent/multi-advisor/SKILL.md) | Implements intelligent multi advisor with multi-factor... | multi-advisor, multi advisor... |
@@ -340,7 +342,7 @@ MIT — All skills are freely available and redistributable.
 | [zoom-automation](../../skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor... | zoom-automation, zoom automation... |
 
 
-### Cncf (153 skills)
+### Cncf (162 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -384,6 +386,7 @@ MIT — All skills are freely available and redistributable.
 | [cortex](../../skills/cncf/cortex/SKILL.md) | "Cortex in Monitoring & Observability - distributed,... | cortex, distributed... |
 | [cosmos-db](../../skills/cncf/cosmos-db/SKILL.md) | Provides Global NoSQL database with multi-region... | cosmos db, nosql... |
 | [cost-optimization](../../skills/cncf/cost-optimization/SKILL.md) | Implements cloud cost optimization strategies... | cost optimization, right sizing... |
+| [cost-optimization-analysis](../../skills/cncf/cost-optimization-analysis/SKILL.md) | Cloud cost optimization analysis including AWS Cost... | aws cost explorer, azure cost analysis... |
 | [crossplane](../../skills/cncf/crossplane/SKILL.md) | "Crossplane in Platform Engineering - Kubernetes-native... | container orchestration, crossplane... |
 | [cubefs](../../skills/cncf/cubefs/SKILL.md) | "Provides CubeFS in Storage - distributed, high-performance... | cubefs, distributed... |
 | [custodian](../../skills/cncf/custodian/SKILL.md) | "Provides Cloud Custodian in Cloud-Native Engineering... | cloud custodian, cloud-custodian... |
@@ -409,12 +412,14 @@ MIT — All skills are freely available and redistributable.
 | [gke](../../skills/cncf/gke/SKILL.md) | "Provides Managed Kubernetes cluster with automatic... | gke, kubernetes... |
 | [grpc](../../skills/cncf/grpc/SKILL.md) | "gRPC in Remote Procedure Call - cloud native architecture,... | cdn, grpc... |
 | [harbor](../../skills/cncf/harbor/SKILL.md) | "Configures harbor in cloud-native engineering - container... | cloud-native, container... |
+| [health-check-patterns](../../skills/cncf/health-check-patterns/SKILL.md) | Implements comprehensive health check patterns for... | health checks, liveness probes... |
 | [helm](../../skills/cncf/helm/SKILL.md) | "Provides Helm in Cloud-Native Engineering - The Kubernetes... | cloud-native, container orchestration... |
 | [hub](../../skills/cncf/hub/SKILL.md) | "Provides Artifact Hub in Cloud-Native Engineering -... | artifact hub, artifact-hub... |
 | [hydra](../../skills/cncf/hydra/SKILL.md) | "ORY Hydra in Security & Compliance - cloud native... | ory hydra, ory-hydra... |
 | [iam](../../skills/cncf/iam/SKILL.md) | "Configures identity and access management with IAM users,... | iam, identity management... |
 | [iam](../../skills/cncf/iam/SKILL.md) | "Manages identity and access control with service accounts,... | iam, identity access management... |
 | [incident-response](../../skills/cncf/incident-response/SKILL.md) | "Creates or updates an incident response plan covering... | covering, creates... |
+| [incident-response-runbooks](../../skills/cncf/incident-response-runbooks/SKILL.md) | Implements incident response runbooks with detection,... | incident response, runbook creation... |
 | [ingress](../../skills/cncf/ingress/SKILL.md) | "Provides Emissary-Ingress in Cloud-Native Engineering -... | cloud-native, emissary ingress... |
 | [ingress-controller](../../skills/cncf/ingress-controller/SKILL.md) | "Kong Ingress Controller in Kubernetes - cloud native... | kong ingress controller, kong-ingress-controller... |
 | [io](../../skills/cncf/io/SKILL.md) | "metal3.io in Bare Metal Provisioning - cloud native... | cdn, infrastructure as code... |
@@ -434,6 +439,8 @@ MIT — All skills are freely available and redistributable.
 | [kubeedge](../../skills/cncf/kubeedge/SKILL.md) | "Configures kubeedge in cloud-native engineering - edge... | cloud-native, computing... |
 | [kubeflow](../../skills/cncf/kubeflow/SKILL.md) | "Configures kubeflow in cloud-native engineering - ml on... | cloud-native, container orchestration... |
 | [kubernetes](../../skills/cncf/kubernetes/SKILL.md) | "Kubernetes in Cloud-Native Engineering - Production-Grade... | cloud-native, container orchestration... |
+| [kubernetes-api-patterns](../../skills/cncf/kubernetes-api-patterns/SKILL.md) | Kubernetes API patterns including CRD development, webhook... | kubernetes api, k8s api... |
+| [kubernetes-debugging](../../skills/cncf/kubernetes-debugging/SKILL.md) | Implements comprehensive Kubernetes debugging workflow with... | kubernetes debugging, k8s troubleshooting... |
 | [kubescape](../../skills/cncf/kubescape/SKILL.md) | "Configures kubescape in cloud-native engineering -... | cloud-native, container orchestration... |
 | [kubevela](../../skills/cncf/kubevela/SKILL.md) | "Configures kubevela in cloud-native engineering -... | application, cloud-native... |
 | [kubevirt](../../skills/cncf/kubevirt/SKILL.md) | "Provides KubeVirt in Cloud-Native Engineering -... | cloud-native, engineering... |
@@ -449,6 +456,7 @@ MIT — All skills are freely available and redistributable.
 | [monitor](../../skills/cncf/monitor/SKILL.md) | "Provides Monitoring and logging for Azure resources with... | azure monitor, monitoring... |
 | [nats](../../skills/cncf/nats/SKILL.md) | "NATS in Cloud Native Messaging - cloud native... | cdn, infrastructure as code... |
 | [network-interface-cni](../../skills/cncf/network-interface-cni/SKILL.md) | "Container Network Interface in Cloud Native Network -... | architecture, cdn... |
+| [networking-troubleshooting](../../skills/cncf/networking-troubleshooting/SKILL.md) | Implements comprehensive networking troubleshooting... | iptables debugging, dns issues... |
 | [o](../../skills/cncf/o/SKILL.md) | "Provides CRI-O in Container Runtime - OCI-compliant... | container, cri o... |
 | [oathkeeper](../../skills/cncf/oathkeeper/SKILL.md) | "Oathkeeper in Identity & Access - cloud native... | access, cdn... |
 | [opencost](../../skills/cncf/opencost/SKILL.md) | "OpenCost in Kubernetes Cost Monitoring - cloud native... | cdn, container orchestration... |
@@ -466,14 +474,17 @@ MIT — All skills are freely available and redistributable.
 | [rds](../../skills/cncf/rds/SKILL.md) | "Deploys managed relational databases (MySQL, PostgreSQL,... | rds, relational database... |
 | [releases](../../skills/cncf/releases/SKILL.md) | "Creates or updates RELEASES.md documenting the release... | creates, documenting... |
 | [resource-manager](../../skills/cncf/resource-manager/SKILL.md) | "Provides Infrastructure as code using ARM templates for... | resource manager, arm templates... |
+| [rollback-procedures](../../skills/cncf/rollback-procedures/SKILL.md) | Implements comprehensive rollback procedures including... | rollback strategies, deployment rollback... |
 | [rook](../../skills/cncf/rook/SKILL.md) | "Configures rook in cloud-native storage orchestration for... | cloud-native, orchestration... |
 | [route53](../../skills/cncf/route53/SKILL.md) | "Configures DNS routing with Route 53 for domain... | cname, dns... |
 | [s3](../../skills/cncf/s3/SKILL.md) | "Configures S3 object storage with versioning, lifecycle... | s3, object storage... |
 | [scale-sets](../../skills/cncf/scale-sets/SKILL.md) | "Manages auto-scaling VM groups with load balancing and... | scale sets, vmss... |
 | [secret-manager](../../skills/cncf/secret-manager/SKILL.md) | "Provides Stores and rotates secrets with encryption and... | secret manager, secrets... |
 | [secrets-manager](../../skills/cncf/secrets-manager/SKILL.md) | "Manages sensitive data with automatic encryption,... | credential rotation, password rotation... |
+| [security-compliance](../../skills/cncf/security-compliance/SKILL.md) | Implements security compliance frameworks (SOC2, HIPAA,... | soc2 compliance, hipaa security... |
 | [security-policy](../../skills/cncf/security-policy/SKILL.md) | "Creates or updates SECURITY.md defining the vulnerability... | creates, defining... |
 | [service-bus](../../skills/cncf/service-bus/SKILL.md) | "Provides Messaging service with queues and topics for... | service bus, messaging... |
+| [service-mesh-debugging](../../skills/cncf/service-mesh-debugging/SKILL.md) | Implements comprehensive debugging workflows for Istio and... | istio debugging, linkerd troubleshooting... |
 | [sns](../../skills/cncf/sns/SKILL.md) | "Deploys managed pub/sub messaging with SNS for... | messaging, notifications... |
 | [spiffe](../../skills/cncf/spiffe/SKILL.md) | "Provides SPIFFE in Secure Product Identity Framework for... | identity, product... |
 | [spire](../../skills/cncf/spire/SKILL.md) | "Configures spire in spiffe implementation for real-world... | implementation, real-world... |
@@ -499,7 +510,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](../../skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture,... | cdn, container... |
 
 
-### Coding (81 skills)
+### Coding (82 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -544,6 +555,7 @@ MIT — All skills are freely available and redistributable.
 | [feature-interaction](../../skills/coding/feature-interaction/SKILL.md) | "Provides Discovers and engineers feature interactions... | feature interaction, interaction terms... |
 | [feature-scaling-normalization](../../skills/coding/feature-scaling-normalization/SKILL.md) | "Provides Scales and normalizes features using... | feature scaling, normalization... |
 | [feature-selection](../../skills/coding/feature-selection/SKILL.md) | "Selects relevant features using univariate selection,... | feature selection, feature importance... |
+| [grpc-patterns](../../skills/coding/grpc-patterns/SKILL.md) | Implements gRPC development patterns including protocol... | grpc development, grpc debugging... |
 | [hyperparameter-tuning](../../skills/coding/hyperparameter-tuning/SKILL.md) | "Optimizes hyperparameters using grid search, random... | hyperparameter tuning, grid search... |
 | [hypothesis-testing](../../skills/coding/hypothesis-testing/SKILL.md) | Implements hypothesis testing including t-tests, chi-square... | hypothesis testing, t-test... |
 | [instrumental-variables](../../skills/coding/instrumental-variables/SKILL.md) | "Provides Uses instrumental variables (IV), two-stage least... | instrumental variables, IV... |
@@ -686,7 +698,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (172 skills)
+### Implementation (Build Features) (184 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -707,6 +719,7 @@ MIT — All skills are freely available and redistributable.
 | [categorical-encoding](../../skills/categorical-encoding/SKILL.md) | Coding | "Provides Encodes categorical variables using one-hot... |
 | [causal-inference](../../skills/causal-inference/SKILL.md) | Coding | Implements causal models, directed acyclic graphs (DAGs),... |
 | [ccxt-patterns](../../skills/ccxt-patterns/SKILL.md) | Trading | "Effective patterns for using CCXT library for exchange... |
+| [cicd-pipeline-debugging](../../skills/cicd-pipeline-debugging/SKILL.md) | Agent | Debugging patterns for GitHub Actions, GitLab CI, Jenkins... |
 | [cicd-pipeline-troubleshooting](../../skills/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with... |
 | [classification-metrics](../../skills/classification-metrics/SKILL.md) | Coding | "Evaluates classification models using precision, recall,... |
 | [clustering](../../skills/clustering/SKILL.md) | Coding | "Implements clustering algorithms including K-means,... |
@@ -717,6 +730,7 @@ MIT — All skills are freely available and redistributable.
 | [correlation-analysis](../../skills/correlation-analysis/SKILL.md) | Coding | "Analyzes correlation, covariance, and multivariate... |
 | [correlation-risk](../../skills/correlation-risk/SKILL.md) | Trading | "Implements correlation breakdown and portfolio... |
 | [cost-optimization](../../skills/cost-optimization/SKILL.md) | Cncf | Implements cloud cost optimization strategies... |
+| [cost-optimization-analysis](../../skills/cost-optimization-analysis/SKILL.md) | Cncf | Cloud cost optimization analysis including AWS Cost... |
 | [cross-validation](../../skills/cross-validation/SKILL.md) | Coding | "Implements k-fold cross-validation, stratified... |
 | [cycle-analysis](../../skills/cycle-analysis/SKILL.md) | Trading | "Implements market cycles and periodic patterns in price... |
 | [data-collection](../../skills/data-collection/SKILL.md) | Coding | "Implements data gathering strategies including APIs, web... |
@@ -753,16 +767,21 @@ MIT — All skills are freely available and redistributable.
 | [feature-store](../../skills/feature-store/SKILL.md) | Trading | "Provides Feature storage and management for machine... |
 | [fill-simulation](../../skills/fill-simulation/SKILL.md) | Trading | "Implements fill simulation models for order execution... |
 | [gitops-troubleshooting](../../skills/gitops-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves GitOps synchronization failures,... |
+| [grpc-patterns](../../skills/grpc-patterns/SKILL.md) | Coding | Implements gRPC development patterns including protocol... |
 | [health](../../skills/health/SKILL.md) | Trading | "Provides Exchange system health monitoring and... |
+| [health-check-patterns](../../skills/health-check-patterns/SKILL.md) | Cncf | Implements comprehensive health check patterns for... |
 | [hyperparameter-tuning](../../skills/hyperparameter-tuning/SKILL.md) | Coding | "Optimizes hyperparameters using grid search, random... |
 | [hyperparameter-tuning](../../skills/hyperparameter-tuning/SKILL.md) | Trading | "Implements optimize model configurations for trading... |
 | [hypothesis-testing](../../skills/hypothesis-testing/SKILL.md) | Coding | Implements hypothesis testing including t-tests, chi-square... |
+| [incident-response-runbooks](../../skills/incident-response-runbooks/SKILL.md) | Cncf | Implements incident response runbooks with detection,... |
 | [indicator-confluence](../../skills/indicator-confluence/SKILL.md) | Trading | "Provides Indicator Confluence Validation Systems for... |
 | [instrumental-variables](../../skills/instrumental-variables/SKILL.md) | Coding | "Provides Uses instrumental variables (IV), two-stage least... |
 | [intermarket-analysis](../../skills/intermarket-analysis/SKILL.md) | Trading | "Implements cross-market relationships and asset class... |
 | [intervention-analysis](../../skills/intervention-analysis/SKILL.md) | Coding | "Provides Estimates treatment effects, conditional average... |
 | [kernel-density](../../skills/kernel-density/SKILL.md) | Coding | "Implements kernel density estimation, non-parametric... |
 | [kill-switches](../../skills/kill-switches/SKILL.md) | Trading | "Implementing multi-layered kill switches at account,... |
+| [kubernetes-api-patterns](../../skills/kubernetes-api-patterns/SKILL.md) | Cncf | Kubernetes API patterns including CRD development, webhook... |
+| [kubernetes-debugging](../../skills/kubernetes-debugging/SKILL.md) | Cncf | Implements comprehensive Kubernetes debugging workflow with... |
 | [lake](../../skills/lake/SKILL.md) | Trading | "Provides Data lake architecture and management for trading... |
 | [linear-regression](../../skills/linear-regression/SKILL.md) | Coding | "Implements linear regression including OLS, ridge... |
 | [liquidity-risk](../../skills/liquidity-risk/SKILL.md) | Trading | "Implements liquidity assessment and trade execution risk... |
@@ -777,6 +796,7 @@ MIT — All skills are freely available and redistributable.
 | [market-regimes](../../skills/market-regimes/SKILL.md) | Trading | "Market regime detection and adaptation for trading systems... |
 | [market-structure](../../skills/market-structure/SKILL.md) | Trading | "Implements market structure and trading participants... |
 | [maximum-likelihood](../../skills/maximum-likelihood/SKILL.md) | Coding | Implements maximum likelihood estimation, likelihood... |
+| [message-queue-debugging](../../skills/message-queue-debugging/SKILL.md) | Agent | Debugs Kafka, RabbitMQ, and SQS message queues with... |
 | [message-queue-troubleshooting](../../skills/message-queue-troubleshooting/SKILL.md) | Agent | Implements intelligent message queue troubleshooting for... |
 | [metrics-and-kpis](../../skills/metrics-and-kpis/SKILL.md) | Coding | "Defines, selects, and monitors key performance indicators... |
 | [missing-data](../../skills/missing-data/SKILL.md) | Coding | "Handles missing data using imputation strategies, deletion... |
@@ -790,6 +810,7 @@ MIT — All skills are freely available and redistributable.
 | [monte-carlo](../../skills/monte-carlo/SKILL.md) | Coding | "Implements Monte Carlo sampling, simulation methods, and... |
 | [multi-asset-model](../../skills/multi-asset-model/SKILL.md) | Trading | "Provides Model inter-asset relationships for portfolio and... |
 | [network-troubleshooting](../../skills/network-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves network connectivity issues... |
+| [networking-troubleshooting](../../skills/networking-troubleshooting/SKILL.md) | Cncf | Implements comprehensive networking troubleshooting... |
 | [neural-networks](../../skills/neural-networks/SKILL.md) | Coding | "Implements deep neural networks, backpropagation,... |
 | [news-embedding](../../skills/news-embedding/SKILL.md) | Trading | "Implements process news text using nlp embeddings for... |
 | [normalization](../../skills/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed... |
@@ -822,9 +843,12 @@ MIT — All skills are freely available and redistributable.
 | [review](../../skills/review/SKILL.md) | Coding | "Analyzes code diffs and files to identify bugs, security... |
 | [review](../../skills/review/SKILL.md) | Coding | "Security-focused code review identifying vulnerabilities... |
 | [risk-management-basics](../../skills/risk-management-basics/SKILL.md) | Trading | "Position sizing, stop-loss implementation, and... |
+| [rollback-procedures](../../skills/rollback-procedures/SKILL.md) | Cncf | Implements comprehensive rollback procedures including... |
 | [scoring](../../skills/scoring/SKILL.md) | Coding | "Multi-factor conviction scoring engine combining... |
+| [security-compliance](../../skills/security-compliance/SKILL.md) | Cncf | Implements security compliance frameworks (SOC2, HIPAA,... |
 | [sentiment-analysis](../../skills/sentiment-analysis/SKILL.md) | Trading | "AI-powered sentiment analysis for news, social media, and... |
 | [sentiment-features](../../skills/sentiment-features/SKILL.md) | Trading | "Provides Extract market sentiment from news, social media,... |
+| [service-mesh-debugging](../../skills/service-mesh-debugging/SKILL.md) | Cncf | Implements comprehensive debugging workflows for Istio and... |
 | [sharpe-ratio](../../skills/sharpe-ratio/SKILL.md) | Trading | "Provides Sharpe Ratio Calculation and Risk-Adjusted... |
 | [shop](../../skills/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing... |
 | [slippage-model](../../skills/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for... |
@@ -1337,6 +1361,7 @@ MIT — All skills are freely available and redistributable.
 | [chaosmesh](../../skills/cncf/chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering... | Reference |
 | [ci-cd-pipeline-analyzer](../../skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Agent | Implements intelligent ci cd pipeline analyzer with... | Orchestration |
 | [cicd-automation-workflow-automate](../../skills/agent/cicd-automation-workflow-automate/SKILL.md) | Agent | Implements intelligent cicd automation workflow automate... | Orchestration |
+| [cicd-pipeline-debugging](../../skills/agent/cicd-pipeline-debugging/SKILL.md) | Agent | Debugging patterns for GitHub Actions, GitLab CI, Jenkins... | Implementation |
 | [cicd-pipeline-troubleshooting](../../skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with... | Implementation |
 | [cilium](../../skills/cncf/cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native... | Reference |
 | [circleci-automation](../../skills/agent/circleci-automation/SKILL.md) | Agent | Implements intelligent circleci automation with... | Orchestration |
@@ -1392,6 +1417,7 @@ MIT — All skills are freely available and redistributable.
 | [cortex](../../skills/cncf/cortex/SKILL.md) | Cncf | "Cortex in Monitoring & Observability - distributed,... | Reference |
 | [cosmos-db](../../skills/cncf/cosmos-db/SKILL.md) | Cncf | Provides Global NoSQL database with multi-region... | Reference |
 | [cost-optimization](../../skills/cncf/cost-optimization/SKILL.md) | Cncf | Implements cloud cost optimization strategies... | Implementation |
+| [cost-optimization-analysis](../../skills/cncf/cost-optimization-analysis/SKILL.md) | Cncf | Cloud cost optimization analysis including AWS Cost... | Implementation |
 | [create-branch](../../skills/agent/create-branch/SKILL.md) | Agent | Implements intelligent create branch with multi-factor... | Orchestration |
 | [create-issue-gate](../../skills/agent/create-issue-gate/SKILL.md) | Agent | Implements intelligent create issue gate with multi-factor... | Orchestration |
 | [create-pr](../../skills/agent/create-pr/SKILL.md) | Agent | Implements intelligent create pr with multi-factor skill... | Orchestration |
@@ -1488,8 +1514,10 @@ MIT — All skills are freely available and redistributable.
 | [google-docs-automation](../../skills/agent/google-docs-automation/SKILL.md) | Agent | Implements intelligent google docs automation with... | Orchestration |
 | [google-drive-automation](../../skills/agent/google-drive-automation/SKILL.md) | Agent | Implements intelligent google drive automation with... | Orchestration |
 | [grpc](../../skills/cncf/grpc/SKILL.md) | Cncf | "gRPC in Remote Procedure Call - cloud native architecture,... | Reference |
+| [grpc-patterns](../../skills/coding/grpc-patterns/SKILL.md) | Coding | Implements gRPC development patterns including protocol... | Implementation |
 | [harbor](../../skills/cncf/harbor/SKILL.md) | Cncf | "Configures harbor in cloud-native engineering - container... | Reference |
 | [health](../../skills/trading/health/SKILL.md) | Trading | "Provides Exchange system health monitoring and... | Implementation |
+| [health-check-patterns](../../skills/cncf/health-check-patterns/SKILL.md) | Cncf | Implements comprehensive health check patterns for... | Implementation |
 | [helm](../../skills/cncf/helm/SKILL.md) | Cncf | "Provides Helm in Cloud-Native Engineering - The Kubernetes... | Reference |
 | [helpdesk-automation](../../skills/agent/helpdesk-automation/SKILL.md) | Agent | Implements intelligent helpdesk automation with... | Orchestration |
 | [hierarchical-agent-memory](../../skills/agent/hierarchical-agent-memory/SKILL.md) | Agent | Implements intelligent hierarchical agent memory with... | Orchestration |
@@ -1505,6 +1533,7 @@ MIT — All skills are freely available and redistributable.
 | [iam](../../skills/cncf/iam/SKILL.md) | Cncf | "Configures identity and access management with IAM users,... | Reference |
 | [iam](../../skills/cncf/iam/SKILL.md) | Cncf | "Manages identity and access control with service accounts,... | Reference |
 | [incident-response](../../skills/cncf/incident-response/SKILL.md) | Cncf | "Creates or updates an incident response plan covering... | Reference |
+| [incident-response-runbooks](../../skills/cncf/incident-response-runbooks/SKILL.md) | Cncf | Implements incident response runbooks with detection,... | Implementation |
 | [indicator-confluence](../../skills/trading/indicator-confluence/SKILL.md) | Trading | "Provides Indicator Confluence Validation Systems for... | Implementation |
 | [infra-drift-detector](../../skills/agent/infra-drift-detector/SKILL.md) | Agent | Implements intelligent infra drift detector with... | Orchestration |
 | [ingress](../../skills/cncf/ingress/SKILL.md) | Cncf | "Provides Emissary-Ingress in Cloud-Native Engineering -... | Reference |
@@ -1536,6 +1565,8 @@ MIT — All skills are freely available and redistributable.
 | [kubeedge](../../skills/cncf/kubeedge/SKILL.md) | Cncf | "Configures kubeedge in cloud-native engineering - edge... | Reference |
 | [kubeflow](../../skills/cncf/kubeflow/SKILL.md) | Cncf | "Configures kubeflow in cloud-native engineering - ml on... | Reference |
 | [kubernetes](../../skills/cncf/kubernetes/SKILL.md) | Cncf | "Kubernetes in Cloud-Native Engineering - Production-Grade... | Reference |
+| [kubernetes-api-patterns](../../skills/cncf/kubernetes-api-patterns/SKILL.md) | Cncf | Kubernetes API patterns including CRD development, webhook... | Implementation |
+| [kubernetes-debugging](../../skills/cncf/kubernetes-debugging/SKILL.md) | Cncf | Implements comprehensive Kubernetes debugging workflow with... | Implementation |
 | [kubernetes-deployment](../../skills/agent/kubernetes-deployment/SKILL.md) | Agent | Implements intelligent kubernetes deployment with... | Orchestration |
 | [kubescape](../../skills/cncf/kubescape/SKILL.md) | Cncf | "Configures kubescape in cloud-native engineering -... | Reference |
 | [kubevela](../../skills/cncf/kubevela/SKILL.md) | Cncf | "Configures kubevela in cloud-native engineering -... | Reference |
@@ -1574,6 +1605,7 @@ MIT — All skills are freely available and redistributable.
 | [mcp-builder-ms](../../skills/agent/mcp-builder-ms/SKILL.md) | Agent | Implements intelligent mcp builder ms with multi-factor... | Orchestration |
 | [memory-systems](../../skills/agent/memory-systems/SKILL.md) | Agent | Implements intelligent memory systems with multi-factor... | Orchestration |
 | [memory-usage-analyzer](../../skills/agent/memory-usage-analyzer/SKILL.md) | Agent | Implements intelligent memory usage analyzer with... | Orchestration |
+| [message-queue-debugging](../../skills/agent/message-queue-debugging/SKILL.md) | Agent | Debugs Kafka, RabbitMQ, and SQS message queues with... | Implementation |
 | [message-queue-troubleshooting](../../skills/agent/message-queue-troubleshooting/SKILL.md) | Agent | Implements intelligent message queue troubleshooting for... | Implementation |
 | [metrics-and-kpis](../../skills/coding/metrics-and-kpis/SKILL.md) | Coding | "Defines, selects, and monitors key performance indicators... | Implementation |
 | [missing-data](../../skills/coding/missing-data/SKILL.md) | Coding | "Handles missing data using imputation strategies, deletion... | Implementation |
@@ -1603,6 +1635,7 @@ MIT — All skills are freely available and redistributable.
 | [network-diagnostics](../../skills/agent/network-diagnostics/SKILL.md) | Agent | Implements intelligent network diagnostics with... | Orchestration |
 | [network-interface-cni](../../skills/cncf/network-interface-cni/SKILL.md) | Cncf | "Container Network Interface in Cloud Native Network -... | Reference |
 | [network-troubleshooting](../../skills/agent/network-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves network connectivity issues... | Implementation |
+| [networking-troubleshooting](../../skills/cncf/networking-troubleshooting/SKILL.md) | Cncf | Implements comprehensive networking troubleshooting... | Implementation |
 | [neural-networks](../../skills/coding/neural-networks/SKILL.md) | Coding | "Implements deep neural networks, backpropagation,... | Implementation |
 | [news-embedding](../../skills/trading/news-embedding/SKILL.md) | Trading | "Implements process news text using nlp embeddings for... | Implementation |
 | [normalization](../../skills/coding/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed... | Implementation |
@@ -1677,6 +1710,7 @@ MIT — All skills are freely available and redistributable.
 | [review](../../skills/coding/review/SKILL.md) | Coding | "Analyzes code diffs and files to identify bugs, security... | Implementation |
 | [review](../../skills/coding/review/SKILL.md) | Coding | "Security-focused code review identifying vulnerabilities... | Implementation |
 | [risk-management-basics](../../skills/trading/risk-management-basics/SKILL.md) | Trading | "Position sizing, stop-loss implementation, and... | Implementation |
+| [rollback-procedures](../../skills/cncf/rollback-procedures/SKILL.md) | Cncf | Implements comprehensive rollback procedures including... | Implementation |
 | [rook](../../skills/cncf/rook/SKILL.md) | Cncf | "Configures rook in cloud-native storage orchestration for... | Reference |
 | [route53](../../skills/cncf/route53/SKILL.md) | Cncf | "Configures DNS routing with Route 53 for domain... | Reference |
 | [runtime-log-analyzer](../../skills/agent/runtime-log-analyzer/SKILL.md) | Agent | Implements intelligent runtime log analyzer with... | Orchestration |
@@ -1687,12 +1721,14 @@ MIT — All skills are freely available and redistributable.
 | [secret-manager](../../skills/cncf/secret-manager/SKILL.md) | Cncf | "Provides Stores and rotates secrets with encryption and... | Reference |
 | [secrets-manager](../../skills/cncf/secrets-manager/SKILL.md) | Cncf | "Manages sensitive data with automatic encryption,... | Reference |
 | [security-audit](../../skills/agent/security-audit/SKILL.md) | Agent | Implements intelligent security audit with multi-factor... | Orchestration |
+| [security-compliance](../../skills/cncf/security-compliance/SKILL.md) | Cncf | Implements security compliance frameworks (SOC2, HIPAA,... | Implementation |
 | [security-policy](../../skills/cncf/security-policy/SKILL.md) | Cncf | "Creates or updates SECURITY.md defining the vulnerability... | Reference |
 | [self-critique-engine](../../skills/agent/self-critique-engine/SKILL.md) | Agent | Implements intelligent self critique engine with... | Orchestration |
 | [sendgrid-automation](../../skills/agent/sendgrid-automation/SKILL.md) | Agent | Implements intelligent sendgrid automation with... | Orchestration |
 | [sentiment-analysis](../../skills/trading/sentiment-analysis/SKILL.md) | Trading | "AI-powered sentiment analysis for news, social media, and... | Implementation |
 | [sentiment-features](../../skills/trading/sentiment-features/SKILL.md) | Trading | "Provides Extract market sentiment from news, social media,... | Implementation |
 | [service-bus](../../skills/cncf/service-bus/SKILL.md) | Cncf | "Provides Messaging service with queues and topics for... | Reference |
+| [service-mesh-debugging](../../skills/cncf/service-mesh-debugging/SKILL.md) | Cncf | Implements comprehensive debugging workflows for Istio and... | Implementation |
 | [sharpe-ratio](../../skills/trading/sharpe-ratio/SKILL.md) | Trading | "Provides Sharpe Ratio Calculation and Risk-Adjusted... | Implementation |
 | [shop](../../skills/coding/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing... | Implementation |
 | [shopify-automation](../../skills/agent/shopify-automation/SKILL.md) | Agent | Implements intelligent shopify automation with multi-factor... | Orchestration |
