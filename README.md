@@ -1,6 +1,6 @@
 # Agent Skill Router — Intelligent Skill Routing for AI Agents
 
-**An AI skill routing system that automatically selects and injects the right expertise into your AI's context.** With 1,827+ skills across 5 domains and built-in compression, the router delivers expert knowledge without manual commands.
+**An AI skill routing system that automatically selects and injects the right expertise into your AI's context.** With 561 skills across 5 domains and built-in compression, the router delivers expert knowledge without manual commands.
 
 ```
 You → "review this Python code for security issues"
@@ -11,7 +11,7 @@ Full expert skills injected into context — AI answers as expert reviewer
 ```
 
 **Key Features:**
-- 🎯 **1,827+ Skills** across Agent, CNCF, Coding, Programming, and Trading domains
+- 🎯 **561 Skills** across Agent, CNCF, Coding, Programming, and Trading domains
 - 🔄 **Auto-Routing** — tasks automatically match the most relevant skills
 - 🗜️ **SkillCompressor** — reduce token overhead by 28-65%
 - ⚡ **Fast** — ~10ms warm, ~3.5s cold responses
@@ -88,10 +88,10 @@ The skill router is an **MCP (Model Context Protocol) server** that routes tasks
 
 | Domain | Count | Focus |
 |--------|-------|-------|
-| Agent | 271 | AI orchestration, routing, task decomposition |
-| CNCF | 365 | Kubernetes, cloud-native, DevOps |
-| Coding | 317 | Software patterns, security, testing |
-| Programming | 791 | Algorithms, frameworks, languages |
+| Agent | 228 | AI orchestration, routing, task decomposition |
+| CNCF | 164 | Kubernetes, cloud-native, DevOps |
+| Coding | 82 | Software patterns, security, testing |
+| Programming | 3 | Algorithms, frameworks, languages |
 | Trading | 83 | Execution, risk management, ML models |
 
 ---
@@ -103,7 +103,7 @@ MIT — All skills are freely available and redistributable.
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
 > **Last updated:** 2026-05-04 12:38:47 UTC  
-> **Total skills:** 558
+> **Total skills:** 561
 
 ## Skills by Domain
 
@@ -342,7 +342,7 @@ MIT — All skills are freely available and redistributable.
 | [zoom-automation](../../skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor... | zoom-automation, zoom automation... |
 
 
-### Cncf (162 skills)
+### Cncf (164 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -461,13 +461,13 @@ MIT — All skills are freely available and redistributable.
 | [oathkeeper](../../skills/cncf/oathkeeper/SKILL.md) | "Oathkeeper in Identity & Access - cloud native... | access, cdn... |
 | [opencost](../../skills/cncf/opencost/SKILL.md) | "OpenCost in Kubernetes Cost Monitoring - cloud native... | cdn, container orchestration... |
 | [openfeature](../../skills/cncf/openfeature/SKILL.md) | "OpenFeature in Feature Flagging - cloud native... | cdn, feature... |
-| [openfga](../../skills/cncf/openfga/SKILL.md) | "OpenFGA in Security &amp; Compliance - cloud native... | cdn, compliance... |
+| [openfga](../../skills/cncf/openfga/SKILL.md) | "OpenFGA in Security & Compliance - cloud native... | cdn, compliance... |
 | [openkruise](../../skills/cncf/openkruise/SKILL.md) | "OpenKruise in Extended Kubernetes workload management with... | container orchestration, extended... |
 | [opentelemetry](../../skills/cncf/opentelemetry/SKILL.md) | "OpenTelemetry in Observability framework for tracing,... | framework, observability... |
 | [openyurt](../../skills/cncf/openyurt/SKILL.md) | ''Provides OpenYurt in Extending Kubernetes to edge... | openyurt, extending... |
 | [osi](../../skills/cncf/osi/SKILL.md) | "OSI Model Networking for Cloud-Native - All 7 layers with... | cloud-native, layers... |
-| [policy-agent-opa](../../skills/cncf/policy-agent-opa/SKILL.md) | "Open Policy Agent in Security &amp; Compliance - cloud... | open policy agent opa, open-policy-agent-opa... |
-| [project](../../skills/cncf/project/SKILL.md) | "Notary Project in Content Trust &amp; Security - cloud... | content, how do i find security issues... |
+| [policy-agent-opa](../../skills/cncf/policy-agent-opa/SKILL.md) | "Open Policy Agent in Security & Compliance - cloud... | open policy agent opa, open-policy-agent-opa... |
+| [project](../../skills/cncf/project/SKILL.md) | "Notary Project in Content Trust & Security - cloud... | content, how do i find security issues... |
 | [prometheus](../../skills/cncf/prometheus/SKILL.md) | "Prometheus in Cloud-Native Engineering - The Prometheus... | cloud-native, engineering... |
 | [pulumi](../../skills/cncf/pulumi/SKILL.md) | Implements Pulumi infrastructure as code using Python,... | pulumi, iac... |
 | [rbac](../../skills/cncf/rbac/SKILL.md) | "Manages identity and access with roles, service... | rbac, role-based access... |
@@ -602,7 +602,7 @@ MIT — All skills are freely available and redistributable.
 
 | Skill Name | Description | Triggers |
 |---|---|---|
-| [algorithms](../../skills/programming/algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide u2014... | algorithms, comprehensive... |
+| [algorithms](../../skills/programming/algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide —... | algorithms, comprehensive... |
 | [v10-learning](../../skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... | abl, abl programming... |
 | [v12-learning](../../skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... | abl v12, openedge 12... |
 
@@ -894,7 +894,7 @@ MIT — All skills are freely available and redistributable.
 |---|---|---|
 | [advanced](../../skills/advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing,... |
 | [aks](../../skills/aks/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling... |
-| [algorithms](../../skills/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014... |
+| [algorithms](../../skills/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide —... |
 | [architecture](../../skills/architecture/SKILL.md) | Cncf | "Creates or updates ARCHITECTURE.md documenting the... |
 | [argo](../../skills/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native... |
 | [auto-scaling](../../skills/auto-scaling/SKILL.md) | Cncf | "Configures automatic scaling of compute resources (EC2,... |
@@ -1001,14 +1001,14 @@ MIT — All skills are freely available and redistributable.
 | [oathkeeper](../../skills/oathkeeper/SKILL.md) | Cncf | "Oathkeeper in Identity & Access - cloud native... |
 | [opencost](../../skills/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native... |
 | [openfeature](../../skills/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native... |
-| [openfga](../../skills/openfga/SKILL.md) | Cncf | "OpenFGA in Security &amp; Compliance - cloud native... |
+| [openfga](../../skills/openfga/SKILL.md) | Cncf | "OpenFGA in Security & Compliance - cloud native... |
 | [openkruise](../../skills/openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with... |
 | [opentelemetry](../../skills/opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing,... |
 | [openyurt](../../skills/openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge... |
 | [osi](../../skills/osi/SKILL.md) | Cncf | "OSI Model Networking for Cloud-Native - All 7 layers with... |
 | [patterns](../../skills/patterns/SKILL.md) | Coding | "Provides Software architecture patterns including MVC,... |
-| [policy-agent-opa](../../skills/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security &amp; Compliance - cloud... |
-| [project](../../skills/project/SKILL.md) | Cncf | "Notary Project in Content Trust &amp; Security - cloud... |
+| [policy-agent-opa](../../skills/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security & Compliance - cloud... |
+| [project](../../skills/project/SKILL.md) | Cncf | "Notary Project in Content Trust & Security - cloud... |
 | [prometheus](../../skills/prometheus/SKILL.md) | Cncf | "Prometheus in Cloud-Native Engineering - The Prometheus... |
 | [rbac](../../skills/rbac/SKILL.md) | Cncf | "Manages identity and access with roles, service... |
 | [rds](../../skills/rds/SKILL.md) | Cncf | "Deploys managed relational databases (MySQL, PostgreSQL,... |
@@ -1291,7 +1291,7 @@ MIT — All skills are freely available and redistributable.
 | [airflow-dag-patterns](../../skills/agent/airflow-dag-patterns/SKILL.md) | Agent | Implements intelligent airflow dag patterns with... | Orchestration |
 | [airtable-automation](../../skills/agent/airtable-automation/SKILL.md) | Agent | Implements intelligent airtable automation with... | Orchestration |
 | [aks](../../skills/cncf/aks/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling... | Reference |
-| [algorithms](../../skills/programming/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014... | Reference |
+| [algorithms](../../skills/programming/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide —... | Reference |
 | [alternative-data](../../skills/trading/alternative-data/SKILL.md) | Trading | "Alternative data ingestion pipelines for trading signals... | Implementation |
 | [analyze-project](../../skills/agent/analyze-project/SKILL.md) | Agent | Implements intelligent analyze project with multi-factor... | Orchestration |
 | [andruia-consultant](../../skills/agent/andruia-consultant/SKILL.md) | Agent | Implements intelligent andruia consultant with multi-factor... | Orchestration |
@@ -1647,7 +1647,7 @@ MIT — All skills are freely available and redistributable.
 | [online-experiments](../../skills/coding/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits,... | Implementation |
 | [opencost](../../skills/cncf/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native... | Reference |
 | [openfeature](../../skills/cncf/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native... | Reference |
-| [openfga](../../skills/cncf/openfga/SKILL.md) | Cncf | "OpenFGA in Security &amp; Compliance - cloud native... | Reference |
+| [openfga](../../skills/cncf/openfga/SKILL.md) | Cncf | "OpenFGA in Security & Compliance - cloud native... | Reference |
 | [openkruise](../../skills/cncf/openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with... | Reference |
 | [opentelemetry](../../skills/cncf/opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing,... | Reference |
 | [openyurt](../../skills/cncf/openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge... | Reference |
@@ -1669,7 +1669,7 @@ MIT — All skills are freely available and redistributable.
 | [pipecat-friday-agent](../../skills/agent/pipecat-friday-agent/SKILL.md) | Agent | Implements intelligent pipecat friday agent with... | Orchestration |
 | [plan-writing](../../skills/agent/plan-writing/SKILL.md) | Agent | Implements intelligent plan writing with multi-factor skill... | Orchestration |
 | [planning-with-files](../../skills/agent/planning-with-files/SKILL.md) | Agent | Implements intelligent planning with files with... | Orchestration |
-| [policy-agent-opa](../../skills/cncf/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security &amp; Compliance - cloud... | Reference |
+| [policy-agent-opa](../../skills/cncf/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security & Compliance - cloud... | Reference |
 | [position-exits](../../skills/trading/position-exits/SKILL.md) | Trading | "Exit strategies, trailing stops, and take-profit... | Implementation |
 | [position-sizing](../../skills/trading/position-sizing/SKILL.md) | Trading | "'Position Sizing Algorithms: Fixed Fractional, Kelly... | Implementation |
 | [position-sizing](../../skills/trading/position-sizing/SKILL.md) | Trading | "Calculating optimal position sizes using Kelly criterion,... | Implementation |
@@ -1677,7 +1677,7 @@ MIT — All skills are freely available and redistributable.
 | [pr-writer](../../skills/agent/pr-writer/SKILL.md) | Agent | Implements intelligent pr writer with multi-factor skill... | Orchestration |
 | [price-action-patterns](../../skills/trading/price-action-patterns/SKILL.md) | Trading | "Provides Analysis of candlestick and chart patterns for... | Implementation |
 | [privacy-ml](../../skills/coding/privacy-ml/SKILL.md) | Coding | "Implements privacy-preserving machine learning including... | Implementation |
-| [project](../../skills/cncf/project/SKILL.md) | Cncf | "Notary Project in Content Trust &amp; Security - cloud... | Reference |
+| [project](../../skills/cncf/project/SKILL.md) | Cncf | "Notary Project in Content Trust & Security - cloud... | Reference |
 | [prometheus](../../skills/cncf/prometheus/SKILL.md) | Cncf | "Prometheus in Cloud-Native Engineering - The Prometheus... | Reference |
 | [prompt-engineer](../../skills/agent/prompt-engineer/SKILL.md) | Agent | Implements intelligent prompt engineer with multi-factor... | Orchestration |
 | [pulumi](../../skills/cncf/pulumi/SKILL.md) | Cncf | Implements Pulumi infrastructure as code using Python,... | Implementation |
