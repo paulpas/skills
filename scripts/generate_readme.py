@@ -24,16 +24,29 @@ def truncate_at_word_boundary(text: str, max_length: int = 60) -> str:
     if len(text) <= max_length:
         return text
 
-    # Find the last space before max_length
     truncated = text[:max_length]
     last_space = truncated.rfind(" ")
 
     if last_space > 0:
-        # Truncate at the last word boundary
         return text[:last_space] + "..."
     else:
-        # No space found, truncate hard and add ellipsis
         return text[: max_length - 3] + "..."
+
+
+def format_description_for_readme(description: str) -> str:
+    """Format description for README display with proper length and readability."""
+    if len(description) <= 250:
+        return description
+    return description[:250].rstrip() + "..."
+
+
+def format_triggers_for_readme(trigger_list: List[str], max_count: int = 15) -> str:
+    """Format triggers for README display, showing up to max_count triggers."""
+    display_triggers = trigger_list[:max_count]
+    formatted = ", ".join(display_triggers)
+    if len(trigger_list) > max_count:
+        formatted += "..."
+    return formatted
 
 
 # Color codes for terminal output
@@ -144,49 +157,6 @@ def parse_skill(skill_dir: Path) -> Optional[Dict]:
         )
         return None
 
-    try:
-        with open(skill_md, "r", encoding="utf-8") as f:
-            post = frontmatter.load(f)
-
-        # Extract required fields
-        name = post.metadata.get("name")
-        description = post.metadata.get("description")
-
-        if not name or not description:
-            print(
-                f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: missing name or description{Colors.RESET}",
-                file=sys.stderr,
-            )
-            return None
-
-        # Extract metadata nested fields
-        metadata = post.metadata.get("metadata", {})
-        domain = metadata.get("domain", "unknown")
-        role = metadata.get("role", "unknown")
-        triggers = metadata.get("triggers", "")
-
-        # Extract H1 title from markdown content
-        title = extract_h1_title(post.content)
-        if not title:
-            title = name  # fallback to name if no H1 found
-
-        return {
-            "name": name,
-            "title": title,
-            "description": description,
-            "domain": domain,
-            "role": role,
-            "triggers": triggers,
-            "trigger_list": [t.strip() for t in triggers.split(",") if t.strip()],
-        }
-
-    except Exception as e:
-        print(
-            f"{Colors.RED}✗ Error parsing {skill_dir.name}: {str(e)}{Colors.RESET}",
-            file=sys.stderr,
-        )
-        return None
-
 
 def read_all_skills(skills_root: Path) -> List[Dict]:
     """Read all skills from the skills/ directory, organized by domain subdirectories."""
@@ -239,17 +209,13 @@ def generate_skills_by_domain(skills: List[Dict]) -> str:
         lines.append("|---|---|---|")
 
         for skill in domain_skills:
-            skill_link = (
-                f"[{skill['name']}](../../skills/{domain}/{skill['name']}/SKILL.md)"
-            )
+            skill_link = f"[{skill['name']}](skills/{domain}/{skill['name']}/SKILL.md)"
 
-            # Truncate description at word boundary
-            desc = truncate_at_word_boundary(skill["description"], max_length=60)
+            # Format description for README (up to 150 characters)
+            desc = format_description_for_readme(skill["description"])
 
-            # Show top 2-3 triggers
-            triggers = ", ".join(skill["trigger_list"][:2])
-            if len(skill["trigger_list"]) > 2:
-                triggers += "..."
+            # Format triggers for README (up to 15 triggers)
+            triggers = format_triggers_for_readme(skill["trigger_list"], max_count=15)
 
             lines.append(f"| {skill_link} | {desc} | {triggers} |")
 
@@ -293,11 +259,13 @@ def generate_skills_by_role(skills: List[Dict]) -> str:
         lines.append("|---|---|---|")
 
         for skill in role_skills:
-            skill_link = f"[{skill['name']}](../../skills/{skill['name']}/SKILL.md)"
+            skill_link = (
+                f"[{skill['name']}](skills/{skill['domain']}/{skill['name']}/SKILL.md)"
+            )
             domain = skill["domain"].capitalize()
 
-            # Truncate description at word boundary
-            desc = truncate_at_word_boundary(skill["description"], max_length=60)
+            # Format description for README (up to 150 characters)
+            desc = format_description_for_readme(skill["description"])
 
             lines.append(f"| {skill_link} | {domain} | {desc} |")
 
@@ -314,8 +282,8 @@ def generate_skills_index(skills: List[Dict]) -> str:
 
     # Sort by name alphabetically
     for skill in sorted(skills, key=lambda s: s["name"]):
-        # Use word-boundary truncation for description (60 chars)
-        desc = truncate_at_word_boundary(skill["description"], max_length=60)
+        # Format description for README (up to 150 characters)
+        desc = format_description_for_readme(skill["description"])
 
         # Format domain with proper capitalization
         domain = skill["domain"].capitalize()
@@ -324,7 +292,9 @@ def generate_skills_index(skills: List[Dict]) -> str:
         role = skill["role"].capitalize()
 
         # Create skill link using domain/skillname structure
-        skill_link = f"[{skill['name']}](../../skills/{skill['domain']}/{skill['name']}/SKILL.md)"
+        skill_link = (
+            f"[{skill['name']}](skills/{skill['domain']}/{skill['name']}/SKILL.md)"
+        )
 
         lines.append(f"| {skill_link} | {domain} | {desc} | {role} |")
 

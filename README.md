@@ -102,8 +102,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-04 12:38:47 UTC  
-> **Total skills:** 561
+> **Last updated:** 2026-05-06 18:53:17 UTC  
+> **Total skills:** 558
 
 ## Skills by Domain
 
@@ -112,588 +112,588 @@ MIT — All skills are freely available and redistributable.
 
 | Skill Name | Description | Triggers |
 |---|---|---|
-| [acceptance-orchestrator](../../skills/agent/acceptance-orchestrator/SKILL.md) | Implements intelligent acceptance orchestrator with... | acceptance-orchestrator, acceptance orchestrator... |
-| [address-github-comments](../../skills/agent/address-github-comments/SKILL.md) | Implements intelligent address github comments with... | address-github-comments, address github comments... |
-| [agent-evaluation](../../skills/agent/agent-evaluation/SKILL.md) | Implements intelligent agent evaluation with multi-factor... | agent-evaluation, agent evaluation... |
-| [agent-manager-skill](../../skills/agent/agent-manager-skill/SKILL.md) | Implements intelligent agent manager skill with... | agent-manager-skill, agent manager skill... |
-| [agent-memory-systems](../../skills/agent/agent-memory-systems/SKILL.md) | Implements intelligent agent memory systems with... | agent-memory-systems, agent memory systems... |
-| [ai-agent-development](../../skills/agent/ai-agent-development/SKILL.md) | Implements intelligent ai agent development with... | ai-agent-development, ai agent development... |
-| [ai-agents-architect](../../skills/agent/ai-agents-architect/SKILL.md) | Implements intelligent ai agents architect with... | ai-agents-architect, ai agents architect... |
-| [ai-dev-jobs-mcp](../../skills/agent/ai-dev-jobs-mcp/SKILL.md) | Implements intelligent ai dev jobs mcp with multi-factor... | ai-dev-jobs-mcp, ai dev jobs mcp... |
-| [ai-ml](../../skills/agent/ai-ml/SKILL.md) | Implements intelligent ai ml with multi-factor skill... | ai-ml, ai ml... |
-| [airflow-dag-patterns](../../skills/agent/airflow-dag-patterns/SKILL.md) | Implements intelligent airflow dag patterns with... | airflow-dag-patterns, airflow dag patterns... |
-| [airtable-automation](../../skills/agent/airtable-automation/SKILL.md) | Implements intelligent airtable automation with... | airtable-automation, airtable automation... |
-| [analyze-project](../../skills/agent/analyze-project/SKILL.md) | Implements intelligent analyze project with multi-factor... | analyze-project, analyze project... |
-| [andruia-consultant](../../skills/agent/andruia-consultant/SKILL.md) | Implements intelligent andruia consultant with multi-factor... | andruia-consultant, andruia consultant... |
-| [andruia-niche-intelligence](../../skills/agent/andruia-niche-intelligence/SKILL.md) | Implements intelligent andruia niche intelligence with... | andruia-niche-intelligence, andruia niche intelligence... |
-| [andruia-skill-smith](../../skills/agent/andruia-skill-smith/SKILL.md) | Implements intelligent andruia skill smith with... | andruia-skill-smith, andruia skill smith... |
-| [antigravity-skill-orchestrator](../../skills/agent/antigravity-skill-orchestrator/SKILL.md) | Implements intelligent antigravity skill orchestrator with... | antigravity-skill-orchestrator, antigravity skill orchestrator... |
-| [antigravity-workflows](../../skills/agent/antigravity-workflows/SKILL.md) | Implements intelligent antigravity workflows with... | antigravity-workflows, antigravity workflows... |
-| [api-documentation](../../skills/agent/api-documentation/SKILL.md) | Implements intelligent api documentation with multi-factor... | api-documentation, api documentation... |
-| [api-security-testing](../../skills/agent/api-security-testing/SKILL.md) | Implements intelligent api security testing with... | api-security-testing, api security testing... |
-| [apify-actor-development](../../skills/agent/apify-actor-development/SKILL.md) | Implements intelligent apify actor development with... | apify-actor-development, apify actor development... |
-| [apify-actorization](../../skills/agent/apify-actorization/SKILL.md) | Implements intelligent apify actorization with multi-factor... | apify-actorization, apify actorization... |
-| [apify-audience-analysis](../../skills/agent/apify-audience-analysis/SKILL.md) | Implements intelligent apify audience analysis with... | apify-audience-analysis, apify audience analysis... |
-| [apify-brand-reputation-monitoring](../../skills/agent/apify-brand-reputation-monitoring/SKILL.md) | Implements intelligent apify brand reputation monitoring... | apify-brand-reputation-monitoring, apify brand reputation monitoring... |
-| [apify-competitor-intelligence](../../skills/agent/apify-competitor-intelligence/SKILL.md) | Implements intelligent apify competitor intelligence with... | apify-competitor-intelligence, apify competitor intelligence... |
-| [apify-content-analytics](../../skills/agent/apify-content-analytics/SKILL.md) | Implements intelligent apify content analytics with... | apify-content-analytics, apify content analytics... |
-| [apify-ecommerce](../../skills/agent/apify-ecommerce/SKILL.md) | Implements intelligent apify ecommerce with multi-factor... | apify-ecommerce, apify ecommerce... |
-| [apify-influencer-discovery](../../skills/agent/apify-influencer-discovery/SKILL.md) | Implements intelligent apify influencer discovery with... | apify-influencer-discovery, apify influencer discovery... |
-| [apify-lead-generation](../../skills/agent/apify-lead-generation/SKILL.md) | Implements intelligent apify lead generation with... | apify-lead-generation, apify lead generation... |
-| [apify-market-research](../../skills/agent/apify-market-research/SKILL.md) | Implements intelligent apify market research with... | apify-market-research, apify market research... |
-| [apify-trend-analysis](../../skills/agent/apify-trend-analysis/SKILL.md) | Implements intelligent apify trend analysis with... | apify-trend-analysis, apify trend analysis... |
-| [apify-ultimate-scraper](../../skills/agent/apify-ultimate-scraper/SKILL.md) | Implements intelligent apify ultimate scraper with... | apify-ultimate-scraper, apify ultimate scraper... |
-| [ask-questions-if-underspecified](../../skills/agent/ask-questions-if-underspecified/SKILL.md) | Implements intelligent ask questions if underspecified with... | ask-questions-if-underspecified, ask questions if underspecified... |
-| [audio-transcriber](../../skills/agent/audio-transcriber/SKILL.md) | Implements intelligent audio transcriber with multi-factor... | audio-transcriber, audio transcriber... |
-| [audit-context-building](../../skills/agent/audit-context-building/SKILL.md) | Implements intelligent audit context building with... | audit-context-building, audit context building... |
-| [auri-core](../../skills/agent/auri-core/SKILL.md) | Implements intelligent auri core with multi-factor skill... | auri-core, auri core... |
-| [bash-scripting](../../skills/agent/bash-scripting/SKILL.md) | Implements intelligent bash scripting with multi-factor... | bash-scripting, bash scripting... |
-| [bdistill-behavioral-xray](../../skills/agent/bdistill-behavioral-xray/SKILL.md) | Implements intelligent bdistill behavioral xray with... | bdistill-behavioral-xray, bdistill behavioral xray... |
-| [behavioral-modes](../../skills/agent/behavioral-modes/SKILL.md) | Implements intelligent behavioral modes with multi-factor... | behavioral-modes, behavioral modes... |
-| [bitbucket-automation](../../skills/agent/bitbucket-automation/SKILL.md) | Implements intelligent bitbucket automation with... | bitbucket-automation, bitbucket automation... |
-| [blueprint](../../skills/agent/blueprint/SKILL.md) | Implements intelligent blueprint with multi-factor skill... | blueprint, blueprint... |
-| [build](../../skills/agent/build/SKILL.md) | Implements intelligent build with multi-factor skill... | build, build... |
-| [cc-skill-backend-patterns](../../skills/agent/cc-skill-backend-patterns/SKILL.md) | Implements intelligent cc skill backend patterns with... | cc-skill-backend-patterns, cc skill backend patterns... |
-| [cc-skill-clickhouse-io](../../skills/agent/cc-skill-clickhouse-io/SKILL.md) | Implements intelligent cc skill clickhouse io with... | cc-skill-clickhouse-io, cc skill clickhouse io... |
-| [cc-skill-coding-standards](../../skills/agent/cc-skill-coding-standards/SKILL.md) | Implements intelligent cc skill coding standards with... | cc-skill-coding-standards, cc skill coding standards... |
-| [cc-skill-continuous-learning](../../skills/agent/cc-skill-continuous-learning/SKILL.md) | Implements intelligent cc skill continuous learning with... | cc-skill-continuous-learning, cc skill continuous learning... |
-| [cc-skill-frontend-patterns](../../skills/agent/cc-skill-frontend-patterns/SKILL.md) | Implements intelligent cc skill frontend patterns with... | cc-skill-frontend-patterns, cc skill frontend patterns... |
-| [cc-skill-project-guidelines-example](../../skills/agent/cc-skill-project-guidelines-example/SKILL.md) | Implements intelligent cc skill project guidelines example... | cc-skill-project-guidelines-example, cc skill project guidelines example... |
-| [cc-skill-security-review](../../skills/agent/cc-skill-security-review/SKILL.md) | Implements intelligent cc skill security review with... | cc-skill-security-review, cc skill security review... |
-| [cc-skill-strategic-compact](../../skills/agent/cc-skill-strategic-compact/SKILL.md) | Implements intelligent cc skill strategic compact with... | cc-skill-strategic-compact, cc skill strategic compact... |
-| [changelog-automation](../../skills/agent/changelog-automation/SKILL.md) | Implements intelligent changelog automation with... | changelog-automation, changelog automation... |
-| [ci-cd-pipeline-analyzer](../../skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Implements intelligent ci cd pipeline analyzer with... | ci-cd-pipeline-analyzer, ci cd pipeline analyzer... |
-| [cicd-automation-workflow-automate](../../skills/agent/cicd-automation-workflow-automate/SKILL.md) | Implements intelligent cicd automation workflow automate... | cicd-automation-workflow-automate, cicd automation workflow automate... |
-| [cicd-pipeline-debugging](../../skills/agent/cicd-pipeline-debugging/SKILL.md) | Debugging patterns for GitHub Actions, GitLab CI, Jenkins... | github actions debugging, gitlab ci troubleshooting... |
-| [cicd-pipeline-troubleshooting](../../skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Diagnoses and resolves CI/CD pipeline failures with... | ci cd troubleshooting, pipeline failure... |
-| [circleci-automation](../../skills/agent/circleci-automation/SKILL.md) | Implements intelligent circleci automation with... | circleci-automation, circleci automation... |
-| [clickup-automation](../../skills/agent/clickup-automation/SKILL.md) | Implements intelligent clickup automation with multi-factor... | clickup-automation, clickup automation... |
-| [closed-loop-delivery](../../skills/agent/closed-loop-delivery/SKILL.md) | Implements intelligent closed loop delivery with... | closed-loop-delivery, closed loop delivery... |
-| [cloud-devops](../../skills/agent/cloud-devops/SKILL.md) | Implements intelligent cloud devops with multi-factor skill... | cloud-devops, cloud devops... |
-| [code-correctness-verifier](../../skills/agent/code-correctness-verifier/SKILL.md) | Implements intelligent code correctness verifier with... | code-correctness-verifier, code correctness verifier... |
-| [commit](../../skills/agent/commit/SKILL.md) | Implements intelligent commit with multi-factor skill... | commit, commit... |
-| [concise-planning](../../skills/agent/concise-planning/SKILL.md) | Implements intelligent concise planning with multi-factor... | concise-planning, concise planning... |
-| [conductor-implement](../../skills/agent/conductor-implement/SKILL.md) | Implements intelligent conductor implement with... | conductor-implement, conductor implement... |
-| [conductor-manage](../../skills/agent/conductor-manage/SKILL.md) | Implements intelligent conductor manage with multi-factor... | conductor-manage, conductor manage... |
-| [conductor-new-track](../../skills/agent/conductor-new-track/SKILL.md) | Implements intelligent conductor new track with... | conductor-new-track, conductor new track... |
-| [conductor-revert](../../skills/agent/conductor-revert/SKILL.md) | Implements intelligent conductor revert with multi-factor... | conductor-revert, conductor revert... |
-| [conductor-setup](../../skills/agent/conductor-setup/SKILL.md) | Implements intelligent conductor setup with multi-factor... | conductor-setup, conductor setup... |
-| [conductor-status](../../skills/agent/conductor-status/SKILL.md) | Implements intelligent conductor status with multi-factor... | conductor-status, conductor status... |
-| [conductor-validator](../../skills/agent/conductor-validator/SKILL.md) | Implements intelligent conductor validator with... | conductor-validator, conductor validator... |
-| [confidence-based-selector](../../skills/agent/confidence-based-selector/SKILL.md) | Implements intelligent confidence based selector with... | confidence-based-selector, confidence based selector... |
-| [container-inspector](../../skills/agent/container-inspector/SKILL.md) | Implements intelligent container inspector with... | container-inspector, container inspector... |
-| [context-window-management](../../skills/agent/context-window-management/SKILL.md) | Implements intelligent context window management with... | context-window-management, context window management... |
-| [context7-auto-research](../../skills/agent/context7-auto-research/SKILL.md) | Implements intelligent context7 auto research with... | context7-auto-research, context7 auto research... |
-| [conversation-memory](../../skills/agent/conversation-memory/SKILL.md) | Implements intelligent conversation memory with... | conversation-memory, conversation memory... |
-| [create-branch](../../skills/agent/create-branch/SKILL.md) | Implements intelligent create branch with multi-factor... | create-branch, create branch... |
-| [create-issue-gate](../../skills/agent/create-issue-gate/SKILL.md) | Implements intelligent create issue gate with multi-factor... | create-issue-gate, create issue gate... |
-| [create-pr](../../skills/agent/create-pr/SKILL.md) | Implements intelligent create pr with multi-factor skill... | create-pr, create pr... |
-| [database](../../skills/agent/database/SKILL.md) | Implements intelligent database with multi-factor skill... | database, database... |
-| [database-admin](../../skills/agent/database-admin/SKILL.md) | Implements database administration best practices... | database administration, postgresql tuning... |
-| [dependency-graph-builder](../../skills/agent/dependency-graph-builder/SKILL.md) | Implements intelligent dependency graph builder with... | dependency-graph-builder, dependency graph builder... |
-| [development](../../skills/agent/development/SKILL.md) | Implements intelligent development with multi-factor skill... | development, development... |
-| [diary](../../skills/agent/diary/SKILL.md) | Implements intelligent diary with multi-factor skill... | diary, diary... |
-| [diff-quality-analyzer](../../skills/agent/diff-quality-analyzer/SKILL.md) | Implements intelligent diff quality analyzer with... | diff-quality-analyzer, diff quality analyzer... |
-| [dispatching-parallel-agents](../../skills/agent/dispatching-parallel-agents/SKILL.md) | Implements intelligent dispatching parallel agents with... | dispatching-parallel-agents, dispatching parallel agents... |
-| [docker-debugging](../../skills/agent/docker-debugging/SKILL.md) | Diagnoses and resolves Docker container issues including... | docker debugging, container crash... |
-| [documentation](../../skills/agent/documentation/SKILL.md) | Implements intelligent documentation with multi-factor... | documentation, documentation... |
-| [dynamic-replanner](../../skills/agent/dynamic-replanner/SKILL.md) | Implements intelligent dynamic replanner with multi-factor... | dynamic-replanner, dynamic replanner... |
-| [e2e-testing](../../skills/agent/e2e-testing/SKILL.md) | Implements intelligent e2e testing with multi-factor skill... | e2e-testing, e2e testing... |
-| [error-trace-explainer](../../skills/agent/error-trace-explainer/SKILL.md) | Implements intelligent error trace explainer with... | error-trace-explainer, error trace explainer... |
-| [executing-plans](../../skills/agent/executing-plans/SKILL.md) | Implements intelligent executing plans with multi-factor... | executing-plans, executing plans... |
-| [failure-mode-analysis](../../skills/agent/failure-mode-analysis/SKILL.md) | Implements intelligent failure mode analysis with... | failure-mode-analysis, failure mode analysis... |
-| [fal-audio](../../skills/agent/fal-audio/SKILL.md) | Implements intelligent fal audio with multi-factor skill... | fal-audio, fal audio... |
-| [filesystem-context](../../skills/agent/filesystem-context/SKILL.md) | Implements intelligent filesystem context with multi-factor... | filesystem-context, filesystem context... |
-| [finishing-a-development-branch](../../skills/agent/finishing-a-development-branch/SKILL.md) | Implements intelligent finishing a development branch with... | finishing-a-development-branch, finishing a development branch... |
-| [freshdesk-automation](../../skills/agent/freshdesk-automation/SKILL.md) | Implements intelligent freshdesk automation with... | freshdesk-automation, freshdesk automation... |
-| [full-stack-orchestration-full-stack-feature](../../skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Implements intelligent full stack orchestration full stack... | full-stack-orchestration-full-stack-feature, full stack orchestration full stack feature... |
-| [gemini-api-integration](../../skills/agent/gemini-api-integration/SKILL.md) | Implements intelligent gemini api integration with... | gemini-api-integration, gemini api integration... |
-| [gh-review-requests](../../skills/agent/gh-review-requests/SKILL.md) | Implements intelligent gh review requests with multi-factor... | gh-review-requests, gh review requests... |
-| [git-advanced-workflows](../../skills/agent/git-advanced-workflows/SKILL.md) | Implements intelligent git advanced workflows with... | git-advanced-workflows, git advanced workflows... |
-| [git-hooks-automation](../../skills/agent/git-hooks-automation/SKILL.md) | Implements intelligent git hooks automation with... | git-hooks-automation, git hooks automation... |
-| [git-pr-workflows-git-workflow](../../skills/agent/git-pr-workflows-git-workflow/SKILL.md) | Implements intelligent git pr workflows git workflow with... | git-pr-workflows-git-workflow, git pr workflows git workflow... |
-| [git-pr-workflows-onboard](../../skills/agent/git-pr-workflows-onboard/SKILL.md) | Implements intelligent git pr workflows onboard with... | git-pr-workflows-onboard, git pr workflows onboard... |
-| [git-pr-workflows-pr-enhance](../../skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Implements intelligent git pr workflows pr enhance with... | git-pr-workflows-pr-enhance, git pr workflows pr enhance... |
-| [git-pushing](../../skills/agent/git-pushing/SKILL.md) | Implements intelligent git pushing with multi-factor skill... | git-pushing, git pushing... |
-| [github-actions-templates](../../skills/agent/github-actions-templates/SKILL.md) | Implements intelligent github actions templates with... | github-actions-templates, github actions templates... |
-| [github-automation](../../skills/agent/github-automation/SKILL.md) | Implements intelligent github automation with multi-factor... | github-automation, github automation... |
-| [github-workflow-automation](../../skills/agent/github-workflow-automation/SKILL.md) | Implements intelligent github workflow automation with... | github-workflow-automation, github workflow automation... |
-| [gitlab-automation](../../skills/agent/gitlab-automation/SKILL.md) | Implements intelligent gitlab automation with multi-factor... | gitlab-automation, gitlab automation... |
-| [gitlab-ci-patterns](../../skills/agent/gitlab-ci-patterns/SKILL.md) | Implements intelligent gitlab ci patterns with multi-factor... | gitlab-ci-patterns, gitlab ci patterns... |
-| [gitops-troubleshooting](../../skills/agent/gitops-troubleshooting/SKILL.md) | Diagnoses and resolves GitOps synchronization failures,... | gitops troubleshooting, sync failure... |
-| [goal-to-milestones](../../skills/agent/goal-to-milestones/SKILL.md) | Implements intelligent goal to milestones with multi-factor... | goal-to-milestones, goal to milestones... |
-| [google-analytics-automation](../../skills/agent/google-analytics-automation/SKILL.md) | Implements intelligent google analytics automation with... | google-analytics-automation, google analytics automation... |
-| [google-docs-automation](../../skills/agent/google-docs-automation/SKILL.md) | Implements intelligent google docs automation with... | google-docs-automation, google docs automation... |
-| [google-drive-automation](../../skills/agent/google-drive-automation/SKILL.md) | Implements intelligent google drive automation with... | google-drive-automation, google drive automation... |
-| [helpdesk-automation](../../skills/agent/helpdesk-automation/SKILL.md) | Implements intelligent helpdesk automation with... | helpdesk-automation, helpdesk automation... |
-| [hierarchical-agent-memory](../../skills/agent/hierarchical-agent-memory/SKILL.md) | Implements intelligent hierarchical agent memory with... | hierarchical-agent-memory, hierarchical agent memory... |
-| [hosted-agents](../../skills/agent/hosted-agents/SKILL.md) | Implements intelligent hosted agents with multi-factor... | hosted-agents, hosted agents... |
-| [hosted-agents-v2-py](../../skills/agent/hosted-agents-v2-py/SKILL.md) | Implements intelligent hosted agents v2 py with... | hosted-agents-v2-py, hosted agents v2 py... |
-| [hot-path-detector](../../skills/agent/hot-path-detector/SKILL.md) | Implements intelligent hot path detector with multi-factor... | hot-path-detector, hot path detector... |
-| [hubspot-automation](../../skills/agent/hubspot-automation/SKILL.md) | Implements intelligent hubspot automation with multi-factor... | hubspot-automation, hubspot automation... |
-| [infra-drift-detector](../../skills/agent/infra-drift-detector/SKILL.md) | Implements intelligent infra drift detector with... | infra-drift-detector, infra drift detector... |
-| [inngest](../../skills/agent/inngest/SKILL.md) | Implements intelligent inngest with multi-factor skill... | inngest, inngest... |
-| [intercom-automation](../../skills/agent/intercom-automation/SKILL.md) | Implements intelligent intercom automation with... | intercom-automation, intercom automation... |
-| [issues](../../skills/agent/issues/SKILL.md) | Implements intelligent issues with multi-factor skill... | issues, issues... |
-| [iterate-pr](../../skills/agent/iterate-pr/SKILL.md) | Implements intelligent iterate pr with multi-factor skill... | iterate-pr, iterate pr... |
-| [k8s-debugger](../../skills/agent/k8s-debugger/SKILL.md) | Implements intelligent k8s debugger with multi-factor skill... | k8s-debugger, k8s debugger... |
-| [kubernetes-deployment](../../skills/agent/kubernetes-deployment/SKILL.md) | Implements intelligent kubernetes deployment with... | kubernetes-deployment, kubernetes deployment... |
-| [lambda-lang](../../skills/agent/lambda-lang/SKILL.md) | Implements intelligent lambda lang with multi-factor skill... | lambda-lang, lambda lang... |
-| [langgraph](../../skills/agent/langgraph/SKILL.md) | Implements intelligent langgraph with multi-factor skill... | langgraph, langgraph... |
-| [lint-and-validate](../../skills/agent/lint-and-validate/SKILL.md) | Implements intelligent lint and validate with multi-factor... | lint-and-validate, lint and validate... |
-| [linux-troubleshooting](../../skills/agent/linux-troubleshooting/SKILL.md) | Implements intelligent linux troubleshooting with... | linux-troubleshooting, linux troubleshooting... |
-| [m365-agents-dotnet](../../skills/agent/m365-agents-dotnet/SKILL.md) | Implements intelligent m365 agents dotnet with multi-factor... | m365-agents-dotnet, m365 agents dotnet... |
-| [m365-agents-ts](../../skills/agent/m365-agents-ts/SKILL.md) | Implements intelligent m365 agents ts with multi-factor... | m365-agents-ts, m365 agents ts... |
-| [make-automation](../../skills/agent/make-automation/SKILL.md) | Implements intelligent make automation with multi-factor... | make-automation, make automation... |
-| [mcp-builder](../../skills/agent/mcp-builder/SKILL.md) | Implements intelligent mcp builder with multi-factor skill... | mcp-builder, mcp builder... |
-| [mcp-builder-ms](../../skills/agent/mcp-builder-ms/SKILL.md) | Implements intelligent mcp builder ms with multi-factor... | mcp-builder-ms, mcp builder ms... |
-| [memory-systems](../../skills/agent/memory-systems/SKILL.md) | Implements intelligent memory systems with multi-factor... | memory-systems, memory systems... |
-| [memory-usage-analyzer](../../skills/agent/memory-usage-analyzer/SKILL.md) | Implements intelligent memory usage analyzer with... | memory-usage-analyzer, memory usage analyzer... |
-| [message-queue-debugging](../../skills/agent/message-queue-debugging/SKILL.md) | Debugs Kafka, RabbitMQ, and SQS message queues with... | kafka troubleshooting, rabbitmq debugging... |
-| [message-queue-troubleshooting](../../skills/agent/message-queue-troubleshooting/SKILL.md) | Implements intelligent message queue troubleshooting for... | message queue troubleshooting, kafka cluster... |
-| [ml-pipeline-workflow](../../skills/agent/ml-pipeline-workflow/SKILL.md) | Implements intelligent ml pipeline workflow with... | ml-pipeline-workflow, ml pipeline workflow... |
-| [multi-advisor](../../skills/agent/multi-advisor/SKILL.md) | Implements intelligent multi advisor with multi-factor... | multi-advisor, multi advisor... |
-| [multi-agent-patterns](../../skills/agent/multi-agent-patterns/SKILL.md) | Implements intelligent multi agent patterns with... | multi-agent-patterns, multi agent patterns... |
-| [multi-agent-task-orchestrator](../../skills/agent/multi-agent-task-orchestrator/SKILL.md) | Implements intelligent multi agent task orchestrator with... | multi-agent-task-orchestrator, multi agent task orchestrator... |
-| [multi-skill-executor](../../skills/agent/multi-skill-executor/SKILL.md) | Implements intelligent multi skill executor with... | multi-skill-executor, multi skill executor... |
-| [n8n-code-javascript](../../skills/agent/n8n-code-javascript/SKILL.md) | Implements intelligent n8n code javascript with... | n8n-code-javascript, n8n code javascript... |
-| [n8n-code-python](../../skills/agent/n8n-code-python/SKILL.md) | Implements intelligent n8n code python with multi-factor... | n8n-code-python, n8n code python... |
-| [n8n-expression-syntax](../../skills/agent/n8n-expression-syntax/SKILL.md) | Implements intelligent n8n expression syntax with... | n8n-expression-syntax, n8n expression syntax... |
-| [n8n-mcp-tools-expert](../../skills/agent/n8n-mcp-tools-expert/SKILL.md) | Implements intelligent n8n mcp tools expert with... | n8n-mcp-tools-expert, n8n mcp tools expert... |
-| [n8n-node-configuration](../../skills/agent/n8n-node-configuration/SKILL.md) | Implements intelligent n8n node configuration with... | n8n-node-configuration, n8n node configuration... |
-| [n8n-validation-expert](../../skills/agent/n8n-validation-expert/SKILL.md) | Implements intelligent n8n validation expert with... | n8n-validation-expert, n8n validation expert... |
-| [n8n-workflow-patterns](../../skills/agent/n8n-workflow-patterns/SKILL.md) | Implements intelligent n8n workflow patterns with... | n8n-workflow-patterns, n8n workflow patterns... |
-| [network-diagnostics](../../skills/agent/network-diagnostics/SKILL.md) | Implements intelligent network diagnostics with... | network-diagnostics, network diagnostics... |
-| [network-troubleshooting](../../skills/agent/network-troubleshooting/SKILL.md) | Diagnoses and resolves network connectivity issues... | network troubleshooting, iptables... |
-| [not-human-search-mcp](../../skills/agent/not-human-search-mcp/SKILL.md) | Implements intelligent not human search mcp with... | not-human-search-mcp, not human search mcp... |
-| [notion-automation](../../skills/agent/notion-automation/SKILL.md) | Implements intelligent notion automation with multi-factor... | notion-automation, notion automation... |
-| [os-scripting](../../skills/agent/os-scripting/SKILL.md) | Implements intelligent os scripting with multi-factor skill... | os-scripting, os scripting... |
-| [outlook-automation](../../skills/agent/outlook-automation/SKILL.md) | Implements intelligent outlook automation with multi-factor... | outlook-automation, outlook automation... |
-| [outlook-calendar-automation](../../skills/agent/outlook-calendar-automation/SKILL.md) | Implements intelligent outlook calendar automation with... | outlook-calendar-automation, outlook calendar automation... |
-| [parallel-agents](../../skills/agent/parallel-agents/SKILL.md) | Implements intelligent parallel agents with multi-factor... | parallel-agents, parallel agents... |
-| [parallel-skill-runner](../../skills/agent/parallel-skill-runner/SKILL.md) | Implements intelligent parallel skill runner with... | parallel-skill-runner, parallel skill runner... |
-| [performance-profiler](../../skills/agent/performance-profiler/SKILL.md) | Implements intelligent performance profiler with... | performance-profiler, performance profiler... |
-| [pipecat-friday-agent](../../skills/agent/pipecat-friday-agent/SKILL.md) | Implements intelligent pipecat friday agent with... | pipecat-friday-agent, pipecat friday agent... |
-| [plan-writing](../../skills/agent/plan-writing/SKILL.md) | Implements intelligent plan writing with multi-factor skill... | plan-writing, plan writing... |
-| [planning-with-files](../../skills/agent/planning-with-files/SKILL.md) | Implements intelligent planning with files with... | planning-with-files, planning with files... |
-| [postgresql-optimization](../../skills/agent/postgresql-optimization/SKILL.md) | Implements intelligent postgresql optimization with... | postgresql-optimization, postgresql optimization... |
-| [pr-writer](../../skills/agent/pr-writer/SKILL.md) | Implements intelligent pr writer with multi-factor skill... | pr-writer, pr writer... |
-| [prompt-engineer](../../skills/agent/prompt-engineer/SKILL.md) | Implements intelligent prompt engineer with multi-factor... | prompt-engineer, prompt engineer... |
-| [pydantic-ai](../../skills/agent/pydantic-ai/SKILL.md) | Implements intelligent pydantic ai with multi-factor skill... | pydantic-ai, pydantic ai... |
-| [python-fastapi-development](../../skills/agent/python-fastapi-development/SKILL.md) | Implements intelligent python fastapi development with... | python-fastapi-development, python fastapi development... |
-| [query-optimizer](../../skills/agent/query-optimizer/SKILL.md) | Implements intelligent query optimizer with multi-factor... | query-optimizer, query optimizer... |
-| [rag-implementation](../../skills/agent/rag-implementation/SKILL.md) | Implements intelligent rag implementation with multi-factor... | rag-implementation, rag implementation... |
-| [react-nextjs-development](../../skills/agent/react-nextjs-development/SKILL.md) | Implements intelligent react nextjs development with... | react-nextjs-development, react nextjs development... |
-| [recallmax](../../skills/agent/recallmax/SKILL.md) | Implements intelligent recallmax with multi-factor skill... | recallmax, recallmax... |
-| [receiving-code-review](../../skills/agent/receiving-code-review/SKILL.md) | Implements intelligent receiving code review with... | receiving-code-review, receiving code review... |
-| [regression-detector](../../skills/agent/regression-detector/SKILL.md) | Implements intelligent regression detector with... | regression-detector, regression detector... |
-| [render-automation](../../skills/agent/render-automation/SKILL.md) | Implements intelligent render automation with multi-factor... | render-automation, render automation... |
-| [requesting-code-review](../../skills/agent/requesting-code-review/SKILL.md) | Implements intelligent requesting code review with... | requesting-code-review, requesting code review... |
-| [resource-optimizer](../../skills/agent/resource-optimizer/SKILL.md) | Implements intelligent resource optimizer with multi-factor... | resource-optimizer, resource optimizer... |
-| [runtime-log-analyzer](../../skills/agent/runtime-log-analyzer/SKILL.md) | Implements intelligent runtime log analyzer with... | runtime-log-analyzer, runtime log analyzer... |
-| [schema-inference-engine](../../skills/agent/schema-inference-engine/SKILL.md) | Implements intelligent schema inference engine with... | schema-inference-engine, schema inference engine... |
-| [security-audit](../../skills/agent/security-audit/SKILL.md) | Implements intelligent security audit with multi-factor... | security-audit, security audit... |
-| [self-critique-engine](../../skills/agent/self-critique-engine/SKILL.md) | Implements intelligent self critique engine with... | self-critique-engine, self critique engine... |
-| [sendgrid-automation](../../skills/agent/sendgrid-automation/SKILL.md) | Implements intelligent sendgrid automation with... | sendgrid-automation, sendgrid automation... |
-| [shopify-automation](../../skills/agent/shopify-automation/SKILL.md) | Implements intelligent shopify automation with multi-factor... | shopify-automation, shopify automation... |
-| [skill-creator](../../skills/agent/skill-creator/SKILL.md) | Implements intelligent skill creator with multi-factor... | skill-creator, skill creator... |
-| [skill-creator-ms](../../skills/agent/skill-creator-ms/SKILL.md) | Implements intelligent skill creator ms with multi-factor... | skill-creator-ms, skill creator ms... |
-| [skill-developer](../../skills/agent/skill-developer/SKILL.md) | Implements intelligent skill developer with multi-factor... | skill-developer, skill developer... |
-| [skill-improver](../../skills/agent/skill-improver/SKILL.md) | Implements intelligent skill improver with multi-factor... | skill-improver, skill improver... |
-| [skill-installer](../../skills/agent/skill-installer/SKILL.md) | Implements intelligent skill installer with multi-factor... | skill-installer, skill installer... |
-| [skill-optimizer](../../skills/agent/skill-optimizer/SKILL.md) | Implements intelligent skill optimizer with multi-factor... | skill-optimizer, skill optimizer... |
-| [skill-rails-upgrade](../../skills/agent/skill-rails-upgrade/SKILL.md) | Implements intelligent skill rails upgrade with... | skill-rails-upgrade, skill rails upgrade... |
-| [skill-router](../../skills/agent/skill-router/SKILL.md) | Implements intelligent skill router with multi-factor skill... | skill-router, skill router... |
-| [skill-scanner](../../skills/agent/skill-scanner/SKILL.md) | Implements intelligent skill scanner with multi-factor... | skill-scanner, skill scanner... |
-| [skill-seekers](../../skills/agent/skill-seekers/SKILL.md) | Implements intelligent skill seekers with multi-factor... | skill-seekers, skill seekers... |
-| [skill-sentinel](../../skills/agent/skill-sentinel/SKILL.md) | Implements intelligent skill sentinel with multi-factor... | skill-sentinel, skill sentinel... |
-| [skill-writer](../../skills/agent/skill-writer/SKILL.md) | Implements intelligent skill writer with multi-factor skill... | skill-writer, skill writer... |
-| [slack-automation](../../skills/agent/slack-automation/SKILL.md) | Implements intelligent slack automation with multi-factor... | slack-automation, slack automation... |
-| [stacktrace-root-cause](../../skills/agent/stacktrace-root-cause/SKILL.md) | Implements intelligent stacktrace root cause with... | stacktrace-root-cause, stacktrace root cause... |
-| [stripe-automation](../../skills/agent/stripe-automation/SKILL.md) | Implements intelligent stripe automation with multi-factor... | stripe-automation, stripe automation... |
-| [subagent-driven-development](../../skills/agent/subagent-driven-development/SKILL.md) | Implements intelligent subagent driven development with... | subagent-driven-development, subagent driven development... |
-| [task-decomposition-engine](../../skills/agent/task-decomposition-engine/SKILL.md) | Implements intelligent task decomposition engine with... | task-decomposition-engine, task decomposition engine... |
-| [task-intelligence](../../skills/agent/task-intelligence/SKILL.md) | Implements intelligent task intelligence with multi-factor... | task-intelligence, task intelligence... |
-| [temporal-golang-pro](../../skills/agent/temporal-golang-pro/SKILL.md) | Implements intelligent temporal golang pro with... | temporal-golang-pro, temporal golang pro... |
-| [temporal-python-pro](../../skills/agent/temporal-python-pro/SKILL.md) | Implements intelligent temporal python pro with... | temporal-python-pro, temporal python pro... |
-| [terraform-infrastructure](../../skills/agent/terraform-infrastructure/SKILL.md) | Implements intelligent terraform infrastructure with... | terraform-infrastructure, terraform infrastructure... |
-| [test-oracle-generator](../../skills/agent/test-oracle-generator/SKILL.md) | Implements intelligent test oracle generator with... | test-oracle-generator, test oracle generator... |
-| [testing-qa](../../skills/agent/testing-qa/SKILL.md) | Implements intelligent testing qa with multi-factor skill... | testing-qa, testing qa... |
-| [track-management](../../skills/agent/track-management/SKILL.md) | Implements intelligent track management with multi-factor... | track-management, track management... |
-| [trigger-dev](../../skills/agent/trigger-dev/SKILL.md) | Implements intelligent trigger dev with multi-factor skill... | trigger-dev, trigger dev... |
-| [upstash-qstash](../../skills/agent/upstash-qstash/SKILL.md) | Implements intelligent upstash qstash with multi-factor... | upstash-qstash, upstash qstash... |
-| [using-superpowers](../../skills/agent/using-superpowers/SKILL.md) | Implements intelligent using superpowers with multi-factor... | using-superpowers, using superpowers... |
-| [verification-before-completion](../../skills/agent/verification-before-completion/SKILL.md) | Implements intelligent verification before completion with... | verification-before-completion, verification before completion... |
-| [viboscope](../../skills/agent/viboscope/SKILL.md) | Implements intelligent viboscope with multi-factor skill... | viboscope, viboscope... |
-| [voice-ai-development](../../skills/agent/voice-ai-development/SKILL.md) | Implements intelligent voice ai development with... | voice-ai-development, voice ai development... |
-| [web-security-testing](../../skills/agent/web-security-testing/SKILL.md) | Implements intelligent web security testing with... | web-security-testing, web security testing... |
-| [wordpress](../../skills/agent/wordpress/SKILL.md) | Implements intelligent wordpress with multi-factor skill... | wordpress, wordpress... |
-| [wordpress-plugin-development](../../skills/agent/wordpress-plugin-development/SKILL.md) | Implements intelligent wordpress plugin development with... | wordpress-plugin-development, wordpress plugin development... |
-| [wordpress-theme-development](../../skills/agent/wordpress-theme-development/SKILL.md) | Implements intelligent wordpress theme development with... | wordpress-theme-development, wordpress theme development... |
-| [wordpress-woocommerce-development](../../skills/agent/wordpress-woocommerce-development/SKILL.md) | Implements intelligent wordpress woocommerce development... | wordpress-woocommerce-development, wordpress woocommerce development... |
-| [workflow-automation](../../skills/agent/workflow-automation/SKILL.md) | Implements intelligent workflow automation with... | workflow-automation, workflow automation... |
-| [workflow-orchestration-patterns](../../skills/agent/workflow-orchestration-patterns/SKILL.md) | Implements intelligent workflow orchestration patterns with... | workflow-orchestration-patterns, workflow orchestration patterns... |
-| [workflow-patterns](../../skills/agent/workflow-patterns/SKILL.md) | Implements intelligent workflow patterns with multi-factor... | workflow-patterns, workflow patterns... |
-| [writing-plans](../../skills/agent/writing-plans/SKILL.md) | Implements intelligent writing plans with multi-factor... | writing-plans, writing plans... |
-| [writing-skills](../../skills/agent/writing-skills/SKILL.md) | Implements intelligent writing skills with multi-factor... | writing-skills, writing skills... |
-| [zapier-make-patterns](../../skills/agent/zapier-make-patterns/SKILL.md) | Implements intelligent zapier make patterns with... | zapier-make-patterns, zapier make patterns... |
-| [zendesk-automation](../../skills/agent/zendesk-automation/SKILL.md) | Implements intelligent zendesk automation with multi-factor... | zendesk-automation, zendesk automation... |
-| [zipai-optimizer](../../skills/agent/zipai-optimizer/SKILL.md) | Implements intelligent zipai optimizer with multi-factor... | zipai-optimizer, zipai optimizer... |
-| [zoom-automation](../../skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor... | zoom-automation, zoom automation... |
+| [acceptance-orchestrator](skills/agent/acceptance-orchestrator/SKILL.md) | Implements intelligent acceptance orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | acceptance-orchestrator, acceptance orchestrator, how do i acceptance-orchestrator, orchestrate acceptance-orchestrator, automate acceptance-orchestrator, agent acceptance-orchestrator |
+| [address-github-comments](skills/agent/address-github-comments/SKILL.md) | Implements intelligent address github comments with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | address-github-comments, address github comments, how do i address-github-comments, orchestrate address-github-comments, automate address-github-comments, agent address-github-comments |
+| [agent-evaluation](skills/agent/agent-evaluation/SKILL.md) | Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | agent-evaluation, agent evaluation, how do i agent-evaluation, orchestrate agent-evaluation, automate agent-evaluation, agent agent-evaluation |
+| [agent-manager-skill](skills/agent/agent-manager-skill/SKILL.md) | Implements intelligent agent manager skill with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | agent-manager-skill, agent manager skill, how do i agent-manager-skill, orchestrate agent-manager-skill, automate agent-manager-skill, agent agent-manager-skill |
+| [agent-memory-systems](skills/agent/agent-memory-systems/SKILL.md) | Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | agent-memory-systems, agent memory systems, how do i agent-memory-systems, orchestrate agent-memory-systems, automate agent-memory-systems, agent agent-memory-systems |
+| [ai-agent-development](skills/agent/ai-agent-development/SKILL.md) | Implements intelligent ai agent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ai-agent-development, ai agent development, how do i ai-agent-development, orchestrate ai-agent-development, automate ai-agent-development, agent ai-agent-development |
+| [ai-agents-architect](skills/agent/ai-agents-architect/SKILL.md) | Implements intelligent ai agents architect with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ai-agents-architect, ai agents architect, how do i ai-agents-architect, orchestrate ai-agents-architect, automate ai-agents-architect, agent ai-agents-architect |
+| [ai-dev-jobs-mcp](skills/agent/ai-dev-jobs-mcp/SKILL.md) | Implements intelligent ai dev jobs mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ai-dev-jobs-mcp, ai dev jobs mcp, how do i ai-dev-jobs-mcp, orchestrate ai-dev-jobs-mcp, automate ai-dev-jobs-mcp, agent ai-dev-jobs-mcp |
+| [ai-ml](skills/agent/ai-ml/SKILL.md) | Implements intelligent ai ml with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ai-ml, ai ml, how do i ai-ml, orchestrate ai-ml, automate ai-ml, agent ai-ml |
+| [airflow-dag-patterns](skills/agent/airflow-dag-patterns/SKILL.md) | Implements intelligent airflow dag patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | airflow-dag-patterns, airflow dag patterns, how do i airflow-dag-patterns, orchestrate airflow-dag-patterns, automate airflow-dag-patterns, agent airflow-dag-patterns, workflow orchestration, airflow |
+| [airtable-automation](skills/agent/airtable-automation/SKILL.md) | Implements intelligent airtable automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | airtable-automation, airtable automation, how do i airtable-automation, orchestrate airtable-automation, automate airtable-automation, agent airtable-automation |
+| [analyze-project](skills/agent/analyze-project/SKILL.md) | Implements intelligent analyze project with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | analyze-project, analyze project, how do i analyze-project, orchestrate analyze-project, automate analyze-project, agent analyze-project |
+| [andruia-consultant](skills/agent/andruia-consultant/SKILL.md) | Implements intelligent andruia consultant with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | andruia-consultant, andruia consultant, how do i andruia-consultant, orchestrate andruia-consultant, automate andruia-consultant, agent andruia-consultant |
+| [andruia-niche-intelligence](skills/agent/andruia-niche-intelligence/SKILL.md) | Implements intelligent andruia niche intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | andruia-niche-intelligence, andruia niche intelligence, how do i andruia-niche-intelligence, orchestrate andruia-niche-intelligence, automate andruia-niche-intelligence, agent andruia-niche-intelligence |
+| [andruia-skill-smith](skills/agent/andruia-skill-smith/SKILL.md) | Implements intelligent andruia skill smith with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | andruia-skill-smith, andruia skill smith, how do i andruia-skill-smith, orchestrate andruia-skill-smith, automate andruia-skill-smith, agent andruia-skill-smith |
+| [antigravity-skill-orchestrator](skills/agent/antigravity-skill-orchestrator/SKILL.md) | Implements intelligent antigravity skill orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | antigravity-skill-orchestrator, antigravity skill orchestrator, how do i antigravity-skill-orchestrator, orchestrate antigravity-skill-orchestrator, automate antigravity-skill-orchestrator, agent antigravity-skill-orchestrator |
+| [antigravity-workflows](skills/agent/antigravity-workflows/SKILL.md) | Implements intelligent antigravity workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | antigravity-workflows, antigravity workflows, how do i antigravity-workflows, orchestrate antigravity-workflows, automate antigravity-workflows, agent antigravity-workflows |
+| [api-documentation](skills/agent/api-documentation/SKILL.md) | Implements intelligent api documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | api-documentation, api documentation, how do i api-documentation, orchestrate api-documentation, automate api-documentation, agent api-documentation |
+| [api-security-testing](skills/agent/api-security-testing/SKILL.md) | Implements intelligent api security testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | api-security-testing, api security testing, how do i api-security-testing, orchestrate api-security-testing, automate api-security-testing, agent api-security-testing, unit tests, vulnerability scanning |
+| [apify-actor-development](skills/agent/apify-actor-development/SKILL.md) | Implements intelligent apify actor development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-actor-development, apify actor development, how do i apify-actor-development, orchestrate apify-actor-development, automate apify-actor-development, agent apify-actor-development |
+| [apify-actorization](skills/agent/apify-actorization/SKILL.md) | Implements intelligent apify actorization with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-actorization, apify actorization, how do i apify-actorization, orchestrate apify-actorization, automate apify-actorization, agent apify-actorization |
+| [apify-audience-analysis](skills/agent/apify-audience-analysis/SKILL.md) | Implements intelligent apify audience analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-audience-analysis, apify audience analysis, how do i apify-audience-analysis, orchestrate apify-audience-analysis, automate apify-audience-analysis, agent apify-audience-analysis |
+| [apify-brand-reputation-monitoring](skills/agent/apify-brand-reputation-monitoring/SKILL.md) | Implements intelligent apify brand reputation monitoring with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-brand-reputation-monitoring, apify brand reputation monitoring, how do i apify-brand-reputation-monitoring, orchestrate apify-brand-reputation-monitoring, automate apify-brand-reputation-monitoring, agent apify-brand-reputation-monitoring |
+| [apify-competitor-intelligence](skills/agent/apify-competitor-intelligence/SKILL.md) | Implements intelligent apify competitor intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-competitor-intelligence, apify competitor intelligence, how do i apify-competitor-intelligence, orchestrate apify-competitor-intelligence, automate apify-competitor-intelligence, agent apify-competitor-intelligence |
+| [apify-content-analytics](skills/agent/apify-content-analytics/SKILL.md) | Implements intelligent apify content analytics with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-content-analytics, apify content analytics, how do i apify-content-analytics, orchestrate apify-content-analytics, automate apify-content-analytics, agent apify-content-analytics |
+| [apify-ecommerce](skills/agent/apify-ecommerce/SKILL.md) | Implements intelligent apify ecommerce with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-ecommerce, apify ecommerce, how do i apify-ecommerce, orchestrate apify-ecommerce, automate apify-ecommerce, agent apify-ecommerce |
+| [apify-influencer-discovery](skills/agent/apify-influencer-discovery/SKILL.md) | Implements intelligent apify influencer discovery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-influencer-discovery, apify influencer discovery, how do i apify-influencer-discovery, orchestrate apify-influencer-discovery, automate apify-influencer-discovery, agent apify-influencer-discovery |
+| [apify-lead-generation](skills/agent/apify-lead-generation/SKILL.md) | Implements intelligent apify lead generation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-lead-generation, apify lead generation, how do i apify-lead-generation, orchestrate apify-lead-generation, automate apify-lead-generation, agent apify-lead-generation |
+| [apify-market-research](skills/agent/apify-market-research/SKILL.md) | Implements intelligent apify market research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-market-research, apify market research, how do i apify-market-research, orchestrate apify-market-research, automate apify-market-research, agent apify-market-research |
+| [apify-trend-analysis](skills/agent/apify-trend-analysis/SKILL.md) | Implements intelligent apify trend analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-trend-analysis, apify trend analysis, how do i apify-trend-analysis, orchestrate apify-trend-analysis, automate apify-trend-analysis, agent apify-trend-analysis |
+| [apify-ultimate-scraper](skills/agent/apify-ultimate-scraper/SKILL.md) | Implements intelligent apify ultimate scraper with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | apify-ultimate-scraper, apify ultimate scraper, how do i apify-ultimate-scraper, orchestrate apify-ultimate-scraper, automate apify-ultimate-scraper, agent apify-ultimate-scraper |
+| [ask-questions-if-underspecified](skills/agent/ask-questions-if-underspecified/SKILL.md) | Implements intelligent ask questions if underspecified with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ask-questions-if-underspecified, ask questions if underspecified, how do i ask-questions-if-underspecified, orchestrate ask-questions-if-underspecified, automate ask-questions-if-underspecified, agent ask-questions-if-underspecified |
+| [audio-transcriber](skills/agent/audio-transcriber/SKILL.md) | Implements intelligent audio transcriber with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | audio-transcriber, audio transcriber, how do i audio-transcriber, orchestrate audio-transcriber, automate audio-transcriber, agent audio-transcriber |
+| [audit-context-building](skills/agent/audit-context-building/SKILL.md) | Implements intelligent audit context building with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | audit-context-building, audit context building, how do i audit-context-building, orchestrate audit-context-building, automate audit-context-building, agent audit-context-building |
+| [auri-core](skills/agent/auri-core/SKILL.md) | Implements intelligent auri core with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | auri-core, auri core, how do i auri-core, orchestrate auri-core, automate auri-core, agent auri-core |
+| [bash-scripting](skills/agent/bash-scripting/SKILL.md) | Implements intelligent bash scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | bash-scripting, bash scripting, how do i bash-scripting, orchestrate bash-scripting, automate bash-scripting, agent bash-scripting |
+| [bdistill-behavioral-xray](skills/agent/bdistill-behavioral-xray/SKILL.md) | Implements intelligent bdistill behavioral xray with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | bdistill-behavioral-xray, bdistill behavioral xray, how do i bdistill-behavioral-xray, orchestrate bdistill-behavioral-xray, automate bdistill-behavioral-xray, agent bdistill-behavioral-xray, distributed tracing, xray |
+| [behavioral-modes](skills/agent/behavioral-modes/SKILL.md) | Implements intelligent behavioral modes with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | behavioral-modes, behavioral modes, how do i behavioral-modes, orchestrate behavioral-modes, automate behavioral-modes, agent behavioral-modes |
+| [bitbucket-automation](skills/agent/bitbucket-automation/SKILL.md) | Implements intelligent bitbucket automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | bitbucket-automation, bitbucket automation, how do i bitbucket-automation, orchestrate bitbucket-automation, automate bitbucket-automation, agent bitbucket-automation |
+| [blueprint](skills/agent/blueprint/SKILL.md) | Implements intelligent blueprint with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | blueprint, blueprint, how do i blueprint, orchestrate blueprint, automate blueprint, agent blueprint |
+| [build](skills/agent/build/SKILL.md) | Implements intelligent build with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | build, build, how do i build, orchestrate build, automate build, agent build |
+| [cc-skill-backend-patterns](skills/agent/cc-skill-backend-patterns/SKILL.md) | Implements intelligent cc skill backend patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-backend-patterns, cc skill backend patterns, how do i cc-skill-backend-patterns, orchestrate cc-skill-backend-patterns, automate cc-skill-backend-patterns, agent cc-skill-backend-patterns |
+| [cc-skill-clickhouse-io](skills/agent/cc-skill-clickhouse-io/SKILL.md) | Implements intelligent cc skill clickhouse io with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-clickhouse-io, cc skill clickhouse io, how do i cc-skill-clickhouse-io, orchestrate cc-skill-clickhouse-io, automate cc-skill-clickhouse-io, agent cc-skill-clickhouse-io |
+| [cc-skill-coding-standards](skills/agent/cc-skill-coding-standards/SKILL.md) | Implements intelligent cc skill coding standards with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-coding-standards, cc skill coding standards, how do i cc-skill-coding-standards, orchestrate cc-skill-coding-standards, automate cc-skill-coding-standards, agent cc-skill-coding-standards |
+| [cc-skill-continuous-learning](skills/agent/cc-skill-continuous-learning/SKILL.md) | Implements intelligent cc skill continuous learning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-continuous-learning, cc skill continuous learning, how do i cc-skill-continuous-learning, orchestrate cc-skill-continuous-learning, automate cc-skill-continuous-learning, agent cc-skill-continuous-learning |
+| [cc-skill-frontend-patterns](skills/agent/cc-skill-frontend-patterns/SKILL.md) | Implements intelligent cc skill frontend patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-frontend-patterns, cc skill frontend patterns, how do i cc-skill-frontend-patterns, orchestrate cc-skill-frontend-patterns, automate cc-skill-frontend-patterns, agent cc-skill-frontend-patterns |
+| [cc-skill-project-guidelines-example](skills/agent/cc-skill-project-guidelines-example/SKILL.md) | Implements intelligent cc skill project guidelines example with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-project-guidelines-example, cc skill project guidelines example, how do i cc-skill-project-guidelines-example, orchestrate cc-skill-project-guidelines-example, automate cc-skill-project-guidelines-example, agent cc-skill-project-guidelines-example |
+| [cc-skill-security-review](skills/agent/cc-skill-security-review/SKILL.md) | Implements intelligent cc skill security review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-security-review, cc skill security review, how do i cc-skill-security-review, orchestrate cc-skill-security-review, automate cc-skill-security-review, agent cc-skill-security-review, vulnerability scanning, security |
+| [cc-skill-strategic-compact](skills/agent/cc-skill-strategic-compact/SKILL.md) | Implements intelligent cc skill strategic compact with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cc-skill-strategic-compact, cc skill strategic compact, how do i cc-skill-strategic-compact, orchestrate cc-skill-strategic-compact, automate cc-skill-strategic-compact, agent cc-skill-strategic-compact |
+| [changelog-automation](skills/agent/changelog-automation/SKILL.md) | Implements intelligent changelog automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | changelog-automation, changelog automation, how do i changelog-automation, orchestrate changelog-automation, automate changelog-automation, agent changelog-automation |
+| [ci-cd-pipeline-analyzer](skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Implements intelligent ci cd pipeline analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ci-cd-pipeline-analyzer, ci cd pipeline analyzer, how do i ci-cd-pipeline-analyzer, orchestrate ci-cd-pipeline-analyzer, automate ci-cd-pipeline-analyzer, agent ci-cd-pipeline-analyzer |
+| [cicd-automation-workflow-automate](skills/agent/cicd-automation-workflow-automate/SKILL.md) | Implements intelligent cicd automation workflow automate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cicd-automation-workflow-automate, cicd automation workflow automate, how do i cicd-automation-workflow-automate, orchestrate cicd-automation-workflow-automate, automate cicd-automation-workflow-automate, agent cicd-automation-workflow-automate |
+| [cicd-pipeline-debugging](skills/agent/cicd-pipeline-debugging/SKILL.md) | Debugging patterns for GitHub Actions, GitLab CI, Jenkins and other CI/CD systems including log analysis, runner issues, cache problems, and workflow optimization | github actions debugging, gitlab ci troubleshooting, jenkins pipeline, ci cd failures, build errors, workflow debugging, pipeline logs, runner issues |
+| [cicd-pipeline-troubleshooting](skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns. | ci cd troubleshooting, pipeline failure, build cache, parallel build, artifact resolution, github actions, gitlab ci, how do i debug pipelines |
+| [circleci-automation](skills/agent/circleci-automation/SKILL.md) | Implements intelligent circleci automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | circleci-automation, circleci automation, how do i circleci-automation, orchestrate circleci-automation, automate circleci-automation, agent circleci-automation, continuous integration, jenkins |
+| [clickup-automation](skills/agent/clickup-automation/SKILL.md) | Implements intelligent clickup automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | clickup-automation, clickup automation, how do i clickup-automation, orchestrate clickup-automation, automate clickup-automation, agent clickup-automation |
+| [closed-loop-delivery](skills/agent/closed-loop-delivery/SKILL.md) | Implements intelligent closed loop delivery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | closed-loop-delivery, closed loop delivery, how do i closed-loop-delivery, orchestrate closed-loop-delivery, automate closed-loop-delivery, agent closed-loop-delivery |
+| [cloud-devops](skills/agent/cloud-devops/SKILL.md) | Implements intelligent cloud devops with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | cloud-devops, cloud devops, how do i cloud-devops, orchestrate cloud-devops, automate cloud-devops, agent cloud-devops |
+| [code-correctness-verifier](skills/agent/code-correctness-verifier/SKILL.md) | Implements intelligent code correctness verifier with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | code-correctness-verifier, code correctness verifier, how do i code-correctness-verifier, orchestrate code-correctness-verifier, automate code-correctness-verifier, agent code-correctness-verifier |
+| [commit](skills/agent/commit/SKILL.md) | Implements intelligent commit with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | commit, commit, how do i commit, orchestrate commit, automate commit, agent commit |
+| [concise-planning](skills/agent/concise-planning/SKILL.md) | Implements intelligent concise planning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | concise-planning, concise planning, how do i concise-planning, orchestrate concise-planning, automate concise-planning, agent concise-planning |
+| [conductor-implement](skills/agent/conductor-implement/SKILL.md) | Implements intelligent conductor implement with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-implement, conductor implement, how do i conductor-implement, orchestrate conductor-implement, automate conductor-implement, agent conductor-implement |
+| [conductor-manage](skills/agent/conductor-manage/SKILL.md) | Implements intelligent conductor manage with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-manage, conductor manage, how do i conductor-manage, orchestrate conductor-manage, automate conductor-manage, agent conductor-manage |
+| [conductor-new-track](skills/agent/conductor-new-track/SKILL.md) | Implements intelligent conductor new track with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-new-track, conductor new track, how do i conductor-new-track, orchestrate conductor-new-track, automate conductor-new-track, agent conductor-new-track |
+| [conductor-revert](skills/agent/conductor-revert/SKILL.md) | Implements intelligent conductor revert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-revert, conductor revert, how do i conductor-revert, orchestrate conductor-revert, automate conductor-revert, agent conductor-revert |
+| [conductor-setup](skills/agent/conductor-setup/SKILL.md) | Implements intelligent conductor setup with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-setup, conductor setup, how do i conductor-setup, orchestrate conductor-setup, automate conductor-setup, agent conductor-setup |
+| [conductor-status](skills/agent/conductor-status/SKILL.md) | Implements intelligent conductor status with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-status, conductor status, how do i conductor-status, orchestrate conductor-status, automate conductor-status, agent conductor-status |
+| [conductor-validator](skills/agent/conductor-validator/SKILL.md) | Implements intelligent conductor validator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conductor-validator, conductor validator, how do i conductor-validator, orchestrate conductor-validator, automate conductor-validator, agent conductor-validator |
+| [confidence-based-selector](skills/agent/confidence-based-selector/SKILL.md) | Implements intelligent confidence based selector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | confidence-based-selector, confidence based selector, how do i confidence-based-selector, orchestrate confidence-based-selector, automate confidence-based-selector, agent confidence-based-selector |
+| [container-inspector](skills/agent/container-inspector/SKILL.md) | Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | container-inspector, container inspector, how do i container-inspector, orchestrate container-inspector, automate container-inspector, agent container-inspector |
+| [context-window-management](skills/agent/context-window-management/SKILL.md) | Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | context-window-management, context window management, how do i context-window-management, orchestrate context-window-management, automate context-window-management, agent context-window-management |
+| [context7-auto-research](skills/agent/context7-auto-research/SKILL.md) | Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | context7-auto-research, context7 auto research, how do i context7-auto-research, orchestrate context7-auto-research, automate context7-auto-research, agent context7-auto-research |
+| [conversation-memory](skills/agent/conversation-memory/SKILL.md) | Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conversation-memory, conversation memory, how do i conversation-memory, orchestrate conversation-memory, automate conversation-memory, agent conversation-memory |
+| [create-branch](skills/agent/create-branch/SKILL.md) | Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | create-branch, create branch, how do i create-branch, orchestrate create-branch, automate create-branch, agent create-branch |
+| [create-issue-gate](skills/agent/create-issue-gate/SKILL.md) | Implements intelligent create issue gate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | create-issue-gate, create issue gate, how do i create-issue-gate, orchestrate create-issue-gate, automate create-issue-gate, agent create-issue-gate |
+| [create-pr](skills/agent/create-pr/SKILL.md) | Implements intelligent create pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | create-pr, create pr, how do i create-pr, orchestrate create-pr, automate create-pr, agent create-pr |
+| [database](skills/agent/database/SKILL.md) | Implements intelligent database with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | database, database, how do i database, orchestrate database, automate database, agent database |
+| [database-admin](skills/agent/database-admin/SKILL.md) | Implements database administration best practices (PostgreSQL tuning, MySQL replication, MongoDB sharding, Redis optimization) with real operational commands and query analysis patterns. | database administration, postgresql tuning, connection pooling, query optimization, vacuuming, mysql replication, mongodb sharding, redis memory |
+| [dependency-graph-builder](skills/agent/dependency-graph-builder/SKILL.md) | Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | dependency-graph-builder, dependency graph builder, how do i dependency-graph-builder, orchestrate dependency-graph-builder, automate dependency-graph-builder, agent dependency-graph-builder |
+| [development](skills/agent/development/SKILL.md) | Implements intelligent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | development, development, how do i development, orchestrate development, automate development, agent development |
+| [diary](skills/agent/diary/SKILL.md) | Implements intelligent diary with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | diary, diary, how do i diary, orchestrate diary, automate diary, agent diary |
+| [diff-quality-analyzer](skills/agent/diff-quality-analyzer/SKILL.md) | Implements intelligent diff quality analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | diff-quality-analyzer, diff quality analyzer, how do i diff-quality-analyzer, orchestrate diff-quality-analyzer, automate diff-quality-analyzer, agent diff-quality-analyzer |
+| [dispatching-parallel-agents](skills/agent/dispatching-parallel-agents/SKILL.md) | Implements intelligent dispatching parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | dispatching-parallel-agents, dispatching parallel agents, how do i dispatching-parallel-agents, orchestrate dispatching-parallel-agents, automate dispatching-parallel-agents, agent dispatching-parallel-agents |
+| [docker-debugging](skills/agent/docker-debugging/SKILL.md) | Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization | docker debugging, container crash, oom error, network troubleshooting, docker compose, container logs, how do i debug docker, volume mount |
+| [documentation](skills/agent/documentation/SKILL.md) | Implements intelligent documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | documentation, documentation, how do i documentation, orchestrate documentation, automate documentation, agent documentation |
+| [dynamic-replanner](skills/agent/dynamic-replanner/SKILL.md) | Implements intelligent dynamic replanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | dynamic-replanner, dynamic replanner, how do i dynamic-replanner, orchestrate dynamic-replanner, automate dynamic-replanner, agent dynamic-replanner |
+| [e2e-testing](skills/agent/e2e-testing/SKILL.md) | Implements intelligent e2e testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | e2e-testing, e2e testing, how do i e2e-testing, orchestrate e2e-testing, automate e2e-testing, agent e2e-testing, selenium, unit tests |
+| [error-trace-explainer](skills/agent/error-trace-explainer/SKILL.md) | Implements intelligent error trace explainer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | error-trace-explainer, error trace explainer, how do i error-trace-explainer, orchestrate error-trace-explainer, automate error-trace-explainer, agent error-trace-explainer |
+| [executing-plans](skills/agent/executing-plans/SKILL.md) | Implements intelligent executing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | executing-plans, executing plans, how do i executing-plans, orchestrate executing-plans, automate executing-plans, agent executing-plans |
+| [failure-mode-analysis](skills/agent/failure-mode-analysis/SKILL.md) | Implements intelligent failure mode analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | failure-mode-analysis, failure mode analysis, how do i failure-mode-analysis, orchestrate failure-mode-analysis, automate failure-mode-analysis, agent failure-mode-analysis |
+| [fal-audio](skills/agent/fal-audio/SKILL.md) | Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | fal-audio, fal audio, how do i fal-audio, orchestrate fal-audio, automate fal-audio, agent fal-audio |
+| [filesystem-context](skills/agent/filesystem-context/SKILL.md) | Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | filesystem-context, filesystem context, how do i filesystem-context, orchestrate filesystem-context, automate filesystem-context, agent filesystem-context |
+| [finishing-a-development-branch](skills/agent/finishing-a-development-branch/SKILL.md) | Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | finishing-a-development-branch, finishing a development branch, how do i finishing-a-development-branch, orchestrate finishing-a-development-branch, automate finishing-a-development-branch, agent finishing-a-development-branch |
+| [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | freshdesk-automation, freshdesk automation, how do i freshdesk-automation, orchestrate freshdesk-automation, automate freshdesk-automation, agent freshdesk-automation |
+| [full-stack-orchestration-full-stack-feature](skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | full-stack-orchestration-full-stack-feature, full stack orchestration full stack feature, how do i full-stack-orchestration-full-stack-feature, orchestrate full-stack-orchestration-full-stack-feature, automate full-stack-orchestration-full-stack-feature, agent full-stack-orchestration-full-stack-feature |
+| [gemini-api-integration](skills/agent/gemini-api-integration/SKILL.md) | Implements intelligent gemini api integration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | gemini-api-integration, gemini api integration, how do i gemini-api-integration, orchestrate gemini-api-integration, automate gemini-api-integration, agent gemini-api-integration |
+| [gh-review-requests](skills/agent/gh-review-requests/SKILL.md) | Implements intelligent gh review requests with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | gh-review-requests, gh review requests, how do i gh-review-requests, orchestrate gh-review-requests, automate gh-review-requests, agent gh-review-requests |
+| [git-advanced-workflows](skills/agent/git-advanced-workflows/SKILL.md) | Implements intelligent git advanced workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-advanced-workflows, git advanced workflows, how do i git-advanced-workflows, orchestrate git-advanced-workflows, automate git-advanced-workflows, agent git-advanced-workflows |
+| [git-hooks-automation](skills/agent/git-hooks-automation/SKILL.md) | Implements intelligent git hooks automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-hooks-automation, git hooks automation, how do i git-hooks-automation, orchestrate git-hooks-automation, automate git-hooks-automation, agent git-hooks-automation |
+| [git-pr-workflows-git-workflow](skills/agent/git-pr-workflows-git-workflow/SKILL.md) | Implements intelligent git pr workflows git workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pr-workflows-git-workflow, git pr workflows git workflow, how do i git-pr-workflows-git-workflow, orchestrate git-pr-workflows-git-workflow, automate git-pr-workflows-git-workflow, agent git-pr-workflows-git-workflow |
+| [git-pr-workflows-onboard](skills/agent/git-pr-workflows-onboard/SKILL.md) | Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pr-workflows-onboard, git pr workflows onboard, how do i git-pr-workflows-onboard, orchestrate git-pr-workflows-onboard, automate git-pr-workflows-onboard, agent git-pr-workflows-onboard |
+| [git-pr-workflows-pr-enhance](skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pr-workflows-pr-enhance, git pr workflows pr enhance, how do i git-pr-workflows-pr-enhance, orchestrate git-pr-workflows-pr-enhance, automate git-pr-workflows-pr-enhance, agent git-pr-workflows-pr-enhance |
+| [git-pushing](skills/agent/git-pushing/SKILL.md) | Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pushing, git pushing, how do i git-pushing, orchestrate git-pushing, automate git-pushing, agent git-pushing |
+| [github-actions-templates](skills/agent/github-actions-templates/SKILL.md) | Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | github-actions-templates, github actions templates, how do i github-actions-templates, orchestrate github-actions-templates, automate github-actions-templates, agent github-actions-templates |
+| [github-automation](skills/agent/github-automation/SKILL.md) | Implements intelligent github automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | github-automation, github automation, how do i github-automation, orchestrate github-automation, automate github-automation, agent github-automation |
+| [github-workflow-automation](skills/agent/github-workflow-automation/SKILL.md) | Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | github-workflow-automation, github workflow automation, how do i github-workflow-automation, orchestrate github-workflow-automation, automate github-workflow-automation, agent github-workflow-automation |
+| [gitlab-automation](skills/agent/gitlab-automation/SKILL.md) | Implements intelligent gitlab automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | gitlab-automation, gitlab automation, how do i gitlab-automation, orchestrate gitlab-automation, automate gitlab-automation, agent gitlab-automation |
+| [gitlab-ci-patterns](skills/agent/gitlab-ci-patterns/SKILL.md) | Implements intelligent gitlab ci patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | gitlab-ci-patterns, gitlab ci patterns, how do i gitlab-ci-patterns, orchestrate gitlab-ci-patterns, automate gitlab-ci-patterns, agent gitlab-ci-patterns |
+| [gitops-troubleshooting](skills/agent/gitops-troubleshooting/SKILL.md) | Diagnoses and resolves GitOps synchronization failures, drift detection issues, and reconciliation problems for ArgoCD and Flux deployments with actionable debugging commands. | gitops troubleshooting, sync failure, drift detection, reconciliation, kustomize, argocd, flux, how do i debug gitops |
+| [goal-to-milestones](skills/agent/goal-to-milestones/SKILL.md) | Implements intelligent goal to milestones with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | goal-to-milestones, goal to milestones, how do i goal-to-milestones, orchestrate goal-to-milestones, automate goal-to-milestones, agent goal-to-milestones |
+| [google-analytics-automation](skills/agent/google-analytics-automation/SKILL.md) | Implements intelligent google analytics automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | google-analytics-automation, google analytics automation, how do i google-analytics-automation, orchestrate google-analytics-automation, automate google-analytics-automation, agent google-analytics-automation |
+| [google-docs-automation](skills/agent/google-docs-automation/SKILL.md) | Implements intelligent google docs automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | google-docs-automation, google docs automation, how do i google-docs-automation, orchestrate google-docs-automation, automate google-docs-automation, agent google-docs-automation |
+| [google-drive-automation](skills/agent/google-drive-automation/SKILL.md) | Implements intelligent google drive automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | google-drive-automation, google drive automation, how do i google-drive-automation, orchestrate google-drive-automation, automate google-drive-automation, agent google-drive-automation |
+| [helpdesk-automation](skills/agent/helpdesk-automation/SKILL.md) | Implements intelligent helpdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | helpdesk-automation, helpdesk automation, how do i helpdesk-automation, orchestrate helpdesk-automation, automate helpdesk-automation, agent helpdesk-automation |
+| [hierarchical-agent-memory](skills/agent/hierarchical-agent-memory/SKILL.md) | Implements intelligent hierarchical agent memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | hierarchical-agent-memory, hierarchical agent memory, how do i hierarchical-agent-memory, orchestrate hierarchical-agent-memory, automate hierarchical-agent-memory, agent hierarchical-agent-memory |
+| [hosted-agents](skills/agent/hosted-agents/SKILL.md) | Implements intelligent hosted agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | hosted-agents, hosted agents, how do i hosted-agents, orchestrate hosted-agents, automate hosted-agents, agent hosted-agents |
+| [hosted-agents-v2-py](skills/agent/hosted-agents-v2-py/SKILL.md) | Implements intelligent hosted agents v2 py with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | hosted-agents-v2-py, hosted agents v2 py, how do i hosted-agents-v2-py, orchestrate hosted-agents-v2-py, automate hosted-agents-v2-py, agent hosted-agents-v2-py |
+| [hot-path-detector](skills/agent/hot-path-detector/SKILL.md) | Implements intelligent hot path detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | hot-path-detector, hot path detector, how do i hot-path-detector, orchestrate hot-path-detector, automate hot-path-detector, agent hot-path-detector |
+| [hubspot-automation](skills/agent/hubspot-automation/SKILL.md) | Implements intelligent hubspot automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | hubspot-automation, hubspot automation, how do i hubspot-automation, orchestrate hubspot-automation, automate hubspot-automation, agent hubspot-automation |
+| [infra-drift-detector](skills/agent/infra-drift-detector/SKILL.md) | Implements intelligent infra drift detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | infra-drift-detector, infra drift detector, how do i infra-drift-detector, orchestrate infra-drift-detector, automate infra-drift-detector, agent infra-drift-detector |
+| [inngest](skills/agent/inngest/SKILL.md) | Implements intelligent inngest with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | inngest, inngest, how do i inngest, orchestrate inngest, automate inngest, agent inngest |
+| [intercom-automation](skills/agent/intercom-automation/SKILL.md) | Implements intelligent intercom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | intercom-automation, intercom automation, how do i intercom-automation, orchestrate intercom-automation, automate intercom-automation, agent intercom-automation |
+| [issues](skills/agent/issues/SKILL.md) | Implements intelligent issues with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | issues, issues, how do i issues, orchestrate issues, automate issues, agent issues |
+| [iterate-pr](skills/agent/iterate-pr/SKILL.md) | Implements intelligent iterate pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | iterate-pr, iterate pr, how do i iterate-pr, orchestrate iterate-pr, automate iterate-pr, agent iterate-pr |
+| [k8s-debugger](skills/agent/k8s-debugger/SKILL.md) | Implements intelligent k8s debugger with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | k8s-debugger, k8s debugger, how do i k8s-debugger, orchestrate k8s-debugger, automate k8s-debugger, agent k8s-debugger, kubernetes, container orchestration |
+| [kubernetes-deployment](skills/agent/kubernetes-deployment/SKILL.md) | Implements intelligent kubernetes deployment with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | kubernetes-deployment, kubernetes deployment, how do i kubernetes-deployment, orchestrate kubernetes-deployment, automate kubernetes-deployment, agent kubernetes-deployment, container orchestration, deployment |
+| [lambda-lang](skills/agent/lambda-lang/SKILL.md) | Implements intelligent lambda lang with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | lambda-lang, lambda lang, how do i lambda-lang, orchestrate lambda-lang, automate lambda-lang, agent lambda-lang, serverless functions, lambda |
+| [langgraph](skills/agent/langgraph/SKILL.md) | Implements intelligent langgraph with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | langgraph, langgraph, how do i langgraph, orchestrate langgraph, automate langgraph, agent langgraph |
+| [lint-and-validate](skills/agent/lint-and-validate/SKILL.md) | Implements intelligent lint and validate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | lint-and-validate, lint and validate, how do i lint-and-validate, orchestrate lint-and-validate, automate lint-and-validate, agent lint-and-validate |
+| [linux-troubleshooting](skills/agent/linux-troubleshooting/SKILL.md) | Implements intelligent linux troubleshooting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | linux-troubleshooting, linux troubleshooting, how do i linux-troubleshooting, orchestrate linux-troubleshooting, automate linux-troubleshooting, agent linux-troubleshooting |
+| [m365-agents-dotnet](skills/agent/m365-agents-dotnet/SKILL.md) | Implements intelligent m365 agents dotnet with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | m365-agents-dotnet, m365 agents dotnet, how do i m365-agents-dotnet, orchestrate m365-agents-dotnet, automate m365-agents-dotnet, agent m365-agents-dotnet |
+| [m365-agents-ts](skills/agent/m365-agents-ts/SKILL.md) | Implements intelligent m365 agents ts with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | m365-agents-ts, m365 agents ts, how do i m365-agents-ts, orchestrate m365-agents-ts, automate m365-agents-ts, agent m365-agents-ts |
+| [make-automation](skills/agent/make-automation/SKILL.md) | Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | make-automation, make automation, how do i make-automation, orchestrate make-automation, automate make-automation, agent make-automation |
+| [mcp-builder](skills/agent/mcp-builder/SKILL.md) | Implements intelligent mcp builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | mcp-builder, mcp builder, how do i mcp-builder, orchestrate mcp-builder, automate mcp-builder, agent mcp-builder |
+| [mcp-builder-ms](skills/agent/mcp-builder-ms/SKILL.md) | Implements intelligent mcp builder ms with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | mcp-builder-ms, mcp builder ms, how do i mcp-builder-ms, orchestrate mcp-builder-ms, automate mcp-builder-ms, agent mcp-builder-ms |
+| [memory-systems](skills/agent/memory-systems/SKILL.md) | Implements intelligent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | memory-systems, memory systems, how do i memory-systems, orchestrate memory-systems, automate memory-systems, agent memory-systems |
+| [memory-usage-analyzer](skills/agent/memory-usage-analyzer/SKILL.md) | Implements intelligent memory usage analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | memory-usage-analyzer, memory usage analyzer, how do i memory-usage-analyzer, orchestrate memory-usage-analyzer, automate memory-usage-analyzer, agent memory-usage-analyzer |
+| [message-queue-debugging](skills/agent/message-queue-debugging/SKILL.md) | Debugs Kafka, RabbitMQ, and SQS message queues with consumer lag analysis, dead letter handling, and message flow troubleshooting for distributed systems | kafka troubleshooting, rabbitmq debugging, sqs issues, message queue problems, dead letter queues, consumer lag, message backlog, queue monitoring |
+| [message-queue-troubleshooting](skills/agent/message-queue-troubleshooting/SKILL.md) | Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic commands, dead letter handling, and backlog resolution | message queue troubleshooting, kafka cluster, rabbitmq queues, dead letter, sqs visibility, message backlog, nats streaming, how do i debug queues |
+| [ml-pipeline-workflow](skills/agent/ml-pipeline-workflow/SKILL.md) | Implements intelligent ml pipeline workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | ml-pipeline-workflow, ml pipeline workflow, how do i ml-pipeline-workflow, orchestrate ml-pipeline-workflow, automate ml-pipeline-workflow, agent ml-pipeline-workflow |
+| [multi-advisor](skills/agent/multi-advisor/SKILL.md) | Implements intelligent multi advisor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | multi-advisor, multi advisor, how do i multi-advisor, orchestrate multi-advisor, automate multi-advisor, agent multi-advisor |
+| [multi-agent-patterns](skills/agent/multi-agent-patterns/SKILL.md) | Implements intelligent multi agent patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | multi-agent-patterns, multi agent patterns, how do i multi-agent-patterns, orchestrate multi-agent-patterns, automate multi-agent-patterns, agent multi-agent-patterns |
+| [multi-agent-task-orchestrator](skills/agent/multi-agent-task-orchestrator/SKILL.md) | Implements intelligent multi agent task orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | multi-agent-task-orchestrator, multi agent task orchestrator, how do i multi-agent-task-orchestrator, orchestrate multi-agent-task-orchestrator, automate multi-agent-task-orchestrator, agent multi-agent-task-orchestrator |
+| [multi-skill-executor](skills/agent/multi-skill-executor/SKILL.md) | Implements intelligent multi skill executor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | multi-skill-executor, multi skill executor, how do i multi-skill-executor, orchestrate multi-skill-executor, automate multi-skill-executor, agent multi-skill-executor |
+| [n8n-code-javascript](skills/agent/n8n-code-javascript/SKILL.md) | Implements intelligent n8n code javascript with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-code-javascript, n8n code javascript, how do i n8n-code-javascript, orchestrate n8n-code-javascript, automate n8n-code-javascript, agent n8n-code-javascript |
+| [n8n-code-python](skills/agent/n8n-code-python/SKILL.md) | Implements intelligent n8n code python with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-code-python, n8n code python, how do i n8n-code-python, orchestrate n8n-code-python, automate n8n-code-python, agent n8n-code-python |
+| [n8n-expression-syntax](skills/agent/n8n-expression-syntax/SKILL.md) | Implements intelligent n8n expression syntax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-expression-syntax, n8n expression syntax, how do i n8n-expression-syntax, orchestrate n8n-expression-syntax, automate n8n-expression-syntax, agent n8n-expression-syntax |
+| [n8n-mcp-tools-expert](skills/agent/n8n-mcp-tools-expert/SKILL.md) | Implements intelligent n8n mcp tools expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-mcp-tools-expert, n8n mcp tools expert, how do i n8n-mcp-tools-expert, orchestrate n8n-mcp-tools-expert, automate n8n-mcp-tools-expert, agent n8n-mcp-tools-expert |
+| [n8n-node-configuration](skills/agent/n8n-node-configuration/SKILL.md) | Implements intelligent n8n node configuration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-node-configuration, n8n node configuration, how do i n8n-node-configuration, orchestrate n8n-node-configuration, automate n8n-node-configuration, agent n8n-node-configuration |
+| [n8n-validation-expert](skills/agent/n8n-validation-expert/SKILL.md) | Implements intelligent n8n validation expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-validation-expert, n8n validation expert, how do i n8n-validation-expert, orchestrate n8n-validation-expert, automate n8n-validation-expert, agent n8n-validation-expert |
+| [n8n-workflow-patterns](skills/agent/n8n-workflow-patterns/SKILL.md) | Implements intelligent n8n workflow patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | n8n-workflow-patterns, n8n workflow patterns, how do i n8n-workflow-patterns, orchestrate n8n-workflow-patterns, automate n8n-workflow-patterns, agent n8n-workflow-patterns |
+| [network-diagnostics](skills/agent/network-diagnostics/SKILL.md) | Implements intelligent network diagnostics with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | network-diagnostics, network diagnostics, how do i network-diagnostics, orchestrate network-diagnostics, automate network-diagnostics, agent network-diagnostics |
+| [network-troubleshooting](skills/agent/network-troubleshooting/SKILL.md) | Diagnoses and resolves network connectivity issues including firewall rules, DNS resolution, load balancer configuration, container networking, VPN connectivity, and network policy debugging for Docker, Kubernetes, and cloud-native environments | network troubleshooting, iptables, dns resolution, firewall rules, load balancer, calico, cni, how do i debug network |
+| [not-human-search-mcp](skills/agent/not-human-search-mcp/SKILL.md) | Implements intelligent not human search mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | not-human-search-mcp, not human search mcp, how do i not-human-search-mcp, orchestrate not-human-search-mcp, automate not-human-search-mcp, agent not-human-search-mcp |
+| [notion-automation](skills/agent/notion-automation/SKILL.md) | Implements intelligent notion automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | notion-automation, notion automation, how do i notion-automation, orchestrate notion-automation, automate notion-automation, agent notion-automation |
+| [os-scripting](skills/agent/os-scripting/SKILL.md) | Implements intelligent os scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | os-scripting, os scripting, how do i os-scripting, orchestrate os-scripting, automate os-scripting, agent os-scripting |
+| [outlook-automation](skills/agent/outlook-automation/SKILL.md) | Implements intelligent outlook automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | outlook-automation, outlook automation, how do i outlook-automation, orchestrate outlook-automation, automate outlook-automation, agent outlook-automation |
+| [outlook-calendar-automation](skills/agent/outlook-calendar-automation/SKILL.md) | Implements intelligent outlook calendar automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | outlook-calendar-automation, outlook calendar automation, how do i outlook-calendar-automation, orchestrate outlook-calendar-automation, automate outlook-calendar-automation, agent outlook-calendar-automation |
+| [parallel-agents](skills/agent/parallel-agents/SKILL.md) | Implements intelligent parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | parallel-agents, parallel agents, how do i parallel-agents, orchestrate parallel-agents, automate parallel-agents, agent parallel-agents |
+| [parallel-skill-runner](skills/agent/parallel-skill-runner/SKILL.md) | Implements intelligent parallel skill runner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | parallel-skill-runner, parallel skill runner, how do i parallel-skill-runner, orchestrate parallel-skill-runner, automate parallel-skill-runner, agent parallel-skill-runner |
+| [performance-profiler](skills/agent/performance-profiler/SKILL.md) | Implements intelligent performance profiler with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | performance-profiler, performance profiler, how do i performance-profiler, orchestrate performance-profiler, automate performance-profiler, agent performance-profiler, optimization, performance |
+| [pipecat-friday-agent](skills/agent/pipecat-friday-agent/SKILL.md) | Implements intelligent pipecat friday agent with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | pipecat-friday-agent, pipecat friday agent, how do i pipecat-friday-agent, orchestrate pipecat-friday-agent, automate pipecat-friday-agent, agent pipecat-friday-agent |
+| [plan-writing](skills/agent/plan-writing/SKILL.md) | Implements intelligent plan writing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | plan-writing, plan writing, how do i plan-writing, orchestrate plan-writing, automate plan-writing, agent plan-writing |
+| [planning-with-files](skills/agent/planning-with-files/SKILL.md) | Implements intelligent planning with files with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | planning-with-files, planning with files, how do i planning-with-files, orchestrate planning-with-files, automate planning-with-files, agent planning-with-files |
+| [postgresql-optimization](skills/agent/postgresql-optimization/SKILL.md) | Implements intelligent postgresql optimization with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | postgresql-optimization, postgresql optimization, how do i postgresql-optimization, orchestrate postgresql-optimization, automate postgresql-optimization, agent postgresql-optimization, postgres, postgresql |
+| [pr-writer](skills/agent/pr-writer/SKILL.md) | Implements intelligent pr writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | pr-writer, pr writer, how do i pr-writer, orchestrate pr-writer, automate pr-writer, agent pr-writer |
+| [prompt-engineer](skills/agent/prompt-engineer/SKILL.md) | Implements intelligent prompt engineer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | prompt-engineer, prompt engineer, how do i prompt-engineer, orchestrate prompt-engineer, automate prompt-engineer, agent prompt-engineer |
+| [pydantic-ai](skills/agent/pydantic-ai/SKILL.md) | Implements intelligent pydantic ai with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | pydantic-ai, pydantic ai, how do i pydantic-ai, orchestrate pydantic-ai, automate pydantic-ai, agent pydantic-ai |
+| [python-fastapi-development](skills/agent/python-fastapi-development/SKILL.md) | Implements intelligent python fastapi development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | python-fastapi-development, python fastapi development, how do i python-fastapi-development, orchestrate python-fastapi-development, automate python-fastapi-development, agent python-fastapi-development |
+| [query-optimizer](skills/agent/query-optimizer/SKILL.md) | Implements intelligent query optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | query-optimizer, query optimizer, how do i query-optimizer, orchestrate query-optimizer, automate query-optimizer, agent query-optimizer |
+| [rag-implementation](skills/agent/rag-implementation/SKILL.md) | Implements intelligent rag implementation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | rag-implementation, rag implementation, how do i rag-implementation, orchestrate rag-implementation, automate rag-implementation, agent rag-implementation |
+| [react-nextjs-development](skills/agent/react-nextjs-development/SKILL.md) | Implements intelligent react nextjs development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | react-nextjs-development, react nextjs development, how do i react-nextjs-development, orchestrate react-nextjs-development, automate react-nextjs-development, agent react-nextjs-development |
+| [recallmax](skills/agent/recallmax/SKILL.md) | Implements intelligent recallmax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | recallmax, recallmax, how do i recallmax, orchestrate recallmax, automate recallmax, agent recallmax |
+| [receiving-code-review](skills/agent/receiving-code-review/SKILL.md) | Implements intelligent receiving code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | receiving-code-review, receiving code review, how do i receiving-code-review, orchestrate receiving-code-review, automate receiving-code-review, agent receiving-code-review |
+| [regression-detector](skills/agent/regression-detector/SKILL.md) | Implements intelligent regression detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | regression-detector, regression detector, how do i regression-detector, orchestrate regression-detector, automate regression-detector, agent regression-detector |
+| [render-automation](skills/agent/render-automation/SKILL.md) | Implements intelligent render automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | render-automation, render automation, how do i render-automation, orchestrate render-automation, automate render-automation, agent render-automation |
+| [requesting-code-review](skills/agent/requesting-code-review/SKILL.md) | Implements intelligent requesting code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | requesting-code-review, requesting code review, how do i requesting-code-review, orchestrate requesting-code-review, automate requesting-code-review, agent requesting-code-review |
+| [resource-optimizer](skills/agent/resource-optimizer/SKILL.md) | Implements intelligent resource optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | resource-optimizer, resource optimizer, how do i resource-optimizer, orchestrate resource-optimizer, automate resource-optimizer, agent resource-optimizer |
+| [runtime-log-analyzer](skills/agent/runtime-log-analyzer/SKILL.md) | Implements intelligent runtime log analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | runtime-log-analyzer, runtime log analyzer, how do i runtime-log-analyzer, orchestrate runtime-log-analyzer, automate runtime-log-analyzer, agent runtime-log-analyzer |
+| [schema-inference-engine](skills/agent/schema-inference-engine/SKILL.md) | Implements intelligent schema inference engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | schema-inference-engine, schema inference engine, how do i schema-inference-engine, orchestrate schema-inference-engine, automate schema-inference-engine, agent schema-inference-engine |
+| [security-audit](skills/agent/security-audit/SKILL.md) | Implements intelligent security audit with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | security-audit, security audit, how do i security-audit, orchestrate security-audit, automate security-audit, agent security-audit, vulnerability scanning, security |
+| [self-critique-engine](skills/agent/self-critique-engine/SKILL.md) | Implements intelligent self critique engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | self-critique-engine, self critique engine, how do i self-critique-engine, orchestrate self-critique-engine, automate self-critique-engine, agent self-critique-engine |
+| [sendgrid-automation](skills/agent/sendgrid-automation/SKILL.md) | Implements intelligent sendgrid automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | sendgrid-automation, sendgrid automation, how do i sendgrid-automation, orchestrate sendgrid-automation, automate sendgrid-automation, agent sendgrid-automation |
+| [shopify-automation](skills/agent/shopify-automation/SKILL.md) | Implements intelligent shopify automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | shopify-automation, shopify automation, how do i shopify-automation, orchestrate shopify-automation, automate shopify-automation, agent shopify-automation |
+| [skill-creator](skills/agent/skill-creator/SKILL.md) | Implements intelligent skill creator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-creator, skill creator, how do i skill-creator, orchestrate skill-creator, automate skill-creator, agent skill-creator |
+| [skill-creator-ms](skills/agent/skill-creator-ms/SKILL.md) | Implements intelligent skill creator ms with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-creator-ms, skill creator ms, how do i skill-creator-ms, orchestrate skill-creator-ms, automate skill-creator-ms, agent skill-creator-ms |
+| [skill-developer](skills/agent/skill-developer/SKILL.md) | Implements intelligent skill developer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-developer, skill developer, how do i skill-developer, orchestrate skill-developer, automate skill-developer, agent skill-developer |
+| [skill-improver](skills/agent/skill-improver/SKILL.md) | Implements intelligent skill improver with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-improver, skill improver, how do i skill-improver, orchestrate skill-improver, automate skill-improver, agent skill-improver |
+| [skill-installer](skills/agent/skill-installer/SKILL.md) | Implements intelligent skill installer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-installer, skill installer, how do i skill-installer, orchestrate skill-installer, automate skill-installer, agent skill-installer |
+| [skill-optimizer](skills/agent/skill-optimizer/SKILL.md) | Implements intelligent skill optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-optimizer, skill optimizer, how do i skill-optimizer, orchestrate skill-optimizer, automate skill-optimizer, agent skill-optimizer |
+| [skill-rails-upgrade](skills/agent/skill-rails-upgrade/SKILL.md) | Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-rails-upgrade, skill rails upgrade, how do i skill-rails-upgrade, orchestrate skill-rails-upgrade, automate skill-rails-upgrade, agent skill-rails-upgrade |
+| [skill-router](skills/agent/skill-router/SKILL.md) | Implements intelligent skill router with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-router, skill router, how do i skill-router, orchestrate skill-router, automate skill-router, agent skill-router |
+| [skill-scanner](skills/agent/skill-scanner/SKILL.md) | Implements intelligent skill scanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-scanner, skill scanner, how do i skill-scanner, orchestrate skill-scanner, automate skill-scanner, agent skill-scanner |
+| [skill-seekers](skills/agent/skill-seekers/SKILL.md) | Implements intelligent skill seekers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-seekers, skill seekers, how do i skill-seekers, orchestrate skill-seekers, automate skill-seekers, agent skill-seekers |
+| [skill-sentinel](skills/agent/skill-sentinel/SKILL.md) | Implements intelligent skill sentinel with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-sentinel, skill sentinel, how do i skill-sentinel, orchestrate skill-sentinel, automate skill-sentinel, agent skill-sentinel |
+| [skill-writer](skills/agent/skill-writer/SKILL.md) | Implements intelligent skill writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-writer, skill writer, how do i skill-writer, orchestrate skill-writer, automate skill-writer, agent skill-writer |
+| [slack-automation](skills/agent/slack-automation/SKILL.md) | Implements intelligent slack automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | slack-automation, slack automation, how do i slack-automation, orchestrate slack-automation, automate slack-automation, agent slack-automation |
+| [stacktrace-root-cause](skills/agent/stacktrace-root-cause/SKILL.md) | Implements intelligent stacktrace root cause with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | stacktrace-root-cause, stacktrace root cause, how do i stacktrace-root-cause, orchestrate stacktrace-root-cause, automate stacktrace-root-cause, agent stacktrace-root-cause |
+| [stripe-automation](skills/agent/stripe-automation/SKILL.md) | Implements intelligent stripe automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | stripe-automation, stripe automation, how do i stripe-automation, orchestrate stripe-automation, automate stripe-automation, agent stripe-automation |
+| [subagent-driven-development](skills/agent/subagent-driven-development/SKILL.md) | Implements intelligent subagent driven development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | subagent-driven-development, subagent driven development, how do i subagent-driven-development, orchestrate subagent-driven-development, automate subagent-driven-development, agent subagent-driven-development |
+| [task-decomposition-engine](skills/agent/task-decomposition-engine/SKILL.md) | Implements intelligent task decomposition engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | task-decomposition-engine, task decomposition engine, how do i task-decomposition-engine, orchestrate task-decomposition-engine, automate task-decomposition-engine, agent task-decomposition-engine |
+| [task-intelligence](skills/agent/task-intelligence/SKILL.md) | Implements intelligent task intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | task-intelligence, task intelligence, how do i task-intelligence, orchestrate task-intelligence, automate task-intelligence, agent task-intelligence |
+| [temporal-golang-pro](skills/agent/temporal-golang-pro/SKILL.md) | Implements intelligent temporal golang pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | temporal-golang-pro, temporal golang pro, how do i temporal-golang-pro, orchestrate temporal-golang-pro, automate temporal-golang-pro, agent temporal-golang-pro |
+| [temporal-python-pro](skills/agent/temporal-python-pro/SKILL.md) | Implements intelligent temporal python pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | temporal-python-pro, temporal python pro, how do i temporal-python-pro, orchestrate temporal-python-pro, automate temporal-python-pro, agent temporal-python-pro |
+| [terraform-infrastructure](skills/agent/terraform-infrastructure/SKILL.md) | Implements intelligent terraform infrastructure with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | terraform-infrastructure, terraform infrastructure, how do i terraform-infrastructure, orchestrate terraform-infrastructure, automate terraform-infrastructure, agent terraform-infrastructure, infrastructure as code, cloudformation |
+| [test-oracle-generator](skills/agent/test-oracle-generator/SKILL.md) | Implements intelligent test oracle generator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | test-oracle-generator, test oracle generator, how do i test-oracle-generator, orchestrate test-oracle-generator, automate test-oracle-generator, agent test-oracle-generator, enterprise database, oracle |
+| [testing-qa](skills/agent/testing-qa/SKILL.md) | Implements intelligent testing qa with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | testing-qa, testing qa, how do i testing-qa, orchestrate testing-qa, automate testing-qa, agent testing-qa, unit tests, testing |
+| [track-management](skills/agent/track-management/SKILL.md) | Implements intelligent track management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | track-management, track management, how do i track-management, orchestrate track-management, automate track-management, agent track-management |
+| [trigger-dev](skills/agent/trigger-dev/SKILL.md) | Implements intelligent trigger dev with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | trigger-dev, trigger dev, how do i trigger-dev, orchestrate trigger-dev, automate trigger-dev, agent trigger-dev |
+| [upstash-qstash](skills/agent/upstash-qstash/SKILL.md) | Implements intelligent upstash qstash with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | upstash-qstash, upstash qstash, how do i upstash-qstash, orchestrate upstash-qstash, automate upstash-qstash, agent upstash-qstash |
+| [using-superpowers](skills/agent/using-superpowers/SKILL.md) | Implements intelligent using superpowers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | using-superpowers, using superpowers, how do i using-superpowers, orchestrate using-superpowers, automate using-superpowers, agent using-superpowers |
+| [verification-before-completion](skills/agent/verification-before-completion/SKILL.md) | Implements intelligent verification before completion with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | verification-before-completion, verification before completion, how do i verification-before-completion, orchestrate verification-before-completion, automate verification-before-completion, agent verification-before-completion |
+| [viboscope](skills/agent/viboscope/SKILL.md) | Implements intelligent viboscope with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | viboscope, viboscope, how do i viboscope, orchestrate viboscope, automate viboscope, agent viboscope |
+| [voice-ai-development](skills/agent/voice-ai-development/SKILL.md) | Implements intelligent voice ai development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | voice-ai-development, voice ai development, how do i voice-ai-development, orchestrate voice-ai-development, automate voice-ai-development, agent voice-ai-development |
+| [web-security-testing](skills/agent/web-security-testing/SKILL.md) | Implements intelligent web security testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | web-security-testing, web security testing, how do i web-security-testing, orchestrate web-security-testing, automate web-security-testing, agent web-security-testing, unit tests, vulnerability scanning |
+| [wordpress](skills/agent/wordpress/SKILL.md) | Implements intelligent wordpress with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | wordpress, wordpress, how do i wordpress, orchestrate wordpress, automate wordpress, agent wordpress |
+| [wordpress-plugin-development](skills/agent/wordpress-plugin-development/SKILL.md) | Implements intelligent wordpress plugin development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | wordpress-plugin-development, wordpress plugin development, how do i wordpress-plugin-development, orchestrate wordpress-plugin-development, automate wordpress-plugin-development, agent wordpress-plugin-development |
+| [wordpress-theme-development](skills/agent/wordpress-theme-development/SKILL.md) | Implements intelligent wordpress theme development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | wordpress-theme-development, wordpress theme development, how do i wordpress-theme-development, orchestrate wordpress-theme-development, automate wordpress-theme-development, agent wordpress-theme-development |
+| [wordpress-woocommerce-development](skills/agent/wordpress-woocommerce-development/SKILL.md) | Implements intelligent wordpress woocommerce development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | wordpress-woocommerce-development, wordpress woocommerce development, how do i wordpress-woocommerce-development, orchestrate wordpress-woocommerce-development, automate wordpress-woocommerce-development, agent wordpress-woocommerce-development |
+| [workflow-automation](skills/agent/workflow-automation/SKILL.md) | Implements intelligent workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | workflow-automation, workflow automation, how do i workflow-automation, orchestrate workflow-automation, automate workflow-automation, agent workflow-automation, github actions, ci/cd |
+| [workflow-orchestration-patterns](skills/agent/workflow-orchestration-patterns/SKILL.md) | Implements intelligent workflow orchestration patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | workflow-orchestration-patterns, workflow orchestration patterns, how do i workflow-orchestration-patterns, orchestrate workflow-orchestration-patterns, automate workflow-orchestration-patterns, agent workflow-orchestration-patterns |
+| [workflow-patterns](skills/agent/workflow-patterns/SKILL.md) | Implements intelligent workflow patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | workflow-patterns, workflow patterns, how do i workflow-patterns, orchestrate workflow-patterns, automate workflow-patterns, agent workflow-patterns |
+| [writing-plans](skills/agent/writing-plans/SKILL.md) | Implements intelligent writing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | writing-plans, writing plans, how do i writing-plans, orchestrate writing-plans, automate writing-plans, agent writing-plans |
+| [writing-skills](skills/agent/writing-skills/SKILL.md) | Implements intelligent writing skills with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | writing-skills, writing skills, how do i writing-skills, orchestrate writing-skills, automate writing-skills, agent writing-skills |
+| [zapier-make-patterns](skills/agent/zapier-make-patterns/SKILL.md) | Implements intelligent zapier make patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zapier-make-patterns, zapier make patterns, how do i zapier-make-patterns, orchestrate zapier-make-patterns, automate zapier-make-patterns, agent zapier-make-patterns |
+| [zendesk-automation](skills/agent/zendesk-automation/SKILL.md) | Implements intelligent zendesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zendesk-automation, zendesk automation, how do i zendesk-automation, orchestrate zendesk-automation, automate zendesk-automation, agent zendesk-automation |
+| [zipai-optimizer](skills/agent/zipai-optimizer/SKILL.md) | Implements intelligent zipai optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zipai-optimizer, zipai optimizer, how do i zipai-optimizer, orchestrate zipai-optimizer, automate zipai-optimizer, agent zipai-optimizer |
+| [zoom-automation](skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zoom-automation, zoom automation, how do i zoom-automation, orchestrate zoom-automation, automate zoom-automation, agent zoom-automation |
 
 
-### Cncf (164 skills)
+### Cncf (162 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
-| [aks](../../skills/cncf/aks/SKILL.md) | "Provides Managed Kubernetes cluster with automatic scaling... | aks, kubernetes... |
-| [architecture](../../skills/cncf/architecture/SKILL.md) | "Creates or updates ARCHITECTURE.md documenting the... | creates, documenting... |
-| [argo](../../skills/cncf/argo/SKILL.md) | "Argo in Cloud-Native Engineering - Kubernetes-Native... | argo, cloud-native... |
-| [auto-scaling](../../skills/cncf/auto-scaling/SKILL.md) | "Configures automatic scaling of compute resources (EC2,... | asg, auto-scaling... |
-| [automation](../../skills/cncf/automation/SKILL.md) | Provides Automation and orchestration of Azure resources... | automation, runbooks... |
-| [autoscaling](../../skills/cncf/autoscaling/SKILL.md) | "Provides Automatically scales compute resources based on... | autoscaling, auto-scaling... |
-| [backstage](../../skills/cncf/backstage/SKILL.md) | "Provides Backstage in Cloud-Native Engineering - Developer... | backstage, cloud-native... |
-| [best-practices](../../skills/cncf/best-practices/SKILL.md) | "Cloud Native Computing Foundation (CNCF) architecture best... | architecture best practices, architecture-best-practices... |
-| [blob-storage](../../skills/cncf/blob-storage/SKILL.md) | Provides Object storage with versioning, lifecycle... | blob storage, object storage... |
-| [buildpacks](../../skills/cncf/buildpacks/SKILL.md) | "Provides Buildpacks in Cloud-Native Engineering - Turn... | buildpacks, cloud-native... |
-| [calico](../../skills/cncf/calico/SKILL.md) | "Calico in Cloud Native Security - cloud native... | calico, cdn... |
-| [cdn](../../skills/cncf/cdn/SKILL.md) | Provides Content delivery network for caching and global... | cdn, content delivery... |
-| [chaosmesh](../../skills/cncf/chaosmesh/SKILL.md) | ''Provides Chaos Mesh in Cloud-Native Engineering... | chaosmesh, chaos... |
-| [cilium](../../skills/cncf/cilium/SKILL.md) | "Cilium in Cloud Native Network - cloud native... | cdn, cilium... |
-| [cloud-cdn](../../skills/cncf/cloud-cdn/SKILL.md) | Provides Content delivery network for caching and globally... | cloud cdn, cdn... |
-| [cloud-dns](../../skills/cncf/cloud-dns/SKILL.md) | Manages DNS with health checks, traffic routing, and... | cloud dns, dns... |
-| [cloud-functions](../../skills/cncf/cloud-functions/SKILL.md) | Deploys serverless functions triggered by events with... | cloud functions, serverless... |
-| [cloud-kms](../../skills/cncf/cloud-kms/SKILL.md) | "Manages encryption keys for data protection with automated... | kms, key management... |
-| [cloud-load-balancing](../../skills/cncf/cloud-load-balancing/SKILL.md) | "Provides Distributes traffic across instances with... | load balancing, traffic distribution... |
-| [cloud-monitoring](../../skills/cncf/cloud-monitoring/SKILL.md) | "Monitors GCP resources with metrics, logging, and alerting... | cloud monitoring, monitoring... |
-| [cloud-operations](../../skills/cncf/cloud-operations/SKILL.md) | "Provides Systems management including monitoring, logging,... | cloud operations, monitoring... |
-| [cloud-pubsub](../../skills/cncf/cloud-pubsub/SKILL.md) | "Asynchronous messaging service for event streaming and... | pubsub, messaging... |
-| [cloud-sql](../../skills/cncf/cloud-sql/SKILL.md) | "Provides managed relational databases (MySQL, PostgreSQL)... | cloud sql, relational database... |
-| [cloud-storage](../../skills/cncf/cloud-storage/SKILL.md) | "Provides Stores objects with versioning, lifecycle... | cloud storage, gcs... |
-| [cloud-tasks](../../skills/cncf/cloud-tasks/SKILL.md) | "Manages task queues for asynchronous job execution with... | cloud tasks, task queue... |
-| [cloudevents](../../skills/cncf/cloudevents/SKILL.md) | "CloudEvents in Streaming & Messaging - cloud native... | cdn, cloudevents... |
-| [cloudformation](../../skills/cncf/cloudformation/SKILL.md) | "Creates Infrastructure as Code templates with... | cloudformation, infrastructure as code... |
-| [cloudfront](../../skills/cncf/cloudfront/SKILL.md) | "Configures CloudFront CDN for global content distribution... | cloudfront, cdn... |
-| [cloudwatch](../../skills/cncf/cloudwatch/SKILL.md) | "Configures CloudWatch monitoring with metrics, logs,... | cloudwatch, monitoring... |
-| [cni](../../skills/cncf/cni/SKILL.md) | "Cni in Cloud-Native Engineering - Container Network... | cloud-native, cni... |
-| [compute-engine](../../skills/cncf/compute-engine/SKILL.md) | "Deploys and manages virtual machine instances with... | compute engine, gce... |
-| [container-linux](../../skills/cncf/container-linux/SKILL.md) | "Provides Flatcar Container Linux in Cloud-Native... | cloud-native, engineering... |
-| [container-registry](../../skills/cncf/container-registry/SKILL.md) | "Provides Stores and manages container images with... | container registry, acr... |
-| [container-registry](../../skills/cncf/container-registry/SKILL.md) | "Provides Stores and manages container images with... | container registry, gcr... |
-| [containerd](../../skills/cncf/containerd/SKILL.md) | "Containerd in Cloud-Native Engineering - An open and... | cloud-native, containerd... |
-| [contour](../../skills/cncf/contour/SKILL.md) | "Contour in Service Proxy - cloud native architecture,... | cdn, contour... |
-| [coredns](../../skills/cncf/coredns/SKILL.md) | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS... | cloud-native, coredns... |
-| [cortex](../../skills/cncf/cortex/SKILL.md) | "Cortex in Monitoring & Observability - distributed,... | cortex, distributed... |
-| [cosmos-db](../../skills/cncf/cosmos-db/SKILL.md) | Provides Global NoSQL database with multi-region... | cosmos db, nosql... |
-| [cost-optimization](../../skills/cncf/cost-optimization/SKILL.md) | Implements cloud cost optimization strategies... | cost optimization, right sizing... |
-| [cost-optimization-analysis](../../skills/cncf/cost-optimization-analysis/SKILL.md) | Cloud cost optimization analysis including AWS Cost... | aws cost explorer, azure cost analysis... |
-| [crossplane](../../skills/cncf/crossplane/SKILL.md) | "Crossplane in Platform Engineering - Kubernetes-native... | container orchestration, crossplane... |
-| [cubefs](../../skills/cncf/cubefs/SKILL.md) | "Provides CubeFS in Storage - distributed, high-performance... | cubefs, distributed... |
-| [custodian](../../skills/cncf/custodian/SKILL.md) | "Provides Cloud Custodian in Cloud-Native Engineering... | cloud custodian, cloud-custodian... |
-| [dapr](../../skills/cncf/dapr/SKILL.md) | "Provides Dapr in Cloud-Native Engineering - distributed... | cloud-native, dapr... |
-| [deployment-manager](../../skills/cncf/deployment-manager/SKILL.md) | "Infrastructure as code using YAML templates for repeatable... | deployment manager, infrastructure as code... |
-| [disaster-recovery](../../skills/cncf/disaster-recovery/SKILL.md) | Implements comprehensive disaster recovery planning for... | disaster recovery, backup strategy... |
-| [dragonfly](../../skills/cncf/dragonfly/SKILL.md) | "Provides Dragonfly in Cloud-Native Engineering - P2P file... | cloud-native, distribution... |
-| [dynamodb](../../skills/cncf/dynamodb/SKILL.md) | "Deploys managed NoSQL databases with DynamoDB for... | dynamodb, nosql... |
-| [ec2](../../skills/cncf/ec2/SKILL.md) | "Deploys, configures, and auto-scales EC2 instances with... | ec2, compute instances... |
-| [ecr](../../skills/cncf/ecr/SKILL.md) | "Manages container image repositories with ECR for secure... | container registry, container security... |
-| [eks](../../skills/cncf/eks/SKILL.md) | "Deploys managed Kubernetes clusters with EKS for container... | eks, container orchestration... |
-| [elb](../../skills/cncf/elb/SKILL.md) | "Configures Elastic Load Balancing (ALB, NLB, Classic) for... | elb, load balancer... |
-| [envoy](../../skills/cncf/envoy/SKILL.md) | "Envoy in Cloud-Native Engineering - Cloud-native... | cloud-native, engineering... |
-| [etcd](../../skills/cncf/etcd/SKILL.md) | "Provides etcd in Cloud-Native Engineering - distributed... | cloud-native, distributed... |
-| [event-hubs](../../skills/cncf/event-hubs/SKILL.md) | "Provides Event streaming platform for high-throughput data... | event hubs, event streaming... |
-| [falco](../../skills/cncf/falco/SKILL.md) | "Provides Falco in Cloud-Native Engineering - Cloud Native... | cdn, cloud-native... |
-| [firestore](../../skills/cncf/firestore/SKILL.md) | Provides NoSQL document database with real-time sync,... | firestore, nosql... |
-| [fluentd](../../skills/cncf/fluentd/SKILL.md) | "Fluentd unified logging layer for collecting,... | fluentd, log collection... |
-| [fluid](../../skills/cncf/fluid/SKILL.md) | "Fluid in A Kubernetes-native data acceleration layer for... | acceleration, container orchestration... |
-| [flux](../../skills/cncf/flux/SKILL.md) | "Configures flux in cloud-native engineering - gitops for... | cloud-native, declarative... |
-| [framework](../../skills/cncf/framework/SKILL.md) | "Operator Framework in Tools to build and manage Kubernetes... | build, manage... |
-| [functions](../../skills/cncf/functions/SKILL.md) | Provides Serverless computing with event-driven functions... | azure functions, serverless... |
-| [gke](../../skills/cncf/gke/SKILL.md) | "Provides Managed Kubernetes cluster with automatic... | gke, kubernetes... |
-| [grpc](../../skills/cncf/grpc/SKILL.md) | "gRPC in Remote Procedure Call - cloud native architecture,... | cdn, grpc... |
-| [harbor](../../skills/cncf/harbor/SKILL.md) | "Configures harbor in cloud-native engineering - container... | cloud-native, container... |
-| [health-check-patterns](../../skills/cncf/health-check-patterns/SKILL.md) | Implements comprehensive health check patterns for... | health checks, liveness probes... |
-| [helm](../../skills/cncf/helm/SKILL.md) | "Provides Helm in Cloud-Native Engineering - The Kubernetes... | cloud-native, container orchestration... |
-| [hub](../../skills/cncf/hub/SKILL.md) | "Provides Artifact Hub in Cloud-Native Engineering -... | artifact hub, artifact-hub... |
-| [hydra](../../skills/cncf/hydra/SKILL.md) | "ORY Hydra in Security & Compliance - cloud native... | ory hydra, ory-hydra... |
-| [iam](../../skills/cncf/iam/SKILL.md) | "Configures identity and access management with IAM users,... | iam, identity management... |
-| [iam](../../skills/cncf/iam/SKILL.md) | "Manages identity and access control with service accounts,... | iam, identity access management... |
-| [incident-response](../../skills/cncf/incident-response/SKILL.md) | "Creates or updates an incident response plan covering... | covering, creates... |
-| [incident-response-runbooks](../../skills/cncf/incident-response-runbooks/SKILL.md) | Implements incident response runbooks with detection,... | incident response, runbook creation... |
-| [ingress](../../skills/cncf/ingress/SKILL.md) | "Provides Emissary-Ingress in Cloud-Native Engineering -... | cloud-native, emissary ingress... |
-| [ingress-controller](../../skills/cncf/ingress-controller/SKILL.md) | "Kong Ingress Controller in Kubernetes - cloud native... | kong ingress controller, kong-ingress-controller... |
-| [io](../../skills/cncf/io/SKILL.md) | "metal3.io in Bare Metal Provisioning - cloud native... | cdn, infrastructure as code... |
-| [istio](../../skills/cncf/istio/SKILL.md) | "Istio in Cloud-Native Engineering - Connect, secure,... | cloud-native, connect... |
-| [jaeger](../../skills/cncf/jaeger/SKILL.md) | "Configures jaeger in cloud-native engineering -... | cloud-native, distributed... |
-| [karmada](../../skills/cncf/karmada/SKILL.md) | "Provides Karmada in Cloud-Native Engineering -... | cloud-native, engineering... |
-| [keda](../../skills/cncf/keda/SKILL.md) | "Configures keda in cloud-native engineering - event-driven... | cloud-native, engineering... |
-| [key-vault](../../skills/cncf/key-vault/SKILL.md) | "Manages encryption keys, secrets, and certificates with... | key vault, key management... |
-| [keycloak](../../skills/cncf/keycloak/SKILL.md) | "Provides Keycloak in Cloud-Native Engineering - identity... | cloud-native, engineering... |
-| [keyvault-secrets](../../skills/cncf/keyvault-secrets/SKILL.md) | "Provides Secret management and rotation for sensitive... | secrets, secret management... |
-| [kms](../../skills/cncf/kms/SKILL.md) | "Manages encryption keys with AWS KMS for data protection... | cmk, customer-managed key... |
-| [knative](../../skills/cncf/knative/SKILL.md) | "Provides Knative in Cloud-Native Engineering - serverless... | cloud-native, engineering... |
-| [kong](../../skills/cncf/kong/SKILL.md) | "Kong in API Gateway - cloud native architecture, patterns,... | cdn, gateway... |
-| [kratos](../../skills/cncf/kratos/SKILL.md) | "ORY Kratos in Identity & Access - cloud native... | access, cdn... |
-| [krustlet](../../skills/cncf/krustlet/SKILL.md) | "Krustlet in Kubernetes Runtime - cloud native... | cdn, container orchestration... |
-| [kserve](../../skills/cncf/kserve/SKILL.md) | "Configures kserve in cloud-native engineering - model... | cloud-native, engineering... |
-| [kubeedge](../../skills/cncf/kubeedge/SKILL.md) | "Configures kubeedge in cloud-native engineering - edge... | cloud-native, computing... |
-| [kubeflow](../../skills/cncf/kubeflow/SKILL.md) | "Configures kubeflow in cloud-native engineering - ml on... | cloud-native, container orchestration... |
-| [kubernetes](../../skills/cncf/kubernetes/SKILL.md) | "Kubernetes in Cloud-Native Engineering - Production-Grade... | cloud-native, container orchestration... |
-| [kubernetes-api-patterns](../../skills/cncf/kubernetes-api-patterns/SKILL.md) | Kubernetes API patterns including CRD development, webhook... | kubernetes api, k8s api... |
-| [kubernetes-debugging](../../skills/cncf/kubernetes-debugging/SKILL.md) | Implements comprehensive Kubernetes debugging workflow with... | kubernetes debugging, k8s troubleshooting... |
-| [kubescape](../../skills/cncf/kubescape/SKILL.md) | "Configures kubescape in cloud-native engineering -... | cloud-native, container orchestration... |
-| [kubevela](../../skills/cncf/kubevela/SKILL.md) | "Configures kubevela in cloud-native engineering -... | application, cloud-native... |
-| [kubevirt](../../skills/cncf/kubevirt/SKILL.md) | "Provides KubeVirt in Cloud-Native Engineering -... | cloud-native, engineering... |
-| [kuma](../../skills/cncf/kuma/SKILL.md) | "Kuma in Service Mesh - cloud native architecture,... | cdn, infrastructure as code... |
-| [kyverno](../../skills/cncf/kyverno/SKILL.md) | "Configures kyverno in cloud-native engineering - policy... | cloud-native, engineering... |
-| [lambda](../../skills/cncf/lambda/SKILL.md) | "Deploys serverless event-driven applications with Lambda... | lambda, serverless... |
-| [lima](../../skills/cncf/lima/SKILL.md) | "Lima in Container Runtime - cloud native architecture,... | cdn, container... |
-| [linkerd](../../skills/cncf/linkerd/SKILL.md) | "Linkerd in Service Mesh - cloud native architecture,... | cdn, infrastructure as code... |
-| [litmus](../../skills/cncf/litmus/SKILL.md) | "Litmus in Chaos Engineering - cloud native architecture,... | cdn, chaos... |
-| [load-balancer](../../skills/cncf/load-balancer/SKILL.md) | Provides Distributes traffic across VMs with health probes... | load balancer, load balancing... |
-| [longhorn](../../skills/cncf/longhorn/SKILL.md) | "Longhorn in Cloud Native Storage - cloud native... | cdn, infrastructure as code... |
-| [manager](../../skills/cncf/manager/SKILL.md) | "cert-manager in Cloud-Native Engineering - Certificate... | cert manager, cert-manager... |
-| [monitor](../../skills/cncf/monitor/SKILL.md) | "Provides Monitoring and logging for Azure resources with... | azure monitor, monitoring... |
-| [nats](../../skills/cncf/nats/SKILL.md) | "NATS in Cloud Native Messaging - cloud native... | cdn, infrastructure as code... |
-| [network-interface-cni](../../skills/cncf/network-interface-cni/SKILL.md) | "Container Network Interface in Cloud Native Network -... | architecture, cdn... |
-| [networking-troubleshooting](../../skills/cncf/networking-troubleshooting/SKILL.md) | Implements comprehensive networking troubleshooting... | iptables debugging, dns issues... |
-| [o](../../skills/cncf/o/SKILL.md) | "Provides CRI-O in Container Runtime - OCI-compliant... | container, cri o... |
-| [oathkeeper](../../skills/cncf/oathkeeper/SKILL.md) | "Oathkeeper in Identity & Access - cloud native... | access, cdn... |
-| [opencost](../../skills/cncf/opencost/SKILL.md) | "OpenCost in Kubernetes Cost Monitoring - cloud native... | cdn, container orchestration... |
-| [openfeature](../../skills/cncf/openfeature/SKILL.md) | "OpenFeature in Feature Flagging - cloud native... | cdn, feature... |
-| [openfga](../../skills/cncf/openfga/SKILL.md) | "OpenFGA in Security & Compliance - cloud native... | cdn, compliance... |
-| [openkruise](../../skills/cncf/openkruise/SKILL.md) | "OpenKruise in Extended Kubernetes workload management with... | container orchestration, extended... |
-| [opentelemetry](../../skills/cncf/opentelemetry/SKILL.md) | "OpenTelemetry in Observability framework for tracing,... | framework, observability... |
-| [openyurt](../../skills/cncf/openyurt/SKILL.md) | ''Provides OpenYurt in Extending Kubernetes to edge... | openyurt, extending... |
-| [osi](../../skills/cncf/osi/SKILL.md) | "OSI Model Networking for Cloud-Native - All 7 layers with... | cloud-native, layers... |
-| [policy-agent-opa](../../skills/cncf/policy-agent-opa/SKILL.md) | "Open Policy Agent in Security & Compliance - cloud... | open policy agent opa, open-policy-agent-opa... |
-| [project](../../skills/cncf/project/SKILL.md) | "Notary Project in Content Trust & Security - cloud... | content, how do i find security issues... |
-| [prometheus](../../skills/cncf/prometheus/SKILL.md) | "Prometheus in Cloud-Native Engineering - The Prometheus... | cloud-native, engineering... |
-| [pulumi](../../skills/cncf/pulumi/SKILL.md) | Implements Pulumi infrastructure as code using Python,... | pulumi, iac... |
-| [rbac](../../skills/cncf/rbac/SKILL.md) | "Manages identity and access with roles, service... | rbac, role-based access... |
-| [rds](../../skills/cncf/rds/SKILL.md) | "Deploys managed relational databases (MySQL, PostgreSQL,... | rds, relational database... |
-| [releases](../../skills/cncf/releases/SKILL.md) | "Creates or updates RELEASES.md documenting the release... | creates, documenting... |
-| [resource-manager](../../skills/cncf/resource-manager/SKILL.md) | "Provides Infrastructure as code using ARM templates for... | resource manager, arm templates... |
-| [rollback-procedures](../../skills/cncf/rollback-procedures/SKILL.md) | Implements comprehensive rollback procedures including... | rollback strategies, deployment rollback... |
-| [rook](../../skills/cncf/rook/SKILL.md) | "Configures rook in cloud-native storage orchestration for... | cloud-native, orchestration... |
-| [route53](../../skills/cncf/route53/SKILL.md) | "Configures DNS routing with Route 53 for domain... | cname, dns... |
-| [s3](../../skills/cncf/s3/SKILL.md) | "Configures S3 object storage with versioning, lifecycle... | s3, object storage... |
-| [scale-sets](../../skills/cncf/scale-sets/SKILL.md) | "Manages auto-scaling VM groups with load balancing and... | scale sets, vmss... |
-| [secret-manager](../../skills/cncf/secret-manager/SKILL.md) | "Provides Stores and rotates secrets with encryption and... | secret manager, secrets... |
-| [secrets-manager](../../skills/cncf/secrets-manager/SKILL.md) | "Manages sensitive data with automatic encryption,... | credential rotation, password rotation... |
-| [security-compliance](../../skills/cncf/security-compliance/SKILL.md) | Implements security compliance frameworks (SOC2, HIPAA,... | soc2 compliance, hipaa security... |
-| [security-policy](../../skills/cncf/security-policy/SKILL.md) | "Creates or updates SECURITY.md defining the vulnerability... | creates, defining... |
-| [service-bus](../../skills/cncf/service-bus/SKILL.md) | "Provides Messaging service with queues and topics for... | service bus, messaging... |
-| [service-mesh-debugging](../../skills/cncf/service-mesh-debugging/SKILL.md) | Implements comprehensive debugging workflows for Istio and... | istio debugging, linkerd troubleshooting... |
-| [sns](../../skills/cncf/sns/SKILL.md) | "Deploys managed pub/sub messaging with SNS for... | messaging, notifications... |
-| [spiffe](../../skills/cncf/spiffe/SKILL.md) | "Provides SPIFFE in Secure Product Identity Framework for... | identity, product... |
-| [spire](../../skills/cncf/spire/SKILL.md) | "Configures spire in spiffe implementation for real-world... | implementation, real-world... |
-| [sql-database](../../skills/cncf/sql-database/SKILL.md) | Provides Managed relational database with elastic pools,... | sql database, relational database... |
-| [sqs](../../skills/cncf/sqs/SKILL.md) | "Deploys managed message queues with SQS for asynchronous... | dead-letter queue, fifo queue... |
-| [ssm](../../skills/cncf/ssm/SKILL.md) | "Manages EC2 instances and on-premises servers with AWS... | configuration management, parameter store... |
-| [strimzi](../../skills/cncf/strimzi/SKILL.md) | "Provides Strimzi in Kafka on Kubernetes - Apache Kafka for... | apache, container orchestration... |
-| [tekton](../../skills/cncf/tekton/SKILL.md) | "Provides Tekton in Cloud-Native Engineering - A... | cloud-native, engineering... |
-| [telemetry](../../skills/cncf/telemetry/SKILL.md) | "OpenTelemetry in Observability - cloud native... | cdn, infrastructure as code... |
-| [terraform](../../skills/cncf/terraform/SKILL.md) | Implements Terraform infrastructure as code for cloud... | terraform, iac... |
-| [thanos](../../skills/cncf/thanos/SKILL.md) | "Provides Thanos in High availability Prometheus solution... | availability, metrics... |
-| [tikv](../../skills/cncf/tikv/SKILL.md) | "TiKV in Distributed transactional key-value database... | distributed, key-value... |
-| [toto](../../skills/cncf/toto/SKILL.md) | "in-toto in Supply Chain Security - cloud native... | chain, in toto... |
-| [traffic-manager](../../skills/cncf/traffic-manager/SKILL.md) | Provides DNS-based traffic routing with health checks and... | traffic manager, dns... |
-| [update-framework-tuf](../../skills/cncf/update-framework-tuf/SKILL.md) | "The Update Framework (TUF) in Secure software update... | protecting, secure... |
-| [virtual-machines](../../skills/cncf/virtual-machines/SKILL.md) | "Deploys and manages VMs with auto-scaling, availability... | virtual machines, vm... |
-| [virtual-networks](../../skills/cncf/virtual-networks/SKILL.md) | "Provides Networking with subnets, network security groups,... | virtual networks, networking... |
-| [vitess](../../skills/cncf/vitess/SKILL.md) | "Provides Vitess in Database clustering system for... | clustering, system... |
-| [volcano](../../skills/cncf/volcano/SKILL.md) | "Configures volcano in batch scheduling infrastructure for... | batch, cloud infrastructure... |
-| [vpc](../../skills/cncf/vpc/SKILL.md) | "Configures Virtual Private Clouds with subnets, route... | vpc, virtual private cloud... |
-| [vpc](../../skills/cncf/vpc/SKILL.md) | "Provides networking with subnets, firewall rules, and VPC... | vpc, virtual private cloud... |
-| [wasmcloud](../../skills/cncf/wasmcloud/SKILL.md) | "Provides wasmCloud in WebAssembly-based distributed... | applications, distributed... |
-| [zot](../../skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture,... | cdn, container... |
+| [aks](skills/cncf/aks/SKILL.md) | "Provides Managed Kubernetes cluster with automatic scaling and Azure service integration" | aks, kubernetes, container orchestration, k8s, managed kubernetes |
+| [architecture](skills/cncf/architecture/SKILL.md) | "Creates or updates ARCHITECTURE.md documenting the project's design" components, and technical decisions for CNCF projects | creates, documenting, process architecture, process-architecture, updates |
+| [argo](skills/cncf/argo/SKILL.md) | "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD" and Governance | argo, cloud-native, container orchestration, engineering, kubernetes-native, kubernetes, k8s |
+| [auto-scaling](skills/cncf/auto-scaling/SKILL.md) | "Configures automatic scaling of compute resources (EC2, RDS, DynamoDB" Lambda) based on demand metrics with scaling policies and lifecycle hooks. | asg, auto-scaling, dynamic scaling, scaling policy, scheduled scaling, target tracking |
+| [automation](skills/cncf/automation/SKILL.md) | Provides Automation and orchestration of Azure resources with runbooks and update management | automation, runbooks, update management, orchestration, automation account, jenkins, ci/cd pipeline, continuous integration |
+| [autoscaling](skills/cncf/autoscaling/SKILL.md) | "Provides Automatically scales compute resources based on metrics like CPU and custom signals" | autoscaling, auto-scaling, scaling, horizontal scaling, vertical scaling |
+| [backstage](skills/cncf/backstage/SKILL.md) | "Provides Backstage in Cloud-Native Engineering - Developer Portal for Microservices" | backstage, cloud-native, developer, engineering |
+| [best-practices](skills/cncf/best-practices/SKILL.md) | "Cloud Native Computing Foundation (CNCF) architecture best practices" for production-grade Kubernetes deployments. Covers service mesh, CNI, GitOps, CI/CD, observability, security, networking, and scaling patterns across the CNCF landscape. | architecture best practices, architecture-best-practices, cdn, computing, infrastructure as code, monitoring, native, cloudformation |
+| [blob-storage](skills/cncf/blob-storage/SKILL.md) | Provides Object storage with versioning, lifecycle policies, and integration to other Azure services | blob storage, object storage, azure storage, storage account, blob, how do i store files, s3, file storage |
+| [buildpacks](skills/cncf/buildpacks/SKILL.md) | "Provides Buildpacks in Cloud-Native Engineering - Turn source code into container images without Dockerfiles" | buildpacks, cloud-native, engineering, source |
+| [calico](skills/cncf/calico/SKILL.md) | "Calico in Cloud Native Security - cloud native architecture, patterns" pitfalls, and best practices | calico, cdn, how do i find security issues, infrastructure as code, monitoring, native, security, vulnerability scanning |
+| [cdn](skills/cncf/cdn/SKILL.md) | Provides Content delivery network for caching and global content distribution | cdn, content delivery, content distribution, caching, global delivery, cloudfront, elasticache, redis |
+| [chaosmesh](skills/cncf/chaosmesh/SKILL.md) | ''Provides Chaos Mesh in Cloud-Native Engineering -u6DF7u6C8Cu5DE5u7A0B u5E73' u53F0 for Kubernetes'' | chaosmesh, chaos, cloud-native, engineering |
+| [cilium](skills/cncf/cilium/SKILL.md) | "Cilium in Cloud Native Network - cloud native architecture, patterns" pitfalls, and best practices | cdn, cilium, infrastructure as code, monitoring, native, network, cloudformation, cloudfront |
+| [cloud-cdn](skills/cncf/cloud-cdn/SKILL.md) | Provides Content delivery network for caching and globally distributing content with low latency | cloud cdn, cdn, content delivery, caching, global distribution, cloudfront, elasticache, redis |
+| [cloud-dns](skills/cncf/cloud-dns/SKILL.md) | Manages DNS with health checks, traffic routing, and low-latency resolution | cloud dns, dns, domain name, health checks, traffic routing, route53, domain management |
+| [cloud-functions](skills/cncf/cloud-functions/SKILL.md) | Deploys serverless functions triggered by events with automatic scaling and GCP service integration | cloud functions, serverless, functions, event-driven, function deployment, eventbridge, kubernetes deployment, container orchestration |
+| [cloud-kms](skills/cncf/cloud-kms/SKILL.md) | "Manages encryption keys for data protection with automated rotation and auditing" | kms, key management, encryption, encryption keys, key rotation |
+| [cloud-load-balancing](skills/cncf/cloud-load-balancing/SKILL.md) | "Provides Distributes traffic across instances with automatic failover and health checking" | load balancing, traffic distribution, load balancer, health checks, traffic routing, elb |
+| [cloud-monitoring](skills/cncf/cloud-monitoring/SKILL.md) | "Monitors GCP resources with metrics, logging, and alerting for operational visibility" | cloud monitoring, monitoring, logging, observability, metrics, alerting, cloudwatch, grafana |
+| [cloud-operations](skills/cncf/cloud-operations/SKILL.md) | "Provides Systems management including monitoring, logging, error reporting, and diagnostics" | cloud operations, monitoring, logging, error reporting, diagnostics, cloudwatch |
+| [cloud-pubsub](skills/cncf/cloud-pubsub/SKILL.md) | "Asynchronous messaging service for event streaming and decoupled application" integration. | pubsub, messaging, event streaming, message queue, asynchronous messaging, kafka, sns, sqs |
+| [cloud-sql](skills/cncf/cloud-sql/SKILL.md) | "Provides managed relational databases (MySQL, PostgreSQL) with automated backups, replication, and encryption" | cloud sql, relational database, mysql, postgresql, managed database, postgres, sql database |
+| [cloud-storage](skills/cncf/cloud-storage/SKILL.md) | "Provides Stores objects with versioning, lifecycle policies, access control, and integration with other GCP services" | cloud storage, gcs, object storage, bucket, versioning, storage lifecycle, how do i store files, s3 |
+| [cloud-tasks](skills/cncf/cloud-tasks/SKILL.md) | "Manages task queues for asynchronous job execution with retry policies" and rate limiting. | cloud tasks, task queue, task scheduling, asynchronous tasks, job scheduling |
+| [cloudevents](skills/cncf/cloudevents/SKILL.md) | "CloudEvents in Streaming & Messaging - cloud native architecture, patterns" pitfalls, and best practices | cdn, cloudevents, infrastructure as code, messaging, monitoring, streaming, cloudformation, cloudfront |
+| [cloudformation](skills/cncf/cloudformation/SKILL.md) | "Creates Infrastructure as Code templates with CloudFormation for reproducible" versioned, automated deployments of entire AWS infrastructure stacks. | cloudformation, infrastructure as code, iac, cloudformation template, stack, aws template, yaml, json |
+| [cloudfront](skills/cncf/cloudfront/SKILL.md) | "Configures CloudFront CDN for global content distribution with edge caching" DDoS protection, and SSL/TLS termination for improved performance and security. | cloudfront, cdn, content distribution, edge caching, ddos protection, waf, ssl termination, content delivery |
+| [cloudwatch](skills/cncf/cloudwatch/SKILL.md) | "Configures CloudWatch monitoring with metrics, logs, alarms, and dashboards" for visibility into AWS resource performance, application health, and operational metrics. | cloudwatch, monitoring, metrics, logs, alarms, dashboard, log insights, log groups |
+| [cni](skills/cncf/cni/SKILL.md) | "Cni in Cloud-Native Engineering - Container Network Interface - networking" for Linux containers | cloud-native, cni, container, engineering |
+| [compute-engine](skills/cncf/compute-engine/SKILL.md) | "Deploys and manages virtual machine instances with auto-scaling, instance groups, and integration with GCP services for IaaS workloads" | compute engine, gce, virtual machine, vm, auto-scaling, instance group |
+| [container-linux](skills/cncf/container-linux/SKILL.md) | "Provides Flatcar Container Linux in Cloud-Native Engineering - container Linux" | cloud-native, engineering, flatcar container linux, flatcar-container-linux |
+| [container-registry](skills/cncf/container-registry/SKILL.md) | "Provides Stores and manages container images with integration to AKS and Azure services" | container registry, acr, container images, image registry, docker images, containers, docker, docker hub |
+| [container-registry](skills/cncf/container-registry/SKILL.md) | "Provides Stores and manages container images with integration to GKE and Cloud Build" | container registry, gcr, container images, image registry, docker images, containers, docker, docker hub |
+| [containerd](skills/cncf/containerd/SKILL.md) | "Containerd in Cloud-Native Engineering - An open and reliable container" runtime | cloud-native, containerd, engineering, reliable |
+| [contour](skills/cncf/contour/SKILL.md) | "Contour in Service Proxy - cloud native architecture, patterns, pitfalls" and best practices | cdn, contour, infrastructure as code, k8s service, kubernetes service, monitoring, proxy, service |
+| [coredns](skills/cncf/coredns/SKILL.md) | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains" plugins | cloud-native, coredns, engineering, server |
+| [cortex](skills/cncf/cortex/SKILL.md) | "Cortex in Monitoring & Observability - distributed, horizontally scalable" Prometheus system | cortex, distributed, monitoring, observability, cloudwatch, logging |
+| [cosmos-db](skills/cncf/cosmos-db/SKILL.md) | Provides Global NoSQL database with multi-region distribution and guaranteed latency | cosmos db, nosql, document database, global database, distributed database, cassandra, mongodb, nosql database |
+| [cost-optimization](skills/cncf/cost-optimization/SKILL.md) | Implements cloud cost optimization strategies (right-sizing, reserved instances, spot instances, multi-cloud comparison) for Kubernetes and cloud-native deployments. | cost optimization, right sizing, reserved instances, spot instances, multi cloud costs, aws cost analysis, azure cost, gcp billing |
+| [cost-optimization-analysis](skills/cncf/cost-optimization-analysis/SKILL.md) | Cloud cost optimization analysis including AWS Cost Explorer, Azure Cost Management, and GCP Billing with right-sizing recommendations and optimization strategies for multi-cloud environments | aws cost explorer, azure cost analysis, gcp billing, cloud cost optimization, right-sizing recommendations, spot instance strategy, reserved instance optimization, cost allocation |
+| [crossplane](skills/cncf/crossplane/SKILL.md) | "Crossplane in Platform Engineering - Kubernetes-native control plane" for multi-cloud infrastructure | container orchestration, crossplane, engineering, kubernetes-native, platform, kubernetes, k8s |
+| [cubefs](skills/cncf/cubefs/SKILL.md) | "Provides CubeFS in Storage - distributed, high-performance file system" | cubefs, distributed, high-performance, optimization, storage, performance, speed |
+| [custodian](skills/cncf/custodian/SKILL.md) | "Provides Cloud Custodian in Cloud-Native Engineering -/rules engine for cloud infrastructure management" | cloud custodian, cloud-custodian, cloud-native, engineering, rules |
+| [dapr](skills/cncf/dapr/SKILL.md) | "Provides Dapr in Cloud-Native Engineering - distributed application runtime" | cloud-native, dapr, distributed, engineering |
+| [deployment-manager](skills/cncf/deployment-manager/SKILL.md) | "Infrastructure as code using YAML templates for repeatable GCP resource" deployments. | deployment manager, infrastructure as code, iac, templates, yaml, cloudformation, kubernetes deployment, container orchestration |
+| [disaster-recovery](skills/cncf/disaster-recovery/SKILL.md) | Implements comprehensive disaster recovery planning for Kubernetes clusters with backup strategies, recovery procedures, cross-region replication, RPO/RTO planning, and validation workflows. | disaster recovery, backup strategy, recovery procedures, cross region replication, rpo rto, backup validation, how do i plan dr |
+| [dragonfly](skills/cncf/dragonfly/SKILL.md) | "Provides Dragonfly in Cloud-Native Engineering - P2P file distribution" | cloud-native, distribution, dragonfly, engineering, elb, load balancer, load balancing |
+| [dynamodb](skills/cncf/dynamodb/SKILL.md) | "Deploys managed NoSQL databases with DynamoDB for scalable, low-latency" key-value storage, streams, and global tables with high availability and automatic replication. | dynamodb, nosql, key-value store, dynamodb stream, global table, partition key, sort key, auto-scaling |
+| [ec2](skills/cncf/ec2/SKILL.md) | "Deploys, configures, and auto-scales EC2 instances with load balancing" using best practices for high availability, security, and cost optimization in AWS compute environments. | ec2, compute instances, auto-scaling, load balancing, asg, launch template, instance types, ebs volumes |
+| [ecr](skills/cncf/ecr/SKILL.md) | "Manages container image repositories with ECR for secure storage, scanning" replication, and integration with EKS, ECS, and Lambda for container deployments. | container registry, container security, containers, docker images, ecr, image repository, image scanning, vulnerability scanning |
+| [eks](skills/cncf/eks/SKILL.md) | "Deploys managed Kubernetes clusters with EKS for container orchestration" auto-scaling, networking, and integrations with AWS services for production Kubernetes workloads. | eks, container orchestration, k8s, cluster, pods, namespaces, ingress, kubernetes namespace |
+| [elb](skills/cncf/elb/SKILL.md) | "Configures Elastic Load Balancing (ALB, NLB, Classic) for distributing" traffic across instances with health checks, SSL termination, and cross-AZ failover. | elb, load balancer, alb, nlb, application load balancer, health check, ssl termination, traffic distribution |
+| [envoy](skills/cncf/envoy/SKILL.md) | "Envoy in Cloud-Native Engineering - Cloud-native high-performance edge/middle/service" proxy | cloud-native, engineering, envoy, high-performance, optimization, performance, speed |
+| [etcd](skills/cncf/etcd/SKILL.md) | "Provides etcd in Cloud-Native Engineering - distributed key-value store" | cloud-native, distributed, engineering, etcd |
+| [event-hubs](skills/cncf/event-hubs/SKILL.md) | "Provides Event streaming platform for high-throughput data ingestion and processing" | event hubs, event streaming, data ingestion, streaming, message streaming, kafka |
+| [falco](skills/cncf/falco/SKILL.md) | "Provides Falco in Cloud-Native Engineering - Cloud Native Runtime Security" | cdn, cloud-native, engineering, falco, infrastructure as code, monitoring, cloudformation, cloudfront |
+| [firestore](skills/cncf/firestore/SKILL.md) | Provides NoSQL document database with real-time sync, offline support, and automatic scaling | firestore, nosql, document database, real-time sync, data synchronization, mongodb, nosql database, dynamodb |
+| [fluentd](skills/cncf/fluentd/SKILL.md) | "Fluentd unified logging layer for collecting, transforming, and routing" log data in cloud-native environments | fluentd, log collection, log routing, logging, unified logging, cloudwatch, log forwarding, monitoring |
+| [fluid](skills/cncf/fluid/SKILL.md) | "Fluid in A Kubernetes-native data acceleration layer for data-intensive" applications | acceleration, container orchestration, fluid, kubernetes-native, layer, kubernetes, k8s |
+| [flux](skills/cncf/flux/SKILL.md) | "Configures flux in cloud-native engineering - gitops for kubernetes for cloud-native deployment and infrastructure management." | cloud-native, declarative, engineering, flux, git-driven operations, gitops |
+| [framework](skills/cncf/framework/SKILL.md) | "Operator Framework in Tools to build and manage Kubernetes operators" with standardized patterns | build, manage, operator framework, operator-framework, tools |
+| [functions](skills/cncf/functions/SKILL.md) | Provides Serverless computing with event-driven functions and automatic scaling | azure functions, serverless, function app, event-driven, function deployment, eventbridge, kubernetes deployment, container orchestration |
+| [gke](skills/cncf/gke/SKILL.md) | "Provides Managed Kubernetes cluster with automatic scaling, networking, and GCP service integration" | gke, kubernetes, container orchestration, k8s, managed kubernetes |
+| [grpc](skills/cncf/grpc/SKILL.md) | "gRPC in Remote Procedure Call - cloud native architecture, patterns" pitfalls, and best practices | cdn, grpc, infrastructure as code, microservices communication, monitoring, procedure, remote, rpc framework |
+| [harbor](skills/cncf/harbor/SKILL.md) | "Configures harbor in cloud-native engineering - container registry for cloud-native deployment and infrastructure management." | cloud-native, container, engineering, harbor, container images, private registry, docker, containerization |
+| [health-check-patterns](skills/cncf/health-check-patterns/SKILL.md) | Implements comprehensive health check patterns for cloud-native applications including Kubernetes probes, HTTP health endpoints, database checks, and circuit breaker patterns | health checks, liveness probes, readiness probes, health monitoring, health endpoint, service health, health check implementation, health check testing |
+| [helm](skills/cncf/helm/SKILL.md) | "Provides Helm in Cloud-Native Engineering - The Kubernetes Package Manager" | cloud-native, container orchestration, engineering, helm, k8s, k8s charts, kubernetes package manager, kubernetes |
+| [hub](skills/cncf/hub/SKILL.md) | "Provides Artifact Hub in Cloud-Native Engineering - Repository for Kubernetes Helm, Falco, OPA, and more" | artifact hub, artifact-hub, cloud-native, engineering, repository |
+| [hydra](skills/cncf/hydra/SKILL.md) | "ORY Hydra in Security & Compliance - cloud native architecture, patterns" pitfalls, and best practices | ory hydra, ory-hydra, security, compliance, how do i find security issues, infrastructure as code, vulnerability scanning, monitoring |
+| [iam](skills/cncf/iam/SKILL.md) | "Configures identity and access management with IAM users, roles, policies" and MFA for secure, least-privilege access control across AWS resources and services. | iam, identity management, access control, iam role, iam policy, mfa, least privilege, service role |
+| [iam](skills/cncf/iam/SKILL.md) | "Manages identity and access control with service accounts, roles, and" fine-grained permissions. | iam, identity access management, service account, roles, permissions, access control, kubernetes service, container orchestration |
+| [incident-response](skills/cncf/incident-response/SKILL.md) | "Creates or updates an incident response plan covering detection, triage" communication, and post-incident review for CNCF projects | covering, creates, process incident response, process-incident-response, updates |
+| [incident-response-runbooks](skills/cncf/incident-response-runbooks/SKILL.md) | Implements incident response runbooks with detection, triage, communication, resolution, and post-incident procedures for Kubernetes and cloud-native environments. | incident response, runbook creation, incident procedures, escalation procedures, incident command, postmortem, blameless postmortem, incident documentation |
+| [ingress](skills/cncf/ingress/SKILL.md) | "Provides Emissary-Ingress in Cloud-Native Engineering - Kubernetes ingress controller" | cloud-native, emissary ingress, emissary-ingress, engineering, kubernetes ingress, container orchestration, ingress, http routing |
+| [ingress-controller](skills/cncf/ingress-controller/SKILL.md) | "Kong Ingress Controller in Kubernetes - cloud native architecture, patterns" pitfalls, and best practices | kong ingress controller, kong-ingress-controller, native, container orchestration, infrastructure as code, kubernetes ingress, monitoring, cdn |
+| [io](skills/cncf/io/SKILL.md) | "metal3.io in Bare Metal Provisioning - cloud native architecture, patterns" pitfalls, and best practices | cdn, infrastructure as code, metal, metal3 io, metal3-io, monitoring, provisioning, cloudformation |
+| [istio](skills/cncf/istio/SKILL.md) | "Istio in Cloud-Native Engineering - Connect, secure, control, and observe" services. | cloud-native, connect, engineering, istio, service mesh, traffic management, kubernetes service, container orchestration |
+| [jaeger](skills/cncf/jaeger/SKILL.md) | "Configures jaeger in cloud-native engineering - distributed tracing for cloud-native deployment and infrastructure management." | cloud-native, distributed, distributed tracing, engineering, jaeger, tracing, request tracing, xray |
+| [karmada](skills/cncf/karmada/SKILL.md) | "Provides Karmada in Cloud-Native Engineering - multi-cluster orchestration" | cloud-native, engineering, karmada, multi-cluster |
+| [keda](skills/cncf/keda/SKILL.md) | "Configures keda in cloud-native engineering - event-driven autoscaling for cloud-native deployment and infrastructure management." | cloud-native, engineering, event-driven, keda, eventbridge, event bus, event routing |
+| [key-vault](skills/cncf/key-vault/SKILL.md) | "Manages encryption keys, secrets, and certificates with access control" and auditing. | key vault, key management, secrets, certificate management, encryption keys, acm, kms, secrets management |
+| [keycloak](skills/cncf/keycloak/SKILL.md) | "Provides Keycloak in Cloud-Native Engineering - identity and access management" | cloud-native, engineering, identity, keycloak |
+| [keyvault-secrets](skills/cncf/keyvault-secrets/SKILL.md) | "Provides Secret management and rotation for sensitive credentials and configuration" | secrets, secret management, secret rotation, credential management, password |
+| [kms](skills/cncf/kms/SKILL.md) | "Manages encryption keys with AWS KMS for data protection at rest and" in transit, key rotation, and compliance with encryption standards across all AWS services. | cmk, customer-managed key, data encryption, encryption, key management, key rotation, kms |
+| [knative](skills/cncf/knative/SKILL.md) | "Provides Knative in Cloud-Native Engineering - serverless on Kubernetes" | cloud-native, engineering, knative, serverless |
+| [kong](skills/cncf/kong/SKILL.md) | "Kong in API Gateway - cloud native architecture, patterns, pitfalls" and best practices | cdn, gateway, infrastructure as code, kong, monitoring, native, api gateway, api management |
+| [kratos](skills/cncf/kratos/SKILL.md) | "ORY Kratos in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices | access, cdn, identity, infrastructure as code, monitoring, ory kratos, ory-kratos, cloudformation |
+| [krustlet](skills/cncf/krustlet/SKILL.md) | "Krustlet in Kubernetes Runtime - cloud native architecture, patterns" pitfalls, and best practices | cdn, container orchestration, infrastructure as code, k8s, krustlet, monitoring, runtime, cloudformation |
+| [kserve](skills/cncf/kserve/SKILL.md) | "Configures kserve in cloud-native engineering - model serving for cloud-native deployment and infrastructure management." | cloud-native, engineering, kserve, model |
+| [kubeedge](skills/cncf/kubeedge/SKILL.md) | "Configures kubeedge in cloud-native engineering - edge computing for cloud-native deployment and infrastructure management." | cloud-native, computing, engineering, kubeedge |
+| [kubeflow](skills/cncf/kubeflow/SKILL.md) | "Configures kubeflow in cloud-native engineering - ml on kubernetes for cloud-native deployment and infrastructure management." | cloud-native, container orchestration, engineering, k8s, kubeflow, kubernetes |
+| [kubernetes](skills/cncf/kubernetes/SKILL.md) | "Kubernetes in Cloud-Native Engineering - Production-Grade Container Scheduling" and Management | cloud-native, container orchestration, engineering, k8s, production-grade, kubernetes |
+| [kubernetes-api-patterns](skills/cncf/kubernetes-api-patterns/SKILL.md) | Kubernetes API patterns including CRD development, webhook implementation, API groups, client library usage, and debugging techniques for custom API extensions | kubernetes api, k8s api, crd development, api groups, subresources, watch api, admission webhooks, client libraries |
+| [kubernetes-debugging](skills/cncf/kubernetes-debugging/SKILL.md) | Implements comprehensive Kubernetes debugging workflow with pod inspection, log analysis, resource debugging, network troubleshooting, and common failure pattern diagnosis using kubectl commands. | kubernetes debugging, k8s troubleshooting, pod crashes, node failures, cluster debugging, kubectl debug, container logs, k8s errors |
+| [kubescape](skills/cncf/kubescape/SKILL.md) | "Configures kubescape in cloud-native engineering - kubernetes security for cloud-native deployment and infrastructure management." | cloud-native, container orchestration, engineering, k8s, kubescape, kubernetes |
+| [kubevela](skills/cncf/kubevela/SKILL.md) | "Configures kubevela in cloud-native engineering - application platform for cloud-native deployment and infrastructure management." | application, cloud-native, engineering, kubevela |
+| [kubevirt](skills/cncf/kubevirt/SKILL.md) | "Provides KubeVirt in Cloud-Native Engineering - virtualization on Kubernetes" | cloud-native, engineering, kubevirt, virtualization |
+| [kuma](skills/cncf/kuma/SKILL.md) | "Kuma in Service Mesh - cloud native architecture, patterns, pitfalls" and best practices | cdn, infrastructure as code, k8s service, kubernetes service, kuma, monitoring, native, service |
+| [kyverno](skills/cncf/kyverno/SKILL.md) | "Configures kyverno in cloud-native engineering - policy engine for cloud-native deployment and infrastructure management." | cloud-native, engineering, kyverno, policy, kubernetes policies, security policies, container orchestration, vulnerability scanning |
+| [lambda](skills/cncf/lambda/SKILL.md) | "Deploys serverless event-driven applications with Lambda functions, triggers" layers, and VPC integration for cost-effective, auto-scaling compute without server management. | lambda, serverless, event-driven, lambda function, api gateway, s3 trigger, sqs, dynamodb stream |
+| [lima](skills/cncf/lima/SKILL.md) | "Lima in Container Runtime - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, lima, monitoring, runtime, cloudformation, cloudfront |
+| [linkerd](skills/cncf/linkerd/SKILL.md) | "Linkerd in Service Mesh - cloud native architecture, patterns, pitfalls" and best practices | cdn, infrastructure as code, k8s service, kubernetes service, linkerd, monitoring, native, service |
+| [litmus](skills/cncf/litmus/SKILL.md) | "Litmus in Chaos Engineering - cloud native architecture, patterns, pits" and best practices | cdn, chaos, engineering, infrastructure as code, litmus, monitoring, cloudformation, cloudfront |
+| [load-balancer](skills/cncf/load-balancer/SKILL.md) | Provides Distributes traffic across VMs with health probes and rule-based routing | load balancer, load balancing, traffic distribution, health checks, routing, elb, route53, dns |
+| [longhorn](skills/cncf/longhorn/SKILL.md) | "Longhorn in Cloud Native Storage - cloud native architecture, patterns" pitfalls, and best practices | cdn, infrastructure as code, longhorn, monitoring, native, storage, cloudformation, cloudfront |
+| [manager](skills/cncf/manager/SKILL.md) | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes | cert manager, cert-manager, cloud-native, engineering |
+| [monitor](skills/cncf/monitor/SKILL.md) | "Provides Monitoring and logging for Azure resources with alerting and observability" | azure monitor, monitoring, logging, observability, metrics, alerts, cloudwatch |
+| [nats](skills/cncf/nats/SKILL.md) | "NATS in Cloud Native Messaging - cloud native architecture, patterns" pitfalls, and best practices | cdn, infrastructure as code, messaging, monitoring, native, nats, cloudformation, cloudfront |
+| [network-interface-cni](skills/cncf/network-interface-cni/SKILL.md) | "Container Network Interface in Cloud Native Network - cloud native architecture" patterns, pitfalls, and best practices | architecture, cdn, container network interface cni, container-network-interface-cni, infrastructure as code, monitoring, native, cloudformation |
+| [networking-troubleshooting](skills/cncf/networking-troubleshooting/SKILL.md) | Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis | iptables debugging, dns issues, load balancer problems, network policies, kubernetes networking, container networking, vpn troubleshooting, firewall rules |
+| [o](skills/cncf/o/SKILL.md) | "Provides CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes" | container, cri o, cri-o, runtime |
+| [oathkeeper](skills/cncf/oathkeeper/SKILL.md) | "Oathkeeper in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices | access, cdn, identity, infrastructure as code, monitoring, oathkeeper, cloudformation, cloudfront |
+| [opencost](skills/cncf/opencost/SKILL.md) | "OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns" pitfalls, and best practices | cdn, container orchestration, infrastructure as code, k8s, monitoring, opencost, cloudformation, cloudfront |
+| [openfeature](skills/cncf/openfeature/SKILL.md) | "OpenFeature in Feature Flagging - cloud native architecture, patterns" pitfalls, and best practices | cdn, feature, flagging, infrastructure as code, monitoring, openfeature, cloudformation, cloudfront |
+| [openfga](skills/cncf/openfga/SKILL.md) | "OpenFGA in Security &amp; Compliance - cloud native architecture, patterns" pitfalls, and best practices | cdn, compliance, how do i find security issues, infrastructure as code, monitoring, openfga, security, vulnerability scanning |
+| [openkruise](skills/cncf/openkruise/SKILL.md) | "OpenKruise in Extended Kubernetes workload management with advanced deployment" strategies | container orchestration, extended, k8s, openkruise, workload, kubernetes |
+| [opentelemetry](skills/cncf/opentelemetry/SKILL.md) | "OpenTelemetry in Observability framework for tracing, metrics, and logs" with vendor-neutral APIs | framework, observability, opentelemetry, tracing, cloudwatch, xray, distributed tracing, logging |
+| [openyurt](skills/cncf/openyurt/SKILL.md) | ''Provides OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edgeu534F' u540C'' | openyurt, extending, kubernetes, computing, container orchestration, k8s |
+| [osi](skills/cncf/osi/SKILL.md) | "OSI Model Networking for Cloud-Native - All 7 layers with CNCF project" mappings, Kubernetes networking, and troubleshooting patterns. | cloud-native, layers, model, networking osi, networking-osi |
+| [policy-agent-opa](skills/cncf/policy-agent-opa/SKILL.md) | "Open Policy Agent in Security &amp; Compliance - cloud native architecture" patterns, pitfalls, and best practices | open policy agent opa, open-policy-agent-opa, security, compliance, how do i find security issues, infrastructure as code, vulnerability scanning, monitoring |
+| [project](skills/cncf/project/SKILL.md) | "Notary Project in Content Trust &amp; Security - cloud native architecture" patterns, pitfalls, and best practices | content, how do i find security issues, notary project, notary-project, security, trust, vulnerability scanning, security auditing |
+| [prometheus](skills/cncf/prometheus/SKILL.md) | "Prometheus in Cloud-Native Engineering - The Prometheus monitoring system" and time series database. | cloud-native, engineering, metrics, monitoring, prometheus, prometheus monitoring, cloudwatch, logging |
+| [pulumi](skills/cncf/pulumi/SKILL.md) | Implements Pulumi infrastructure as code using Python, TypeScript, and Go for cloud provisioning with state management, stacks, backends, and cross-cloud provisioning | pulumi, iac, infrastructure as code, pulumi python, pulumi typescript, how do i deploy infrastructure, crossplane, cloudformation |
+| [rbac](skills/cncf/rbac/SKILL.md) | "Manages identity and access with roles, service principals, and fine-grained" permissions. | rbac, role-based access, access control, iam, roles, permissions |
+| [rds](skills/cncf/rds/SKILL.md) | "Deploys managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle" SQL Server) with multi-AZ failover, automated backups, read replicas, and encryption for production-grade database infrastructure. | rds, relational database, mysql, postgresql, multi-az, database failover, read replica, automated backup |
+| [releases](skills/cncf/releases/SKILL.md) | "Creates or updates RELEASES.md documenting the release process, versioning" policy, and release cadence for CNCF projects | creates, documenting, process releases, process-releases, updates |
+| [resource-manager](skills/cncf/resource-manager/SKILL.md) | "Provides Infrastructure as code using ARM templates for repeatable Azure resource deployments" | resource manager, arm templates, infrastructure as code, iac, deployment, cloudformation, kubernetes deployment, rolling updates |
+| [rollback-procedures](skills/cncf/rollback-procedures/SKILL.md) | Implements comprehensive rollback procedures including deployment rollback, version rollback, database rollback, and rollback testing for Kubernetes and cloud-native applications | rollback strategies, deployment rollback, version rollback, rollback procedures, rollback testing, rollback automation, rollback validation, rollback procedures |
+| [rook](skills/cncf/rook/SKILL.md) | "Configures rook in cloud-native storage orchestration for kubernetes for cloud-native deployment and infrastructure management." | cloud-native, orchestration, rook, storage |
+| [route53](skills/cncf/route53/SKILL.md) | "Configures DNS routing with Route 53 for domain registration, health" checks, failover, and traffic management with private hosted zones. | cname, dns, domain, failover, health check, hosted zone, route 53, traffic policy |
+| [s3](skills/cncf/s3/SKILL.md) | "Configures S3 object storage with versioning, lifecycle policies, encryption" and access controls for durable, scalable data storage with cost optimization in AWS. | s3, object storage, bucket, versioning, lifecycle policy, s3 access, static website, object expiration |
+| [scale-sets](skills/cncf/scale-sets/SKILL.md) | "Manages auto-scaling VM groups with load balancing and health management" | scale sets, vmss, auto-scaling, scaling, vm groups, autoscaling |
+| [secret-manager](skills/cncf/secret-manager/SKILL.md) | "Provides Stores and rotates secrets with encryption and audit logging for sensitive data" | secret manager, secrets, secret storage, credential management, secret rotation |
+| [secrets-manager](skills/cncf/secrets-manager/SKILL.md) | "Manages sensitive data with automatic encryption, rotation, and fine-grained" access control for database passwords, API keys, and credentials. | credential rotation, password rotation, secret management, secrets manager, sensitive data |
+| [security-compliance](skills/cncf/security-compliance/SKILL.md) | Implements security compliance frameworks (SOC2, HIPAA, PCI-DSS) with implementation patterns, audit procedures, and compliance automation for Kubernetes and cloud environments | soc2 compliance, hipaa security, pci dss requirements, security auditing, compliance framework, regulatory requirements, audit trails, security controls |
+| [security-policy](skills/cncf/security-policy/SKILL.md) | "Creates or updates SECURITY.md defining the vulnerability reporting process" disclosure timeline, and supported versions for CNCF projects | creates, defining, process security policy, process-security-policy, updates, vulnerability scanning, security, security auditing |
+| [service-bus](skills/cncf/service-bus/SKILL.md) | "Provides Messaging service with queues and topics for reliable communication" | service bus, messaging, message queue, queues, topics, event messaging, kubernetes service, sns |
+| [service-mesh-debugging](skills/cncf/service-mesh-debugging/SKILL.md) | Implements comprehensive debugging workflows for Istio and Linkerd service meshes including mTLS validation, sidecar injection issues, traffic routing problems, and mesh observability for microservices. | istio debugging, linkerd troubleshooting, service mesh issues, envoy errors, mTLS problems, traffic routing, sidecar injection, mesh monitoring |
+| [sns](skills/cncf/sns/SKILL.md) | "Deploys managed pub/sub messaging with SNS for asynchronous notifications" across services, mobile push, email, and Lambda integrations. | messaging, notifications, pub/sub, publish subscribe, sns, subscription, topic |
+| [spiffe](skills/cncf/spiffe/SKILL.md) | "Provides SPIFFE in Secure Product Identity Framework for Applications" | identity, product, secure, spiffe |
+| [spire](skills/cncf/spire/SKILL.md) | "Configures spire in spiffe implementation for real-world deployments for cloud-native deployment and infrastructure management." | implementation, real-world, spiffe, spire |
+| [sql-database](skills/cncf/sql-database/SKILL.md) | Provides Managed relational database with elastic pools, geo-replication, and automatic backups | sql database, relational database, managed database, azure sql, elasticity, postgresql, postgres |
+| [sqs](skills/cncf/sqs/SKILL.md) | "Deploys managed message queues with SQS for asynchronous processing" decoupling services, and reliable message delivery with visibility timeout and dead-letter queues. | dead-letter queue, fifo queue, message deduplication, message queue, queue, queuing, sqs, visibility timeout |
+| [ssm](skills/cncf/ssm/SKILL.md) | "Manages EC2 instances and on-premises servers with AWS Systems Manager" for configuration management, patch management, and secure shell access without SSH keys. | configuration management, parameter store, patch management, session manager, ssm, systems manager, ansible, automation |
+| [strimzi](skills/cncf/strimzi/SKILL.md) | "Provides Strimzi in Kafka on Kubernetes - Apache Kafka for cloud-native environments" | apache, container orchestration, event streaming, k8s, kafka, message streaming, strimzi, kubernetes |
+| [tekton](skills/cncf/tekton/SKILL.md) | "Provides Tekton in Cloud-Native Engineering - A cloud-native Pipeline resource" | cloud-native, engineering, pipeline, tekton |
+| [telemetry](skills/cncf/telemetry/SKILL.md) | "OpenTelemetry in Observability - cloud native architecture, patterns" pitfalls, and best practices | cdn, infrastructure as code, monitoring, observability, open telemetry, open-telemetry, opentelemetry, cloudformation |
+| [terraform](skills/cncf/terraform/SKILL.md) | Implements Terraform infrastructure as code for cloud provisioning with state management, modules, remote backends, and troubleshooting | terraform, iac, infrastructure as code, terraform state, modules, remote backends, plan apply, terraform troubleshooting |
+| [thanos](skills/cncf/thanos/SKILL.md) | "Provides Thanos in High availability Prometheus solution with long-term storage" | availability, metrics, prometheus, prometheus monitoring, solution, thanos, cloudwatch, monitoring |
+| [tikv](skills/cncf/tikv/SKILL.md) | "TiKV in Distributed transactional key-value database inspired by Google" Spanner | distributed, key-value, tikv, transactional |
+| [toto](skills/cncf/toto/SKILL.md) | "in-toto in Supply Chain Security - cloud native architecture, patterns" pitfalls, and best practices | chain, in toto, in-toto, supply |
+| [traffic-manager](skills/cncf/traffic-manager/SKILL.md) | Provides DNS-based traffic routing with health checks and geographic distribution | traffic manager, dns, traffic routing, health checks, geographic routing, route53, domain management |
+| [update-framework-tuf](skills/cncf/update-framework-tuf/SKILL.md) | "The Update Framework (TUF) in Secure software update framework for protecting" software deliveries | protecting, secure, software, the update framework tuf, the-update-framework-tuf |
+| [virtual-machines](skills/cncf/virtual-machines/SKILL.md) | "Deploys and manages VMs with auto-scaling, availability sets, and integration" with Azure services. | virtual machines, vm, azure vm, compute, instance types, scaling, ec2, servers |
+| [virtual-networks](skills/cncf/virtual-networks/SKILL.md) | "Provides Networking with subnets, network security groups, and VPN connectivity" | virtual networks, networking, vnet, subnets, network security, vpn, availability zones, network segmentation |
+| [vitess](skills/cncf/vitess/SKILL.md) | "Provides Vitess in Database clustering system for horizontal scaling of MySQL" | clustering, system, vitess |
+| [volcano](skills/cncf/volcano/SKILL.md) | "Configures volcano in batch scheduling infrastructure for kubernetes for cloud-native deployment and infrastructure management." | batch, cloud infrastructure, infrastructure, scheduling, servers, volcano, ec2, virtual machines |
+| [vpc](skills/cncf/vpc/SKILL.md) | "Configures Virtual Private Clouds with subnets, route tables, NAT gateways" security groups, and network ACLs for secure, isolated network infrastructure on AWS. | vpc, virtual private cloud, subnet, route table, security group, nat gateway, network acl, vpn |
+| [vpc](skills/cncf/vpc/SKILL.md) | "Provides networking with subnets, firewall rules, and VPC peering for secure cloud infrastructure" | vpc, virtual private cloud, networking, subnets, firewall, vpc peering, availability zones, network segmentation |
+| [wasmcloud](skills/cncf/wasmcloud/SKILL.md) | "Provides wasmCloud in WebAssembly-based distributed applications platform" | applications, distributed, wasmcloud, webassembly-based |
+| [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
 ### Coding (82 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
-| [ab-testing](../../skills/coding/ab-testing/SKILL.md) | Provides Designs and analyzes A/B tests including... | A/B testing, A/B test... |
-| [advanced](../../skills/coding/advanced/SKILL.md) | "Provides Advanced Git operations including rebasing,... | git rebase, git cherry-pick... |
-| [anomaly-detection](../../skills/coding/anomaly-detection/SKILL.md) | "Detects anomalies and outliers using isolation forests,... | anomaly detection, outlier detection... |
-| [association-rules](../../skills/coding/association-rules/SKILL.md) | "Provides Discovers association rules and frequent itemsets... | association rules, market basket... |
-| [automation](../../skills/coding/automation/SKILL.md) | "Provides Automating semantic versioning in Git... | semantic versioning, semver... |
-| [base](../../skills/coding/base/SKILL.md) | "Abstract base strategy pattern with initialization guards,... | abstract, initialization... |
-| [bayesian-inference](../../skills/coding/bayesian-inference/SKILL.md) | "Applies Bayesian methods for prior selection, posterior... | bayesian inference, bayes... |
-| [best-practices](../../skills/coding/best-practices/SKILL.md) | "Provides Markdown best practices for OpenCode skills -... | markdown best practices, markdown-best-practices... |
-| [bias-variance-tradeoff](../../skills/coding/bias-variance-tradeoff/SKILL.md) | "Analyzes bias-variance tradeoff, overfitting,... | bias-variance, overfitting... |
-| [branching-strategies](../../skills/coding/branching-strategies/SKILL.md) | "Git branching models including Git Flow, GitHub Flow,... | git branching strategies, git repository... |
-| [bus](../../skills/coding/bus/SKILL.md) | "Async pub/sub event bus with typed events, mixed... | async, event bus... |
-| [categorical-encoding](../../skills/coding/categorical-encoding/SKILL.md) | "Provides Encodes categorical variables using one-hot... | categorical encoding, one-hot encoding... |
-| [causal-inference](../../skills/coding/causal-inference/SKILL.md) | Implements causal models, directed acyclic graphs (DAGs),... | causal inference, causality... |
-| [classification-metrics](../../skills/coding/classification-metrics/SKILL.md) | "Evaluates classification models using precision, recall,... | classification metrics, precision... |
-| [clustering](../../skills/coding/clustering/SKILL.md) | "Implements clustering algorithms including K-means,... | clustering, k-means... |
-| [community-detection](../../skills/coding/community-detection/SKILL.md) | "Detects communities and clusters in graphs using... | community detection, graph clustering... |
-| [confidence-intervals](../../skills/coding/confidence-intervals/SKILL.md) | "Provides Constructs confidence intervals using bootstrap,... | confidence intervals, bootstrap... |
-| [config](../../skills/coding/config/SKILL.md) | "Pydantic-based configuration management with frozen... | configuration, management... |
-| [correlation-analysis](../../skills/coding/correlation-analysis/SKILL.md) | "Analyzes correlation, covariance, and multivariate... | correlation analysis, covariance... |
-| [cross-validation](../../skills/coding/cross-validation/SKILL.md) | "Implements k-fold cross-validation, stratified... | cross-validation, k-fold... |
-| [data-collection](../../skills/coding/data-collection/SKILL.md) | "Implements data gathering strategies including APIs, web... | data collection, web scraping... |
-| [data-ingestion](../../skills/coding/data-ingestion/SKILL.md) | "Provides Designs and implements ETL pipelines, streaming... | ETL pipeline, data ingestion... |
-| [data-privacy](../../skills/coding/data-privacy/SKILL.md) | "Applies privacy-preserving techniques including... | data privacy, anonymization... |
-| [data-profiling](../../skills/coding/data-profiling/SKILL.md) | Provides Extracts data profiles, schemas, metadata, and... | data profiling, metadata extraction... |
-| [data-quality](../../skills/coding/data-quality/SKILL.md) | "Implements data validation, cleaning, outlier detection,... | data validation, data cleaning... |
-| [data-versioning](../../skills/coding/data-versioning/SKILL.md) | "Implements data versioning, lineage tracking, provenance... | data versioning, data lineage... |
-| [data-visualization](../../skills/coding/data-visualization/SKILL.md) | "Creates effective visualizations including plots, charts,... | data visualization, plotting... |
-| [dependency-management](../../skills/coding/dependency-management/SKILL.md) | "Provides Cybersecurity operations skill for automating... | CVE, dependency management... |
-| [dimensionality-reduction](../../skills/coding/dimensionality-reduction/SKILL.md) | "Provides Reduces data dimensionality using PCA, t-SNE,... | dimensionality reduction, PCA... |
-| [distribution-fitting](../../skills/coding/distribution-fitting/SKILL.md) | "Provides Fits statistical distributions to data using... | distribution fitting, goodness-of-fit... |
-| [driven-architecture](../../skills/coding/driven-architecture/SKILL.md) | "'Event-driven architecture for real-time trading systems:... | event driven architecture, event-driven... |
-| [driven-development](../../skills/coding/driven-development/SKILL.md) | "Test-Driven Development (TDD) and Behavior-Driven... | behavior-driven, patterns... |
-| [dry-principles](../../skills/coding/dry-principles/SKILL.md) | Implements DRY (Don't Repeat Yourself) principle... | dry principle, don't repeat yourself... |
-| [eda](../../skills/coding/eda/SKILL.md) | "Provides Performs exploratory data analysis using summary... | exploratory data analysis, EDA... |
-| [ensemble-methods](../../skills/coding/ensemble-methods/SKILL.md) | "Provides Combines multiple models using bagging, boosting,... | ensemble methods, bagging... |
-| [experimental-design](../../skills/coding/experimental-design/SKILL.md) | "Provides Designs experiments using design of experiments... | experimental design, DOE... |
-| [explainability](../../skills/coding/explainability/SKILL.md) | "Implements explainability and interpretability techniques... | explainability, interpretability... |
-| [feature-engineering](../../skills/coding/feature-engineering/SKILL.md) | "Creates and transforms features including polynomial... | feature engineering, feature creation... |
-| [feature-interaction](../../skills/coding/feature-interaction/SKILL.md) | "Provides Discovers and engineers feature interactions... | feature interaction, interaction terms... |
-| [feature-scaling-normalization](../../skills/coding/feature-scaling-normalization/SKILL.md) | "Provides Scales and normalizes features using... | feature scaling, normalization... |
-| [feature-selection](../../skills/coding/feature-selection/SKILL.md) | "Selects relevant features using univariate selection,... | feature selection, feature importance... |
-| [grpc-patterns](../../skills/coding/grpc-patterns/SKILL.md) | Implements gRPC development patterns including protocol... | grpc development, grpc debugging... |
-| [hyperparameter-tuning](../../skills/coding/hyperparameter-tuning/SKILL.md) | "Optimizes hyperparameters using grid search, random... | hyperparameter tuning, grid search... |
-| [hypothesis-testing](../../skills/coding/hypothesis-testing/SKILL.md) | Implements hypothesis testing including t-tests, chi-square... | hypothesis testing, t-test... |
-| [instrumental-variables](../../skills/coding/instrumental-variables/SKILL.md) | "Provides Uses instrumental variables (IV), two-stage least... | instrumental variables, IV... |
-| [intervention-analysis](../../skills/coding/intervention-analysis/SKILL.md) | "Provides Estimates treatment effects, conditional average... | treatment effects, intervention analysis... |
-| [kernel-density](../../skills/coding/kernel-density/SKILL.md) | "Implements kernel density estimation, non-parametric... | kernel density estimation, KDE... |
-| [linear-regression](../../skills/coding/linear-regression/SKILL.md) | "Implements linear regression including OLS, ridge... | linear regression, OLS... |
-| [logistic-regression](../../skills/coding/logistic-regression/SKILL.md) | "Implements logistic regression for binary and multinomial... | logistic regression, classification... |
-| [manager](../../skills/coding/manager/SKILL.md) | "WebSocket connection manager with state machine... | connection, machine... |
-| [maximum-likelihood](../../skills/coding/maximum-likelihood/SKILL.md) | Implements maximum likelihood estimation, likelihood... | maximum likelihood, MLE... |
-| [metrics-and-kpis](../../skills/coding/metrics-and-kpis/SKILL.md) | "Defines, selects, and monitors key performance indicators... | metrics, KPI... |
-| [missing-data](../../skills/coding/missing-data/SKILL.md) | "Handles missing data using imputation strategies, deletion... | missing data, imputation... |
-| [model-fairness](../../skills/coding/model-fairness/SKILL.md) | "Evaluates and mitigates fairness issues including bias... | model fairness, fairness metrics... |
-| [model-interpretation](../../skills/coding/model-interpretation/SKILL.md) | "Provides Interprets models using SHAP values, LIME,... | model interpretation, SHAP... |
-| [model-robustness](../../skills/coding/model-robustness/SKILL.md) | Improves model robustness including adversarial robustness,... | model robustness, adversarial robustness... |
-| [model-selection](../../skills/coding/model-selection/SKILL.md) | "Provides Compares and selects models using AIC, BIC,... | model selection, AIC... |
-| [models](../../skills/coding/models/SKILL.md) | "'Pydantic frozen data models for trading: enums, annotated... | enums, frozen... |
-| [monte-carlo](../../skills/coding/monte-carlo/SKILL.md) | "Implements Monte Carlo sampling, simulation methods, and... | monte carlo, sampling... |
-| [neural-networks](../../skills/coding/neural-networks/SKILL.md) | "Implements deep neural networks, backpropagation,... | neural networks, deep learning... |
-| [normalization](../../skills/coding/normalization/SKILL.md) | 'Provides Exchange data normalization layer: typed... | data normalization, data-normalization... |
-| [observational-studies](../../skills/coding/observational-studies/SKILL.md) | "Analyzes observational data using matching methods,... | observational studies, propensity score... |
-| [online-experiments](../../skills/coding/online-experiments/SKILL.md) | "Implements multi-armed bandits, contextual bandits,... | multi-armed bandits, bandits... |
-| [patterns](../../skills/coding/patterns/SKILL.md) | "Provides Software architecture patterns including MVC,... | architectural patterns, system design... |
-| [patterns](../../skills/coding/patterns/SKILL.md) | "FastAPI application structure with typed error hierarchy,... | application, cloud infrastructure... |
-| [privacy-ml](../../skills/coding/privacy-ml/SKILL.md) | "Implements privacy-preserving machine learning including... | privacy machine learning, differential privacy... |
-| [quality-policies](../../skills/coding/quality-policies/SKILL.md) | "Provides Establishing policies for maintaining a clean... | code quality, clean code... |
-| [randomized-experiments](../../skills/coding/randomized-experiments/SKILL.md) | "Provides Designs and analyzes randomized controlled trials... | randomized experiments, RCT... |
-| [regression-evaluation](../../skills/coding/regression-evaluation/SKILL.md) | "Evaluates regression models using MSE, RMSE, MAE, MAPE,... | regression evaluation, MSE... |
-| [release-pipeline](../../skills/coding/release-pipeline/SKILL.md) | Implements comprehensive secure release pipeline with CVE... | secure release, CVE scanning... |
-| [reproducible-research](../../skills/coding/reproducible-research/SKILL.md) | "Implements reproducible research practices including code... | reproducible research, reproducibility... |
-| [review](../../skills/coding/review/SKILL.md) | "Analyzes code diffs and files to identify bugs, security... | analyzes, code review... |
-| [review](../../skills/coding/review/SKILL.md) | "Security-focused code review identifying vulnerabilities... | identifying, security review... |
-| [scoring](../../skills/coding/scoring/SKILL.md) | "Multi-factor conviction scoring engine combining... | combining, conviction scoring... |
-| [shop](../../skills/coding/shop/SKILL.md) | "'OWASP Juice Shop guide: Web application security testing... | application, guide... |
-| [statistical-power](../../skills/coding/statistical-power/SKILL.md) | "Analyzes statistical power, sample size determination,... | statistical power, power analysis... |
-| [support-vector-machines](../../skills/coding/support-vector-machines/SKILL.md) | "Implements support vector machines (SVM) with kernel... | support vector machines, SVM... |
-| [synthetic-control](../../skills/coding/synthetic-control/SKILL.md) | "Implements synthetic control methods,... | synthetic control, difference-in-differences... |
-| [time-series-forecasting](../../skills/coding/time-series-forecasting/SKILL.md) | "Implements ARIMA, exponential smoothing, state-space... | time series forecasting, ARIMA... |
-| [topic-modeling](../../skills/coding/topic-modeling/SKILL.md) | "Implements topic modeling using Latent Dirichlet... | topic modeling, LDA... |
-| [tree-methods](../../skills/coding/tree-methods/SKILL.md) | "Implements decision trees, random forests, gradient... | decision trees, random forest... |
-| [validation](../../skills/coding/validation/SKILL.md) | Validates pipeline stages and returns config status strings... | validation, code validation... |
+| [ab-testing](skills/coding/ab-testing/SKILL.md) | Provides Designs and analyzes A/B tests including hypothesis testing, power analysis, sample size calculation, and statistical significance evaluation | A/B testing, A/B test, statistical test, power analysis, sample size, how do I design tests, unit tests, testing |
+| [advanced](skills/coding/advanced/SKILL.md) | "Provides Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper" | git rebase, git cherry-pick, git bisect, git reflog, worktrees, filter-branch, multi-repo, advanced git |
+| [anomaly-detection](skills/coding/anomaly-detection/SKILL.md) | "Detects anomalies and outliers using isolation forests, local outlier factor (LOF), one-class SVM, and isolation-based methods" | anomaly detection, outlier detection, isolation forest, LOF, one-class SVM, how do I detect anomalies |
+| [association-rules](skills/coding/association-rules/SKILL.md) | "Provides Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining" | association rules, market basket, apriori, frequent itemsets, recommendation, pattern mining |
+| [automation](skills/coding/automation/SKILL.md) | "Provides Automating semantic versioning in Git repositories for version bumping, changelog generation, and release automation using conventional commits and to" | semantic versioning, semver, version bumping, conventional commits, semantic-release, changelog automation, release automation, git tags |
+| [base](skills/coding/base/SKILL.md) | "Abstract base strategy pattern with initialization guards, typed abstract" methods, and conviction scoring integration | abstract, initialization, pattern, strategy base, strategy-base |
+| [bayesian-inference](skills/coding/bayesian-inference/SKILL.md) | "Applies Bayesian methods for prior selection, posterior estimation, and probabilistic inference in machine learning models" | bayesian inference, bayes, prior, posterior, probabilistic inference, how do i do bayesian |
+| [best-practices](skills/coding/best-practices/SKILL.md) | "Provides Markdown best practices for OpenCode skills - syntax rules, common pitfalls, and coding practices for documentation consistency" | markdown best practices, markdown-best-practices, opencode, skills, syntax |
+| [bias-variance-tradeoff](skills/coding/bias-variance-tradeoff/SKILL.md) | "Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model generalization" | bias-variance, overfitting, underfitting, regularization, generalization, how do I prevent overfitting |
+| [branching-strategies](skills/coding/branching-strategies/SKILL.md) | "Git branching models including Git Flow, GitHub Flow, Trunk-Based Development" and feature flag strategies for CI/CD pipelines | git branching strategies, git repository, git-branching-strategies, github, including, models, version control |
+| [bus](skills/coding/bus/SKILL.md) | "Async pub/sub event bus with typed events, mixed sync/async dispatch" and singleton initialization for trading systems | async, event bus, event-bus, events, typed, eventbridge, event routing |
+| [categorical-encoding](skills/coding/categorical-encoding/SKILL.md) | "Provides Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies" | categorical encoding, one-hot encoding, target encoding, ordinal encoding, categorical variables |
+| [causal-inference](skills/coding/causal-inference/SKILL.md) | Implements causal models, directed acyclic graphs (DAGs), confounding adjustment, and mediation analysis for causal discovery | causal inference, causality, causal models, DAG, confounding, how do i determine causation, airflow, data pipelines |
+| [classification-metrics](skills/coding/classification-metrics/SKILL.md) | "Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification metrics" | classification metrics, precision, recall, F1-score, ROC-AUC, confusion matrix |
+| [clustering](skills/coding/clustering/SKILL.md) | "Implements clustering algorithms including K-means, hierarchical clustering, DBSCAN, Gaussian mixture models, and spectral clustering" | clustering, k-means, hierarchical clustering, DBSCAN, mixture models, how do I cluster data |
+| [community-detection](skills/coding/community-detection/SKILL.md) | "Detects communities and clusters in graphs using modularity optimization, spectral methods, and graph partitioning algorithms" | community detection, graph clustering, modularity, spectral clustering, graph partitioning |
+| [confidence-intervals](skills/coding/confidence-intervals/SKILL.md) | "Provides Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation" | confidence intervals, bootstrap, uncertainty quantification, confidence bounds, credible intervals |
+| [config](skills/coding/config/SKILL.md) | "Pydantic-based configuration management with frozen models, nested hierarchy" TOML/env parsing, and module-level singleton | configuration, management, pydantic config, pydantic-based, pydantic-config |
+| [correlation-analysis](skills/coding/correlation-analysis/SKILL.md) | "Analyzes correlation, covariance, and multivariate relationships between variables using statistical methods and visualization techniques" | correlation analysis, covariance, multivariate analysis, correlation, pearson, spearman, feature relationships |
+| [cross-validation](skills/coding/cross-validation/SKILL.md) | "Implements k-fold cross-validation, stratified cross-validation, time-series cross-validation, and model validation strategies" | cross-validation, k-fold, stratified cross-validation, time-series cross-validation, validation |
+| [data-collection](skills/coding/data-collection/SKILL.md) | "Implements data gathering strategies including APIs, web scraping, sensor data collection, and database queries for building machine learning datasets" | data collection, web scraping, API integration, data gathering, data acquisition, ETL, how do i collect data |
+| [data-ingestion](skills/coding/data-ingestion/SKILL.md) | "Provides Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow" | ETL pipeline, data ingestion, streaming data, batch processing, pipeline, how do i ingest data |
+| [data-privacy](skills/coding/data-privacy/SKILL.md) | "Applies privacy-preserving techniques including anonymization, differential privacy, encryption, and GDPR compliance for sensitive data" | data privacy, anonymization, differential privacy, GDPR, PII protection, privacy-preserving, sensitive data |
+| [data-profiling](skills/coding/data-profiling/SKILL.md) | Provides Extracts data profiles, schemas, metadata, and statistical summaries to understand data structure, quality, and characteristics at scale | data profiling, metadata extraction, schema analysis, data schema, how do i profile data, data structure, performance analysis, optimization |
+| [data-quality](skills/coding/data-quality/SKILL.md) | "Implements data validation, cleaning, outlier detection, and quality assurance techniques to ensure reliable datasets for model training" | data validation, data cleaning, outlier detection, data quality, how do i clean data, missing values |
+| [data-versioning](skills/coding/data-versioning/SKILL.md) | "Implements data versioning, lineage tracking, provenance management, and reproducible data pipelines for experiment tracking and governance" | data versioning, data lineage, provenance, reproducibility, data governance, how do i track data |
+| [data-visualization](skills/coding/data-visualization/SKILL.md) | "Creates effective visualizations including plots, charts, dashboards, and interactive visualizations for data insight and storytelling" | data visualization, plotting, dashboards, charts, matplotlib, seaborn, plotly, how do i visualize data |
+| [dependency-management](skills/coding/dependency-management/SKILL.md) | "Provides Cybersecurity operations skill for automating software dependency version updates based on CVE (Common Vulnerabilities and Exposures) data, vulnerabil" | CVE, dependency management, vulnerability scanning, dependency updates, security patching, SCA, software composition analysis, vulnerability remediation |
+| [dimensionality-reduction](skills/coding/dimensionality-reduction/SKILL.md) | "Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency" | dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do i reduce dimensions |
+| [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" | distribution fitting, goodness-of-fit, fitting distributions, distribution selection, how do i fit |
+| [driven-architecture](skills/coding/driven-architecture/SKILL.md) | "'Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy base, and common pitfalls' | event driven architecture, event-driven, event-driven-architecture, real-time, trading, eventbridge, event bus, event routing |
+| [driven-development](skills/coding/driven-development/SKILL.md) | "Test-Driven Development (TDD) and Behavior-Driven Development (BDD) patterns" with pytest, unit tests, mocking, and test pyramid principles | behavior-driven, patterns, test driven development, test-driven, test-driven-development |
+| [dry-principles](skills/coding/dry-principles/SKILL.md) | Implements DRY (Don't Repeat Yourself) principle enforcement through pattern recognition, code duplication detection, and refactoring guidance for clean maintainable codebases | dry principle, don't repeat yourself, code duplication, refactoring, code duplication detection, refactoring guidance, maintainable code, code reuse |
+| [eda](skills/coding/eda/SKILL.md) | "Provides Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristic" | exploratory data analysis, EDA, summary statistics, distributions, data exploration, how do i explore data |
+| [ensemble-methods](skills/coding/ensemble-methods/SKILL.md) | "Provides Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness" | ensemble methods, bagging, boosting, stacking, voting, blending, ensemble learning |
+| [experimental-design](skills/coding/experimental-design/SKILL.md) | "Provides Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning" | experimental design, DOE, factorial design, randomization, blocking, how do I design experiments |
+| [explainability](skills/coding/explainability/SKILL.md) | "Implements explainability and interpretability techniques for model transparency, understanding decisions, and building trust" | explainability, interpretability, transparency, understanding models, how do I explain predictions |
+| [feature-engineering](skills/coding/feature-engineering/SKILL.md) | "Creates and transforms features including polynomial features, interactions, domain-specific features, and feature transformations" | feature engineering, feature creation, feature transformation, how do I engineer features, feature design |
+| [feature-interaction](skills/coding/feature-interaction/SKILL.md) | "Provides Discovers and engineers feature interactions including polynomial interactions, cross-features, and interaction detection methods" | feature interaction, interaction terms, polynomial features, cross-features, feature interactions |
+| [feature-scaling-normalization](skills/coding/feature-scaling-normalization/SKILL.md) | "Provides Scales and normalizes features using standardization, normalization, robust scaling, and other scaling methods for model compatibility" | feature scaling, normalization, standardization, robust scaling, scaling features, how do I scale |
+| [feature-selection](skills/coding/feature-selection/SKILL.md) | "Selects relevant features using univariate selection, recursive elimination, stability selection, and importance-based methods" | feature selection, feature importance, recursive elimination, univariate selection, feature selection methods |
+| [grpc-patterns](skills/coding/grpc-patterns/SKILL.md) | Implements gRPC development patterns including protocol buffer definitions, unary/streaming RPCs, error handling, and debugging techniques for cloud-native microservices | grpc development, grpc debugging, protocol buffers, rpc services, grpc errors, stream handling, unary calls, grpc gateway |
+| [hyperparameter-tuning](skills/coding/hyperparameter-tuning/SKILL.md) | "Optimizes hyperparameters using grid search, random search, Bayesian optimization, and evolutionary methods for model improvement" | hyperparameter tuning, grid search, random search, bayesian optimization, how do I tune parameters |
+| [hypothesis-testing](skills/coding/hypothesis-testing/SKILL.md) | Implements hypothesis testing including t-tests, chi-square tests, p-values, and statistical significance evaluation for data-driven decisions | hypothesis testing, t-test, chi-square, p-value, statistical significance, how do i test hypotheses, unit tests, testing |
+| [instrumental-variables](skills/coding/instrumental-variables/SKILL.md) | "Provides Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data" | instrumental variables, IV, 2SLS, endogeneity, causal effect, how do i handle endogeneity |
+| [intervention-analysis](skills/coding/intervention-analysis/SKILL.md) | "Provides Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses" | treatment effects, intervention analysis, CATE, heterogeneous effects, treatment response |
+| [kernel-density](skills/coding/kernel-density/SKILL.md) | "Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions" | kernel density estimation, KDE, non-parametric, density estimation, bandwidth selection |
+| [linear-regression](skills/coding/linear-regression/SKILL.md) | "Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction" | linear regression, OLS, ridge regression, lasso, elastic net, regularization |
+| [logistic-regression](skills/coding/logistic-regression/SKILL.md) | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" | logistic regression, classification, binary classification, multinomial, how do i classify |
+| [manager](skills/coding/manager/SKILL.md) | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing | connection, machine, ml, state, websocket manager, websocket-manager, machine learning, ai |
+| [maximum-likelihood](skills/coding/maximum-likelihood/SKILL.md) | Implements maximum likelihood estimation, likelihood functions, and optimization methods for parameter estimation in probabilistic models | maximum likelihood, MLE, likelihood estimation, likelihood function, optimization, performance, speed |
+| [metrics-and-kpis](skills/coding/metrics-and-kpis/SKILL.md) | "Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making" | metrics, KPI, key performance indicator, business metrics, metric definition, how do I choose metrics, cloudwatch, optimization |
+| [missing-data](skills/coding/missing-data/SKILL.md) | "Handles missing data using imputation strategies, deletion methods, and techniques for dealing with incomplete datasets while preserving information" | missing data, imputation, NaN handling, missing values, how do i handle missing data, data gaps |
+| [model-fairness](skills/coding/model-fairness/SKILL.md) | "Evaluates and mitigates fairness issues including bias detection, fairness metrics, and debiasing strategies in machine learning" | model fairness, fairness metrics, bias detection, debiasing, fair machine learning, how do I check bias |
+| [model-interpretation](skills/coding/model-interpretation/SKILL.md) | "Provides Interprets models using SHAP values, LIME, feature importance, permutation importance, and other explainability techniques" | model interpretation, SHAP, LIME, feature importance, explainability, how do I explain models |
+| [model-robustness](skills/coding/model-robustness/SKILL.md) | Improves model robustness including adversarial robustness, out-of-distribution detection, and uncertainty quantification | model robustness, adversarial robustness, out-of-distribution, OOD detection, robustness testing, unit tests, testing, test automation |
+| [model-selection](skills/coding/model-selection/SKILL.md) | "Provides Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques" | model selection, AIC, BIC, validation curves, learning curves, model comparison |
+| [models](skills/coding/models/SKILL.md) | "'Pydantic frozen data models for trading: enums, annotated constraints" field/model validators, and computed properties' | enums, frozen, pydantic models, pydantic-models, trading |
+| [monte-carlo](skills/coding/monte-carlo/SKILL.md) | "Implements Monte Carlo sampling, simulation methods, and stochastic approximation for uncertainty estimation and numerical integration" | monte carlo, sampling, simulation, stochastic, markov chain, mcmc, how do i simulate |
+| [neural-networks](skills/coding/neural-networks/SKILL.md) | "Implements deep neural networks, backpropagation, activation functions, architectures (CNN, RNN, Transformers), and training strategies" | neural networks, deep learning, backpropagation, CNN, RNN, transformers, how do i use deep learning, hugging face |
+| [normalization](skills/coding/normalization/SKILL.md) | 'Provides Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization' | data normalization, data-normalization, exchange, layer, typed |
+| [observational-studies](skills/coding/observational-studies/SKILL.md) | "Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias" | observational studies, propensity score, matching, stratification, observational data, adjustment |
+| [online-experiments](skills/coding/online-experiments/SKILL.md) | "Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms" | multi-armed bandits, bandits, contextual bandits, exploration exploitation, online learning |
+| [patterns](skills/coding/patterns/SKILL.md) | "Provides Software architecture patterns including MVC, MVVM, microservices, event-driven, CQRS, DDD, hexagonal architecture, layered architecture, and pattern" | architectural patterns, system design, architecture, microservices, design patterns, CQRS, DDD, hexagonal architecture |
+| [patterns](skills/coding/patterns/SKILL.md) | "FastAPI application structure with typed error hierarchy, global exception" handlers, CORS middleware, request timing, and lifecycle events | application, cloud infrastructure, fastapi patterns, fastapi-patterns, structure, typed |
+| [privacy-ml](skills/coding/privacy-ml/SKILL.md) | "Implements privacy-preserving machine learning including differential privacy, federated learning, and privacy attack prevention" | privacy machine learning, differential privacy, federated learning, privacy attacks, privacy-preserving |
+| [quality-policies](skills/coding/quality-policies/SKILL.md) | "Provides Establishing policies for maintaining a clean codebase including code standards, linting, formatting, testing requirements, cyclomatic complexity limi" | code quality, clean code, linting, code formatting, testing policies, cyclomatic complexity, code standards, automated enforcement |
+| [randomized-experiments](skills/coding/randomized-experiments/SKILL.md) | "Provides Designs and analyzes randomized controlled trials (RCTs), A/B tests, experimental blocking, and sample size calculations" | randomized experiments, RCT, experimental design, randomization, blocking, sample size |
+| [regression-evaluation](skills/coding/regression-evaluation/SKILL.md) | "Evaluates regression models using MSE, RMSE, MAE, MAPE, R-squared, and other metrics for assessing predictive accuracy" | regression evaluation, MSE, RMSE, MAE, R-squared, regression metrics, how do i evaluate |
+| [release-pipeline](skills/coding/release-pipeline/SKILL.md) | Implements comprehensive secure release pipeline with CVE scanning, security code review, semantic versioning for patches, and multi-stage quality gates for secure deployments. | secure release, CVE scanning, security audit, version management, quality gates, dependency security, semantic versioning, incident response |
+| [reproducible-research](skills/coding/reproducible-research/SKILL.md) | "Implements reproducible research practices including code organization, environment management, documentation, and experiment tracking" | reproducible research, reproducibility, code organization, environment, notebooks, how do I reproduce |
+| [review](skills/coding/review/SKILL.md) | "Analyzes code diffs and files to identify bugs, security vulnerabilities" code smells, and architectural concerns, producing a structured review report with prioritized, actionable feedback | analyzes, code review, code-review, diffs, files |
+| [review](skills/coding/review/SKILL.md) | "Security-focused code review identifying vulnerabilities like injection" XSS, insecure deserialization, and misconfigurations, with remediation guidance | identifying, security review, security-focused, security-review, vulnerabilities, vulnerability scanning, security, security auditing |
+| [scoring](skills/coding/scoring/SKILL.md) | "Multi-factor conviction scoring engine combining technical, momentum" trend, volatility, and volume signals with configurable weights | combining, conviction scoring, conviction-scoring, engine, multi-factor |
+| [shop](skills/coding/shop/SKILL.md) | "'OWASP Juice Shop guide: Web application security testing with intentionally" vulnerable Node.js/Express application for learning and practice' | application, guide, juice shop, juice-shop, owasp, security best practices, security guidelines, vulnerability scanning |
+| [statistical-power](skills/coding/statistical-power/SKILL.md) | "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control" | statistical power, power analysis, sample size, effect size, Type I error, Type II error |
+| [support-vector-machines](skills/coding/support-vector-machines/SKILL.md) | "Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression" | support vector machines, SVM, kernel methods, support vectors, SVM classification |
+| [synthetic-control](skills/coding/synthetic-control/SKILL.md) | "Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation" | synthetic control, difference-in-differences, DiD, quasi-experiment, impact evaluation |
+| [time-series-forecasting](skills/coding/time-series-forecasting/SKILL.md) | "Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction" | time series forecasting, ARIMA, exponential smoothing, LSTM, forecasting, time series prediction |
+| [topic-modeling](skills/coding/topic-modeling/SKILL.md) | "Implements topic modeling using Latent Dirichlet Allocation (LDA), Non-negative Matrix Factorization (NMF), and other topic extraction methods" | topic modeling, LDA, NMF, topic extraction, latent dirichlet allocation, text analysis |
+| [tree-methods](skills/coding/tree-methods/SKILL.md) | "Implements decision trees, random forests, gradient boosting (XGBoost" LightGBM), and tree ensemble methods for classification and regression | decision trees, random forest, gradient boosting, xgboost, lightgbm, how do i use trees |
+| [validation](skills/coding/validation/SKILL.md) | Validates pipeline stages and returns config status strings (valid_config/invalid_config) using guard clauses and the 5 Laws of Elegant Defense, returning invalid_config for invalid input types instead of raising exceptions | validation, code validation, pipeline validation, config status, input validation, validate pipeline, pipeline stages |
 
 
 ### Programming (3 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
-| [algorithms](../../skills/programming/algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide —... | algorithms, comprehensive... |
-| [v10-learning](../../skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... | abl, abl programming... |
-| [v12-learning](../../skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... | abl v12, openedge 12... |
+| [algorithms](skills/programming/algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints'' | algorithms, comprehensive, algorithm, selection |
+| [v10-learning](skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow | abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress abl |
+| [v12-learning](skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins | abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch throw, jsonobject, read-json |
 
 
 ### Trading (83 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
-| [alternative-data](../../skills/trading/alternative-data/SKILL.md) | "Alternative data ingestion pipelines for trading signals... | data alternative data, data-alternative-data... |
-| [anomaly-detection](../../skills/trading/anomaly-detection/SKILL.md) | "Provides Detect anomalous market behavior, outliers, and... | ai anomaly detection, ai-anomaly-detection... |
-| [backfill-strategy](../../skills/trading/backfill-strategy/SKILL.md) | "Provides Strategic data backfill for populating historical... | data backfill strategy, data-backfill-strategy... |
-| [candle-data](../../skills/trading/candle-data/SKILL.md) | "OHLCV candle data processing, timeframe management, and... | data candle data, data-candle-data... |
-| [ccxt-patterns](../../skills/trading/ccxt-patterns/SKILL.md) | "Effective patterns for using CCXT library for exchange... | connectivity, effective... |
-| [commission-model](../../skills/trading/commission-model/SKILL.md) | "Implements commission model and fee structure simulation... | cloud infrastructure, paper commission model... |
-| [correlation-risk](../../skills/trading/correlation-risk/SKILL.md) | "Implements correlation breakdown and portfolio... | breakdown, diversification... |
-| [cycle-analysis](../../skills/trading/cycle-analysis/SKILL.md) | "Implements market cycles and periodic patterns in price... | cycles, market... |
-| [drawdown-analysis](../../skills/trading/drawdown-analysis/SKILL.md) | "Implements maximum drawdown, recovery time, and... | backtest drawdown analysis, backtest-drawdown-analysis... |
-| [drawdown-control](../../skills/trading/drawdown-control/SKILL.md) | "Implements maximum drawdown control and equity... | equity, maximum... |
-| [enrichment](../../skills/trading/enrichment/SKILL.md) | "Provides Data enrichment techniques for adding context to... | adding, context... |
-| [explainable-ai](../../skills/trading/explainable-ai/SKILL.md) | "Provides Explainable AI for understanding and trusting... | ai explainable ai, ai-explainable-ai... |
-| [failover-handling](../../skills/trading/failover-handling/SKILL.md) | "Provides Automated failover and redundancy management for... | automated, exchange failover handling... |
-| [false-signal-filtering](../../skills/trading/false-signal-filtering/SKILL.md) | "Provides False Signal Filtering Techniques for Robust... | analysis, robust... |
-| [feature-engineering](../../skills/trading/feature-engineering/SKILL.md) | "Implements create actionable trading features from raw... | actionable, ai feature engineering... |
-| [feature-store](../../skills/trading/feature-store/SKILL.md) | "Provides Feature storage and management for machine... | data feature store, data-feature-store... |
-| [fill-simulation](../../skills/trading/fill-simulation/SKILL.md) | "Implements fill simulation models for order execution... | execution, models... |
-| [health](../../skills/trading/health/SKILL.md) | "Provides Exchange system health monitoring and... | connectivity, exchange health... |
-| [hyperparameter-tuning](../../skills/trading/hyperparameter-tuning/SKILL.md) | "Implements optimize model configurations for trading... | ai hyperparameter tuning, ai-hyperparameter-tuning... |
-| [indicator-confluence](../../skills/trading/indicator-confluence/SKILL.md) | "Provides Indicator Confluence Validation Systems for... | confirming, systems... |
-| [intermarket-analysis](../../skills/trading/intermarket-analysis/SKILL.md) | "Implements cross-market relationships and asset class... | asset, cross-market... |
-| [kill-switches](../../skills/trading/kill-switches/SKILL.md) | "Implementing multi-layered kill switches at account,... | account, implementing... |
-| [lake](../../skills/trading/lake/SKILL.md) | "Provides Data lake architecture and management for trading... | architecture, data lake... |
-| [liquidity-risk](../../skills/trading/liquidity-risk/SKILL.md) | "Implements liquidity assessment and trade execution risk... | assessment, execution... |
-| [live-model-monitoring](../../skills/trading/live-model-monitoring/SKILL.md) | "Provides Monitor production ML models for drift, decay,... | ai live model monitoring, ai-live-model-monitoring... |
-| [llm-orchestration](../../skills/trading/llm-orchestration/SKILL.md) | "Large Language Model orchestration for trading analysis... | ai llm orchestration, ai-llm-orchestration... |
-| [lookahead-bias](../../skills/trading/lookahead-bias/SKILL.md) | "Preventing lookahead bias in backtesting through strict... | backtest lookahead bias, backtest-lookahead-bias... |
-| [market-data-cache](../../skills/trading/market-data-cache/SKILL.md) | "High-performance caching layer for market data with low... | caching, exchange market data cache... |
-| [market-impact](../../skills/trading/market-impact/SKILL.md) | "Implements market impact modeling and order book... | modeling, order... |
-| [market-microstructure](../../skills/trading/market-microstructure/SKILL.md) | "Implements order book dynamics and order flow analysis for... | analysis, dynamics... |
-| [market-regimes](../../skills/trading/market-regimes/SKILL.md) | "Market regime detection and adaptation for trading systems... | adaptation, detection... |
-| [market-structure](../../skills/trading/market-structure/SKILL.md) | "Implements market structure and trading participants... | analysis, fundamentals market structure... |
-| [model-ensemble](../../skills/trading/model-ensemble/SKILL.md) | "Provides Combine multiple models for improved prediction... | ai model ensemble, ai-model-ensemble... |
-| [momentum-indicators](../../skills/trading/momentum-indicators/SKILL.md) | "Implements rsi, macd, stochastic oscillators and momentum... | analysis, oscillators... |
-| [multi-asset-model](../../skills/trading/multi-asset-model/SKILL.md) | "Provides Model inter-asset relationships for portfolio and... | ai multi asset model, ai-multi-asset-model... |
-| [news-embedding](../../skills/trading/news-embedding/SKILL.md) | "Implements process news text using nlp embeddings for... | ai news embedding, ai-news-embedding... |
-| [order-book](../../skills/trading/order-book/SKILL.md) | "Order book data handling, spread calculation, liquidity... | calculation, data order book... |
-| [order-book-impact](../../skills/trading/order-book-impact/SKILL.md) | "Provides Order Book Impact Measurement and Market... | execution order book impact, execution-order-book-impact... |
-| [order-book-sync](../../skills/trading/order-book-sync/SKILL.md) | "Provides Order book synchronization and state management... | exchange order book sync, exchange-order-book-sync... |
-| [order-execution-api](../../skills/trading/order-execution-api/SKILL.md) | "Implements order execution and management api for trading... | exchange order execution api, exchange-order-execution-api... |
-| [order-flow-analysis](../../skills/trading/order-flow-analysis/SKILL.md) | "Provides Analyze order flow to detect market pressure and... | ai order flow analysis, ai-order-flow-analysis... |
-| [performance-attribution](../../skills/trading/performance-attribution/SKILL.md) | "Provides Performance Attribution Systems for Trading... | optimization, paper performance attribution... |
-| [position-exits](../../skills/trading/position-exits/SKILL.md) | "Exit strategies, trailing stops, and take-profit... | backtest position exits, backtest-position-exits... |
-| [position-sizing](../../skills/trading/position-sizing/SKILL.md) | "'Position Sizing Algorithms: Fixed Fractional, Kelly... | algorithms, backtest position sizing... |
-| [position-sizing](../../skills/trading/position-sizing/SKILL.md) | "Calculating optimal position sizes using Kelly criterion,... | calculating, optimal... |
-| [price-action-patterns](../../skills/trading/price-action-patterns/SKILL.md) | "Provides Analysis of candlestick and chart patterns for... | analysis, candlestick... |
-| [rate-limiting](../../skills/trading/rate-limiting/SKILL.md) | "Rate Limiting Strategies and Circuit Breaker Patterns for... | breaker, circuit... |
-| [rate-limiting](../../skills/trading/rate-limiting/SKILL.md) | "Provides Rate Limiting and Exchange API Management for... | exchange, execution rate limiting... |
-| [realistic-simulation](../../skills/trading/realistic-simulation/SKILL.md) | "Provides Realistic Paper Trading Simulation with Market... | impact, market... |
-| [regime-classification](../../skills/trading/regime-classification/SKILL.md) | "Provides Detect current market regime for adaptive trading... | ai regime classification, ai-regime-classification... |
-| [regime-detection](../../skills/trading/regime-detection/SKILL.md) | "Provides Market Regime Detection Systems for Adaptive... | adaptive, market... |
-| [reinforcement-learning](../../skills/trading/reinforcement-learning/SKILL.md) | "Provides Reinforcement Learning for automated trading... | agents, ai reinforcement learning... |
-| [risk-management-basics](../../skills/trading/risk-management-basics/SKILL.md) | "Position sizing, stop-loss implementation, and... | fundamentals risk management basics, fundamentals-risk-management-basics... |
-| [sentiment-analysis](../../skills/trading/sentiment-analysis/SKILL.md) | "AI-powered sentiment analysis for news, social media, and... | ai sentiment analysis, ai-powered... |
-| [sentiment-features](../../skills/trading/sentiment-features/SKILL.md) | "Provides Extract market sentiment from news, social media,... | ai sentiment features, ai-sentiment-features... |
-| [sharpe-ratio](../../skills/trading/sharpe-ratio/SKILL.md) | "Provides Sharpe Ratio Calculation and Risk-Adjusted... | backtest sharpe ratio, backtest-sharpe-ratio... |
-| [slippage-model](../../skills/trading/slippage-model/SKILL.md) | "Implements slippage modeling and execution simulation for... | execution, modeling... |
-| [slippage-modeling](../../skills/trading/slippage-modeling/SKILL.md) | "Slippage Estimation, Simulation, and Fee Modeling for... | estimation, execution slippage modeling... |
-| [statistical-arbitrage](../../skills/trading/statistical-arbitrage/SKILL.md) | "Implements pair trading and cointegration-based arbitrage... | cointegration-based, strategies... |
-| [stop-loss](../../skills/trading/stop-loss/SKILL.md) | "Implements stop loss strategies for risk management for... | management, risk stop loss... |
-| [stream-processing](../../skills/trading/stream-processing/SKILL.md) | "Provides Streaming data processing for real-time trading... | data stream processing, data-stream-processing... |
-| [stress-testing](../../skills/trading/stress-testing/SKILL.md) | "Implements stress test scenarios and portfolio resilience... | portfolio, resilience... |
-| [support-resistance](../../skills/trading/support-resistance/SKILL.md) | "Implements technical levels where price tends to pause or... | levels, price... |
-| [synthetic-data](../../skills/trading/synthetic-data/SKILL.md) | "Provides Generate synthetic financial data for training... | ai synthetic data, ai-synthetic-data... |
-| [tail-risk](../../skills/trading/tail-risk/SKILL.md) | "Implements tail risk management and extreme event... | event, extreme... |
-| [time-series-database](../../skills/trading/time-series-database/SKILL.md) | "Provides Time-series database queries and optimization for... | data time series database, data-time-series-database... |
-| [time-series-forecasting](../../skills/trading/time-series-forecasting/SKILL.md) | "Provides Time series forecasting for price prediction and... | ai time series forecasting, ai-time-series-forecasting... |
-| [trade-reporting](../../skills/trading/trade-reporting/SKILL.md) | "Real-time trade reporting and execution analytics for... | analytics, exchange trade reporting... |
-| [trading-edge](../../skills/trading/trading-edge/SKILL.md) | "Provides Finding and maintaining competitive advantage in... | competitive, finding... |
-| [trading-plan](../../skills/trading/trading-plan/SKILL.md) | "Implements trading plan structure and risk management... | cloud infrastructure, framework... |
-| [trading-psychology](../../skills/trading/trading-psychology/SKILL.md) | "Emotional discipline, cognitive bias awareness, and... | cognitive, discipline... |
-| [trend-analysis](../../skills/trading/trend-analysis/SKILL.md) | "Provides Trend identification, classification, and... | classification, continuation... |
-| [twap](../../skills/trading/twap/SKILL.md) | "Time-Weighted Average Price algorithm for executing large... | average, execution twap... |
-| [twap-vwap](../../skills/trading/twap-vwap/SKILL.md) | 'Provides ''TWAP and VWAP Execution Algorithms:... | algorithms, execution twap vwap... |
-| [validation](../../skills/trading/validation/SKILL.md) | "Provides Data validation and quality assurance for trading... | assurance, data validation... |
-| [value-at-risk](../../skills/trading/value-at-risk/SKILL.md) | "Implements value at risk calculations for portfolio risk... | calculations, management... |
-| [volatility-analysis](../../skills/trading/volatility-analysis/SKILL.md) | "Implements volatility measurement, forecasting, and risk... | assessment, forecasting... |
-| [volatility-prediction](../../skills/trading/volatility-prediction/SKILL.md) | "Implements forecast volatility for risk management and... | ai volatility prediction, ai-volatility-prediction... |
-| [volume-profile](../../skills/trading/volume-profile/SKILL.md) | "Provides Volume analysis techniques for understanding... | analysis, technical volume profile... |
-| [vwap](../../skills/trading/vwap/SKILL.md) | "Volume-Weighted Average Price algorithm for executing... | average, execution vwap... |
-| [walk-forward](../../skills/trading/walk-forward/SKILL.md) | "Implements walk-forward optimization for robust strategy... | backtest walk forward, backtest-walk-forward... |
-| [websocket-handling](../../skills/trading/websocket-handling/SKILL.md) | "Real-time market data handling with WebSockets including... | exchange websocket handling, exchange-websocket-handling... |
-| [websocket-streaming](../../skills/trading/websocket-streaming/SKILL.md) | "Implements real-time market data streaming and processing... | exchange websocket streaming, exchange-websocket-streaming... |
+| [alternative-data](skills/trading/alternative-data/SKILL.md) | "Alternative data ingestion pipelines for trading signals including news" social media, and on-chain data sources | data alternative data, data-alternative-data, ingestion, pipelines, trading |
+| [anomaly-detection](skills/trading/anomaly-detection/SKILL.md) | "Provides Detect anomalous market behavior, outliers, and potential market manipulation" | ai anomaly detection, ai-anomaly-detection, anomalous, detect, market |
+| [backfill-strategy](skills/trading/backfill-strategy/SKILL.md) | "Provides Strategic data backfill for populating historical data in trading systems" | data backfill strategy, data-backfill-strategy, historical, populating, strategic |
+| [candle-data](skills/trading/candle-data/SKILL.md) | "OHLCV candle data processing, timeframe management, and validation for" trading algorithms | data candle data, data-candle-data, ohlcv, processing, timeframe |
+| [ccxt-patterns](skills/trading/ccxt-patterns/SKILL.md) | "Effective patterns for using CCXT library for exchange connectivity including" error handling, rate limiting, and state management | connectivity, effective, exchange ccxt patterns, exchange-ccxt-patterns, library |
+| [commission-model](skills/trading/commission-model/SKILL.md) | "Implements commission model and fee structure simulation for risk management and algorithmic trading execution." | cloud infrastructure, paper commission model, paper-commission-model, simulation, structure |
+| [correlation-risk](skills/trading/correlation-risk/SKILL.md) | "Implements correlation breakdown and portfolio diversification risk for risk management and algorithmic trading execution." | breakdown, diversification, portfolio, risk correlation risk, risk-correlation-risk |
+| [cycle-analysis](skills/trading/cycle-analysis/SKILL.md) | "Implements market cycles and periodic patterns in price movement for risk management and algorithmic trading execution." | cycles, market, periodic, technical cycle analysis, technical-cycle-analysis |
+| [drawdown-analysis](skills/trading/drawdown-analysis/SKILL.md) | "Implements maximum drawdown, recovery time, and value-at-risk analysis for risk management and algorithmic trading execution." | backtest drawdown analysis, backtest-drawdown-analysis, maximum, recovery, value-at-risk |
+| [drawdown-control](skills/trading/drawdown-control/SKILL.md) | "Implements maximum drawdown control and equity preservation for risk management and algorithmic trading execution." | equity, maximum, preservation, risk drawdown control, risk-drawdown-control |
+| [enrichment](skills/trading/enrichment/SKILL.md) | "Provides Data enrichment techniques for adding context to raw trading data" | adding, context, data enrichment, data-enrichment, techniques |
+| [explainable-ai](skills/trading/explainable-ai/SKILL.md) | "Provides Explainable AI for understanding and trusting trading model decisions" | ai explainable ai, ai-explainable-ai, trading, trusting, understanding |
+| [failover-handling](skills/trading/failover-handling/SKILL.md) | "Provides Automated failover and redundancy management for exchange connectivity" | automated, exchange failover handling, exchange-failover-handling, management, redundancy |
+| [false-signal-filtering](skills/trading/false-signal-filtering/SKILL.md) | "Provides False Signal Filtering Techniques for Robust Technical Analysis" | analysis, robust, technical false signal filtering, technical-false-signal-filtering, techniques |
+| [feature-engineering](skills/trading/feature-engineering/SKILL.md) | "Implements create actionable trading features from raw market data for risk management and algorithmic trading execution." | actionable, ai feature engineering, ai-feature-engineering, create, trading |
+| [feature-store](skills/trading/feature-store/SKILL.md) | "Provides Feature storage and management for machine learning trading models" | data feature store, data-feature-store, machine, management, ml, storage, machine learning, ai |
+| [fill-simulation](skills/trading/fill-simulation/SKILL.md) | "Implements fill simulation models for order execution probability for risk management and algorithmic trading execution." | execution, models, order, paper fill simulation, paper-fill-simulation |
+| [health](skills/trading/health/SKILL.md) | "Provides Exchange system health monitoring and connectivity status tracking" | connectivity, exchange health, exchange-health, monitoring, system, cloudwatch, logging |
+| [hyperparameter-tuning](skills/trading/hyperparameter-tuning/SKILL.md) | "Implements optimize model configurations for trading applications for risk management and algorithmic trading execution." | ai hyperparameter tuning, ai-hyperparameter-tuning, configurations, model, optimize |
+| [indicator-confluence](skills/trading/indicator-confluence/SKILL.md) | "Provides Indicator Confluence Validation Systems for Confirming Trading Signals" | confirming, systems, technical indicator confluence, technical-indicator-confluence, validation |
+| [intermarket-analysis](skills/trading/intermarket-analysis/SKILL.md) | "Implements cross-market relationships and asset class correlations for risk management and algorithmic trading execution." | asset, cross-market, relationships, technical intermarket analysis, technical-intermarket-analysis |
+| [kill-switches](skills/trading/kill-switches/SKILL.md) | "Implementing multi-layered kill switches at account, strategy, market" and infrastructure levels to prevent catastrophic losses and system failures | account, implementing, multi-layered, risk kill switches, risk-kill-switches |
+| [lake](skills/trading/lake/SKILL.md) | "Provides Data lake architecture and management for trading data storage" | architecture, data lake, data-lake, management, trading |
+| [liquidity-risk](skills/trading/liquidity-risk/SKILL.md) | "Implements liquidity assessment and trade execution risk for risk management and algorithmic trading execution." | assessment, execution, risk liquidity risk, risk-liquidity-risk, trade |
+| [live-model-monitoring](skills/trading/live-model-monitoring/SKILL.md) | "Provides Monitor production ML models for drift, decay, and performance degradation" | ai live model monitoring, ai-live-model-monitoring, models, monitor, production |
+| [llm-orchestration](skills/trading/llm-orchestration/SKILL.md) | "Large Language Model orchestration for trading analysis with structured" output using instructor/pydantic | ai llm orchestration, ai-llm-orchestration, language, large, model |
+| [lookahead-bias](skills/trading/lookahead-bias/SKILL.md) | "Preventing lookahead bias in backtesting through strict causality enforcement" time-based validation, and comprehensive detection frameworks. | backtest lookahead bias, backtest-lookahead-bias, backtesting, preventing, strict, unit tests, testing, test automation |
+| [market-data-cache](skills/trading/market-data-cache/SKILL.md) | "High-performance caching layer for market data with low latency and high" throughput | caching, exchange market data cache, exchange-market-data-cache, high-performance, layer, optimization, elasticache, performance |
+| [market-impact](skills/trading/market-impact/SKILL.md) | "Implements market impact modeling and order book simulation for risk management and algorithmic trading execution." | modeling, order, paper market impact, paper-market-impact, simulation |
+| [market-microstructure](skills/trading/market-microstructure/SKILL.md) | "Implements order book dynamics and order flow analysis for risk management and algorithmic trading execution." | analysis, dynamics, order, technical market microstructure, technical-market-microstructure |
+| [market-regimes](skills/trading/market-regimes/SKILL.md) | "Market regime detection and adaptation for trading systems across changing" market conditions. | adaptation, detection, fundamentals market regimes, fundamentals-market-regimes, regime |
+| [market-structure](skills/trading/market-structure/SKILL.md) | "Implements market structure and trading participants analysis for risk management and algorithmic trading execution." | analysis, fundamentals market structure, fundamentals-market-structure, participants, trading |
+| [model-ensemble](skills/trading/model-ensemble/SKILL.md) | "Provides Combine multiple models for improved prediction accuracy and robustness" | ai model ensemble, ai-model-ensemble, combine, models, multiple |
+| [momentum-indicators](skills/trading/momentum-indicators/SKILL.md) | "Implements rsi, macd, stochastic oscillators and momentum analysis for risk management and algorithmic trading execution." | analysis, oscillators, stochastic, technical momentum indicators, technical-momentum-indicators |
+| [multi-asset-model](skills/trading/multi-asset-model/SKILL.md) | "Provides Model inter-asset relationships for portfolio and cross-asset strategies" | ai multi asset model, ai-multi-asset-model, inter-asset, portfolio, relationships |
+| [news-embedding](skills/trading/news-embedding/SKILL.md) | "Implements process news text using nlp embeddings for trading signals for risk management and algorithmic trading execution." | ai news embedding, ai-news-embedding, embeddings, process, trading |
+| [order-book](skills/trading/order-book/SKILL.md) | "Order book data handling, spread calculation, liquidity measurement" and cross-exchange normalization | calculation, data order book, data-order-book, handling, spread |
+| [order-book-impact](skills/trading/order-book-impact/SKILL.md) | "Provides Order Book Impact Measurement and Market Microstructure Analysis" | execution order book impact, execution-order-book-impact, market, measurement, microstructure |
+| [order-book-sync](skills/trading/order-book-sync/SKILL.md) | "Provides Order book synchronization and state management for accurate trading" | exchange order book sync, exchange-order-book-sync, management, state, synchronization |
+| [order-execution-api](skills/trading/order-execution-api/SKILL.md) | "Implements order execution and management api for trading systems for risk management and algorithmic trading execution." | exchange order execution api, exchange-order-execution-api, management, systems, trading |
+| [order-flow-analysis](skills/trading/order-flow-analysis/SKILL.md) | "Provides Analyze order flow to detect market pressure and anticipate price moves" | ai order flow analysis, ai-order-flow-analysis, analyze, detect, market |
+| [performance-attribution](skills/trading/performance-attribution/SKILL.md) | "Provides Performance Attribution Systems for Trading Strategy Decomposition" | optimization, paper performance attribution, paper-performance-attribution, strategy, systems, trading, performance, speed |
+| [position-exits](skills/trading/position-exits/SKILL.md) | "Exit strategies, trailing stops, and take-profit mechanisms for trading" systems. | backtest position exits, backtest-position-exits, stops, strategies, trailing |
+| [position-sizing](skills/trading/position-sizing/SKILL.md) | "'Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility" Adjustment' | algorithms, backtest position sizing, backtest-position-sizing, fixed, fractional |
+| [position-sizing](skills/trading/position-sizing/SKILL.md) | "Calculating optimal position sizes using Kelly criterion, volatility" adjustments, and edge-based sizing to maximize long-term growth while managing risk | calculating, optimal, risk position sizing, risk-position-sizing, sizes |
+| [price-action-patterns](skills/trading/price-action-patterns/SKILL.md) | "Provides Analysis of candlestick and chart patterns for price movement prediction" | analysis, candlestick, chart, technical price action patterns, technical-price-action-patterns |
+| [rate-limiting](skills/trading/rate-limiting/SKILL.md) | "Rate Limiting Strategies and Circuit Breaker Patterns for Exchange API" Integration | breaker, circuit, exchange rate limiting, exchange-rate-limiting, strategies |
+| [rate-limiting](skills/trading/rate-limiting/SKILL.md) | "Provides Rate Limiting and Exchange API Management for Robust Trading Execution" | exchange, execution rate limiting, execution-rate-limiting, management, robust |
+| [realistic-simulation](skills/trading/realistic-simulation/SKILL.md) | "Provides Realistic Paper Trading Simulation with Market Impact and Execution Fees" | impact, market, paper realistic simulation, paper-realistic-simulation, trading |
+| [regime-classification](skills/trading/regime-classification/SKILL.md) | "Provides Detect current market regime for adaptive trading strategies" | ai regime classification, ai-regime-classification, current, detect, market |
+| [regime-detection](skills/trading/regime-detection/SKILL.md) | "Provides Market Regime Detection Systems for Adaptive Trading Strategies" | adaptive, market, systems, technical regime detection, technical-regime-detection |
+| [reinforcement-learning](skills/trading/reinforcement-learning/SKILL.md) | "Provides Reinforcement Learning for automated trading agents and policy optimization" | agents, ai reinforcement learning, ai-reinforcement-learning, automated, trading |
+| [risk-management-basics](skills/trading/risk-management-basics/SKILL.md) | "Position sizing, stop-loss implementation, and system-level risk controls" to preserve capital | fundamentals risk management basics, fundamentals-risk-management-basics, position, sizing, stop-loss |
+| [sentiment-analysis](skills/trading/sentiment-analysis/SKILL.md) | "AI-powered sentiment analysis for news, social media, and political figures" in trading | ai sentiment analysis, ai-powered, ai-sentiment-analysis, media, social |
+| [sentiment-features](skills/trading/sentiment-features/SKILL.md) | "Provides Extract market sentiment from news, social media, and analyst reports" | ai sentiment features, ai-sentiment-features, extract, market, social |
+| [sharpe-ratio](skills/trading/sharpe-ratio/SKILL.md) | "Provides Sharpe Ratio Calculation and Risk-Adjusted Performance Metrics" | backtest sharpe ratio, backtest-sharpe-ratio, calculation, optimization, performance, risk-adjusted, speed |
+| [slippage-model](skills/trading/slippage-model/SKILL.md) | "Implements slippage modeling and execution simulation for risk management and algorithmic trading execution." | execution, modeling, paper slippage model, paper-slippage-model, simulation |
+| [slippage-modeling](skills/trading/slippage-modeling/SKILL.md) | "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution" Analysis | estimation, execution slippage modeling, execution-slippage-modeling, realistic, simulation |
+| [statistical-arbitrage](skills/trading/statistical-arbitrage/SKILL.md) | "Implements pair trading and cointegration-based arbitrage strategies for risk management and algorithmic trading execution." | cointegration-based, strategies, technical statistical arbitrage, technical-statistical-arbitrage, trading |
+| [stop-loss](skills/trading/stop-loss/SKILL.md) | "Implements stop loss strategies for risk management for risk management and algorithmic trading execution." | management, risk stop loss, risk-stop-loss, strategies |
+| [stream-processing](skills/trading/stream-processing/SKILL.md) | "Provides Streaming data processing for real-time trading signals and analytics" | data stream processing, data-stream-processing, real-time, streaming, trading |
+| [stress-testing](skills/trading/stress-testing/SKILL.md) | "Implements stress test scenarios and portfolio resilience analysis for risk management and algorithmic trading execution." | portfolio, resilience, risk stress testing, risk-stress-testing, scenarios, unit tests, testing, test automation |
+| [support-resistance](skills/trading/support-resistance/SKILL.md) | "Implements technical levels where price tends to pause or reverse for risk management and algorithmic trading execution." | levels, price, technical support resistance, technical-support-resistance, where |
+| [synthetic-data](skills/trading/synthetic-data/SKILL.md) | "Provides Generate synthetic financial data for training and testing trading models" | ai synthetic data, ai-synthetic-data, financial, generate, training |
+| [tail-risk](skills/trading/tail-risk/SKILL.md) | "Implements tail risk management and extreme event protection for risk management and algorithmic trading execution." | event, extreme, management, risk tail risk, risk-tail-risk |
+| [time-series-database](skills/trading/time-series-database/SKILL.md) | "Provides Time-series database queries and optimization for financial data" | data time series database, data-time-series-database, optimization, queries, time-series, performance, speed |
+| [time-series-forecasting](skills/trading/time-series-forecasting/SKILL.md) | "Provides Time series forecasting for price prediction and market analysis" | ai time series forecasting, ai-time-series-forecasting, market, prediction, price |
+| [trade-reporting](skills/trading/trade-reporting/SKILL.md) | "Real-time trade reporting and execution analytics for monitoring and" optimization | analytics, exchange trade reporting, exchange-trade-reporting, execution, real-time |
+| [trading-edge](skills/trading/trading-edge/SKILL.md) | "Provides Finding and maintaining competitive advantage in trading systems" | competitive, finding, fundamentals trading edge, fundamentals-trading-edge, maintaining |
+| [trading-plan](skills/trading/trading-plan/SKILL.md) | "Implements trading plan structure and risk management framework for risk management and algorithmic trading execution." | cloud infrastructure, framework, fundamentals trading plan, fundamentals-trading-plan, management, structure |
+| [trading-psychology](skills/trading/trading-psychology/SKILL.md) | "Emotional discipline, cognitive bias awareness, and maintaining operational" integrity in trading | cognitive, discipline, emotional, fundamentals trading psychology, fundamentals-trading-psychology |
+| [trend-analysis](skills/trading/trend-analysis/SKILL.md) | "Provides Trend identification, classification, and continuation analysis" | classification, continuation, identification, technical trend analysis, technical-trend-analysis |
+| [twap](skills/trading/twap/SKILL.md) | "Time-Weighted Average Price algorithm for executing large orders with" minimal market impact | average, execution twap, execution-twap, price, time-weighted |
+| [twap-vwap](skills/trading/twap-vwap/SKILL.md) | 'Provides ''TWAP and VWAP Execution Algorithms: Institutional-Grade Order Execution''' | algorithms, execution twap vwap, execution-twap-vwap, institutional-grade, order |
+| [validation](skills/trading/validation/SKILL.md) | "Provides Data validation and quality assurance for trading data pipelines" | assurance, data validation, data-validation, quality, trading |
+| [value-at-risk](skills/trading/value-at-risk/SKILL.md) | "Implements value at risk calculations for portfolio risk management for risk management and algorithmic trading execution." | calculations, management, portfolio, risk value at risk, risk-value-at-risk |
+| [volatility-analysis](skills/trading/volatility-analysis/SKILL.md) | "Implements volatility measurement, forecasting, and risk assessment for risk management and algorithmic trading execution." | assessment, forecasting, measurement, technical volatility analysis, technical-volatility-analysis |
+| [volatility-prediction](skills/trading/volatility-prediction/SKILL.md) | "Implements forecast volatility for risk management and option pricing for risk management and algorithmic trading execution." | ai volatility prediction, ai-volatility-prediction, forecast, management, option |
+| [volume-profile](skills/trading/volume-profile/SKILL.md) | "Provides Volume analysis techniques for understanding market structure" | analysis, technical volume profile, technical-volume-profile, techniques, understanding |
+| [vwap](skills/trading/vwap/SKILL.md) | "Volume-Weighted Average Price algorithm for executing orders relative" to market volume | average, execution vwap, execution-vwap, price, volume-weighted |
+| [walk-forward](skills/trading/walk-forward/SKILL.md) | "Implements walk-forward optimization for robust strategy validation for risk management and algorithmic trading execution." | backtest walk forward, backtest-walk-forward, optimization, robust, walk-forward, performance, speed |
+| [websocket-handling](skills/trading/websocket-handling/SKILL.md) | "Real-time market data handling with WebSockets including connection management" data aggregation, and robust error recovery | exchange websocket handling, exchange-websocket-handling, market, real-time, websockets |
+| [websocket-streaming](skills/trading/websocket-streaming/SKILL.md) | "Implements real-time market data streaming and processing for risk management and algorithmic trading execution." | exchange websocket streaming, exchange-websocket-streaming, market, processing, real-time |
 
 ## Skills by Role
 
@@ -702,1139 +702,1139 @@ MIT — All skills are freely available and redistributable.
 
 | Skill Name | Domain | Description |
 |---|---|---|
-| [ab-testing](../../skills/ab-testing/SKILL.md) | Coding | Provides Designs and analyzes A/B tests including... |
-| [alternative-data](../../skills/alternative-data/SKILL.md) | Trading | "Alternative data ingestion pipelines for trading signals... |
-| [anomaly-detection](../../skills/anomaly-detection/SKILL.md) | Coding | "Detects anomalies and outliers using isolation forests,... |
-| [anomaly-detection](../../skills/anomaly-detection/SKILL.md) | Trading | "Provides Detect anomalous market behavior, outliers, and... |
-| [association-rules](../../skills/association-rules/SKILL.md) | Coding | "Provides Discovers association rules and frequent itemsets... |
-| [automation](../../skills/automation/SKILL.md) | Coding | "Provides Automating semantic versioning in Git... |
-| [backfill-strategy](../../skills/backfill-strategy/SKILL.md) | Trading | "Provides Strategic data backfill for populating historical... |
-| [base](../../skills/base/SKILL.md) | Coding | "Abstract base strategy pattern with initialization guards,... |
-| [bayesian-inference](../../skills/bayesian-inference/SKILL.md) | Coding | "Applies Bayesian methods for prior selection, posterior... |
-| [best-practices](../../skills/best-practices/SKILL.md) | Coding | "Provides Markdown best practices for OpenCode skills -... |
-| [bias-variance-tradeoff](../../skills/bias-variance-tradeoff/SKILL.md) | Coding | "Analyzes bias-variance tradeoff, overfitting,... |
-| [branching-strategies](../../skills/branching-strategies/SKILL.md) | Coding | "Git branching models including Git Flow, GitHub Flow,... |
-| [bus](../../skills/bus/SKILL.md) | Coding | "Async pub/sub event bus with typed events, mixed... |
-| [candle-data](../../skills/candle-data/SKILL.md) | Trading | "OHLCV candle data processing, timeframe management, and... |
-| [categorical-encoding](../../skills/categorical-encoding/SKILL.md) | Coding | "Provides Encodes categorical variables using one-hot... |
-| [causal-inference](../../skills/causal-inference/SKILL.md) | Coding | Implements causal models, directed acyclic graphs (DAGs),... |
-| [ccxt-patterns](../../skills/ccxt-patterns/SKILL.md) | Trading | "Effective patterns for using CCXT library for exchange... |
-| [cicd-pipeline-debugging](../../skills/cicd-pipeline-debugging/SKILL.md) | Agent | Debugging patterns for GitHub Actions, GitLab CI, Jenkins... |
-| [cicd-pipeline-troubleshooting](../../skills/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with... |
-| [classification-metrics](../../skills/classification-metrics/SKILL.md) | Coding | "Evaluates classification models using precision, recall,... |
-| [clustering](../../skills/clustering/SKILL.md) | Coding | "Implements clustering algorithms including K-means,... |
-| [commission-model](../../skills/commission-model/SKILL.md) | Trading | "Implements commission model and fee structure simulation... |
-| [community-detection](../../skills/community-detection/SKILL.md) | Coding | "Detects communities and clusters in graphs using... |
-| [confidence-intervals](../../skills/confidence-intervals/SKILL.md) | Coding | "Provides Constructs confidence intervals using bootstrap,... |
-| [config](../../skills/config/SKILL.md) | Coding | "Pydantic-based configuration management with frozen... |
-| [correlation-analysis](../../skills/correlation-analysis/SKILL.md) | Coding | "Analyzes correlation, covariance, and multivariate... |
-| [correlation-risk](../../skills/correlation-risk/SKILL.md) | Trading | "Implements correlation breakdown and portfolio... |
-| [cost-optimization](../../skills/cost-optimization/SKILL.md) | Cncf | Implements cloud cost optimization strategies... |
-| [cost-optimization-analysis](../../skills/cost-optimization-analysis/SKILL.md) | Cncf | Cloud cost optimization analysis including AWS Cost... |
-| [cross-validation](../../skills/cross-validation/SKILL.md) | Coding | "Implements k-fold cross-validation, stratified... |
-| [cycle-analysis](../../skills/cycle-analysis/SKILL.md) | Trading | "Implements market cycles and periodic patterns in price... |
-| [data-collection](../../skills/data-collection/SKILL.md) | Coding | "Implements data gathering strategies including APIs, web... |
-| [data-ingestion](../../skills/data-ingestion/SKILL.md) | Coding | "Provides Designs and implements ETL pipelines, streaming... |
-| [data-privacy](../../skills/data-privacy/SKILL.md) | Coding | "Applies privacy-preserving techniques including... |
-| [data-profiling](../../skills/data-profiling/SKILL.md) | Coding | Provides Extracts data profiles, schemas, metadata, and... |
-| [data-quality](../../skills/data-quality/SKILL.md) | Coding | "Implements data validation, cleaning, outlier detection,... |
-| [data-versioning](../../skills/data-versioning/SKILL.md) | Coding | "Implements data versioning, lineage tracking, provenance... |
-| [data-visualization](../../skills/data-visualization/SKILL.md) | Coding | "Creates effective visualizations including plots, charts,... |
-| [database-admin](../../skills/database-admin/SKILL.md) | Agent | Implements database administration best practices... |
-| [dependency-management](../../skills/dependency-management/SKILL.md) | Coding | "Provides Cybersecurity operations skill for automating... |
-| [dimensionality-reduction](../../skills/dimensionality-reduction/SKILL.md) | Coding | "Provides Reduces data dimensionality using PCA, t-SNE,... |
-| [disaster-recovery](../../skills/disaster-recovery/SKILL.md) | Cncf | Implements comprehensive disaster recovery planning for... |
-| [distribution-fitting](../../skills/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using... |
-| [docker-debugging](../../skills/docker-debugging/SKILL.md) | Agent | Diagnoses and resolves Docker container issues including... |
-| [drawdown-analysis](../../skills/drawdown-analysis/SKILL.md) | Trading | "Implements maximum drawdown, recovery time, and... |
-| [drawdown-control](../../skills/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity... |
-| [driven-architecture](../../skills/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems:... |
-| [driven-development](../../skills/driven-development/SKILL.md) | Coding | "Test-Driven Development (TDD) and Behavior-Driven... |
-| [dry-principles](../../skills/dry-principles/SKILL.md) | Coding | Implements DRY (Don't Repeat Yourself) principle... |
-| [eda](../../skills/eda/SKILL.md) | Coding | "Provides Performs exploratory data analysis using summary... |
-| [enrichment](../../skills/enrichment/SKILL.md) | Trading | "Provides Data enrichment techniques for adding context to... |
-| [ensemble-methods](../../skills/ensemble-methods/SKILL.md) | Coding | "Provides Combines multiple models using bagging, boosting,... |
-| [experimental-design](../../skills/experimental-design/SKILL.md) | Coding | "Provides Designs experiments using design of experiments... |
-| [explainability](../../skills/explainability/SKILL.md) | Coding | "Implements explainability and interpretability techniques... |
-| [explainable-ai](../../skills/explainable-ai/SKILL.md) | Trading | "Provides Explainable AI for understanding and trusting... |
-| [failover-handling](../../skills/failover-handling/SKILL.md) | Trading | "Provides Automated failover and redundancy management for... |
-| [false-signal-filtering](../../skills/false-signal-filtering/SKILL.md) | Trading | "Provides False Signal Filtering Techniques for Robust... |
-| [feature-engineering](../../skills/feature-engineering/SKILL.md) | Coding | "Creates and transforms features including polynomial... |
-| [feature-engineering](../../skills/feature-engineering/SKILL.md) | Trading | "Implements create actionable trading features from raw... |
-| [feature-interaction](../../skills/feature-interaction/SKILL.md) | Coding | "Provides Discovers and engineers feature interactions... |
-| [feature-scaling-normalization](../../skills/feature-scaling-normalization/SKILL.md) | Coding | "Provides Scales and normalizes features using... |
-| [feature-selection](../../skills/feature-selection/SKILL.md) | Coding | "Selects relevant features using univariate selection,... |
-| [feature-store](../../skills/feature-store/SKILL.md) | Trading | "Provides Feature storage and management for machine... |
-| [fill-simulation](../../skills/fill-simulation/SKILL.md) | Trading | "Implements fill simulation models for order execution... |
-| [gitops-troubleshooting](../../skills/gitops-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves GitOps synchronization failures,... |
-| [grpc-patterns](../../skills/grpc-patterns/SKILL.md) | Coding | Implements gRPC development patterns including protocol... |
-| [health](../../skills/health/SKILL.md) | Trading | "Provides Exchange system health monitoring and... |
-| [health-check-patterns](../../skills/health-check-patterns/SKILL.md) | Cncf | Implements comprehensive health check patterns for... |
-| [hyperparameter-tuning](../../skills/hyperparameter-tuning/SKILL.md) | Coding | "Optimizes hyperparameters using grid search, random... |
-| [hyperparameter-tuning](../../skills/hyperparameter-tuning/SKILL.md) | Trading | "Implements optimize model configurations for trading... |
-| [hypothesis-testing](../../skills/hypothesis-testing/SKILL.md) | Coding | Implements hypothesis testing including t-tests, chi-square... |
-| [incident-response-runbooks](../../skills/incident-response-runbooks/SKILL.md) | Cncf | Implements incident response runbooks with detection,... |
-| [indicator-confluence](../../skills/indicator-confluence/SKILL.md) | Trading | "Provides Indicator Confluence Validation Systems for... |
-| [instrumental-variables](../../skills/instrumental-variables/SKILL.md) | Coding | "Provides Uses instrumental variables (IV), two-stage least... |
-| [intermarket-analysis](../../skills/intermarket-analysis/SKILL.md) | Trading | "Implements cross-market relationships and asset class... |
-| [intervention-analysis](../../skills/intervention-analysis/SKILL.md) | Coding | "Provides Estimates treatment effects, conditional average... |
-| [kernel-density](../../skills/kernel-density/SKILL.md) | Coding | "Implements kernel density estimation, non-parametric... |
-| [kill-switches](../../skills/kill-switches/SKILL.md) | Trading | "Implementing multi-layered kill switches at account,... |
-| [kubernetes-api-patterns](../../skills/kubernetes-api-patterns/SKILL.md) | Cncf | Kubernetes API patterns including CRD development, webhook... |
-| [kubernetes-debugging](../../skills/kubernetes-debugging/SKILL.md) | Cncf | Implements comprehensive Kubernetes debugging workflow with... |
-| [lake](../../skills/lake/SKILL.md) | Trading | "Provides Data lake architecture and management for trading... |
-| [linear-regression](../../skills/linear-regression/SKILL.md) | Coding | "Implements linear regression including OLS, ridge... |
-| [liquidity-risk](../../skills/liquidity-risk/SKILL.md) | Trading | "Implements liquidity assessment and trade execution risk... |
-| [live-model-monitoring](../../skills/live-model-monitoring/SKILL.md) | Trading | "Provides Monitor production ML models for drift, decay,... |
-| [llm-orchestration](../../skills/llm-orchestration/SKILL.md) | Trading | "Large Language Model orchestration for trading analysis... |
-| [logistic-regression](../../skills/logistic-regression/SKILL.md) | Coding | "Implements logistic regression for binary and multinomial... |
-| [lookahead-bias](../../skills/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict... |
-| [manager](../../skills/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine... |
-| [market-data-cache](../../skills/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low... |
-| [market-impact](../../skills/market-impact/SKILL.md) | Trading | "Implements market impact modeling and order book... |
-| [market-microstructure](../../skills/market-microstructure/SKILL.md) | Trading | "Implements order book dynamics and order flow analysis for... |
-| [market-regimes](../../skills/market-regimes/SKILL.md) | Trading | "Market regime detection and adaptation for trading systems... |
-| [market-structure](../../skills/market-structure/SKILL.md) | Trading | "Implements market structure and trading participants... |
-| [maximum-likelihood](../../skills/maximum-likelihood/SKILL.md) | Coding | Implements maximum likelihood estimation, likelihood... |
-| [message-queue-debugging](../../skills/message-queue-debugging/SKILL.md) | Agent | Debugs Kafka, RabbitMQ, and SQS message queues with... |
-| [message-queue-troubleshooting](../../skills/message-queue-troubleshooting/SKILL.md) | Agent | Implements intelligent message queue troubleshooting for... |
-| [metrics-and-kpis](../../skills/metrics-and-kpis/SKILL.md) | Coding | "Defines, selects, and monitors key performance indicators... |
-| [missing-data](../../skills/missing-data/SKILL.md) | Coding | "Handles missing data using imputation strategies, deletion... |
-| [model-ensemble](../../skills/model-ensemble/SKILL.md) | Trading | "Provides Combine multiple models for improved prediction... |
-| [model-fairness](../../skills/model-fairness/SKILL.md) | Coding | "Evaluates and mitigates fairness issues including bias... |
-| [model-interpretation](../../skills/model-interpretation/SKILL.md) | Coding | "Provides Interprets models using SHAP values, LIME,... |
-| [model-robustness](../../skills/model-robustness/SKILL.md) | Coding | Improves model robustness including adversarial robustness,... |
-| [model-selection](../../skills/model-selection/SKILL.md) | Coding | "Provides Compares and selects models using AIC, BIC,... |
-| [models](../../skills/models/SKILL.md) | Coding | "'Pydantic frozen data models for trading: enums, annotated... |
-| [momentum-indicators](../../skills/momentum-indicators/SKILL.md) | Trading | "Implements rsi, macd, stochastic oscillators and momentum... |
-| [monte-carlo](../../skills/monte-carlo/SKILL.md) | Coding | "Implements Monte Carlo sampling, simulation methods, and... |
-| [multi-asset-model](../../skills/multi-asset-model/SKILL.md) | Trading | "Provides Model inter-asset relationships for portfolio and... |
-| [network-troubleshooting](../../skills/network-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves network connectivity issues... |
-| [networking-troubleshooting](../../skills/networking-troubleshooting/SKILL.md) | Cncf | Implements comprehensive networking troubleshooting... |
-| [neural-networks](../../skills/neural-networks/SKILL.md) | Coding | "Implements deep neural networks, backpropagation,... |
-| [news-embedding](../../skills/news-embedding/SKILL.md) | Trading | "Implements process news text using nlp embeddings for... |
-| [normalization](../../skills/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed... |
-| [observational-studies](../../skills/observational-studies/SKILL.md) | Coding | "Analyzes observational data using matching methods,... |
-| [online-experiments](../../skills/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits,... |
-| [order-book](../../skills/order-book/SKILL.md) | Trading | "Order book data handling, spread calculation, liquidity... |
-| [order-book-impact](../../skills/order-book-impact/SKILL.md) | Trading | "Provides Order Book Impact Measurement and Market... |
-| [order-book-sync](../../skills/order-book-sync/SKILL.md) | Trading | "Provides Order book synchronization and state management... |
-| [order-execution-api](../../skills/order-execution-api/SKILL.md) | Trading | "Implements order execution and management api for trading... |
-| [order-flow-analysis](../../skills/order-flow-analysis/SKILL.md) | Trading | "Provides Analyze order flow to detect market pressure and... |
-| [patterns](../../skills/patterns/SKILL.md) | Coding | "FastAPI application structure with typed error hierarchy,... |
-| [performance-attribution](../../skills/performance-attribution/SKILL.md) | Trading | "Provides Performance Attribution Systems for Trading... |
-| [position-exits](../../skills/position-exits/SKILL.md) | Trading | "Exit strategies, trailing stops, and take-profit... |
-| [position-sizing](../../skills/position-sizing/SKILL.md) | Trading | "'Position Sizing Algorithms: Fixed Fractional, Kelly... |
-| [position-sizing](../../skills/position-sizing/SKILL.md) | Trading | "Calculating optimal position sizes using Kelly criterion,... |
-| [price-action-patterns](../../skills/price-action-patterns/SKILL.md) | Trading | "Provides Analysis of candlestick and chart patterns for... |
-| [privacy-ml](../../skills/privacy-ml/SKILL.md) | Coding | "Implements privacy-preserving machine learning including... |
-| [pulumi](../../skills/pulumi/SKILL.md) | Cncf | Implements Pulumi infrastructure as code using Python,... |
-| [quality-policies](../../skills/quality-policies/SKILL.md) | Coding | "Provides Establishing policies for maintaining a clean... |
-| [randomized-experiments](../../skills/randomized-experiments/SKILL.md) | Coding | "Provides Designs and analyzes randomized controlled trials... |
-| [rate-limiting](../../skills/rate-limiting/SKILL.md) | Trading | "Rate Limiting Strategies and Circuit Breaker Patterns for... |
-| [rate-limiting](../../skills/rate-limiting/SKILL.md) | Trading | "Provides Rate Limiting and Exchange API Management for... |
-| [realistic-simulation](../../skills/realistic-simulation/SKILL.md) | Trading | "Provides Realistic Paper Trading Simulation with Market... |
-| [regime-classification](../../skills/regime-classification/SKILL.md) | Trading | "Provides Detect current market regime for adaptive trading... |
-| [regime-detection](../../skills/regime-detection/SKILL.md) | Trading | "Provides Market Regime Detection Systems for Adaptive... |
-| [regression-evaluation](../../skills/regression-evaluation/SKILL.md) | Coding | "Evaluates regression models using MSE, RMSE, MAE, MAPE,... |
-| [reinforcement-learning](../../skills/reinforcement-learning/SKILL.md) | Trading | "Provides Reinforcement Learning for automated trading... |
-| [release-pipeline](../../skills/release-pipeline/SKILL.md) | Coding | Implements comprehensive secure release pipeline with CVE... |
-| [reproducible-research](../../skills/reproducible-research/SKILL.md) | Coding | "Implements reproducible research practices including code... |
-| [review](../../skills/review/SKILL.md) | Coding | "Analyzes code diffs and files to identify bugs, security... |
-| [review](../../skills/review/SKILL.md) | Coding | "Security-focused code review identifying vulnerabilities... |
-| [risk-management-basics](../../skills/risk-management-basics/SKILL.md) | Trading | "Position sizing, stop-loss implementation, and... |
-| [rollback-procedures](../../skills/rollback-procedures/SKILL.md) | Cncf | Implements comprehensive rollback procedures including... |
-| [scoring](../../skills/scoring/SKILL.md) | Coding | "Multi-factor conviction scoring engine combining... |
-| [security-compliance](../../skills/security-compliance/SKILL.md) | Cncf | Implements security compliance frameworks (SOC2, HIPAA,... |
-| [sentiment-analysis](../../skills/sentiment-analysis/SKILL.md) | Trading | "AI-powered sentiment analysis for news, social media, and... |
-| [sentiment-features](../../skills/sentiment-features/SKILL.md) | Trading | "Provides Extract market sentiment from news, social media,... |
-| [service-mesh-debugging](../../skills/service-mesh-debugging/SKILL.md) | Cncf | Implements comprehensive debugging workflows for Istio and... |
-| [sharpe-ratio](../../skills/sharpe-ratio/SKILL.md) | Trading | "Provides Sharpe Ratio Calculation and Risk-Adjusted... |
-| [shop](../../skills/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing... |
-| [slippage-model](../../skills/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for... |
-| [slippage-modeling](../../skills/slippage-modeling/SKILL.md) | Trading | "Slippage Estimation, Simulation, and Fee Modeling for... |
-| [statistical-arbitrage](../../skills/statistical-arbitrage/SKILL.md) | Trading | "Implements pair trading and cointegration-based arbitrage... |
-| [statistical-power](../../skills/statistical-power/SKILL.md) | Coding | "Analyzes statistical power, sample size determination,... |
-| [stop-loss](../../skills/stop-loss/SKILL.md) | Trading | "Implements stop loss strategies for risk management for... |
-| [stream-processing](../../skills/stream-processing/SKILL.md) | Trading | "Provides Streaming data processing for real-time trading... |
-| [stress-testing](../../skills/stress-testing/SKILL.md) | Trading | "Implements stress test scenarios and portfolio resilience... |
-| [support-resistance](../../skills/support-resistance/SKILL.md) | Trading | "Implements technical levels where price tends to pause or... |
-| [support-vector-machines](../../skills/support-vector-machines/SKILL.md) | Coding | "Implements support vector machines (SVM) with kernel... |
-| [synthetic-control](../../skills/synthetic-control/SKILL.md) | Coding | "Implements synthetic control methods,... |
-| [synthetic-data](../../skills/synthetic-data/SKILL.md) | Trading | "Provides Generate synthetic financial data for training... |
-| [tail-risk](../../skills/tail-risk/SKILL.md) | Trading | "Implements tail risk management and extreme event... |
-| [terraform](../../skills/terraform/SKILL.md) | Cncf | Implements Terraform infrastructure as code for cloud... |
-| [time-series-database](../../skills/time-series-database/SKILL.md) | Trading | "Provides Time-series database queries and optimization for... |
-| [time-series-forecasting](../../skills/time-series-forecasting/SKILL.md) | Coding | "Implements ARIMA, exponential smoothing, state-space... |
-| [time-series-forecasting](../../skills/time-series-forecasting/SKILL.md) | Trading | "Provides Time series forecasting for price prediction and... |
-| [topic-modeling](../../skills/topic-modeling/SKILL.md) | Coding | "Implements topic modeling using Latent Dirichlet... |
-| [trade-reporting](../../skills/trade-reporting/SKILL.md) | Trading | "Real-time trade reporting and execution analytics for... |
-| [trading-edge](../../skills/trading-edge/SKILL.md) | Trading | "Provides Finding and maintaining competitive advantage in... |
-| [trading-plan](../../skills/trading-plan/SKILL.md) | Trading | "Implements trading plan structure and risk management... |
-| [trading-psychology](../../skills/trading-psychology/SKILL.md) | Trading | "Emotional discipline, cognitive bias awareness, and... |
-| [tree-methods](../../skills/tree-methods/SKILL.md) | Coding | "Implements decision trees, random forests, gradient... |
-| [trend-analysis](../../skills/trend-analysis/SKILL.md) | Trading | "Provides Trend identification, classification, and... |
-| [twap](../../skills/twap/SKILL.md) | Trading | "Time-Weighted Average Price algorithm for executing large... |
-| [twap-vwap](../../skills/twap-vwap/SKILL.md) | Trading | 'Provides ''TWAP and VWAP Execution Algorithms:... |
-| [validation](../../skills/validation/SKILL.md) | Coding | Validates pipeline stages and returns config status strings... |
-| [validation](../../skills/validation/SKILL.md) | Trading | "Provides Data validation and quality assurance for trading... |
-| [value-at-risk](../../skills/value-at-risk/SKILL.md) | Trading | "Implements value at risk calculations for portfolio risk... |
-| [volatility-analysis](../../skills/volatility-analysis/SKILL.md) | Trading | "Implements volatility measurement, forecasting, and risk... |
-| [volatility-prediction](../../skills/volatility-prediction/SKILL.md) | Trading | "Implements forecast volatility for risk management and... |
-| [volume-profile](../../skills/volume-profile/SKILL.md) | Trading | "Provides Volume analysis techniques for understanding... |
-| [vwap](../../skills/vwap/SKILL.md) | Trading | "Volume-Weighted Average Price algorithm for executing... |
-| [walk-forward](../../skills/walk-forward/SKILL.md) | Trading | "Implements walk-forward optimization for robust strategy... |
-| [websocket-handling](../../skills/websocket-handling/SKILL.md) | Trading | "Real-time market data handling with WebSockets including... |
-| [websocket-streaming](../../skills/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing... |
+| [ab-testing](skills/coding/ab-testing/SKILL.md) | Coding | Provides Designs and analyzes A/B tests including hypothesis testing, power analysis, sample size calculation, and statistical significance evaluation |
+| [alternative-data](skills/trading/alternative-data/SKILL.md) | Trading | "Alternative data ingestion pipelines for trading signals including news" social media, and on-chain data sources |
+| [anomaly-detection](skills/coding/anomaly-detection/SKILL.md) | Coding | "Detects anomalies and outliers using isolation forests, local outlier factor (LOF), one-class SVM, and isolation-based methods" |
+| [anomaly-detection](skills/trading/anomaly-detection/SKILL.md) | Trading | "Provides Detect anomalous market behavior, outliers, and potential market manipulation" |
+| [association-rules](skills/coding/association-rules/SKILL.md) | Coding | "Provides Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining" |
+| [automation](skills/coding/automation/SKILL.md) | Coding | "Provides Automating semantic versioning in Git repositories for version bumping, changelog generation, and release automation using conventional commits and to" |
+| [backfill-strategy](skills/trading/backfill-strategy/SKILL.md) | Trading | "Provides Strategic data backfill for populating historical data in trading systems" |
+| [base](skills/coding/base/SKILL.md) | Coding | "Abstract base strategy pattern with initialization guards, typed abstract" methods, and conviction scoring integration |
+| [bayesian-inference](skills/coding/bayesian-inference/SKILL.md) | Coding | "Applies Bayesian methods for prior selection, posterior estimation, and probabilistic inference in machine learning models" |
+| [best-practices](skills/coding/best-practices/SKILL.md) | Coding | "Provides Markdown best practices for OpenCode skills - syntax rules, common pitfalls, and coding practices for documentation consistency" |
+| [bias-variance-tradeoff](skills/coding/bias-variance-tradeoff/SKILL.md) | Coding | "Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model generalization" |
+| [branching-strategies](skills/coding/branching-strategies/SKILL.md) | Coding | "Git branching models including Git Flow, GitHub Flow, Trunk-Based Development" and feature flag strategies for CI/CD pipelines |
+| [bus](skills/coding/bus/SKILL.md) | Coding | "Async pub/sub event bus with typed events, mixed sync/async dispatch" and singleton initialization for trading systems |
+| [candle-data](skills/trading/candle-data/SKILL.md) | Trading | "OHLCV candle data processing, timeframe management, and validation for" trading algorithms |
+| [categorical-encoding](skills/coding/categorical-encoding/SKILL.md) | Coding | "Provides Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies" |
+| [causal-inference](skills/coding/causal-inference/SKILL.md) | Coding | Implements causal models, directed acyclic graphs (DAGs), confounding adjustment, and mediation analysis for causal discovery |
+| [ccxt-patterns](skills/trading/ccxt-patterns/SKILL.md) | Trading | "Effective patterns for using CCXT library for exchange connectivity including" error handling, rate limiting, and state management |
+| [cicd-pipeline-debugging](skills/agent/cicd-pipeline-debugging/SKILL.md) | Agent | Debugging patterns for GitHub Actions, GitLab CI, Jenkins and other CI/CD systems including log analysis, runner issues, cache problems, and workflow optimization |
+| [cicd-pipeline-troubleshooting](skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns. |
+| [classification-metrics](skills/coding/classification-metrics/SKILL.md) | Coding | "Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification metrics" |
+| [clustering](skills/coding/clustering/SKILL.md) | Coding | "Implements clustering algorithms including K-means, hierarchical clustering, DBSCAN, Gaussian mixture models, and spectral clustering" |
+| [commission-model](skills/trading/commission-model/SKILL.md) | Trading | "Implements commission model and fee structure simulation for risk management and algorithmic trading execution." |
+| [community-detection](skills/coding/community-detection/SKILL.md) | Coding | "Detects communities and clusters in graphs using modularity optimization, spectral methods, and graph partitioning algorithms" |
+| [confidence-intervals](skills/coding/confidence-intervals/SKILL.md) | Coding | "Provides Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation" |
+| [config](skills/coding/config/SKILL.md) | Coding | "Pydantic-based configuration management with frozen models, nested hierarchy" TOML/env parsing, and module-level singleton |
+| [correlation-analysis](skills/coding/correlation-analysis/SKILL.md) | Coding | "Analyzes correlation, covariance, and multivariate relationships between variables using statistical methods and visualization techniques" |
+| [correlation-risk](skills/trading/correlation-risk/SKILL.md) | Trading | "Implements correlation breakdown and portfolio diversification risk for risk management and algorithmic trading execution." |
+| [cost-optimization](skills/cncf/cost-optimization/SKILL.md) | Cncf | Implements cloud cost optimization strategies (right-sizing, reserved instances, spot instances, multi-cloud comparison) for Kubernetes and cloud-native deployments. |
+| [cost-optimization-analysis](skills/cncf/cost-optimization-analysis/SKILL.md) | Cncf | Cloud cost optimization analysis including AWS Cost Explorer, Azure Cost Management, and GCP Billing with right-sizing recommendations and optimization strategies for multi-cloud environments |
+| [cross-validation](skills/coding/cross-validation/SKILL.md) | Coding | "Implements k-fold cross-validation, stratified cross-validation, time-series cross-validation, and model validation strategies" |
+| [cycle-analysis](skills/trading/cycle-analysis/SKILL.md) | Trading | "Implements market cycles and periodic patterns in price movement for risk management and algorithmic trading execution." |
+| [data-collection](skills/coding/data-collection/SKILL.md) | Coding | "Implements data gathering strategies including APIs, web scraping, sensor data collection, and database queries for building machine learning datasets" |
+| [data-ingestion](skills/coding/data-ingestion/SKILL.md) | Coding | "Provides Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow" |
+| [data-privacy](skills/coding/data-privacy/SKILL.md) | Coding | "Applies privacy-preserving techniques including anonymization, differential privacy, encryption, and GDPR compliance for sensitive data" |
+| [data-profiling](skills/coding/data-profiling/SKILL.md) | Coding | Provides Extracts data profiles, schemas, metadata, and statistical summaries to understand data structure, quality, and characteristics at scale |
+| [data-quality](skills/coding/data-quality/SKILL.md) | Coding | "Implements data validation, cleaning, outlier detection, and quality assurance techniques to ensure reliable datasets for model training" |
+| [data-versioning](skills/coding/data-versioning/SKILL.md) | Coding | "Implements data versioning, lineage tracking, provenance management, and reproducible data pipelines for experiment tracking and governance" |
+| [data-visualization](skills/coding/data-visualization/SKILL.md) | Coding | "Creates effective visualizations including plots, charts, dashboards, and interactive visualizations for data insight and storytelling" |
+| [database-admin](skills/agent/database-admin/SKILL.md) | Agent | Implements database administration best practices (PostgreSQL tuning, MySQL replication, MongoDB sharding, Redis optimization) with real operational commands and query analysis patterns. |
+| [dependency-management](skills/coding/dependency-management/SKILL.md) | Coding | "Provides Cybersecurity operations skill for automating software dependency version updates based on CVE (Common Vulnerabilities and Exposures) data, vulnerabil" |
+| [dimensionality-reduction](skills/coding/dimensionality-reduction/SKILL.md) | Coding | "Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency" |
+| [disaster-recovery](skills/cncf/disaster-recovery/SKILL.md) | Cncf | Implements comprehensive disaster recovery planning for Kubernetes clusters with backup strategies, recovery procedures, cross-region replication, RPO/RTO planning, and validation workflows. |
+| [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" |
+| [docker-debugging](skills/agent/docker-debugging/SKILL.md) | Agent | Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization |
+| [drawdown-analysis](skills/trading/drawdown-analysis/SKILL.md) | Trading | "Implements maximum drawdown, recovery time, and value-at-risk analysis for risk management and algorithmic trading execution." |
+| [drawdown-control](skills/trading/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity preservation for risk management and algorithmic trading execution." |
+| [driven-architecture](skills/coding/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy base, and common pitfalls' |
+| [driven-development](skills/coding/driven-development/SKILL.md) | Coding | "Test-Driven Development (TDD) and Behavior-Driven Development (BDD) patterns" with pytest, unit tests, mocking, and test pyramid principles |
+| [dry-principles](skills/coding/dry-principles/SKILL.md) | Coding | Implements DRY (Don't Repeat Yourself) principle enforcement through pattern recognition, code duplication detection, and refactoring guidance for clean maintainable codebases |
+| [eda](skills/coding/eda/SKILL.md) | Coding | "Provides Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristic" |
+| [enrichment](skills/trading/enrichment/SKILL.md) | Trading | "Provides Data enrichment techniques for adding context to raw trading data" |
+| [ensemble-methods](skills/coding/ensemble-methods/SKILL.md) | Coding | "Provides Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness" |
+| [experimental-design](skills/coding/experimental-design/SKILL.md) | Coding | "Provides Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning" |
+| [explainability](skills/coding/explainability/SKILL.md) | Coding | "Implements explainability and interpretability techniques for model transparency, understanding decisions, and building trust" |
+| [explainable-ai](skills/trading/explainable-ai/SKILL.md) | Trading | "Provides Explainable AI for understanding and trusting trading model decisions" |
+| [failover-handling](skills/trading/failover-handling/SKILL.md) | Trading | "Provides Automated failover and redundancy management for exchange connectivity" |
+| [false-signal-filtering](skills/trading/false-signal-filtering/SKILL.md) | Trading | "Provides False Signal Filtering Techniques for Robust Technical Analysis" |
+| [feature-engineering](skills/coding/feature-engineering/SKILL.md) | Coding | "Creates and transforms features including polynomial features, interactions, domain-specific features, and feature transformations" |
+| [feature-engineering](skills/trading/feature-engineering/SKILL.md) | Trading | "Implements create actionable trading features from raw market data for risk management and algorithmic trading execution." |
+| [feature-interaction](skills/coding/feature-interaction/SKILL.md) | Coding | "Provides Discovers and engineers feature interactions including polynomial interactions, cross-features, and interaction detection methods" |
+| [feature-scaling-normalization](skills/coding/feature-scaling-normalization/SKILL.md) | Coding | "Provides Scales and normalizes features using standardization, normalization, robust scaling, and other scaling methods for model compatibility" |
+| [feature-selection](skills/coding/feature-selection/SKILL.md) | Coding | "Selects relevant features using univariate selection, recursive elimination, stability selection, and importance-based methods" |
+| [feature-store](skills/trading/feature-store/SKILL.md) | Trading | "Provides Feature storage and management for machine learning trading models" |
+| [fill-simulation](skills/trading/fill-simulation/SKILL.md) | Trading | "Implements fill simulation models for order execution probability for risk management and algorithmic trading execution." |
+| [gitops-troubleshooting](skills/agent/gitops-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves GitOps synchronization failures, drift detection issues, and reconciliation problems for ArgoCD and Flux deployments with actionable debugging commands. |
+| [grpc-patterns](skills/coding/grpc-patterns/SKILL.md) | Coding | Implements gRPC development patterns including protocol buffer definitions, unary/streaming RPCs, error handling, and debugging techniques for cloud-native microservices |
+| [health](skills/trading/health/SKILL.md) | Trading | "Provides Exchange system health monitoring and connectivity status tracking" |
+| [health-check-patterns](skills/cncf/health-check-patterns/SKILL.md) | Cncf | Implements comprehensive health check patterns for cloud-native applications including Kubernetes probes, HTTP health endpoints, database checks, and circuit breaker patterns |
+| [hyperparameter-tuning](skills/coding/hyperparameter-tuning/SKILL.md) | Coding | "Optimizes hyperparameters using grid search, random search, Bayesian optimization, and evolutionary methods for model improvement" |
+| [hyperparameter-tuning](skills/trading/hyperparameter-tuning/SKILL.md) | Trading | "Implements optimize model configurations for trading applications for risk management and algorithmic trading execution." |
+| [hypothesis-testing](skills/coding/hypothesis-testing/SKILL.md) | Coding | Implements hypothesis testing including t-tests, chi-square tests, p-values, and statistical significance evaluation for data-driven decisions |
+| [incident-response-runbooks](skills/cncf/incident-response-runbooks/SKILL.md) | Cncf | Implements incident response runbooks with detection, triage, communication, resolution, and post-incident procedures for Kubernetes and cloud-native environments. |
+| [indicator-confluence](skills/trading/indicator-confluence/SKILL.md) | Trading | "Provides Indicator Confluence Validation Systems for Confirming Trading Signals" |
+| [instrumental-variables](skills/coding/instrumental-variables/SKILL.md) | Coding | "Provides Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data" |
+| [intermarket-analysis](skills/trading/intermarket-analysis/SKILL.md) | Trading | "Implements cross-market relationships and asset class correlations for risk management and algorithmic trading execution." |
+| [intervention-analysis](skills/coding/intervention-analysis/SKILL.md) | Coding | "Provides Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses" |
+| [kernel-density](skills/coding/kernel-density/SKILL.md) | Coding | "Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions" |
+| [kill-switches](skills/trading/kill-switches/SKILL.md) | Trading | "Implementing multi-layered kill switches at account, strategy, market" and infrastructure levels to prevent catastrophic losses and system failures |
+| [kubernetes-api-patterns](skills/cncf/kubernetes-api-patterns/SKILL.md) | Cncf | Kubernetes API patterns including CRD development, webhook implementation, API groups, client library usage, and debugging techniques for custom API extensions |
+| [kubernetes-debugging](skills/cncf/kubernetes-debugging/SKILL.md) | Cncf | Implements comprehensive Kubernetes debugging workflow with pod inspection, log analysis, resource debugging, network troubleshooting, and common failure pattern diagnosis using kubectl commands. |
+| [lake](skills/trading/lake/SKILL.md) | Trading | "Provides Data lake architecture and management for trading data storage" |
+| [linear-regression](skills/coding/linear-regression/SKILL.md) | Coding | "Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction" |
+| [liquidity-risk](skills/trading/liquidity-risk/SKILL.md) | Trading | "Implements liquidity assessment and trade execution risk for risk management and algorithmic trading execution." |
+| [live-model-monitoring](skills/trading/live-model-monitoring/SKILL.md) | Trading | "Provides Monitor production ML models for drift, decay, and performance degradation" |
+| [llm-orchestration](skills/trading/llm-orchestration/SKILL.md) | Trading | "Large Language Model orchestration for trading analysis with structured" output using instructor/pydantic |
+| [logistic-regression](skills/coding/logistic-regression/SKILL.md) | Coding | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" |
+| [lookahead-bias](skills/trading/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict causality enforcement" time-based validation, and comprehensive detection frameworks. |
+| [manager](skills/coding/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing |
+| [market-data-cache](skills/trading/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low latency and high" throughput |
+| [market-impact](skills/trading/market-impact/SKILL.md) | Trading | "Implements market impact modeling and order book simulation for risk management and algorithmic trading execution." |
+| [market-microstructure](skills/trading/market-microstructure/SKILL.md) | Trading | "Implements order book dynamics and order flow analysis for risk management and algorithmic trading execution." |
+| [market-regimes](skills/trading/market-regimes/SKILL.md) | Trading | "Market regime detection and adaptation for trading systems across changing" market conditions. |
+| [market-structure](skills/trading/market-structure/SKILL.md) | Trading | "Implements market structure and trading participants analysis for risk management and algorithmic trading execution." |
+| [maximum-likelihood](skills/coding/maximum-likelihood/SKILL.md) | Coding | Implements maximum likelihood estimation, likelihood functions, and optimization methods for parameter estimation in probabilistic models |
+| [message-queue-debugging](skills/agent/message-queue-debugging/SKILL.md) | Agent | Debugs Kafka, RabbitMQ, and SQS message queues with consumer lag analysis, dead letter handling, and message flow troubleshooting for distributed systems |
+| [message-queue-troubleshooting](skills/agent/message-queue-troubleshooting/SKILL.md) | Agent | Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic commands, dead letter handling, and backlog resolution |
+| [metrics-and-kpis](skills/coding/metrics-and-kpis/SKILL.md) | Coding | "Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making" |
+| [missing-data](skills/coding/missing-data/SKILL.md) | Coding | "Handles missing data using imputation strategies, deletion methods, and techniques for dealing with incomplete datasets while preserving information" |
+| [model-ensemble](skills/trading/model-ensemble/SKILL.md) | Trading | "Provides Combine multiple models for improved prediction accuracy and robustness" |
+| [model-fairness](skills/coding/model-fairness/SKILL.md) | Coding | "Evaluates and mitigates fairness issues including bias detection, fairness metrics, and debiasing strategies in machine learning" |
+| [model-interpretation](skills/coding/model-interpretation/SKILL.md) | Coding | "Provides Interprets models using SHAP values, LIME, feature importance, permutation importance, and other explainability techniques" |
+| [model-robustness](skills/coding/model-robustness/SKILL.md) | Coding | Improves model robustness including adversarial robustness, out-of-distribution detection, and uncertainty quantification |
+| [model-selection](skills/coding/model-selection/SKILL.md) | Coding | "Provides Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques" |
+| [models](skills/coding/models/SKILL.md) | Coding | "'Pydantic frozen data models for trading: enums, annotated constraints" field/model validators, and computed properties' |
+| [momentum-indicators](skills/trading/momentum-indicators/SKILL.md) | Trading | "Implements rsi, macd, stochastic oscillators and momentum analysis for risk management and algorithmic trading execution." |
+| [monte-carlo](skills/coding/monte-carlo/SKILL.md) | Coding | "Implements Monte Carlo sampling, simulation methods, and stochastic approximation for uncertainty estimation and numerical integration" |
+| [multi-asset-model](skills/trading/multi-asset-model/SKILL.md) | Trading | "Provides Model inter-asset relationships for portfolio and cross-asset strategies" |
+| [network-troubleshooting](skills/agent/network-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves network connectivity issues including firewall rules, DNS resolution, load balancer configuration, container networking, VPN connectivity, and network policy debugging for Docker, Kubernetes, and cloud-native environments |
+| [networking-troubleshooting](skills/cncf/networking-troubleshooting/SKILL.md) | Cncf | Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis |
+| [neural-networks](skills/coding/neural-networks/SKILL.md) | Coding | "Implements deep neural networks, backpropagation, activation functions, architectures (CNN, RNN, Transformers), and training strategies" |
+| [news-embedding](skills/trading/news-embedding/SKILL.md) | Trading | "Implements process news text using nlp embeddings for trading signals for risk management and algorithmic trading execution." |
+| [normalization](skills/coding/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization' |
+| [observational-studies](skills/coding/observational-studies/SKILL.md) | Coding | "Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias" |
+| [online-experiments](skills/coding/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms" |
+| [order-book](skills/trading/order-book/SKILL.md) | Trading | "Order book data handling, spread calculation, liquidity measurement" and cross-exchange normalization |
+| [order-book-impact](skills/trading/order-book-impact/SKILL.md) | Trading | "Provides Order Book Impact Measurement and Market Microstructure Analysis" |
+| [order-book-sync](skills/trading/order-book-sync/SKILL.md) | Trading | "Provides Order book synchronization and state management for accurate trading" |
+| [order-execution-api](skills/trading/order-execution-api/SKILL.md) | Trading | "Implements order execution and management api for trading systems for risk management and algorithmic trading execution." |
+| [order-flow-analysis](skills/trading/order-flow-analysis/SKILL.md) | Trading | "Provides Analyze order flow to detect market pressure and anticipate price moves" |
+| [patterns](skills/coding/patterns/SKILL.md) | Coding | "FastAPI application structure with typed error hierarchy, global exception" handlers, CORS middleware, request timing, and lifecycle events |
+| [performance-attribution](skills/trading/performance-attribution/SKILL.md) | Trading | "Provides Performance Attribution Systems for Trading Strategy Decomposition" |
+| [position-exits](skills/trading/position-exits/SKILL.md) | Trading | "Exit strategies, trailing stops, and take-profit mechanisms for trading" systems. |
+| [position-sizing](skills/trading/position-sizing/SKILL.md) | Trading | "'Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility" Adjustment' |
+| [position-sizing](skills/trading/position-sizing/SKILL.md) | Trading | "Calculating optimal position sizes using Kelly criterion, volatility" adjustments, and edge-based sizing to maximize long-term growth while managing risk |
+| [price-action-patterns](skills/trading/price-action-patterns/SKILL.md) | Trading | "Provides Analysis of candlestick and chart patterns for price movement prediction" |
+| [privacy-ml](skills/coding/privacy-ml/SKILL.md) | Coding | "Implements privacy-preserving machine learning including differential privacy, federated learning, and privacy attack prevention" |
+| [pulumi](skills/cncf/pulumi/SKILL.md) | Cncf | Implements Pulumi infrastructure as code using Python, TypeScript, and Go for cloud provisioning with state management, stacks, backends, and cross-cloud provisioning |
+| [quality-policies](skills/coding/quality-policies/SKILL.md) | Coding | "Provides Establishing policies for maintaining a clean codebase including code standards, linting, formatting, testing requirements, cyclomatic complexity limi" |
+| [randomized-experiments](skills/coding/randomized-experiments/SKILL.md) | Coding | "Provides Designs and analyzes randomized controlled trials (RCTs), A/B tests, experimental blocking, and sample size calculations" |
+| [rate-limiting](skills/trading/rate-limiting/SKILL.md) | Trading | "Rate Limiting Strategies and Circuit Breaker Patterns for Exchange API" Integration |
+| [rate-limiting](skills/trading/rate-limiting/SKILL.md) | Trading | "Provides Rate Limiting and Exchange API Management for Robust Trading Execution" |
+| [realistic-simulation](skills/trading/realistic-simulation/SKILL.md) | Trading | "Provides Realistic Paper Trading Simulation with Market Impact and Execution Fees" |
+| [regime-classification](skills/trading/regime-classification/SKILL.md) | Trading | "Provides Detect current market regime for adaptive trading strategies" |
+| [regime-detection](skills/trading/regime-detection/SKILL.md) | Trading | "Provides Market Regime Detection Systems for Adaptive Trading Strategies" |
+| [regression-evaluation](skills/coding/regression-evaluation/SKILL.md) | Coding | "Evaluates regression models using MSE, RMSE, MAE, MAPE, R-squared, and other metrics for assessing predictive accuracy" |
+| [reinforcement-learning](skills/trading/reinforcement-learning/SKILL.md) | Trading | "Provides Reinforcement Learning for automated trading agents and policy optimization" |
+| [release-pipeline](skills/coding/release-pipeline/SKILL.md) | Coding | Implements comprehensive secure release pipeline with CVE scanning, security code review, semantic versioning for patches, and multi-stage quality gates for secure deployments. |
+| [reproducible-research](skills/coding/reproducible-research/SKILL.md) | Coding | "Implements reproducible research practices including code organization, environment management, documentation, and experiment tracking" |
+| [review](skills/coding/review/SKILL.md) | Coding | "Analyzes code diffs and files to identify bugs, security vulnerabilities" code smells, and architectural concerns, producing a structured review report with prioritized, actionable feedback |
+| [review](skills/coding/review/SKILL.md) | Coding | "Security-focused code review identifying vulnerabilities like injection" XSS, insecure deserialization, and misconfigurations, with remediation guidance |
+| [risk-management-basics](skills/trading/risk-management-basics/SKILL.md) | Trading | "Position sizing, stop-loss implementation, and system-level risk controls" to preserve capital |
+| [rollback-procedures](skills/cncf/rollback-procedures/SKILL.md) | Cncf | Implements comprehensive rollback procedures including deployment rollback, version rollback, database rollback, and rollback testing for Kubernetes and cloud-native applications |
+| [scoring](skills/coding/scoring/SKILL.md) | Coding | "Multi-factor conviction scoring engine combining technical, momentum" trend, volatility, and volume signals with configurable weights |
+| [security-compliance](skills/cncf/security-compliance/SKILL.md) | Cncf | Implements security compliance frameworks (SOC2, HIPAA, PCI-DSS) with implementation patterns, audit procedures, and compliance automation for Kubernetes and cloud environments |
+| [sentiment-analysis](skills/trading/sentiment-analysis/SKILL.md) | Trading | "AI-powered sentiment analysis for news, social media, and political figures" in trading |
+| [sentiment-features](skills/trading/sentiment-features/SKILL.md) | Trading | "Provides Extract market sentiment from news, social media, and analyst reports" |
+| [service-mesh-debugging](skills/cncf/service-mesh-debugging/SKILL.md) | Cncf | Implements comprehensive debugging workflows for Istio and Linkerd service meshes including mTLS validation, sidecar injection issues, traffic routing problems, and mesh observability for microservices. |
+| [sharpe-ratio](skills/trading/sharpe-ratio/SKILL.md) | Trading | "Provides Sharpe Ratio Calculation and Risk-Adjusted Performance Metrics" |
+| [shop](skills/coding/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing with intentionally" vulnerable Node.js/Express application for learning and practice' |
+| [slippage-model](skills/trading/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for risk management and algorithmic trading execution." |
+| [slippage-modeling](skills/trading/slippage-modeling/SKILL.md) | Trading | "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution" Analysis |
+| [statistical-arbitrage](skills/trading/statistical-arbitrage/SKILL.md) | Trading | "Implements pair trading and cointegration-based arbitrage strategies for risk management and algorithmic trading execution." |
+| [statistical-power](skills/coding/statistical-power/SKILL.md) | Coding | "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control" |
+| [stop-loss](skills/trading/stop-loss/SKILL.md) | Trading | "Implements stop loss strategies for risk management for risk management and algorithmic trading execution." |
+| [stream-processing](skills/trading/stream-processing/SKILL.md) | Trading | "Provides Streaming data processing for real-time trading signals and analytics" |
+| [stress-testing](skills/trading/stress-testing/SKILL.md) | Trading | "Implements stress test scenarios and portfolio resilience analysis for risk management and algorithmic trading execution." |
+| [support-resistance](skills/trading/support-resistance/SKILL.md) | Trading | "Implements technical levels where price tends to pause or reverse for risk management and algorithmic trading execution." |
+| [support-vector-machines](skills/coding/support-vector-machines/SKILL.md) | Coding | "Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression" |
+| [synthetic-control](skills/coding/synthetic-control/SKILL.md) | Coding | "Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation" |
+| [synthetic-data](skills/trading/synthetic-data/SKILL.md) | Trading | "Provides Generate synthetic financial data for training and testing trading models" |
+| [tail-risk](skills/trading/tail-risk/SKILL.md) | Trading | "Implements tail risk management and extreme event protection for risk management and algorithmic trading execution." |
+| [terraform](skills/cncf/terraform/SKILL.md) | Cncf | Implements Terraform infrastructure as code for cloud provisioning with state management, modules, remote backends, and troubleshooting |
+| [time-series-database](skills/trading/time-series-database/SKILL.md) | Trading | "Provides Time-series database queries and optimization for financial data" |
+| [time-series-forecasting](skills/coding/time-series-forecasting/SKILL.md) | Coding | "Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction" |
+| [time-series-forecasting](skills/trading/time-series-forecasting/SKILL.md) | Trading | "Provides Time series forecasting for price prediction and market analysis" |
+| [topic-modeling](skills/coding/topic-modeling/SKILL.md) | Coding | "Implements topic modeling using Latent Dirichlet Allocation (LDA), Non-negative Matrix Factorization (NMF), and other topic extraction methods" |
+| [trade-reporting](skills/trading/trade-reporting/SKILL.md) | Trading | "Real-time trade reporting and execution analytics for monitoring and" optimization |
+| [trading-edge](skills/trading/trading-edge/SKILL.md) | Trading | "Provides Finding and maintaining competitive advantage in trading systems" |
+| [trading-plan](skills/trading/trading-plan/SKILL.md) | Trading | "Implements trading plan structure and risk management framework for risk management and algorithmic trading execution." |
+| [trading-psychology](skills/trading/trading-psychology/SKILL.md) | Trading | "Emotional discipline, cognitive bias awareness, and maintaining operational" integrity in trading |
+| [tree-methods](skills/coding/tree-methods/SKILL.md) | Coding | "Implements decision trees, random forests, gradient boosting (XGBoost" LightGBM), and tree ensemble methods for classification and regression |
+| [trend-analysis](skills/trading/trend-analysis/SKILL.md) | Trading | "Provides Trend identification, classification, and continuation analysis" |
+| [twap](skills/trading/twap/SKILL.md) | Trading | "Time-Weighted Average Price algorithm for executing large orders with" minimal market impact |
+| [twap-vwap](skills/trading/twap-vwap/SKILL.md) | Trading | 'Provides ''TWAP and VWAP Execution Algorithms: Institutional-Grade Order Execution''' |
+| [validation](skills/coding/validation/SKILL.md) | Coding | Validates pipeline stages and returns config status strings (valid_config/invalid_config) using guard clauses and the 5 Laws of Elegant Defense, returning invalid_config for invalid input types instead of raising exceptions |
+| [validation](skills/trading/validation/SKILL.md) | Trading | "Provides Data validation and quality assurance for trading data pipelines" |
+| [value-at-risk](skills/trading/value-at-risk/SKILL.md) | Trading | "Implements value at risk calculations for portfolio risk management for risk management and algorithmic trading execution." |
+| [volatility-analysis](skills/trading/volatility-analysis/SKILL.md) | Trading | "Implements volatility measurement, forecasting, and risk assessment for risk management and algorithmic trading execution." |
+| [volatility-prediction](skills/trading/volatility-prediction/SKILL.md) | Trading | "Implements forecast volatility for risk management and option pricing for risk management and algorithmic trading execution." |
+| [volume-profile](skills/trading/volume-profile/SKILL.md) | Trading | "Provides Volume analysis techniques for understanding market structure" |
+| [vwap](skills/trading/vwap/SKILL.md) | Trading | "Volume-Weighted Average Price algorithm for executing orders relative" to market volume |
+| [walk-forward](skills/trading/walk-forward/SKILL.md) | Trading | "Implements walk-forward optimization for robust strategy validation for risk management and algorithmic trading execution." |
+| [websocket-handling](skills/trading/websocket-handling/SKILL.md) | Trading | "Real-time market data handling with WebSockets including connection management" data aggregation, and robust error recovery |
+| [websocket-streaming](skills/trading/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing for risk management and algorithmic trading execution." |
 
 
 ### Reference (Learn & Understand) (154 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
-| [advanced](../../skills/advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing,... |
-| [aks](../../skills/aks/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling... |
-| [algorithms](../../skills/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide —... |
-| [architecture](../../skills/architecture/SKILL.md) | Cncf | "Creates or updates ARCHITECTURE.md documenting the... |
-| [argo](../../skills/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native... |
-| [auto-scaling](../../skills/auto-scaling/SKILL.md) | Cncf | "Configures automatic scaling of compute resources (EC2,... |
-| [automation](../../skills/automation/SKILL.md) | Cncf | Provides Automation and orchestration of Azure resources... |
-| [autoscaling](../../skills/autoscaling/SKILL.md) | Cncf | "Provides Automatically scales compute resources based on... |
-| [backstage](../../skills/backstage/SKILL.md) | Cncf | "Provides Backstage in Cloud-Native Engineering - Developer... |
-| [best-practices](../../skills/best-practices/SKILL.md) | Cncf | "Cloud Native Computing Foundation (CNCF) architecture best... |
-| [blob-storage](../../skills/blob-storage/SKILL.md) | Cncf | Provides Object storage with versioning, lifecycle... |
-| [buildpacks](../../skills/buildpacks/SKILL.md) | Cncf | "Provides Buildpacks in Cloud-Native Engineering - Turn... |
-| [calico](../../skills/calico/SKILL.md) | Cncf | "Calico in Cloud Native Security - cloud native... |
-| [cdn](../../skills/cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and global... |
-| [chaosmesh](../../skills/chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering... |
-| [cilium](../../skills/cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native... |
-| [cloud-cdn](../../skills/cloud-cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and globally... |
-| [cloud-dns](../../skills/cloud-dns/SKILL.md) | Cncf | Manages DNS with health checks, traffic routing, and... |
-| [cloud-functions](../../skills/cloud-functions/SKILL.md) | Cncf | Deploys serverless functions triggered by events with... |
-| [cloud-kms](../../skills/cloud-kms/SKILL.md) | Cncf | "Manages encryption keys for data protection with automated... |
-| [cloud-load-balancing](../../skills/cloud-load-balancing/SKILL.md) | Cncf | "Provides Distributes traffic across instances with... |
-| [cloud-monitoring](../../skills/cloud-monitoring/SKILL.md) | Cncf | "Monitors GCP resources with metrics, logging, and alerting... |
-| [cloud-operations](../../skills/cloud-operations/SKILL.md) | Cncf | "Provides Systems management including monitoring, logging,... |
-| [cloud-pubsub](../../skills/cloud-pubsub/SKILL.md) | Cncf | "Asynchronous messaging service for event streaming and... |
-| [cloud-sql](../../skills/cloud-sql/SKILL.md) | Cncf | "Provides managed relational databases (MySQL, PostgreSQL)... |
-| [cloud-storage](../../skills/cloud-storage/SKILL.md) | Cncf | "Provides Stores objects with versioning, lifecycle... |
-| [cloud-tasks](../../skills/cloud-tasks/SKILL.md) | Cncf | "Manages task queues for asynchronous job execution with... |
-| [cloudevents](../../skills/cloudevents/SKILL.md) | Cncf | "CloudEvents in Streaming & Messaging - cloud native... |
-| [cloudformation](../../skills/cloudformation/SKILL.md) | Cncf | "Creates Infrastructure as Code templates with... |
-| [cloudfront](../../skills/cloudfront/SKILL.md) | Cncf | "Configures CloudFront CDN for global content distribution... |
-| [cloudwatch](../../skills/cloudwatch/SKILL.md) | Cncf | "Configures CloudWatch monitoring with metrics, logs,... |
-| [cni](../../skills/cni/SKILL.md) | Cncf | "Cni in Cloud-Native Engineering - Container Network... |
-| [compute-engine](../../skills/compute-engine/SKILL.md) | Cncf | "Deploys and manages virtual machine instances with... |
-| [container-linux](../../skills/container-linux/SKILL.md) | Cncf | "Provides Flatcar Container Linux in Cloud-Native... |
-| [container-registry](../../skills/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with... |
-| [container-registry](../../skills/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with... |
-| [containerd](../../skills/containerd/SKILL.md) | Cncf | "Containerd in Cloud-Native Engineering - An open and... |
-| [contour](../../skills/contour/SKILL.md) | Cncf | "Contour in Service Proxy - cloud native architecture,... |
-| [coredns](../../skills/coredns/SKILL.md) | Cncf | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS... |
-| [cortex](../../skills/cortex/SKILL.md) | Cncf | "Cortex in Monitoring & Observability - distributed,... |
-| [cosmos-db](../../skills/cosmos-db/SKILL.md) | Cncf | Provides Global NoSQL database with multi-region... |
-| [crossplane](../../skills/crossplane/SKILL.md) | Cncf | "Crossplane in Platform Engineering - Kubernetes-native... |
-| [cubefs](../../skills/cubefs/SKILL.md) | Cncf | "Provides CubeFS in Storage - distributed, high-performance... |
-| [custodian](../../skills/custodian/SKILL.md) | Cncf | "Provides Cloud Custodian in Cloud-Native Engineering... |
-| [dapr](../../skills/dapr/SKILL.md) | Cncf | "Provides Dapr in Cloud-Native Engineering - distributed... |
-| [deployment-manager](../../skills/deployment-manager/SKILL.md) | Cncf | "Infrastructure as code using YAML templates for repeatable... |
-| [dragonfly](../../skills/dragonfly/SKILL.md) | Cncf | "Provides Dragonfly in Cloud-Native Engineering - P2P file... |
-| [dynamodb](../../skills/dynamodb/SKILL.md) | Cncf | "Deploys managed NoSQL databases with DynamoDB for... |
-| [ec2](../../skills/ec2/SKILL.md) | Cncf | "Deploys, configures, and auto-scales EC2 instances with... |
-| [ecr](../../skills/ecr/SKILL.md) | Cncf | "Manages container image repositories with ECR for secure... |
-| [eks](../../skills/eks/SKILL.md) | Cncf | "Deploys managed Kubernetes clusters with EKS for container... |
-| [elb](../../skills/elb/SKILL.md) | Cncf | "Configures Elastic Load Balancing (ALB, NLB, Classic) for... |
-| [envoy](../../skills/envoy/SKILL.md) | Cncf | "Envoy in Cloud-Native Engineering - Cloud-native... |
-| [etcd](../../skills/etcd/SKILL.md) | Cncf | "Provides etcd in Cloud-Native Engineering - distributed... |
-| [event-hubs](../../skills/event-hubs/SKILL.md) | Cncf | "Provides Event streaming platform for high-throughput data... |
-| [falco](../../skills/falco/SKILL.md) | Cncf | "Provides Falco in Cloud-Native Engineering - Cloud Native... |
-| [firestore](../../skills/firestore/SKILL.md) | Cncf | Provides NoSQL document database with real-time sync,... |
-| [fluentd](../../skills/fluentd/SKILL.md) | Cncf | "Fluentd unified logging layer for collecting,... |
-| [fluid](../../skills/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for... |
-| [flux](../../skills/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for... |
-| [framework](../../skills/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes... |
-| [functions](../../skills/functions/SKILL.md) | Cncf | Provides Serverless computing with event-driven functions... |
-| [gke](../../skills/gke/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic... |
-| [grpc](../../skills/grpc/SKILL.md) | Cncf | "gRPC in Remote Procedure Call - cloud native architecture,... |
-| [harbor](../../skills/harbor/SKILL.md) | Cncf | "Configures harbor in cloud-native engineering - container... |
-| [helm](../../skills/helm/SKILL.md) | Cncf | "Provides Helm in Cloud-Native Engineering - The Kubernetes... |
-| [hub](../../skills/hub/SKILL.md) | Cncf | "Provides Artifact Hub in Cloud-Native Engineering -... |
-| [hydra](../../skills/hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native... |
-| [iam](../../skills/iam/SKILL.md) | Cncf | "Configures identity and access management with IAM users,... |
-| [iam](../../skills/iam/SKILL.md) | Cncf | "Manages identity and access control with service accounts,... |
-| [incident-response](../../skills/incident-response/SKILL.md) | Cncf | "Creates or updates an incident response plan covering... |
-| [ingress](../../skills/ingress/SKILL.md) | Cncf | "Provides Emissary-Ingress in Cloud-Native Engineering -... |
-| [ingress-controller](../../skills/ingress-controller/SKILL.md) | Cncf | "Kong Ingress Controller in Kubernetes - cloud native... |
-| [io](../../skills/io/SKILL.md) | Cncf | "metal3.io in Bare Metal Provisioning - cloud native... |
-| [istio](../../skills/istio/SKILL.md) | Cncf | "Istio in Cloud-Native Engineering - Connect, secure,... |
-| [jaeger](../../skills/jaeger/SKILL.md) | Cncf | "Configures jaeger in cloud-native engineering -... |
-| [karmada](../../skills/karmada/SKILL.md) | Cncf | "Provides Karmada in Cloud-Native Engineering -... |
-| [keda](../../skills/keda/SKILL.md) | Cncf | "Configures keda in cloud-native engineering - event-driven... |
-| [key-vault](../../skills/key-vault/SKILL.md) | Cncf | "Manages encryption keys, secrets, and certificates with... |
-| [keycloak](../../skills/keycloak/SKILL.md) | Cncf | "Provides Keycloak in Cloud-Native Engineering - identity... |
-| [keyvault-secrets](../../skills/keyvault-secrets/SKILL.md) | Cncf | "Provides Secret management and rotation for sensitive... |
-| [kms](../../skills/kms/SKILL.md) | Cncf | "Manages encryption keys with AWS KMS for data protection... |
-| [knative](../../skills/knative/SKILL.md) | Cncf | "Provides Knative in Cloud-Native Engineering - serverless... |
-| [kong](../../skills/kong/SKILL.md) | Cncf | "Kong in API Gateway - cloud native architecture, patterns,... |
-| [kratos](../../skills/kratos/SKILL.md) | Cncf | "ORY Kratos in Identity & Access - cloud native... |
-| [krustlet](../../skills/krustlet/SKILL.md) | Cncf | "Krustlet in Kubernetes Runtime - cloud native... |
-| [kserve](../../skills/kserve/SKILL.md) | Cncf | "Configures kserve in cloud-native engineering - model... |
-| [kubeedge](../../skills/kubeedge/SKILL.md) | Cncf | "Configures kubeedge in cloud-native engineering - edge... |
-| [kubeflow](../../skills/kubeflow/SKILL.md) | Cncf | "Configures kubeflow in cloud-native engineering - ml on... |
-| [kubernetes](../../skills/kubernetes/SKILL.md) | Cncf | "Kubernetes in Cloud-Native Engineering - Production-Grade... |
-| [kubescape](../../skills/kubescape/SKILL.md) | Cncf | "Configures kubescape in cloud-native engineering -... |
-| [kubevela](../../skills/kubevela/SKILL.md) | Cncf | "Configures kubevela in cloud-native engineering -... |
-| [kubevirt](../../skills/kubevirt/SKILL.md) | Cncf | "Provides KubeVirt in Cloud-Native Engineering -... |
-| [kuma](../../skills/kuma/SKILL.md) | Cncf | "Kuma in Service Mesh - cloud native architecture,... |
-| [kyverno](../../skills/kyverno/SKILL.md) | Cncf | "Configures kyverno in cloud-native engineering - policy... |
-| [lambda](../../skills/lambda/SKILL.md) | Cncf | "Deploys serverless event-driven applications with Lambda... |
-| [lima](../../skills/lima/SKILL.md) | Cncf | "Lima in Container Runtime - cloud native architecture,... |
-| [linkerd](../../skills/linkerd/SKILL.md) | Cncf | "Linkerd in Service Mesh - cloud native architecture,... |
-| [litmus](../../skills/litmus/SKILL.md) | Cncf | "Litmus in Chaos Engineering - cloud native architecture,... |
-| [load-balancer](../../skills/load-balancer/SKILL.md) | Cncf | Provides Distributes traffic across VMs with health probes... |
-| [longhorn](../../skills/longhorn/SKILL.md) | Cncf | "Longhorn in Cloud Native Storage - cloud native... |
-| [manager](../../skills/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate... |
-| [monitor](../../skills/monitor/SKILL.md) | Cncf | "Provides Monitoring and logging for Azure resources with... |
-| [nats](../../skills/nats/SKILL.md) | Cncf | "NATS in Cloud Native Messaging - cloud native... |
-| [network-interface-cni](../../skills/network-interface-cni/SKILL.md) | Cncf | "Container Network Interface in Cloud Native Network -... |
-| [o](../../skills/o/SKILL.md) | Cncf | "Provides CRI-O in Container Runtime - OCI-compliant... |
-| [oathkeeper](../../skills/oathkeeper/SKILL.md) | Cncf | "Oathkeeper in Identity & Access - cloud native... |
-| [opencost](../../skills/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native... |
-| [openfeature](../../skills/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native... |
-| [openfga](../../skills/openfga/SKILL.md) | Cncf | "OpenFGA in Security & Compliance - cloud native... |
-| [openkruise](../../skills/openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with... |
-| [opentelemetry](../../skills/opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing,... |
-| [openyurt](../../skills/openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge... |
-| [osi](../../skills/osi/SKILL.md) | Cncf | "OSI Model Networking for Cloud-Native - All 7 layers with... |
-| [patterns](../../skills/patterns/SKILL.md) | Coding | "Provides Software architecture patterns including MVC,... |
-| [policy-agent-opa](../../skills/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security & Compliance - cloud... |
-| [project](../../skills/project/SKILL.md) | Cncf | "Notary Project in Content Trust & Security - cloud... |
-| [prometheus](../../skills/prometheus/SKILL.md) | Cncf | "Prometheus in Cloud-Native Engineering - The Prometheus... |
-| [rbac](../../skills/rbac/SKILL.md) | Cncf | "Manages identity and access with roles, service... |
-| [rds](../../skills/rds/SKILL.md) | Cncf | "Deploys managed relational databases (MySQL, PostgreSQL,... |
-| [releases](../../skills/releases/SKILL.md) | Cncf | "Creates or updates RELEASES.md documenting the release... |
-| [resource-manager](../../skills/resource-manager/SKILL.md) | Cncf | "Provides Infrastructure as code using ARM templates for... |
-| [rook](../../skills/rook/SKILL.md) | Cncf | "Configures rook in cloud-native storage orchestration for... |
-| [route53](../../skills/route53/SKILL.md) | Cncf | "Configures DNS routing with Route 53 for domain... |
-| [s3](../../skills/s3/SKILL.md) | Cncf | "Configures S3 object storage with versioning, lifecycle... |
-| [scale-sets](../../skills/scale-sets/SKILL.md) | Cncf | "Manages auto-scaling VM groups with load balancing and... |
-| [secret-manager](../../skills/secret-manager/SKILL.md) | Cncf | "Provides Stores and rotates secrets with encryption and... |
-| [secrets-manager](../../skills/secrets-manager/SKILL.md) | Cncf | "Manages sensitive data with automatic encryption,... |
-| [security-policy](../../skills/security-policy/SKILL.md) | Cncf | "Creates or updates SECURITY.md defining the vulnerability... |
-| [service-bus](../../skills/service-bus/SKILL.md) | Cncf | "Provides Messaging service with queues and topics for... |
-| [sns](../../skills/sns/SKILL.md) | Cncf | "Deploys managed pub/sub messaging with SNS for... |
-| [spiffe](../../skills/spiffe/SKILL.md) | Cncf | "Provides SPIFFE in Secure Product Identity Framework for... |
-| [spire](../../skills/spire/SKILL.md) | Cncf | "Configures spire in spiffe implementation for real-world... |
-| [sql-database](../../skills/sql-database/SKILL.md) | Cncf | Provides Managed relational database with elastic pools,... |
-| [sqs](../../skills/sqs/SKILL.md) | Cncf | "Deploys managed message queues with SQS for asynchronous... |
-| [ssm](../../skills/ssm/SKILL.md) | Cncf | "Manages EC2 instances and on-premises servers with AWS... |
-| [strimzi](../../skills/strimzi/SKILL.md) | Cncf | "Provides Strimzi in Kafka on Kubernetes - Apache Kafka for... |
-| [tekton](../../skills/tekton/SKILL.md) | Cncf | "Provides Tekton in Cloud-Native Engineering - A... |
-| [telemetry](../../skills/telemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability - cloud native... |
-| [thanos](../../skills/thanos/SKILL.md) | Cncf | "Provides Thanos in High availability Prometheus solution... |
-| [tikv](../../skills/tikv/SKILL.md) | Cncf | "TiKV in Distributed transactional key-value database... |
-| [toto](../../skills/toto/SKILL.md) | Cncf | "in-toto in Supply Chain Security - cloud native... |
-| [traffic-manager](../../skills/traffic-manager/SKILL.md) | Cncf | Provides DNS-based traffic routing with health checks and... |
-| [update-framework-tuf](../../skills/update-framework-tuf/SKILL.md) | Cncf | "The Update Framework (TUF) in Secure software update... |
-| [v10-learning](../../skills/v10-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... |
-| [v12-learning](../../skills/v12-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... |
-| [virtual-machines](../../skills/virtual-machines/SKILL.md) | Cncf | "Deploys and manages VMs with auto-scaling, availability... |
-| [virtual-networks](../../skills/virtual-networks/SKILL.md) | Cncf | "Provides Networking with subnets, network security groups,... |
-| [vitess](../../skills/vitess/SKILL.md) | Cncf | "Provides Vitess in Database clustering system for... |
-| [volcano](../../skills/volcano/SKILL.md) | Cncf | "Configures volcano in batch scheduling infrastructure for... |
-| [vpc](../../skills/vpc/SKILL.md) | Cncf | "Configures Virtual Private Clouds with subnets, route... |
-| [vpc](../../skills/vpc/SKILL.md) | Cncf | "Provides networking with subnets, firewall rules, and VPC... |
-| [wasmcloud](../../skills/wasmcloud/SKILL.md) | Cncf | "Provides wasmCloud in WebAssembly-based distributed... |
-| [zot](../../skills/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture,... |
+| [advanced](skills/coding/advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper" |
+| [aks](skills/cncf/aks/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling and Azure service integration" |
+| [algorithms](skills/programming/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints'' |
+| [architecture](skills/cncf/architecture/SKILL.md) | Cncf | "Creates or updates ARCHITECTURE.md documenting the project's design" components, and technical decisions for CNCF projects |
+| [argo](skills/cncf/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD" and Governance |
+| [auto-scaling](skills/cncf/auto-scaling/SKILL.md) | Cncf | "Configures automatic scaling of compute resources (EC2, RDS, DynamoDB" Lambda) based on demand metrics with scaling policies and lifecycle hooks. |
+| [automation](skills/cncf/automation/SKILL.md) | Cncf | Provides Automation and orchestration of Azure resources with runbooks and update management |
+| [autoscaling](skills/cncf/autoscaling/SKILL.md) | Cncf | "Provides Automatically scales compute resources based on metrics like CPU and custom signals" |
+| [backstage](skills/cncf/backstage/SKILL.md) | Cncf | "Provides Backstage in Cloud-Native Engineering - Developer Portal for Microservices" |
+| [best-practices](skills/cncf/best-practices/SKILL.md) | Cncf | "Cloud Native Computing Foundation (CNCF) architecture best practices" for production-grade Kubernetes deployments. Covers service mesh, CNI, GitOps, CI/CD, observability, security, networking, and scaling patterns across the CNCF landscape. |
+| [blob-storage](skills/cncf/blob-storage/SKILL.md) | Cncf | Provides Object storage with versioning, lifecycle policies, and integration to other Azure services |
+| [buildpacks](skills/cncf/buildpacks/SKILL.md) | Cncf | "Provides Buildpacks in Cloud-Native Engineering - Turn source code into container images without Dockerfiles" |
+| [calico](skills/cncf/calico/SKILL.md) | Cncf | "Calico in Cloud Native Security - cloud native architecture, patterns" pitfalls, and best practices |
+| [cdn](skills/cncf/cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and global content distribution |
+| [chaosmesh](skills/cncf/chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering -u6DF7u6C8Cu5DE5u7A0B u5E73' u53F0 for Kubernetes'' |
+| [cilium](skills/cncf/cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native architecture, patterns" pitfalls, and best practices |
+| [cloud-cdn](skills/cncf/cloud-cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and globally distributing content with low latency |
+| [cloud-dns](skills/cncf/cloud-dns/SKILL.md) | Cncf | Manages DNS with health checks, traffic routing, and low-latency resolution |
+| [cloud-functions](skills/cncf/cloud-functions/SKILL.md) | Cncf | Deploys serverless functions triggered by events with automatic scaling and GCP service integration |
+| [cloud-kms](skills/cncf/cloud-kms/SKILL.md) | Cncf | "Manages encryption keys for data protection with automated rotation and auditing" |
+| [cloud-load-balancing](skills/cncf/cloud-load-balancing/SKILL.md) | Cncf | "Provides Distributes traffic across instances with automatic failover and health checking" |
+| [cloud-monitoring](skills/cncf/cloud-monitoring/SKILL.md) | Cncf | "Monitors GCP resources with metrics, logging, and alerting for operational visibility" |
+| [cloud-operations](skills/cncf/cloud-operations/SKILL.md) | Cncf | "Provides Systems management including monitoring, logging, error reporting, and diagnostics" |
+| [cloud-pubsub](skills/cncf/cloud-pubsub/SKILL.md) | Cncf | "Asynchronous messaging service for event streaming and decoupled application" integration. |
+| [cloud-sql](skills/cncf/cloud-sql/SKILL.md) | Cncf | "Provides managed relational databases (MySQL, PostgreSQL) with automated backups, replication, and encryption" |
+| [cloud-storage](skills/cncf/cloud-storage/SKILL.md) | Cncf | "Provides Stores objects with versioning, lifecycle policies, access control, and integration with other GCP services" |
+| [cloud-tasks](skills/cncf/cloud-tasks/SKILL.md) | Cncf | "Manages task queues for asynchronous job execution with retry policies" and rate limiting. |
+| [cloudevents](skills/cncf/cloudevents/SKILL.md) | Cncf | "CloudEvents in Streaming & Messaging - cloud native architecture, patterns" pitfalls, and best practices |
+| [cloudformation](skills/cncf/cloudformation/SKILL.md) | Cncf | "Creates Infrastructure as Code templates with CloudFormation for reproducible" versioned, automated deployments of entire AWS infrastructure stacks. |
+| [cloudfront](skills/cncf/cloudfront/SKILL.md) | Cncf | "Configures CloudFront CDN for global content distribution with edge caching" DDoS protection, and SSL/TLS termination for improved performance and security. |
+| [cloudwatch](skills/cncf/cloudwatch/SKILL.md) | Cncf | "Configures CloudWatch monitoring with metrics, logs, alarms, and dashboards" for visibility into AWS resource performance, application health, and operational metrics. |
+| [cni](skills/cncf/cni/SKILL.md) | Cncf | "Cni in Cloud-Native Engineering - Container Network Interface - networking" for Linux containers |
+| [compute-engine](skills/cncf/compute-engine/SKILL.md) | Cncf | "Deploys and manages virtual machine instances with auto-scaling, instance groups, and integration with GCP services for IaaS workloads" |
+| [container-linux](skills/cncf/container-linux/SKILL.md) | Cncf | "Provides Flatcar Container Linux in Cloud-Native Engineering - container Linux" |
+| [container-registry](skills/cncf/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with integration to AKS and Azure services" |
+| [container-registry](skills/cncf/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with integration to GKE and Cloud Build" |
+| [containerd](skills/cncf/containerd/SKILL.md) | Cncf | "Containerd in Cloud-Native Engineering - An open and reliable container" runtime |
+| [contour](skills/cncf/contour/SKILL.md) | Cncf | "Contour in Service Proxy - cloud native architecture, patterns, pitfalls" and best practices |
+| [coredns](skills/cncf/coredns/SKILL.md) | Cncf | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains" plugins |
+| [cortex](skills/cncf/cortex/SKILL.md) | Cncf | "Cortex in Monitoring & Observability - distributed, horizontally scalable" Prometheus system |
+| [cosmos-db](skills/cncf/cosmos-db/SKILL.md) | Cncf | Provides Global NoSQL database with multi-region distribution and guaranteed latency |
+| [crossplane](skills/cncf/crossplane/SKILL.md) | Cncf | "Crossplane in Platform Engineering - Kubernetes-native control plane" for multi-cloud infrastructure |
+| [cubefs](skills/cncf/cubefs/SKILL.md) | Cncf | "Provides CubeFS in Storage - distributed, high-performance file system" |
+| [custodian](skills/cncf/custodian/SKILL.md) | Cncf | "Provides Cloud Custodian in Cloud-Native Engineering -/rules engine for cloud infrastructure management" |
+| [dapr](skills/cncf/dapr/SKILL.md) | Cncf | "Provides Dapr in Cloud-Native Engineering - distributed application runtime" |
+| [deployment-manager](skills/cncf/deployment-manager/SKILL.md) | Cncf | "Infrastructure as code using YAML templates for repeatable GCP resource" deployments. |
+| [dragonfly](skills/cncf/dragonfly/SKILL.md) | Cncf | "Provides Dragonfly in Cloud-Native Engineering - P2P file distribution" |
+| [dynamodb](skills/cncf/dynamodb/SKILL.md) | Cncf | "Deploys managed NoSQL databases with DynamoDB for scalable, low-latency" key-value storage, streams, and global tables with high availability and automatic replication. |
+| [ec2](skills/cncf/ec2/SKILL.md) | Cncf | "Deploys, configures, and auto-scales EC2 instances with load balancing" using best practices for high availability, security, and cost optimization in AWS compute environments. |
+| [ecr](skills/cncf/ecr/SKILL.md) | Cncf | "Manages container image repositories with ECR for secure storage, scanning" replication, and integration with EKS, ECS, and Lambda for container deployments. |
+| [eks](skills/cncf/eks/SKILL.md) | Cncf | "Deploys managed Kubernetes clusters with EKS for container orchestration" auto-scaling, networking, and integrations with AWS services for production Kubernetes workloads. |
+| [elb](skills/cncf/elb/SKILL.md) | Cncf | "Configures Elastic Load Balancing (ALB, NLB, Classic) for distributing" traffic across instances with health checks, SSL termination, and cross-AZ failover. |
+| [envoy](skills/cncf/envoy/SKILL.md) | Cncf | "Envoy in Cloud-Native Engineering - Cloud-native high-performance edge/middle/service" proxy |
+| [etcd](skills/cncf/etcd/SKILL.md) | Cncf | "Provides etcd in Cloud-Native Engineering - distributed key-value store" |
+| [event-hubs](skills/cncf/event-hubs/SKILL.md) | Cncf | "Provides Event streaming platform for high-throughput data ingestion and processing" |
+| [falco](skills/cncf/falco/SKILL.md) | Cncf | "Provides Falco in Cloud-Native Engineering - Cloud Native Runtime Security" |
+| [firestore](skills/cncf/firestore/SKILL.md) | Cncf | Provides NoSQL document database with real-time sync, offline support, and automatic scaling |
+| [fluentd](skills/cncf/fluentd/SKILL.md) | Cncf | "Fluentd unified logging layer for collecting, transforming, and routing" log data in cloud-native environments |
+| [fluid](skills/cncf/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for data-intensive" applications |
+| [flux](skills/cncf/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for kubernetes for cloud-native deployment and infrastructure management." |
+| [framework](skills/cncf/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes operators" with standardized patterns |
+| [functions](skills/cncf/functions/SKILL.md) | Cncf | Provides Serverless computing with event-driven functions and automatic scaling |
+| [gke](skills/cncf/gke/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling, networking, and GCP service integration" |
+| [grpc](skills/cncf/grpc/SKILL.md) | Cncf | "gRPC in Remote Procedure Call - cloud native architecture, patterns" pitfalls, and best practices |
+| [harbor](skills/cncf/harbor/SKILL.md) | Cncf | "Configures harbor in cloud-native engineering - container registry for cloud-native deployment and infrastructure management." |
+| [helm](skills/cncf/helm/SKILL.md) | Cncf | "Provides Helm in Cloud-Native Engineering - The Kubernetes Package Manager" |
+| [hub](skills/cncf/hub/SKILL.md) | Cncf | "Provides Artifact Hub in Cloud-Native Engineering - Repository for Kubernetes Helm, Falco, OPA, and more" |
+| [hydra](skills/cncf/hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native architecture, patterns" pitfalls, and best practices |
+| [iam](skills/cncf/iam/SKILL.md) | Cncf | "Configures identity and access management with IAM users, roles, policies" and MFA for secure, least-privilege access control across AWS resources and services. |
+| [iam](skills/cncf/iam/SKILL.md) | Cncf | "Manages identity and access control with service accounts, roles, and" fine-grained permissions. |
+| [incident-response](skills/cncf/incident-response/SKILL.md) | Cncf | "Creates or updates an incident response plan covering detection, triage" communication, and post-incident review for CNCF projects |
+| [ingress](skills/cncf/ingress/SKILL.md) | Cncf | "Provides Emissary-Ingress in Cloud-Native Engineering - Kubernetes ingress controller" |
+| [ingress-controller](skills/cncf/ingress-controller/SKILL.md) | Cncf | "Kong Ingress Controller in Kubernetes - cloud native architecture, patterns" pitfalls, and best practices |
+| [io](skills/cncf/io/SKILL.md) | Cncf | "metal3.io in Bare Metal Provisioning - cloud native architecture, patterns" pitfalls, and best practices |
+| [istio](skills/cncf/istio/SKILL.md) | Cncf | "Istio in Cloud-Native Engineering - Connect, secure, control, and observe" services. |
+| [jaeger](skills/cncf/jaeger/SKILL.md) | Cncf | "Configures jaeger in cloud-native engineering - distributed tracing for cloud-native deployment and infrastructure management." |
+| [karmada](skills/cncf/karmada/SKILL.md) | Cncf | "Provides Karmada in Cloud-Native Engineering - multi-cluster orchestration" |
+| [keda](skills/cncf/keda/SKILL.md) | Cncf | "Configures keda in cloud-native engineering - event-driven autoscaling for cloud-native deployment and infrastructure management." |
+| [key-vault](skills/cncf/key-vault/SKILL.md) | Cncf | "Manages encryption keys, secrets, and certificates with access control" and auditing. |
+| [keycloak](skills/cncf/keycloak/SKILL.md) | Cncf | "Provides Keycloak in Cloud-Native Engineering - identity and access management" |
+| [keyvault-secrets](skills/cncf/keyvault-secrets/SKILL.md) | Cncf | "Provides Secret management and rotation for sensitive credentials and configuration" |
+| [kms](skills/cncf/kms/SKILL.md) | Cncf | "Manages encryption keys with AWS KMS for data protection at rest and" in transit, key rotation, and compliance with encryption standards across all AWS services. |
+| [knative](skills/cncf/knative/SKILL.md) | Cncf | "Provides Knative in Cloud-Native Engineering - serverless on Kubernetes" |
+| [kong](skills/cncf/kong/SKILL.md) | Cncf | "Kong in API Gateway - cloud native architecture, patterns, pitfalls" and best practices |
+| [kratos](skills/cncf/kratos/SKILL.md) | Cncf | "ORY Kratos in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices |
+| [krustlet](skills/cncf/krustlet/SKILL.md) | Cncf | "Krustlet in Kubernetes Runtime - cloud native architecture, patterns" pitfalls, and best practices |
+| [kserve](skills/cncf/kserve/SKILL.md) | Cncf | "Configures kserve in cloud-native engineering - model serving for cloud-native deployment and infrastructure management." |
+| [kubeedge](skills/cncf/kubeedge/SKILL.md) | Cncf | "Configures kubeedge in cloud-native engineering - edge computing for cloud-native deployment and infrastructure management." |
+| [kubeflow](skills/cncf/kubeflow/SKILL.md) | Cncf | "Configures kubeflow in cloud-native engineering - ml on kubernetes for cloud-native deployment and infrastructure management." |
+| [kubernetes](skills/cncf/kubernetes/SKILL.md) | Cncf | "Kubernetes in Cloud-Native Engineering - Production-Grade Container Scheduling" and Management |
+| [kubescape](skills/cncf/kubescape/SKILL.md) | Cncf | "Configures kubescape in cloud-native engineering - kubernetes security for cloud-native deployment and infrastructure management." |
+| [kubevela](skills/cncf/kubevela/SKILL.md) | Cncf | "Configures kubevela in cloud-native engineering - application platform for cloud-native deployment and infrastructure management." |
+| [kubevirt](skills/cncf/kubevirt/SKILL.md) | Cncf | "Provides KubeVirt in Cloud-Native Engineering - virtualization on Kubernetes" |
+| [kuma](skills/cncf/kuma/SKILL.md) | Cncf | "Kuma in Service Mesh - cloud native architecture, patterns, pitfalls" and best practices |
+| [kyverno](skills/cncf/kyverno/SKILL.md) | Cncf | "Configures kyverno in cloud-native engineering - policy engine for cloud-native deployment and infrastructure management." |
+| [lambda](skills/cncf/lambda/SKILL.md) | Cncf | "Deploys serverless event-driven applications with Lambda functions, triggers" layers, and VPC integration for cost-effective, auto-scaling compute without server management. |
+| [lima](skills/cncf/lima/SKILL.md) | Cncf | "Lima in Container Runtime - cloud native architecture, patterns, pitfalls" and best practices |
+| [linkerd](skills/cncf/linkerd/SKILL.md) | Cncf | "Linkerd in Service Mesh - cloud native architecture, patterns, pitfalls" and best practices |
+| [litmus](skills/cncf/litmus/SKILL.md) | Cncf | "Litmus in Chaos Engineering - cloud native architecture, patterns, pits" and best practices |
+| [load-balancer](skills/cncf/load-balancer/SKILL.md) | Cncf | Provides Distributes traffic across VMs with health probes and rule-based routing |
+| [longhorn](skills/cncf/longhorn/SKILL.md) | Cncf | "Longhorn in Cloud Native Storage - cloud native architecture, patterns" pitfalls, and best practices |
+| [manager](skills/cncf/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes |
+| [monitor](skills/cncf/monitor/SKILL.md) | Cncf | "Provides Monitoring and logging for Azure resources with alerting and observability" |
+| [nats](skills/cncf/nats/SKILL.md) | Cncf | "NATS in Cloud Native Messaging - cloud native architecture, patterns" pitfalls, and best practices |
+| [network-interface-cni](skills/cncf/network-interface-cni/SKILL.md) | Cncf | "Container Network Interface in Cloud Native Network - cloud native architecture" patterns, pitfalls, and best practices |
+| [o](skills/cncf/o/SKILL.md) | Cncf | "Provides CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes" |
+| [oathkeeper](skills/cncf/oathkeeper/SKILL.md) | Cncf | "Oathkeeper in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices |
+| [opencost](skills/cncf/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns" pitfalls, and best practices |
+| [openfeature](skills/cncf/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native architecture, patterns" pitfalls, and best practices |
+| [openfga](skills/cncf/openfga/SKILL.md) | Cncf | "OpenFGA in Security &amp; Compliance - cloud native architecture, patterns" pitfalls, and best practices |
+| [openkruise](skills/cncf/openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with advanced deployment" strategies |
+| [opentelemetry](skills/cncf/opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing, metrics, and logs" with vendor-neutral APIs |
+| [openyurt](skills/cncf/openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edgeu534F' u540C'' |
+| [osi](skills/cncf/osi/SKILL.md) | Cncf | "OSI Model Networking for Cloud-Native - All 7 layers with CNCF project" mappings, Kubernetes networking, and troubleshooting patterns. |
+| [patterns](skills/coding/patterns/SKILL.md) | Coding | "Provides Software architecture patterns including MVC, MVVM, microservices, event-driven, CQRS, DDD, hexagonal architecture, layered architecture, and pattern" |
+| [policy-agent-opa](skills/cncf/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security &amp; Compliance - cloud native architecture" patterns, pitfalls, and best practices |
+| [project](skills/cncf/project/SKILL.md) | Cncf | "Notary Project in Content Trust &amp; Security - cloud native architecture" patterns, pitfalls, and best practices |
+| [prometheus](skills/cncf/prometheus/SKILL.md) | Cncf | "Prometheus in Cloud-Native Engineering - The Prometheus monitoring system" and time series database. |
+| [rbac](skills/cncf/rbac/SKILL.md) | Cncf | "Manages identity and access with roles, service principals, and fine-grained" permissions. |
+| [rds](skills/cncf/rds/SKILL.md) | Cncf | "Deploys managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle" SQL Server) with multi-AZ failover, automated backups, read replicas, and encryption for production-grade database infrastructure. |
+| [releases](skills/cncf/releases/SKILL.md) | Cncf | "Creates or updates RELEASES.md documenting the release process, versioning" policy, and release cadence for CNCF projects |
+| [resource-manager](skills/cncf/resource-manager/SKILL.md) | Cncf | "Provides Infrastructure as code using ARM templates for repeatable Azure resource deployments" |
+| [rook](skills/cncf/rook/SKILL.md) | Cncf | "Configures rook in cloud-native storage orchestration for kubernetes for cloud-native deployment and infrastructure management." |
+| [route53](skills/cncf/route53/SKILL.md) | Cncf | "Configures DNS routing with Route 53 for domain registration, health" checks, failover, and traffic management with private hosted zones. |
+| [s3](skills/cncf/s3/SKILL.md) | Cncf | "Configures S3 object storage with versioning, lifecycle policies, encryption" and access controls for durable, scalable data storage with cost optimization in AWS. |
+| [scale-sets](skills/cncf/scale-sets/SKILL.md) | Cncf | "Manages auto-scaling VM groups with load balancing and health management" |
+| [secret-manager](skills/cncf/secret-manager/SKILL.md) | Cncf | "Provides Stores and rotates secrets with encryption and audit logging for sensitive data" |
+| [secrets-manager](skills/cncf/secrets-manager/SKILL.md) | Cncf | "Manages sensitive data with automatic encryption, rotation, and fine-grained" access control for database passwords, API keys, and credentials. |
+| [security-policy](skills/cncf/security-policy/SKILL.md) | Cncf | "Creates or updates SECURITY.md defining the vulnerability reporting process" disclosure timeline, and supported versions for CNCF projects |
+| [service-bus](skills/cncf/service-bus/SKILL.md) | Cncf | "Provides Messaging service with queues and topics for reliable communication" |
+| [sns](skills/cncf/sns/SKILL.md) | Cncf | "Deploys managed pub/sub messaging with SNS for asynchronous notifications" across services, mobile push, email, and Lambda integrations. |
+| [spiffe](skills/cncf/spiffe/SKILL.md) | Cncf | "Provides SPIFFE in Secure Product Identity Framework for Applications" |
+| [spire](skills/cncf/spire/SKILL.md) | Cncf | "Configures spire in spiffe implementation for real-world deployments for cloud-native deployment and infrastructure management." |
+| [sql-database](skills/cncf/sql-database/SKILL.md) | Cncf | Provides Managed relational database with elastic pools, geo-replication, and automatic backups |
+| [sqs](skills/cncf/sqs/SKILL.md) | Cncf | "Deploys managed message queues with SQS for asynchronous processing" decoupling services, and reliable message delivery with visibility timeout and dead-letter queues. |
+| [ssm](skills/cncf/ssm/SKILL.md) | Cncf | "Manages EC2 instances and on-premises servers with AWS Systems Manager" for configuration management, patch management, and secure shell access without SSH keys. |
+| [strimzi](skills/cncf/strimzi/SKILL.md) | Cncf | "Provides Strimzi in Kafka on Kubernetes - Apache Kafka for cloud-native environments" |
+| [tekton](skills/cncf/tekton/SKILL.md) | Cncf | "Provides Tekton in Cloud-Native Engineering - A cloud-native Pipeline resource" |
+| [telemetry](skills/cncf/telemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability - cloud native architecture, patterns" pitfalls, and best practices |
+| [thanos](skills/cncf/thanos/SKILL.md) | Cncf | "Provides Thanos in High availability Prometheus solution with long-term storage" |
+| [tikv](skills/cncf/tikv/SKILL.md) | Cncf | "TiKV in Distributed transactional key-value database inspired by Google" Spanner |
+| [toto](skills/cncf/toto/SKILL.md) | Cncf | "in-toto in Supply Chain Security - cloud native architecture, patterns" pitfalls, and best practices |
+| [traffic-manager](skills/cncf/traffic-manager/SKILL.md) | Cncf | Provides DNS-based traffic routing with health checks and geographic distribution |
+| [update-framework-tuf](skills/cncf/update-framework-tuf/SKILL.md) | Cncf | "The Update Framework (TUF) in Secure software update framework for protecting" software deliveries |
+| [v10-learning](skills/programming/v10-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow |
+| [v12-learning](skills/programming/v12-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins |
+| [virtual-machines](skills/cncf/virtual-machines/SKILL.md) | Cncf | "Deploys and manages VMs with auto-scaling, availability sets, and integration" with Azure services. |
+| [virtual-networks](skills/cncf/virtual-networks/SKILL.md) | Cncf | "Provides Networking with subnets, network security groups, and VPN connectivity" |
+| [vitess](skills/cncf/vitess/SKILL.md) | Cncf | "Provides Vitess in Database clustering system for horizontal scaling of MySQL" |
+| [volcano](skills/cncf/volcano/SKILL.md) | Cncf | "Configures volcano in batch scheduling infrastructure for kubernetes for cloud-native deployment and infrastructure management." |
+| [vpc](skills/cncf/vpc/SKILL.md) | Cncf | "Configures Virtual Private Clouds with subnets, route tables, NAT gateways" security groups, and network ACLs for secure, isolated network infrastructure on AWS. |
+| [vpc](skills/cncf/vpc/SKILL.md) | Cncf | "Provides networking with subnets, firewall rules, and VPC peering for secure cloud infrastructure" |
+| [wasmcloud](skills/cncf/wasmcloud/SKILL.md) | Cncf | "Provides wasmCloud in WebAssembly-based distributed applications platform" |
+| [zot](skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices |
 
 
 ### Orchestration (Manage AI Agents) (220 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
-| [acceptance-orchestrator](../../skills/acceptance-orchestrator/SKILL.md) | Agent | Implements intelligent acceptance orchestrator with... |
-| [address-github-comments](../../skills/address-github-comments/SKILL.md) | Agent | Implements intelligent address github comments with... |
-| [agent-evaluation](../../skills/agent-evaluation/SKILL.md) | Agent | Implements intelligent agent evaluation with multi-factor... |
-| [agent-manager-skill](../../skills/agent-manager-skill/SKILL.md) | Agent | Implements intelligent agent manager skill with... |
-| [agent-memory-systems](../../skills/agent-memory-systems/SKILL.md) | Agent | Implements intelligent agent memory systems with... |
-| [ai-agent-development](../../skills/ai-agent-development/SKILL.md) | Agent | Implements intelligent ai agent development with... |
-| [ai-agents-architect](../../skills/ai-agents-architect/SKILL.md) | Agent | Implements intelligent ai agents architect with... |
-| [ai-dev-jobs-mcp](../../skills/ai-dev-jobs-mcp/SKILL.md) | Agent | Implements intelligent ai dev jobs mcp with multi-factor... |
-| [ai-ml](../../skills/ai-ml/SKILL.md) | Agent | Implements intelligent ai ml with multi-factor skill... |
-| [airflow-dag-patterns](../../skills/airflow-dag-patterns/SKILL.md) | Agent | Implements intelligent airflow dag patterns with... |
-| [airtable-automation](../../skills/airtable-automation/SKILL.md) | Agent | Implements intelligent airtable automation with... |
-| [analyze-project](../../skills/analyze-project/SKILL.md) | Agent | Implements intelligent analyze project with multi-factor... |
-| [andruia-consultant](../../skills/andruia-consultant/SKILL.md) | Agent | Implements intelligent andruia consultant with multi-factor... |
-| [andruia-niche-intelligence](../../skills/andruia-niche-intelligence/SKILL.md) | Agent | Implements intelligent andruia niche intelligence with... |
-| [andruia-skill-smith](../../skills/andruia-skill-smith/SKILL.md) | Agent | Implements intelligent andruia skill smith with... |
-| [antigravity-skill-orchestrator](../../skills/antigravity-skill-orchestrator/SKILL.md) | Agent | Implements intelligent antigravity skill orchestrator with... |
-| [antigravity-workflows](../../skills/antigravity-workflows/SKILL.md) | Agent | Implements intelligent antigravity workflows with... |
-| [api-documentation](../../skills/api-documentation/SKILL.md) | Agent | Implements intelligent api documentation with multi-factor... |
-| [api-security-testing](../../skills/api-security-testing/SKILL.md) | Agent | Implements intelligent api security testing with... |
-| [apify-actor-development](../../skills/apify-actor-development/SKILL.md) | Agent | Implements intelligent apify actor development with... |
-| [apify-actorization](../../skills/apify-actorization/SKILL.md) | Agent | Implements intelligent apify actorization with multi-factor... |
-| [apify-audience-analysis](../../skills/apify-audience-analysis/SKILL.md) | Agent | Implements intelligent apify audience analysis with... |
-| [apify-brand-reputation-monitoring](../../skills/apify-brand-reputation-monitoring/SKILL.md) | Agent | Implements intelligent apify brand reputation monitoring... |
-| [apify-competitor-intelligence](../../skills/apify-competitor-intelligence/SKILL.md) | Agent | Implements intelligent apify competitor intelligence with... |
-| [apify-content-analytics](../../skills/apify-content-analytics/SKILL.md) | Agent | Implements intelligent apify content analytics with... |
-| [apify-ecommerce](../../skills/apify-ecommerce/SKILL.md) | Agent | Implements intelligent apify ecommerce with multi-factor... |
-| [apify-influencer-discovery](../../skills/apify-influencer-discovery/SKILL.md) | Agent | Implements intelligent apify influencer discovery with... |
-| [apify-lead-generation](../../skills/apify-lead-generation/SKILL.md) | Agent | Implements intelligent apify lead generation with... |
-| [apify-market-research](../../skills/apify-market-research/SKILL.md) | Agent | Implements intelligent apify market research with... |
-| [apify-trend-analysis](../../skills/apify-trend-analysis/SKILL.md) | Agent | Implements intelligent apify trend analysis with... |
-| [apify-ultimate-scraper](../../skills/apify-ultimate-scraper/SKILL.md) | Agent | Implements intelligent apify ultimate scraper with... |
-| [ask-questions-if-underspecified](../../skills/ask-questions-if-underspecified/SKILL.md) | Agent | Implements intelligent ask questions if underspecified with... |
-| [audio-transcriber](../../skills/audio-transcriber/SKILL.md) | Agent | Implements intelligent audio transcriber with multi-factor... |
-| [audit-context-building](../../skills/audit-context-building/SKILL.md) | Agent | Implements intelligent audit context building with... |
-| [auri-core](../../skills/auri-core/SKILL.md) | Agent | Implements intelligent auri core with multi-factor skill... |
-| [bash-scripting](../../skills/bash-scripting/SKILL.md) | Agent | Implements intelligent bash scripting with multi-factor... |
-| [bdistill-behavioral-xray](../../skills/bdistill-behavioral-xray/SKILL.md) | Agent | Implements intelligent bdistill behavioral xray with... |
-| [behavioral-modes](../../skills/behavioral-modes/SKILL.md) | Agent | Implements intelligent behavioral modes with multi-factor... |
-| [bitbucket-automation](../../skills/bitbucket-automation/SKILL.md) | Agent | Implements intelligent bitbucket automation with... |
-| [blueprint](../../skills/blueprint/SKILL.md) | Agent | Implements intelligent blueprint with multi-factor skill... |
-| [build](../../skills/build/SKILL.md) | Agent | Implements intelligent build with multi-factor skill... |
-| [cc-skill-backend-patterns](../../skills/cc-skill-backend-patterns/SKILL.md) | Agent | Implements intelligent cc skill backend patterns with... |
-| [cc-skill-clickhouse-io](../../skills/cc-skill-clickhouse-io/SKILL.md) | Agent | Implements intelligent cc skill clickhouse io with... |
-| [cc-skill-coding-standards](../../skills/cc-skill-coding-standards/SKILL.md) | Agent | Implements intelligent cc skill coding standards with... |
-| [cc-skill-continuous-learning](../../skills/cc-skill-continuous-learning/SKILL.md) | Agent | Implements intelligent cc skill continuous learning with... |
-| [cc-skill-frontend-patterns](../../skills/cc-skill-frontend-patterns/SKILL.md) | Agent | Implements intelligent cc skill frontend patterns with... |
-| [cc-skill-project-guidelines-example](../../skills/cc-skill-project-guidelines-example/SKILL.md) | Agent | Implements intelligent cc skill project guidelines example... |
-| [cc-skill-security-review](../../skills/cc-skill-security-review/SKILL.md) | Agent | Implements intelligent cc skill security review with... |
-| [cc-skill-strategic-compact](../../skills/cc-skill-strategic-compact/SKILL.md) | Agent | Implements intelligent cc skill strategic compact with... |
-| [changelog-automation](../../skills/changelog-automation/SKILL.md) | Agent | Implements intelligent changelog automation with... |
-| [ci-cd-pipeline-analyzer](../../skills/ci-cd-pipeline-analyzer/SKILL.md) | Agent | Implements intelligent ci cd pipeline analyzer with... |
-| [cicd-automation-workflow-automate](../../skills/cicd-automation-workflow-automate/SKILL.md) | Agent | Implements intelligent cicd automation workflow automate... |
-| [circleci-automation](../../skills/circleci-automation/SKILL.md) | Agent | Implements intelligent circleci automation with... |
-| [clickup-automation](../../skills/clickup-automation/SKILL.md) | Agent | Implements intelligent clickup automation with multi-factor... |
-| [closed-loop-delivery](../../skills/closed-loop-delivery/SKILL.md) | Agent | Implements intelligent closed loop delivery with... |
-| [cloud-devops](../../skills/cloud-devops/SKILL.md) | Agent | Implements intelligent cloud devops with multi-factor skill... |
-| [code-correctness-verifier](../../skills/code-correctness-verifier/SKILL.md) | Agent | Implements intelligent code correctness verifier with... |
-| [commit](../../skills/commit/SKILL.md) | Agent | Implements intelligent commit with multi-factor skill... |
-| [concise-planning](../../skills/concise-planning/SKILL.md) | Agent | Implements intelligent concise planning with multi-factor... |
-| [conductor-implement](../../skills/conductor-implement/SKILL.md) | Agent | Implements intelligent conductor implement with... |
-| [conductor-manage](../../skills/conductor-manage/SKILL.md) | Agent | Implements intelligent conductor manage with multi-factor... |
-| [conductor-new-track](../../skills/conductor-new-track/SKILL.md) | Agent | Implements intelligent conductor new track with... |
-| [conductor-revert](../../skills/conductor-revert/SKILL.md) | Agent | Implements intelligent conductor revert with multi-factor... |
-| [conductor-setup](../../skills/conductor-setup/SKILL.md) | Agent | Implements intelligent conductor setup with multi-factor... |
-| [conductor-status](../../skills/conductor-status/SKILL.md) | Agent | Implements intelligent conductor status with multi-factor... |
-| [conductor-validator](../../skills/conductor-validator/SKILL.md) | Agent | Implements intelligent conductor validator with... |
-| [confidence-based-selector](../../skills/confidence-based-selector/SKILL.md) | Agent | Implements intelligent confidence based selector with... |
-| [container-inspector](../../skills/container-inspector/SKILL.md) | Agent | Implements intelligent container inspector with... |
-| [context-window-management](../../skills/context-window-management/SKILL.md) | Agent | Implements intelligent context window management with... |
-| [context7-auto-research](../../skills/context7-auto-research/SKILL.md) | Agent | Implements intelligent context7 auto research with... |
-| [conversation-memory](../../skills/conversation-memory/SKILL.md) | Agent | Implements intelligent conversation memory with... |
-| [create-branch](../../skills/create-branch/SKILL.md) | Agent | Implements intelligent create branch with multi-factor... |
-| [create-issue-gate](../../skills/create-issue-gate/SKILL.md) | Agent | Implements intelligent create issue gate with multi-factor... |
-| [create-pr](../../skills/create-pr/SKILL.md) | Agent | Implements intelligent create pr with multi-factor skill... |
-| [database](../../skills/database/SKILL.md) | Agent | Implements intelligent database with multi-factor skill... |
-| [dependency-graph-builder](../../skills/dependency-graph-builder/SKILL.md) | Agent | Implements intelligent dependency graph builder with... |
-| [development](../../skills/development/SKILL.md) | Agent | Implements intelligent development with multi-factor skill... |
-| [diary](../../skills/diary/SKILL.md) | Agent | Implements intelligent diary with multi-factor skill... |
-| [diff-quality-analyzer](../../skills/diff-quality-analyzer/SKILL.md) | Agent | Implements intelligent diff quality analyzer with... |
-| [dispatching-parallel-agents](../../skills/dispatching-parallel-agents/SKILL.md) | Agent | Implements intelligent dispatching parallel agents with... |
-| [documentation](../../skills/documentation/SKILL.md) | Agent | Implements intelligent documentation with multi-factor... |
-| [dynamic-replanner](../../skills/dynamic-replanner/SKILL.md) | Agent | Implements intelligent dynamic replanner with multi-factor... |
-| [e2e-testing](../../skills/e2e-testing/SKILL.md) | Agent | Implements intelligent e2e testing with multi-factor skill... |
-| [error-trace-explainer](../../skills/error-trace-explainer/SKILL.md) | Agent | Implements intelligent error trace explainer with... |
-| [executing-plans](../../skills/executing-plans/SKILL.md) | Agent | Implements intelligent executing plans with multi-factor... |
-| [failure-mode-analysis](../../skills/failure-mode-analysis/SKILL.md) | Agent | Implements intelligent failure mode analysis with... |
-| [fal-audio](../../skills/fal-audio/SKILL.md) | Agent | Implements intelligent fal audio with multi-factor skill... |
-| [filesystem-context](../../skills/filesystem-context/SKILL.md) | Agent | Implements intelligent filesystem context with multi-factor... |
-| [finishing-a-development-branch](../../skills/finishing-a-development-branch/SKILL.md) | Agent | Implements intelligent finishing a development branch with... |
-| [freshdesk-automation](../../skills/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with... |
-| [full-stack-orchestration-full-stack-feature](../../skills/full-stack-orchestration-full-stack-feature/SKILL.md) | Agent | Implements intelligent full stack orchestration full stack... |
-| [gemini-api-integration](../../skills/gemini-api-integration/SKILL.md) | Agent | Implements intelligent gemini api integration with... |
-| [gh-review-requests](../../skills/gh-review-requests/SKILL.md) | Agent | Implements intelligent gh review requests with multi-factor... |
-| [git-advanced-workflows](../../skills/git-advanced-workflows/SKILL.md) | Agent | Implements intelligent git advanced workflows with... |
-| [git-hooks-automation](../../skills/git-hooks-automation/SKILL.md) | Agent | Implements intelligent git hooks automation with... |
-| [git-pr-workflows-git-workflow](../../skills/git-pr-workflows-git-workflow/SKILL.md) | Agent | Implements intelligent git pr workflows git workflow with... |
-| [git-pr-workflows-onboard](../../skills/git-pr-workflows-onboard/SKILL.md) | Agent | Implements intelligent git pr workflows onboard with... |
-| [git-pr-workflows-pr-enhance](../../skills/git-pr-workflows-pr-enhance/SKILL.md) | Agent | Implements intelligent git pr workflows pr enhance with... |
-| [git-pushing](../../skills/git-pushing/SKILL.md) | Agent | Implements intelligent git pushing with multi-factor skill... |
-| [github-actions-templates](../../skills/github-actions-templates/SKILL.md) | Agent | Implements intelligent github actions templates with... |
-| [github-automation](../../skills/github-automation/SKILL.md) | Agent | Implements intelligent github automation with multi-factor... |
-| [github-workflow-automation](../../skills/github-workflow-automation/SKILL.md) | Agent | Implements intelligent github workflow automation with... |
-| [gitlab-automation](../../skills/gitlab-automation/SKILL.md) | Agent | Implements intelligent gitlab automation with multi-factor... |
-| [gitlab-ci-patterns](../../skills/gitlab-ci-patterns/SKILL.md) | Agent | Implements intelligent gitlab ci patterns with multi-factor... |
-| [goal-to-milestones](../../skills/goal-to-milestones/SKILL.md) | Agent | Implements intelligent goal to milestones with multi-factor... |
-| [google-analytics-automation](../../skills/google-analytics-automation/SKILL.md) | Agent | Implements intelligent google analytics automation with... |
-| [google-docs-automation](../../skills/google-docs-automation/SKILL.md) | Agent | Implements intelligent google docs automation with... |
-| [google-drive-automation](../../skills/google-drive-automation/SKILL.md) | Agent | Implements intelligent google drive automation with... |
-| [helpdesk-automation](../../skills/helpdesk-automation/SKILL.md) | Agent | Implements intelligent helpdesk automation with... |
-| [hierarchical-agent-memory](../../skills/hierarchical-agent-memory/SKILL.md) | Agent | Implements intelligent hierarchical agent memory with... |
-| [hosted-agents](../../skills/hosted-agents/SKILL.md) | Agent | Implements intelligent hosted agents with multi-factor... |
-| [hosted-agents-v2-py](../../skills/hosted-agents-v2-py/SKILL.md) | Agent | Implements intelligent hosted agents v2 py with... |
-| [hot-path-detector](../../skills/hot-path-detector/SKILL.md) | Agent | Implements intelligent hot path detector with multi-factor... |
-| [hubspot-automation](../../skills/hubspot-automation/SKILL.md) | Agent | Implements intelligent hubspot automation with multi-factor... |
-| [infra-drift-detector](../../skills/infra-drift-detector/SKILL.md) | Agent | Implements intelligent infra drift detector with... |
-| [inngest](../../skills/inngest/SKILL.md) | Agent | Implements intelligent inngest with multi-factor skill... |
-| [intercom-automation](../../skills/intercom-automation/SKILL.md) | Agent | Implements intelligent intercom automation with... |
-| [issues](../../skills/issues/SKILL.md) | Agent | Implements intelligent issues with multi-factor skill... |
-| [iterate-pr](../../skills/iterate-pr/SKILL.md) | Agent | Implements intelligent iterate pr with multi-factor skill... |
-| [k8s-debugger](../../skills/k8s-debugger/SKILL.md) | Agent | Implements intelligent k8s debugger with multi-factor skill... |
-| [kubernetes-deployment](../../skills/kubernetes-deployment/SKILL.md) | Agent | Implements intelligent kubernetes deployment with... |
-| [lambda-lang](../../skills/lambda-lang/SKILL.md) | Agent | Implements intelligent lambda lang with multi-factor skill... |
-| [langgraph](../../skills/langgraph/SKILL.md) | Agent | Implements intelligent langgraph with multi-factor skill... |
-| [lint-and-validate](../../skills/lint-and-validate/SKILL.md) | Agent | Implements intelligent lint and validate with multi-factor... |
-| [linux-troubleshooting](../../skills/linux-troubleshooting/SKILL.md) | Agent | Implements intelligent linux troubleshooting with... |
-| [m365-agents-dotnet](../../skills/m365-agents-dotnet/SKILL.md) | Agent | Implements intelligent m365 agents dotnet with multi-factor... |
-| [m365-agents-ts](../../skills/m365-agents-ts/SKILL.md) | Agent | Implements intelligent m365 agents ts with multi-factor... |
-| [make-automation](../../skills/make-automation/SKILL.md) | Agent | Implements intelligent make automation with multi-factor... |
-| [mcp-builder](../../skills/mcp-builder/SKILL.md) | Agent | Implements intelligent mcp builder with multi-factor skill... |
-| [mcp-builder-ms](../../skills/mcp-builder-ms/SKILL.md) | Agent | Implements intelligent mcp builder ms with multi-factor... |
-| [memory-systems](../../skills/memory-systems/SKILL.md) | Agent | Implements intelligent memory systems with multi-factor... |
-| [memory-usage-analyzer](../../skills/memory-usage-analyzer/SKILL.md) | Agent | Implements intelligent memory usage analyzer with... |
-| [ml-pipeline-workflow](../../skills/ml-pipeline-workflow/SKILL.md) | Agent | Implements intelligent ml pipeline workflow with... |
-| [multi-advisor](../../skills/multi-advisor/SKILL.md) | Agent | Implements intelligent multi advisor with multi-factor... |
-| [multi-agent-patterns](../../skills/multi-agent-patterns/SKILL.md) | Agent | Implements intelligent multi agent patterns with... |
-| [multi-agent-task-orchestrator](../../skills/multi-agent-task-orchestrator/SKILL.md) | Agent | Implements intelligent multi agent task orchestrator with... |
-| [multi-skill-executor](../../skills/multi-skill-executor/SKILL.md) | Agent | Implements intelligent multi skill executor with... |
-| [n8n-code-javascript](../../skills/n8n-code-javascript/SKILL.md) | Agent | Implements intelligent n8n code javascript with... |
-| [n8n-code-python](../../skills/n8n-code-python/SKILL.md) | Agent | Implements intelligent n8n code python with multi-factor... |
-| [n8n-expression-syntax](../../skills/n8n-expression-syntax/SKILL.md) | Agent | Implements intelligent n8n expression syntax with... |
-| [n8n-mcp-tools-expert](../../skills/n8n-mcp-tools-expert/SKILL.md) | Agent | Implements intelligent n8n mcp tools expert with... |
-| [n8n-node-configuration](../../skills/n8n-node-configuration/SKILL.md) | Agent | Implements intelligent n8n node configuration with... |
-| [n8n-validation-expert](../../skills/n8n-validation-expert/SKILL.md) | Agent | Implements intelligent n8n validation expert with... |
-| [n8n-workflow-patterns](../../skills/n8n-workflow-patterns/SKILL.md) | Agent | Implements intelligent n8n workflow patterns with... |
-| [network-diagnostics](../../skills/network-diagnostics/SKILL.md) | Agent | Implements intelligent network diagnostics with... |
-| [not-human-search-mcp](../../skills/not-human-search-mcp/SKILL.md) | Agent | Implements intelligent not human search mcp with... |
-| [notion-automation](../../skills/notion-automation/SKILL.md) | Agent | Implements intelligent notion automation with multi-factor... |
-| [os-scripting](../../skills/os-scripting/SKILL.md) | Agent | Implements intelligent os scripting with multi-factor skill... |
-| [outlook-automation](../../skills/outlook-automation/SKILL.md) | Agent | Implements intelligent outlook automation with multi-factor... |
-| [outlook-calendar-automation](../../skills/outlook-calendar-automation/SKILL.md) | Agent | Implements intelligent outlook calendar automation with... |
-| [parallel-agents](../../skills/parallel-agents/SKILL.md) | Agent | Implements intelligent parallel agents with multi-factor... |
-| [parallel-skill-runner](../../skills/parallel-skill-runner/SKILL.md) | Agent | Implements intelligent parallel skill runner with... |
-| [performance-profiler](../../skills/performance-profiler/SKILL.md) | Agent | Implements intelligent performance profiler with... |
-| [pipecat-friday-agent](../../skills/pipecat-friday-agent/SKILL.md) | Agent | Implements intelligent pipecat friday agent with... |
-| [plan-writing](../../skills/plan-writing/SKILL.md) | Agent | Implements intelligent plan writing with multi-factor skill... |
-| [planning-with-files](../../skills/planning-with-files/SKILL.md) | Agent | Implements intelligent planning with files with... |
-| [postgresql-optimization](../../skills/postgresql-optimization/SKILL.md) | Agent | Implements intelligent postgresql optimization with... |
-| [pr-writer](../../skills/pr-writer/SKILL.md) | Agent | Implements intelligent pr writer with multi-factor skill... |
-| [prompt-engineer](../../skills/prompt-engineer/SKILL.md) | Agent | Implements intelligent prompt engineer with multi-factor... |
-| [pydantic-ai](../../skills/pydantic-ai/SKILL.md) | Agent | Implements intelligent pydantic ai with multi-factor skill... |
-| [python-fastapi-development](../../skills/python-fastapi-development/SKILL.md) | Agent | Implements intelligent python fastapi development with... |
-| [query-optimizer](../../skills/query-optimizer/SKILL.md) | Agent | Implements intelligent query optimizer with multi-factor... |
-| [rag-implementation](../../skills/rag-implementation/SKILL.md) | Agent | Implements intelligent rag implementation with multi-factor... |
-| [react-nextjs-development](../../skills/react-nextjs-development/SKILL.md) | Agent | Implements intelligent react nextjs development with... |
-| [recallmax](../../skills/recallmax/SKILL.md) | Agent | Implements intelligent recallmax with multi-factor skill... |
-| [receiving-code-review](../../skills/receiving-code-review/SKILL.md) | Agent | Implements intelligent receiving code review with... |
-| [regression-detector](../../skills/regression-detector/SKILL.md) | Agent | Implements intelligent regression detector with... |
-| [render-automation](../../skills/render-automation/SKILL.md) | Agent | Implements intelligent render automation with multi-factor... |
-| [requesting-code-review](../../skills/requesting-code-review/SKILL.md) | Agent | Implements intelligent requesting code review with... |
-| [resource-optimizer](../../skills/resource-optimizer/SKILL.md) | Agent | Implements intelligent resource optimizer with multi-factor... |
-| [runtime-log-analyzer](../../skills/runtime-log-analyzer/SKILL.md) | Agent | Implements intelligent runtime log analyzer with... |
-| [schema-inference-engine](../../skills/schema-inference-engine/SKILL.md) | Agent | Implements intelligent schema inference engine with... |
-| [security-audit](../../skills/security-audit/SKILL.md) | Agent | Implements intelligent security audit with multi-factor... |
-| [self-critique-engine](../../skills/self-critique-engine/SKILL.md) | Agent | Implements intelligent self critique engine with... |
-| [sendgrid-automation](../../skills/sendgrid-automation/SKILL.md) | Agent | Implements intelligent sendgrid automation with... |
-| [shopify-automation](../../skills/shopify-automation/SKILL.md) | Agent | Implements intelligent shopify automation with multi-factor... |
-| [skill-creator](../../skills/skill-creator/SKILL.md) | Agent | Implements intelligent skill creator with multi-factor... |
-| [skill-creator-ms](../../skills/skill-creator-ms/SKILL.md) | Agent | Implements intelligent skill creator ms with multi-factor... |
-| [skill-developer](../../skills/skill-developer/SKILL.md) | Agent | Implements intelligent skill developer with multi-factor... |
-| [skill-improver](../../skills/skill-improver/SKILL.md) | Agent | Implements intelligent skill improver with multi-factor... |
-| [skill-installer](../../skills/skill-installer/SKILL.md) | Agent | Implements intelligent skill installer with multi-factor... |
-| [skill-optimizer](../../skills/skill-optimizer/SKILL.md) | Agent | Implements intelligent skill optimizer with multi-factor... |
-| [skill-rails-upgrade](../../skills/skill-rails-upgrade/SKILL.md) | Agent | Implements intelligent skill rails upgrade with... |
-| [skill-router](../../skills/skill-router/SKILL.md) | Agent | Implements intelligent skill router with multi-factor skill... |
-| [skill-scanner](../../skills/skill-scanner/SKILL.md) | Agent | Implements intelligent skill scanner with multi-factor... |
-| [skill-seekers](../../skills/skill-seekers/SKILL.md) | Agent | Implements intelligent skill seekers with multi-factor... |
-| [skill-sentinel](../../skills/skill-sentinel/SKILL.md) | Agent | Implements intelligent skill sentinel with multi-factor... |
-| [skill-writer](../../skills/skill-writer/SKILL.md) | Agent | Implements intelligent skill writer with multi-factor skill... |
-| [slack-automation](../../skills/slack-automation/SKILL.md) | Agent | Implements intelligent slack automation with multi-factor... |
-| [stacktrace-root-cause](../../skills/stacktrace-root-cause/SKILL.md) | Agent | Implements intelligent stacktrace root cause with... |
-| [stripe-automation](../../skills/stripe-automation/SKILL.md) | Agent | Implements intelligent stripe automation with multi-factor... |
-| [subagent-driven-development](../../skills/subagent-driven-development/SKILL.md) | Agent | Implements intelligent subagent driven development with... |
-| [task-decomposition-engine](../../skills/task-decomposition-engine/SKILL.md) | Agent | Implements intelligent task decomposition engine with... |
-| [task-intelligence](../../skills/task-intelligence/SKILL.md) | Agent | Implements intelligent task intelligence with multi-factor... |
-| [temporal-golang-pro](../../skills/temporal-golang-pro/SKILL.md) | Agent | Implements intelligent temporal golang pro with... |
-| [temporal-python-pro](../../skills/temporal-python-pro/SKILL.md) | Agent | Implements intelligent temporal python pro with... |
-| [terraform-infrastructure](../../skills/terraform-infrastructure/SKILL.md) | Agent | Implements intelligent terraform infrastructure with... |
-| [test-oracle-generator](../../skills/test-oracle-generator/SKILL.md) | Agent | Implements intelligent test oracle generator with... |
-| [testing-qa](../../skills/testing-qa/SKILL.md) | Agent | Implements intelligent testing qa with multi-factor skill... |
-| [track-management](../../skills/track-management/SKILL.md) | Agent | Implements intelligent track management with multi-factor... |
-| [trigger-dev](../../skills/trigger-dev/SKILL.md) | Agent | Implements intelligent trigger dev with multi-factor skill... |
-| [upstash-qstash](../../skills/upstash-qstash/SKILL.md) | Agent | Implements intelligent upstash qstash with multi-factor... |
-| [using-superpowers](../../skills/using-superpowers/SKILL.md) | Agent | Implements intelligent using superpowers with multi-factor... |
-| [verification-before-completion](../../skills/verification-before-completion/SKILL.md) | Agent | Implements intelligent verification before completion with... |
-| [viboscope](../../skills/viboscope/SKILL.md) | Agent | Implements intelligent viboscope with multi-factor skill... |
-| [voice-ai-development](../../skills/voice-ai-development/SKILL.md) | Agent | Implements intelligent voice ai development with... |
-| [web-security-testing](../../skills/web-security-testing/SKILL.md) | Agent | Implements intelligent web security testing with... |
-| [wordpress](../../skills/wordpress/SKILL.md) | Agent | Implements intelligent wordpress with multi-factor skill... |
-| [wordpress-plugin-development](../../skills/wordpress-plugin-development/SKILL.md) | Agent | Implements intelligent wordpress plugin development with... |
-| [wordpress-theme-development](../../skills/wordpress-theme-development/SKILL.md) | Agent | Implements intelligent wordpress theme development with... |
-| [wordpress-woocommerce-development](../../skills/wordpress-woocommerce-development/SKILL.md) | Agent | Implements intelligent wordpress woocommerce development... |
-| [workflow-automation](../../skills/workflow-automation/SKILL.md) | Agent | Implements intelligent workflow automation with... |
-| [workflow-orchestration-patterns](../../skills/workflow-orchestration-patterns/SKILL.md) | Agent | Implements intelligent workflow orchestration patterns with... |
-| [workflow-patterns](../../skills/workflow-patterns/SKILL.md) | Agent | Implements intelligent workflow patterns with multi-factor... |
-| [writing-plans](../../skills/writing-plans/SKILL.md) | Agent | Implements intelligent writing plans with multi-factor... |
-| [writing-skills](../../skills/writing-skills/SKILL.md) | Agent | Implements intelligent writing skills with multi-factor... |
-| [zapier-make-patterns](../../skills/zapier-make-patterns/SKILL.md) | Agent | Implements intelligent zapier make patterns with... |
-| [zendesk-automation](../../skills/zendesk-automation/SKILL.md) | Agent | Implements intelligent zendesk automation with multi-factor... |
-| [zipai-optimizer](../../skills/zipai-optimizer/SKILL.md) | Agent | Implements intelligent zipai optimizer with multi-factor... |
-| [zoom-automation](../../skills/zoom-automation/SKILL.md) | Agent | Implements intelligent zoom automation with multi-factor... |
+| [acceptance-orchestrator](skills/agent/acceptance-orchestrator/SKILL.md) | Agent | Implements intelligent acceptance orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [address-github-comments](skills/agent/address-github-comments/SKILL.md) | Agent | Implements intelligent address github comments with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [agent-evaluation](skills/agent/agent-evaluation/SKILL.md) | Agent | Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [agent-manager-skill](skills/agent/agent-manager-skill/SKILL.md) | Agent | Implements intelligent agent manager skill with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [agent-memory-systems](skills/agent/agent-memory-systems/SKILL.md) | Agent | Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ai-agent-development](skills/agent/ai-agent-development/SKILL.md) | Agent | Implements intelligent ai agent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ai-agents-architect](skills/agent/ai-agents-architect/SKILL.md) | Agent | Implements intelligent ai agents architect with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ai-dev-jobs-mcp](skills/agent/ai-dev-jobs-mcp/SKILL.md) | Agent | Implements intelligent ai dev jobs mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ai-ml](skills/agent/ai-ml/SKILL.md) | Agent | Implements intelligent ai ml with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [airflow-dag-patterns](skills/agent/airflow-dag-patterns/SKILL.md) | Agent | Implements intelligent airflow dag patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [airtable-automation](skills/agent/airtable-automation/SKILL.md) | Agent | Implements intelligent airtable automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [analyze-project](skills/agent/analyze-project/SKILL.md) | Agent | Implements intelligent analyze project with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [andruia-consultant](skills/agent/andruia-consultant/SKILL.md) | Agent | Implements intelligent andruia consultant with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [andruia-niche-intelligence](skills/agent/andruia-niche-intelligence/SKILL.md) | Agent | Implements intelligent andruia niche intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [andruia-skill-smith](skills/agent/andruia-skill-smith/SKILL.md) | Agent | Implements intelligent andruia skill smith with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [antigravity-skill-orchestrator](skills/agent/antigravity-skill-orchestrator/SKILL.md) | Agent | Implements intelligent antigravity skill orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [antigravity-workflows](skills/agent/antigravity-workflows/SKILL.md) | Agent | Implements intelligent antigravity workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [api-documentation](skills/agent/api-documentation/SKILL.md) | Agent | Implements intelligent api documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [api-security-testing](skills/agent/api-security-testing/SKILL.md) | Agent | Implements intelligent api security testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-actor-development](skills/agent/apify-actor-development/SKILL.md) | Agent | Implements intelligent apify actor development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-actorization](skills/agent/apify-actorization/SKILL.md) | Agent | Implements intelligent apify actorization with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-audience-analysis](skills/agent/apify-audience-analysis/SKILL.md) | Agent | Implements intelligent apify audience analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-brand-reputation-monitoring](skills/agent/apify-brand-reputation-monitoring/SKILL.md) | Agent | Implements intelligent apify brand reputation monitoring with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-competitor-intelligence](skills/agent/apify-competitor-intelligence/SKILL.md) | Agent | Implements intelligent apify competitor intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-content-analytics](skills/agent/apify-content-analytics/SKILL.md) | Agent | Implements intelligent apify content analytics with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-ecommerce](skills/agent/apify-ecommerce/SKILL.md) | Agent | Implements intelligent apify ecommerce with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-influencer-discovery](skills/agent/apify-influencer-discovery/SKILL.md) | Agent | Implements intelligent apify influencer discovery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-lead-generation](skills/agent/apify-lead-generation/SKILL.md) | Agent | Implements intelligent apify lead generation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-market-research](skills/agent/apify-market-research/SKILL.md) | Agent | Implements intelligent apify market research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-trend-analysis](skills/agent/apify-trend-analysis/SKILL.md) | Agent | Implements intelligent apify trend analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [apify-ultimate-scraper](skills/agent/apify-ultimate-scraper/SKILL.md) | Agent | Implements intelligent apify ultimate scraper with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ask-questions-if-underspecified](skills/agent/ask-questions-if-underspecified/SKILL.md) | Agent | Implements intelligent ask questions if underspecified with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [audio-transcriber](skills/agent/audio-transcriber/SKILL.md) | Agent | Implements intelligent audio transcriber with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [audit-context-building](skills/agent/audit-context-building/SKILL.md) | Agent | Implements intelligent audit context building with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [auri-core](skills/agent/auri-core/SKILL.md) | Agent | Implements intelligent auri core with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [bash-scripting](skills/agent/bash-scripting/SKILL.md) | Agent | Implements intelligent bash scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [bdistill-behavioral-xray](skills/agent/bdistill-behavioral-xray/SKILL.md) | Agent | Implements intelligent bdistill behavioral xray with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [behavioral-modes](skills/agent/behavioral-modes/SKILL.md) | Agent | Implements intelligent behavioral modes with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [bitbucket-automation](skills/agent/bitbucket-automation/SKILL.md) | Agent | Implements intelligent bitbucket automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [blueprint](skills/agent/blueprint/SKILL.md) | Agent | Implements intelligent blueprint with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [build](skills/agent/build/SKILL.md) | Agent | Implements intelligent build with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-backend-patterns](skills/agent/cc-skill-backend-patterns/SKILL.md) | Agent | Implements intelligent cc skill backend patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-clickhouse-io](skills/agent/cc-skill-clickhouse-io/SKILL.md) | Agent | Implements intelligent cc skill clickhouse io with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-coding-standards](skills/agent/cc-skill-coding-standards/SKILL.md) | Agent | Implements intelligent cc skill coding standards with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-continuous-learning](skills/agent/cc-skill-continuous-learning/SKILL.md) | Agent | Implements intelligent cc skill continuous learning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-frontend-patterns](skills/agent/cc-skill-frontend-patterns/SKILL.md) | Agent | Implements intelligent cc skill frontend patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-project-guidelines-example](skills/agent/cc-skill-project-guidelines-example/SKILL.md) | Agent | Implements intelligent cc skill project guidelines example with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-security-review](skills/agent/cc-skill-security-review/SKILL.md) | Agent | Implements intelligent cc skill security review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cc-skill-strategic-compact](skills/agent/cc-skill-strategic-compact/SKILL.md) | Agent | Implements intelligent cc skill strategic compact with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [changelog-automation](skills/agent/changelog-automation/SKILL.md) | Agent | Implements intelligent changelog automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ci-cd-pipeline-analyzer](skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Agent | Implements intelligent ci cd pipeline analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cicd-automation-workflow-automate](skills/agent/cicd-automation-workflow-automate/SKILL.md) | Agent | Implements intelligent cicd automation workflow automate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [circleci-automation](skills/agent/circleci-automation/SKILL.md) | Agent | Implements intelligent circleci automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [clickup-automation](skills/agent/clickup-automation/SKILL.md) | Agent | Implements intelligent clickup automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [closed-loop-delivery](skills/agent/closed-loop-delivery/SKILL.md) | Agent | Implements intelligent closed loop delivery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [cloud-devops](skills/agent/cloud-devops/SKILL.md) | Agent | Implements intelligent cloud devops with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [code-correctness-verifier](skills/agent/code-correctness-verifier/SKILL.md) | Agent | Implements intelligent code correctness verifier with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [commit](skills/agent/commit/SKILL.md) | Agent | Implements intelligent commit with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [concise-planning](skills/agent/concise-planning/SKILL.md) | Agent | Implements intelligent concise planning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-implement](skills/agent/conductor-implement/SKILL.md) | Agent | Implements intelligent conductor implement with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-manage](skills/agent/conductor-manage/SKILL.md) | Agent | Implements intelligent conductor manage with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-new-track](skills/agent/conductor-new-track/SKILL.md) | Agent | Implements intelligent conductor new track with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-revert](skills/agent/conductor-revert/SKILL.md) | Agent | Implements intelligent conductor revert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-setup](skills/agent/conductor-setup/SKILL.md) | Agent | Implements intelligent conductor setup with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-status](skills/agent/conductor-status/SKILL.md) | Agent | Implements intelligent conductor status with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conductor-validator](skills/agent/conductor-validator/SKILL.md) | Agent | Implements intelligent conductor validator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [confidence-based-selector](skills/agent/confidence-based-selector/SKILL.md) | Agent | Implements intelligent confidence based selector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [container-inspector](skills/agent/container-inspector/SKILL.md) | Agent | Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [context-window-management](skills/agent/context-window-management/SKILL.md) | Agent | Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [context7-auto-research](skills/agent/context7-auto-research/SKILL.md) | Agent | Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [conversation-memory](skills/agent/conversation-memory/SKILL.md) | Agent | Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [create-branch](skills/agent/create-branch/SKILL.md) | Agent | Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [create-issue-gate](skills/agent/create-issue-gate/SKILL.md) | Agent | Implements intelligent create issue gate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [create-pr](skills/agent/create-pr/SKILL.md) | Agent | Implements intelligent create pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [database](skills/agent/database/SKILL.md) | Agent | Implements intelligent database with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [dependency-graph-builder](skills/agent/dependency-graph-builder/SKILL.md) | Agent | Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [development](skills/agent/development/SKILL.md) | Agent | Implements intelligent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [diary](skills/agent/diary/SKILL.md) | Agent | Implements intelligent diary with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [diff-quality-analyzer](skills/agent/diff-quality-analyzer/SKILL.md) | Agent | Implements intelligent diff quality analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [dispatching-parallel-agents](skills/agent/dispatching-parallel-agents/SKILL.md) | Agent | Implements intelligent dispatching parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [documentation](skills/agent/documentation/SKILL.md) | Agent | Implements intelligent documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [dynamic-replanner](skills/agent/dynamic-replanner/SKILL.md) | Agent | Implements intelligent dynamic replanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [e2e-testing](skills/agent/e2e-testing/SKILL.md) | Agent | Implements intelligent e2e testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [error-trace-explainer](skills/agent/error-trace-explainer/SKILL.md) | Agent | Implements intelligent error trace explainer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [executing-plans](skills/agent/executing-plans/SKILL.md) | Agent | Implements intelligent executing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [failure-mode-analysis](skills/agent/failure-mode-analysis/SKILL.md) | Agent | Implements intelligent failure mode analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [fal-audio](skills/agent/fal-audio/SKILL.md) | Agent | Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [filesystem-context](skills/agent/filesystem-context/SKILL.md) | Agent | Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [finishing-a-development-branch](skills/agent/finishing-a-development-branch/SKILL.md) | Agent | Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [full-stack-orchestration-full-stack-feature](skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Agent | Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [gemini-api-integration](skills/agent/gemini-api-integration/SKILL.md) | Agent | Implements intelligent gemini api integration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [gh-review-requests](skills/agent/gh-review-requests/SKILL.md) | Agent | Implements intelligent gh review requests with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [git-advanced-workflows](skills/agent/git-advanced-workflows/SKILL.md) | Agent | Implements intelligent git advanced workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [git-hooks-automation](skills/agent/git-hooks-automation/SKILL.md) | Agent | Implements intelligent git hooks automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [git-pr-workflows-git-workflow](skills/agent/git-pr-workflows-git-workflow/SKILL.md) | Agent | Implements intelligent git pr workflows git workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [git-pr-workflows-onboard](skills/agent/git-pr-workflows-onboard/SKILL.md) | Agent | Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [git-pr-workflows-pr-enhance](skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Agent | Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [git-pushing](skills/agent/git-pushing/SKILL.md) | Agent | Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [github-actions-templates](skills/agent/github-actions-templates/SKILL.md) | Agent | Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [github-automation](skills/agent/github-automation/SKILL.md) | Agent | Implements intelligent github automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [github-workflow-automation](skills/agent/github-workflow-automation/SKILL.md) | Agent | Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [gitlab-automation](skills/agent/gitlab-automation/SKILL.md) | Agent | Implements intelligent gitlab automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [gitlab-ci-patterns](skills/agent/gitlab-ci-patterns/SKILL.md) | Agent | Implements intelligent gitlab ci patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [goal-to-milestones](skills/agent/goal-to-milestones/SKILL.md) | Agent | Implements intelligent goal to milestones with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [google-analytics-automation](skills/agent/google-analytics-automation/SKILL.md) | Agent | Implements intelligent google analytics automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [google-docs-automation](skills/agent/google-docs-automation/SKILL.md) | Agent | Implements intelligent google docs automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [google-drive-automation](skills/agent/google-drive-automation/SKILL.md) | Agent | Implements intelligent google drive automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [helpdesk-automation](skills/agent/helpdesk-automation/SKILL.md) | Agent | Implements intelligent helpdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [hierarchical-agent-memory](skills/agent/hierarchical-agent-memory/SKILL.md) | Agent | Implements intelligent hierarchical agent memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [hosted-agents](skills/agent/hosted-agents/SKILL.md) | Agent | Implements intelligent hosted agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [hosted-agents-v2-py](skills/agent/hosted-agents-v2-py/SKILL.md) | Agent | Implements intelligent hosted agents v2 py with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [hot-path-detector](skills/agent/hot-path-detector/SKILL.md) | Agent | Implements intelligent hot path detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [hubspot-automation](skills/agent/hubspot-automation/SKILL.md) | Agent | Implements intelligent hubspot automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [infra-drift-detector](skills/agent/infra-drift-detector/SKILL.md) | Agent | Implements intelligent infra drift detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [inngest](skills/agent/inngest/SKILL.md) | Agent | Implements intelligent inngest with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [intercom-automation](skills/agent/intercom-automation/SKILL.md) | Agent | Implements intelligent intercom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [issues](skills/agent/issues/SKILL.md) | Agent | Implements intelligent issues with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [iterate-pr](skills/agent/iterate-pr/SKILL.md) | Agent | Implements intelligent iterate pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [k8s-debugger](skills/agent/k8s-debugger/SKILL.md) | Agent | Implements intelligent k8s debugger with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [kubernetes-deployment](skills/agent/kubernetes-deployment/SKILL.md) | Agent | Implements intelligent kubernetes deployment with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [lambda-lang](skills/agent/lambda-lang/SKILL.md) | Agent | Implements intelligent lambda lang with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [langgraph](skills/agent/langgraph/SKILL.md) | Agent | Implements intelligent langgraph with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [lint-and-validate](skills/agent/lint-and-validate/SKILL.md) | Agent | Implements intelligent lint and validate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [linux-troubleshooting](skills/agent/linux-troubleshooting/SKILL.md) | Agent | Implements intelligent linux troubleshooting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [m365-agents-dotnet](skills/agent/m365-agents-dotnet/SKILL.md) | Agent | Implements intelligent m365 agents dotnet with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [m365-agents-ts](skills/agent/m365-agents-ts/SKILL.md) | Agent | Implements intelligent m365 agents ts with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [make-automation](skills/agent/make-automation/SKILL.md) | Agent | Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [mcp-builder](skills/agent/mcp-builder/SKILL.md) | Agent | Implements intelligent mcp builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [mcp-builder-ms](skills/agent/mcp-builder-ms/SKILL.md) | Agent | Implements intelligent mcp builder ms with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [memory-systems](skills/agent/memory-systems/SKILL.md) | Agent | Implements intelligent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [memory-usage-analyzer](skills/agent/memory-usage-analyzer/SKILL.md) | Agent | Implements intelligent memory usage analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [ml-pipeline-workflow](skills/agent/ml-pipeline-workflow/SKILL.md) | Agent | Implements intelligent ml pipeline workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [multi-advisor](skills/agent/multi-advisor/SKILL.md) | Agent | Implements intelligent multi advisor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [multi-agent-patterns](skills/agent/multi-agent-patterns/SKILL.md) | Agent | Implements intelligent multi agent patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [multi-agent-task-orchestrator](skills/agent/multi-agent-task-orchestrator/SKILL.md) | Agent | Implements intelligent multi agent task orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [multi-skill-executor](skills/agent/multi-skill-executor/SKILL.md) | Agent | Implements intelligent multi skill executor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-code-javascript](skills/agent/n8n-code-javascript/SKILL.md) | Agent | Implements intelligent n8n code javascript with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-code-python](skills/agent/n8n-code-python/SKILL.md) | Agent | Implements intelligent n8n code python with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-expression-syntax](skills/agent/n8n-expression-syntax/SKILL.md) | Agent | Implements intelligent n8n expression syntax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-mcp-tools-expert](skills/agent/n8n-mcp-tools-expert/SKILL.md) | Agent | Implements intelligent n8n mcp tools expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-node-configuration](skills/agent/n8n-node-configuration/SKILL.md) | Agent | Implements intelligent n8n node configuration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-validation-expert](skills/agent/n8n-validation-expert/SKILL.md) | Agent | Implements intelligent n8n validation expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [n8n-workflow-patterns](skills/agent/n8n-workflow-patterns/SKILL.md) | Agent | Implements intelligent n8n workflow patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [network-diagnostics](skills/agent/network-diagnostics/SKILL.md) | Agent | Implements intelligent network diagnostics with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [not-human-search-mcp](skills/agent/not-human-search-mcp/SKILL.md) | Agent | Implements intelligent not human search mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [notion-automation](skills/agent/notion-automation/SKILL.md) | Agent | Implements intelligent notion automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [os-scripting](skills/agent/os-scripting/SKILL.md) | Agent | Implements intelligent os scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [outlook-automation](skills/agent/outlook-automation/SKILL.md) | Agent | Implements intelligent outlook automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [outlook-calendar-automation](skills/agent/outlook-calendar-automation/SKILL.md) | Agent | Implements intelligent outlook calendar automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [parallel-agents](skills/agent/parallel-agents/SKILL.md) | Agent | Implements intelligent parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [parallel-skill-runner](skills/agent/parallel-skill-runner/SKILL.md) | Agent | Implements intelligent parallel skill runner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [performance-profiler](skills/agent/performance-profiler/SKILL.md) | Agent | Implements intelligent performance profiler with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [pipecat-friday-agent](skills/agent/pipecat-friday-agent/SKILL.md) | Agent | Implements intelligent pipecat friday agent with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [plan-writing](skills/agent/plan-writing/SKILL.md) | Agent | Implements intelligent plan writing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [planning-with-files](skills/agent/planning-with-files/SKILL.md) | Agent | Implements intelligent planning with files with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [postgresql-optimization](skills/agent/postgresql-optimization/SKILL.md) | Agent | Implements intelligent postgresql optimization with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [pr-writer](skills/agent/pr-writer/SKILL.md) | Agent | Implements intelligent pr writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [prompt-engineer](skills/agent/prompt-engineer/SKILL.md) | Agent | Implements intelligent prompt engineer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [pydantic-ai](skills/agent/pydantic-ai/SKILL.md) | Agent | Implements intelligent pydantic ai with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [python-fastapi-development](skills/agent/python-fastapi-development/SKILL.md) | Agent | Implements intelligent python fastapi development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [query-optimizer](skills/agent/query-optimizer/SKILL.md) | Agent | Implements intelligent query optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [rag-implementation](skills/agent/rag-implementation/SKILL.md) | Agent | Implements intelligent rag implementation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [react-nextjs-development](skills/agent/react-nextjs-development/SKILL.md) | Agent | Implements intelligent react nextjs development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [recallmax](skills/agent/recallmax/SKILL.md) | Agent | Implements intelligent recallmax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [receiving-code-review](skills/agent/receiving-code-review/SKILL.md) | Agent | Implements intelligent receiving code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [regression-detector](skills/agent/regression-detector/SKILL.md) | Agent | Implements intelligent regression detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [render-automation](skills/agent/render-automation/SKILL.md) | Agent | Implements intelligent render automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [requesting-code-review](skills/agent/requesting-code-review/SKILL.md) | Agent | Implements intelligent requesting code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [resource-optimizer](skills/agent/resource-optimizer/SKILL.md) | Agent | Implements intelligent resource optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [runtime-log-analyzer](skills/agent/runtime-log-analyzer/SKILL.md) | Agent | Implements intelligent runtime log analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [schema-inference-engine](skills/agent/schema-inference-engine/SKILL.md) | Agent | Implements intelligent schema inference engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [security-audit](skills/agent/security-audit/SKILL.md) | Agent | Implements intelligent security audit with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [self-critique-engine](skills/agent/self-critique-engine/SKILL.md) | Agent | Implements intelligent self critique engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [sendgrid-automation](skills/agent/sendgrid-automation/SKILL.md) | Agent | Implements intelligent sendgrid automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [shopify-automation](skills/agent/shopify-automation/SKILL.md) | Agent | Implements intelligent shopify automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-creator](skills/agent/skill-creator/SKILL.md) | Agent | Implements intelligent skill creator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-creator-ms](skills/agent/skill-creator-ms/SKILL.md) | Agent | Implements intelligent skill creator ms with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-developer](skills/agent/skill-developer/SKILL.md) | Agent | Implements intelligent skill developer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-improver](skills/agent/skill-improver/SKILL.md) | Agent | Implements intelligent skill improver with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-installer](skills/agent/skill-installer/SKILL.md) | Agent | Implements intelligent skill installer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-optimizer](skills/agent/skill-optimizer/SKILL.md) | Agent | Implements intelligent skill optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-rails-upgrade](skills/agent/skill-rails-upgrade/SKILL.md) | Agent | Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-router](skills/agent/skill-router/SKILL.md) | Agent | Implements intelligent skill router with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-scanner](skills/agent/skill-scanner/SKILL.md) | Agent | Implements intelligent skill scanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-seekers](skills/agent/skill-seekers/SKILL.md) | Agent | Implements intelligent skill seekers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-sentinel](skills/agent/skill-sentinel/SKILL.md) | Agent | Implements intelligent skill sentinel with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-writer](skills/agent/skill-writer/SKILL.md) | Agent | Implements intelligent skill writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [slack-automation](skills/agent/slack-automation/SKILL.md) | Agent | Implements intelligent slack automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [stacktrace-root-cause](skills/agent/stacktrace-root-cause/SKILL.md) | Agent | Implements intelligent stacktrace root cause with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [stripe-automation](skills/agent/stripe-automation/SKILL.md) | Agent | Implements intelligent stripe automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [subagent-driven-development](skills/agent/subagent-driven-development/SKILL.md) | Agent | Implements intelligent subagent driven development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [task-decomposition-engine](skills/agent/task-decomposition-engine/SKILL.md) | Agent | Implements intelligent task decomposition engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [task-intelligence](skills/agent/task-intelligence/SKILL.md) | Agent | Implements intelligent task intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [temporal-golang-pro](skills/agent/temporal-golang-pro/SKILL.md) | Agent | Implements intelligent temporal golang pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [temporal-python-pro](skills/agent/temporal-python-pro/SKILL.md) | Agent | Implements intelligent temporal python pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [terraform-infrastructure](skills/agent/terraform-infrastructure/SKILL.md) | Agent | Implements intelligent terraform infrastructure with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [test-oracle-generator](skills/agent/test-oracle-generator/SKILL.md) | Agent | Implements intelligent test oracle generator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [testing-qa](skills/agent/testing-qa/SKILL.md) | Agent | Implements intelligent testing qa with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [track-management](skills/agent/track-management/SKILL.md) | Agent | Implements intelligent track management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [trigger-dev](skills/agent/trigger-dev/SKILL.md) | Agent | Implements intelligent trigger dev with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [upstash-qstash](skills/agent/upstash-qstash/SKILL.md) | Agent | Implements intelligent upstash qstash with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [using-superpowers](skills/agent/using-superpowers/SKILL.md) | Agent | Implements intelligent using superpowers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [verification-before-completion](skills/agent/verification-before-completion/SKILL.md) | Agent | Implements intelligent verification before completion with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [viboscope](skills/agent/viboscope/SKILL.md) | Agent | Implements intelligent viboscope with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [voice-ai-development](skills/agent/voice-ai-development/SKILL.md) | Agent | Implements intelligent voice ai development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [web-security-testing](skills/agent/web-security-testing/SKILL.md) | Agent | Implements intelligent web security testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [wordpress](skills/agent/wordpress/SKILL.md) | Agent | Implements intelligent wordpress with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [wordpress-plugin-development](skills/agent/wordpress-plugin-development/SKILL.md) | Agent | Implements intelligent wordpress plugin development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [wordpress-theme-development](skills/agent/wordpress-theme-development/SKILL.md) | Agent | Implements intelligent wordpress theme development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [wordpress-woocommerce-development](skills/agent/wordpress-woocommerce-development/SKILL.md) | Agent | Implements intelligent wordpress woocommerce development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [workflow-automation](skills/agent/workflow-automation/SKILL.md) | Agent | Implements intelligent workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [workflow-orchestration-patterns](skills/agent/workflow-orchestration-patterns/SKILL.md) | Agent | Implements intelligent workflow orchestration patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [workflow-patterns](skills/agent/workflow-patterns/SKILL.md) | Agent | Implements intelligent workflow patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [writing-plans](skills/agent/writing-plans/SKILL.md) | Agent | Implements intelligent writing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [writing-skills](skills/agent/writing-skills/SKILL.md) | Agent | Implements intelligent writing skills with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [zapier-make-patterns](skills/agent/zapier-make-patterns/SKILL.md) | Agent | Implements intelligent zapier make patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [zendesk-automation](skills/agent/zendesk-automation/SKILL.md) | Agent | Implements intelligent zendesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [zipai-optimizer](skills/agent/zipai-optimizer/SKILL.md) | Agent | Implements intelligent zipai optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [zoom-automation](skills/agent/zoom-automation/SKILL.md) | Agent | Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 
 ## Complete Skills Index
 
 | Skill Name | Domain | Description | Role |
 |---|---|---|---|
-| [ab-testing](../../skills/coding/ab-testing/SKILL.md) | Coding | Provides Designs and analyzes A/B tests including... | Implementation |
-| [acceptance-orchestrator](../../skills/agent/acceptance-orchestrator/SKILL.md) | Agent | Implements intelligent acceptance orchestrator with... | Orchestration |
-| [address-github-comments](../../skills/agent/address-github-comments/SKILL.md) | Agent | Implements intelligent address github comments with... | Orchestration |
-| [advanced](../../skills/coding/advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing,... | Reference |
-| [agent-evaluation](../../skills/agent/agent-evaluation/SKILL.md) | Agent | Implements intelligent agent evaluation with multi-factor... | Orchestration |
-| [agent-manager-skill](../../skills/agent/agent-manager-skill/SKILL.md) | Agent | Implements intelligent agent manager skill with... | Orchestration |
-| [agent-memory-systems](../../skills/agent/agent-memory-systems/SKILL.md) | Agent | Implements intelligent agent memory systems with... | Orchestration |
-| [ai-agent-development](../../skills/agent/ai-agent-development/SKILL.md) | Agent | Implements intelligent ai agent development with... | Orchestration |
-| [ai-agents-architect](../../skills/agent/ai-agents-architect/SKILL.md) | Agent | Implements intelligent ai agents architect with... | Orchestration |
-| [ai-dev-jobs-mcp](../../skills/agent/ai-dev-jobs-mcp/SKILL.md) | Agent | Implements intelligent ai dev jobs mcp with multi-factor... | Orchestration |
-| [ai-ml](../../skills/agent/ai-ml/SKILL.md) | Agent | Implements intelligent ai ml with multi-factor skill... | Orchestration |
-| [airflow-dag-patterns](../../skills/agent/airflow-dag-patterns/SKILL.md) | Agent | Implements intelligent airflow dag patterns with... | Orchestration |
-| [airtable-automation](../../skills/agent/airtable-automation/SKILL.md) | Agent | Implements intelligent airtable automation with... | Orchestration |
-| [aks](../../skills/cncf/aks/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling... | Reference |
-| [algorithms](../../skills/programming/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide —... | Reference |
-| [alternative-data](../../skills/trading/alternative-data/SKILL.md) | Trading | "Alternative data ingestion pipelines for trading signals... | Implementation |
-| [analyze-project](../../skills/agent/analyze-project/SKILL.md) | Agent | Implements intelligent analyze project with multi-factor... | Orchestration |
-| [andruia-consultant](../../skills/agent/andruia-consultant/SKILL.md) | Agent | Implements intelligent andruia consultant with multi-factor... | Orchestration |
-| [andruia-niche-intelligence](../../skills/agent/andruia-niche-intelligence/SKILL.md) | Agent | Implements intelligent andruia niche intelligence with... | Orchestration |
-| [andruia-skill-smith](../../skills/agent/andruia-skill-smith/SKILL.md) | Agent | Implements intelligent andruia skill smith with... | Orchestration |
-| [anomaly-detection](../../skills/coding/anomaly-detection/SKILL.md) | Coding | "Detects anomalies and outliers using isolation forests,... | Implementation |
-| [anomaly-detection](../../skills/trading/anomaly-detection/SKILL.md) | Trading | "Provides Detect anomalous market behavior, outliers, and... | Implementation |
-| [antigravity-skill-orchestrator](../../skills/agent/antigravity-skill-orchestrator/SKILL.md) | Agent | Implements intelligent antigravity skill orchestrator with... | Orchestration |
-| [antigravity-workflows](../../skills/agent/antigravity-workflows/SKILL.md) | Agent | Implements intelligent antigravity workflows with... | Orchestration |
-| [api-documentation](../../skills/agent/api-documentation/SKILL.md) | Agent | Implements intelligent api documentation with multi-factor... | Orchestration |
-| [api-security-testing](../../skills/agent/api-security-testing/SKILL.md) | Agent | Implements intelligent api security testing with... | Orchestration |
-| [apify-actor-development](../../skills/agent/apify-actor-development/SKILL.md) | Agent | Implements intelligent apify actor development with... | Orchestration |
-| [apify-actorization](../../skills/agent/apify-actorization/SKILL.md) | Agent | Implements intelligent apify actorization with multi-factor... | Orchestration |
-| [apify-audience-analysis](../../skills/agent/apify-audience-analysis/SKILL.md) | Agent | Implements intelligent apify audience analysis with... | Orchestration |
-| [apify-brand-reputation-monitoring](../../skills/agent/apify-brand-reputation-monitoring/SKILL.md) | Agent | Implements intelligent apify brand reputation monitoring... | Orchestration |
-| [apify-competitor-intelligence](../../skills/agent/apify-competitor-intelligence/SKILL.md) | Agent | Implements intelligent apify competitor intelligence with... | Orchestration |
-| [apify-content-analytics](../../skills/agent/apify-content-analytics/SKILL.md) | Agent | Implements intelligent apify content analytics with... | Orchestration |
-| [apify-ecommerce](../../skills/agent/apify-ecommerce/SKILL.md) | Agent | Implements intelligent apify ecommerce with multi-factor... | Orchestration |
-| [apify-influencer-discovery](../../skills/agent/apify-influencer-discovery/SKILL.md) | Agent | Implements intelligent apify influencer discovery with... | Orchestration |
-| [apify-lead-generation](../../skills/agent/apify-lead-generation/SKILL.md) | Agent | Implements intelligent apify lead generation with... | Orchestration |
-| [apify-market-research](../../skills/agent/apify-market-research/SKILL.md) | Agent | Implements intelligent apify market research with... | Orchestration |
-| [apify-trend-analysis](../../skills/agent/apify-trend-analysis/SKILL.md) | Agent | Implements intelligent apify trend analysis with... | Orchestration |
-| [apify-ultimate-scraper](../../skills/agent/apify-ultimate-scraper/SKILL.md) | Agent | Implements intelligent apify ultimate scraper with... | Orchestration |
-| [architecture](../../skills/cncf/architecture/SKILL.md) | Cncf | "Creates or updates ARCHITECTURE.md documenting the... | Reference |
-| [argo](../../skills/cncf/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native... | Reference |
-| [ask-questions-if-underspecified](../../skills/agent/ask-questions-if-underspecified/SKILL.md) | Agent | Implements intelligent ask questions if underspecified with... | Orchestration |
-| [association-rules](../../skills/coding/association-rules/SKILL.md) | Coding | "Provides Discovers association rules and frequent itemsets... | Implementation |
-| [audio-transcriber](../../skills/agent/audio-transcriber/SKILL.md) | Agent | Implements intelligent audio transcriber with multi-factor... | Orchestration |
-| [audit-context-building](../../skills/agent/audit-context-building/SKILL.md) | Agent | Implements intelligent audit context building with... | Orchestration |
-| [auri-core](../../skills/agent/auri-core/SKILL.md) | Agent | Implements intelligent auri core with multi-factor skill... | Orchestration |
-| [auto-scaling](../../skills/cncf/auto-scaling/SKILL.md) | Cncf | "Configures automatic scaling of compute resources (EC2,... | Reference |
-| [automation](../../skills/cncf/automation/SKILL.md) | Cncf | Provides Automation and orchestration of Azure resources... | Reference |
-| [automation](../../skills/coding/automation/SKILL.md) | Coding | "Provides Automating semantic versioning in Git... | Implementation |
-| [autoscaling](../../skills/cncf/autoscaling/SKILL.md) | Cncf | "Provides Automatically scales compute resources based on... | Reference |
-| [backfill-strategy](../../skills/trading/backfill-strategy/SKILL.md) | Trading | "Provides Strategic data backfill for populating historical... | Implementation |
-| [backstage](../../skills/cncf/backstage/SKILL.md) | Cncf | "Provides Backstage in Cloud-Native Engineering - Developer... | Reference |
-| [base](../../skills/coding/base/SKILL.md) | Coding | "Abstract base strategy pattern with initialization guards,... | Implementation |
-| [bash-scripting](../../skills/agent/bash-scripting/SKILL.md) | Agent | Implements intelligent bash scripting with multi-factor... | Orchestration |
-| [bayesian-inference](../../skills/coding/bayesian-inference/SKILL.md) | Coding | "Applies Bayesian methods for prior selection, posterior... | Implementation |
-| [bdistill-behavioral-xray](../../skills/agent/bdistill-behavioral-xray/SKILL.md) | Agent | Implements intelligent bdistill behavioral xray with... | Orchestration |
-| [behavioral-modes](../../skills/agent/behavioral-modes/SKILL.md) | Agent | Implements intelligent behavioral modes with multi-factor... | Orchestration |
-| [best-practices](../../skills/cncf/best-practices/SKILL.md) | Cncf | "Cloud Native Computing Foundation (CNCF) architecture best... | Reference |
-| [best-practices](../../skills/coding/best-practices/SKILL.md) | Coding | "Provides Markdown best practices for OpenCode skills -... | Implementation |
-| [bias-variance-tradeoff](../../skills/coding/bias-variance-tradeoff/SKILL.md) | Coding | "Analyzes bias-variance tradeoff, overfitting,... | Implementation |
-| [bitbucket-automation](../../skills/agent/bitbucket-automation/SKILL.md) | Agent | Implements intelligent bitbucket automation with... | Orchestration |
-| [blob-storage](../../skills/cncf/blob-storage/SKILL.md) | Cncf | Provides Object storage with versioning, lifecycle... | Reference |
-| [blueprint](../../skills/agent/blueprint/SKILL.md) | Agent | Implements intelligent blueprint with multi-factor skill... | Orchestration |
-| [branching-strategies](../../skills/coding/branching-strategies/SKILL.md) | Coding | "Git branching models including Git Flow, GitHub Flow,... | Implementation |
-| [build](../../skills/agent/build/SKILL.md) | Agent | Implements intelligent build with multi-factor skill... | Orchestration |
-| [buildpacks](../../skills/cncf/buildpacks/SKILL.md) | Cncf | "Provides Buildpacks in Cloud-Native Engineering - Turn... | Reference |
-| [bus](../../skills/coding/bus/SKILL.md) | Coding | "Async pub/sub event bus with typed events, mixed... | Implementation |
-| [calico](../../skills/cncf/calico/SKILL.md) | Cncf | "Calico in Cloud Native Security - cloud native... | Reference |
-| [candle-data](../../skills/trading/candle-data/SKILL.md) | Trading | "OHLCV candle data processing, timeframe management, and... | Implementation |
-| [categorical-encoding](../../skills/coding/categorical-encoding/SKILL.md) | Coding | "Provides Encodes categorical variables using one-hot... | Implementation |
-| [causal-inference](../../skills/coding/causal-inference/SKILL.md) | Coding | Implements causal models, directed acyclic graphs (DAGs),... | Implementation |
-| [cc-skill-backend-patterns](../../skills/agent/cc-skill-backend-patterns/SKILL.md) | Agent | Implements intelligent cc skill backend patterns with... | Orchestration |
-| [cc-skill-clickhouse-io](../../skills/agent/cc-skill-clickhouse-io/SKILL.md) | Agent | Implements intelligent cc skill clickhouse io with... | Orchestration |
-| [cc-skill-coding-standards](../../skills/agent/cc-skill-coding-standards/SKILL.md) | Agent | Implements intelligent cc skill coding standards with... | Orchestration |
-| [cc-skill-continuous-learning](../../skills/agent/cc-skill-continuous-learning/SKILL.md) | Agent | Implements intelligent cc skill continuous learning with... | Orchestration |
-| [cc-skill-frontend-patterns](../../skills/agent/cc-skill-frontend-patterns/SKILL.md) | Agent | Implements intelligent cc skill frontend patterns with... | Orchestration |
-| [cc-skill-project-guidelines-example](../../skills/agent/cc-skill-project-guidelines-example/SKILL.md) | Agent | Implements intelligent cc skill project guidelines example... | Orchestration |
-| [cc-skill-security-review](../../skills/agent/cc-skill-security-review/SKILL.md) | Agent | Implements intelligent cc skill security review with... | Orchestration |
-| [cc-skill-strategic-compact](../../skills/agent/cc-skill-strategic-compact/SKILL.md) | Agent | Implements intelligent cc skill strategic compact with... | Orchestration |
-| [ccxt-patterns](../../skills/trading/ccxt-patterns/SKILL.md) | Trading | "Effective patterns for using CCXT library for exchange... | Implementation |
-| [cdn](../../skills/cncf/cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and global... | Reference |
-| [changelog-automation](../../skills/agent/changelog-automation/SKILL.md) | Agent | Implements intelligent changelog automation with... | Orchestration |
-| [chaosmesh](../../skills/cncf/chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering... | Reference |
-| [ci-cd-pipeline-analyzer](../../skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Agent | Implements intelligent ci cd pipeline analyzer with... | Orchestration |
-| [cicd-automation-workflow-automate](../../skills/agent/cicd-automation-workflow-automate/SKILL.md) | Agent | Implements intelligent cicd automation workflow automate... | Orchestration |
-| [cicd-pipeline-debugging](../../skills/agent/cicd-pipeline-debugging/SKILL.md) | Agent | Debugging patterns for GitHub Actions, GitLab CI, Jenkins... | Implementation |
-| [cicd-pipeline-troubleshooting](../../skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with... | Implementation |
-| [cilium](../../skills/cncf/cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native... | Reference |
-| [circleci-automation](../../skills/agent/circleci-automation/SKILL.md) | Agent | Implements intelligent circleci automation with... | Orchestration |
-| [classification-metrics](../../skills/coding/classification-metrics/SKILL.md) | Coding | "Evaluates classification models using precision, recall,... | Implementation |
-| [clickup-automation](../../skills/agent/clickup-automation/SKILL.md) | Agent | Implements intelligent clickup automation with multi-factor... | Orchestration |
-| [closed-loop-delivery](../../skills/agent/closed-loop-delivery/SKILL.md) | Agent | Implements intelligent closed loop delivery with... | Orchestration |
-| [cloud-cdn](../../skills/cncf/cloud-cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and globally... | Reference |
-| [cloud-devops](../../skills/agent/cloud-devops/SKILL.md) | Agent | Implements intelligent cloud devops with multi-factor skill... | Orchestration |
-| [cloud-dns](../../skills/cncf/cloud-dns/SKILL.md) | Cncf | Manages DNS with health checks, traffic routing, and... | Reference |
-| [cloud-functions](../../skills/cncf/cloud-functions/SKILL.md) | Cncf | Deploys serverless functions triggered by events with... | Reference |
-| [cloud-kms](../../skills/cncf/cloud-kms/SKILL.md) | Cncf | "Manages encryption keys for data protection with automated... | Reference |
-| [cloud-load-balancing](../../skills/cncf/cloud-load-balancing/SKILL.md) | Cncf | "Provides Distributes traffic across instances with... | Reference |
-| [cloud-monitoring](../../skills/cncf/cloud-monitoring/SKILL.md) | Cncf | "Monitors GCP resources with metrics, logging, and alerting... | Reference |
-| [cloud-operations](../../skills/cncf/cloud-operations/SKILL.md) | Cncf | "Provides Systems management including monitoring, logging,... | Reference |
-| [cloud-pubsub](../../skills/cncf/cloud-pubsub/SKILL.md) | Cncf | "Asynchronous messaging service for event streaming and... | Reference |
-| [cloud-sql](../../skills/cncf/cloud-sql/SKILL.md) | Cncf | "Provides managed relational databases (MySQL, PostgreSQL)... | Reference |
-| [cloud-storage](../../skills/cncf/cloud-storage/SKILL.md) | Cncf | "Provides Stores objects with versioning, lifecycle... | Reference |
-| [cloud-tasks](../../skills/cncf/cloud-tasks/SKILL.md) | Cncf | "Manages task queues for asynchronous job execution with... | Reference |
-| [cloudevents](../../skills/cncf/cloudevents/SKILL.md) | Cncf | "CloudEvents in Streaming & Messaging - cloud native... | Reference |
-| [cloudformation](../../skills/cncf/cloudformation/SKILL.md) | Cncf | "Creates Infrastructure as Code templates with... | Reference |
-| [cloudfront](../../skills/cncf/cloudfront/SKILL.md) | Cncf | "Configures CloudFront CDN for global content distribution... | Reference |
-| [cloudwatch](../../skills/cncf/cloudwatch/SKILL.md) | Cncf | "Configures CloudWatch monitoring with metrics, logs,... | Reference |
-| [clustering](../../skills/coding/clustering/SKILL.md) | Coding | "Implements clustering algorithms including K-means,... | Implementation |
-| [cni](../../skills/cncf/cni/SKILL.md) | Cncf | "Cni in Cloud-Native Engineering - Container Network... | Reference |
-| [code-correctness-verifier](../../skills/agent/code-correctness-verifier/SKILL.md) | Agent | Implements intelligent code correctness verifier with... | Orchestration |
-| [commission-model](../../skills/trading/commission-model/SKILL.md) | Trading | "Implements commission model and fee structure simulation... | Implementation |
-| [commit](../../skills/agent/commit/SKILL.md) | Agent | Implements intelligent commit with multi-factor skill... | Orchestration |
-| [community-detection](../../skills/coding/community-detection/SKILL.md) | Coding | "Detects communities and clusters in graphs using... | Implementation |
-| [compute-engine](../../skills/cncf/compute-engine/SKILL.md) | Cncf | "Deploys and manages virtual machine instances with... | Reference |
-| [concise-planning](../../skills/agent/concise-planning/SKILL.md) | Agent | Implements intelligent concise planning with multi-factor... | Orchestration |
-| [conductor-implement](../../skills/agent/conductor-implement/SKILL.md) | Agent | Implements intelligent conductor implement with... | Orchestration |
-| [conductor-manage](../../skills/agent/conductor-manage/SKILL.md) | Agent | Implements intelligent conductor manage with multi-factor... | Orchestration |
-| [conductor-new-track](../../skills/agent/conductor-new-track/SKILL.md) | Agent | Implements intelligent conductor new track with... | Orchestration |
-| [conductor-revert](../../skills/agent/conductor-revert/SKILL.md) | Agent | Implements intelligent conductor revert with multi-factor... | Orchestration |
-| [conductor-setup](../../skills/agent/conductor-setup/SKILL.md) | Agent | Implements intelligent conductor setup with multi-factor... | Orchestration |
-| [conductor-status](../../skills/agent/conductor-status/SKILL.md) | Agent | Implements intelligent conductor status with multi-factor... | Orchestration |
-| [conductor-validator](../../skills/agent/conductor-validator/SKILL.md) | Agent | Implements intelligent conductor validator with... | Orchestration |
-| [confidence-based-selector](../../skills/agent/confidence-based-selector/SKILL.md) | Agent | Implements intelligent confidence based selector with... | Orchestration |
-| [confidence-intervals](../../skills/coding/confidence-intervals/SKILL.md) | Coding | "Provides Constructs confidence intervals using bootstrap,... | Implementation |
-| [config](../../skills/coding/config/SKILL.md) | Coding | "Pydantic-based configuration management with frozen... | Implementation |
-| [container-inspector](../../skills/agent/container-inspector/SKILL.md) | Agent | Implements intelligent container inspector with... | Orchestration |
-| [container-linux](../../skills/cncf/container-linux/SKILL.md) | Cncf | "Provides Flatcar Container Linux in Cloud-Native... | Reference |
-| [container-registry](../../skills/cncf/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with... | Reference |
-| [container-registry](../../skills/cncf/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with... | Reference |
-| [containerd](../../skills/cncf/containerd/SKILL.md) | Cncf | "Containerd in Cloud-Native Engineering - An open and... | Reference |
-| [context-window-management](../../skills/agent/context-window-management/SKILL.md) | Agent | Implements intelligent context window management with... | Orchestration |
-| [context7-auto-research](../../skills/agent/context7-auto-research/SKILL.md) | Agent | Implements intelligent context7 auto research with... | Orchestration |
-| [contour](../../skills/cncf/contour/SKILL.md) | Cncf | "Contour in Service Proxy - cloud native architecture,... | Reference |
-| [conversation-memory](../../skills/agent/conversation-memory/SKILL.md) | Agent | Implements intelligent conversation memory with... | Orchestration |
-| [coredns](../../skills/cncf/coredns/SKILL.md) | Cncf | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS... | Reference |
-| [correlation-analysis](../../skills/coding/correlation-analysis/SKILL.md) | Coding | "Analyzes correlation, covariance, and multivariate... | Implementation |
-| [correlation-risk](../../skills/trading/correlation-risk/SKILL.md) | Trading | "Implements correlation breakdown and portfolio... | Implementation |
-| [cortex](../../skills/cncf/cortex/SKILL.md) | Cncf | "Cortex in Monitoring & Observability - distributed,... | Reference |
-| [cosmos-db](../../skills/cncf/cosmos-db/SKILL.md) | Cncf | Provides Global NoSQL database with multi-region... | Reference |
-| [cost-optimization](../../skills/cncf/cost-optimization/SKILL.md) | Cncf | Implements cloud cost optimization strategies... | Implementation |
-| [cost-optimization-analysis](../../skills/cncf/cost-optimization-analysis/SKILL.md) | Cncf | Cloud cost optimization analysis including AWS Cost... | Implementation |
-| [create-branch](../../skills/agent/create-branch/SKILL.md) | Agent | Implements intelligent create branch with multi-factor... | Orchestration |
-| [create-issue-gate](../../skills/agent/create-issue-gate/SKILL.md) | Agent | Implements intelligent create issue gate with multi-factor... | Orchestration |
-| [create-pr](../../skills/agent/create-pr/SKILL.md) | Agent | Implements intelligent create pr with multi-factor skill... | Orchestration |
-| [cross-validation](../../skills/coding/cross-validation/SKILL.md) | Coding | "Implements k-fold cross-validation, stratified... | Implementation |
-| [crossplane](../../skills/cncf/crossplane/SKILL.md) | Cncf | "Crossplane in Platform Engineering - Kubernetes-native... | Reference |
-| [cubefs](../../skills/cncf/cubefs/SKILL.md) | Cncf | "Provides CubeFS in Storage - distributed, high-performance... | Reference |
-| [custodian](../../skills/cncf/custodian/SKILL.md) | Cncf | "Provides Cloud Custodian in Cloud-Native Engineering... | Reference |
-| [cycle-analysis](../../skills/trading/cycle-analysis/SKILL.md) | Trading | "Implements market cycles and periodic patterns in price... | Implementation |
-| [dapr](../../skills/cncf/dapr/SKILL.md) | Cncf | "Provides Dapr in Cloud-Native Engineering - distributed... | Reference |
-| [data-collection](../../skills/coding/data-collection/SKILL.md) | Coding | "Implements data gathering strategies including APIs, web... | Implementation |
-| [data-ingestion](../../skills/coding/data-ingestion/SKILL.md) | Coding | "Provides Designs and implements ETL pipelines, streaming... | Implementation |
-| [data-privacy](../../skills/coding/data-privacy/SKILL.md) | Coding | "Applies privacy-preserving techniques including... | Implementation |
-| [data-profiling](../../skills/coding/data-profiling/SKILL.md) | Coding | Provides Extracts data profiles, schemas, metadata, and... | Implementation |
-| [data-quality](../../skills/coding/data-quality/SKILL.md) | Coding | "Implements data validation, cleaning, outlier detection,... | Implementation |
-| [data-versioning](../../skills/coding/data-versioning/SKILL.md) | Coding | "Implements data versioning, lineage tracking, provenance... | Implementation |
-| [data-visualization](../../skills/coding/data-visualization/SKILL.md) | Coding | "Creates effective visualizations including plots, charts,... | Implementation |
-| [database](../../skills/agent/database/SKILL.md) | Agent | Implements intelligent database with multi-factor skill... | Orchestration |
-| [database-admin](../../skills/agent/database-admin/SKILL.md) | Agent | Implements database administration best practices... | Implementation |
-| [dependency-graph-builder](../../skills/agent/dependency-graph-builder/SKILL.md) | Agent | Implements intelligent dependency graph builder with... | Orchestration |
-| [dependency-management](../../skills/coding/dependency-management/SKILL.md) | Coding | "Provides Cybersecurity operations skill for automating... | Implementation |
-| [deployment-manager](../../skills/cncf/deployment-manager/SKILL.md) | Cncf | "Infrastructure as code using YAML templates for repeatable... | Reference |
-| [development](../../skills/agent/development/SKILL.md) | Agent | Implements intelligent development with multi-factor skill... | Orchestration |
-| [diary](../../skills/agent/diary/SKILL.md) | Agent | Implements intelligent diary with multi-factor skill... | Orchestration |
-| [diff-quality-analyzer](../../skills/agent/diff-quality-analyzer/SKILL.md) | Agent | Implements intelligent diff quality analyzer with... | Orchestration |
-| [dimensionality-reduction](../../skills/coding/dimensionality-reduction/SKILL.md) | Coding | "Provides Reduces data dimensionality using PCA, t-SNE,... | Implementation |
-| [disaster-recovery](../../skills/cncf/disaster-recovery/SKILL.md) | Cncf | Implements comprehensive disaster recovery planning for... | Implementation |
-| [dispatching-parallel-agents](../../skills/agent/dispatching-parallel-agents/SKILL.md) | Agent | Implements intelligent dispatching parallel agents with... | Orchestration |
-| [distribution-fitting](../../skills/coding/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using... | Implementation |
-| [docker-debugging](../../skills/agent/docker-debugging/SKILL.md) | Agent | Diagnoses and resolves Docker container issues including... | Implementation |
-| [documentation](../../skills/agent/documentation/SKILL.md) | Agent | Implements intelligent documentation with multi-factor... | Orchestration |
-| [dragonfly](../../skills/cncf/dragonfly/SKILL.md) | Cncf | "Provides Dragonfly in Cloud-Native Engineering - P2P file... | Reference |
-| [drawdown-analysis](../../skills/trading/drawdown-analysis/SKILL.md) | Trading | "Implements maximum drawdown, recovery time, and... | Implementation |
-| [drawdown-control](../../skills/trading/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity... | Implementation |
-| [driven-architecture](../../skills/coding/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems:... | Implementation |
-| [driven-development](../../skills/coding/driven-development/SKILL.md) | Coding | "Test-Driven Development (TDD) and Behavior-Driven... | Implementation |
-| [dry-principles](../../skills/coding/dry-principles/SKILL.md) | Coding | Implements DRY (Don't Repeat Yourself) principle... | Implementation |
-| [dynamic-replanner](../../skills/agent/dynamic-replanner/SKILL.md) | Agent | Implements intelligent dynamic replanner with multi-factor... | Orchestration |
-| [dynamodb](../../skills/cncf/dynamodb/SKILL.md) | Cncf | "Deploys managed NoSQL databases with DynamoDB for... | Reference |
-| [e2e-testing](../../skills/agent/e2e-testing/SKILL.md) | Agent | Implements intelligent e2e testing with multi-factor skill... | Orchestration |
-| [ec2](../../skills/cncf/ec2/SKILL.md) | Cncf | "Deploys, configures, and auto-scales EC2 instances with... | Reference |
-| [ecr](../../skills/cncf/ecr/SKILL.md) | Cncf | "Manages container image repositories with ECR for secure... | Reference |
-| [eda](../../skills/coding/eda/SKILL.md) | Coding | "Provides Performs exploratory data analysis using summary... | Implementation |
-| [eks](../../skills/cncf/eks/SKILL.md) | Cncf | "Deploys managed Kubernetes clusters with EKS for container... | Reference |
-| [elb](../../skills/cncf/elb/SKILL.md) | Cncf | "Configures Elastic Load Balancing (ALB, NLB, Classic) for... | Reference |
-| [enrichment](../../skills/trading/enrichment/SKILL.md) | Trading | "Provides Data enrichment techniques for adding context to... | Implementation |
-| [ensemble-methods](../../skills/coding/ensemble-methods/SKILL.md) | Coding | "Provides Combines multiple models using bagging, boosting,... | Implementation |
-| [envoy](../../skills/cncf/envoy/SKILL.md) | Cncf | "Envoy in Cloud-Native Engineering - Cloud-native... | Reference |
-| [error-trace-explainer](../../skills/agent/error-trace-explainer/SKILL.md) | Agent | Implements intelligent error trace explainer with... | Orchestration |
-| [etcd](../../skills/cncf/etcd/SKILL.md) | Cncf | "Provides etcd in Cloud-Native Engineering - distributed... | Reference |
-| [event-hubs](../../skills/cncf/event-hubs/SKILL.md) | Cncf | "Provides Event streaming platform for high-throughput data... | Reference |
-| [executing-plans](../../skills/agent/executing-plans/SKILL.md) | Agent | Implements intelligent executing plans with multi-factor... | Orchestration |
-| [experimental-design](../../skills/coding/experimental-design/SKILL.md) | Coding | "Provides Designs experiments using design of experiments... | Implementation |
-| [explainability](../../skills/coding/explainability/SKILL.md) | Coding | "Implements explainability and interpretability techniques... | Implementation |
-| [explainable-ai](../../skills/trading/explainable-ai/SKILL.md) | Trading | "Provides Explainable AI for understanding and trusting... | Implementation |
-| [failover-handling](../../skills/trading/failover-handling/SKILL.md) | Trading | "Provides Automated failover and redundancy management for... | Implementation |
-| [failure-mode-analysis](../../skills/agent/failure-mode-analysis/SKILL.md) | Agent | Implements intelligent failure mode analysis with... | Orchestration |
-| [fal-audio](../../skills/agent/fal-audio/SKILL.md) | Agent | Implements intelligent fal audio with multi-factor skill... | Orchestration |
-| [falco](../../skills/cncf/falco/SKILL.md) | Cncf | "Provides Falco in Cloud-Native Engineering - Cloud Native... | Reference |
-| [false-signal-filtering](../../skills/trading/false-signal-filtering/SKILL.md) | Trading | "Provides False Signal Filtering Techniques for Robust... | Implementation |
-| [feature-engineering](../../skills/coding/feature-engineering/SKILL.md) | Coding | "Creates and transforms features including polynomial... | Implementation |
-| [feature-engineering](../../skills/trading/feature-engineering/SKILL.md) | Trading | "Implements create actionable trading features from raw... | Implementation |
-| [feature-interaction](../../skills/coding/feature-interaction/SKILL.md) | Coding | "Provides Discovers and engineers feature interactions... | Implementation |
-| [feature-scaling-normalization](../../skills/coding/feature-scaling-normalization/SKILL.md) | Coding | "Provides Scales and normalizes features using... | Implementation |
-| [feature-selection](../../skills/coding/feature-selection/SKILL.md) | Coding | "Selects relevant features using univariate selection,... | Implementation |
-| [feature-store](../../skills/trading/feature-store/SKILL.md) | Trading | "Provides Feature storage and management for machine... | Implementation |
-| [filesystem-context](../../skills/agent/filesystem-context/SKILL.md) | Agent | Implements intelligent filesystem context with multi-factor... | Orchestration |
-| [fill-simulation](../../skills/trading/fill-simulation/SKILL.md) | Trading | "Implements fill simulation models for order execution... | Implementation |
-| [finishing-a-development-branch](../../skills/agent/finishing-a-development-branch/SKILL.md) | Agent | Implements intelligent finishing a development branch with... | Orchestration |
-| [firestore](../../skills/cncf/firestore/SKILL.md) | Cncf | Provides NoSQL document database with real-time sync,... | Reference |
-| [fluentd](../../skills/cncf/fluentd/SKILL.md) | Cncf | "Fluentd unified logging layer for collecting,... | Reference |
-| [fluid](../../skills/cncf/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for... | Reference |
-| [flux](../../skills/cncf/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for... | Reference |
-| [framework](../../skills/cncf/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes... | Reference |
-| [freshdesk-automation](../../skills/agent/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with... | Orchestration |
-| [full-stack-orchestration-full-stack-feature](../../skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Agent | Implements intelligent full stack orchestration full stack... | Orchestration |
-| [functions](../../skills/cncf/functions/SKILL.md) | Cncf | Provides Serverless computing with event-driven functions... | Reference |
-| [gemini-api-integration](../../skills/agent/gemini-api-integration/SKILL.md) | Agent | Implements intelligent gemini api integration with... | Orchestration |
-| [gh-review-requests](../../skills/agent/gh-review-requests/SKILL.md) | Agent | Implements intelligent gh review requests with multi-factor... | Orchestration |
-| [git-advanced-workflows](../../skills/agent/git-advanced-workflows/SKILL.md) | Agent | Implements intelligent git advanced workflows with... | Orchestration |
-| [git-hooks-automation](../../skills/agent/git-hooks-automation/SKILL.md) | Agent | Implements intelligent git hooks automation with... | Orchestration |
-| [git-pr-workflows-git-workflow](../../skills/agent/git-pr-workflows-git-workflow/SKILL.md) | Agent | Implements intelligent git pr workflows git workflow with... | Orchestration |
-| [git-pr-workflows-onboard](../../skills/agent/git-pr-workflows-onboard/SKILL.md) | Agent | Implements intelligent git pr workflows onboard with... | Orchestration |
-| [git-pr-workflows-pr-enhance](../../skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Agent | Implements intelligent git pr workflows pr enhance with... | Orchestration |
-| [git-pushing](../../skills/agent/git-pushing/SKILL.md) | Agent | Implements intelligent git pushing with multi-factor skill... | Orchestration |
-| [github-actions-templates](../../skills/agent/github-actions-templates/SKILL.md) | Agent | Implements intelligent github actions templates with... | Orchestration |
-| [github-automation](../../skills/agent/github-automation/SKILL.md) | Agent | Implements intelligent github automation with multi-factor... | Orchestration |
-| [github-workflow-automation](../../skills/agent/github-workflow-automation/SKILL.md) | Agent | Implements intelligent github workflow automation with... | Orchestration |
-| [gitlab-automation](../../skills/agent/gitlab-automation/SKILL.md) | Agent | Implements intelligent gitlab automation with multi-factor... | Orchestration |
-| [gitlab-ci-patterns](../../skills/agent/gitlab-ci-patterns/SKILL.md) | Agent | Implements intelligent gitlab ci patterns with multi-factor... | Orchestration |
-| [gitops-troubleshooting](../../skills/agent/gitops-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves GitOps synchronization failures,... | Implementation |
-| [gke](../../skills/cncf/gke/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic... | Reference |
-| [goal-to-milestones](../../skills/agent/goal-to-milestones/SKILL.md) | Agent | Implements intelligent goal to milestones with multi-factor... | Orchestration |
-| [google-analytics-automation](../../skills/agent/google-analytics-automation/SKILL.md) | Agent | Implements intelligent google analytics automation with... | Orchestration |
-| [google-docs-automation](../../skills/agent/google-docs-automation/SKILL.md) | Agent | Implements intelligent google docs automation with... | Orchestration |
-| [google-drive-automation](../../skills/agent/google-drive-automation/SKILL.md) | Agent | Implements intelligent google drive automation with... | Orchestration |
-| [grpc](../../skills/cncf/grpc/SKILL.md) | Cncf | "gRPC in Remote Procedure Call - cloud native architecture,... | Reference |
-| [grpc-patterns](../../skills/coding/grpc-patterns/SKILL.md) | Coding | Implements gRPC development patterns including protocol... | Implementation |
-| [harbor](../../skills/cncf/harbor/SKILL.md) | Cncf | "Configures harbor in cloud-native engineering - container... | Reference |
-| [health](../../skills/trading/health/SKILL.md) | Trading | "Provides Exchange system health monitoring and... | Implementation |
-| [health-check-patterns](../../skills/cncf/health-check-patterns/SKILL.md) | Cncf | Implements comprehensive health check patterns for... | Implementation |
-| [helm](../../skills/cncf/helm/SKILL.md) | Cncf | "Provides Helm in Cloud-Native Engineering - The Kubernetes... | Reference |
-| [helpdesk-automation](../../skills/agent/helpdesk-automation/SKILL.md) | Agent | Implements intelligent helpdesk automation with... | Orchestration |
-| [hierarchical-agent-memory](../../skills/agent/hierarchical-agent-memory/SKILL.md) | Agent | Implements intelligent hierarchical agent memory with... | Orchestration |
-| [hosted-agents](../../skills/agent/hosted-agents/SKILL.md) | Agent | Implements intelligent hosted agents with multi-factor... | Orchestration |
-| [hosted-agents-v2-py](../../skills/agent/hosted-agents-v2-py/SKILL.md) | Agent | Implements intelligent hosted agents v2 py with... | Orchestration |
-| [hot-path-detector](../../skills/agent/hot-path-detector/SKILL.md) | Agent | Implements intelligent hot path detector with multi-factor... | Orchestration |
-| [hub](../../skills/cncf/hub/SKILL.md) | Cncf | "Provides Artifact Hub in Cloud-Native Engineering -... | Reference |
-| [hubspot-automation](../../skills/agent/hubspot-automation/SKILL.md) | Agent | Implements intelligent hubspot automation with multi-factor... | Orchestration |
-| [hydra](../../skills/cncf/hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native... | Reference |
-| [hyperparameter-tuning](../../skills/coding/hyperparameter-tuning/SKILL.md) | Coding | "Optimizes hyperparameters using grid search, random... | Implementation |
-| [hyperparameter-tuning](../../skills/trading/hyperparameter-tuning/SKILL.md) | Trading | "Implements optimize model configurations for trading... | Implementation |
-| [hypothesis-testing](../../skills/coding/hypothesis-testing/SKILL.md) | Coding | Implements hypothesis testing including t-tests, chi-square... | Implementation |
-| [iam](../../skills/cncf/iam/SKILL.md) | Cncf | "Configures identity and access management with IAM users,... | Reference |
-| [iam](../../skills/cncf/iam/SKILL.md) | Cncf | "Manages identity and access control with service accounts,... | Reference |
-| [incident-response](../../skills/cncf/incident-response/SKILL.md) | Cncf | "Creates or updates an incident response plan covering... | Reference |
-| [incident-response-runbooks](../../skills/cncf/incident-response-runbooks/SKILL.md) | Cncf | Implements incident response runbooks with detection,... | Implementation |
-| [indicator-confluence](../../skills/trading/indicator-confluence/SKILL.md) | Trading | "Provides Indicator Confluence Validation Systems for... | Implementation |
-| [infra-drift-detector](../../skills/agent/infra-drift-detector/SKILL.md) | Agent | Implements intelligent infra drift detector with... | Orchestration |
-| [ingress](../../skills/cncf/ingress/SKILL.md) | Cncf | "Provides Emissary-Ingress in Cloud-Native Engineering -... | Reference |
-| [ingress-controller](../../skills/cncf/ingress-controller/SKILL.md) | Cncf | "Kong Ingress Controller in Kubernetes - cloud native... | Reference |
-| [inngest](../../skills/agent/inngest/SKILL.md) | Agent | Implements intelligent inngest with multi-factor skill... | Orchestration |
-| [instrumental-variables](../../skills/coding/instrumental-variables/SKILL.md) | Coding | "Provides Uses instrumental variables (IV), two-stage least... | Implementation |
-| [intercom-automation](../../skills/agent/intercom-automation/SKILL.md) | Agent | Implements intelligent intercom automation with... | Orchestration |
-| [intermarket-analysis](../../skills/trading/intermarket-analysis/SKILL.md) | Trading | "Implements cross-market relationships and asset class... | Implementation |
-| [intervention-analysis](../../skills/coding/intervention-analysis/SKILL.md) | Coding | "Provides Estimates treatment effects, conditional average... | Implementation |
-| [io](../../skills/cncf/io/SKILL.md) | Cncf | "metal3.io in Bare Metal Provisioning - cloud native... | Reference |
-| [issues](../../skills/agent/issues/SKILL.md) | Agent | Implements intelligent issues with multi-factor skill... | Orchestration |
-| [istio](../../skills/cncf/istio/SKILL.md) | Cncf | "Istio in Cloud-Native Engineering - Connect, secure,... | Reference |
-| [iterate-pr](../../skills/agent/iterate-pr/SKILL.md) | Agent | Implements intelligent iterate pr with multi-factor skill... | Orchestration |
-| [jaeger](../../skills/cncf/jaeger/SKILL.md) | Cncf | "Configures jaeger in cloud-native engineering -... | Reference |
-| [k8s-debugger](../../skills/agent/k8s-debugger/SKILL.md) | Agent | Implements intelligent k8s debugger with multi-factor skill... | Orchestration |
-| [karmada](../../skills/cncf/karmada/SKILL.md) | Cncf | "Provides Karmada in Cloud-Native Engineering -... | Reference |
-| [keda](../../skills/cncf/keda/SKILL.md) | Cncf | "Configures keda in cloud-native engineering - event-driven... | Reference |
-| [kernel-density](../../skills/coding/kernel-density/SKILL.md) | Coding | "Implements kernel density estimation, non-parametric... | Implementation |
-| [key-vault](../../skills/cncf/key-vault/SKILL.md) | Cncf | "Manages encryption keys, secrets, and certificates with... | Reference |
-| [keycloak](../../skills/cncf/keycloak/SKILL.md) | Cncf | "Provides Keycloak in Cloud-Native Engineering - identity... | Reference |
-| [keyvault-secrets](../../skills/cncf/keyvault-secrets/SKILL.md) | Cncf | "Provides Secret management and rotation for sensitive... | Reference |
-| [kill-switches](../../skills/trading/kill-switches/SKILL.md) | Trading | "Implementing multi-layered kill switches at account,... | Implementation |
-| [kms](../../skills/cncf/kms/SKILL.md) | Cncf | "Manages encryption keys with AWS KMS for data protection... | Reference |
-| [knative](../../skills/cncf/knative/SKILL.md) | Cncf | "Provides Knative in Cloud-Native Engineering - serverless... | Reference |
-| [kong](../../skills/cncf/kong/SKILL.md) | Cncf | "Kong in API Gateway - cloud native architecture, patterns,... | Reference |
-| [kratos](../../skills/cncf/kratos/SKILL.md) | Cncf | "ORY Kratos in Identity & Access - cloud native... | Reference |
-| [krustlet](../../skills/cncf/krustlet/SKILL.md) | Cncf | "Krustlet in Kubernetes Runtime - cloud native... | Reference |
-| [kserve](../../skills/cncf/kserve/SKILL.md) | Cncf | "Configures kserve in cloud-native engineering - model... | Reference |
-| [kubeedge](../../skills/cncf/kubeedge/SKILL.md) | Cncf | "Configures kubeedge in cloud-native engineering - edge... | Reference |
-| [kubeflow](../../skills/cncf/kubeflow/SKILL.md) | Cncf | "Configures kubeflow in cloud-native engineering - ml on... | Reference |
-| [kubernetes](../../skills/cncf/kubernetes/SKILL.md) | Cncf | "Kubernetes in Cloud-Native Engineering - Production-Grade... | Reference |
-| [kubernetes-api-patterns](../../skills/cncf/kubernetes-api-patterns/SKILL.md) | Cncf | Kubernetes API patterns including CRD development, webhook... | Implementation |
-| [kubernetes-debugging](../../skills/cncf/kubernetes-debugging/SKILL.md) | Cncf | Implements comprehensive Kubernetes debugging workflow with... | Implementation |
-| [kubernetes-deployment](../../skills/agent/kubernetes-deployment/SKILL.md) | Agent | Implements intelligent kubernetes deployment with... | Orchestration |
-| [kubescape](../../skills/cncf/kubescape/SKILL.md) | Cncf | "Configures kubescape in cloud-native engineering -... | Reference |
-| [kubevela](../../skills/cncf/kubevela/SKILL.md) | Cncf | "Configures kubevela in cloud-native engineering -... | Reference |
-| [kubevirt](../../skills/cncf/kubevirt/SKILL.md) | Cncf | "Provides KubeVirt in Cloud-Native Engineering -... | Reference |
-| [kuma](../../skills/cncf/kuma/SKILL.md) | Cncf | "Kuma in Service Mesh - cloud native architecture,... | Reference |
-| [kyverno](../../skills/cncf/kyverno/SKILL.md) | Cncf | "Configures kyverno in cloud-native engineering - policy... | Reference |
-| [lake](../../skills/trading/lake/SKILL.md) | Trading | "Provides Data lake architecture and management for trading... | Implementation |
-| [lambda](../../skills/cncf/lambda/SKILL.md) | Cncf | "Deploys serverless event-driven applications with Lambda... | Reference |
-| [lambda-lang](../../skills/agent/lambda-lang/SKILL.md) | Agent | Implements intelligent lambda lang with multi-factor skill... | Orchestration |
-| [langgraph](../../skills/agent/langgraph/SKILL.md) | Agent | Implements intelligent langgraph with multi-factor skill... | Orchestration |
-| [lima](../../skills/cncf/lima/SKILL.md) | Cncf | "Lima in Container Runtime - cloud native architecture,... | Reference |
-| [linear-regression](../../skills/coding/linear-regression/SKILL.md) | Coding | "Implements linear regression including OLS, ridge... | Implementation |
-| [linkerd](../../skills/cncf/linkerd/SKILL.md) | Cncf | "Linkerd in Service Mesh - cloud native architecture,... | Reference |
-| [lint-and-validate](../../skills/agent/lint-and-validate/SKILL.md) | Agent | Implements intelligent lint and validate with multi-factor... | Orchestration |
-| [linux-troubleshooting](../../skills/agent/linux-troubleshooting/SKILL.md) | Agent | Implements intelligent linux troubleshooting with... | Orchestration |
-| [liquidity-risk](../../skills/trading/liquidity-risk/SKILL.md) | Trading | "Implements liquidity assessment and trade execution risk... | Implementation |
-| [litmus](../../skills/cncf/litmus/SKILL.md) | Cncf | "Litmus in Chaos Engineering - cloud native architecture,... | Reference |
-| [live-model-monitoring](../../skills/trading/live-model-monitoring/SKILL.md) | Trading | "Provides Monitor production ML models for drift, decay,... | Implementation |
-| [llm-orchestration](../../skills/trading/llm-orchestration/SKILL.md) | Trading | "Large Language Model orchestration for trading analysis... | Implementation |
-| [load-balancer](../../skills/cncf/load-balancer/SKILL.md) | Cncf | Provides Distributes traffic across VMs with health probes... | Reference |
-| [logistic-regression](../../skills/coding/logistic-regression/SKILL.md) | Coding | "Implements logistic regression for binary and multinomial... | Implementation |
-| [longhorn](../../skills/cncf/longhorn/SKILL.md) | Cncf | "Longhorn in Cloud Native Storage - cloud native... | Reference |
-| [lookahead-bias](../../skills/trading/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict... | Implementation |
-| [m365-agents-dotnet](../../skills/agent/m365-agents-dotnet/SKILL.md) | Agent | Implements intelligent m365 agents dotnet with multi-factor... | Orchestration |
-| [m365-agents-ts](../../skills/agent/m365-agents-ts/SKILL.md) | Agent | Implements intelligent m365 agents ts with multi-factor... | Orchestration |
-| [make-automation](../../skills/agent/make-automation/SKILL.md) | Agent | Implements intelligent make automation with multi-factor... | Orchestration |
-| [manager](../../skills/cncf/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate... | Reference |
-| [manager](../../skills/coding/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine... | Implementation |
-| [market-data-cache](../../skills/trading/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low... | Implementation |
-| [market-impact](../../skills/trading/market-impact/SKILL.md) | Trading | "Implements market impact modeling and order book... | Implementation |
-| [market-microstructure](../../skills/trading/market-microstructure/SKILL.md) | Trading | "Implements order book dynamics and order flow analysis for... | Implementation |
-| [market-regimes](../../skills/trading/market-regimes/SKILL.md) | Trading | "Market regime detection and adaptation for trading systems... | Implementation |
-| [market-structure](../../skills/trading/market-structure/SKILL.md) | Trading | "Implements market structure and trading participants... | Implementation |
-| [maximum-likelihood](../../skills/coding/maximum-likelihood/SKILL.md) | Coding | Implements maximum likelihood estimation, likelihood... | Implementation |
-| [mcp-builder](../../skills/agent/mcp-builder/SKILL.md) | Agent | Implements intelligent mcp builder with multi-factor skill... | Orchestration |
-| [mcp-builder-ms](../../skills/agent/mcp-builder-ms/SKILL.md) | Agent | Implements intelligent mcp builder ms with multi-factor... | Orchestration |
-| [memory-systems](../../skills/agent/memory-systems/SKILL.md) | Agent | Implements intelligent memory systems with multi-factor... | Orchestration |
-| [memory-usage-analyzer](../../skills/agent/memory-usage-analyzer/SKILL.md) | Agent | Implements intelligent memory usage analyzer with... | Orchestration |
-| [message-queue-debugging](../../skills/agent/message-queue-debugging/SKILL.md) | Agent | Debugs Kafka, RabbitMQ, and SQS message queues with... | Implementation |
-| [message-queue-troubleshooting](../../skills/agent/message-queue-troubleshooting/SKILL.md) | Agent | Implements intelligent message queue troubleshooting for... | Implementation |
-| [metrics-and-kpis](../../skills/coding/metrics-and-kpis/SKILL.md) | Coding | "Defines, selects, and monitors key performance indicators... | Implementation |
-| [missing-data](../../skills/coding/missing-data/SKILL.md) | Coding | "Handles missing data using imputation strategies, deletion... | Implementation |
-| [ml-pipeline-workflow](../../skills/agent/ml-pipeline-workflow/SKILL.md) | Agent | Implements intelligent ml pipeline workflow with... | Orchestration |
-| [model-ensemble](../../skills/trading/model-ensemble/SKILL.md) | Trading | "Provides Combine multiple models for improved prediction... | Implementation |
-| [model-fairness](../../skills/coding/model-fairness/SKILL.md) | Coding | "Evaluates and mitigates fairness issues including bias... | Implementation |
-| [model-interpretation](../../skills/coding/model-interpretation/SKILL.md) | Coding | "Provides Interprets models using SHAP values, LIME,... | Implementation |
-| [model-robustness](../../skills/coding/model-robustness/SKILL.md) | Coding | Improves model robustness including adversarial robustness,... | Implementation |
-| [model-selection](../../skills/coding/model-selection/SKILL.md) | Coding | "Provides Compares and selects models using AIC, BIC,... | Implementation |
-| [models](../../skills/coding/models/SKILL.md) | Coding | "'Pydantic frozen data models for trading: enums, annotated... | Implementation |
-| [momentum-indicators](../../skills/trading/momentum-indicators/SKILL.md) | Trading | "Implements rsi, macd, stochastic oscillators and momentum... | Implementation |
-| [monitor](../../skills/cncf/monitor/SKILL.md) | Cncf | "Provides Monitoring and logging for Azure resources with... | Reference |
-| [monte-carlo](../../skills/coding/monte-carlo/SKILL.md) | Coding | "Implements Monte Carlo sampling, simulation methods, and... | Implementation |
-| [multi-advisor](../../skills/agent/multi-advisor/SKILL.md) | Agent | Implements intelligent multi advisor with multi-factor... | Orchestration |
-| [multi-agent-patterns](../../skills/agent/multi-agent-patterns/SKILL.md) | Agent | Implements intelligent multi agent patterns with... | Orchestration |
-| [multi-agent-task-orchestrator](../../skills/agent/multi-agent-task-orchestrator/SKILL.md) | Agent | Implements intelligent multi agent task orchestrator with... | Orchestration |
-| [multi-asset-model](../../skills/trading/multi-asset-model/SKILL.md) | Trading | "Provides Model inter-asset relationships for portfolio and... | Implementation |
-| [multi-skill-executor](../../skills/agent/multi-skill-executor/SKILL.md) | Agent | Implements intelligent multi skill executor with... | Orchestration |
-| [n8n-code-javascript](../../skills/agent/n8n-code-javascript/SKILL.md) | Agent | Implements intelligent n8n code javascript with... | Orchestration |
-| [n8n-code-python](../../skills/agent/n8n-code-python/SKILL.md) | Agent | Implements intelligent n8n code python with multi-factor... | Orchestration |
-| [n8n-expression-syntax](../../skills/agent/n8n-expression-syntax/SKILL.md) | Agent | Implements intelligent n8n expression syntax with... | Orchestration |
-| [n8n-mcp-tools-expert](../../skills/agent/n8n-mcp-tools-expert/SKILL.md) | Agent | Implements intelligent n8n mcp tools expert with... | Orchestration |
-| [n8n-node-configuration](../../skills/agent/n8n-node-configuration/SKILL.md) | Agent | Implements intelligent n8n node configuration with... | Orchestration |
-| [n8n-validation-expert](../../skills/agent/n8n-validation-expert/SKILL.md) | Agent | Implements intelligent n8n validation expert with... | Orchestration |
-| [n8n-workflow-patterns](../../skills/agent/n8n-workflow-patterns/SKILL.md) | Agent | Implements intelligent n8n workflow patterns with... | Orchestration |
-| [nats](../../skills/cncf/nats/SKILL.md) | Cncf | "NATS in Cloud Native Messaging - cloud native... | Reference |
-| [network-diagnostics](../../skills/agent/network-diagnostics/SKILL.md) | Agent | Implements intelligent network diagnostics with... | Orchestration |
-| [network-interface-cni](../../skills/cncf/network-interface-cni/SKILL.md) | Cncf | "Container Network Interface in Cloud Native Network -... | Reference |
-| [network-troubleshooting](../../skills/agent/network-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves network connectivity issues... | Implementation |
-| [networking-troubleshooting](../../skills/cncf/networking-troubleshooting/SKILL.md) | Cncf | Implements comprehensive networking troubleshooting... | Implementation |
-| [neural-networks](../../skills/coding/neural-networks/SKILL.md) | Coding | "Implements deep neural networks, backpropagation,... | Implementation |
-| [news-embedding](../../skills/trading/news-embedding/SKILL.md) | Trading | "Implements process news text using nlp embeddings for... | Implementation |
-| [normalization](../../skills/coding/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed... | Implementation |
-| [not-human-search-mcp](../../skills/agent/not-human-search-mcp/SKILL.md) | Agent | Implements intelligent not human search mcp with... | Orchestration |
-| [notion-automation](../../skills/agent/notion-automation/SKILL.md) | Agent | Implements intelligent notion automation with multi-factor... | Orchestration |
-| [o](../../skills/cncf/o/SKILL.md) | Cncf | "Provides CRI-O in Container Runtime - OCI-compliant... | Reference |
-| [oathkeeper](../../skills/cncf/oathkeeper/SKILL.md) | Cncf | "Oathkeeper in Identity & Access - cloud native... | Reference |
-| [observational-studies](../../skills/coding/observational-studies/SKILL.md) | Coding | "Analyzes observational data using matching methods,... | Implementation |
-| [online-experiments](../../skills/coding/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits,... | Implementation |
-| [opencost](../../skills/cncf/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native... | Reference |
-| [openfeature](../../skills/cncf/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native... | Reference |
-| [openfga](../../skills/cncf/openfga/SKILL.md) | Cncf | "OpenFGA in Security & Compliance - cloud native... | Reference |
-| [openkruise](../../skills/cncf/openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with... | Reference |
-| [opentelemetry](../../skills/cncf/opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing,... | Reference |
-| [openyurt](../../skills/cncf/openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge... | Reference |
-| [order-book](../../skills/trading/order-book/SKILL.md) | Trading | "Order book data handling, spread calculation, liquidity... | Implementation |
-| [order-book-impact](../../skills/trading/order-book-impact/SKILL.md) | Trading | "Provides Order Book Impact Measurement and Market... | Implementation |
-| [order-book-sync](../../skills/trading/order-book-sync/SKILL.md) | Trading | "Provides Order book synchronization and state management... | Implementation |
-| [order-execution-api](../../skills/trading/order-execution-api/SKILL.md) | Trading | "Implements order execution and management api for trading... | Implementation |
-| [order-flow-analysis](../../skills/trading/order-flow-analysis/SKILL.md) | Trading | "Provides Analyze order flow to detect market pressure and... | Implementation |
-| [os-scripting](../../skills/agent/os-scripting/SKILL.md) | Agent | Implements intelligent os scripting with multi-factor skill... | Orchestration |
-| [osi](../../skills/cncf/osi/SKILL.md) | Cncf | "OSI Model Networking for Cloud-Native - All 7 layers with... | Reference |
-| [outlook-automation](../../skills/agent/outlook-automation/SKILL.md) | Agent | Implements intelligent outlook automation with multi-factor... | Orchestration |
-| [outlook-calendar-automation](../../skills/agent/outlook-calendar-automation/SKILL.md) | Agent | Implements intelligent outlook calendar automation with... | Orchestration |
-| [parallel-agents](../../skills/agent/parallel-agents/SKILL.md) | Agent | Implements intelligent parallel agents with multi-factor... | Orchestration |
-| [parallel-skill-runner](../../skills/agent/parallel-skill-runner/SKILL.md) | Agent | Implements intelligent parallel skill runner with... | Orchestration |
-| [patterns](../../skills/coding/patterns/SKILL.md) | Coding | "Provides Software architecture patterns including MVC,... | Reference |
-| [patterns](../../skills/coding/patterns/SKILL.md) | Coding | "FastAPI application structure with typed error hierarchy,... | Implementation |
-| [performance-attribution](../../skills/trading/performance-attribution/SKILL.md) | Trading | "Provides Performance Attribution Systems for Trading... | Implementation |
-| [performance-profiler](../../skills/agent/performance-profiler/SKILL.md) | Agent | Implements intelligent performance profiler with... | Orchestration |
-| [pipecat-friday-agent](../../skills/agent/pipecat-friday-agent/SKILL.md) | Agent | Implements intelligent pipecat friday agent with... | Orchestration |
-| [plan-writing](../../skills/agent/plan-writing/SKILL.md) | Agent | Implements intelligent plan writing with multi-factor skill... | Orchestration |
-| [planning-with-files](../../skills/agent/planning-with-files/SKILL.md) | Agent | Implements intelligent planning with files with... | Orchestration |
-| [policy-agent-opa](../../skills/cncf/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security & Compliance - cloud... | Reference |
-| [position-exits](../../skills/trading/position-exits/SKILL.md) | Trading | "Exit strategies, trailing stops, and take-profit... | Implementation |
-| [position-sizing](../../skills/trading/position-sizing/SKILL.md) | Trading | "'Position Sizing Algorithms: Fixed Fractional, Kelly... | Implementation |
-| [position-sizing](../../skills/trading/position-sizing/SKILL.md) | Trading | "Calculating optimal position sizes using Kelly criterion,... | Implementation |
-| [postgresql-optimization](../../skills/agent/postgresql-optimization/SKILL.md) | Agent | Implements intelligent postgresql optimization with... | Orchestration |
-| [pr-writer](../../skills/agent/pr-writer/SKILL.md) | Agent | Implements intelligent pr writer with multi-factor skill... | Orchestration |
-| [price-action-patterns](../../skills/trading/price-action-patterns/SKILL.md) | Trading | "Provides Analysis of candlestick and chart patterns for... | Implementation |
-| [privacy-ml](../../skills/coding/privacy-ml/SKILL.md) | Coding | "Implements privacy-preserving machine learning including... | Implementation |
-| [project](../../skills/cncf/project/SKILL.md) | Cncf | "Notary Project in Content Trust & Security - cloud... | Reference |
-| [prometheus](../../skills/cncf/prometheus/SKILL.md) | Cncf | "Prometheus in Cloud-Native Engineering - The Prometheus... | Reference |
-| [prompt-engineer](../../skills/agent/prompt-engineer/SKILL.md) | Agent | Implements intelligent prompt engineer with multi-factor... | Orchestration |
-| [pulumi](../../skills/cncf/pulumi/SKILL.md) | Cncf | Implements Pulumi infrastructure as code using Python,... | Implementation |
-| [pydantic-ai](../../skills/agent/pydantic-ai/SKILL.md) | Agent | Implements intelligent pydantic ai with multi-factor skill... | Orchestration |
-| [python-fastapi-development](../../skills/agent/python-fastapi-development/SKILL.md) | Agent | Implements intelligent python fastapi development with... | Orchestration |
-| [quality-policies](../../skills/coding/quality-policies/SKILL.md) | Coding | "Provides Establishing policies for maintaining a clean... | Implementation |
-| [query-optimizer](../../skills/agent/query-optimizer/SKILL.md) | Agent | Implements intelligent query optimizer with multi-factor... | Orchestration |
-| [rag-implementation](../../skills/agent/rag-implementation/SKILL.md) | Agent | Implements intelligent rag implementation with multi-factor... | Orchestration |
-| [randomized-experiments](../../skills/coding/randomized-experiments/SKILL.md) | Coding | "Provides Designs and analyzes randomized controlled trials... | Implementation |
-| [rate-limiting](../../skills/trading/rate-limiting/SKILL.md) | Trading | "Rate Limiting Strategies and Circuit Breaker Patterns for... | Implementation |
-| [rate-limiting](../../skills/trading/rate-limiting/SKILL.md) | Trading | "Provides Rate Limiting and Exchange API Management for... | Implementation |
-| [rbac](../../skills/cncf/rbac/SKILL.md) | Cncf | "Manages identity and access with roles, service... | Reference |
-| [rds](../../skills/cncf/rds/SKILL.md) | Cncf | "Deploys managed relational databases (MySQL, PostgreSQL,... | Reference |
-| [react-nextjs-development](../../skills/agent/react-nextjs-development/SKILL.md) | Agent | Implements intelligent react nextjs development with... | Orchestration |
-| [realistic-simulation](../../skills/trading/realistic-simulation/SKILL.md) | Trading | "Provides Realistic Paper Trading Simulation with Market... | Implementation |
-| [recallmax](../../skills/agent/recallmax/SKILL.md) | Agent | Implements intelligent recallmax with multi-factor skill... | Orchestration |
-| [receiving-code-review](../../skills/agent/receiving-code-review/SKILL.md) | Agent | Implements intelligent receiving code review with... | Orchestration |
-| [regime-classification](../../skills/trading/regime-classification/SKILL.md) | Trading | "Provides Detect current market regime for adaptive trading... | Implementation |
-| [regime-detection](../../skills/trading/regime-detection/SKILL.md) | Trading | "Provides Market Regime Detection Systems for Adaptive... | Implementation |
-| [regression-detector](../../skills/agent/regression-detector/SKILL.md) | Agent | Implements intelligent regression detector with... | Orchestration |
-| [regression-evaluation](../../skills/coding/regression-evaluation/SKILL.md) | Coding | "Evaluates regression models using MSE, RMSE, MAE, MAPE,... | Implementation |
-| [reinforcement-learning](../../skills/trading/reinforcement-learning/SKILL.md) | Trading | "Provides Reinforcement Learning for automated trading... | Implementation |
-| [release-pipeline](../../skills/coding/release-pipeline/SKILL.md) | Coding | Implements comprehensive secure release pipeline with CVE... | Implementation |
-| [releases](../../skills/cncf/releases/SKILL.md) | Cncf | "Creates or updates RELEASES.md documenting the release... | Reference |
-| [render-automation](../../skills/agent/render-automation/SKILL.md) | Agent | Implements intelligent render automation with multi-factor... | Orchestration |
-| [reproducible-research](../../skills/coding/reproducible-research/SKILL.md) | Coding | "Implements reproducible research practices including code... | Implementation |
-| [requesting-code-review](../../skills/agent/requesting-code-review/SKILL.md) | Agent | Implements intelligent requesting code review with... | Orchestration |
-| [resource-manager](../../skills/cncf/resource-manager/SKILL.md) | Cncf | "Provides Infrastructure as code using ARM templates for... | Reference |
-| [resource-optimizer](../../skills/agent/resource-optimizer/SKILL.md) | Agent | Implements intelligent resource optimizer with multi-factor... | Orchestration |
-| [review](../../skills/coding/review/SKILL.md) | Coding | "Analyzes code diffs and files to identify bugs, security... | Implementation |
-| [review](../../skills/coding/review/SKILL.md) | Coding | "Security-focused code review identifying vulnerabilities... | Implementation |
-| [risk-management-basics](../../skills/trading/risk-management-basics/SKILL.md) | Trading | "Position sizing, stop-loss implementation, and... | Implementation |
-| [rollback-procedures](../../skills/cncf/rollback-procedures/SKILL.md) | Cncf | Implements comprehensive rollback procedures including... | Implementation |
-| [rook](../../skills/cncf/rook/SKILL.md) | Cncf | "Configures rook in cloud-native storage orchestration for... | Reference |
-| [route53](../../skills/cncf/route53/SKILL.md) | Cncf | "Configures DNS routing with Route 53 for domain... | Reference |
-| [runtime-log-analyzer](../../skills/agent/runtime-log-analyzer/SKILL.md) | Agent | Implements intelligent runtime log analyzer with... | Orchestration |
-| [s3](../../skills/cncf/s3/SKILL.md) | Cncf | "Configures S3 object storage with versioning, lifecycle... | Reference |
-| [scale-sets](../../skills/cncf/scale-sets/SKILL.md) | Cncf | "Manages auto-scaling VM groups with load balancing and... | Reference |
-| [schema-inference-engine](../../skills/agent/schema-inference-engine/SKILL.md) | Agent | Implements intelligent schema inference engine with... | Orchestration |
-| [scoring](../../skills/coding/scoring/SKILL.md) | Coding | "Multi-factor conviction scoring engine combining... | Implementation |
-| [secret-manager](../../skills/cncf/secret-manager/SKILL.md) | Cncf | "Provides Stores and rotates secrets with encryption and... | Reference |
-| [secrets-manager](../../skills/cncf/secrets-manager/SKILL.md) | Cncf | "Manages sensitive data with automatic encryption,... | Reference |
-| [security-audit](../../skills/agent/security-audit/SKILL.md) | Agent | Implements intelligent security audit with multi-factor... | Orchestration |
-| [security-compliance](../../skills/cncf/security-compliance/SKILL.md) | Cncf | Implements security compliance frameworks (SOC2, HIPAA,... | Implementation |
-| [security-policy](../../skills/cncf/security-policy/SKILL.md) | Cncf | "Creates or updates SECURITY.md defining the vulnerability... | Reference |
-| [self-critique-engine](../../skills/agent/self-critique-engine/SKILL.md) | Agent | Implements intelligent self critique engine with... | Orchestration |
-| [sendgrid-automation](../../skills/agent/sendgrid-automation/SKILL.md) | Agent | Implements intelligent sendgrid automation with... | Orchestration |
-| [sentiment-analysis](../../skills/trading/sentiment-analysis/SKILL.md) | Trading | "AI-powered sentiment analysis for news, social media, and... | Implementation |
-| [sentiment-features](../../skills/trading/sentiment-features/SKILL.md) | Trading | "Provides Extract market sentiment from news, social media,... | Implementation |
-| [service-bus](../../skills/cncf/service-bus/SKILL.md) | Cncf | "Provides Messaging service with queues and topics for... | Reference |
-| [service-mesh-debugging](../../skills/cncf/service-mesh-debugging/SKILL.md) | Cncf | Implements comprehensive debugging workflows for Istio and... | Implementation |
-| [sharpe-ratio](../../skills/trading/sharpe-ratio/SKILL.md) | Trading | "Provides Sharpe Ratio Calculation and Risk-Adjusted... | Implementation |
-| [shop](../../skills/coding/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing... | Implementation |
-| [shopify-automation](../../skills/agent/shopify-automation/SKILL.md) | Agent | Implements intelligent shopify automation with multi-factor... | Orchestration |
-| [skill-creator](../../skills/agent/skill-creator/SKILL.md) | Agent | Implements intelligent skill creator with multi-factor... | Orchestration |
-| [skill-creator-ms](../../skills/agent/skill-creator-ms/SKILL.md) | Agent | Implements intelligent skill creator ms with multi-factor... | Orchestration |
-| [skill-developer](../../skills/agent/skill-developer/SKILL.md) | Agent | Implements intelligent skill developer with multi-factor... | Orchestration |
-| [skill-improver](../../skills/agent/skill-improver/SKILL.md) | Agent | Implements intelligent skill improver with multi-factor... | Orchestration |
-| [skill-installer](../../skills/agent/skill-installer/SKILL.md) | Agent | Implements intelligent skill installer with multi-factor... | Orchestration |
-| [skill-optimizer](../../skills/agent/skill-optimizer/SKILL.md) | Agent | Implements intelligent skill optimizer with multi-factor... | Orchestration |
-| [skill-rails-upgrade](../../skills/agent/skill-rails-upgrade/SKILL.md) | Agent | Implements intelligent skill rails upgrade with... | Orchestration |
-| [skill-router](../../skills/agent/skill-router/SKILL.md) | Agent | Implements intelligent skill router with multi-factor skill... | Orchestration |
-| [skill-scanner](../../skills/agent/skill-scanner/SKILL.md) | Agent | Implements intelligent skill scanner with multi-factor... | Orchestration |
-| [skill-seekers](../../skills/agent/skill-seekers/SKILL.md) | Agent | Implements intelligent skill seekers with multi-factor... | Orchestration |
-| [skill-sentinel](../../skills/agent/skill-sentinel/SKILL.md) | Agent | Implements intelligent skill sentinel with multi-factor... | Orchestration |
-| [skill-writer](../../skills/agent/skill-writer/SKILL.md) | Agent | Implements intelligent skill writer with multi-factor skill... | Orchestration |
-| [slack-automation](../../skills/agent/slack-automation/SKILL.md) | Agent | Implements intelligent slack automation with multi-factor... | Orchestration |
-| [slippage-model](../../skills/trading/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for... | Implementation |
-| [slippage-modeling](../../skills/trading/slippage-modeling/SKILL.md) | Trading | "Slippage Estimation, Simulation, and Fee Modeling for... | Implementation |
-| [sns](../../skills/cncf/sns/SKILL.md) | Cncf | "Deploys managed pub/sub messaging with SNS for... | Reference |
-| [spiffe](../../skills/cncf/spiffe/SKILL.md) | Cncf | "Provides SPIFFE in Secure Product Identity Framework for... | Reference |
-| [spire](../../skills/cncf/spire/SKILL.md) | Cncf | "Configures spire in spiffe implementation for real-world... | Reference |
-| [sql-database](../../skills/cncf/sql-database/SKILL.md) | Cncf | Provides Managed relational database with elastic pools,... | Reference |
-| [sqs](../../skills/cncf/sqs/SKILL.md) | Cncf | "Deploys managed message queues with SQS for asynchronous... | Reference |
-| [ssm](../../skills/cncf/ssm/SKILL.md) | Cncf | "Manages EC2 instances and on-premises servers with AWS... | Reference |
-| [stacktrace-root-cause](../../skills/agent/stacktrace-root-cause/SKILL.md) | Agent | Implements intelligent stacktrace root cause with... | Orchestration |
-| [statistical-arbitrage](../../skills/trading/statistical-arbitrage/SKILL.md) | Trading | "Implements pair trading and cointegration-based arbitrage... | Implementation |
-| [statistical-power](../../skills/coding/statistical-power/SKILL.md) | Coding | "Analyzes statistical power, sample size determination,... | Implementation |
-| [stop-loss](../../skills/trading/stop-loss/SKILL.md) | Trading | "Implements stop loss strategies for risk management for... | Implementation |
-| [stream-processing](../../skills/trading/stream-processing/SKILL.md) | Trading | "Provides Streaming data processing for real-time trading... | Implementation |
-| [stress-testing](../../skills/trading/stress-testing/SKILL.md) | Trading | "Implements stress test scenarios and portfolio resilience... | Implementation |
-| [strimzi](../../skills/cncf/strimzi/SKILL.md) | Cncf | "Provides Strimzi in Kafka on Kubernetes - Apache Kafka for... | Reference |
-| [stripe-automation](../../skills/agent/stripe-automation/SKILL.md) | Agent | Implements intelligent stripe automation with multi-factor... | Orchestration |
-| [subagent-driven-development](../../skills/agent/subagent-driven-development/SKILL.md) | Agent | Implements intelligent subagent driven development with... | Orchestration |
-| [support-resistance](../../skills/trading/support-resistance/SKILL.md) | Trading | "Implements technical levels where price tends to pause or... | Implementation |
-| [support-vector-machines](../../skills/coding/support-vector-machines/SKILL.md) | Coding | "Implements support vector machines (SVM) with kernel... | Implementation |
-| [synthetic-control](../../skills/coding/synthetic-control/SKILL.md) | Coding | "Implements synthetic control methods,... | Implementation |
-| [synthetic-data](../../skills/trading/synthetic-data/SKILL.md) | Trading | "Provides Generate synthetic financial data for training... | Implementation |
-| [tail-risk](../../skills/trading/tail-risk/SKILL.md) | Trading | "Implements tail risk management and extreme event... | Implementation |
-| [task-decomposition-engine](../../skills/agent/task-decomposition-engine/SKILL.md) | Agent | Implements intelligent task decomposition engine with... | Orchestration |
-| [task-intelligence](../../skills/agent/task-intelligence/SKILL.md) | Agent | Implements intelligent task intelligence with multi-factor... | Orchestration |
-| [tekton](../../skills/cncf/tekton/SKILL.md) | Cncf | "Provides Tekton in Cloud-Native Engineering - A... | Reference |
-| [telemetry](../../skills/cncf/telemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability - cloud native... | Reference |
-| [temporal-golang-pro](../../skills/agent/temporal-golang-pro/SKILL.md) | Agent | Implements intelligent temporal golang pro with... | Orchestration |
-| [temporal-python-pro](../../skills/agent/temporal-python-pro/SKILL.md) | Agent | Implements intelligent temporal python pro with... | Orchestration |
-| [terraform](../../skills/cncf/terraform/SKILL.md) | Cncf | Implements Terraform infrastructure as code for cloud... | Implementation |
-| [terraform-infrastructure](../../skills/agent/terraform-infrastructure/SKILL.md) | Agent | Implements intelligent terraform infrastructure with... | Orchestration |
-| [test-oracle-generator](../../skills/agent/test-oracle-generator/SKILL.md) | Agent | Implements intelligent test oracle generator with... | Orchestration |
-| [testing-qa](../../skills/agent/testing-qa/SKILL.md) | Agent | Implements intelligent testing qa with multi-factor skill... | Orchestration |
-| [thanos](../../skills/cncf/thanos/SKILL.md) | Cncf | "Provides Thanos in High availability Prometheus solution... | Reference |
-| [tikv](../../skills/cncf/tikv/SKILL.md) | Cncf | "TiKV in Distributed transactional key-value database... | Reference |
-| [time-series-database](../../skills/trading/time-series-database/SKILL.md) | Trading | "Provides Time-series database queries and optimization for... | Implementation |
-| [time-series-forecasting](../../skills/coding/time-series-forecasting/SKILL.md) | Coding | "Implements ARIMA, exponential smoothing, state-space... | Implementation |
-| [time-series-forecasting](../../skills/trading/time-series-forecasting/SKILL.md) | Trading | "Provides Time series forecasting for price prediction and... | Implementation |
-| [topic-modeling](../../skills/coding/topic-modeling/SKILL.md) | Coding | "Implements topic modeling using Latent Dirichlet... | Implementation |
-| [toto](../../skills/cncf/toto/SKILL.md) | Cncf | "in-toto in Supply Chain Security - cloud native... | Reference |
-| [track-management](../../skills/agent/track-management/SKILL.md) | Agent | Implements intelligent track management with multi-factor... | Orchestration |
-| [trade-reporting](../../skills/trading/trade-reporting/SKILL.md) | Trading | "Real-time trade reporting and execution analytics for... | Implementation |
-| [trading-edge](../../skills/trading/trading-edge/SKILL.md) | Trading | "Provides Finding and maintaining competitive advantage in... | Implementation |
-| [trading-plan](../../skills/trading/trading-plan/SKILL.md) | Trading | "Implements trading plan structure and risk management... | Implementation |
-| [trading-psychology](../../skills/trading/trading-psychology/SKILL.md) | Trading | "Emotional discipline, cognitive bias awareness, and... | Implementation |
-| [traffic-manager](../../skills/cncf/traffic-manager/SKILL.md) | Cncf | Provides DNS-based traffic routing with health checks and... | Reference |
-| [tree-methods](../../skills/coding/tree-methods/SKILL.md) | Coding | "Implements decision trees, random forests, gradient... | Implementation |
-| [trend-analysis](../../skills/trading/trend-analysis/SKILL.md) | Trading | "Provides Trend identification, classification, and... | Implementation |
-| [trigger-dev](../../skills/agent/trigger-dev/SKILL.md) | Agent | Implements intelligent trigger dev with multi-factor skill... | Orchestration |
-| [twap](../../skills/trading/twap/SKILL.md) | Trading | "Time-Weighted Average Price algorithm for executing large... | Implementation |
-| [twap-vwap](../../skills/trading/twap-vwap/SKILL.md) | Trading | 'Provides ''TWAP and VWAP Execution Algorithms:... | Implementation |
-| [update-framework-tuf](../../skills/cncf/update-framework-tuf/SKILL.md) | Cncf | "The Update Framework (TUF) in Secure software update... | Reference |
-| [upstash-qstash](../../skills/agent/upstash-qstash/SKILL.md) | Agent | Implements intelligent upstash qstash with multi-factor... | Orchestration |
-| [using-superpowers](../../skills/agent/using-superpowers/SKILL.md) | Agent | Implements intelligent using superpowers with multi-factor... | Orchestration |
-| [v10-learning](../../skills/programming/v10-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 10.1A (2005) —... | Reference |
-| [v12-learning](../../skills/programming/v12-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 12.7 (2023) —... | Reference |
-| [validation](../../skills/coding/validation/SKILL.md) | Coding | Validates pipeline stages and returns config status strings... | Implementation |
-| [validation](../../skills/trading/validation/SKILL.md) | Trading | "Provides Data validation and quality assurance for trading... | Implementation |
-| [value-at-risk](../../skills/trading/value-at-risk/SKILL.md) | Trading | "Implements value at risk calculations for portfolio risk... | Implementation |
-| [verification-before-completion](../../skills/agent/verification-before-completion/SKILL.md) | Agent | Implements intelligent verification before completion with... | Orchestration |
-| [viboscope](../../skills/agent/viboscope/SKILL.md) | Agent | Implements intelligent viboscope with multi-factor skill... | Orchestration |
-| [virtual-machines](../../skills/cncf/virtual-machines/SKILL.md) | Cncf | "Deploys and manages VMs with auto-scaling, availability... | Reference |
-| [virtual-networks](../../skills/cncf/virtual-networks/SKILL.md) | Cncf | "Provides Networking with subnets, network security groups,... | Reference |
-| [vitess](../../skills/cncf/vitess/SKILL.md) | Cncf | "Provides Vitess in Database clustering system for... | Reference |
-| [voice-ai-development](../../skills/agent/voice-ai-development/SKILL.md) | Agent | Implements intelligent voice ai development with... | Orchestration |
-| [volatility-analysis](../../skills/trading/volatility-analysis/SKILL.md) | Trading | "Implements volatility measurement, forecasting, and risk... | Implementation |
-| [volatility-prediction](../../skills/trading/volatility-prediction/SKILL.md) | Trading | "Implements forecast volatility for risk management and... | Implementation |
-| [volcano](../../skills/cncf/volcano/SKILL.md) | Cncf | "Configures volcano in batch scheduling infrastructure for... | Reference |
-| [volume-profile](../../skills/trading/volume-profile/SKILL.md) | Trading | "Provides Volume analysis techniques for understanding... | Implementation |
-| [vpc](../../skills/cncf/vpc/SKILL.md) | Cncf | "Configures Virtual Private Clouds with subnets, route... | Reference |
-| [vpc](../../skills/cncf/vpc/SKILL.md) | Cncf | "Provides networking with subnets, firewall rules, and VPC... | Reference |
-| [vwap](../../skills/trading/vwap/SKILL.md) | Trading | "Volume-Weighted Average Price algorithm for executing... | Implementation |
-| [walk-forward](../../skills/trading/walk-forward/SKILL.md) | Trading | "Implements walk-forward optimization for robust strategy... | Implementation |
-| [wasmcloud](../../skills/cncf/wasmcloud/SKILL.md) | Cncf | "Provides wasmCloud in WebAssembly-based distributed... | Reference |
-| [web-security-testing](../../skills/agent/web-security-testing/SKILL.md) | Agent | Implements intelligent web security testing with... | Orchestration |
-| [websocket-handling](../../skills/trading/websocket-handling/SKILL.md) | Trading | "Real-time market data handling with WebSockets including... | Implementation |
-| [websocket-streaming](../../skills/trading/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing... | Implementation |
-| [wordpress](../../skills/agent/wordpress/SKILL.md) | Agent | Implements intelligent wordpress with multi-factor skill... | Orchestration |
-| [wordpress-plugin-development](../../skills/agent/wordpress-plugin-development/SKILL.md) | Agent | Implements intelligent wordpress plugin development with... | Orchestration |
-| [wordpress-theme-development](../../skills/agent/wordpress-theme-development/SKILL.md) | Agent | Implements intelligent wordpress theme development with... | Orchestration |
-| [wordpress-woocommerce-development](../../skills/agent/wordpress-woocommerce-development/SKILL.md) | Agent | Implements intelligent wordpress woocommerce development... | Orchestration |
-| [workflow-automation](../../skills/agent/workflow-automation/SKILL.md) | Agent | Implements intelligent workflow automation with... | Orchestration |
-| [workflow-orchestration-patterns](../../skills/agent/workflow-orchestration-patterns/SKILL.md) | Agent | Implements intelligent workflow orchestration patterns with... | Orchestration |
-| [workflow-patterns](../../skills/agent/workflow-patterns/SKILL.md) | Agent | Implements intelligent workflow patterns with multi-factor... | Orchestration |
-| [writing-plans](../../skills/agent/writing-plans/SKILL.md) | Agent | Implements intelligent writing plans with multi-factor... | Orchestration |
-| [writing-skills](../../skills/agent/writing-skills/SKILL.md) | Agent | Implements intelligent writing skills with multi-factor... | Orchestration |
-| [zapier-make-patterns](../../skills/agent/zapier-make-patterns/SKILL.md) | Agent | Implements intelligent zapier make patterns with... | Orchestration |
-| [zendesk-automation](../../skills/agent/zendesk-automation/SKILL.md) | Agent | Implements intelligent zendesk automation with multi-factor... | Orchestration |
-| [zipai-optimizer](../../skills/agent/zipai-optimizer/SKILL.md) | Agent | Implements intelligent zipai optimizer with multi-factor... | Orchestration |
-| [zoom-automation](../../skills/agent/zoom-automation/SKILL.md) | Agent | Implements intelligent zoom automation with multi-factor... | Orchestration |
-| [zot](../../skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture,... | Reference |
+| [ab-testing](skills/coding/ab-testing/SKILL.md) | Coding | Provides Designs and analyzes A/B tests including hypothesis testing, power analysis, sample size calculation, and statistical significance evaluation | Implementation |
+| [acceptance-orchestrator](skills/agent/acceptance-orchestrator/SKILL.md) | Agent | Implements intelligent acceptance orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [address-github-comments](skills/agent/address-github-comments/SKILL.md) | Agent | Implements intelligent address github comments with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [advanced](skills/coding/advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper" | Reference |
+| [agent-evaluation](skills/agent/agent-evaluation/SKILL.md) | Agent | Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [agent-manager-skill](skills/agent/agent-manager-skill/SKILL.md) | Agent | Implements intelligent agent manager skill with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [agent-memory-systems](skills/agent/agent-memory-systems/SKILL.md) | Agent | Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ai-agent-development](skills/agent/ai-agent-development/SKILL.md) | Agent | Implements intelligent ai agent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ai-agents-architect](skills/agent/ai-agents-architect/SKILL.md) | Agent | Implements intelligent ai agents architect with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ai-dev-jobs-mcp](skills/agent/ai-dev-jobs-mcp/SKILL.md) | Agent | Implements intelligent ai dev jobs mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ai-ml](skills/agent/ai-ml/SKILL.md) | Agent | Implements intelligent ai ml with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [airflow-dag-patterns](skills/agent/airflow-dag-patterns/SKILL.md) | Agent | Implements intelligent airflow dag patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [airtable-automation](skills/agent/airtable-automation/SKILL.md) | Agent | Implements intelligent airtable automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [aks](skills/cncf/aks/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling and Azure service integration" | Reference |
+| [algorithms](skills/programming/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints'' | Reference |
+| [alternative-data](skills/trading/alternative-data/SKILL.md) | Trading | "Alternative data ingestion pipelines for trading signals including news" social media, and on-chain data sources | Implementation |
+| [analyze-project](skills/agent/analyze-project/SKILL.md) | Agent | Implements intelligent analyze project with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [andruia-consultant](skills/agent/andruia-consultant/SKILL.md) | Agent | Implements intelligent andruia consultant with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [andruia-niche-intelligence](skills/agent/andruia-niche-intelligence/SKILL.md) | Agent | Implements intelligent andruia niche intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [andruia-skill-smith](skills/agent/andruia-skill-smith/SKILL.md) | Agent | Implements intelligent andruia skill smith with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [anomaly-detection](skills/coding/anomaly-detection/SKILL.md) | Coding | "Detects anomalies and outliers using isolation forests, local outlier factor (LOF), one-class SVM, and isolation-based methods" | Implementation |
+| [anomaly-detection](skills/trading/anomaly-detection/SKILL.md) | Trading | "Provides Detect anomalous market behavior, outliers, and potential market manipulation" | Implementation |
+| [antigravity-skill-orchestrator](skills/agent/antigravity-skill-orchestrator/SKILL.md) | Agent | Implements intelligent antigravity skill orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [antigravity-workflows](skills/agent/antigravity-workflows/SKILL.md) | Agent | Implements intelligent antigravity workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [api-documentation](skills/agent/api-documentation/SKILL.md) | Agent | Implements intelligent api documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [api-security-testing](skills/agent/api-security-testing/SKILL.md) | Agent | Implements intelligent api security testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-actor-development](skills/agent/apify-actor-development/SKILL.md) | Agent | Implements intelligent apify actor development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-actorization](skills/agent/apify-actorization/SKILL.md) | Agent | Implements intelligent apify actorization with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-audience-analysis](skills/agent/apify-audience-analysis/SKILL.md) | Agent | Implements intelligent apify audience analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-brand-reputation-monitoring](skills/agent/apify-brand-reputation-monitoring/SKILL.md) | Agent | Implements intelligent apify brand reputation monitoring with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-competitor-intelligence](skills/agent/apify-competitor-intelligence/SKILL.md) | Agent | Implements intelligent apify competitor intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-content-analytics](skills/agent/apify-content-analytics/SKILL.md) | Agent | Implements intelligent apify content analytics with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-ecommerce](skills/agent/apify-ecommerce/SKILL.md) | Agent | Implements intelligent apify ecommerce with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-influencer-discovery](skills/agent/apify-influencer-discovery/SKILL.md) | Agent | Implements intelligent apify influencer discovery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-lead-generation](skills/agent/apify-lead-generation/SKILL.md) | Agent | Implements intelligent apify lead generation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-market-research](skills/agent/apify-market-research/SKILL.md) | Agent | Implements intelligent apify market research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-trend-analysis](skills/agent/apify-trend-analysis/SKILL.md) | Agent | Implements intelligent apify trend analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [apify-ultimate-scraper](skills/agent/apify-ultimate-scraper/SKILL.md) | Agent | Implements intelligent apify ultimate scraper with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [architecture](skills/cncf/architecture/SKILL.md) | Cncf | "Creates or updates ARCHITECTURE.md documenting the project's design" components, and technical decisions for CNCF projects | Reference |
+| [argo](skills/cncf/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD" and Governance | Reference |
+| [ask-questions-if-underspecified](skills/agent/ask-questions-if-underspecified/SKILL.md) | Agent | Implements intelligent ask questions if underspecified with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [association-rules](skills/coding/association-rules/SKILL.md) | Coding | "Provides Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining" | Implementation |
+| [audio-transcriber](skills/agent/audio-transcriber/SKILL.md) | Agent | Implements intelligent audio transcriber with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [audit-context-building](skills/agent/audit-context-building/SKILL.md) | Agent | Implements intelligent audit context building with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [auri-core](skills/agent/auri-core/SKILL.md) | Agent | Implements intelligent auri core with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [auto-scaling](skills/cncf/auto-scaling/SKILL.md) | Cncf | "Configures automatic scaling of compute resources (EC2, RDS, DynamoDB" Lambda) based on demand metrics with scaling policies and lifecycle hooks. | Reference |
+| [automation](skills/cncf/automation/SKILL.md) | Cncf | Provides Automation and orchestration of Azure resources with runbooks and update management | Reference |
+| [automation](skills/coding/automation/SKILL.md) | Coding | "Provides Automating semantic versioning in Git repositories for version bumping, changelog generation, and release automation using conventional commits and to" | Implementation |
+| [autoscaling](skills/cncf/autoscaling/SKILL.md) | Cncf | "Provides Automatically scales compute resources based on metrics like CPU and custom signals" | Reference |
+| [backfill-strategy](skills/trading/backfill-strategy/SKILL.md) | Trading | "Provides Strategic data backfill for populating historical data in trading systems" | Implementation |
+| [backstage](skills/cncf/backstage/SKILL.md) | Cncf | "Provides Backstage in Cloud-Native Engineering - Developer Portal for Microservices" | Reference |
+| [base](skills/coding/base/SKILL.md) | Coding | "Abstract base strategy pattern with initialization guards, typed abstract" methods, and conviction scoring integration | Implementation |
+| [bash-scripting](skills/agent/bash-scripting/SKILL.md) | Agent | Implements intelligent bash scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [bayesian-inference](skills/coding/bayesian-inference/SKILL.md) | Coding | "Applies Bayesian methods for prior selection, posterior estimation, and probabilistic inference in machine learning models" | Implementation |
+| [bdistill-behavioral-xray](skills/agent/bdistill-behavioral-xray/SKILL.md) | Agent | Implements intelligent bdistill behavioral xray with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [behavioral-modes](skills/agent/behavioral-modes/SKILL.md) | Agent | Implements intelligent behavioral modes with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [best-practices](skills/cncf/best-practices/SKILL.md) | Cncf | "Cloud Native Computing Foundation (CNCF) architecture best practices" for production-grade Kubernetes deployments. Covers service mesh, CNI, GitOps, CI/CD, observability, security, networking, and scaling patterns across the CNCF landscape. | Reference |
+| [best-practices](skills/coding/best-practices/SKILL.md) | Coding | "Provides Markdown best practices for OpenCode skills - syntax rules, common pitfalls, and coding practices for documentation consistency" | Implementation |
+| [bias-variance-tradeoff](skills/coding/bias-variance-tradeoff/SKILL.md) | Coding | "Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model generalization" | Implementation |
+| [bitbucket-automation](skills/agent/bitbucket-automation/SKILL.md) | Agent | Implements intelligent bitbucket automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [blob-storage](skills/cncf/blob-storage/SKILL.md) | Cncf | Provides Object storage with versioning, lifecycle policies, and integration to other Azure services | Reference |
+| [blueprint](skills/agent/blueprint/SKILL.md) | Agent | Implements intelligent blueprint with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [branching-strategies](skills/coding/branching-strategies/SKILL.md) | Coding | "Git branching models including Git Flow, GitHub Flow, Trunk-Based Development" and feature flag strategies for CI/CD pipelines | Implementation |
+| [build](skills/agent/build/SKILL.md) | Agent | Implements intelligent build with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [buildpacks](skills/cncf/buildpacks/SKILL.md) | Cncf | "Provides Buildpacks in Cloud-Native Engineering - Turn source code into container images without Dockerfiles" | Reference |
+| [bus](skills/coding/bus/SKILL.md) | Coding | "Async pub/sub event bus with typed events, mixed sync/async dispatch" and singleton initialization for trading systems | Implementation |
+| [calico](skills/cncf/calico/SKILL.md) | Cncf | "Calico in Cloud Native Security - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [candle-data](skills/trading/candle-data/SKILL.md) | Trading | "OHLCV candle data processing, timeframe management, and validation for" trading algorithms | Implementation |
+| [categorical-encoding](skills/coding/categorical-encoding/SKILL.md) | Coding | "Provides Encodes categorical variables using one-hot encoding, target encoding, ordinal encoding, embeddings, and other encoding strategies" | Implementation |
+| [causal-inference](skills/coding/causal-inference/SKILL.md) | Coding | Implements causal models, directed acyclic graphs (DAGs), confounding adjustment, and mediation analysis for causal discovery | Implementation |
+| [cc-skill-backend-patterns](skills/agent/cc-skill-backend-patterns/SKILL.md) | Agent | Implements intelligent cc skill backend patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-clickhouse-io](skills/agent/cc-skill-clickhouse-io/SKILL.md) | Agent | Implements intelligent cc skill clickhouse io with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-coding-standards](skills/agent/cc-skill-coding-standards/SKILL.md) | Agent | Implements intelligent cc skill coding standards with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-continuous-learning](skills/agent/cc-skill-continuous-learning/SKILL.md) | Agent | Implements intelligent cc skill continuous learning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-frontend-patterns](skills/agent/cc-skill-frontend-patterns/SKILL.md) | Agent | Implements intelligent cc skill frontend patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-project-guidelines-example](skills/agent/cc-skill-project-guidelines-example/SKILL.md) | Agent | Implements intelligent cc skill project guidelines example with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-security-review](skills/agent/cc-skill-security-review/SKILL.md) | Agent | Implements intelligent cc skill security review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cc-skill-strategic-compact](skills/agent/cc-skill-strategic-compact/SKILL.md) | Agent | Implements intelligent cc skill strategic compact with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ccxt-patterns](skills/trading/ccxt-patterns/SKILL.md) | Trading | "Effective patterns for using CCXT library for exchange connectivity including" error handling, rate limiting, and state management | Implementation |
+| [cdn](skills/cncf/cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and global content distribution | Reference |
+| [changelog-automation](skills/agent/changelog-automation/SKILL.md) | Agent | Implements intelligent changelog automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [chaosmesh](skills/cncf/chaosmesh/SKILL.md) | Cncf | ''Provides Chaos Mesh in Cloud-Native Engineering -u6DF7u6C8Cu5DE5u7A0B u5E73' u53F0 for Kubernetes'' | Reference |
+| [ci-cd-pipeline-analyzer](skills/agent/ci-cd-pipeline-analyzer/SKILL.md) | Agent | Implements intelligent ci cd pipeline analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cicd-automation-workflow-automate](skills/agent/cicd-automation-workflow-automate/SKILL.md) | Agent | Implements intelligent cicd automation workflow automate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cicd-pipeline-debugging](skills/agent/cicd-pipeline-debugging/SKILL.md) | Agent | Debugging patterns for GitHub Actions, GitLab CI, Jenkins and other CI/CD systems including log analysis, runner issues, cache problems, and workflow optimization | Implementation |
+| [cicd-pipeline-troubleshooting](skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns. | Implementation |
+| [cilium](skills/cncf/cilium/SKILL.md) | Cncf | "Cilium in Cloud Native Network - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [circleci-automation](skills/agent/circleci-automation/SKILL.md) | Agent | Implements intelligent circleci automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [classification-metrics](skills/coding/classification-metrics/SKILL.md) | Coding | "Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification metrics" | Implementation |
+| [clickup-automation](skills/agent/clickup-automation/SKILL.md) | Agent | Implements intelligent clickup automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [closed-loop-delivery](skills/agent/closed-loop-delivery/SKILL.md) | Agent | Implements intelligent closed loop delivery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cloud-cdn](skills/cncf/cloud-cdn/SKILL.md) | Cncf | Provides Content delivery network for caching and globally distributing content with low latency | Reference |
+| [cloud-devops](skills/agent/cloud-devops/SKILL.md) | Agent | Implements intelligent cloud devops with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cloud-dns](skills/cncf/cloud-dns/SKILL.md) | Cncf | Manages DNS with health checks, traffic routing, and low-latency resolution | Reference |
+| [cloud-functions](skills/cncf/cloud-functions/SKILL.md) | Cncf | Deploys serverless functions triggered by events with automatic scaling and GCP service integration | Reference |
+| [cloud-kms](skills/cncf/cloud-kms/SKILL.md) | Cncf | "Manages encryption keys for data protection with automated rotation and auditing" | Reference |
+| [cloud-load-balancing](skills/cncf/cloud-load-balancing/SKILL.md) | Cncf | "Provides Distributes traffic across instances with automatic failover and health checking" | Reference |
+| [cloud-monitoring](skills/cncf/cloud-monitoring/SKILL.md) | Cncf | "Monitors GCP resources with metrics, logging, and alerting for operational visibility" | Reference |
+| [cloud-operations](skills/cncf/cloud-operations/SKILL.md) | Cncf | "Provides Systems management including monitoring, logging, error reporting, and diagnostics" | Reference |
+| [cloud-pubsub](skills/cncf/cloud-pubsub/SKILL.md) | Cncf | "Asynchronous messaging service for event streaming and decoupled application" integration. | Reference |
+| [cloud-sql](skills/cncf/cloud-sql/SKILL.md) | Cncf | "Provides managed relational databases (MySQL, PostgreSQL) with automated backups, replication, and encryption" | Reference |
+| [cloud-storage](skills/cncf/cloud-storage/SKILL.md) | Cncf | "Provides Stores objects with versioning, lifecycle policies, access control, and integration with other GCP services" | Reference |
+| [cloud-tasks](skills/cncf/cloud-tasks/SKILL.md) | Cncf | "Manages task queues for asynchronous job execution with retry policies" and rate limiting. | Reference |
+| [cloudevents](skills/cncf/cloudevents/SKILL.md) | Cncf | "CloudEvents in Streaming & Messaging - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [cloudformation](skills/cncf/cloudformation/SKILL.md) | Cncf | "Creates Infrastructure as Code templates with CloudFormation for reproducible" versioned, automated deployments of entire AWS infrastructure stacks. | Reference |
+| [cloudfront](skills/cncf/cloudfront/SKILL.md) | Cncf | "Configures CloudFront CDN for global content distribution with edge caching" DDoS protection, and SSL/TLS termination for improved performance and security. | Reference |
+| [cloudwatch](skills/cncf/cloudwatch/SKILL.md) | Cncf | "Configures CloudWatch monitoring with metrics, logs, alarms, and dashboards" for visibility into AWS resource performance, application health, and operational metrics. | Reference |
+| [clustering](skills/coding/clustering/SKILL.md) | Coding | "Implements clustering algorithms including K-means, hierarchical clustering, DBSCAN, Gaussian mixture models, and spectral clustering" | Implementation |
+| [cni](skills/cncf/cni/SKILL.md) | Cncf | "Cni in Cloud-Native Engineering - Container Network Interface - networking" for Linux containers | Reference |
+| [code-correctness-verifier](skills/agent/code-correctness-verifier/SKILL.md) | Agent | Implements intelligent code correctness verifier with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [commission-model](skills/trading/commission-model/SKILL.md) | Trading | "Implements commission model and fee structure simulation for risk management and algorithmic trading execution." | Implementation |
+| [commit](skills/agent/commit/SKILL.md) | Agent | Implements intelligent commit with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [community-detection](skills/coding/community-detection/SKILL.md) | Coding | "Detects communities and clusters in graphs using modularity optimization, spectral methods, and graph partitioning algorithms" | Implementation |
+| [compute-engine](skills/cncf/compute-engine/SKILL.md) | Cncf | "Deploys and manages virtual machine instances with auto-scaling, instance groups, and integration with GCP services for IaaS workloads" | Reference |
+| [concise-planning](skills/agent/concise-planning/SKILL.md) | Agent | Implements intelligent concise planning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-implement](skills/agent/conductor-implement/SKILL.md) | Agent | Implements intelligent conductor implement with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-manage](skills/agent/conductor-manage/SKILL.md) | Agent | Implements intelligent conductor manage with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-new-track](skills/agent/conductor-new-track/SKILL.md) | Agent | Implements intelligent conductor new track with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-revert](skills/agent/conductor-revert/SKILL.md) | Agent | Implements intelligent conductor revert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-setup](skills/agent/conductor-setup/SKILL.md) | Agent | Implements intelligent conductor setup with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-status](skills/agent/conductor-status/SKILL.md) | Agent | Implements intelligent conductor status with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [conductor-validator](skills/agent/conductor-validator/SKILL.md) | Agent | Implements intelligent conductor validator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [confidence-based-selector](skills/agent/confidence-based-selector/SKILL.md) | Agent | Implements intelligent confidence based selector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [confidence-intervals](skills/coding/confidence-intervals/SKILL.md) | Coding | "Provides Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification for parameter estimation" | Implementation |
+| [config](skills/coding/config/SKILL.md) | Coding | "Pydantic-based configuration management with frozen models, nested hierarchy" TOML/env parsing, and module-level singleton | Implementation |
+| [container-inspector](skills/agent/container-inspector/SKILL.md) | Agent | Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [container-linux](skills/cncf/container-linux/SKILL.md) | Cncf | "Provides Flatcar Container Linux in Cloud-Native Engineering - container Linux" | Reference |
+| [container-registry](skills/cncf/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with integration to AKS and Azure services" | Reference |
+| [container-registry](skills/cncf/container-registry/SKILL.md) | Cncf | "Provides Stores and manages container images with integration to GKE and Cloud Build" | Reference |
+| [containerd](skills/cncf/containerd/SKILL.md) | Cncf | "Containerd in Cloud-Native Engineering - An open and reliable container" runtime | Reference |
+| [context-window-management](skills/agent/context-window-management/SKILL.md) | Agent | Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [context7-auto-research](skills/agent/context7-auto-research/SKILL.md) | Agent | Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [contour](skills/cncf/contour/SKILL.md) | Cncf | "Contour in Service Proxy - cloud native architecture, patterns, pitfalls" and best practices | Reference |
+| [conversation-memory](skills/agent/conversation-memory/SKILL.md) | Agent | Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [coredns](skills/cncf/coredns/SKILL.md) | Cncf | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains" plugins | Reference |
+| [correlation-analysis](skills/coding/correlation-analysis/SKILL.md) | Coding | "Analyzes correlation, covariance, and multivariate relationships between variables using statistical methods and visualization techniques" | Implementation |
+| [correlation-risk](skills/trading/correlation-risk/SKILL.md) | Trading | "Implements correlation breakdown and portfolio diversification risk for risk management and algorithmic trading execution." | Implementation |
+| [cortex](skills/cncf/cortex/SKILL.md) | Cncf | "Cortex in Monitoring & Observability - distributed, horizontally scalable" Prometheus system | Reference |
+| [cosmos-db](skills/cncf/cosmos-db/SKILL.md) | Cncf | Provides Global NoSQL database with multi-region distribution and guaranteed latency | Reference |
+| [cost-optimization](skills/cncf/cost-optimization/SKILL.md) | Cncf | Implements cloud cost optimization strategies (right-sizing, reserved instances, spot instances, multi-cloud comparison) for Kubernetes and cloud-native deployments. | Implementation |
+| [cost-optimization-analysis](skills/cncf/cost-optimization-analysis/SKILL.md) | Cncf | Cloud cost optimization analysis including AWS Cost Explorer, Azure Cost Management, and GCP Billing with right-sizing recommendations and optimization strategies for multi-cloud environments | Implementation |
+| [create-branch](skills/agent/create-branch/SKILL.md) | Agent | Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [create-issue-gate](skills/agent/create-issue-gate/SKILL.md) | Agent | Implements intelligent create issue gate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [create-pr](skills/agent/create-pr/SKILL.md) | Agent | Implements intelligent create pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [cross-validation](skills/coding/cross-validation/SKILL.md) | Coding | "Implements k-fold cross-validation, stratified cross-validation, time-series cross-validation, and model validation strategies" | Implementation |
+| [crossplane](skills/cncf/crossplane/SKILL.md) | Cncf | "Crossplane in Platform Engineering - Kubernetes-native control plane" for multi-cloud infrastructure | Reference |
+| [cubefs](skills/cncf/cubefs/SKILL.md) | Cncf | "Provides CubeFS in Storage - distributed, high-performance file system" | Reference |
+| [custodian](skills/cncf/custodian/SKILL.md) | Cncf | "Provides Cloud Custodian in Cloud-Native Engineering -/rules engine for cloud infrastructure management" | Reference |
+| [cycle-analysis](skills/trading/cycle-analysis/SKILL.md) | Trading | "Implements market cycles and periodic patterns in price movement for risk management and algorithmic trading execution." | Implementation |
+| [dapr](skills/cncf/dapr/SKILL.md) | Cncf | "Provides Dapr in Cloud-Native Engineering - distributed application runtime" | Reference |
+| [data-collection](skills/coding/data-collection/SKILL.md) | Coding | "Implements data gathering strategies including APIs, web scraping, sensor data collection, and database queries for building machine learning datasets" | Implementation |
+| [data-ingestion](skills/coding/data-ingestion/SKILL.md) | Coding | "Provides Designs and implements ETL pipelines, streaming data ingestion, batch processing, and data pipeline orchestration for reliable data flow" | Implementation |
+| [data-privacy](skills/coding/data-privacy/SKILL.md) | Coding | "Applies privacy-preserving techniques including anonymization, differential privacy, encryption, and GDPR compliance for sensitive data" | Implementation |
+| [data-profiling](skills/coding/data-profiling/SKILL.md) | Coding | Provides Extracts data profiles, schemas, metadata, and statistical summaries to understand data structure, quality, and characteristics at scale | Implementation |
+| [data-quality](skills/coding/data-quality/SKILL.md) | Coding | "Implements data validation, cleaning, outlier detection, and quality assurance techniques to ensure reliable datasets for model training" | Implementation |
+| [data-versioning](skills/coding/data-versioning/SKILL.md) | Coding | "Implements data versioning, lineage tracking, provenance management, and reproducible data pipelines for experiment tracking and governance" | Implementation |
+| [data-visualization](skills/coding/data-visualization/SKILL.md) | Coding | "Creates effective visualizations including plots, charts, dashboards, and interactive visualizations for data insight and storytelling" | Implementation |
+| [database](skills/agent/database/SKILL.md) | Agent | Implements intelligent database with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [database-admin](skills/agent/database-admin/SKILL.md) | Agent | Implements database administration best practices (PostgreSQL tuning, MySQL replication, MongoDB sharding, Redis optimization) with real operational commands and query analysis patterns. | Implementation |
+| [dependency-graph-builder](skills/agent/dependency-graph-builder/SKILL.md) | Agent | Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [dependency-management](skills/coding/dependency-management/SKILL.md) | Coding | "Provides Cybersecurity operations skill for automating software dependency version updates based on CVE (Common Vulnerabilities and Exposures) data, vulnerabil" | Implementation |
+| [deployment-manager](skills/cncf/deployment-manager/SKILL.md) | Cncf | "Infrastructure as code using YAML templates for repeatable GCP resource" deployments. | Reference |
+| [development](skills/agent/development/SKILL.md) | Agent | Implements intelligent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [diary](skills/agent/diary/SKILL.md) | Agent | Implements intelligent diary with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [diff-quality-analyzer](skills/agent/diff-quality-analyzer/SKILL.md) | Agent | Implements intelligent diff quality analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [dimensionality-reduction](skills/coding/dimensionality-reduction/SKILL.md) | Coding | "Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency" | Implementation |
+| [disaster-recovery](skills/cncf/disaster-recovery/SKILL.md) | Cncf | Implements comprehensive disaster recovery planning for Kubernetes clusters with backup strategies, recovery procedures, cross-region replication, RPO/RTO planning, and validation workflows. | Implementation |
+| [dispatching-parallel-agents](skills/agent/dispatching-parallel-agents/SKILL.md) | Agent | Implements intelligent dispatching parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" | Implementation |
+| [docker-debugging](skills/agent/docker-debugging/SKILL.md) | Agent | Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization | Implementation |
+| [documentation](skills/agent/documentation/SKILL.md) | Agent | Implements intelligent documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [dragonfly](skills/cncf/dragonfly/SKILL.md) | Cncf | "Provides Dragonfly in Cloud-Native Engineering - P2P file distribution" | Reference |
+| [drawdown-analysis](skills/trading/drawdown-analysis/SKILL.md) | Trading | "Implements maximum drawdown, recovery time, and value-at-risk analysis for risk management and algorithmic trading execution." | Implementation |
+| [drawdown-control](skills/trading/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity preservation for risk management and algorithmic trading execution." | Implementation |
+| [driven-architecture](skills/coding/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy base, and common pitfalls' | Implementation |
+| [driven-development](skills/coding/driven-development/SKILL.md) | Coding | "Test-Driven Development (TDD) and Behavior-Driven Development (BDD) patterns" with pytest, unit tests, mocking, and test pyramid principles | Implementation |
+| [dry-principles](skills/coding/dry-principles/SKILL.md) | Coding | Implements DRY (Don't Repeat Yourself) principle enforcement through pattern recognition, code duplication detection, and refactoring guidance for clean maintainable codebases | Implementation |
+| [dynamic-replanner](skills/agent/dynamic-replanner/SKILL.md) | Agent | Implements intelligent dynamic replanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [dynamodb](skills/cncf/dynamodb/SKILL.md) | Cncf | "Deploys managed NoSQL databases with DynamoDB for scalable, low-latency" key-value storage, streams, and global tables with high availability and automatic replication. | Reference |
+| [e2e-testing](skills/agent/e2e-testing/SKILL.md) | Agent | Implements intelligent e2e testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ec2](skills/cncf/ec2/SKILL.md) | Cncf | "Deploys, configures, and auto-scales EC2 instances with load balancing" using best practices for high availability, security, and cost optimization in AWS compute environments. | Reference |
+| [ecr](skills/cncf/ecr/SKILL.md) | Cncf | "Manages container image repositories with ECR for secure storage, scanning" replication, and integration with EKS, ECS, and Lambda for container deployments. | Reference |
+| [eda](skills/coding/eda/SKILL.md) | Coding | "Provides Performs exploratory data analysis using summary statistics, distributions, correlations, and descriptive methods to understand dataset characteristic" | Implementation |
+| [eks](skills/cncf/eks/SKILL.md) | Cncf | "Deploys managed Kubernetes clusters with EKS for container orchestration" auto-scaling, networking, and integrations with AWS services for production Kubernetes workloads. | Reference |
+| [elb](skills/cncf/elb/SKILL.md) | Cncf | "Configures Elastic Load Balancing (ALB, NLB, Classic) for distributing" traffic across instances with health checks, SSL termination, and cross-AZ failover. | Reference |
+| [enrichment](skills/trading/enrichment/SKILL.md) | Trading | "Provides Data enrichment techniques for adding context to raw trading data" | Implementation |
+| [ensemble-methods](skills/coding/ensemble-methods/SKILL.md) | Coding | "Provides Combines multiple models using bagging, boosting, stacking, voting, and blending for improved predictive performance and robustness" | Implementation |
+| [envoy](skills/cncf/envoy/SKILL.md) | Cncf | "Envoy in Cloud-Native Engineering - Cloud-native high-performance edge/middle/service" proxy | Reference |
+| [error-trace-explainer](skills/agent/error-trace-explainer/SKILL.md) | Agent | Implements intelligent error trace explainer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [etcd](skills/cncf/etcd/SKILL.md) | Cncf | "Provides etcd in Cloud-Native Engineering - distributed key-value store" | Reference |
+| [event-hubs](skills/cncf/event-hubs/SKILL.md) | Cncf | "Provides Event streaming platform for high-throughput data ingestion and processing" | Reference |
+| [executing-plans](skills/agent/executing-plans/SKILL.md) | Agent | Implements intelligent executing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [experimental-design](skills/coding/experimental-design/SKILL.md) | Coding | "Provides Designs experiments using design of experiments (DOE), factorial designs, randomization, and blocking for efficient learning" | Implementation |
+| [explainability](skills/coding/explainability/SKILL.md) | Coding | "Implements explainability and interpretability techniques for model transparency, understanding decisions, and building trust" | Implementation |
+| [explainable-ai](skills/trading/explainable-ai/SKILL.md) | Trading | "Provides Explainable AI for understanding and trusting trading model decisions" | Implementation |
+| [failover-handling](skills/trading/failover-handling/SKILL.md) | Trading | "Provides Automated failover and redundancy management for exchange connectivity" | Implementation |
+| [failure-mode-analysis](skills/agent/failure-mode-analysis/SKILL.md) | Agent | Implements intelligent failure mode analysis with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [fal-audio](skills/agent/fal-audio/SKILL.md) | Agent | Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [falco](skills/cncf/falco/SKILL.md) | Cncf | "Provides Falco in Cloud-Native Engineering - Cloud Native Runtime Security" | Reference |
+| [false-signal-filtering](skills/trading/false-signal-filtering/SKILL.md) | Trading | "Provides False Signal Filtering Techniques for Robust Technical Analysis" | Implementation |
+| [feature-engineering](skills/coding/feature-engineering/SKILL.md) | Coding | "Creates and transforms features including polynomial features, interactions, domain-specific features, and feature transformations" | Implementation |
+| [feature-engineering](skills/trading/feature-engineering/SKILL.md) | Trading | "Implements create actionable trading features from raw market data for risk management and algorithmic trading execution." | Implementation |
+| [feature-interaction](skills/coding/feature-interaction/SKILL.md) | Coding | "Provides Discovers and engineers feature interactions including polynomial interactions, cross-features, and interaction detection methods" | Implementation |
+| [feature-scaling-normalization](skills/coding/feature-scaling-normalization/SKILL.md) | Coding | "Provides Scales and normalizes features using standardization, normalization, robust scaling, and other scaling methods for model compatibility" | Implementation |
+| [feature-selection](skills/coding/feature-selection/SKILL.md) | Coding | "Selects relevant features using univariate selection, recursive elimination, stability selection, and importance-based methods" | Implementation |
+| [feature-store](skills/trading/feature-store/SKILL.md) | Trading | "Provides Feature storage and management for machine learning trading models" | Implementation |
+| [filesystem-context](skills/agent/filesystem-context/SKILL.md) | Agent | Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [fill-simulation](skills/trading/fill-simulation/SKILL.md) | Trading | "Implements fill simulation models for order execution probability for risk management and algorithmic trading execution." | Implementation |
+| [finishing-a-development-branch](skills/agent/finishing-a-development-branch/SKILL.md) | Agent | Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [firestore](skills/cncf/firestore/SKILL.md) | Cncf | Provides NoSQL document database with real-time sync, offline support, and automatic scaling | Reference |
+| [fluentd](skills/cncf/fluentd/SKILL.md) | Cncf | "Fluentd unified logging layer for collecting, transforming, and routing" log data in cloud-native environments | Reference |
+| [fluid](skills/cncf/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for data-intensive" applications | Reference |
+| [flux](skills/cncf/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for kubernetes for cloud-native deployment and infrastructure management." | Reference |
+| [framework](skills/cncf/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes operators" with standardized patterns | Reference |
+| [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [full-stack-orchestration-full-stack-feature](skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Agent | Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [functions](skills/cncf/functions/SKILL.md) | Cncf | Provides Serverless computing with event-driven functions and automatic scaling | Reference |
+| [gemini-api-integration](skills/agent/gemini-api-integration/SKILL.md) | Agent | Implements intelligent gemini api integration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [gh-review-requests](skills/agent/gh-review-requests/SKILL.md) | Agent | Implements intelligent gh review requests with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [git-advanced-workflows](skills/agent/git-advanced-workflows/SKILL.md) | Agent | Implements intelligent git advanced workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [git-hooks-automation](skills/agent/git-hooks-automation/SKILL.md) | Agent | Implements intelligent git hooks automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [git-pr-workflows-git-workflow](skills/agent/git-pr-workflows-git-workflow/SKILL.md) | Agent | Implements intelligent git pr workflows git workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [git-pr-workflows-onboard](skills/agent/git-pr-workflows-onboard/SKILL.md) | Agent | Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [git-pr-workflows-pr-enhance](skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Agent | Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [git-pushing](skills/agent/git-pushing/SKILL.md) | Agent | Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [github-actions-templates](skills/agent/github-actions-templates/SKILL.md) | Agent | Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [github-automation](skills/agent/github-automation/SKILL.md) | Agent | Implements intelligent github automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [github-workflow-automation](skills/agent/github-workflow-automation/SKILL.md) | Agent | Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [gitlab-automation](skills/agent/gitlab-automation/SKILL.md) | Agent | Implements intelligent gitlab automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [gitlab-ci-patterns](skills/agent/gitlab-ci-patterns/SKILL.md) | Agent | Implements intelligent gitlab ci patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [gitops-troubleshooting](skills/agent/gitops-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves GitOps synchronization failures, drift detection issues, and reconciliation problems for ArgoCD and Flux deployments with actionable debugging commands. | Implementation |
+| [gke](skills/cncf/gke/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling, networking, and GCP service integration" | Reference |
+| [goal-to-milestones](skills/agent/goal-to-milestones/SKILL.md) | Agent | Implements intelligent goal to milestones with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [google-analytics-automation](skills/agent/google-analytics-automation/SKILL.md) | Agent | Implements intelligent google analytics automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [google-docs-automation](skills/agent/google-docs-automation/SKILL.md) | Agent | Implements intelligent google docs automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [google-drive-automation](skills/agent/google-drive-automation/SKILL.md) | Agent | Implements intelligent google drive automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [grpc](skills/cncf/grpc/SKILL.md) | Cncf | "gRPC in Remote Procedure Call - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [grpc-patterns](skills/coding/grpc-patterns/SKILL.md) | Coding | Implements gRPC development patterns including protocol buffer definitions, unary/streaming RPCs, error handling, and debugging techniques for cloud-native microservices | Implementation |
+| [harbor](skills/cncf/harbor/SKILL.md) | Cncf | "Configures harbor in cloud-native engineering - container registry for cloud-native deployment and infrastructure management." | Reference |
+| [health](skills/trading/health/SKILL.md) | Trading | "Provides Exchange system health monitoring and connectivity status tracking" | Implementation |
+| [health-check-patterns](skills/cncf/health-check-patterns/SKILL.md) | Cncf | Implements comprehensive health check patterns for cloud-native applications including Kubernetes probes, HTTP health endpoints, database checks, and circuit breaker patterns | Implementation |
+| [helm](skills/cncf/helm/SKILL.md) | Cncf | "Provides Helm in Cloud-Native Engineering - The Kubernetes Package Manager" | Reference |
+| [helpdesk-automation](skills/agent/helpdesk-automation/SKILL.md) | Agent | Implements intelligent helpdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [hierarchical-agent-memory](skills/agent/hierarchical-agent-memory/SKILL.md) | Agent | Implements intelligent hierarchical agent memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [hosted-agents](skills/agent/hosted-agents/SKILL.md) | Agent | Implements intelligent hosted agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [hosted-agents-v2-py](skills/agent/hosted-agents-v2-py/SKILL.md) | Agent | Implements intelligent hosted agents v2 py with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [hot-path-detector](skills/agent/hot-path-detector/SKILL.md) | Agent | Implements intelligent hot path detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [hub](skills/cncf/hub/SKILL.md) | Cncf | "Provides Artifact Hub in Cloud-Native Engineering - Repository for Kubernetes Helm, Falco, OPA, and more" | Reference |
+| [hubspot-automation](skills/agent/hubspot-automation/SKILL.md) | Agent | Implements intelligent hubspot automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [hydra](skills/cncf/hydra/SKILL.md) | Cncf | "ORY Hydra in Security & Compliance - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [hyperparameter-tuning](skills/coding/hyperparameter-tuning/SKILL.md) | Coding | "Optimizes hyperparameters using grid search, random search, Bayesian optimization, and evolutionary methods for model improvement" | Implementation |
+| [hyperparameter-tuning](skills/trading/hyperparameter-tuning/SKILL.md) | Trading | "Implements optimize model configurations for trading applications for risk management and algorithmic trading execution." | Implementation |
+| [hypothesis-testing](skills/coding/hypothesis-testing/SKILL.md) | Coding | Implements hypothesis testing including t-tests, chi-square tests, p-values, and statistical significance evaluation for data-driven decisions | Implementation |
+| [iam](skills/cncf/iam/SKILL.md) | Cncf | "Configures identity and access management with IAM users, roles, policies" and MFA for secure, least-privilege access control across AWS resources and services. | Reference |
+| [iam](skills/cncf/iam/SKILL.md) | Cncf | "Manages identity and access control with service accounts, roles, and" fine-grained permissions. | Reference |
+| [incident-response](skills/cncf/incident-response/SKILL.md) | Cncf | "Creates or updates an incident response plan covering detection, triage" communication, and post-incident review for CNCF projects | Reference |
+| [incident-response-runbooks](skills/cncf/incident-response-runbooks/SKILL.md) | Cncf | Implements incident response runbooks with detection, triage, communication, resolution, and post-incident procedures for Kubernetes and cloud-native environments. | Implementation |
+| [indicator-confluence](skills/trading/indicator-confluence/SKILL.md) | Trading | "Provides Indicator Confluence Validation Systems for Confirming Trading Signals" | Implementation |
+| [infra-drift-detector](skills/agent/infra-drift-detector/SKILL.md) | Agent | Implements intelligent infra drift detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [ingress](skills/cncf/ingress/SKILL.md) | Cncf | "Provides Emissary-Ingress in Cloud-Native Engineering - Kubernetes ingress controller" | Reference |
+| [ingress-controller](skills/cncf/ingress-controller/SKILL.md) | Cncf | "Kong Ingress Controller in Kubernetes - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [inngest](skills/agent/inngest/SKILL.md) | Agent | Implements intelligent inngest with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [instrumental-variables](skills/coding/instrumental-variables/SKILL.md) | Coding | "Provides Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data" | Implementation |
+| [intercom-automation](skills/agent/intercom-automation/SKILL.md) | Agent | Implements intelligent intercom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [intermarket-analysis](skills/trading/intermarket-analysis/SKILL.md) | Trading | "Implements cross-market relationships and asset class correlations for risk management and algorithmic trading execution." | Implementation |
+| [intervention-analysis](skills/coding/intervention-analysis/SKILL.md) | Coding | "Provides Estimates treatment effects, conditional average treatment effects (CATE), heterogeneous effects, and individual treatment responses" | Implementation |
+| [io](skills/cncf/io/SKILL.md) | Cncf | "metal3.io in Bare Metal Provisioning - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [issues](skills/agent/issues/SKILL.md) | Agent | Implements intelligent issues with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [istio](skills/cncf/istio/SKILL.md) | Cncf | "Istio in Cloud-Native Engineering - Connect, secure, control, and observe" services. | Reference |
+| [iterate-pr](skills/agent/iterate-pr/SKILL.md) | Agent | Implements intelligent iterate pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [jaeger](skills/cncf/jaeger/SKILL.md) | Cncf | "Configures jaeger in cloud-native engineering - distributed tracing for cloud-native deployment and infrastructure management." | Reference |
+| [k8s-debugger](skills/agent/k8s-debugger/SKILL.md) | Agent | Implements intelligent k8s debugger with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [karmada](skills/cncf/karmada/SKILL.md) | Cncf | "Provides Karmada in Cloud-Native Engineering - multi-cluster orchestration" | Reference |
+| [keda](skills/cncf/keda/SKILL.md) | Cncf | "Configures keda in cloud-native engineering - event-driven autoscaling for cloud-native deployment and infrastructure management." | Reference |
+| [kernel-density](skills/coding/kernel-density/SKILL.md) | Coding | "Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions" | Implementation |
+| [key-vault](skills/cncf/key-vault/SKILL.md) | Cncf | "Manages encryption keys, secrets, and certificates with access control" and auditing. | Reference |
+| [keycloak](skills/cncf/keycloak/SKILL.md) | Cncf | "Provides Keycloak in Cloud-Native Engineering - identity and access management" | Reference |
+| [keyvault-secrets](skills/cncf/keyvault-secrets/SKILL.md) | Cncf | "Provides Secret management and rotation for sensitive credentials and configuration" | Reference |
+| [kill-switches](skills/trading/kill-switches/SKILL.md) | Trading | "Implementing multi-layered kill switches at account, strategy, market" and infrastructure levels to prevent catastrophic losses and system failures | Implementation |
+| [kms](skills/cncf/kms/SKILL.md) | Cncf | "Manages encryption keys with AWS KMS for data protection at rest and" in transit, key rotation, and compliance with encryption standards across all AWS services. | Reference |
+| [knative](skills/cncf/knative/SKILL.md) | Cncf | "Provides Knative in Cloud-Native Engineering - serverless on Kubernetes" | Reference |
+| [kong](skills/cncf/kong/SKILL.md) | Cncf | "Kong in API Gateway - cloud native architecture, patterns, pitfalls" and best practices | Reference |
+| [kratos](skills/cncf/kratos/SKILL.md) | Cncf | "ORY Kratos in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [krustlet](skills/cncf/krustlet/SKILL.md) | Cncf | "Krustlet in Kubernetes Runtime - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [kserve](skills/cncf/kserve/SKILL.md) | Cncf | "Configures kserve in cloud-native engineering - model serving for cloud-native deployment and infrastructure management." | Reference |
+| [kubeedge](skills/cncf/kubeedge/SKILL.md) | Cncf | "Configures kubeedge in cloud-native engineering - edge computing for cloud-native deployment and infrastructure management." | Reference |
+| [kubeflow](skills/cncf/kubeflow/SKILL.md) | Cncf | "Configures kubeflow in cloud-native engineering - ml on kubernetes for cloud-native deployment and infrastructure management." | Reference |
+| [kubernetes](skills/cncf/kubernetes/SKILL.md) | Cncf | "Kubernetes in Cloud-Native Engineering - Production-Grade Container Scheduling" and Management | Reference |
+| [kubernetes-api-patterns](skills/cncf/kubernetes-api-patterns/SKILL.md) | Cncf | Kubernetes API patterns including CRD development, webhook implementation, API groups, client library usage, and debugging techniques for custom API extensions | Implementation |
+| [kubernetes-debugging](skills/cncf/kubernetes-debugging/SKILL.md) | Cncf | Implements comprehensive Kubernetes debugging workflow with pod inspection, log analysis, resource debugging, network troubleshooting, and common failure pattern diagnosis using kubectl commands. | Implementation |
+| [kubernetes-deployment](skills/agent/kubernetes-deployment/SKILL.md) | Agent | Implements intelligent kubernetes deployment with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [kubescape](skills/cncf/kubescape/SKILL.md) | Cncf | "Configures kubescape in cloud-native engineering - kubernetes security for cloud-native deployment and infrastructure management." | Reference |
+| [kubevela](skills/cncf/kubevela/SKILL.md) | Cncf | "Configures kubevela in cloud-native engineering - application platform for cloud-native deployment and infrastructure management." | Reference |
+| [kubevirt](skills/cncf/kubevirt/SKILL.md) | Cncf | "Provides KubeVirt in Cloud-Native Engineering - virtualization on Kubernetes" | Reference |
+| [kuma](skills/cncf/kuma/SKILL.md) | Cncf | "Kuma in Service Mesh - cloud native architecture, patterns, pitfalls" and best practices | Reference |
+| [kyverno](skills/cncf/kyverno/SKILL.md) | Cncf | "Configures kyverno in cloud-native engineering - policy engine for cloud-native deployment and infrastructure management." | Reference |
+| [lake](skills/trading/lake/SKILL.md) | Trading | "Provides Data lake architecture and management for trading data storage" | Implementation |
+| [lambda](skills/cncf/lambda/SKILL.md) | Cncf | "Deploys serverless event-driven applications with Lambda functions, triggers" layers, and VPC integration for cost-effective, auto-scaling compute without server management. | Reference |
+| [lambda-lang](skills/agent/lambda-lang/SKILL.md) | Agent | Implements intelligent lambda lang with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [langgraph](skills/agent/langgraph/SKILL.md) | Agent | Implements intelligent langgraph with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [lima](skills/cncf/lima/SKILL.md) | Cncf | "Lima in Container Runtime - cloud native architecture, patterns, pitfalls" and best practices | Reference |
+| [linear-regression](skills/coding/linear-regression/SKILL.md) | Coding | "Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction" | Implementation |
+| [linkerd](skills/cncf/linkerd/SKILL.md) | Cncf | "Linkerd in Service Mesh - cloud native architecture, patterns, pitfalls" and best practices | Reference |
+| [lint-and-validate](skills/agent/lint-and-validate/SKILL.md) | Agent | Implements intelligent lint and validate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [linux-troubleshooting](skills/agent/linux-troubleshooting/SKILL.md) | Agent | Implements intelligent linux troubleshooting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [liquidity-risk](skills/trading/liquidity-risk/SKILL.md) | Trading | "Implements liquidity assessment and trade execution risk for risk management and algorithmic trading execution." | Implementation |
+| [litmus](skills/cncf/litmus/SKILL.md) | Cncf | "Litmus in Chaos Engineering - cloud native architecture, patterns, pits" and best practices | Reference |
+| [live-model-monitoring](skills/trading/live-model-monitoring/SKILL.md) | Trading | "Provides Monitor production ML models for drift, decay, and performance degradation" | Implementation |
+| [llm-orchestration](skills/trading/llm-orchestration/SKILL.md) | Trading | "Large Language Model orchestration for trading analysis with structured" output using instructor/pydantic | Implementation |
+| [load-balancer](skills/cncf/load-balancer/SKILL.md) | Cncf | Provides Distributes traffic across VMs with health probes and rule-based routing | Reference |
+| [logistic-regression](skills/coding/logistic-regression/SKILL.md) | Coding | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" | Implementation |
+| [longhorn](skills/cncf/longhorn/SKILL.md) | Cncf | "Longhorn in Cloud Native Storage - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [lookahead-bias](skills/trading/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict causality enforcement" time-based validation, and comprehensive detection frameworks. | Implementation |
+| [m365-agents-dotnet](skills/agent/m365-agents-dotnet/SKILL.md) | Agent | Implements intelligent m365 agents dotnet with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [m365-agents-ts](skills/agent/m365-agents-ts/SKILL.md) | Agent | Implements intelligent m365 agents ts with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [make-automation](skills/agent/make-automation/SKILL.md) | Agent | Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [manager](skills/cncf/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes | Reference |
+| [manager](skills/coding/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing | Implementation |
+| [market-data-cache](skills/trading/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low latency and high" throughput | Implementation |
+| [market-impact](skills/trading/market-impact/SKILL.md) | Trading | "Implements market impact modeling and order book simulation for risk management and algorithmic trading execution." | Implementation |
+| [market-microstructure](skills/trading/market-microstructure/SKILL.md) | Trading | "Implements order book dynamics and order flow analysis for risk management and algorithmic trading execution." | Implementation |
+| [market-regimes](skills/trading/market-regimes/SKILL.md) | Trading | "Market regime detection and adaptation for trading systems across changing" market conditions. | Implementation |
+| [market-structure](skills/trading/market-structure/SKILL.md) | Trading | "Implements market structure and trading participants analysis for risk management and algorithmic trading execution." | Implementation |
+| [maximum-likelihood](skills/coding/maximum-likelihood/SKILL.md) | Coding | Implements maximum likelihood estimation, likelihood functions, and optimization methods for parameter estimation in probabilistic models | Implementation |
+| [mcp-builder](skills/agent/mcp-builder/SKILL.md) | Agent | Implements intelligent mcp builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [mcp-builder-ms](skills/agent/mcp-builder-ms/SKILL.md) | Agent | Implements intelligent mcp builder ms with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [memory-systems](skills/agent/memory-systems/SKILL.md) | Agent | Implements intelligent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [memory-usage-analyzer](skills/agent/memory-usage-analyzer/SKILL.md) | Agent | Implements intelligent memory usage analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [message-queue-debugging](skills/agent/message-queue-debugging/SKILL.md) | Agent | Debugs Kafka, RabbitMQ, and SQS message queues with consumer lag analysis, dead letter handling, and message flow troubleshooting for distributed systems | Implementation |
+| [message-queue-troubleshooting](skills/agent/message-queue-troubleshooting/SKILL.md) | Agent | Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic commands, dead letter handling, and backlog resolution | Implementation |
+| [metrics-and-kpis](skills/coding/metrics-and-kpis/SKILL.md) | Coding | "Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making" | Implementation |
+| [missing-data](skills/coding/missing-data/SKILL.md) | Coding | "Handles missing data using imputation strategies, deletion methods, and techniques for dealing with incomplete datasets while preserving information" | Implementation |
+| [ml-pipeline-workflow](skills/agent/ml-pipeline-workflow/SKILL.md) | Agent | Implements intelligent ml pipeline workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [model-ensemble](skills/trading/model-ensemble/SKILL.md) | Trading | "Provides Combine multiple models for improved prediction accuracy and robustness" | Implementation |
+| [model-fairness](skills/coding/model-fairness/SKILL.md) | Coding | "Evaluates and mitigates fairness issues including bias detection, fairness metrics, and debiasing strategies in machine learning" | Implementation |
+| [model-interpretation](skills/coding/model-interpretation/SKILL.md) | Coding | "Provides Interprets models using SHAP values, LIME, feature importance, permutation importance, and other explainability techniques" | Implementation |
+| [model-robustness](skills/coding/model-robustness/SKILL.md) | Coding | Improves model robustness including adversarial robustness, out-of-distribution detection, and uncertainty quantification | Implementation |
+| [model-selection](skills/coding/model-selection/SKILL.md) | Coding | "Provides Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison techniques" | Implementation |
+| [models](skills/coding/models/SKILL.md) | Coding | "'Pydantic frozen data models for trading: enums, annotated constraints" field/model validators, and computed properties' | Implementation |
+| [momentum-indicators](skills/trading/momentum-indicators/SKILL.md) | Trading | "Implements rsi, macd, stochastic oscillators and momentum analysis for risk management and algorithmic trading execution." | Implementation |
+| [monitor](skills/cncf/monitor/SKILL.md) | Cncf | "Provides Monitoring and logging for Azure resources with alerting and observability" | Reference |
+| [monte-carlo](skills/coding/monte-carlo/SKILL.md) | Coding | "Implements Monte Carlo sampling, simulation methods, and stochastic approximation for uncertainty estimation and numerical integration" | Implementation |
+| [multi-advisor](skills/agent/multi-advisor/SKILL.md) | Agent | Implements intelligent multi advisor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [multi-agent-patterns](skills/agent/multi-agent-patterns/SKILL.md) | Agent | Implements intelligent multi agent patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [multi-agent-task-orchestrator](skills/agent/multi-agent-task-orchestrator/SKILL.md) | Agent | Implements intelligent multi agent task orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [multi-asset-model](skills/trading/multi-asset-model/SKILL.md) | Trading | "Provides Model inter-asset relationships for portfolio and cross-asset strategies" | Implementation |
+| [multi-skill-executor](skills/agent/multi-skill-executor/SKILL.md) | Agent | Implements intelligent multi skill executor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-code-javascript](skills/agent/n8n-code-javascript/SKILL.md) | Agent | Implements intelligent n8n code javascript with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-code-python](skills/agent/n8n-code-python/SKILL.md) | Agent | Implements intelligent n8n code python with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-expression-syntax](skills/agent/n8n-expression-syntax/SKILL.md) | Agent | Implements intelligent n8n expression syntax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-mcp-tools-expert](skills/agent/n8n-mcp-tools-expert/SKILL.md) | Agent | Implements intelligent n8n mcp tools expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-node-configuration](skills/agent/n8n-node-configuration/SKILL.md) | Agent | Implements intelligent n8n node configuration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-validation-expert](skills/agent/n8n-validation-expert/SKILL.md) | Agent | Implements intelligent n8n validation expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [n8n-workflow-patterns](skills/agent/n8n-workflow-patterns/SKILL.md) | Agent | Implements intelligent n8n workflow patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [nats](skills/cncf/nats/SKILL.md) | Cncf | "NATS in Cloud Native Messaging - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [network-diagnostics](skills/agent/network-diagnostics/SKILL.md) | Agent | Implements intelligent network diagnostics with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [network-interface-cni](skills/cncf/network-interface-cni/SKILL.md) | Cncf | "Container Network Interface in Cloud Native Network - cloud native architecture" patterns, pitfalls, and best practices | Reference |
+| [network-troubleshooting](skills/agent/network-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves network connectivity issues including firewall rules, DNS resolution, load balancer configuration, container networking, VPN connectivity, and network policy debugging for Docker, Kubernetes, and cloud-native environments | Implementation |
+| [networking-troubleshooting](skills/cncf/networking-troubleshooting/SKILL.md) | Cncf | Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis | Implementation |
+| [neural-networks](skills/coding/neural-networks/SKILL.md) | Coding | "Implements deep neural networks, backpropagation, activation functions, architectures (CNN, RNN, Transformers), and training strategies" | Implementation |
+| [news-embedding](skills/trading/news-embedding/SKILL.md) | Trading | "Implements process news text using nlp embeddings for trading signals for risk management and algorithmic trading execution." | Implementation |
+| [normalization](skills/coding/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization' | Implementation |
+| [not-human-search-mcp](skills/agent/not-human-search-mcp/SKILL.md) | Agent | Implements intelligent not human search mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [notion-automation](skills/agent/notion-automation/SKILL.md) | Agent | Implements intelligent notion automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [o](skills/cncf/o/SKILL.md) | Cncf | "Provides CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes" | Reference |
+| [oathkeeper](skills/cncf/oathkeeper/SKILL.md) | Cncf | "Oathkeeper in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [observational-studies](skills/coding/observational-studies/SKILL.md) | Coding | "Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias" | Implementation |
+| [online-experiments](skills/coding/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms" | Implementation |
+| [opencost](skills/cncf/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [openfeature](skills/cncf/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [openfga](skills/cncf/openfga/SKILL.md) | Cncf | "OpenFGA in Security &amp; Compliance - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [openkruise](skills/cncf/openkruise/SKILL.md) | Cncf | "OpenKruise in Extended Kubernetes workload management with advanced deployment" strategies | Reference |
+| [opentelemetry](skills/cncf/opentelemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability framework for tracing, metrics, and logs" with vendor-neutral APIs | Reference |
+| [openyurt](skills/cncf/openyurt/SKILL.md) | Cncf | ''Provides OpenYurt in Extending Kubernetes to edge computing scenarios with cloud-edgeu534F' u540C'' | Reference |
+| [order-book](skills/trading/order-book/SKILL.md) | Trading | "Order book data handling, spread calculation, liquidity measurement" and cross-exchange normalization | Implementation |
+| [order-book-impact](skills/trading/order-book-impact/SKILL.md) | Trading | "Provides Order Book Impact Measurement and Market Microstructure Analysis" | Implementation |
+| [order-book-sync](skills/trading/order-book-sync/SKILL.md) | Trading | "Provides Order book synchronization and state management for accurate trading" | Implementation |
+| [order-execution-api](skills/trading/order-execution-api/SKILL.md) | Trading | "Implements order execution and management api for trading systems for risk management and algorithmic trading execution." | Implementation |
+| [order-flow-analysis](skills/trading/order-flow-analysis/SKILL.md) | Trading | "Provides Analyze order flow to detect market pressure and anticipate price moves" | Implementation |
+| [os-scripting](skills/agent/os-scripting/SKILL.md) | Agent | Implements intelligent os scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [osi](skills/cncf/osi/SKILL.md) | Cncf | "OSI Model Networking for Cloud-Native - All 7 layers with CNCF project" mappings, Kubernetes networking, and troubleshooting patterns. | Reference |
+| [outlook-automation](skills/agent/outlook-automation/SKILL.md) | Agent | Implements intelligent outlook automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [outlook-calendar-automation](skills/agent/outlook-calendar-automation/SKILL.md) | Agent | Implements intelligent outlook calendar automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [parallel-agents](skills/agent/parallel-agents/SKILL.md) | Agent | Implements intelligent parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [parallel-skill-runner](skills/agent/parallel-skill-runner/SKILL.md) | Agent | Implements intelligent parallel skill runner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [patterns](skills/coding/patterns/SKILL.md) | Coding | "Provides Software architecture patterns including MVC, MVVM, microservices, event-driven, CQRS, DDD, hexagonal architecture, layered architecture, and pattern" | Reference |
+| [patterns](skills/coding/patterns/SKILL.md) | Coding | "FastAPI application structure with typed error hierarchy, global exception" handlers, CORS middleware, request timing, and lifecycle events | Implementation |
+| [performance-attribution](skills/trading/performance-attribution/SKILL.md) | Trading | "Provides Performance Attribution Systems for Trading Strategy Decomposition" | Implementation |
+| [performance-profiler](skills/agent/performance-profiler/SKILL.md) | Agent | Implements intelligent performance profiler with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [pipecat-friday-agent](skills/agent/pipecat-friday-agent/SKILL.md) | Agent | Implements intelligent pipecat friday agent with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [plan-writing](skills/agent/plan-writing/SKILL.md) | Agent | Implements intelligent plan writing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [planning-with-files](skills/agent/planning-with-files/SKILL.md) | Agent | Implements intelligent planning with files with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [policy-agent-opa](skills/cncf/policy-agent-opa/SKILL.md) | Cncf | "Open Policy Agent in Security &amp; Compliance - cloud native architecture" patterns, pitfalls, and best practices | Reference |
+| [position-exits](skills/trading/position-exits/SKILL.md) | Trading | "Exit strategies, trailing stops, and take-profit mechanisms for trading" systems. | Implementation |
+| [position-sizing](skills/trading/position-sizing/SKILL.md) | Trading | "'Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility" Adjustment' | Implementation |
+| [position-sizing](skills/trading/position-sizing/SKILL.md) | Trading | "Calculating optimal position sizes using Kelly criterion, volatility" adjustments, and edge-based sizing to maximize long-term growth while managing risk | Implementation |
+| [postgresql-optimization](skills/agent/postgresql-optimization/SKILL.md) | Agent | Implements intelligent postgresql optimization with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [pr-writer](skills/agent/pr-writer/SKILL.md) | Agent | Implements intelligent pr writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [price-action-patterns](skills/trading/price-action-patterns/SKILL.md) | Trading | "Provides Analysis of candlestick and chart patterns for price movement prediction" | Implementation |
+| [privacy-ml](skills/coding/privacy-ml/SKILL.md) | Coding | "Implements privacy-preserving machine learning including differential privacy, federated learning, and privacy attack prevention" | Implementation |
+| [project](skills/cncf/project/SKILL.md) | Cncf | "Notary Project in Content Trust &amp; Security - cloud native architecture" patterns, pitfalls, and best practices | Reference |
+| [prometheus](skills/cncf/prometheus/SKILL.md) | Cncf | "Prometheus in Cloud-Native Engineering - The Prometheus monitoring system" and time series database. | Reference |
+| [prompt-engineer](skills/agent/prompt-engineer/SKILL.md) | Agent | Implements intelligent prompt engineer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [pulumi](skills/cncf/pulumi/SKILL.md) | Cncf | Implements Pulumi infrastructure as code using Python, TypeScript, and Go for cloud provisioning with state management, stacks, backends, and cross-cloud provisioning | Implementation |
+| [pydantic-ai](skills/agent/pydantic-ai/SKILL.md) | Agent | Implements intelligent pydantic ai with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [python-fastapi-development](skills/agent/python-fastapi-development/SKILL.md) | Agent | Implements intelligent python fastapi development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [quality-policies](skills/coding/quality-policies/SKILL.md) | Coding | "Provides Establishing policies for maintaining a clean codebase including code standards, linting, formatting, testing requirements, cyclomatic complexity limi" | Implementation |
+| [query-optimizer](skills/agent/query-optimizer/SKILL.md) | Agent | Implements intelligent query optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [rag-implementation](skills/agent/rag-implementation/SKILL.md) | Agent | Implements intelligent rag implementation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [randomized-experiments](skills/coding/randomized-experiments/SKILL.md) | Coding | "Provides Designs and analyzes randomized controlled trials (RCTs), A/B tests, experimental blocking, and sample size calculations" | Implementation |
+| [rate-limiting](skills/trading/rate-limiting/SKILL.md) | Trading | "Rate Limiting Strategies and Circuit Breaker Patterns for Exchange API" Integration | Implementation |
+| [rate-limiting](skills/trading/rate-limiting/SKILL.md) | Trading | "Provides Rate Limiting and Exchange API Management for Robust Trading Execution" | Implementation |
+| [rbac](skills/cncf/rbac/SKILL.md) | Cncf | "Manages identity and access with roles, service principals, and fine-grained" permissions. | Reference |
+| [rds](skills/cncf/rds/SKILL.md) | Cncf | "Deploys managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle" SQL Server) with multi-AZ failover, automated backups, read replicas, and encryption for production-grade database infrastructure. | Reference |
+| [react-nextjs-development](skills/agent/react-nextjs-development/SKILL.md) | Agent | Implements intelligent react nextjs development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [realistic-simulation](skills/trading/realistic-simulation/SKILL.md) | Trading | "Provides Realistic Paper Trading Simulation with Market Impact and Execution Fees" | Implementation |
+| [recallmax](skills/agent/recallmax/SKILL.md) | Agent | Implements intelligent recallmax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [receiving-code-review](skills/agent/receiving-code-review/SKILL.md) | Agent | Implements intelligent receiving code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [regime-classification](skills/trading/regime-classification/SKILL.md) | Trading | "Provides Detect current market regime for adaptive trading strategies" | Implementation |
+| [regime-detection](skills/trading/regime-detection/SKILL.md) | Trading | "Provides Market Regime Detection Systems for Adaptive Trading Strategies" | Implementation |
+| [regression-detector](skills/agent/regression-detector/SKILL.md) | Agent | Implements intelligent regression detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [regression-evaluation](skills/coding/regression-evaluation/SKILL.md) | Coding | "Evaluates regression models using MSE, RMSE, MAE, MAPE, R-squared, and other metrics for assessing predictive accuracy" | Implementation |
+| [reinforcement-learning](skills/trading/reinforcement-learning/SKILL.md) | Trading | "Provides Reinforcement Learning for automated trading agents and policy optimization" | Implementation |
+| [release-pipeline](skills/coding/release-pipeline/SKILL.md) | Coding | Implements comprehensive secure release pipeline with CVE scanning, security code review, semantic versioning for patches, and multi-stage quality gates for secure deployments. | Implementation |
+| [releases](skills/cncf/releases/SKILL.md) | Cncf | "Creates or updates RELEASES.md documenting the release process, versioning" policy, and release cadence for CNCF projects | Reference |
+| [render-automation](skills/agent/render-automation/SKILL.md) | Agent | Implements intelligent render automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [reproducible-research](skills/coding/reproducible-research/SKILL.md) | Coding | "Implements reproducible research practices including code organization, environment management, documentation, and experiment tracking" | Implementation |
+| [requesting-code-review](skills/agent/requesting-code-review/SKILL.md) | Agent | Implements intelligent requesting code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [resource-manager](skills/cncf/resource-manager/SKILL.md) | Cncf | "Provides Infrastructure as code using ARM templates for repeatable Azure resource deployments" | Reference |
+| [resource-optimizer](skills/agent/resource-optimizer/SKILL.md) | Agent | Implements intelligent resource optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [review](skills/coding/review/SKILL.md) | Coding | "Analyzes code diffs and files to identify bugs, security vulnerabilities" code smells, and architectural concerns, producing a structured review report with prioritized, actionable feedback | Implementation |
+| [review](skills/coding/review/SKILL.md) | Coding | "Security-focused code review identifying vulnerabilities like injection" XSS, insecure deserialization, and misconfigurations, with remediation guidance | Implementation |
+| [risk-management-basics](skills/trading/risk-management-basics/SKILL.md) | Trading | "Position sizing, stop-loss implementation, and system-level risk controls" to preserve capital | Implementation |
+| [rollback-procedures](skills/cncf/rollback-procedures/SKILL.md) | Cncf | Implements comprehensive rollback procedures including deployment rollback, version rollback, database rollback, and rollback testing for Kubernetes and cloud-native applications | Implementation |
+| [rook](skills/cncf/rook/SKILL.md) | Cncf | "Configures rook in cloud-native storage orchestration for kubernetes for cloud-native deployment and infrastructure management." | Reference |
+| [route53](skills/cncf/route53/SKILL.md) | Cncf | "Configures DNS routing with Route 53 for domain registration, health" checks, failover, and traffic management with private hosted zones. | Reference |
+| [runtime-log-analyzer](skills/agent/runtime-log-analyzer/SKILL.md) | Agent | Implements intelligent runtime log analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [s3](skills/cncf/s3/SKILL.md) | Cncf | "Configures S3 object storage with versioning, lifecycle policies, encryption" and access controls for durable, scalable data storage with cost optimization in AWS. | Reference |
+| [scale-sets](skills/cncf/scale-sets/SKILL.md) | Cncf | "Manages auto-scaling VM groups with load balancing and health management" | Reference |
+| [schema-inference-engine](skills/agent/schema-inference-engine/SKILL.md) | Agent | Implements intelligent schema inference engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [scoring](skills/coding/scoring/SKILL.md) | Coding | "Multi-factor conviction scoring engine combining technical, momentum" trend, volatility, and volume signals with configurable weights | Implementation |
+| [secret-manager](skills/cncf/secret-manager/SKILL.md) | Cncf | "Provides Stores and rotates secrets with encryption and audit logging for sensitive data" | Reference |
+| [secrets-manager](skills/cncf/secrets-manager/SKILL.md) | Cncf | "Manages sensitive data with automatic encryption, rotation, and fine-grained" access control for database passwords, API keys, and credentials. | Reference |
+| [security-audit](skills/agent/security-audit/SKILL.md) | Agent | Implements intelligent security audit with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [security-compliance](skills/cncf/security-compliance/SKILL.md) | Cncf | Implements security compliance frameworks (SOC2, HIPAA, PCI-DSS) with implementation patterns, audit procedures, and compliance automation for Kubernetes and cloud environments | Implementation |
+| [security-policy](skills/cncf/security-policy/SKILL.md) | Cncf | "Creates or updates SECURITY.md defining the vulnerability reporting process" disclosure timeline, and supported versions for CNCF projects | Reference |
+| [self-critique-engine](skills/agent/self-critique-engine/SKILL.md) | Agent | Implements intelligent self critique engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [sendgrid-automation](skills/agent/sendgrid-automation/SKILL.md) | Agent | Implements intelligent sendgrid automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [sentiment-analysis](skills/trading/sentiment-analysis/SKILL.md) | Trading | "AI-powered sentiment analysis for news, social media, and political figures" in trading | Implementation |
+| [sentiment-features](skills/trading/sentiment-features/SKILL.md) | Trading | "Provides Extract market sentiment from news, social media, and analyst reports" | Implementation |
+| [service-bus](skills/cncf/service-bus/SKILL.md) | Cncf | "Provides Messaging service with queues and topics for reliable communication" | Reference |
+| [service-mesh-debugging](skills/cncf/service-mesh-debugging/SKILL.md) | Cncf | Implements comprehensive debugging workflows for Istio and Linkerd service meshes including mTLS validation, sidecar injection issues, traffic routing problems, and mesh observability for microservices. | Implementation |
+| [sharpe-ratio](skills/trading/sharpe-ratio/SKILL.md) | Trading | "Provides Sharpe Ratio Calculation and Risk-Adjusted Performance Metrics" | Implementation |
+| [shop](skills/coding/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing with intentionally" vulnerable Node.js/Express application for learning and practice' | Implementation |
+| [shopify-automation](skills/agent/shopify-automation/SKILL.md) | Agent | Implements intelligent shopify automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-creator](skills/agent/skill-creator/SKILL.md) | Agent | Implements intelligent skill creator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-creator-ms](skills/agent/skill-creator-ms/SKILL.md) | Agent | Implements intelligent skill creator ms with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-developer](skills/agent/skill-developer/SKILL.md) | Agent | Implements intelligent skill developer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-improver](skills/agent/skill-improver/SKILL.md) | Agent | Implements intelligent skill improver with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-installer](skills/agent/skill-installer/SKILL.md) | Agent | Implements intelligent skill installer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-optimizer](skills/agent/skill-optimizer/SKILL.md) | Agent | Implements intelligent skill optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-rails-upgrade](skills/agent/skill-rails-upgrade/SKILL.md) | Agent | Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-router](skills/agent/skill-router/SKILL.md) | Agent | Implements intelligent skill router with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-scanner](skills/agent/skill-scanner/SKILL.md) | Agent | Implements intelligent skill scanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-seekers](skills/agent/skill-seekers/SKILL.md) | Agent | Implements intelligent skill seekers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-sentinel](skills/agent/skill-sentinel/SKILL.md) | Agent | Implements intelligent skill sentinel with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-writer](skills/agent/skill-writer/SKILL.md) | Agent | Implements intelligent skill writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [slack-automation](skills/agent/slack-automation/SKILL.md) | Agent | Implements intelligent slack automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [slippage-model](skills/trading/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for risk management and algorithmic trading execution." | Implementation |
+| [slippage-modeling](skills/trading/slippage-modeling/SKILL.md) | Trading | "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution" Analysis | Implementation |
+| [sns](skills/cncf/sns/SKILL.md) | Cncf | "Deploys managed pub/sub messaging with SNS for asynchronous notifications" across services, mobile push, email, and Lambda integrations. | Reference |
+| [spiffe](skills/cncf/spiffe/SKILL.md) | Cncf | "Provides SPIFFE in Secure Product Identity Framework for Applications" | Reference |
+| [spire](skills/cncf/spire/SKILL.md) | Cncf | "Configures spire in spiffe implementation for real-world deployments for cloud-native deployment and infrastructure management." | Reference |
+| [sql-database](skills/cncf/sql-database/SKILL.md) | Cncf | Provides Managed relational database with elastic pools, geo-replication, and automatic backups | Reference |
+| [sqs](skills/cncf/sqs/SKILL.md) | Cncf | "Deploys managed message queues with SQS for asynchronous processing" decoupling services, and reliable message delivery with visibility timeout and dead-letter queues. | Reference |
+| [ssm](skills/cncf/ssm/SKILL.md) | Cncf | "Manages EC2 instances and on-premises servers with AWS Systems Manager" for configuration management, patch management, and secure shell access without SSH keys. | Reference |
+| [stacktrace-root-cause](skills/agent/stacktrace-root-cause/SKILL.md) | Agent | Implements intelligent stacktrace root cause with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [statistical-arbitrage](skills/trading/statistical-arbitrage/SKILL.md) | Trading | "Implements pair trading and cointegration-based arbitrage strategies for risk management and algorithmic trading execution." | Implementation |
+| [statistical-power](skills/coding/statistical-power/SKILL.md) | Coding | "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control" | Implementation |
+| [stop-loss](skills/trading/stop-loss/SKILL.md) | Trading | "Implements stop loss strategies for risk management for risk management and algorithmic trading execution." | Implementation |
+| [stream-processing](skills/trading/stream-processing/SKILL.md) | Trading | "Provides Streaming data processing for real-time trading signals and analytics" | Implementation |
+| [stress-testing](skills/trading/stress-testing/SKILL.md) | Trading | "Implements stress test scenarios and portfolio resilience analysis for risk management and algorithmic trading execution." | Implementation |
+| [strimzi](skills/cncf/strimzi/SKILL.md) | Cncf | "Provides Strimzi in Kafka on Kubernetes - Apache Kafka for cloud-native environments" | Reference |
+| [stripe-automation](skills/agent/stripe-automation/SKILL.md) | Agent | Implements intelligent stripe automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [subagent-driven-development](skills/agent/subagent-driven-development/SKILL.md) | Agent | Implements intelligent subagent driven development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [support-resistance](skills/trading/support-resistance/SKILL.md) | Trading | "Implements technical levels where price tends to pause or reverse for risk management and algorithmic trading execution." | Implementation |
+| [support-vector-machines](skills/coding/support-vector-machines/SKILL.md) | Coding | "Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression" | Implementation |
+| [synthetic-control](skills/coding/synthetic-control/SKILL.md) | Coding | "Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation" | Implementation |
+| [synthetic-data](skills/trading/synthetic-data/SKILL.md) | Trading | "Provides Generate synthetic financial data for training and testing trading models" | Implementation |
+| [tail-risk](skills/trading/tail-risk/SKILL.md) | Trading | "Implements tail risk management and extreme event protection for risk management and algorithmic trading execution." | Implementation |
+| [task-decomposition-engine](skills/agent/task-decomposition-engine/SKILL.md) | Agent | Implements intelligent task decomposition engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [task-intelligence](skills/agent/task-intelligence/SKILL.md) | Agent | Implements intelligent task intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [tekton](skills/cncf/tekton/SKILL.md) | Cncf | "Provides Tekton in Cloud-Native Engineering - A cloud-native Pipeline resource" | Reference |
+| [telemetry](skills/cncf/telemetry/SKILL.md) | Cncf | "OpenTelemetry in Observability - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [temporal-golang-pro](skills/agent/temporal-golang-pro/SKILL.md) | Agent | Implements intelligent temporal golang pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [temporal-python-pro](skills/agent/temporal-python-pro/SKILL.md) | Agent | Implements intelligent temporal python pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [terraform](skills/cncf/terraform/SKILL.md) | Cncf | Implements Terraform infrastructure as code for cloud provisioning with state management, modules, remote backends, and troubleshooting | Implementation |
+| [terraform-infrastructure](skills/agent/terraform-infrastructure/SKILL.md) | Agent | Implements intelligent terraform infrastructure with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [test-oracle-generator](skills/agent/test-oracle-generator/SKILL.md) | Agent | Implements intelligent test oracle generator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [testing-qa](skills/agent/testing-qa/SKILL.md) | Agent | Implements intelligent testing qa with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [thanos](skills/cncf/thanos/SKILL.md) | Cncf | "Provides Thanos in High availability Prometheus solution with long-term storage" | Reference |
+| [tikv](skills/cncf/tikv/SKILL.md) | Cncf | "TiKV in Distributed transactional key-value database inspired by Google" Spanner | Reference |
+| [time-series-database](skills/trading/time-series-database/SKILL.md) | Trading | "Provides Time-series database queries and optimization for financial data" | Implementation |
+| [time-series-forecasting](skills/coding/time-series-forecasting/SKILL.md) | Coding | "Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction" | Implementation |
+| [time-series-forecasting](skills/trading/time-series-forecasting/SKILL.md) | Trading | "Provides Time series forecasting for price prediction and market analysis" | Implementation |
+| [topic-modeling](skills/coding/topic-modeling/SKILL.md) | Coding | "Implements topic modeling using Latent Dirichlet Allocation (LDA), Non-negative Matrix Factorization (NMF), and other topic extraction methods" | Implementation |
+| [toto](skills/cncf/toto/SKILL.md) | Cncf | "in-toto in Supply Chain Security - cloud native architecture, patterns" pitfalls, and best practices | Reference |
+| [track-management](skills/agent/track-management/SKILL.md) | Agent | Implements intelligent track management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [trade-reporting](skills/trading/trade-reporting/SKILL.md) | Trading | "Real-time trade reporting and execution analytics for monitoring and" optimization | Implementation |
+| [trading-edge](skills/trading/trading-edge/SKILL.md) | Trading | "Provides Finding and maintaining competitive advantage in trading systems" | Implementation |
+| [trading-plan](skills/trading/trading-plan/SKILL.md) | Trading | "Implements trading plan structure and risk management framework for risk management and algorithmic trading execution." | Implementation |
+| [trading-psychology](skills/trading/trading-psychology/SKILL.md) | Trading | "Emotional discipline, cognitive bias awareness, and maintaining operational" integrity in trading | Implementation |
+| [traffic-manager](skills/cncf/traffic-manager/SKILL.md) | Cncf | Provides DNS-based traffic routing with health checks and geographic distribution | Reference |
+| [tree-methods](skills/coding/tree-methods/SKILL.md) | Coding | "Implements decision trees, random forests, gradient boosting (XGBoost" LightGBM), and tree ensemble methods for classification and regression | Implementation |
+| [trend-analysis](skills/trading/trend-analysis/SKILL.md) | Trading | "Provides Trend identification, classification, and continuation analysis" | Implementation |
+| [trigger-dev](skills/agent/trigger-dev/SKILL.md) | Agent | Implements intelligent trigger dev with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [twap](skills/trading/twap/SKILL.md) | Trading | "Time-Weighted Average Price algorithm for executing large orders with" minimal market impact | Implementation |
+| [twap-vwap](skills/trading/twap-vwap/SKILL.md) | Trading | 'Provides ''TWAP and VWAP Execution Algorithms: Institutional-Grade Order Execution''' | Implementation |
+| [update-framework-tuf](skills/cncf/update-framework-tuf/SKILL.md) | Cncf | "The Update Framework (TUF) in Secure software update framework for protecting" software deliveries | Reference |
+| [upstash-qstash](skills/agent/upstash-qstash/SKILL.md) | Agent | Implements intelligent upstash qstash with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [using-superpowers](skills/agent/using-superpowers/SKILL.md) | Agent | Implements intelligent using superpowers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [v10-learning](skills/programming/v10-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow | Reference |
+| [v12-learning](skills/programming/v12-learning/SKILL.md) | Programming | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins | Reference |
+| [validation](skills/coding/validation/SKILL.md) | Coding | Validates pipeline stages and returns config status strings (valid_config/invalid_config) using guard clauses and the 5 Laws of Elegant Defense, returning invalid_config for invalid input types instead of raising exceptions | Implementation |
+| [validation](skills/trading/validation/SKILL.md) | Trading | "Provides Data validation and quality assurance for trading data pipelines" | Implementation |
+| [value-at-risk](skills/trading/value-at-risk/SKILL.md) | Trading | "Implements value at risk calculations for portfolio risk management for risk management and algorithmic trading execution." | Implementation |
+| [verification-before-completion](skills/agent/verification-before-completion/SKILL.md) | Agent | Implements intelligent verification before completion with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [viboscope](skills/agent/viboscope/SKILL.md) | Agent | Implements intelligent viboscope with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [virtual-machines](skills/cncf/virtual-machines/SKILL.md) | Cncf | "Deploys and manages VMs with auto-scaling, availability sets, and integration" with Azure services. | Reference |
+| [virtual-networks](skills/cncf/virtual-networks/SKILL.md) | Cncf | "Provides Networking with subnets, network security groups, and VPN connectivity" | Reference |
+| [vitess](skills/cncf/vitess/SKILL.md) | Cncf | "Provides Vitess in Database clustering system for horizontal scaling of MySQL" | Reference |
+| [voice-ai-development](skills/agent/voice-ai-development/SKILL.md) | Agent | Implements intelligent voice ai development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [volatility-analysis](skills/trading/volatility-analysis/SKILL.md) | Trading | "Implements volatility measurement, forecasting, and risk assessment for risk management and algorithmic trading execution." | Implementation |
+| [volatility-prediction](skills/trading/volatility-prediction/SKILL.md) | Trading | "Implements forecast volatility for risk management and option pricing for risk management and algorithmic trading execution." | Implementation |
+| [volcano](skills/cncf/volcano/SKILL.md) | Cncf | "Configures volcano in batch scheduling infrastructure for kubernetes for cloud-native deployment and infrastructure management." | Reference |
+| [volume-profile](skills/trading/volume-profile/SKILL.md) | Trading | "Provides Volume analysis techniques for understanding market structure" | Implementation |
+| [vpc](skills/cncf/vpc/SKILL.md) | Cncf | "Configures Virtual Private Clouds with subnets, route tables, NAT gateways" security groups, and network ACLs for secure, isolated network infrastructure on AWS. | Reference |
+| [vpc](skills/cncf/vpc/SKILL.md) | Cncf | "Provides networking with subnets, firewall rules, and VPC peering for secure cloud infrastructure" | Reference |
+| [vwap](skills/trading/vwap/SKILL.md) | Trading | "Volume-Weighted Average Price algorithm for executing orders relative" to market volume | Implementation |
+| [walk-forward](skills/trading/walk-forward/SKILL.md) | Trading | "Implements walk-forward optimization for robust strategy validation for risk management and algorithmic trading execution." | Implementation |
+| [wasmcloud](skills/cncf/wasmcloud/SKILL.md) | Cncf | "Provides wasmCloud in WebAssembly-based distributed applications platform" | Reference |
+| [web-security-testing](skills/agent/web-security-testing/SKILL.md) | Agent | Implements intelligent web security testing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [websocket-handling](skills/trading/websocket-handling/SKILL.md) | Trading | "Real-time market data handling with WebSockets including connection management" data aggregation, and robust error recovery | Implementation |
+| [websocket-streaming](skills/trading/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing for risk management and algorithmic trading execution." | Implementation |
+| [wordpress](skills/agent/wordpress/SKILL.md) | Agent | Implements intelligent wordpress with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [wordpress-plugin-development](skills/agent/wordpress-plugin-development/SKILL.md) | Agent | Implements intelligent wordpress plugin development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [wordpress-theme-development](skills/agent/wordpress-theme-development/SKILL.md) | Agent | Implements intelligent wordpress theme development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [wordpress-woocommerce-development](skills/agent/wordpress-woocommerce-development/SKILL.md) | Agent | Implements intelligent wordpress woocommerce development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [workflow-automation](skills/agent/workflow-automation/SKILL.md) | Agent | Implements intelligent workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [workflow-orchestration-patterns](skills/agent/workflow-orchestration-patterns/SKILL.md) | Agent | Implements intelligent workflow orchestration patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [workflow-patterns](skills/agent/workflow-patterns/SKILL.md) | Agent | Implements intelligent workflow patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [writing-plans](skills/agent/writing-plans/SKILL.md) | Agent | Implements intelligent writing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [writing-skills](skills/agent/writing-skills/SKILL.md) | Agent | Implements intelligent writing skills with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [zapier-make-patterns](skills/agent/zapier-make-patterns/SKILL.md) | Agent | Implements intelligent zapier make patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [zendesk-automation](skills/agent/zendesk-automation/SKILL.md) | Agent | Implements intelligent zendesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [zipai-optimizer](skills/agent/zipai-optimizer/SKILL.md) | Agent | Implements intelligent zipai optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [zoom-automation](skills/agent/zoom-automation/SKILL.md) | Agent | Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [zot](skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | Reference |
 
 
 <!-- AUTO-GENERATED SKILLS INDEX END -->
