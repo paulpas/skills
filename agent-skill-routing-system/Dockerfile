@@ -11,9 +11,10 @@
 # - SSH authentication support for git operations with github.com
 #
 # SSH Support:
-#   - Mount ~/.ssh:/home/appuser/.ssh:ro for SSH key authentication
-#   - SSH agent forwarding via $SSH_AUTH_SOCK environment variable
+#   - Read-only mount: -v ~/.ssh:/home/appuser/.ssh:ro for static keys
+#   - Socket forwarding: -v $SSH_AUTH_SOCK:/tmp/ssh-agent.sock for dynamic agent ops
 #   - GitHub known_hosts pre-configured for secure connections
+#   - SSH config uses agent-based key selection (no hardcoded IdentityFile)
 #
 # Git Permissions Fix:
 #   - /app/skills and /cache/skills owned by appuser (uid=1000)
@@ -163,28 +164,48 @@ HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
 VOLUME ["/cache", "/app/cache/compressed", "/app/skills"]
 
 # SSH Support for Git Operations
-# SSH keys should be mounted at runtime using:
-#   -v ~/.ssh:/home/appuser/.ssh:ro
-# SSH agent forwarding is supported via:
-#   -v $SSH_AUTH_SOCK:/tmp/ssh-agent.sock
-#   -e SSH_AUTH_SOCK=/tmp/ssh-agent.sock
-# The container will use SSH keys for git authentication with github.com
+# SSH Authentication Patterns:
+#   1. Read-Only Mount (Static Keys):
+#      Mount your SSH keys at runtime: -v ~/.ssh:/home/appuser/.ssh:ro
+#      Use for: Static key authentication, build-time key mounting
+#      This approach is secure and simple for fixed key sets
+#   
+#   2. Read-Write Mount or Socket Forwarding (Dynamic Agent):
+#      SSH agent forwarding: -v $SSH_AUTH_SOCK:/tmp/ssh-agent.sock -e SSH_AUTH_SOCK=/tmp/ssh-agent.sock
+#      Use for: Dynamic key addition, runtime key management, ssh-add operations
+#      This allows ssh-add to work dynamically without mounting full .ssh directory
+#   
+#   Note: The container pre-configures github.com in known_hosts for secure connections
+#   SSH config uses agent-based key selection (no hardcoded IdentityFile)
 
 # Configure SSH for git operations - must run as root (before USER appuser)
 # This creates ~/.ssh directory with proper permissions (700)
-# and sets up known_hosts for github.com
+# and sets up known_hosts for github.com with retry logic
 RUN mkdir -p /home/appuser/.ssh && \
     chown appuser:appuser /home/appuser/.ssh && \
     chmod 700 /home/appuser/.ssh && \
-    ssh-keyscan github.com >> /home/appuser/.ssh/known_hosts && \
+    # ssh-keyscan with retry logic (3 attempts, 2 second sleep between retries)
+    for i in 1 2 3; do \
+        if ssh-keyscan github.com >> /home/appuser/.ssh/known_hosts 2>/dev/null; then \
+            break; \
+        fi; \
+        if [ $i -lt 3 ]; then \
+            echo "ssh-keyscan attempt $i failed, retrying in 2 seconds..."; \
+            sleep 2; \
+        else \
+            echo "ERROR: ssh-keyscan failed after 3 attempts"; \
+            exit 1; \
+        fi; \
+    done && \
     chown appuser:appuser /home/appuser/.ssh/known_hosts && \
     chmod 644 /home/appuser/.ssh/known_hosts && \
     echo "Host github.com" > /home/appuser/.ssh/config && \
     echo "    AddKeysToAgent yes" >> /home/appuser/.ssh/config && \
-    echo "    IdentityFile ~/.ssh/id_rsa" >> /home/appuser/.ssh/config && \
     echo "    User git" >> /home/appuser/.ssh/config && \
     chown appuser:appuser /home/appuser/.ssh/config && \
-    chmod 600 /home/appuser/.ssh/config
+    chmod 600 /home/appuser/.ssh/config && \
+    if ! grep -qE "^\s*(Host|Include)" /home/appuser/.ssh/config; then echo "ERROR: SSH config validation failed - missing Host or Include directive"; exit 1; fi && \
+    if [ ! -s /home/appuser/.ssh/config ]; then echo "ERROR: SSH config validation failed - config file is empty"; exit 1; fi
 
 # Security: Switch to non-root user for security
 # Note: appuser was already created earlier with proper ownership
