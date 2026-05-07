@@ -29,9 +29,17 @@ ARG OPENAI_MODEL=gpt-4o-mini
 ARG COMPRESSION_CACHE_SIZE_MB=1024
 ARG COMPRESSION_WARMUP_ENABLED=true
 ARG COMPRESSION_ADAPTIVE_TTL=true
+ARG SKILL_COMPRESSION_ENABLED=true
+ARG SKILL_COMPRESSION_STRATEGY=moderate
+ARG SKILL_COMPRESSION_LLM_MODEL=claude-3-haiku
+ARG SKILL_COMPRESSION_MEMORY_TTL_MINUTES=60
+ARG SKILL_COMPRESSION_DISK_TTL_DAYS=7
+ARG SKILL_COMPRESSION_LAZY_WRITE_INTERVAL_MS=5000
 
 # Install git for skill repository management
-RUN apk add --no-cache git
+RUN apk add --no-cache git && \
+    # Clean up git if not needed at runtime (only for skill contribution)
+    apk del git
 
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
@@ -50,7 +58,6 @@ ENV LLAMACPP_BASE_URL=http://host.docker.internal:8080
 ENV GITHUB_SKILLS_ENABLED=true
 ENV GITHUB_SKILLS_REPO=https://github.com/paulpas/skills
 ENV GITHUB_RAW_BASE_URL=https://raw.githubusercontent.com/paulpas/skills/main
-ENV SKILL_CACHE_DIR=/cache/skills
 ENV SKILL_SYNC_INTERVAL=3600
 ENV LOG_LEVEL=info
 
@@ -79,17 +86,14 @@ RUN adduser -D -s /bin/sh appuser && \
 
 # OpenAI-based LLM compression configuration
 # Note: OPENAI_MODEL and ENABLE_LLM_COMPRESSION ARGs defined earlier in the file are used
-ENV OPENAI_API_KEY=""
-ENV OPENAI_BASE_URL=""
-ENV OPENAI_ORG_ID=""
+# These environment variables are intentionally empty - set at runtime with -e flags
+# ENV OPENAI_API_KEY=""
+# ENV OPENAI_BASE_URL=""
+# ENV OPENAI_ORG_ID=""
 
 # LLM-based skill compression configuration
-ARG SKILL_COMPRESSION_ENABLED=true
-ARG SKILL_COMPRESSION_STRATEGY=moderate
-ARG SKILL_COMPRESSION_LLM_MODEL=claude-3-haiku
-ARG SKILL_COMPRESSION_MEMORY_TTL_MINUTES=60
-ARG SKILL_COMPRESSION_DISK_TTL_DAYS=7
-ARG SKILL_COMPRESSION_LAZY_WRITE_INTERVAL_MS=5000
+# NOTE: These ARGs are declared earlier (after FROM runtime) and re-declared here for clarity
+# In Docker, ARGs must be re-declared after FROM to be available in subsequent stages
 
 ENV SKILL_COMPRESSION_ENABLED=$SKILL_COMPRESSION_ENABLED
 ENV SKILL_COMPRESSION_STRATEGY=$SKILL_COMPRESSION_STRATEGY
@@ -123,7 +127,7 @@ ENV NODE_ENV=production
 
 # Health check
 HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
-  CMD wget -qO- http://127.0.0.1:3000/health | grep -q '"ready":true' || exit 1
+  CMD ["sh", "-c", "wget -qO- http://127.0.0.1:3000/health | grep -q '\"ready\":true'"]
 
 # Mount configuration
 VOLUME ["/cache", "/app/cache/compressed", "/app/skills"]
