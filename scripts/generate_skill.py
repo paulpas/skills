@@ -94,7 +94,7 @@ class SkillGenerator:
         # Initialize OpenAI client with API key masking in logs
         self._api_key = os.environ.get("OPENAI_API_KEY")
         self._masked_key = mask_api_key(self._api_key) if self._api_key else "not set"
-        
+
         if not self._api_key:
             print(
                 f"{Colors.YELLOW}⚠ OPENAI_API_KEY not set. LLM generation will fail.{Colors.RESET}"
@@ -363,11 +363,11 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
     ) -> Path:
         """Save skill file to appropriate location."""
         # Use environment variable for base directory or default to /app
-        base_dir = os.environ.get("SKILLS_DIRECTORY", "/app/skills")
+        base_dir = os.environ.get("SKILLS_DIRECTORY", "/app")
 
         if self.contribute:
-            # Save to skills directory (using environment variable)
-            skill_dir = Path(base_dir) / "skills" / domain / topic
+            # Save to skills directory (using base_dir directly)
+            skill_dir = Path(base_dir) / domain / topic
         else:
             # Save to cache directory
             skill_dir = self.cache_dir / domain / topic
@@ -395,16 +395,23 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
             return False
 
         try:
-            result = os.system(f"python3 {script_path}")
-            if result == 0:
+            result = subprocess.run(
+                ["python3", str(script_path)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode == 0:
                 print(
                     f"{Colors.GREEN}✅ reformat_skills.py completed successfully{Colors.RESET}"
                 )
                 return True
             else:
                 print(
-                    f"{Colors.RED}❌ reformat_skills.py failed with exit code {result}{Colors.RESET}"
+                    f"{Colors.RED}❌ reformat_skills.py failed with exit code {result.returncode}{Colors.RESET}"
                 )
+                if result.stderr:
+                    print(f"{Colors.RED}stderr: {result.stderr}{Colors.RESET}")
                 return False
         except Exception as e:
             print(f"{Colors.RED}❌ Failed to run reformat_skills.py: {e}{Colors.RESET}")
@@ -425,16 +432,23 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
             return False
 
         try:
-            result = os.system(f"python3 {script_path}")
-            if result == 0:
+            result = subprocess.run(
+                ["python3", str(script_path)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode == 0:
                 print(
                     f"{Colors.GREEN}✅ enhance_triggers.py completed successfully{Colors.RESET}"
                 )
                 return True
             else:
                 print(
-                    f"{Colors.RED}❌ enhance_triggers.py failed with exit code {result}{Colors.RESET}"
+                    f"{Colors.RED}❌ enhance_triggers.py failed with exit code {result.returncode}{Colors.RESET}"
                 )
+                if result.stderr:
+                    print(f"{Colors.RED}stderr: {result.stderr}{Colors.RESET}")
                 return False
         except Exception as e:
             print(
@@ -442,7 +456,7 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
             )
             return False
 
-   def run_generate_index_script(self, skill_file: Path) -> bool:
+    def run_generate_index_script(self, skill_file: Path) -> bool:
         """Run generate_index.py to update skills-index.json."""
         if not self.contribute:
             return True  # Skip if not contributing
@@ -457,17 +471,24 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
             return False
 
         try:
-            result = os.system(f"python3 {script_path}")
-            if result == 0:
+            result = subprocess.run(
+                ["python3", str(script_path)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode == 0:
                 print(
                     f"{Colors.GREEN}✅ generate_index.py completed successfully{Colors.RESET}"
                 )
                 return True
             else:
                 print(
-                    f"{Colors.RED}❌ generate_index.py failed with exit code {result}{Colors.RESET}"
+                    f"{Colors.RED}❌ generate_index.py failed with exit code {result.returncode}{Colors.RESET}"
                 )
-                return False
+            if result.stderr:
+                print(f"{Colors.RED}stderr: {result.stderr}{Colors.RESET}")
+            return False
         except Exception as e:
             print(f"{Colors.RED}❌ Failed to run generate_index.py: {e}{Colors.RESET}")
             return False
@@ -484,14 +505,21 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
             return False
 
         try:
-            result = os.system(f"bash {script_path} {skill_file}")
-            if result == 0:
+            result = subprocess.run(
+                ["bash", str(script_path), str(skill_file)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode == 0:
                 print(f"{Colors.GREEN}✅ validate_skill.sh passed{Colors.RESET}")
                 return True
             else:
                 print(
-                    f"{Colors.RED}❌ validate_skill.sh failed with exit code {result}{Colors.RESET}"
+                    f"{Colors.RED}❌ validate_skill.sh failed with exit code {result.returncode}{Colors.RESET}"
                 )
+                if result.stderr:
+                    print(f"{Colors.RED}stderr: {result.stderr}{Colors.RESET}")
                 return False
         except Exception as e:
             print(f"{Colors.RED}❌ Failed to run validate_skill.sh: {e}{Colors.RESET}")

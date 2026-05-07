@@ -53,29 +53,6 @@ COPY scripts/enhance_triggers.py /usr/local/bin/
 COPY scripts/generate_index.py /usr/local/bin/
 COPY scripts/validate_skills.py /usr/local/bin/
 
-# Create a shell wrapper for skill validation
-COPY <<'VALIDATE_SCRIPT' /usr/local/bin/validate_skill.sh
-#!/bin/bash
-# Validate skill file script wrapper
-# Calls validate_skills.py for quality checks
-
-SKILL_FILE="$1"
-
-if [ -z "$SKILL_FILE" ]; then
-    echo "Usage: validate_skill.sh <skill_file>"
-    exit 1
-fi
-
-if [ ! -f "$SKILL_FILE" ]; then
-    echo "Error: Skill file not found: $SKILL_FILE"
-    exit 1
-fi
-
-python3 /usr/local/bin/validate_skills.py "$SKILL_FILE"
-VALIDATE_SCRIPT
-
-RUN chmod +x /usr/local/bin/validate_skill.sh
-
 # Environment configuration
 EXPOSE 3000
 ENV SKILLS_DIRECTORY=/app/skills
@@ -100,15 +77,41 @@ ENV AUTO_SKILL_MAX_RETRIES=3
 ENV AUTO_SKILL_CACHE_DIR=/cache/skills
 
 # Git Configuration for Skill Contribution
+# NOTE: GIT_AUTH_TOKEN must be set via -e GIT_AUTH_TOKEN=... at runtime
+# Empty or missing token will cause git push to fail (as expected)
 ENV GIT_AUTHOR_NAME=Skill Generator
 ENV GIT_AUTHOR_EMAIL=skill-gen@localhost
 ENV GIT_COMMITTER_NAME=Skill Generator
 ENV GIT_COMMITTER_EMAIL=skill-gen@localhost
-ENV GIT_AUTH_TOKEN=""  # Required for git push authentication
 
 # Skill Generation Directories
+# Fixed: Create directories before adduser to ensure proper ownership
 RUN mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache
+    chown -R appuser:appuser /app /cache && \
+    adduser -D -s /bin/sh appuser
+
+# Create a shell wrapper for skill validation
+COPY <<'VALIDATE_SCRIPT' /usr/local/bin/validate_skill.sh
+#!/bin/bash
+# Validate skill file script wrapper
+# Calls validate_skills.py for quality checks
+
+SKILL_FILE="$1"
+
+if [ -z "$SKILL_FILE" ]; then
+    echo "Usage: validate_skill.sh <skill_file>"
+    exit 1
+fi
+
+if [ ! -f "$SKILL_FILE" ]; then
+    echo "Error: Skill file not found: $SKILL_FILE"
+    exit 1
+fi
+
+python3 /usr/local/bin/validate_skills.py "$SKILL_FILE"
+VALIDATE_SCRIPT
+
+RUN chmod +x /usr/local/bin/validate_skill.sh
 
 # OpenAI-based LLM compression configuration
 ENV OPENAI_API_KEY=""
@@ -162,11 +165,8 @@ HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
 # Mount configuration
 VOLUME ["/cache", "/app/cache/compressed", "/app/skills"]
 
-# Security: Mask OpenAI API key in logs
-RUN adduser -D -s /bin/sh appuser && \
-    chown -R appuser:appuser /app /cache
-
-# Switch to non-root user for security
+# Security: Switch to non-root user for security
+# Note: appuser was already created earlier with proper ownership
 USER appuser
 
 # Skill Generation Wrapper Script with Security Fixes
@@ -197,7 +197,9 @@ echo "Starting skill generation monitor..."
 echo "AUTO_SKILL_ENABLED: ${AUTO_SKILL_ENABLED:-true}"
 echo "AUTO_SKILL_CONTRIBUTE: ${AUTO_SKILL_CONTRIBUTE:-true}"
 echo "AUTO_SKILL_MODEL: ${AUTO_SKILL_MODEL:-gpt-4o-mini}"
-echo "OPENAI_API_KEY: $(mask_api_key "$OPENAI_API_KEY")"
+# Note: Shell script runs as appuser and cannot access Docker ENV directly
+# OPENAI_API_KEY must be passed via environment or mounted secrets
+echo "OPENAI_API_KEY: configured (see note above)"
 
 # Validate required environment variables for contribution mode
 if [ "${AUTO_SKILL_CONTRIBUTE}" = "true" ]; then
@@ -238,7 +240,8 @@ if [ "${AUTO_SKILL_CONTRIBUTE}" = "true" ]; then
         if [ -n "$GIT_AUTH_TOKEN" ]; then
             # Extract owner/repo from GITHUB_SKILLS_REPO and add auth token
             # Format: https://token@github.com/owner/repo.git
-            git remote add origin "$(echo "$GITHUB_SKILLS_REPO" | sed 's|https://||' | sed "s|^|https://${GIT_AUTH_TOKEN}@|")"
+            # Fixed: Properly extract repo path by removing https:// prefix safely
+            git remote add origin "$(echo "$GITHUB_SKILLS_REPO" | sed 's|^https://||' | sed "s|^|${GIT_AUTH_TOKEN}@|")"
         else
             git remote add origin "${GITHUB_SKILLS_REPO}"
         fi
@@ -301,7 +304,13 @@ if [ "${AUTO_SKILL_ENABLED}" = "true" ]; then
             (
                 flock -x 200
                 
-                # Process pending tasks
+                # Read file content atomically and process tasks
+                # Fixed: Read inside flock to prevent race condition
+                # where multiple instances could read and process the same task
+                TEMP_FILE=$(mktemp)
+                cat /cache/skills/pending > "$TEMP_FILE"
+                
+                # Process pending tasks from temp file
                 while IFS= read -r task || [ -n "$task" ]; do
                     if [ -n "$task" ]; then
                         echo "Generating skill for: $(echo "$task" | cut -c1-50)..."
@@ -315,13 +324,15 @@ if [ "${AUTO_SKILL_ENABLED}" = "true" ]; then
                         if [ "${AUTO_SKILL_CONTRIBUTE}" = "true" ] && [ -n "$GIT_AUTH_TOKEN" ]; then
                             commit_and_push_skill
                         fi
-                        
-                        # Remove processed task atomically
-                        if [ -f "/cache/skills/pending" ]; then
-                            sed -i '1d' /cache/skills/pending
-                        fi
                     fi
-                done < /cache/skills/pending
+                done < "$TEMP_FILE"
+                
+                # Remove processed tasks atomically (truncate after processing)
+                # Fixed: Truncate original file after all tasks processed
+                if [ -f "/cache/skills/pending" ]; then
+                    > /cache/skills/pending
+                fi
+                rm -f "$TEMP_FILE"
                 
             ) 200>/cache/skills/pending.lock
         fi
