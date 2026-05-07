@@ -22,17 +22,30 @@
 
 ## Quick Start
 
-### Basic Installation (OpenAI)
+### Interactive Installation (Recommended)
 
 ```bash
 git clone https://github.com/paulpas/agent-skill-router
 cd agent-skill-router
-OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
+./install-skill-router.sh
 ```
 
-### Local Model (No API Keys)
+**What happens:**
+- Interactive prompts guide you through configuration
+- Select your LLM provider (OpenAI, Anthropic, or local llama.cpp)
+- Enter API keys securely with confirmation prompts
+- Optionally integrate with OpenCode or Claude
+- Full configuration summary before installation begins
+
+### Non-Interactive Installation (Legacy)
+
+For advanced users who prefer command-line arguments:
 
 ```bash
+# OpenAI (with inline API key)
+OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
+
+# Local Model (no API keys)
 ./install-skill-router.sh \
   --provider llamacpp \
   --embedding-provider llamacpp \
@@ -43,7 +56,7 @@ OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
 **What happens:**
 1. Docker image `skill-router:latest` is built
 2. Container `skill-router` runs on port 3000
-3. OpenCode config is updated with MCP integration
+3. OpenCode config is updated with MCP integration (if `--integrate-opencode`)
 4. Systemd user service is enabled (Linux)
 
 ---
@@ -67,7 +80,10 @@ curl --version
 ### Method 1: OpenAI (Default)
 
 ```bash
-# With inline API key
+# Interactive (recommended - prompts for API key)
+./install-skill-router.sh
+
+# Non-interactive (with inline API key)
 ./install-skill-router.sh --openai-key sk-...
 
 # Or set environment variable first
@@ -81,7 +97,10 @@ export OPENAI_API_KEY=sk-...
 ### Method 2: Anthropic
 
 ```bash
-# With inline API key
+# Interactive (recommended - prompts for API key)
+./install-skill-router.sh
+
+# Non-interactive (with inline API key)
 ./install-skill-router.sh \
   --provider anthropic \
   --anthropic-key sk-ant-... \
@@ -100,13 +119,10 @@ export ANTHROPIC_API_KEY=sk-ant-...
 ### Method 3: Local llama.cpp (No API Keys)
 
 ```bash
-# Start llama.cpp server first
-./server -m models/llama-3-8b.Q4_K_M.gguf \
-  --host 0.0.0.0 \
-  --port 8080 \
-  --embedding
+# Interactive (recommended)
+./install-skill-router.sh
 
-# Then install router
+# Non-interactive
 ./install-skill-router.sh \
   --provider llamacpp \
   --embedding-provider llamacpp \
@@ -141,10 +157,10 @@ export ANTHROPIC_API_KEY=sk-ant-...
 ### OpenAI Configuration
 
 ```bash
-# Basic installation
+# Interactive (recommended)
 OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
 
-# With custom model
+# Non-interactive
 OPENAI_API_KEY=sk-... ./install-skill-router.sh \
   --openai-key sk-... \
   --model gpt-4o \
@@ -163,7 +179,10 @@ export EMBEDDING_MODEL=text-embedding-3-large
 ### Anthropic Configuration
 
 ```bash
-# Basic installation
+# Interactive (recommended)
+ANTHROPIC_API_KEY=sk-ant-... ./install-skill-router.sh
+
+# Non-interactive
 ANTHROPIC_API_KEY=sk-ant-... ./install-skill-router.sh \
   --provider anthropic \
   --anthropic-key sk-ant-... \
@@ -186,7 +205,7 @@ export LLM_MODEL=claude-3-5-sonnet-20240620
   --port 8080 \
   --embedding
 
-# Step 2: Install router (no API keys required!)
+# Step 2: Install router (interactive or non-interactive)
 ./install-skill-router.sh \
   --provider llamacpp \
   --embedding-provider llamacpp \

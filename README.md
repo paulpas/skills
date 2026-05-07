@@ -21,24 +21,21 @@ Full expert skills injected into context — AI answers as expert reviewer
 
 ## Quick Start
 
-### Installation (OpenAI)
+### Installation (Interactive Mode - Recommended)
 
 ```bash
 git clone https://github.com/paulpas/agent-skill-router
 cd agent-skill-router
-OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
+./install-skill-router.sh
 ```
+
+**What happens:**
+- Interactive prompts guide you through API key configuration
+- Automatically builds and starts the skill router Docker container
+- Optionally integrates with OpenCode or Claude
+- Full configuration summary before installation begins
 
 **Full installation instructions:** [AGENT-MCP.md](./AGENT-MCP.md)
-
-### Local Model (no API key required)
-
-```bash
-./install-skill-router.sh \
-  --provider llamacpp \
-  --embedding-provider llamacpp \
-  --llamacpp-url http://localhost:8080
-```
 
 ---
 
