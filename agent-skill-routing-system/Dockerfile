@@ -16,8 +16,10 @@
 #   - GitHub known_hosts pre-configured for secure connections
 #   - SSH config uses agent-based key selection (no hardcoded IdentityFile)
 #
-# Git Permissions Fix:
-#   - /app/skills and /cache/skills owned by appuser (uid=1000)
+# Volume Mount Permissions Fix:
+#   - /app/skills and /cache/skills permissions fixed at runtime by entrypoint
+#   - Entrypoint script (docker-entrypoint-root.sh) ensures appuser can write to volumes
+#   - Fixes "Permission denied" on .git/FETCH_HEAD during git operations
 #   - Proper umask (0022) for file/directory permissions
 #   - safe.directory configured for /app/skills and /cache/skills
 #
@@ -55,13 +57,14 @@ RUN apk add --no-cache git openssh-client
 
 WORKDIR /app
 
-# Create user first, then directories and set ownership (before COPY to avoid permission issues)
+# Create user first, then directories (ownership will be fixed by entrypoint at runtime)
+# Note: /cache/skills is volume-mounted from host, so ownership is fixed by entrypoint script
 # Set umask to 0022 for proper directory/file permissions
 RUN adduser -D -s /bin/sh appuser && \
-    mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache && \
-    chmod 775 /app/skills /cache/skills && \
-    chmod 755 /app /cache
+    mkdir -p /app/skills /cache/skills /app/logs /app/dist && \
+    chmod 775 /app/skills /cache/skills /app/logs /app/dist && \
+    chmod 777 /app && \
+    chmod 755 /cache
 
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
@@ -161,6 +164,11 @@ HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
 # Mount configuration
 # Note: /home/appuser/.ssh is NOT included as a volume because we pre-configure it during build
 # SSH keys should be mounted at runtime using: -v ~/.ssh:/home/appuser/.ssh:ro
+#
+# Volume Mount Permissions:
+#   - /cache/skills and /app/skills are mounted from host/volume
+#   - Entrypoint script (docker-entrypoint.sh) fixes ownership to appuser at runtime
+#   - This prevents "Permission denied" errors during git operations
 VOLUME ["/cache", "/app/cache/compressed", "/app/skills"]
 
 # SSH Support for Git Operations
@@ -207,23 +215,25 @@ RUN mkdir -p /home/appuser/.ssh && \
     if ! grep -qE "^\s*(Host|Include)" /home/appuser/.ssh/config; then echo "ERROR: SSH config validation failed - missing Host or Include directive"; exit 1; fi && \
     if [ ! -s /home/appuser/.ssh/config ]; then echo "ERROR: SSH config validation failed - config file is empty"; exit 1; fi
 
-# Security: Switch to non-root user for security
-# Note: appuser was already created earlier with proper ownership
-USER appuser
-
-# Set umask for proper file permissions
-RUN umask 0022
-
-# Configure git safe.directory for appuser - required for skill contribution
-# This must run after USER appuser to write to /home/appuser/.gitconfig
-# Also configure git to use the correct home directory for config
-# Note: git config --global writes to $HOME/.gitconfig which is /home/appuser/.gitconfig when running as appuser
-RUN git config --global --add safe.directory /app/skills && \
-    git config --global --add safe.directory /cache/skills && \
-    git config --global user.email "$GIT_AUTHOR_EMAIL" && \
-    git config --global user.name "$GIT_AUTHOR_NAME"
-
 # Skill generation is now handled by the TypeScript MCP tool
 # The SkillGenerationTool uses OpenAI SDK directly without Python dependencies
 
+# Configure git safe.directory for appuser - required for skill contribution
+# This must run after appuser is created and we need git config written to appuser's .gitconfig
+RUN git config --global --add safe.directory /app/skills && \
+    git config --global --add safe.directory /cache/skills && \
+    git config --global user.email "$GIT_AUTHOR_EMAIL" && \
+    git config --global user.name "$GIT_AUTHOR_NAME" && \
+    # Copy gitconfig to appuser's home directory
+    cp /root/.gitconfig /home/appuser/.gitconfig && \
+    chown appuser:appuser /home/appuser/.gitconfig && \
+    chmod 600 /home/appuser/.gitconfig
+
+# Copy the root entrypoint script that will fix permissions
+COPY docker-entrypoint-root.sh /usr/local/bin/docker-entrypoint-root.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-root.sh
+
+# Set the entrypoint - this runs as root to fix permissions
+# The entrypoint script then switches to appuser before exec'ing the CMD
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-root.sh"]
 CMD ["node", "dist/index.js"]

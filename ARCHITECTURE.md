@@ -415,6 +415,87 @@ graph TD
 
 ---
 
+## Installation
+
+### Interactive Installer (Recommended)
+
+The `install-skill-router.sh` script provides an interactive installation experience:
+
+```bash
+./install-skill-router.sh
+```
+
+**Features:**
+- Step-by-step configuration prompts with real-time validation
+- Secure API key entry with masking in summary
+- LLM provider selection (OpenAI, Anthropic, or local llama.cpp)
+- Model configuration with provider-appropriate defaults
+- Optional integration with OpenCode or Claude
+- Final configuration summary before installation begins
+- Automatic error handling and validation
+
+**Configuration Steps:**
+1. OpenAI API key (required for OpenAI provider)
+2. LLM provider selection
+3. LLM model configuration
+4. Embedding provider selection
+5. Embedding model configuration
+6. Anthropic API key (if Anthropic selected)
+7. llamacpp URL (if llama.cpp selected)
+8. Network configuration (port binding)
+9. GitHub integration settings
+10. GitHub token (optional, for higher rate limits)
+11. SSH configuration (optional, for private repositories)
+12. Auto-skill generation settings
+
+**Installation Flow:**
+```
+User runs ./install-skill-router.sh
+         ↓
+Show welcome screen with overview
+         ↓
+Configure each setting interactively
+         ↓
+Show configuration summary
+         ↓
+Get final confirmation
+         ↓
+Build Docker image
+         ↓
+Start container with configured settings
+         ↓
+Health check (polling up to 5 minutes)
+         ↓
+Configure OpenCode/Claude integration (if requested)
+         ↓
+Display installation summary with useful commands
+```
+
+### Non-Interactive Installation (Legacy)
+
+For CI/CD or advanced users who prefer command-line arguments:
+
+```bash
+OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
+```
+
+**Flags:**
+- `--openai-key sk-...` - Set OpenAI API key
+- `--provider {openai|anthropic|llamacpp}` - Select LLM provider
+- `--model MODEL` - Specify model name
+- `--embedding-provider {openai|llamacpp}` - Select embedding provider
+- `--llamacpp-url URL` - Set llama.cpp server URL
+- `--integrate-opencode` - Configure OpenCode MCP integration
+- `--integrate-claude` - Configure Claude MCP integration
+- `--config PATH` - Specify OpenCode config path
+- `--claude-config PATH` - Specify Claude config path
+- `--no-service` - Skip systemd service setup
+- `--skills-dir PATH` - Specify skills directory path
+
+See [AGENT-MCP.md](./AGENT-MCP.md) for complete installation documentation.
+
+---
+
 ## Integration Architecture
 
 ### MCP Integration with OpenCode
@@ -424,22 +505,22 @@ graph TD
 │                        OpenCode Application                      │
 │  ┌──────────────┐  ┌───────────────────────────────────────┐   │
 │  │  User Input  │  │  MCP Client (skill-router-mcp.js)     │   │
-│  └──────┬───────┘  │  - stdio communication                │   │
-│         │          │  - invokes route_to_skill(task)       │   │
-│         │          │  - handles skill content injection    │   │
-│         │          └───────────────┬───────────────────────┘   │
-│         │                          │                            │
-│         └──────────────────────────┴───────────────────────────┘
-│                                    │                            │
-│                                    ▼                            │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │              skill-router Server (:3000)                │   │
-│  │  ┌───────────────────────────────────────────────────┐  │   │
-│  │  │  Fastify HTTP Server                              │  │   │
-│  │  │  - POST /route                                    │  │   │
-│  │  │  - POST /execute                                  │  │   │
-│  │  │  - GET /health, /stats, /skill/:name             │  │   │
-│  │  └───────────────────────────────────────────────────┘  │   │
+│  │  └──────┬───────┘  │  - stdio communication                │   │
+│  │         │          │  - invokes route_to_skill(task)       │   │
+│  │         │          │  - handles skill content injection    │   │
+│  │         │          └───────────────┬───────────────────────┘   │
+│  │         │                          │                            │
+│  │         └──────────────────────────┴───────────────────────────┘
+│  │                                    │                            │
+│  │                                    ▼                            │
+│  │  ┌─────────────────────────────────────────────────────────┐   │
+│  │  │              skill-router Server (:3000)                │   │
+│  │  │  ┌───────────────────────────────────────────────────┐  │   │
+│  │  │  │  Fastify HTTP Server                              │  │   │
+│  │  │  │  - POST /route                                    │  │   │
+│  │  │  │  - POST /execute                                  │  │   │
+│  │  │  │  - GET /health, /stats, /skill/:name             │  │   │
+│  │  │  └───────────────────────────────────────────────────┘  │   │
 │  └─────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
                                     │

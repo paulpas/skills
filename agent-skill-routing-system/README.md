@@ -275,6 +275,10 @@ The recommended way to run the router is via Docker with the skills repo mounted
 
 ```bash
 # From the root of the skills repo
+# Interactive installation (recommended)
+./install-skill-router.sh
+
+# Non-interactive installation (for CI/CD or advanced users)
 OPENAI_API_KEY=sk-... ./install-skill-router.sh
 ```
 
@@ -288,6 +292,10 @@ The install script:
 ### OpenCode Config Integration (optional)
 
 ```bash
+# Interactive installation (recommended)
+./install-skill-router.sh --integrate-opencode
+
+# Non-interactive installation
 OPENAI_API_KEY=sk-... ./install-skill-router.sh --integrate-opencode
 ```
 
@@ -297,11 +305,19 @@ Adds `skill-router-api.md` to your `~/.config/opencode/opencode.json` instructio
 
 ### OpenAI (default)
 ```bash
+# Interactive (recommended)
+./install-skill-router.sh
+
+# Non-interactive
 OPENAI_API_KEY=sk-... ./install-skill-router.sh
 ```
 
 ### Anthropic
 ```bash
+# Interactive (recommended)
+./install-skill-router.sh
+
+# Non-interactive
 OPENAI_API_KEY=sk-... \
 ANTHROPIC_API_KEY=sk-ant-... \
 ./install-skill-router.sh --provider anthropic --model claude-3-5-haiku-20241022
@@ -310,7 +326,10 @@ Embeddings still use OpenAI (Anthropic has no embedding API). `OPENAI_API_KEY` r
 
 ### Local llama.cpp
 ```bash
-# Assumes llama.cpp server running on host port 8080
+# Interactive (recommended)
+./install-skill-router.sh
+
+# Non-interactive
 ./install-skill-router.sh \
   --provider llamacpp \
   --model local-model \
