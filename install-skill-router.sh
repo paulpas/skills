@@ -469,11 +469,11 @@ ENV_VARS="$ENV_VARS -e SKILL_CACHE_DIR='${SKILL_CACHE_DIR:-/cache/skills}'"
 
 # Build volume mounts
 # Validate that skills directory exists (skills are at parent level of ROUTER_DIR)
-if [[ ! -d "${ROUTER_DIR%/agent-skill-routing-system}/../skills" ]]; then
-  err "Skills directory not found: ${ROUTER_DIR%/agent-skill-routing-system}/../skills"
+if [[ ! -d "${ROUTER_DIR%/agent-skill-routing-system}/skills" ]]; then
+  err "Skills directory not found: ${ROUTER_DIR%/agent-skill-routing-system}/skills"
   exit 1
 fi
-SKILLS_PATH="${ROUTER_DIR%/agent-skill-routing-system}/../skills"
+SKILLS_PATH="${ROUTER_DIR%/agent-skill-routing-system}/skills"
 VOLUMES=(-v "$SKILLS_PATH:/app/skills:ro")
 VOLUMES+=(-v skill-router-cache:/cache)
 if [[ -n "$SSH_VOLUMES" ]]; then
