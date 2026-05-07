@@ -70,10 +70,10 @@ ENV GIT_COMMITTER_NAME="Skill Generator"
 ENV GIT_COMMITTER_EMAIL=skill-gen@localhost
 
 # Skill Generation Directories
-# Fixed: Create directories before adduser to ensure proper ownership
-RUN mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache && \
-    adduser -D -s /bin/sh appuser
+# Fixed: Create user first, then directories and set ownership
+RUN adduser -D -s /bin/sh appuser && \
+    mkdir -p /app/skills /cache/skills && \
+    chown -R appuser:appuser /app /cache
 
 # Skill validation is now handled by the TypeScript MCP tool
 
