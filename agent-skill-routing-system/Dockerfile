@@ -46,8 +46,7 @@ WORKDIR /app
 # Create user first, then directories and set ownership (before COPY to avoid permission issues)
 RUN adduser -D -s /bin/sh appuser && \
     mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache && \
-    git config --global --add safe.directory /app/skills /cache/skills
+    chown -R appuser:appuser /app /cache
 
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
@@ -137,6 +136,11 @@ VOLUME ["/cache", "/app/cache/compressed", "/app/skills"]
 # Security: Switch to non-root user for security
 # Note: appuser was already created earlier with proper ownership
 USER appuser
+
+# Configure git safe.directory for appuser - required for skill contribution
+# This must run after USER appuser to write to /home/appuser/.gitconfig
+RUN git config --global --add safe.directory /app/skills && \
+    git config --global --add safe.directory /cache/skills
 
 # Skill generation is now handled by the TypeScript MCP tool
 # The SkillGenerationTool uses OpenAI SDK directly without Python dependencies
