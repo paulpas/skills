@@ -6,6 +6,7 @@ import { FileTool } from './tools/FileTool';
 import { HTTPTool } from './tools/HTTPTool';
 import { KubectlTool } from './tools/KubectlTool';
 import { LogFetchTool } from './tools/LogFetchTool';
+import { SkillGenerationTool } from './tools/SkillGenerationTool';
 import { ToolResult, ToolSpec } from '../core/types';
 import { Logger } from '../observability/Logger';
 
@@ -47,40 +48,55 @@ export class MCPBridge {
    }
 
   /**
-   * Initialize all configured tools
-   */
-  private initializeTools(): void {
-    const enabledTools = this.config.enabledTools !== undefined && this.config.enabledTools.length > 0
-      ? this.config.enabledTools
-      : ['shell', 'file', 'http', 'kubectl', 'log_fetch'];
+    * Initialize all configured tools
+    */
+   private initializeTools(): void {
+     const enabledTools = this.config.enabledTools !== undefined && this.config.enabledTools.length > 0
+       ? this.config.enabledTools
+       : this.getDefaultEnabledTools();
 
-    const disabledTools = new Set(this.config.disableTools || []);
+     const disabledTools = new Set(this.config.disableTools || []);
 
-    const toolFactories: Record<string, () => IMCPTool> = {
-      shell: () => new ShellCommandTool(this.config.defaultTimeoutMs),
-      file: () => new FileTool(this.config.defaultTimeoutMs),
-      http: () => new HTTPTool(this.config.defaultTimeoutMs),
-      kubectl: () => new KubectlTool(this.config.defaultTimeoutMs),
-      log_fetch: () => new LogFetchTool(this.config.defaultTimeoutMs),
-    };
+     const toolFactories: Record<string, () => IMCPTool> = {
+        shell: () => new ShellCommandTool(this.config.defaultTimeoutMs),
+        file: () => new FileTool(this.config.defaultTimeoutMs),
+        http: () => new HTTPTool(this.config.defaultTimeoutMs),
+        kubectl: () => new KubectlTool(this.config.defaultTimeoutMs),
+        log_fetch: () => new LogFetchTool(this.config.defaultTimeoutMs),
+        generate_skill: () => new SkillGenerationTool(this.config.defaultTimeoutMs),
+      };
 
-    for (const [name, factory] of Object.entries(toolFactories)) {
-      if (disabledTools.has(name)) {
-        continue;
+     for (const [name, factory] of Object.entries(toolFactories)) {
+       if (disabledTools.has(name)) {
+         continue;
+       }
+
+       if (enabledTools.includes(name)) {
+         try {
+           const tool = factory();
+           this.tools.set(tool.name, tool);
+         } catch (error) {
+           this.logger.error(`Failed to initialize tool ${name}:`, {
+             error: error instanceof Error ? error.message : String(error),
+           });
+         }
+       }
+     }
+   }
+
+   /**
+    * Get default enabled tools based on environment configuration
+    */
+   private getDefaultEnabledTools(): string[] {
+     const autoSkillEnabled = process.env.AUTO_SKILL_ENABLED !== 'false';
+     const baseTools = ['shell', 'file', 'http', 'kubectl', 'log_fetch'];
+     
+    if (autoSkillEnabled) {
+        return [...baseTools, 'generate_skill'];
       }
-
-      if (enabledTools.includes(name)) {
-        try {
-          const tool = factory();
-          this.tools.set(tool.name, tool);
-        } catch (error) {
-          this.logger.error(`Failed to initialize tool ${name}:`, {
-            error: error instanceof Error ? error.message : String(error),
-          });
-        }
-      }
-    }
-  }
+     
+     return baseTools;
+   }
 
   /**
    * Get a tool by name
