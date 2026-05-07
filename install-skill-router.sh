@@ -19,6 +19,10 @@ info() { echo -e "  ${CYAN}→${RESET} $*"; }
 # ─────────────────────────────────────────────────────────────────────────────
 # STEP 1 — Parse arguments
 # ─────────────────────────────────────────────────────────────────────────────
+# Initialize OPENAI_API_KEY from environment variable if not set via --openai-key
+# The environment variable should be exported before running this script:
+#   export OPENAI_API_KEY=sk-...
+# Then run: ./install-skill-router.sh
 OPENAI_API_KEY="${OPENAI_API_KEY:-}"
 PORT=3000
 SKILLS_DIR_ARG=""
@@ -89,7 +93,14 @@ ${BOLD}Skill Generation:${RESET}
   --help                 Show this help message
 
 ${BOLD}Examples:${RESET}
-  OPENAI_API_KEY=sk-... $0
+  # Option 1: Export environment variable first
+  export OPENAI_API_KEY=sk-...
+  $0 --port 3001 --no-service
+
+  # Option 2: Set inline for single run
+  OPENAI_API_KEY=sk-... $0 --port 3001 --no-service
+
+  # Option 3: Pass via argument
   $0 --openai-key sk-... --port 3001 --no-service
   $0 --openai-key sk-... --integrate-opencode
   $0 --openai-key sk-... --integrate-opencode --config ~/.config/opencode/opencode.json
@@ -446,26 +457,26 @@ if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
 fi
 
 # Build environment variables
-ENV_VARS="-e OPENAI_API_KEY=\"${OPENAI_API_KEY}\""
-ENV_VARS="$ENV_VARS -e LLM_PROVIDER=\"$LLM_PROVIDER\""
-ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e LLM_MODEL=\"$LLM_MODEL\"}"
-ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL=\"$EMBEDDING_MODEL\"}"
-ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY=\"${ANTHROPIC_API_KEY}\"}"
-ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_URL=\"${LLAMACPP_URL}\"}"
-ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER=\"${EMBEDDING_PROVIDER}\""
-ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED=\"${GITHUB_ENABLED}\""
-ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL=\"${SYNC_INTERVAL}\""
-ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN=\"${GITHUB_TOKEN}\"}"
+ENV_VARS="-e 'OPENAI_API_KEY=${OPENAI_API_KEY}'"
+ENV_VARS="$ENV_VARS -e 'LLM_PROVIDER=${LLM_PROVIDER}'"
+ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e 'LLM_MODEL=${LLM_MODEL}'}"
+ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e 'EMBEDDING_MODEL=${EMBEDDING_MODEL}'}"
+ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e 'ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}'}"
+ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e 'LLAMACPP_URL=${LLAMACPP_URL}'}"
+ENV_VARS="$ENV_VARS -e 'EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER}'"
+ENV_VARS="$ENV_VARS -e 'GITHUB_SKILLS_ENABLED=${GITHUB_ENABLED}'"
+ENV_VARS="$ENV_VARS -e 'SKILL_SYNC_INTERVAL=${SYNC_INTERVAL}'"
+ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e 'GITHUB_TOKEN=${GITHUB_TOKEN}'}"
 
 # Only set SSH_AUTH_SOCK if SSH agent socket is provided
 if [[ -n "$SSH_AGENT_SOCKET" ]]; then
   ENV_VARS="$ENV_VARS -e SSH_AUTH_SOCK='/tmp/ssh-agent.sock'"
 fi
 
-ENV_VARS="$ENV_VARS -e AUTO_SKILL_ENABLED='${AUTO_SKILL_ENABLED}'"
-ENV_VARS="$ENV_VARS -e AUTO_SKILL_CONTRIBUTE='${AUTO_SKILL_CONTRIBUTE}'"
-ENV_VARS="$ENV_VARS -e AUTO_SKILL_MODEL='${AUTO_SKILL_MODEL}'"
-ENV_VARS="$ENV_VARS -e SKILL_CACHE_DIR='${SKILL_CACHE_DIR:-/cache/skills}'"
+ENV_VARS="$ENV_VARS -e 'AUTO_SKILL_ENABLED=${AUTO_SKILL_ENABLED}'"
+ENV_VARS="$ENV_VARS -e 'AUTO_SKILL_CONTRIBUTE=${AUTO_SKILL_CONTRIBUTE}'"
+ENV_VARS="$ENV_VARS -e 'AUTO_SKILL_MODEL=${AUTO_SKILL_MODEL}'"
+ENV_VARS="$ENV_VARS -e 'SKILL_CACHE_DIR=${SKILL_CACHE_DIR:-/cache/skills}'"
 
 # Build volume mounts
 # Validate that skills directory exists (skills are at parent level of ROUTER_DIR)
