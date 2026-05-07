@@ -37,6 +37,17 @@ SYNC_INTERVAL="${SYNC_INTERVAL:-3600}"
 INTEGRATE_CLAUDE=false
 CLAUDE_CONFIG_ARG=""
 
+# SSH support variables
+SSH_KEY_PATH="${SSH_KEY_PATH:-}"
+SSH_AGENT_SOCKET="${SSH_AGENT_SOCKET:-}"
+SSH_KNOWN_HOSTS="${SSH_KNOWN_HOSTS:-}"
+
+# Skill generation configuration
+AUTO_SKILL_ENABLED="${AUTO_SKILL_ENABLED:-true}"
+AUTO_SKILL_CONTRIBUTE="${AUTO_SKILL_CONTRIBUTE:-true}"
+AUTO_SKILL_MODEL="${AUTO_SKILL_MODEL:-gpt-4o-mini}"
+SKILL_CACHE_DIR="${SKILL_CACHE_DIR:-}"
+
 usage() {
   cat <<EOF
 ${BOLD}Usage:${RESET} $0 [OPTIONS]
@@ -63,6 +74,18 @@ ${BOLD}Options:${RESET}
   --integrate-claude       Generate MCP script and register in claude.json
                            mcpServers section (steps 14-16)
   --claude-config PATH     Path to claude.json (auto-detects with fallbacks)
+
+${BOLD}SSH Support:${RESET}
+  --ssh-key-path PATH       Path to SSH private key for git authentication
+  --ssh-agent-socket PATH   Path to SSH agent socket for agent forwarding
+  --ssh-known-hosts PATH    Path to known_hosts file (optional)
+
+${BOLD}Skill Generation:${RESET}
+  --skill-cache-dir PATH    Path to skill cache directory (default: auto-detected or /cache/skills)
+  --auto-skill-enabled BOOL Enable/disable auto-skill generation (default: true)
+  --auto-skill-contribute BOOL Enable/disable contribution to git (default: true)
+  --auto-skill-model MODEL  LLM model for skill generation (default: gpt-4o-mini)
+
   --help                 Show this help message
 
 ${BOLD}Examples:${RESET}
@@ -72,6 +95,8 @@ ${BOLD}Examples:${RESET}
   $0 --openai-key sk-... --integrate-opencode --config ~/.config/opencode/opencode.json
   $0 --openai-key sk-... --provider anthropic --anthropic-key sk-ant-... --model claude-3-5-haiku-20241022
   $0 --provider llamacpp --llamacpp-url http://host.docker.internal:8080 --embedding-provider llamacpp
+  $0 --ssh-key-path ~/.ssh/id_rsa --ssh-agent-socket ~/.ssh/agent.sock
+  $0 --auto-skill-enabled true --auto-skill-contribute false --auto-skill-model gpt-4o
 EOF
   exit 0
 }
@@ -135,6 +160,36 @@ while [[ $# -gt 0 ]]; do
       ;;
     --claude-config)
       CLAUDE_CONFIG_ARG="${2:?'--claude-config requires a value'}"
+      shift 2
+      ;;
+    # SSH support arguments
+    --ssh-key-path)
+      SSH_KEY_PATH="$2"
+      shift 2
+      ;;
+    --ssh-agent-socket)
+      SSH_AGENT_SOCKET="$2"
+      shift 2
+      ;;
+    --ssh-known-hosts)
+      SSH_KNOWN_HOSTS="$2"
+      shift 2
+      ;;
+    # Skill generation arguments
+    --skill-cache-dir)
+      SKILL_CACHE_DIR="$2"
+      shift 2
+      ;;
+    --auto-skill-enabled)
+      AUTO_SKILL_ENABLED="$2"
+      shift 2
+      ;;
+    --auto-skill-contribute)
+      AUTO_SKILL_CONTRIBUTE="$2"
+      shift 2
+      ;;
+    --auto-skill-model)
+      AUTO_SKILL_MODEL="$2"
       shift 2
       ;;
     --help|-h)
@@ -293,10 +348,49 @@ fi
 [[ -n "$ANTHROPIC_API_KEY" ]] && ok "ANTHROPIC_API_KEY is set (${#ANTHROPIC_API_KEY} chars)"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 6 — Build Docker image
+# STEP 6 — Validate SSH configuration
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}[Step 6] Building Docker image...${RESET}"
+echo -e "${BOLD}[Step 6] Validating SSH configuration...${RESET}"
+
+if [[ -n "$SSH_KEY_PATH" ]]; then
+  if [[ -f "$SSH_KEY_PATH" ]]; then
+    ok "SSH key found: $SSH_KEY_PATH"
+  else
+    err "SSH key not found: $SSH_KEY_PATH"
+    exit 1
+  fi
+else
+  info "SSH key not configured (optional)"
+fi
+
+if [[ -n "$SSH_AGENT_SOCKET" ]]; then
+  if [[ -S "$SSH_AGENT_SOCKET" ]]; then
+    ok "SSH agent socket found: $SSH_AGENT_SOCKET"
+  else
+    err "SSH agent socket not found: $SSH_AGENT_SOCKET"
+    exit 1
+  fi
+else
+  info "SSH agent socket not configured (optional)"
+fi
+
+if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
+  if [[ -f "$SSH_KNOWN_HOSTS" ]]; then
+    ok "SSH known_hosts found: $SSH_KNOWN_HOSTS"
+  else
+    err "SSH known_hosts not found: $SSH_KNOWN_HOSTS"
+    exit 1
+  fi
+else
+  info "SSH known_hosts not configured (optional)"
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# STEP 7 — Build Docker image
+# ─────────────────────────────────────────────────────────────────────────────
+echo ""
+echo -e "${BOLD}[Step 7] Building Docker image...${RESET}"
 info "Building skill-router:latest from $ROUTER_DIR"
 
 if ! docker build -t skill-router:latest "$ROUTER_DIR"; then
@@ -306,45 +400,68 @@ fi
 ok "Docker image built successfully: skill-router:latest"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 7 — Stop/remove existing container (idempotent)
+# STEP 8 — Stop/remove existing container (idempotent)
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}[Step 7] Removing existing container (if any)...${RESET}"
+echo -e "${BOLD}[Step 8] Removing existing container (if any)...${RESET}"
 docker stop skill-router 2>/dev/null && ok "Stopped existing skill-router container" || true
 docker rm   skill-router 2>/dev/null && ok "Removed existing skill-router container" || true
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 8 — Run the container
+# STEP 9 — Run the container
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}[Step 8] Starting container...${RESET}"
+echo -e "${BOLD}[Step 9] Starting container...${RESET}"
+
+# Build SSH volume mounts
+SSH_VOLUMES=""
+if [[ -n "$SSH_KEY_PATH" ]]; then
+  SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KEY_PATH"):/home/appuser/.ssh/id_rsa:ro"
+fi
+if [[ -n "$SSH_AGENT_SOCKET" ]]; then
+  SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_AGENT_SOCKET"):/tmp/ssh-agent.sock:ro"
+fi
+if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
+  SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KNOWN_HOSTS"):/home/appuser/.ssh/known_hosts:ro"
+fi
+
+# Build environment variables
+ENV_VARS="-e OPENAI_API_KEY=\"$OPENAI_API_KEY\""
+ENV_VARS="$ENV_VARS -e LLM_PROVIDER=\"$LLM_PROVIDER\""
+ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e LLM_MODEL=\"$LLM_MODEL\"}"
+ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL=\"$EMBEDDING_MODEL\"}"
+ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\"}"
+ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_BASE_URL=\"$LLAMACPP_URL\"}"
+ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER=\"$EMBEDDING_PROVIDER\""
+ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED=\"$GITHUB_ENABLED\""
+ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL=\"$SYNC_INTERVAL\""
+ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN=\"$GITHUB_TOKEN\"}"
+ENV_VARS="$ENV_VARS -e SSH_AUTH_SOCK=\"/tmp/ssh-agent.sock\""
+ENV_VARS="$ENV_VARS -e AUTO_SKILL_ENABLED=\"$AUTO_SKILL_ENABLED\""
+ENV_VARS="$ENV_VARS -e AUTO_SKILL_CONTRIBUTE=\"$AUTO_SKILL_CONTRIBUTE\""
+ENV_VARS="$ENV_VARS -e AUTO_SKILL_MODEL=\"$AUTO_SKILL_MODEL\""
+ENV_VARS="$ENV_VARS -e SKILL_CACHE_DIR=\"/cache/skills\""
+
+# Build volume mounts
+VOLUMES="-v \"${ROUTER_DIR%/agent-skill-routing-system}/skills:/app/skills:ro\""
+VOLUMES="$VOLUMES -v skill-router-cache:/cache"
+VOLUMES="$VOLUMES $SSH_VOLUMES"
 
 docker run -d \
   --name skill-router \
   --restart unless-stopped \
   -p "${PORT}:3000" \
-  -e OPENAI_API_KEY="$OPENAI_API_KEY" \
-  -e LLM_PROVIDER="$LLM_PROVIDER" \
-  ${LLM_MODEL:+-e LLM_MODEL="$LLM_MODEL"} \
-  ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL="$EMBEDDING_MODEL"} \
-  ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY"} \
-  ${LLAMACPP_URL:+-e LLAMACPP_BASE_URL="$LLAMACPP_URL"} \
-  -e EMBEDDING_PROVIDER="$EMBEDDING_PROVIDER" \
-  -e GITHUB_SKILLS_ENABLED="$GITHUB_ENABLED" \
-  -e SKILL_SYNC_INTERVAL="$SYNC_INTERVAL" \
-  ${GITHUB_TOKEN:+-e GITHUB_TOKEN="$GITHUB_TOKEN"} \
-  -e SKILLS_DIRECTORY=/skills \
-  -v "${ROUTER_DIR%/agent-skill-routing-system}/skills:/skills:ro" \
-  -v skill-router-cache:/cache \
+  $ENV_VARS \
+  $VOLUMES \
   skill-router:latest
 
 ok "Container started: skill-router on port $PORT"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 9 — Health check (poll with retry)
+# STEP 10 — Health check (poll with retry)
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}[Step 9] Waiting for health check...${RESET}"
+echo -e "${BOLD}[Step 10] Waiting for health check...${RESET}"
 info "Note: skills load in the background — server responds immediately, ready:true appears once loading completes"
 info "Polling http://localhost:${PORT}/health (up to 60 attempts, 5s apart = 5min max)"
 
@@ -393,10 +510,10 @@ else
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 10 — Show stats
+# STEP 11 — Show stats
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}[Step 10] Skill Router stats:${RESET}"
+echo -e "${BOLD}[Step 11] Skill Router stats:${RESET}"
 STATS_RESPONSE=$(curl -s "http://localhost:$PORT/stats")
 if $HAS_JQ; then
   echo "$STATS_RESPONSE" | jq . || warn "Stats response could not be parsed as JSON"
@@ -405,15 +522,15 @@ else
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEPS 11-13 — OpenCode integration (only when --integrate-opencode is set)
+# STEPS 12-14 — OpenCode integration (only when --integrate-opencode is set)
 # ─────────────────────────────────────────────────────────────────────────────
 API_DOC_PATH=""
 
 if $INTEGRATE_OPENCODE; then
 
-  # STEP 11 — Fetch skill-router-api.md from GitHub
+  # STEP 12 — Fetch skill-router-api.md from GitHub
   echo ""
-  echo -e "${BOLD}[Step 11] Fetching skill-router-api.md from GitHub...${RESET}"
+  echo -e "${BOLD}[Step 12] Fetching skill-router-api.md from GitHub...${RESET}"
 
   API_DOC_PATH="$HOME/.config/opencode/skill-router-api.md"
   RAW_URL="https://raw.githubusercontent.com/paulpas/skills/main/agent-skill-routing-system/skill-router-api.md"
@@ -427,9 +544,9 @@ if $INTEGRATE_OPENCODE; then
     warn "Neither curl nor wget found — skipping skill-router-api.md fetch"
   fi
 
-  # STEP 12 — Update opencode.json instructions array
+  # STEP 13 — Update opencode.json instructions array
   echo ""
-  echo -e "${BOLD}[Step 12] Updating opencode.json instructions array...${RESET}"
+  echo -e "${BOLD}[Step 13] Updating opencode.json instructions array...${RESET}"
 
   INSTRUCTIONS_PATH="$HOME/.config/opencode/skill-router-api.md"
 
@@ -475,17 +592,17 @@ PYEOF
     _update_instructions_python
   fi
 
-  # STEP 12b — Install the skill-router-mcp.js bridge script
+  # STEP 13b — Install the skill-router-mcp.js bridge script
   # The bridge is a stdio MCP server that OpenCode launches; it proxies
   # tool calls to the router's HTTP API. This file is portable across
   # Linux and macOS (no hardcoded absolute paths — it resolves $HOME,
   # SKILLS dir, and log path at runtime).
   #
-  # Install the file BEFORE injecting the config entry (Step 12c), so
+  # Install the file BEFORE injecting the config entry (Step 13c), so
   # opencode.json never references a missing file. If this step fails,
   # opencode.json is left untouched.
   echo ""
-  echo -e "${BOLD}[Step 12b] Installing skill-router-mcp.js bridge script...${RESET}"
+  echo -e "${BOLD}[Step 13b] Installing skill-router-mcp.js bridge script...${RESET}"
 
   MCP_NODE_CMD="$(which node)"
   MCP_SCRIPT_PATH="$HOME/.config/opencode/skill-router-mcp.js"
@@ -519,10 +636,10 @@ PYEOF
     warn "node --check failed on $MCP_SCRIPT_PATH — review manually"
   fi
 
-  # STEP 12c — Inject skill-router MCP entry into opencode.json
-  # This runs AFTER Step 12b so the config never points at a missing file.
+  # STEP 13c — Inject skill-router MCP entry into opencode.json
+  # This runs AFTER Step 13b so the config never points at a missing file.
   echo ""
-  echo -e "${BOLD}[Step 12c] Injecting skill-router MCP server into $OPENCODE_CONFIG...${RESET}"
+  echo -e "${BOLD}[Step 13c] Injecting skill-router MCP server into $OPENCODE_CONFIG...${RESET}"
 
   if command -v jq &>/dev/null; then
     if jq -e '.mcp["skill-router"]' "$OPENCODE_CONFIG" > /dev/null 2>&1; then
@@ -559,9 +676,9 @@ else:
 PYEOF
   fi
 
-  # STEP 13 — Validate opencode.json
+  # STEP 14 — Validate opencode.json
   echo ""
-  echo -e "${BOLD}[Step 13] Validating opencode.json...${RESET}"
+  echo -e "${BOLD}[Step 14] Validating opencode.json...${RESET}"
 
   if $HAS_JQ; then
     if jq empty "$OPENCODE_CONFIG" 2>/dev/null; then
@@ -578,17 +695,17 @@ PYEOF
   fi
 
 else
-  info "[Steps 11-13] Skipping OpenCode integration (pass --integrate-opencode to enable)"
+  info "[Steps 12-14] Skipping OpenCode integration (pass --integrate-opencode to enable)"
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 14 — Detect Claude config (only when --integrate-claude is set)
+# STEP 15 — Detect Claude config (only when --integrate-claude is set)
 # ─────────────────────────────────────────────────────────────────────────────
 CLAUDE_CONFIG=""
 
 if $INTEGRATE_CLAUDE; then
   echo ""
-  echo -e "${BOLD}[Step 14] Detecting Claude config...${RESET}"
+  echo -e "${BOLD}[Step 15] Detecting Claude config...${RESET}"
 
   if [[ -n "$CLAUDE_CONFIG_ARG" ]]; then
     if [[ -f "$CLAUDE_CONFIG_ARG" ]]; then
@@ -616,15 +733,15 @@ if $INTEGRATE_CLAUDE; then
     exit 1
   fi
 else
-  info "[Step 14] Skipping Claude config detection (pass --integrate-claude to enable)"
+  info "[Step 15] Skipping Claude config detection (pass --integrate-claude to enable)"
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 15 — Inject skill-router MCP entry into claude.json
+# STEP 16 — Inject skill-router MCP entry into claude.json
 # ─────────────────────────────────────────────────────────────────────────────
 if $INTEGRATE_CLAUDE; then
   echo ""
-  echo -e "${BOLD}[Step 15] Injecting skill-router MCP server into $CLAUDE_CONFIG...${RESET}"
+  echo -e "${BOLD}[Step 16] Injecting skill-router MCP server into $CLAUDE_CONFIG...${RESET}"
 
   MCP_NODE_CMD="$(which node)"
   MCP_SCRIPT_PATH="$HOME/.config/claude/skill-router-mcp.js"
@@ -710,7 +827,7 @@ PYEOF
 
   # Validate JSON
   echo ""
-  echo -e "${BOLD}[Step 15b] Validating claude.json...${RESET}"
+  echo -e "${BOLD}[Step 16b] Validating claude.json...${RESET}"
 
   if command -v jq &>/dev/null; then
     if jq empty "$CLAUDE_CONFIG" 2>/dev/null; then
@@ -726,14 +843,14 @@ PYEOF
     fi
   fi
 else
-  info "[Step 15] Skipping Claude MCP injection (pass --integrate-claude to enable)"
+  info "[Step 16] Skipping Claude MCP injection (pass --integrate-claude to enable)"
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 16 — Create systemd user service (unless --no-service)
+# STEP 17 — Create systemd user service (unless --no-service)
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}[Step 16] Setting up systemd user service...${RESET}"
+echo -e "${BOLD}[Step 17] Setting up systemd user service...${RESET}"
 
 SERVICE_STATUS="skipped (--no-service)"
 
@@ -778,7 +895,7 @@ UNIT
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# STEP 17 — Final summary
+# STEP 18 — Final summary
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}${GREEN}╔══════════════════════════════════════════════════╗${RESET}"
@@ -799,6 +916,20 @@ if [[ "$GITHUB_ENABLED" == "true" ]]; then
 else
   echo -e "  ${BOLD}GitHub Sync:${RESET}  disabled"
 fi
+
+if [[ -n "$SSH_KEY_PATH" ]]; then
+  echo -e "  ${BOLD}SSH Key:${RESET}      $SSH_KEY_PATH ${GREEN}✓${RESET}"
+fi
+if [[ -n "$SSH_AGENT_SOCKET" ]]; then
+  echo -e "  ${BOLD}SSH Agent:${RESET}    $SSH_AGENT_SOCKET ${GREEN}✓${RESET}"
+fi
+if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
+  echo -e "  ${BOLD}SSH Known Hosts:${RESET} $SSH_KNOWN_HOSTS ${GREEN}✓${RESET}"
+fi
+
+echo -e "  ${BOLD}Auto-Skill:${RESET}     enabled: $AUTO_SKILL_ENABLED, contribute: $AUTO_SKILL_CONTRIBUTE"
+echo -e "  ${BOLD}Auto-Skill Model:${RESET} $AUTO_SKILL_MODEL"
+echo -e "  ${BOLD}Skill Cache:${RESET}  /cache/skills"
 
 if $INTEGRATE_OPENCODE; then
   echo -e "  ${BOLD}OpenCode:${RESET}     $OPENCODE_CONFIG ${GREEN}✓${RESET}"
