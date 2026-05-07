@@ -67,6 +67,13 @@ class Colors:
     BOLD = "\033[1m"
 
 
+def mask_api_key(api_key: Optional[str]) -> str:
+    """Mask OpenAI API key for safe logging - shows only first 4 and last 4 chars."""
+    if not api_key or len(api_key) < 8:
+        return "****"
+    return f"{api_key[:4]}...{api_key[-4:]}"
+
+
 class SkillGenerator:
     """Generates SKILL.md files based on user task descriptions."""
 
@@ -84,9 +91,11 @@ class SkillGenerator:
         self.cache_dir = Path(cache_dir)
         self.contribute = contribute
 
-        # Initialize OpenAI client
-        api_key = os.environ.get("OPENAI_API_KEY")
-        if not api_key:
+        # Initialize OpenAI client with API key masking in logs
+        self._api_key = os.environ.get("OPENAI_API_KEY")
+        self._masked_key = mask_api_key(self._api_key) if self._api_key else "not set"
+        
+        if not self._api_key:
             print(
                 f"{Colors.YELLOW}⚠ OPENAI_API_KEY not set. LLM generation will fail.{Colors.RESET}"
             )
@@ -95,7 +104,7 @@ class SkillGenerator:
             )
 
         self.client = openai.OpenAI(
-            api_key=api_key,
+            api_key=self._api_key,
             timeout=timeout,
         )
 
@@ -353,10 +362,12 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
         content: str,
     ) -> Path:
         """Save skill file to appropriate location."""
+        # Use environment variable for base directory or default to /app
+        base_dir = os.environ.get("SKILLS_DIRECTORY", "/app/skills")
+
         if self.contribute:
-            # Save to skills directory
-            base_dir = Path("/home/paulpas/git/agent-skill-router")
-            skill_dir = base_dir / "skills" / domain / topic
+            # Save to skills directory (using environment variable)
+            skill_dir = Path(base_dir) / "skills" / domain / topic
         else:
             # Save to cache directory
             skill_dir = self.cache_dir / domain / topic
@@ -374,9 +385,9 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
         if not self.contribute:
             return True  # Skip if not contributing
 
-        script_path = Path(
-            "/home/paulpas/git/agent-skill-router/scripts/reformat_skills.py"
-        )
+        # Use environment variable for skill repository root
+        repo_root = os.environ.get("SKILL_REPOSITORY_ROOT", "/app")
+        script_path = Path(repo_root) / "scripts" / "reformat_skills.py"
         if not script_path.exists():
             print(
                 f"{Colors.YELLOW}⚠ reformat_skills.py not found at {script_path}{Colors.RESET}"
@@ -404,9 +415,9 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
         if not self.contribute:
             return True  # Skip if not contributing
 
-        script_path = Path(
-            "/home/paulpas/git/agent-skill-router/scripts/enhance_triggers.py"
-        )
+        # Use environment variable for skill repository root
+        repo_root = os.environ.get("SKILL_REPOSITORY_ROOT", "/app")
+        script_path = Path(repo_root) / "scripts" / "enhance_triggers.py"
         if not script_path.exists():
             print(
                 f"{Colors.YELLOW}⚠ enhance_triggers.py not found at {script_path}{Colors.RESET}"
@@ -431,14 +442,14 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
             )
             return False
 
-    def run_generate_index_script(self, skill_file: Path) -> bool:
+   def run_generate_index_script(self, skill_file: Path) -> bool:
         """Run generate_index.py to update skills-index.json."""
         if not self.contribute:
             return True  # Skip if not contributing
 
-        script_path = Path(
-            "/home/paulpas/git/agent-skill-router/scripts/generate_index.py"
-        )
+        # Use environment variable for skill repository root
+        repo_root = os.environ.get("SKILL_REPOSITORY_ROOT", "/app")
+        script_path = Path(repo_root) / "scripts" / "generate_index.py"
         if not script_path.exists():
             print(
                 f"{Colors.YELLOW}⚠ generate_index.py not found at {script_path}{Colors.RESET}"
@@ -463,9 +474,9 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
 
     def run_validation_script(self, skill_file: Path) -> bool:
         """Run validate_skill.sh for quality checks."""
-        script_path = Path(
-            "/home/paulpas/git/agent-skill-router/scripts/validate_skill.sh"
-        )
+        # Use environment variable for skill repository root
+        repo_root = os.environ.get("SKILL_REPOSITORY_ROOT", "/app")
+        script_path = Path(repo_root) / "scripts" / "validate_skill.sh"
         if not script_path.exists():
             print(
                 f"{Colors.YELLOW}⚠ validate_skill.sh not found at {script_path}{Colors.RESET}"
