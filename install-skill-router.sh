@@ -468,21 +468,24 @@ ENV_VARS="$ENV_VARS -e AUTO_SKILL_MODEL='${AUTO_SKILL_MODEL}'"
 ENV_VARS="$ENV_VARS -e SKILL_CACHE_DIR='${SKILL_CACHE_DIR:-/cache/skills}'"
 
 # Build volume mounts
-# Validate that skills directory exists
-if [[ ! -d "${ROUTER_DIR}/skills" ]]; then
-  err "Skills directory not found: ${ROUTER_DIR}/skills"
+# Validate that skills directory exists (skills are at parent level of ROUTER_DIR)
+if [[ ! -d "${ROUTER_DIR%/agent-skill-routing-system}/skills" ]]; then
+  err "Skills directory not found: ${ROUTER_DIR%/agent-skill-routing-system}/skills"
   exit 1
 fi
-VOLUMES="-v '${ROUTER_DIR}/skills:/app/skills:ro'"
-VOLUMES="$VOLUMES -v skill-router-cache:/cache"
-VOLUMES="$VOLUMES $SSH_VOLUMES"
+SKILLS_PATH="${ROUTER_DIR%/agent-skill-routing-system}/skills"
+VOLUMES=(-v "$SKILLS_PATH:/app/skills:ro")
+VOLUMES+=(-v skill-router-cache:/cache)
+if [[ -n "$SSH_VOLUMES" ]]; then
+  VOLUMES+=($SSH_VOLUMES)
+fi
 
 docker run -d \
   --name skill-router \
   --restart unless-stopped \
   -p "${PORT}:3000" \
   $ENV_VARS \
-  $VOLUMES \
+  "${VOLUMES[@]}" \
   skill-router:latest
 
 ok "Container started: skill-router on port $PORT"
