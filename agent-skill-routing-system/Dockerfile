@@ -22,7 +22,7 @@ RUN npm run build
 # Stage 1b: Python Builder for Skill Generation (removed - now using TypeScript MCP tool)
 
 # Stage 2: Runtime — 1,827 Skills Support
-FROM node:20-alpine AS runtime
+# ARGs must be declared before FROM to be available via --build-arg
 ARG COMPRESSION_LEVEL=4
 ARG ENABLE_LLM_COMPRESSION=true
 ARG OPENAI_MODEL=gpt-4o-mini
@@ -36,12 +36,18 @@ ARG SKILL_COMPRESSION_MEMORY_TTL_MINUTES=60
 ARG SKILL_COMPRESSION_DISK_TTL_DAYS=7
 ARG SKILL_COMPRESSION_LAZY_WRITE_INTERVAL_MS=5000
 
-# Install git for skill repository management
-RUN apk add --no-cache git && \
-    # Clean up git if not needed at runtime (only for skill contribution)
-    apk del git
+FROM node:20-alpine AS runtime
+
+# Install git for skill repository management (kept at runtime for skill contribution)
+RUN apk add --no-cache git
 
 WORKDIR /app
+
+# Create user first, then directories and set ownership (before COPY to avoid permission issues)
+RUN adduser -D -s /bin/sh appuser && \
+    mkdir -p /app/skills /cache/skills && \
+    chown -R appuser:appuser /app /cache
+
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -76,24 +82,19 @@ ENV GIT_AUTHOR_EMAIL=skill-gen@localhost
 ENV GIT_COMMITTER_NAME="Skill Generator"
 ENV GIT_COMMITTER_EMAIL=skill-gen@localhost
 
-# Skill Generation Directories
-# Fixed: Create user first, then directories and set ownership
-RUN adduser -D -s /bin/sh appuser && \
-    mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache
-
 # Skill validation is now handled by the TypeScript MCP tool
 
 # OpenAI-based LLM compression configuration
-# Note: OPENAI_MODEL and ENABLE_LLM_COMPRESSION ARGs defined earlier in the file are used
+# Note: OPENAI_MODEL and ENABLE_LLM_COMPRESSION ARGs defined before FROM (stage 2) are used
 # These environment variables are intentionally empty - set at runtime with -e flags
 # ENV OPENAI_API_KEY=""
 # ENV OPENAI_BASE_URL=""
 # ENV OPENAI_ORG_ID=""
 
 # LLM-based skill compression configuration
-# NOTE: These ARGs are declared earlier (after FROM runtime) and re-declared here for clarity
-# In Docker, ARGs must be re-declared after FROM to be available in subsequent stages
+# NOTE: ARGs are declared before FROM (stage 2) and available throughout this stage
+# For multi-stage builds, ARGs are not automatically available in subsequent stages
+# These environment variables are intentionally empty - set at runtime with -e flags
 
 ENV SKILL_COMPRESSION_ENABLED=$SKILL_COMPRESSION_ENABLED
 ENV SKILL_COMPRESSION_STRATEGY=$SKILL_COMPRESSION_STRATEGY
