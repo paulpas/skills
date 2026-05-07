@@ -238,11 +238,24 @@ if [ "${AUTO_SKILL_CONTRIBUTE}" = "true" ]; then
         
         # Add remote with authentication token if available
         if [ -n "$GIT_AUTH_TOKEN" ]; then
-            # Extract owner/repo from GITHUB_SKILLS_REPO and add auth token
-            # Format: https://token@github.com/owner/repo.git
-            # Fixed: Properly extract repo path by removing https:// prefix safely
-            git remote add origin "$(echo "$GITHUB_SKILLS_REPO" | sed 's|^https://||' | sed "s|^|${GIT_AUTH_TOKEN}@|")"
+            # Extract repo URL safely using parameter expansion (prevents command injection)
+            # Handle https://, http://, and ssh:// protocols
+            REPO_URL="$GITHUB_SKILLS_REPO"
+            
+            # Remove protocol prefixes using parameter expansion (safe from injection)
+            case "$REPO_URL" in
+                https://*) REPO_URL="${REPO_URL#https://}" ;;
+                http://*)  REPO_URL="${REPO_URL#http://}" ;;
+                git@*)     ;;  # SSH format already has auth info
+                *)         ;;  # Fallback for other formats
+            esac
+            
+            # Construct safe URL with auth token using parameter expansion
+            # This prevents command injection by avoiding echo and sed
+            git remote set-url origin "https://${GIT_AUTH_TOKEN}@${REPO_URL}" 2>/dev/null || \
+            git remote add origin "https://${GIT_AUTH_TOKEN}@${REPO_URL}"
         else
+            git remote set-url origin "${GITHUB_SKILLS_REPO}" 2>/dev/null || \
             git remote add origin "${GITHUB_SKILLS_REPO}"
         fi
     fi
