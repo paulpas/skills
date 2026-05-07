@@ -46,7 +46,8 @@ WORKDIR /app
 # Create user first, then directories and set ownership (before COPY to avoid permission issues)
 RUN adduser -D -s /bin/sh appuser && \
     mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache
+    chown -R appuser:appuser /app /cache && \
+    git config --global --add safe.directory /app/skills /cache/skills
 
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
