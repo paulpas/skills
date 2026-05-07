@@ -417,19 +417,27 @@ echo -e "${BOLD}[Step 9] Starting container...${RESET}"
 SSH_VOLUMES=""
 if [[ -n "$SSH_KEY_PATH" ]]; then
   # Verify SSH key path is not a symlink, is a regular file, and is readable
-  if [[ -f "$SSH_KEY_PATH" && ! -L "$SSH_KEY_PATH" && -r "$SSH_KEY_PATH" ]]; then
+  if [[ -L "$SSH_KEY_PATH" ]]; then
+    err "SSH key path is a symlink (not allowed for security): $SSH_KEY_PATH"
+    exit 1
+  fi
+  if [[ -f "$SSH_KEY_PATH" && -r "$SSH_KEY_PATH" ]]; then
     SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KEY_PATH"):/home/appuser/.ssh/id_rsa:ro"
   else
-    err "SSH key path is a symlink, not a regular file, or not readable: $SSH_KEY_PATH"
+    err "SSH key path is not a regular file or not readable: $SSH_KEY_PATH"
     exit 1
   fi
 fi
 if [[ -n "$SSH_AGENT_SOCKET" ]]; then
   # Verify socket path is not a symlink, is a socket, and is readable
-  if [[ -S "$SSH_AGENT_SOCKET" && ! -L "$SSH_AGENT_SOCKET" && -r "$SSH_AGENT_SOCKET" ]]; then
+  if [[ -L "$SSH_AGENT_SOCKET" ]]; then
+    err "SSH agent socket is a symlink (not allowed for security): $SSH_AGENT_SOCKET"
+    exit 1
+  fi
+  if [[ -S "$SSH_AGENT_SOCKET" && -r "$SSH_AGENT_SOCKET" ]]; then
     SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_AGENT_SOCKET"):/tmp/ssh-agent.sock:ro"
   else
-    err "SSH agent socket is a symlink, not a socket, or not readable: $SSH_AGENT_SOCKET"
+    err "SSH agent socket is not a socket or not readable: $SSH_AGENT_SOCKET"
     exit 1
   fi
 fi
@@ -438,16 +446,16 @@ if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
 fi
 
 # Build environment variables
-ENV_VARS="-e OPENAI_API_KEY='${OPENAI_API_KEY}'"
+ENV_VARS="-e OPENAI_API_KEY=\"${OPENAI_API_KEY}\""
 ENV_VARS="$ENV_VARS -e LLM_PROVIDER=\"$LLM_PROVIDER\""
 ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e LLM_MODEL=\"$LLM_MODEL\"}"
 ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL=\"$EMBEDDING_MODEL\"}"
-ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY='${ANTHROPIC_API_KEY}'}"
-ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_BASE_URL='${LLAMACPP_URL}'}"
-ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER='${EMBEDDING_PROVIDER}'"
-ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED='${GITHUB_ENABLED}'"
-ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL='${SYNC_INTERVAL}'"
-ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN='${GITHUB_TOKEN}'}"
+ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY=\"${ANTHROPIC_API_KEY}\"}"
+ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_URL=\"${LLAMACPP_URL}\"}"
+ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER=\"${EMBEDDING_PROVIDER}\""
+ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED=\"${GITHUB_ENABLED}\""
+ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL=\"${SYNC_INTERVAL}\""
+ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN=\"${GITHUB_TOKEN}\"}"
 
 # Only set SSH_AUTH_SOCK if SSH agent socket is provided
 if [[ -n "$SSH_AGENT_SOCKET" ]]; then
@@ -465,7 +473,7 @@ if [[ ! -d "${ROUTER_DIR}/skills" ]]; then
   err "Skills directory not found: ${ROUTER_DIR}/skills"
   exit 1
 fi
-VOLUMES="-v \"${ROUTER_DIR}/skills:/app/skills:ro\""
+VOLUMES="-v '${ROUTER_DIR}/skills:/app/skills:ro'"
 VOLUMES="$VOLUMES -v skill-router-cache:/cache"
 VOLUMES="$VOLUMES $SSH_VOLUMES"
 
