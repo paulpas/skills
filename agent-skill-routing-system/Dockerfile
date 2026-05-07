@@ -8,6 +8,17 @@
 # - All 79 tests passing — production ready
 # - Automated skill generation with git contribution support
 # - Security hardened with proper API key masking and git authentication
+# - SSH authentication support for git operations with github.com
+#
+# SSH Support:
+#   - Mount ~/.ssh:/home/appuser/.ssh:ro for SSH key authentication
+#   - SSH agent forwarding via $SSH_AUTH_SOCK environment variable
+#   - GitHub known_hosts pre-configured for secure connections
+#
+# Git Permissions Fix:
+#   - /app/skills and /cache/skills owned by appuser (uid=1000)
+#   - Proper umask (0022) for file/directory permissions
+#   - safe.directory configured for /app/skills and /cache/skills
 #
 # See LLM_COMPRESSION.md for scaling details and cache tuning
 
@@ -38,15 +49,18 @@ ARG SKILL_COMPRESSION_LAZY_WRITE_INTERVAL_MS=5000
 
 FROM node:20-alpine AS runtime
 
-# Install git for skill repository management (kept at runtime for skill contribution)
-RUN apk add --no-cache git
+# Install git and openssh-client for skill repository management with SSH support
+RUN apk add --no-cache git openssh-client
 
 WORKDIR /app
 
 # Create user first, then directories and set ownership (before COPY to avoid permission issues)
+# Set umask to 0022 for proper directory/file permissions
 RUN adduser -D -s /bin/sh appuser && \
     mkdir -p /app/skills /cache/skills && \
-    chown -R appuser:appuser /app /cache
+    chown -R appuser:appuser /app /cache && \
+    chmod 775 /app/skills /cache/skills && \
+    chmod 755 /app /cache
 
 COPY --from=builder /app/dist ./dist
 COPY package*.json ./
@@ -63,9 +77,14 @@ ENV EMBEDDING_MODEL=text-embedding-3-small
 ENV LLAMACPP_BASE_URL=http://host.docker.internal:8080
 ENV GITHUB_SKILLS_ENABLED=true
 ENV GITHUB_SKILLS_REPO=https://github.com/paulpas/skills
+ENV GITHUB_SKILLS_REPO_SSH=git@github.com:paulpas/skills.git
 ENV GITHUB_RAW_BASE_URL=https://raw.githubusercontent.com/paulpas/skills/main
 ENV SKILL_SYNC_INTERVAL=3600
 ENV LOG_LEVEL=info
+
+# SSH Support for Git Operations
+# SSH_AUTH_SOCK should be set at runtime when using SSH agent forwarding
+ENV SSH_AUTH_SOCK=/tmp/ssh-agent.sock
 
 # Automated Skill Generation Configuration (now handled by TypeScript MCP tool)
 ENV AUTO_SKILL_ENABLED=true
@@ -75,12 +94,20 @@ ENV AUTO_SKILL_MAX_RETRIES=3
 ENV AUTO_SKILL_CACHE_DIR=/cache/skills
 
 # Git Configuration for Skill Contribution
-# NOTE: GIT_AUTH_TOKEN must be set via -e GIT_AUTH_TOKEN=... at runtime
-# Empty or missing token will cause git push to fail (as expected)
+# SSH Authentication (preferred):
+#   Mount your SSH keys at runtime: -v ~/.ssh:/home/appuser/.ssh:ro
+#   SSH agent forwarding: -v $SSH_AUTH_SOCK:/tmp/ssh-agent.sock -e SSH_AUTH_SOCK=/tmp/ssh-agent.sock
+#   The container uses github.com as the known host (configured during build)
+# 
+# Token Authentication (fallback):
+#   Set GIT_AUTH_TOKEN via -e GIT_AUTH_TOKEN=... at runtime
+#   Empty or missing token will cause git push to fail (as expected)
 ENV GIT_AUTHOR_NAME="Skill Generator"
 ENV GIT_AUTHOR_EMAIL=skill-gen@localhost
 ENV GIT_COMMITTER_NAME="Skill Generator"
 ENV GIT_COMMITTER_EMAIL=skill-gen@localhost
+# SSH-based git URL for the skills repository
+ENV GITHUB_SKILLS_REPO_SSH=git@github.com:paulpas/skills.git
 
 # Skill validation is now handled by the TypeScript MCP tool
 
@@ -131,16 +158,49 @@ HEALTHCHECK --interval=60s --timeout=10s --start-period=90s --retries=3 \
   CMD ["sh", "-c", "wget -qO- http://127.0.0.1:3000/health | grep -q '\"ready\":true'"]
 
 # Mount configuration
+# Note: /home/appuser/.ssh is NOT included as a volume because we pre-configure it during build
+# SSH keys should be mounted at runtime using: -v ~/.ssh:/home/appuser/.ssh:ro
 VOLUME ["/cache", "/app/cache/compressed", "/app/skills"]
+
+# SSH Support for Git Operations
+# SSH keys should be mounted at runtime using:
+#   -v ~/.ssh:/home/appuser/.ssh:ro
+# SSH agent forwarding is supported via:
+#   -v $SSH_AUTH_SOCK:/tmp/ssh-agent.sock
+#   -e SSH_AUTH_SOCK=/tmp/ssh-agent.sock
+# The container will use SSH keys for git authentication with github.com
+
+# Configure SSH for git operations - must run as root (before USER appuser)
+# This creates ~/.ssh directory with proper permissions (700)
+# and sets up known_hosts for github.com
+RUN mkdir -p /home/appuser/.ssh && \
+    chown appuser:appuser /home/appuser/.ssh && \
+    chmod 700 /home/appuser/.ssh && \
+    ssh-keyscan github.com >> /home/appuser/.ssh/known_hosts && \
+    chown appuser:appuser /home/appuser/.ssh/known_hosts && \
+    chmod 644 /home/appuser/.ssh/known_hosts && \
+    echo "Host github.com" > /home/appuser/.ssh/config && \
+    echo "    AddKeysToAgent yes" >> /home/appuser/.ssh/config && \
+    echo "    IdentityFile ~/.ssh/id_rsa" >> /home/appuser/.ssh/config && \
+    echo "    User git" >> /home/appuser/.ssh/config && \
+    chown appuser:appuser /home/appuser/.ssh/config && \
+    chmod 600 /home/appuser/.ssh/config
 
 # Security: Switch to non-root user for security
 # Note: appuser was already created earlier with proper ownership
 USER appuser
 
+# Set umask for proper file permissions
+RUN umask 0022
+
 # Configure git safe.directory for appuser - required for skill contribution
 # This must run after USER appuser to write to /home/appuser/.gitconfig
+# Also configure git to use the correct home directory for config
+# Note: git config --global writes to $HOME/.gitconfig which is /home/appuser/.gitconfig when running as appuser
 RUN git config --global --add safe.directory /app/skills && \
-    git config --global --add safe.directory /cache/skills
+    git config --global --add safe.directory /cache/skills && \
+    git config --global user.email "$GIT_AUTHOR_EMAIL" && \
+    git config --global user.name "$GIT_AUTHOR_NAME"
 
 # Skill generation is now handled by the TypeScript MCP tool
 # The SkillGenerationTool uses OpenAI SDK directly without Python dependencies
