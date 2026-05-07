@@ -1,0 +1,732 @@
+// Skill Generation Tool - generates SKILL.md files using LLM with OpenAI SDK
+// Implements the same logic as the Python generate_skill.py script
+
+import { BaseMCPTool, IMCPTool } from '../types';
+import * as path from 'path';
+import * as fs from 'fs/promises';
+
+/**
+ * Skill metadata structure for skill generation
+ */
+export interface SkillMetadata {
+  name: string;
+  description: string;
+  license: string;
+  compatibility: string;
+  version: string;
+  domain: string;
+  role: string;
+  scope: string;
+  'output-format': string;
+  triggers: string;
+  'related-skills'?: string;
+  author?: string;
+  source?: string;
+}
+
+/**
+ * Skill content with frontmatter and body
+ */
+export interface SkillContent {
+  frontmatter: SkillMetadata;
+  body: string;
+  fullContent: string;
+}
+
+/**
+ * Tool result for skill generation
+ */
+interface ToolResult {
+  success: boolean;
+  output?: SkillContent | string;
+  error?: string;
+  latencyMs: number;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Tool specification for LLM
+ */
+interface ToolSpec {
+  name: string;
+  description: string;
+  parameters: Record<string, unknown>;
+}
+
+/**
+ * Skill Generation Tool for creating new skills dynamically
+ * Uses OpenAI SDK directly (like LLMRanker) instead of shell commands
+ */
+export class SkillGenerationTool extends BaseMCPTool implements IMCPTool {
+  private apiKey: string;
+  private model: string;
+  private maxRetries: number;
+
+  constructor(timeoutMs: number = 60000) {
+    super(
+      'generate_skill',
+      'Generate a new skill for tasks that don\'t match existing skills. Automatically creates SKILL.md files with proper validation. Detects domain and topic from task description or uses provided values. Requires OPENAI_API_KEY environment variable.',
+      timeoutMs
+    );
+    
+    // Check required configuration
+    this.apiKey = process.env.OPENAI_API_KEY || '';
+    
+    // Load configuration from environment
+    this.model = process.env.AUTO_SKILL_MODEL || 'gpt-4o-mini';
+    this.maxRetries = parseInt(process.env.AUTO_SKILL_MAX_RETRIES || '3', 10);
+  }
+
+  /**
+   * Execute skill generation
+   */
+  async execute(args: Record<string, unknown>): Promise<ToolResult> {
+    const startTime = Date.now();
+
+    try {
+      // Parse and validate arguments BEFORE any processing (Early Exit pattern)
+      const parsedArgs = this.parseAndValidateArgs(args);
+      const { task, domain, topic, dryRun, contribute } = parsedArgs;
+
+      // Generate skill content
+      const skillContent = await this.generateSkill(task, domain, topic);
+
+      if (!skillContent) {
+        throw new Error('Failed to generate skill content');
+      }
+
+      // Validate skill content
+      const validation = this.validateSkillContent(skillContent);
+      if (!validation.isValid) {
+        console.warn('Skill validation warnings', {
+          issues: validation.issues,
+        });
+      }
+
+      // Dry run mode - just return content
+      if (dryRun) {
+        return {
+          success: true,
+          output: skillContent,
+          metadata: {
+            size: skillContent.fullContent.length,
+            isValid: validation.isValid,
+            issues: validation.issues,
+          },
+          latencyMs: Date.now() - startTime,
+        };
+      }
+
+      // Save skill file
+      const savedPath = await this.saveSkillFile(skillContent, domain, topic, contribute);
+      console.log('Skill saved successfully', {
+        path: savedPath,
+        size: skillContent.fullContent.length,
+        domain: domain || skillContent.frontmatter.domain,
+        topic: topic || skillContent.frontmatter.name,
+      });
+
+      return {
+        success: true,
+        output: savedPath,
+        metadata: {
+          size: skillContent.fullContent.length,
+          isValid: validation.isValid,
+          issues: validation.issues,
+          contribute: contribute,
+        },
+        latencyMs: Date.now() - startTime,
+      };
+    } catch (error) {
+      console.error('Skill generation failed', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : String(error),
+        latencyMs: Date.now() - startTime,
+      };
+    }
+  }
+
+  /**
+   * Parse and validate arguments with guard clauses (Early Exit pattern)
+   */
+  private parseAndValidateArgs(args: Record<string, unknown>): {
+    task: string;
+    domain?: string;
+    topic?: string;
+    dryRun: boolean;
+    contribute: boolean;
+  } {
+    // Early Exit: Validate required arguments first
+    if (!args.task) {
+      throw new Error('Missing required argument: task');
+    }
+
+    const task = String(args.task).trim();
+    if (task.length === 0) {
+      throw new Error('Task argument cannot be empty');
+    }
+
+    // Parse optional arguments
+    const domain = args.domain ? String(args.domain).trim() : undefined;
+    const topic = args.topic ? String(args.topic).trim() : undefined;
+    const dryRun = args.dryRun ? Boolean(args.dryRun) : false;
+    const contribute = args.contribute ? Boolean(args.contribute) : true;
+
+    // Validate domain format if provided
+    if (domain && !/^[a-z0-9-]+$/.test(domain)) {
+      throw new Error(`Invalid domain format: ${domain}. Must be lowercase alphanumeric with hyphens.`);
+    }
+
+    // Validate topic format if provided
+    if (topic && !/^[a-z0-9-]+$/.test(topic)) {
+      throw new Error(`Invalid topic format: ${topic}. Must be lowercase alphanumeric with hyphens.`);
+    }
+
+    return { task, domain, topic, dryRun, contribute };
+  }
+
+  /**
+   * Generate skill content using LLM
+   */
+  private async generateSkill(
+    task: string,
+    domain?: string,
+    topic?: string
+  ): Promise<SkillContent | null> {
+    console.log('Generating skill', {
+      task: task.slice(0, 100),
+      domain,
+      topic,
+      model: this.model,
+    });
+
+    // Step 1: Extract domain and topic from task if not provided
+    let extractedDomain = domain;
+    let extractedTopic = topic;
+
+    if (!extractedDomain || !extractedTopic) {
+      const extractionResult = await this.extractDomainAndTopic(task);
+      if (!extractionResult) {
+        throw new Error('Failed to extract domain and topic from task');
+      }
+      extractedDomain = extractedDomain || extractionResult.domain;
+      extractedTopic = extractedTopic || extractionResult.topic;
+    }
+
+    // Validate domain
+    const validDomains = ['agent', 'cncf', 'coding', 'programming', 'trading'];
+    if (!validDomains.includes(extractedDomain!)) {
+      throw new Error(`Invalid domain: ${extractedDomain}. Valid domains: ${validDomains.join(', ')}`);
+    }
+
+    // Step 2: Generate skill content
+    const skillDescription = this.generateSkillDescription(task, extractedDomain!, extractedTopic!);
+    const role = this.getDefaultRole(extractedDomain!);
+    const outputFormat = this.getDefaultOutputFormat(extractedDomain!);
+
+    for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
+      console.log(`LLM generation attempt ${attempt}/${this.maxRetries}`);
+
+      const content = await this.generateSkillContent(
+        extractedDomain!,
+        extractedTopic!,
+        skillDescription,
+        role,
+        outputFormat
+      );
+
+      if (content) {
+        return content;
+      }
+
+      if (attempt < this.maxRetries) {
+        // Exponential backoff: 100ms, 200ms, 400ms, etc.
+        const backoffMs = 100 * Math.pow(2, attempt - 1);
+        console.warn(`Retry ${attempt}/${this.maxRetries} after failed attempt, waiting ${backoffMs}ms`);
+        await new Promise(resolve => setTimeout(resolve, backoffMs));
+      }
+    }
+
+    console.error(`Failed to generate skill after ${this.maxRetries} attempts`);
+    return null;
+  }
+
+  /**
+   * Extract domain and topic from task using LLM
+   */
+  private async extractDomainAndTopic(task: string): Promise<{ domain: string; topic: string } | null> {
+    const prompt = `Extract the domain and topic from this task description.
+
+Task: "${task}"
+
+Return a JSON object with:
+- domain: one of (agent, cncf, coding, programming, trading)
+- topic: kebab-case topic name (e.g., "code-review", "risk-stop-loss")
+
+Examples:
+- Task: "Create a code review skill" → {"domain": "coding", "topic": "code-review"}
+- Task: "Build a stop loss mechanism" → {"domain": "trading", "topic": "risk-stop-loss"}
+- Task: "Create a Kubernetes deployment skill" → {"domain": "cncf", "topic": "kubernetes"}
+
+Respond with ONLY the JSON object, no other text.`;
+
+    try {
+      const response = await this.callOpenAI({
+        system: 'You are a skill categorization expert. Respond ONLY with valid JSON.',
+        user: prompt,
+        temperature: 0.3,
+        responseFormat: 'json_object',
+      });
+
+      const result = JSON.parse(response);
+      return {
+        domain: result.domain || 'coding',
+        topic: result.topic || 'new-skill',
+      };
+    } catch (error) {
+      console.error('LLM parsing failed', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      // Fallback: use first word as domain, extract topic from task
+      const domain = 'coding';
+      const topic = task.toLowerCase().replace(/[^a-z0-9-]/g, '-').substring(0, 50).replace(/-+/g, '-').replace(/^-|-$/g, '');
+      console.warn('Using fallback extraction', { domain, topic });
+      return { domain, topic };
+    }
+  }
+
+  /**
+   * Generate skill content using LLM
+   */
+  private async generateSkillContent(
+    domain: string,
+    topic: string,
+    description: string,
+    role: string,
+    outputFormat: string
+  ): Promise<SkillContent | null> {
+    const generationPrompt = this.buildGenerationPrompt(domain, topic, description, role, outputFormat);
+
+    try {
+      const response = await this.callOpenAI({
+        system: 'You are an expert at creating high-quality AI skill definitions.',
+        user: generationPrompt,
+        temperature: 0.7,
+      });
+
+      const content = response.trim();
+
+      // Extract YAML frontmatter and body
+      const parsed = this.extractYamlAndBody(content);
+      if (!parsed) {
+        console.error('Failed to parse generated skill content');
+        return null;
+      }
+
+      return {
+        frontmatter: parsed.frontmatter,
+        body: parsed.body,
+        fullContent: content,
+      };
+    } catch (error) {
+      console.error('LLM generation failed', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
+  }
+
+  /**
+   * Build the generation prompt for skill content
+   */
+  private buildGenerationPrompt(
+    domain: string,
+    topic: string,
+    description: string,
+    role: string,
+    outputFormat: string
+  ): string {
+    return `You are creating a SKILL.md file for the agent-skill-router repository.
+
+DOMAIN: ${domain}
+TOPIC: ${topic}
+DESCRIPTION: ${description}
+ROLE: ${role}
+OUTPUT FORMAT: ${outputFormat}
+
+Create a complete, high-quality SKILL.md file following SKILL_FORMAT_SPEC.md requirements:
+
+**YAML Frontmatter Requirements:**
+- name: ${topic} (must match topic directory name exactly)
+- description: Single line, 1-2 sentences. Active verb. Domain-specific terms.
+- license: MIT
+- compatibility: opencode
+- metadata.version: "1.0.0"
+- metadata.domain: ${domain}
+- metadata.role: ${role}
+- metadata.scope: ${this.getDefaultScope(domain)}
+- metadata.output-format: ${outputFormat}
+- metadata.triggers: 5-8 comma-separated keywords (technical + conversational)
+- metadata.related-skills: comma-separated related skill names (optional)
+
+**Content Section Requirements:**
+1. H1 Title: Human-readable name (not kebab-case)
+2. Role/purpose paragraph: 1-3 sentences from model's perspective
+3. ## TL;DR Checklist: 3-5 actionable items
+4. ## TL;DR for Code Generation: 3-7 specific constraints (REQUIRED for role=implementation)
+5. ## When to Use: Bulleted list of concrete situations
+6. ## When NOT to Use: Anti-patterns and exclusions (for complex skills)
+7. ## Core Workflow: Numbered steps with checkpoints
+8. ## Implementation Patterns: Typed Python code with BAD/GOOD examples
+9. ## Constraints: MUST DO / MUST NOT DO sections
+10. ## Output Template: What the model produces (for review/analysis roles)
+11. ## Related Skills: Table if metadata.related-skills exists
+
+**Domain-Specific Requirements:**
+${this.getDomainRequirements(domain)}
+
+**Quality Gate Requirements:**
+- File size: ≥3000 bytes
+- At least 2 code blocks for implementation skills
+- No sentinel string "Implementing this specific pattern or feature"
+- 3-8 triggers in metadata
+- All required sections present
+- Real code examples, not placeholders
+- Domain-specific constraints in MUST DO/MUST NOT DO
+
+**Important:**
+- Use typed Python signatures with docstrings for all functions
+- Include BAD vs GOOD code examples
+- Add concrete, actionable constraints
+- Use domain-specific language and terminology
+- Make the skill actionable and specific
+
+Generate the complete SKILL.md file content. Start with --- for YAML frontmatter.`;
+  }
+
+  /**
+    * Call OpenAI API directly (like LLMRanker)
+    * Supports OpenAI-compatible APIs (OpenRouter, Groq, local LLMs)
+    */
+   private async callOpenAI(params: {
+     system: string;
+     user: string;
+     temperature: number;
+     responseFormat?: 'json_object' | 'text';
+    }): Promise<string> {
+     const { system, user, temperature, responseFormat } = params;
+
+     // Fail Fast: Validate API key before making request
+     if (!this.apiKey || this.apiKey.trim() === '') {
+       throw new Error('Missing OpenAI API key. Set OPENAI_API_KEY environment variable.');
+     }
+
+     // Support OpenAI-compatible APIs via environment variable
+     const apiBase = process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE || 'https://api.openai.com/v1';
+
+     const response = await fetch(`${apiBase}/chat/completions`, {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${this.apiKey}`,
+       },
+       body: JSON.stringify({
+         model: this.model,
+         messages: [
+           { role: 'system', content: system },
+           { role: 'user', content: user },
+         ],
+         temperature,
+         ...(responseFormat ? { response_format: { type: responseFormat } } : {}),
+         max_tokens: 4000,
+       }),
+     });
+
+     if (!response.ok) {
+       const err = await response.text();
+       throw new Error(`OpenAI-compatible API error ${response.status}: ${err}`);
+     }
+
+     const data = await response.json() as {
+       choices: { message: { content: string } }[];
+       usage?: { prompt_tokens?: number; completion_tokens?: number };
+     };
+
+     const content = data.choices[0].message.content;
+     console.debug('OpenAI-compatible API response received', {
+       model: this.model,
+       inputTokens: data.usage?.prompt_tokens,
+       outputTokens: data.usage?.completion_tokens,
+     });
+
+     return content;
+   }
+
+  /**
+   * Get default role for domain
+   */
+  private getDefaultRole(domain: string): string {
+    const defaults: Record<string, string> = {
+      agent: 'orchestration',
+      cncf: 'reference',
+      coding: 'implementation',
+      programming: 'reference',
+      trading: 'implementation',
+    };
+    return defaults[domain] || 'implementation';
+  }
+
+  /**
+   * Get default scope for domain
+   */
+  private getDefaultScope(domain: string): string {
+    const defaults: Record<string, string> = {
+      agent: 'orchestration',
+      cncf: 'infrastructure',
+      coding: 'implementation',
+      programming: 'implementation',
+      trading: 'implementation',
+    };
+    return defaults[domain] || 'implementation';
+  }
+
+  /**
+   * Get default output format for domain
+   */
+  private getDefaultOutputFormat(domain: string): string {
+    const defaults: Record<string, string> = {
+      agent: 'analysis',
+      cncf: 'manifests',
+      coding: 'code',
+      programming: 'code',
+      trading: 'code',
+    };
+    return defaults[domain] || 'code';
+  }
+
+  /**
+   * Get domain-specific requirements
+   */
+  private getDomainRequirements(domain: string): string {
+    const requirements: Record<string, string> = {
+      agent: '- Include ASCII flow diagram for orchestration logic\n- Reference code-philosophy (5 Laws of Elegant Defense)\n- Fallback/error routing for every branching point',
+      cncf: '- Complete working YAML manifest example\n- Architecture diagram or table\n- Common Pitfalls section',
+      coding: '- At least one BAD vs GOOD code example pair\n- MUST DO/MUST NOT DO constraints\n- Reference to standard (OWASP, SOLID, etc.)',
+      trading: '- Python functions with typed signatures and docstrings\n- Risk constraints section\n- File path conventions (risk_engine/, data_pipeline/, execution/, tests/)',
+      programming: '- Implementation in specific language\n- Complexity table\n- Algorithm steps',
+    };
+    return requirements[domain] || '';
+  }
+
+  /**
+   * Generate skill description from task
+   */
+  private generateSkillDescription(task: string, domain: string, topic: string): string {
+    return `Creates a skill for ${topic} in the ${domain} domain to address tasks like: "${task.substring(0, 100)}${task.length > 100 ? '...' : ''}"`;
+  }
+
+  /**
+   * Validate skill content against quality gates
+   */
+  private validateSkillContent(skillContent: SkillContent): { isValid: boolean; issues: string[] } {
+    const issues: string[] = [];
+    const content = skillContent.fullContent;
+
+    // Check sentinel string
+    if (content.includes('Implementing this specific pattern or feature')) {
+      issues.push('Contains sentinel string "Implementing this specific pattern or feature"');
+    }
+
+    // Check file size
+    if (content.length < 3000) {
+      issues.push(`File size (${content.length} bytes) is under 3000 bytes minimum`);
+    }
+
+    // Check YAML frontmatter
+    if (!content.startsWith('---')) {
+      issues.push('Missing YAML frontmatter delimiter (---)');
+    }
+
+    // Check for code blocks in implementation skills
+    const role = skillContent.frontmatter.role;
+    if (role === 'implementation') {
+      const codeBlocks = (content.match(/```/g) || []).length;
+      if (codeBlocks < 4) { // At least 2 complete code blocks
+        issues.push(`Implementation skill has fewer than 2 code blocks (found ${codeBlocks / 2})`);
+      }
+    }
+
+    // Check triggers count
+    const triggers = skillContent.frontmatter.triggers;
+    if (triggers) {
+      const triggerCount = triggers.split(',').filter(t => t.trim()).length;
+      if (triggerCount < 3) {
+        issues.push(`Only ${triggerCount} triggers (recommended: 3-8)`);
+      } else if (triggerCount > 8) {
+        issues.push(`${triggerCount} triggers (recommended: 3-8)`);
+      }
+    }
+
+    // Check required sections
+    const requiredSections = ['## When to Use', '## Core Workflow'];
+    for (const section of requiredSections) {
+      if (!content.includes(section)) {
+        issues.push(`Missing section: ${section}`);
+      }
+    }
+
+    return {
+      isValid: issues.length === 0,
+      issues,
+    };
+  }
+
+  /**
+   * Extract YAML frontmatter and body from markdown content
+   */
+  private extractYamlAndBody(content: string): { frontmatter: SkillMetadata; body: string } | null {
+    if (!content.startsWith('---')) {
+      return null;
+    }
+
+    const parts = content.split('---', 3);
+    if (parts.length < 3) {
+      return null;
+    }
+
+    try {
+      const yamlFrontmatter = this.parseYaml(parts[1].trim());
+      const body = parts[2].trim();
+      return {
+        frontmatter: yamlFrontmatter,
+        body,
+      };
+    } catch (error) {
+      console.error('Failed to parse YAML frontmatter', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
+  }
+
+  /**
+   * Simple YAML parser for frontmatter (handles basic key-value pairs)
+   */
+  private parseYaml(yamlContent: string): SkillMetadata {
+    const result: Partial<SkillMetadata> = {};
+
+    for (const line of yamlContent.split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+
+      const colonIndex = trimmed.indexOf(':');
+      if (colonIndex === -1) continue;
+
+      const key = trimmed.substring(0, colonIndex).trim();
+      const value = trimmed.substring(colonIndex + 1).trim();
+
+      // Remove quotes if present
+      const cleanValue = value.replace(/^"|"$/g, '').replace(/^'|'$/g, '');
+
+      // Convert kebab-case to camelCase for TypeScript
+      const camelKey = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+
+      // Handle array values (triggers)
+      if (key === 'triggers' || key === 'related-skills') {
+        result[camelKey as keyof SkillMetadata] = cleanValue;
+      } else {
+        result[camelKey as keyof SkillMetadata] = cleanValue;
+      }
+    }
+
+    return result as SkillMetadata;
+  }
+
+ /**
+   * Save skill file to appropriate location
+   */
+  private async saveSkillFile(
+    skillContent: SkillContent,
+    domain?: string,
+    topic?: string,
+    contribute: boolean = true
+  ): Promise<string> {
+    // Use environment variable for base directory
+    const baseDir = process.env.SKILLS_DIRECTORY || '/app';
+
+    // Get domain and topic from content or arguments
+    const skillDomain = domain || skillContent.frontmatter.domain;
+    const skillTopic = topic || skillContent.frontmatter.name;
+
+    // Security: Validate domain and topic to prevent path traversal attacks
+    if (!/^[a-z0-9-]+$/.test(skillDomain)) {
+      throw new Error(`Invalid domain: ${skillDomain}`);
+    }
+    if (!/^[a-z0-9-]+$/.test(skillTopic)) {
+      throw new Error(`Invalid topic: ${skillTopic}`);
+    }
+
+    // Fail Fast: Use path.resolve() and verify result is within base directory
+    const skillDirRel = contribute
+      ? `skills/${skillDomain}/${skillTopic}`
+      : `skill-cache/${skillDomain}/${skillTopic}`;
+
+    // Path traversal protection: resolve and verify
+    const resolvedPath = path.resolve(baseDir, skillDirRel);
+    const resolvedBase = path.resolve(baseDir);
+
+    // Security: Verify resolved path is within base directory
+    if (!resolvedPath.startsWith(resolvedBase + path.sep) && resolvedPath !== resolvedBase) {
+      throw new Error(`Path traversal attempt detected: ${resolvedPath}`);
+    }
+
+    // Create directory using async fs/promises
+    await fs.mkdir(resolvedPath, { recursive: true });
+
+    // Write skill file using async fs/promises
+    const skillFile = path.join(resolvedPath, 'SKILL.md');
+    await fs.writeFile(skillFile, skillContent.fullContent, 'utf-8');
+
+    return skillFile;
+  }
+
+  /**
+   * Get tool specification
+   */
+  getSpecification(): ToolSpec {
+    return {
+      name: this.name,
+      description: this.description,
+      parameters: {
+        type: 'object',
+        properties: {
+          task: {
+            type: 'string',
+            description: 'The task description that needs a skill (required)',
+          },
+          domain: {
+            type: 'string',
+            description: 'The domain category (agent, cncf, coding, programming, trading)',
+            enum: ['agent', 'cncf', 'coding', 'programming', 'trading'],
+          },
+          topic: {
+            type: 'string',
+            description: 'The skill topic name (kebab-case)',
+          },
+          dryRun: {
+            type: 'boolean',
+            description: 'Generate skill content without saving (default: false)',
+          },
+          contribute: {
+            type: 'boolean',
+            description: 'Save to skills directory and run automation scripts (default: true)',
+          },
+        },
+        required: ['task'],
+      },
+    };
+  }
+}

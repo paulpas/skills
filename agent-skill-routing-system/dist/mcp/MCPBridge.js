@@ -7,6 +7,7 @@ const FileTool_1 = require("./tools/FileTool");
 const HTTPTool_1 = require("./tools/HTTPTool");
 const KubectlTool_1 = require("./tools/KubectlTool");
 const LogFetchTool_1 = require("./tools/LogFetchTool");
+const SkillGenerationTool_1 = require("./tools/SkillGenerationTool");
 const Logger_1 = require("../observability/Logger");
 /**
  * MCP Bridge - manages all MCP tools
@@ -33,12 +34,12 @@ class MCPBridge {
         this.initializeTools();
     }
     /**
-     * Initialize all configured tools
-     */
+      * Initialize all configured tools
+      */
     initializeTools() {
         const enabledTools = this.config.enabledTools !== undefined && this.config.enabledTools.length > 0
             ? this.config.enabledTools
-            : ['shell', 'file', 'http', 'kubectl', 'log_fetch'];
+            : this.getDefaultEnabledTools();
         const disabledTools = new Set(this.config.disableTools || []);
         const toolFactories = {
             shell: () => new ShellCommandTool_1.ShellCommandTool(this.config.defaultTimeoutMs),
@@ -46,6 +47,7 @@ class MCPBridge {
             http: () => new HTTPTool_1.HTTPTool(this.config.defaultTimeoutMs),
             kubectl: () => new KubectlTool_1.KubectlTool(this.config.defaultTimeoutMs),
             log_fetch: () => new LogFetchTool_1.LogFetchTool(this.config.defaultTimeoutMs),
+            generate_skill: () => new SkillGenerationTool_1.SkillGenerationTool(this.config.defaultTimeoutMs),
         };
         for (const [name, factory] of Object.entries(toolFactories)) {
             if (disabledTools.has(name)) {
@@ -63,6 +65,17 @@ class MCPBridge {
                 }
             }
         }
+    }
+    /**
+     * Get default enabled tools based on environment configuration
+     */
+    getDefaultEnabledTools() {
+        const autoSkillEnabled = process.env.AUTO_SKILL_ENABLED !== 'false';
+        const baseTools = ['shell', 'file', 'http', 'kubectl', 'log_fetch'];
+        if (autoSkillEnabled) {
+            return [...baseTools, 'generate_skill'];
+        }
+        return baseTools;
     }
     /**
      * Get a tool by name

@@ -17,9 +17,13 @@ export declare class MCPBridge {
     private logger;
     constructor(config?: Partial<MCPBridgeConfig>);
     /**
-     * Initialize all configured tools
-     */
+      * Initialize all configured tools
+      */
     private initializeTools;
+    /**
+     * Get default enabled tools based on environment configuration
+     */
+    private getDefaultEnabledTools;
     /**
      * Get a tool by name
      */

@@ -78,11 +78,10 @@ RUN adduser -D -s /bin/sh appuser && \
 # Skill validation is now handled by the TypeScript MCP tool
 
 # OpenAI-based LLM compression configuration
+# Note: OPENAI_MODEL and ENABLE_LLM_COMPRESSION ARGs defined earlier in the file are used
 ENV OPENAI_API_KEY=""
-ENV OPENAI_MODEL="gpt-4o-mini"
 ENV OPENAI_BASE_URL=""
 ENV OPENAI_ORG_ID=""
-ENV ENABLE_LLM_COMPRESSION="true"
 
 # LLM-based skill compression configuration
 ARG SKILL_COMPRESSION_ENABLED=true
