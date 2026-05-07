@@ -365,6 +365,17 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
         # Use environment variable for base directory or default to /app
         base_dir = os.environ.get("SKILLS_DIRECTORY", "/app")
 
+        # Security: Validate domain and topic to prevent path traversal attacks
+        # Only allow alphanumeric characters and hyphens in directory names
+        if not re.match(r"^[a-z0-9-]+$", domain):
+            raise ValueError(
+                f"Invalid domain '{domain}'. Only lowercase alphanumeric characters and hyphens are allowed."
+            )
+        if not re.match(r"^[a-z0-9-]+$", topic):
+            raise ValueError(
+                f"Invalid topic '{topic}'. Only lowercase alphanumeric characters and hyphens are allowed."
+            )
+
         if self.contribute:
             # Save to skills directory (using base_dir directly)
             skill_dir = Path(base_dir) / domain / topic
