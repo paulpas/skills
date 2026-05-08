@@ -97,6 +97,194 @@ validate_file_exists() {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Model fetching functions for interactive selection
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Fetch available OpenAI models
+get_openai_models() {
+  local api_key="${OPENAI_API_KEY:-}"
+  if [[ -z "$api_key" ]]; then
+    return 1
+  fi
+  
+  local response http_code header_file
+  # Use --config to pass auth header from stdin to avoid API key exposure in process list
+  # Add timeout flags to prevent hanging
+  # Create header file in temp to avoid CLI exposure
+  header_file=$(mktemp)
+  trap "rm -f '$header_file'" EXIT
+  echo 'header = "Authorization: Bearer '"$api_key"'"' > "$header_file"
+  http_code=$(curl -s -f --connect-timeout 10 --max-time 60 -X GET \
+    --config "$header_file" \
+    "https://api.openai.com/v1/models" \
+    -w "\n%{http_code}" 2>/dev/null) || return 1
+  # Zero out API key after use
+  api_key=""
+  
+  # Extract response and HTTP code
+  response=$(echo "$http_code" | head -n -1)
+  http_code=$(echo "$http_code" | tail -n 1)
+  
+  # Validate HTTP status code before parsing (accept 2xx codes)
+  if ! [[ "$http_code" =~ ^2[0-9][0-9]$ ]]; then
+    echo "OpenAI API returned HTTP $http_code" >&2
+    return 1
+  fi
+  
+  # Validate JSON format before extracting model IDs
+   if ! echo "$response" | jq empty 2>/dev/null; then
+     echo "OpenAI API returned invalid JSON" >&2
+     return 1
+   fi
+   
+   # Validate response structure has expected .data array
+   if ! echo "$response" | jq -e '.data | type == "array"' >/dev/null 2>&1; then
+     echo "OpenAI API returned unexpected response structure (missing .data array)" >&2
+     return 1
+   fi
+   
+   echo "$response" | jq -r '.data[].id' 2>/dev/null || return 1
+}
+
+# Fetch available Anthropic models
+get_anthropic_models() {
+  local api_key="${ANTHROPIC_API_KEY:-}"
+  if [[ -z "$api_key" ]]; then
+    return 1
+  fi
+  
+  local response http_code header_file
+  # Use --config to pass auth header from stdin to avoid API key exposure in process list
+  # Add timeout flags to prevent hanging
+  # Create header file in temp to avoid CLI exposure
+  header_file=$(mktemp)
+  trap "rm -f '$header_file'" EXIT
+  echo 'header = "x-api-key: '"$api_key"'"' > "$header_file"
+  http_code=$(curl -s -f --connect-timeout 10 --max-time 60 -X GET \
+    --config "$header_file" \
+    -H "anthropic-version: 2023-06-01" \
+    "https://api.anthropic.com/v1/models" \
+    -w "\n%{http_code}" 2>/dev/null) || return 1
+  # Zero out API key after use
+  api_key=""
+  
+  # Extract response and HTTP code
+  response=$(echo "$http_code" | head -n -1)
+  http_code=$(echo "$http_code" | tail -n 1)
+  
+  # Validate HTTP status code before parsing (accept 2xx codes)
+  if ! [[ "$http_code" =~ ^2[0-9][0-9]$ ]]; then
+    echo "Anthropic API returned HTTP $http_code" >&2
+    return 1
+  fi
+  
+ # Validate JSON format before extracting model IDs
+   if ! echo "$response" | jq empty 2>/dev/null; then
+     echo "Anthropic API returned invalid JSON" >&2
+     return 1
+   fi
+   
+   # Validate response structure has expected .data array
+   if ! echo "$response" | jq -e '.data | type == "array"' >/dev/null 2>&1; then
+     echo "Anthropic API returned unexpected response structure (missing .data array)" >&2
+     return 1
+   fi
+   
+   echo "$response" | jq -r '.data[].id' 2>/dev/null || return 1
+}
+
+# Display interactive model selection menu
+# Arguments: $1 = model type (llm|embedding), $2 = provider (openai|anthropic), $3 = default model
+# Returns: selected model via echo
+select_model_interactive() {
+  local model_type="$1"
+  local provider="$2"
+  local default_model="$3"
+  local models=()
+  local selected_model=""
+  local model_source=""
+  
+  # Try to fetch models from API
+  if [[ "$provider" == "openai" ]]; then
+    mapfile -t models < <(get_openai_models 2>/dev/null) || true
+    model_source="OpenAI"
+  elif [[ "$provider" == "anthropic" ]]; then
+    mapfile -t models < <(get_anthropic_models 2>/dev/null) || true
+    model_source="Anthropic"
+  fi
+  
+  print_header
+  
+  if [[ ${#models[@]} -gt 0 ]]; then
+    echo -e "${BOLD}Step: ${model_type^} Model Configuration${RESET}"
+    echo ""
+    echo -e "Available ${model_source} models for ${model_type} configuration:"
+    echo ""
+    
+    # Display models in numbered list
+    local display_count=0
+    for i in "${!models[@]}"; do
+      local model="${models[$i]}"
+      # Only show relevant models based on type
+      if [[ "$model_type" == "llm" ]]; then
+        # Show LLM models (chat models)
+        if [[ "$model" == *"gpt-"* ]] || [[ "$model" == *"claude-"* ]]; then
+          echo "  $((i+1)). $model"
+          ((display_count++))
+        fi
+      else
+        # Show embedding models
+        if [[ "$model" == *"embedding"* ]] || [[ "$model" == *"text-embedding"* ]]; then
+          echo "  $((i+1)). $model"
+          ((display_count++))
+        fi
+      fi
+    done
+    
+    echo ""
+    
+    # Get user selection
+    prompt "Select a model by number (or 0 to enter custom): "
+    read -r choice
+    
+    if [[ "$choice" =~ ^[0-9]+$ ]]; then
+      if [[ "$choice" -eq 0 ]]; then
+        # Custom model entry
+        prompt "Enter custom ${model_type} model name (default: $default_model): "
+        read -r custom_model
+        echo "${custom_model:-$default_model}"
+        return 0
+      elif [[ "$choice" -ge 1 && "$choice" -le ${#models[@]} ]]; then
+        selected_model="${models[$((choice-1))]}"
+        
+        # Verify selection
+        echo ""
+        echo -e "  ${CYAN}Selected:${RESET} $selected_model"
+        prompt "Confirm this selection? (Y/n)"
+        read -r response
+        response="${response:-Y}"
+        
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+          echo "$selected_model"
+          return 0
+        fi
+        # Note: No recursive call - handled iteratively in main loop
+      fi
+    fi
+  fi
+  
+  # Fallback if API failed or no valid models found
+  echo ""
+  warn "Could not fetch models from ${provider^} API (or no matching models found)"
+  echo -e "  ${YELLOW}Note:${RESET} Network errors or API authentication failures may have occurred."
+  echo -e "  ${YELLOW}Ensure your API key is valid and you have internet connectivity.${RESET}"
+  echo ""
+  prompt "Enter ${model_type} model name (default: $default_model): "
+  read -r custom_model
+  echo "${custom_model:-$default_model}"
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Display functions
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -259,11 +447,54 @@ configure_llm_model() {
     anthropic) default_model="claude-3-5-haiku-20241022" ;;
   esac
   
-  configure_variable "LLM_MODEL" \
-    "LLM model name (leave empty for provider default)" \
-    "$default_model" \
-    "gpt-4o-mini (OpenAI)" \
-    "false"
+  # Iterative model selection with retry limit (max 5 attempts)
+  local max_attempts=5
+  local attempt=0
+  local selected_model=""
+  local user_confirmed=false
+  
+  while [[ $attempt -lt $max_attempts && "$user_confirmed" != "true" ]]; do
+    ((attempt++))
+    
+    # Exponential backoff for retry attempts
+    if [[ $attempt -gt 1 ]]; then
+      sleep $((attempt * 2))
+    fi
+    
+    # Interactive model selection
+    selected_model=$(select_model_interactive "llm" "$provider" "$default_model")
+    
+    if [[ -n "$selected_model" && "$selected_model" != "$default_model" ]]; then
+      LLM_MODEL="$selected_model"
+      echo ""
+      ok "Selected model: $LLM_MODEL"
+      user_confirmed=true
+    elif [[ -n "$selected_model" && "$selected_model" == "$default_model" ]]; then
+      # User confirmed the default model
+      LLM_MODEL="$selected_model"
+      echo ""
+      echo -e "  ${CYAN}Using default:${RESET} $LLM_MODEL"
+      user_confirmed=true
+    else
+      # User didn't confirm, prompt to try again
+      echo ""
+      warn "Model selection cancelled or invalid."
+      prompt "Try again? (Y/n) "
+      read -r retry_response
+      retry_response="${retry_response:-Y}"
+      
+      if [[ ! "$retry_response" =~ ^[Yy]$ ]]; then
+        user_confirmed=true
+      fi
+    fi
+  done
+  
+  # Fallback if all attempts failed
+  if [[ -z "$LLM_MODEL" ]]; then
+    LLM_MODEL="$default_model"
+    echo ""
+    echo -e "  ${YELLOW}Using default after $attempt attempts:${RESET} $LLM_MODEL"
+  fi
 }
 
 configure_embedding_provider() {
@@ -298,11 +529,56 @@ configure_embedding_model() {
   echo -e "Select the embedding model for skill vector search."
   echo ""
   
-  configure_variable "EMBEDDING_MODEL" \
-    "Embedding model name (leave empty for provider default)" \
-    "text-embedding-3-small" \
-    "text-embedding-3-small" \
-    "false"
+  local default_model="text-embedding-3-small"
+  
+  # Iterative model selection with retry limit (max 5 attempts)
+  local max_attempts=5
+  local attempt=0
+  local selected_model=""
+  local user_confirmed=false
+  
+  while [[ $attempt -lt $max_attempts && "$user_confirmed" != "true" ]]; do
+    ((attempt++))
+    
+    # Exponential backoff for retry attempts
+    if [[ $attempt -gt 1 ]]; then
+      sleep $((attempt * 2))
+    fi
+    
+    # Interactive model selection
+    selected_model=$(select_model_interactive "embedding" "$provider" "$default_model")
+    
+    if [[ -n "$selected_model" && "$selected_model" != "$default_model" ]]; then
+      EMBEDDING_MODEL="$selected_model"
+      echo ""
+      ok "Selected model: $EMBEDDING_MODEL"
+      user_confirmed=true
+    elif [[ -n "$selected_model" && "$selected_model" == "$default_model" ]]; then
+      # User confirmed the default model
+      EMBEDDING_MODEL="$selected_model"
+      echo ""
+      echo -e "  ${CYAN}Using default:${RESET} $EMBEDDING_MODEL"
+      user_confirmed=true
+    else
+      # User didn't confirm, prompt to try again
+      echo ""
+      warn "Model selection cancelled or invalid."
+      prompt "Try again? (Y/n) "
+      read -r retry_response
+      retry_response="${retry_response:-Y}"
+      
+      if [[ ! "$retry_response" =~ ^[Yy]$ ]]; then
+        user_confirmed=true
+      fi
+    fi
+  done
+  
+  # Fallback if all attempts failed
+  if [[ -z "$EMBEDDING_MODEL" ]]; then
+    EMBEDDING_MODEL="$default_model"
+    echo ""
+    echo -e "  ${YELLOW}Using default after $attempt attempts:${RESET} $EMBEDDING_MODEL"
+  fi
 }
 
 configure_anthropic_key() {
