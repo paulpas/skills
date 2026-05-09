@@ -35,8 +35,7 @@ Configure the Skill Router to use Anthropic's Claude models.
 Configure the Skill Router to use self-hosted LLM providers like vLLM, LiteLLM, and Ollama.
 
 - **Supported providers**: vLLM, LiteLLM, Ollama, Text Generation WebUI
-- **Embedding emulation**: Workaround for providers without native embedding models
-- **Prompt template**: "Represent the following text as a JSON array of 64 floats capturing its semantic meaning"
+- **Native embeddings**: OpenAI (text-embedding-3-small with 1536 dimensions) or local llama.cpp embeddings
 - **Performance considerations**: Speed comparison and optimization tips
 
 [Read the self-hosted configuration guide →](config-litellm-vllm.md)
@@ -70,7 +69,8 @@ EMBEDDING_PROVIDER=anthropic
 LLM_ENDPOINT_URL=http://localhost:8000/v1
 LLM_ENDPOINT_API_KEY=dummy
 LLM_PROVIDER=openai
-EMBEDDING_MODEL=emulated-64
+EMBEDDING_PROVIDER=openai
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ## Choosing the Right Provider
