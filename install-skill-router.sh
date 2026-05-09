@@ -755,6 +755,10 @@ configure_llm_model() {
       echo ""
       warn "Model selection cancelled or invalid."
       prompt "Try again? (Y/n) "
+      if ! is_interactive; then
+        err "Cannot read input in non-interactive mode"
+        exit 1
+      fi
       read -r retry_response
       retry_response="${retry_response:-Y}"
       
@@ -840,6 +844,10 @@ configure_embedding_model() {
       echo ""
       warn "Model selection cancelled or invalid."
       prompt "Try again? (Y/n) "
+      if ! is_interactive; then
+        err "Cannot read input in non-interactive mode"
+        exit 1
+      fi
       read -r retry_response
       retry_response="${retry_response:-Y}"
       
