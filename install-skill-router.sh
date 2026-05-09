@@ -529,6 +529,10 @@ show_intro() {
   echo "  3. Optionally integrate with OpenCode or Claude"
   echo ""
   echo -e "${CYAN}Press Enter to begin...${RESET}"
+  if ! is_interactive; then
+    err "Cannot read input in non-interactive mode"
+    exit 1
+  fi
   read -r
 }
 
@@ -578,6 +582,10 @@ configure_variable() {
     fi
     echo ""
     echo -e "  ${CYAN}Non-interactive mode: keeping current value or default${RESET}"
+    # Set the variable if not already set (using declare)
+    if [[ -z "${!var_name:-}" && -n "$default_value" ]]; then
+      declare "$var_name=$default_value"
+    fi
     return 0
   fi
   
@@ -721,9 +729,11 @@ configure_llm_model() {
   while [[ $attempt -lt $max_attempts && "$user_confirmed" != "true" ]]; do
     ((attempt++))
     
-    # Exponential backoff for retry attempts
+    # Exponential backoff for retry attempts (only in interactive mode)
     if [[ $attempt -gt 1 ]]; then
-      sleep $((attempt * 2))
+      if is_interactive; then
+        sleep $((attempt * 2))
+      fi
     fi
     
     # Interactive model selection
@@ -804,9 +814,11 @@ configure_embedding_model() {
   while [[ $attempt -lt $max_attempts && "$user_confirmed" != "true" ]]; do
     ((attempt++))
     
-    # Exponential backoff for retry attempts
+    # Exponential backoff for retry attempts (only in interactive mode)
     if [[ $attempt -gt 1 ]]; then
-      sleep $((attempt * 2))
+      if is_interactive; then
+        sleep $((attempt * 2))
+      fi
     fi
     
     # Interactive model selection
@@ -1052,13 +1064,17 @@ print_summary() {
 }
 
 get_final_confirmation() {
-  print_summary
-  prompt "Do you want to proceed with this configuration?"
-  echo "  (Y)es - Start installation"
-  echo "  (N)o - Go back and modify settings"
-  echo ""
-  read -r response
-  response="${response:-Y}"
+   print_summary
+   prompt "Do you want to proceed with this configuration?"
+   echo "  (Y)es - Start installation"
+   echo "  (N)o - Go back and modify settings"
+   echo ""
+   if ! is_interactive; then
+     err "Cannot read input in non-interactive mode"
+     exit 1
+   fi
+   read -r response
+   response="${response:-Y}"
   
   if [[ "$response" =~ ^[Yy]$ ]]; then
     return 0
@@ -1919,12 +1935,16 @@ else
     echo "  10. GitHub Token"
     echo "  11. SSH Configuration"
     echo "  12. Auto-Skill Settings"
-    echo ""
-    
-    prompt "Enter your choice (1-12) or 'q' to quit:"
-    read -r choice
-    
-    case "$choice" in
+     echo ""
+     
+     prompt "Enter your choice (1-12) or 'q' to quit:"
+     if ! is_interactive; then
+       err "Cannot read input in non-interactive mode"
+       exit 1
+     fi
+     read -r choice
+     
+     case "$choice" in
       1) configure_required_api ;;
       2) configure_provider_selection ;;
       3) configure_llm_model ;;
