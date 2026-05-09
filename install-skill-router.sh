@@ -44,6 +44,13 @@ declare \
   LLM_ENDPOINT_API_KEY
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Helper function to check if stdin is a terminal (interactive mode)
+# ─────────────────────────────────────────────────────────────────────────────
+is_interactive() {
+  [[ -t 0 ]]
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Usage function for CLI arguments
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -413,6 +420,12 @@ select_model_interactive() {
   local selected_model=""
   local model_source=""
   
+  # Non-interactive mode: use default model immediately (Fail Fast)
+  if ! is_interactive; then
+    echo "$default_model"
+    return 0
+  fi
+  
   # Try to fetch models from API
   if [[ "$provider" == "openai" ]]; then
     mapfile -t models < <(get_openai_models 2>/dev/null) || true
@@ -531,6 +544,42 @@ configure_variable() {
   local example_value="${4:-}"
   local is_required="${5:-false}"
   local validation_func="${6:-}"
+  
+  # Non-interactive mode: use current value if set, otherwise use default (Fail Fast)
+  if ! is_interactive; then
+    local current_value="${!var_name:-$default_value}"
+    if [[ -z "$current_value" ]]; then
+      current_value="Not set"
+    fi
+    # Display current value for logging purposes
+    if [[ "$current_value" == "Not set" ]]; then
+      echo -e "  ${YELLOW}Current:${RESET} ${YELLOW}Not set${RESET}"
+    else
+      # Mask sensitive values
+      if [[ "$var_name" == *"API_KEY"* ]] || [[ "$var_name" == *"TOKEN"* ]]; then
+        local masked
+        # Length validation before masking (Bounds Check)
+        if [[ ${#current_value} -lt 12 ]]; then
+          masked="***"
+        else
+          masked="${current_value:0:8}...${current_value: -4}"
+        fi
+        echo -e "  ${YELLOW}Current:${RESET} ${masked}"
+      else
+        echo -e "  ${YELLOW}Current:${RESET} ${current_value}"
+      fi
+    fi
+    echo -e "  ${CYAN}Description:${RESET} $description"
+    if [[ -n "$example_value" ]]; then
+      echo -e "  ${CYAN}Example:${RESET} $example_value"
+    fi
+    if [[ "$is_required" == "true" ]]; then
+      echo -e "  ${RED}Required:${RESET} Yes"
+    fi
+    echo ""
+    echo -e "  ${CYAN}Non-interactive mode: keeping current value or default${RESET}"
+    return 0
+  fi
   
   # Use indirect expansion to read variable safely (no eval)
   local current_value="${!var_name:-$default_value}"
