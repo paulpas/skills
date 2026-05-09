@@ -297,9 +297,14 @@ parse_config_file() {
       warn "Unknown configuration variable: $key"
     fi
     
+    # Sanitize value to remove shell metacharacters (Code Injection Prevention)
+    value="${value//\$/\\\$}"
+    value="${value//\`/\\\\\`}"
+    value="${value//\"/\\\\\"}"
+    
     # Set the variable (only if it exists in our global vars)
     if declare -p "$key" &>/dev/null; then
-      eval "$key=\"\$value\""
+      declare "$key=$value"
       info "  Loaded: $key"
     fi
   done < "$config_file"
@@ -527,25 +532,31 @@ configure_variable() {
   local is_required="${5:-false}"
   local validation_func="${6:-}"
   
-  local current_value
-  eval "current_value=\${$var_name:-$default_value}"
+  # Use indirect expansion to read variable safely (no eval)
+  local current_value="${!var_name:-$default_value}"
   
   if [[ -z "$current_value" ]]; then
     current_value="Not set"
   fi
   
   # Display current value
-  if [[ "$current_value" == "Not set" ]]; then
-    echo -e "  ${YELLOW}Current:${RESET} ${YELLOW}Not set${RESET}"
-  else
-    # Mask sensitive values
-    if [[ "$var_name" == *"API_KEY"* ]] || [[ "$var_name" == *"TOKEN"* ]]; then
-      local masked="${current_value:0:8}...${current_value: -4}"
-      echo -e "  ${YELLOW}Current:${RESET} ${masked}"
-    else
-      echo -e "  ${YELLOW}Current:${RESET} ${current_value}"
-    fi
-  fi
+   if [[ "$current_value" == "Not set" ]]; then
+     echo -e "  ${YELLOW}Current:${RESET} ${YELLOW}Not set${RESET}"
+   else
+     # Mask sensitive values
+     if [[ "$var_name" == *"API_KEY"* ]] || [[ "$var_name" == *"TOKEN"* ]]; then
+       local masked
+       # Length validation before masking (Bounds Check)
+       if [[ ${#current_value} -lt 12 ]]; then
+         masked="***"
+       else
+         masked="${current_value:0:8}...${current_value: -4}"
+       fi
+       echo -e "  ${YELLOW}Current:${RESET} ${masked}"
+     else
+       echo -e "  ${YELLOW}Current:${RESET} ${current_value}"
+     fi
+   fi
   
   echo -e "  ${CYAN}Description:${RESET} $description"
   if [[ -n "$example_value" ]]; then
@@ -562,12 +573,7 @@ configure_variable() {
   response="${response:-Y}"
   
   if [[ "$response" =~ ^[Yy]$ ]]; then
-    # Keep current value
-    if [[ "$current_value" != "Not set" ]]; then
-      eval "$var_name=\"\$current_value\""
-    else
-      eval "$var_name=\"\""
-    fi
+    # Keep current value (already set, no eval needed)
     return 0
   fi
   
@@ -581,6 +587,12 @@ configure_variable() {
   read -r new_value
   new_value="${new_value:-$default_value}"
   
+  # Sanitize user input to prevent shell metacharacter injection (Code Injection Prevention)
+  # Similar to config parser lines 301-303
+  new_value="${new_value//\$/\\\$}"
+  new_value="${new_value//\`/\\\\\`}"
+  new_value="${new_value//\"/\\\\\"}"
+  
   # Validate if validation function provided
   if [[ -n "$validation_func" ]]; then
     if ! "$validation_func" "$new_value"; then
@@ -589,7 +601,8 @@ configure_variable() {
     fi
   fi
   
-  eval "$var_name=\"\$new_value\""
+  # Use declare instead of eval to set variable safely
+  declare "$var_name=$new_value"
   return 0
 }
 
@@ -629,8 +642,7 @@ configure_provider_selection() {
 }
 
 configure_llm_model() {
-  local provider
-  eval "provider=\${LLM_PROVIDER:-openai}"
+  local provider="${LLM_PROVIDER:-openai}"
   
   # Skip for llamacpp (uses local endpoint)
   if [[ "$provider" == "llamacpp" ]]; then
@@ -717,8 +729,7 @@ configure_embedding_provider() {
 }
 
 configure_embedding_model() {
-  local provider
-  eval "provider=\${EMBEDDING_PROVIDER:-openai}"
+  local provider="${EMBEDDING_PROVIDER:-openai}"
   
   # Skip for llamacpp (uses local endpoint)
   if [[ "$provider" == "llamacpp" ]]; then
@@ -786,8 +797,7 @@ configure_embedding_model() {
 }
 
 configure_anthropic_key() {
-  local provider
-  eval "provider=\${LLM_PROVIDER:-openai}"
+  local provider="${LLM_PROVIDER:-openai}"
   
   # Only ask if anthropic is selected
   if [[ "$provider" != "anthropic" ]]; then
@@ -811,8 +821,7 @@ configure_anthropic_key() {
 }
 
 configure_llamacpp_url() {
-  local provider
-  eval "provider=\${LLM_PROVIDER:-openai}"
+  local provider="${LLM_PROVIDER:-openai}"
   
   # Only ask if llamacpp is selected
   if [[ "$provider" != "llamacpp" ]]; then
@@ -864,8 +873,7 @@ configure_github() {
 }
 
 configure_github_token() {
-  local enabled
-  eval "enabled=\${GITHUB_ENABLED:-true}"
+  local enabled="${GITHUB_ENABLED:-true}"
   
   # Only ask if GitHub is enabled
   if [[ "$enabled" != "true" ]]; then
@@ -1215,46 +1223,57 @@ run_installation() {
   docker rm   skill-router 2>/dev/null && ok "Removed existing skill-router container" || true
   
   # Build SSH volume mounts
-  SSH_VOLUMES=""
-  if [[ -n "$SSH_KEY_PATH" ]]; then
-    if [[ -L "$SSH_KEY_PATH" ]]; then
-      err "SSH key path is a symlink (not allowed for security): $SSH_KEY_PATH"
-      exit 1
-    fi
-    if [[ -f "$SSH_KEY_PATH" && -r "$SSH_KEY_PATH" ]]; then
-      SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KEY_PATH"):/home/appuser/.ssh/id_rsa:ro"
-    else
-      err "SSH key path is not a regular file or not readable: $SSH_KEY_PATH"
-      exit 1
-    fi
-  fi
-  if [[ -n "$SSH_AGENT_SOCKET" ]]; then
-    if [[ -L "$SSH_AGENT_SOCKET" ]]; then
-      err "SSH agent socket is a symlink (not allowed for security): $SSH_AGENT_SOCKET"
-      exit 1
-    fi
-    if [[ -S "$SSH_AGENT_SOCKET" && -r "$SSH_AGENT_SOCKET" ]]; then
-      SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_AGENT_SOCKET"):/tmp/ssh-agent.sock:ro"
-    else
-      err "SSH agent socket is not a socket or not readable: $SSH_AGENT_SOCKET"
-      exit 1
-    fi
-  fi
-  if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
-    SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KNOWN_HOSTS"):/home/appuser/.ssh/known_hosts:ro"
-  fi
+   SSH_VOLUMES=""
+   if [[ -n "$SSH_KEY_PATH" ]]; then
+     # Resolve symlink safely using realpath -m (Fail Fast)
+     local resolved_path
+     resolved_path=$(realpath -m "$SSH_KEY_PATH" 2>/dev/null) || {
+       err "Invalid path: $SSH_KEY_PATH"
+       return 1
+     }
+     if [[ -L "$SSH_KEY_PATH" ]]; then
+       err "SSH key path is a symlink (not allowed for security): $SSH_KEY_PATH"
+       exit 1
+     fi
+     if [[ -f "$SSH_KEY_PATH" && -r "$SSH_KEY_PATH" ]]; then
+       SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KEY_PATH"):/home/appuser/.ssh/id_rsa:ro"
+     else
+       err "SSH key path is not a regular file or not readable: $SSH_KEY_PATH"
+       exit 1
+     fi
+   fi
+   if [[ -n "$SSH_AGENT_SOCKET" ]]; then
+     # Resolve symlink safely using realpath -m (Fail Fast)
+     resolved_path=$(realpath -m "$SSH_AGENT_SOCKET" 2>/dev/null) || {
+       err "Invalid path: $SSH_AGENT_SOCKET"
+       return 1
+     }
+     if [[ -L "$SSH_AGENT_SOCKET" ]]; then
+       err "SSH agent socket is a symlink (not allowed for security): $SSH_AGENT_SOCKET"
+       exit 1
+     fi
+     if [[ -S "$SSH_AGENT_SOCKET" && -r "$SSH_AGENT_SOCKET" ]]; then
+       SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_AGENT_SOCKET"):/tmp/ssh-agent.sock:ro"
+     else
+       err "SSH agent socket is not a socket or not readable: $SSH_AGENT_SOCKET"
+       exit 1
+     fi
+   fi
+   if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
+     SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KNOWN_HOSTS"):/home/appuser/.ssh/known_hosts:ro"
+   fi
   
-  # Build environment variables
-  ENV_VARS="-e OPENAI_API_KEY=${OPENAI_API_KEY}"
-  ENV_VARS="$ENV_VARS -e LLM_PROVIDER=${LLM_PROVIDER}"
-  ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e LLM_MODEL=${LLM_MODEL}}"
-  ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL=${EMBEDDING_MODEL}}"
-  ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}}"
-  ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_URL=${LLAMACPP_URL}}"
-  ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER}"
-  ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED=${GITHUB_ENABLED}"
-  ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL=${SYNC_INTERVAL:-3600}"
-  ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN=${GITHUB_TOKEN}}"
+ # Build environment variables (Quote all values)
+   ENV_VARS="-e OPENAI_API_KEY=\"${OPENAI_API_KEY:-}\""
+   ENV_VARS="$ENV_VARS -e LLM_PROVIDER=\"${LLM_PROVIDER:-}\""
+   ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e LLM_MODEL=\"${LLM_MODEL:-}\"}"
+   ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL=\"${EMBEDDING_MODEL:-}\"}"
+   ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY=\"${ANTHROPIC_API_KEY:-}\"}"
+   ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_URL=\"${LLAMACPP_URL:-}\"}"
+   ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER=\"${EMBEDDING_PROVIDER:-}\""
+   ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED=\"${GITHUB_ENABLED:-}\""
+   ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL=\"${SYNC_INTERVAL:-3600}\""
+   ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN=\"${GITHUB_TOKEN:-}\"}"
   
   if [[ -n "$SSH_AGENT_SOCKET" ]]; then
     ENV_VARS="$ENV_VARS -e SSH_AUTH_SOCK=/tmp/ssh-agent.sock"
@@ -1290,22 +1309,27 @@ run_installation() {
   
   ok "Container started: skill-router on port $PORT"
   
-  # Health check
-  info "Waiting for health check..."
-  info "Note: skills load in the background — server responds immediately, ready:true appears once loading completes"
-  info "Polling http://localhost:${PORT}/health (up to 60 attempts, 5s apart = 5min max)"
-  
-  HEALTH_RESPONSE=""
-  HEALTHY=false
-  
+# Health check
+   info "Waiting for health check..."
+   info "Note: skills load in the background — server responds immediately, ready:true appears once loading completes"
+   info "Polling http://localhost:${PORT}/health (up to 60 attempts, 5s apart = 5min max)"
+   
+   HEALTH_RESPONSE=""
+   HEALTHY=false
+   
   for attempt in $(seq 1 60); do
-    printf "  ."
-    sleep 5
-    HTTP_CODE=$(curl -s -o /tmp/skill-router-health.json -w "%{http_code}" \
-      "http://localhost:$PORT/health" 2>/dev/null || echo "000")
-    
-    if [[ "$HTTP_CODE" == "200" ]]; then
-      HEALTH_RESPONSE=$(cat /tmp/skill-router-health.json)
+     printf "  ."
+     sleep 5
+     # Use mktemp for health check temp file (Atomic Predictability)
+     local health_file
+     health_file=$(mktemp /tmp/skill-router-health.XXXXXX.json)
+     HTTP_CODE=$(curl -s -o "$health_file" -w "%{http_code}" \
+       "http://localhost:$PORT/health" 2>/dev/null || echo "000")
+     
+     if [[ "$HTTP_CODE" == "200" ]]; then
+       HEALTH_RESPONSE=$(cat "$health_file")
+       # Clean up temp file immediately (Fail Fast)
+       rm -f "$health_file"
       if echo "$HEALTH_RESPONSE" | grep -q '"healthy"'; then
         HEALTHY=true
         break
