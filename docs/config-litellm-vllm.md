@@ -1,6 +1,6 @@
 # Self-Hosted LLM Provider Configuration (vLLM, LiteLLM)
 
-This guide explains how to configure the Skill Router to use self-hosted LLM providers like vLLM and LiteLLM, including the embedding emulation workaround for providers without native embedding support.
+This guide explains how to configure the Skill Router to use self-hosted LLM providers like vLLM and LiteLLM with native embedding support.
 
 ## Overview
 
@@ -8,7 +8,7 @@ Self-hosted LLM providers offer:
 - **Privacy and data control** - Keep your data on-premises
 - **Cost savings** - No per-request billing for high-volume usage
 - **Custom models** - Run fine-tuned or proprietary models
-- **Offline capability** - No internet dependency
+- **Offline capability** - No internet dependency (when using local models)
 
 ## Supported Providers
 
@@ -16,16 +16,19 @@ Self-hosted LLM providers offer:
 - High-performance LLM inference server
 - Compatible with OpenAI API format
 - Great for local or on-prem deployments
+- Supports native embeddings via compatible models
 
 ### LiteLLM
 - Unified API for multiple LLM providers
 - Supports OpenAI, Anthropic, Cohere, and more
 - Can route to multiple backends
+- Supports native embeddings when underlying provider supports it
 
 ### Local LLMs
 - llama.cpp, Ollama, Text Generation WebUI
 - Run models locally on your machine
 - No external API calls needed
+- Use local embedding models for semantic search
 
 ## Configuration for Self-Hosted Endpoints
 
@@ -81,66 +84,56 @@ AUTO_SKILL_ENABLED=true
 AUTO_SKILL_MODEL=your-model-name
 ```
 
-## Embedding Configuration Challenges
+## Native Embedding Support
 
-### The Problem
+The Skill Router uses native OpenAI embedding API or llama.cpp local embedding models for semantic search.
 
-Most self-hosted LLM providers (vLLM, Ollama, local models) **do not include embedding models**. Embeddings are a separate specialized model type optimized for semantic similarity, not general LLMs.
+### OpenAI Embeddings
+- **Model**: `text-embedding-3-small` (1536-dimensional embeddings)
+- **Alternative models**: `text-embedding-3-large`, `text-embedding-ada-002`
+- **Performance**: Fast, optimized for semantic similarity
 
-### The Solution: Embedding Emulation
+### Local Embeddings (llama.cpp)
+- **Dimensionality**: 1536 (configurable via model)
+- **Use case**: Private, on-premises deployments
+- **Performance**: Fast with local GPU/CPU
 
-Since dedicated embedding models may not be available, the Skill Router supports **embedding emulation** - using the LLM itself to generate embeddings through a prompt-based approach.
+### Fallback Behavior
+When the configured embedding API is unavailable (e.g., network failure, API key issues), the Skill Router falls back to deterministic hash-based embeddings with 1536 dimensions.
 
-### How Embedding Emulation Works
+**When this helps:**
+- Offline development and testing without API access
+- Network failures during embedding generation
+- Debugging and troubleshooting scenarios
 
-The process uses a specialized prompt that asks the LLM to output a fixed-size vector representation:
+**Characteristics of fallback embeddings:**
+- Deterministic: Same text always produces the same embedding
+- Not semantically meaningful: Only useful for exact-match queries
+- Configurable dimensions: Default 1536, configurable via environment
 
-```
-Represent the following text as a JSON array of 64 floats capturing its semantic meaning.
-Output only the array.
+**Recommendation:** For production use, ensure your embedding provider is accessible to get semantic similarity-based embeddings.
 
-Text: "Your text here"
-```
+### Configuration Priority
 
-The LLM responds with:
-```json
-[0.12, -0.45, 0.78, -0.23, 0.56, ...]
-```
+The Skill Router determines the embedding model using this priority order:
 
-### Why 64 Dimensions?
+1. **Environment variable**: `EMBEDDING_MODEL` (if set)
+2. **Provider default**: 
+   - OpenAI: `text-embedding-3-small`
+   - llama.cpp: local model configured via endpoint
+3. **Provider-specific defaults**: Based on `EMBEDDING_PROVIDER` setting
 
-- **Low dimensionality** (64 floats = 256 bytes) minimizes token usage
-- **Reasonable semantic capture** for skill routing tasks
-- **Compatibility** with vector search algorithms
-- **Speed** - smaller vectors are faster to compute and compare
-
-### Configuration for Emulation
-
-When using embedding emulation:
-
+**Example:**
 ```bash
-# Self-Hosted LLM Configuration
-LLM_ENDPOINT_URL=http://localhost:8000/v1
-LLM_ENDPOINT_API_KEY=dummy
-LLM_MODEL=your-model-name
-
-# For self-hosted providers without native embeddings
+# This will use text-embedding-3-small (OpenAI default)
 EMBEDDING_PROVIDER=openai
-EMBEDDING_MODEL=emulated-64
+# EMBEDDING_MODEL not set
 
-# Optional: Specify the LLM model to use for embedding emulation
-EMBEDDING_LLM_MODEL=your-model-name
+# This will use a local llama.cpp embedding model
+EMBEDDING_PROVIDER=llamacpp
+LLAMACPP_URL=http://localhost:8080
+# EMBEDDING_MODEL not set
 ```
-
-### Customizing the Emulation Prompt
-
-The default emulation prompt is:
-```
-Represent the following text as a JSON array of 64 floats capturing its semantic meaning.
-Output only the array.
-```
-
-If you want to customize this for your specific model, you can modify the Skill Router configuration (requires code modification or environment variable override).
 
 ## Provider-Specific Configuration
 
@@ -154,8 +147,8 @@ LLM_ENDPOINT_URL=http://localhost:8000/v1
 LLM_ENDPOINT_API_KEY=dummy
 LLM_MODEL=meta-llama/Meta-Llama-3-8B-Instruct
 
-# Embeddings (emulated)
-EMBEDDING_MODEL=emulated-64
+# Embeddings (OpenAI-compatible, 1536-dim)
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ### LiteLLM Configuration
@@ -168,8 +161,9 @@ LLM_ENDPOINT_URL=https://api.litellm.com/v1
 LLM_ENDPOINT_API_KEY=your-litellm-key
 LLM_MODEL=claude-4-sonnet
 
-# Embeddings (use native if available, otherwise emulated)
-EMBEDDING_MODEL=emulated-64
+# Embeddings (use native if available)
+# For OpenAI embeddings: text-embedding-3-small (1536-dim)
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ### Ollama Configuration
@@ -182,8 +176,9 @@ LLM_ENDPOINT_URL=http://localhost:11434/v1
 LLM_ENDPOINT_API_KEY=dummy
 LLM_MODEL=llama3:8b
 
-# Embeddings (emulated - Ollama doesn't include embeddings)
-EMBEDDING_MODEL=emulated-64
+# Embeddings (Ollama supports native embeddings)
+# Configure a local embedding model or use OpenAI embeddings
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ### Text Generation WebUI Configuration
@@ -196,8 +191,9 @@ LLM_ENDPOINT_URL=http://localhost:5000/v1
 LLM_ENDPOINT_API_KEY=dummy
 LLM_MODEL=your-model-name
 
-# Embeddings (emulated)
-EMBEDDING_MODEL=emulated-64
+# Embeddings (configure native embedding model)
+# For OpenAI: text-embedding-3-small, text-embedding-3-large
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ## Performance Considerations
@@ -206,22 +202,23 @@ EMBEDDING_MODEL=emulated-64
 
 | Approach | Speed | Quality | Resource Usage |
 |----------|-------|---------|----------------|
-| Native Embeddings (OpenAI) | Fast | High | Low (offloaded) |
-| Emulated Embeddings | Slow | Medium | High (uses LLM) |
-| Local Embedding Model | Fast | High | High (GPU memory) |
+| OpenAI Embeddings (text-embedding-3-small) | Fast | High | Low (offloaded) |
+| Local Embeddings (llama.cpp) | Fast | High | High (GPU memory) |
+| Fallback Hash-based | Medium | Medium | Low (CPU only) |
 
 ### Recommendations
 
-1. **For development/testing**: Use emulated embeddings (no extra setup needed)
-2. **For production with high volume**: Consider running a dedicated embedding model
-3. **For privacy-critical applications**: Run embedding model on-premises
+1. **For development/testing**: Use OpenAI embeddings (fast, reliable) or enable fallback for offline mode
+2. **For production with high volume**: Use OpenAI embeddings or run a dedicated local embedding model
+3. **For privacy-critical applications**: Run local embedding model (llama.cpp) on-premises
+4. **For offline capability**: Fallback to deterministic hash-based embeddings when API is unavailable
 
 ### Optimization Tips
 
-1. **Use smaller models** for emulation (7B-13B parameters)
+1. **Use OpenAI's text-embedding-3-small** for best performance
 2. **Batch requests** when possible to improve throughput
 3. **Cache embeddings** for repeated text queries
-4. **Monitor GPU usage** during embedding generation
+4. **Use local embeddings** when working with sensitive data
 
 ## Security Considerations
 
@@ -270,21 +267,18 @@ curl http://localhost:8000/v1/models
 
 ### Error: "Embedding generation failed"
 
-**Solution**: Try a smaller model for emulation or verify the LLM can generate JSON output correctly.
+**Solution**: Verify your embedding model is configured correctly. Use `text-embedding-3-small` for OpenAI or a compatible local embedding model.
 
 ### Error: "Slow embedding generation"
 
 **Solution**: 
-- Use a smaller model for emulation
 - Increase the LLM endpoint timeout
 - Consider caching embeddings
+- Use a faster embedding model if available
 
-### Error: "Invalid JSON in response"
+### Error: "Embedding model not found"
 
-**Solution**: Some models struggle with JSON output. Try:
-- Using a model known for JSON generation (e.g., `gpt-4o-mini`)
-- Adding "Output valid JSON only" to the prompt
-- Using a larger, more capable model
+**Solution**: Verify your embedding model is available at your endpoint or use a supported OpenAI model like `text-embedding-3-small`.
 
 ## Testing Your Configuration
 
@@ -296,7 +290,7 @@ docker run --rm \
   -e LLM_ENDPOINT_URL="http://host.docker.internal:8000/v1" \
   -e LLM_ENDPOINT_API_KEY="dummy" \
   -e LLM_MODEL="llama3:8b" \
-  -e EMBEDDING_MODEL="emulated-64" \
+  -e EMBEDDING_MODEL="text-embedding-3-small" \
   -p 3000:3000 \
   skill-router:latest
 ```
@@ -318,19 +312,20 @@ curl http://localhost:3000/v1/chat/completions \
 curl http://localhost:3000/embeddings \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{"input": "test query", "model": "emulated-64"}'
+  -d '{"input": "test query", "model": "text-embedding-3-small"}'
 ```
 
-## Comparison: Native vs Emulated Embeddings
+## Embedding Options Comparison
 
-| Aspect | Native Embeddings | Emulated Embeddings |
-|--------|------------------|---------------------|
-| **Quality** | Optimized for semantic similarity | General LLM output |
-| **Speed** | Fast (dedicated model) | Slow (uses LLM) |
-| **Cost** | Low per request | High (uses LLM tokens) |
-| **Setup** | Requires embedding model | Works with any LLM |
-| **Dimensions** | Fixed (e.g., 1536 for OpenAI) | Variable (64 in our case) |
-| **Best For** | Production, high volume | Development, low volume |
+| Aspect | OpenAI Embeddings | Local Embeddings |
+|--------|------------------|------------------|
+| **Quality** | Optimized for semantic similarity | Optimized for semantic similarity |
+| **Speed** | Fast (offloaded to API) | Fast (local GPU/CPU) |
+| **Cost** | Low per request (pay-per-use) | None after setup |
+| **Setup** | Simple (API key only) | Requires local model |
+| **Dimensions** | 1536 (fixed) | 1536 (configurable) |
+| **Privacy** | External processing | Fully on-premises |
+| **Best For** | Easy setup, reliability | Privacy, cost savings |
 
 ## Related Documentation
 

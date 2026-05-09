@@ -55,8 +55,9 @@ LLM_ENDPOINT_API_KEY=
 EMBEDDING_PROVIDER=openai
 
 # Embedding model for skill search and routing
-# For OpenAI: text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002
-# For llamacpp: Leave empty (uses local endpoint)
+# OpenAI provides 1536-dimensional embeddings by default
+# Models: text-embedding-3-small (default), text-embedding-3-large, text-embedding-ada-002
+# For llamacpp: Leave empty (uses local endpoint with 1536-dim embeddings)
 EMBEDDING_MODEL=text-embedding-3-small
 
 # ─────────────────────────────────────────────────────────────────────────────
