@@ -25,15 +25,30 @@ export class GitHubSkillLoader {
   private syncIntervalMs: number;
   private githubToken: string;
   private syncTimer: ReturnType<typeof setInterval> | null = null;
-  private logger: Logger;
+   private logger: Logger;
+   private syncing: Promise<void> | null = null;
 
-  constructor(config: GitHubSkillLoaderConfig) {
+   constructor(config: GitHubSkillLoaderConfig) {
     this.repoUrl = config.repoUrl;
     this.cacheDir = config.cacheDir;
     this.syncIntervalMs = config.syncIntervalMs ?? 3600000;
     this.githubToken = config.githubToken ?? '';
     this.logger = new Logger('GitHubSkillLoader');
-  }
+     this.cleanupStaleLocks();
+   }
+
+   /** Remove stale .git lock files that may remain from previous crashes. */
+   private cleanupStaleLocks(): void {
+     const gitDir = path.join(this.cacheDir, '.git');
+     const lockFiles = ['index.lock', 'shallow.lock'];
+
+     for (const lockFile of lockFiles) {
+       const lockPath = path.join(gitDir, lockFile);
+       fs.promises.unlink(lockPath).catch(() => {
+         // Silent cleanup - lock files may not exist
+       });
+     }
+   }
 
   /** Clone the repo if needed, pull if already cloned. Call on startup. */
   async initialize(): Promise<void> {
@@ -100,11 +115,57 @@ export class GitHubSkillLoader {
     await execFileAsync('git', ['clone', '--depth=1', url, this.cacheDir]);
   }
 
+  /** Execute git command with retry and exponential backoff. */
+  private async runGitCommand(args: string[], maxRetries: number = 3): Promise<void> {
+    const baseDelay = 100; // 100ms base delay
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await execFileAsync('git', args);
+        return; // Success
+      } catch (err) {
+        if (attempt === maxRetries) {
+          // Re-throw on final attempt
+          throw new Error(`Git command failed after ${maxRetries} attempts: ${String(err)}`);
+        }
+        const delay = baseDelay * Math.pow(2, attempt - 1);
+        this.logger.warn('Git command failed, retrying', {
+          args: args.join(' '),
+          attempt,
+          maxRetries,
+          delayMs: delay,
+          error: err instanceof Error ? err.message : String(err),
+        });
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+
   private async pull(): Promise<void> {
+    // Early Exit: If already syncing, await existing operation
+    if (this.syncing) {
+      this.logger.info('Sync already in progress, waiting for completion');
+      await this.syncing;
+      return;
+    }
+
+    // Set syncing flag to prevent concurrent operations
+    this.syncing = this.pullWithRetry();
+
+    try {
+      await this.syncing;
+    } finally {
+      // Clear syncing flag after completion (success or failure)
+      this.syncing = null;
+    }
+  }
+
+  /** Pull with retry logic and mutex protection. */
+  private async pullWithRetry(): Promise<void> {
     // Fetch latest without requiring fast-forward — handles force pushes and rebased history
-    await execFileAsync('git', ['-C', this.cacheDir, 'fetch', '--depth=1', 'origin', 'main']);
+    await this.runGitCommand(['-C', this.cacheDir, 'fetch', '--depth=1', 'origin', 'main']);
     // Hard reset to remote HEAD — always wins, never diverges
-    await execFileAsync('git', ['-C', this.cacheDir, 'reset', '--hard', 'origin/main']);
+    await this.runGitCommand(['-C', this.cacheDir, 'reset', '--hard', 'origin/main']);
   }
 
   /** Inject token into HTTPS URL for authenticated access if provided. */

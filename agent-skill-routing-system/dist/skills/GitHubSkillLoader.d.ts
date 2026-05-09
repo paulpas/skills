@@ -15,7 +15,10 @@ export declare class GitHubSkillLoader {
     private githubToken;
     private syncTimer;
     private logger;
+    private syncing;
     constructor(config: GitHubSkillLoaderConfig);
+    /** Remove stale .git lock files that may remain from previous crashes. */
+    private cleanupStaleLocks;
     /** Clone the repo if needed, pull if already cloned. Call on startup. */
     initialize(): Promise<void>;
     /** Start background sync. Calls onUpdate() after each successful pull. */
@@ -28,7 +31,11 @@ export declare class GitHubSkillLoader {
     getSkillsDir(): string;
     private isCloned;
     private clone;
+    /** Execute git command with retry and exponential backoff. */
+    private runGitCommand;
     private pull;
+    /** Pull with retry logic and mutex protection. */
+    private pullWithRetry;
     /** Inject token into HTTPS URL for authenticated access if provided. */
     private authUrl;
 }
