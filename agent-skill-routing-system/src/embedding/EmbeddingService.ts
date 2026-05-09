@@ -5,7 +5,15 @@ import path from 'path';
 import { EmbeddingResponse } from '../core/types';
 import { Logger } from '../observability/Logger';
 
-export type EmbeddingProvider = 'openai' | 'llamacpp';
+export type EmbeddingProvider = 'openai' | 'llamacpp' | 'emulation';
+
+/**
+ * Default prompt template for embedding emulation via LLM
+ */
+const EMBEDDING_PROMPT_TEMPLATE =
+  'Represent the following text as a JSON array of 64 floats capturing its semantic meaning. ' +
+  'Output only the array, no additional text. ' +
+  'Example format: [0.123, -0.456, 0.789, ...]';
 
 /**
  * Result of batch embedding generation with token information
@@ -13,6 +21,16 @@ export type EmbeddingProvider = 'openai' | 'llamacpp';
 interface EmbeddingsWithTokens {
   embeddings: number[][];
   inputTokens?: number;
+}
+
+/**
+ * JSON schema for embedding output validation
+ */
+interface EmbeddingJsonSchema {
+  type: 'array';
+  items: { type: 'number' };
+  minItems: number;
+  maxItems: number;
 }
 
 /**
@@ -26,6 +44,10 @@ export interface EmbeddingServiceConfig {
   dimensions: number;
   cacheDirectory?: string;
   batchSize: number;
+  // Emulation-specific configuration
+  promptTemplate?: string;
+  maxRetries?: number;
+  jsonSchema?: EmbeddingJsonSchema;
 }
 
 /**
@@ -46,6 +68,15 @@ export class EmbeddingService {
       dimensions: config.dimensions || 1536,
       batchSize: config.batchSize || 100,
       cacheDirectory: config.cacheDirectory || './.embedding-cache',
+      // Emulation-specific defaults
+      promptTemplate: config.promptTemplate || EMBEDDING_PROMPT_TEMPLATE,
+      maxRetries: config.maxRetries ?? 3,
+      jsonSchema: config.jsonSchema ?? {
+        type: 'array',
+        items: { type: 'number' },
+        minItems: 64,
+        maxItems: 64,
+      },
     };
     this.logger = new Logger('EmbeddingService');
     this.loadCacheFromDisk();
@@ -197,12 +228,17 @@ export class EmbeddingService {
     return results;
   }
 
-  /**
-   * Generate embedding from API (OpenAI or llama.cpp)
-   */
+ /**
+    * Generate embedding from API (OpenAI or llama.cpp)
+    */
   private async generateEmbeddingFromAPI(
     text: string
   ): Promise<EmbeddingResponse> {
+    // Early exit: if emulation provider, use LLM-based generation
+    if (this.config.provider === 'emulation') {
+      return this.generateEmbeddingFromEmulation(text);
+    }
+
     try {
       const baseUrl = this.config.provider === 'llamacpp'
         ? this.config.llamacppBaseUrl
@@ -339,6 +375,199 @@ export class EmbeddingService {
     // Normalize the vector
     const magnitude = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
     return embedding.map((val) => val / magnitude);
+  }
+
+  /**
+   * Generate embedding from LLM via prompt emulation
+   * Uses LLM API to generate embeddings through text prompts
+   */
+  private async generateEmbeddingFromEmulation(text: string): Promise<EmbeddingResponse> {
+    // Early exit: sanitize input
+    if (!text || text.length === 0) {
+      this.logger.warn('[Emulation] Empty text provided, using fallback embedding');
+      return {
+        embedding: this.generatePlaceholderEmbedding(''),
+        dimensions: this.config.dimensions,
+        model: this.config.model,
+        inputTokens: 0,
+      };
+    }
+
+    // Parse and validate JSON schema
+    const schema = this.config.jsonSchema;
+    if (!schema || schema.type !== 'array' || schema.items.type !== 'number') {
+      this.logger.error('[Emulation] Invalid JSON schema configuration');
+      throw new Error('Invalid JSON schema for embedding emulation: must be array of numbers');
+    }
+
+    const expectedDimensions = schema.minItems;
+
+    // Build prompt
+    const prompt = this.buildEmulationPrompt(text, expectedDimensions);
+
+    // Try to get embedding with retries
+    let lastError: Error | undefined;
+    for (let attempt = 1; attempt <= this.config.maxRetries; attempt++) {
+      try {
+        const embedding = await this.callLlmForEmbedding(prompt, expectedDimensions);
+        if (embedding) {
+          return {
+            embedding,
+            dimensions: embedding.length,
+            model: this.config.model,
+            inputTokens: 0, // LLM token count not available in emulation mode
+          };
+        }
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        this.logger.warn('[Emulation] Failed attempt', {
+          attempt,
+          maxRetries: this.config.maxRetries,
+          error: lastError.message,
+        });
+        
+        // Exponential backoff (only if not last attempt)
+        if (attempt < this.config.maxRetries) {
+          await this.sleep(100 * Math.pow(2, attempt - 1));
+        }
+      }
+    }
+
+    // All retries failed - use deterministic fallback
+    this.logger.error('[Emulation] All retries failed, using fallback embedding', {
+      error: lastError?.message,
+    });
+    const fallback = this.generatePlaceholderEmbedding(text);
+    return {
+      embedding: fallback,
+      dimensions: fallback.length,
+      model: this.config.model,
+      inputTokens: 0,
+    };
+  }
+
+  /**
+    * Build the prompt for LLM-based embedding generation
+    */
+  private buildEmulationPrompt(text: string, _dimensions: number): string {
+    const template = this.config.promptTemplate || EMBEDDING_PROMPT_TEMPLATE;
+    return `${template}\n\nText to embed:\n"${text}"`;
+  }
+
+  /**
+   * Call LLM API and extract embedding from response
+   */
+  private async callLlmForEmbedding(prompt: string, expectedDimensions: number): Promise<number[] | undefined> {
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.config.apiKey || process.env.OPENAI_API_KEY || ''}`,
+        },
+        body: JSON.stringify({
+          model: this.config.model || 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }],
+          response_format: { type: 'json_object' },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`LLM API error ${response.status}: ${errorData}`);
+      }
+
+      const data = await response.json() as { choices: { message: { content: string } }[]; usage?: { prompt_tokens: number } };
+      const content = data.choices[0]?.message?.content || '';
+
+      // Parse JSON array from response
+      return this.parseJsonEmbedding(content, expectedDimensions);
+    } catch (error) {
+      this.logger.error('[Emulation] LLM call failed', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
+  }
+
+/**
+   * Parse JSON embedding from LLM response with recovery
+   * Parse-Don't-Validate: parse at boundary (JSON string), trust parsed data internally
+   */
+  private parseJsonEmbedding(jsonString: string, expectedDimensions: number): number[] {
+    // Early exit: handle empty or whitespace-only input
+    if (!jsonString || jsonString.trim().length === 0) {
+      throw new Error('Empty JSON string received from LLM');
+    }
+
+    // Try parsing JSON directly first
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (Array.isArray(parsed) && this.isValidNumberArray(parsed, expectedDimensions)) {
+        return parsed;
+      }
+    } catch (error) {
+      // JSON parse failed - continue to recovery strategies
+      this.logger.debug('[Emulation] Direct JSON parse failed, attempting recovery', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+
+    // Recovery 1: Extract JSON array from text using regex
+    const extracted = this.extractJsonArray(jsonString);
+    if (extracted) {
+      try {
+        const parsed = JSON.parse(extracted);
+        if (Array.isArray(parsed) && this.isValidNumberArray(parsed, expectedDimensions)) {
+          return parsed;
+        }
+      } catch (error) {
+        this.logger.debug('[Emulation] Regex extraction failed, using fallback');
+      }
+    }
+
+    // Recovery 2: Generate deterministic fallback embedding
+    this.logger.warn('[Emulation] All parsing strategies failed, using deterministic fallback');
+    throw new Error(`Failed to parse valid embedding from LLM response (expected ${expectedDimensions}-dimensional array of numbers)`);
+  }
+
+  /**
+   * Extract JSON array from text using regex pattern matching
+   */
+  private extractJsonArray(text: string): string | undefined {
+    // Match JSON array pattern: [numbers, separated, by, commas]
+    const jsonRegex = /\[\s*(?:-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\s*,\s*)*-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\s*\]/;
+    const match = text.match(jsonRegex);
+    return match ? match[0] : undefined;
+  }
+
+  /**
+   * Validate that array contains only numbers and has correct dimensions
+   */
+  private isValidNumberArray(value: unknown, expectedDimensions: number): boolean {
+    // Early exit: must be an array
+    if (!Array.isArray(value)) {
+      return false;
+    }
+
+    // Validate dimensions
+    if (value.length !== expectedDimensions) {
+      this.logger.debug('[Emulation] Dimension mismatch', {
+        actual: value.length,
+        expected: expectedDimensions,
+      });
+      return false;
+    }
+
+    // Validate all elements are numbers
+    return value.every((item) => typeof item === 'number' && !isNaN(item));
+  }
+
+  /**
+   * Sleep for specified milliseconds
+   */
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
