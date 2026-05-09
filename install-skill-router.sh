@@ -47,7 +47,11 @@ declare \
 # Helper function to check if stdin is a terminal (interactive mode)
 # ─────────────────────────────────────────────────────────────────────────────
 is_interactive() {
-  [[ -t 0 ]]
+  if [[ -t 0 ]]; then
+    return 0  # Terminal is available, interactive mode
+  else
+    return 1  # Terminal not available, non-interactive mode
+  fi
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -310,8 +314,9 @@ parse_config_file() {
     value="${value//\"/\\\\\"}"
     
     # Set the variable (only if it exists in our global vars)
+    # Use -g to ensure we set global variables, not local ones
     if declare -p "$key" &>/dev/null; then
-      declare "$key=$value"
+      declare -g "$key=$value"
       info "  Loaded: $key"
     fi
   done < "$config_file"
@@ -420,20 +425,27 @@ select_model_interactive() {
   local selected_model=""
   local model_source=""
   
+  echo -e "${BLUE}[DEBUG] select_model_interactive started: type=$model_type provider=$provider default=$default_model${RESET}" >&2
+  echo -e "${BLUE}[DEBUG] is_interactive: $(is_interactive && echo 'true' || echo 'false')${RESET}" >&2
+  
   # Non-interactive mode: use default model immediately (Fail Fast)
   if ! is_interactive; then
     echo "$default_model"
+    echo -e "${BLUE}[DEBUG] Non-interactive: returning default model '$default_model'${RESET}" >&2
     return 0
   fi
   
   # Try to fetch models from API
   if [[ "$provider" == "openai" ]]; then
+    echo -e "${BLUE}[DEBUG] Fetching OpenAI models...${RESET}" >&2
     mapfile -t models < <(get_openai_models 2>/dev/null) || true
     model_source="OpenAI"
   elif [[ "$provider" == "anthropic" ]]; then
+    echo -e "${BLUE}[DEBUG] Fetching Anthropic models...${RESET}" >&2
     mapfile -t models < <(get_anthropic_models 2>/dev/null) || true
     model_source="Anthropic"
   fi
+  echo -e "${BLUE}[DEBUG] Retrieved ${#models[@]} models from API${RESET}" >&2
   
   print_header
   
@@ -496,6 +508,7 @@ select_model_interactive() {
   fi
   
   # Fallback if API failed or no valid models found
+  echo -e "${BLUE}[DEBUG] Fallback path: no valid models found in interactive mode${RESET}" >&2
   echo ""
   warn "Could not fetch models from ${provider^} API (or no matching models found)"
   echo -e "  ${YELLOW}Note:${RESET} Network errors or API authentication failures may have occurred."
@@ -503,7 +516,9 @@ select_model_interactive() {
   echo ""
   prompt "Enter ${model_type} model name (default: $default_model): "
   read -r custom_model
-  echo "${custom_model:-$default_model}"
+  local result="${custom_model:-$default_model}"
+  echo "$result"
+  echo -e "${BLUE}[DEBUG] select_model_interactive returning: '$result'${RESET}" >&2
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -529,7 +544,12 @@ show_intro() {
   echo "  3. Optionally integrate with OpenCode or Claude"
   echo ""
   echo -e "${CYAN}Press Enter to begin...${RESET}"
-  if ! is_interactive; then
+  
+  # Debug: Check if running in interactive mode
+  if is_interactive; then
+    echo -e "${BLUE}[DEBUG] Interactive mode detected${RESET}" >&2
+  else
+    err "[DEBUG] Non-interactive mode detected (no stdin terminal)"
     err "Cannot read input in non-interactive mode"
     exit 1
   fi
@@ -549,8 +569,12 @@ configure_variable() {
   local is_required="${5:-false}"
   local validation_func="${6:-}"
   
+  echo -e "${BLUE}[DEBUG] configure_variable called for $var_name${RESET}" >&2
+  echo -e "${BLUE}[DEBUG] is_interactive: $(is_interactive && echo 'true' || echo 'false')${RESET}" >&2
+  
   # Non-interactive mode: use current value if set, otherwise use default (Fail Fast)
   if ! is_interactive; then
+    echo -e "${BLUE}[DEBUG] Non-interactive mode - using default${RESET}" >&2
     local current_value="${!var_name:-$default_value}"
     if [[ -z "$current_value" ]]; then
       current_value="Not set"
@@ -584,8 +608,9 @@ configure_variable() {
     echo -e "  ${CYAN}Non-interactive mode: keeping current value or default${RESET}"
     # Set the variable if not already set (using declare)
     if [[ -z "${!var_name:-}" && -n "$default_value" ]]; then
-      declare "$var_name=$default_value"
+      declare -g "$var_name=$default_value"
     fi
+    echo -e "${BLUE}[DEBUG] configure_variable exiting non-interactive${RESET}" >&2
     return 0
   fi
   
@@ -658,8 +683,8 @@ configure_variable() {
     fi
   fi
   
-  # Use declare instead of eval to set variable safely
-  declare "$var_name=$new_value"
+  # Use declare -g instead of eval to set variable safely (global scope)
+  declare -g "$var_name=$new_value"
   return 0
 }
 
@@ -684,6 +709,7 @@ configure_required_api() {
 }
 
 configure_provider_selection() {
+  echo -e "${BLUE}[DEBUG] configure_provider_selection started${RESET}" >&2
   print_header
   echo -e "${BOLD}Step 2: LLM Provider Selection${RESET}"
   echo ""
@@ -696,10 +722,16 @@ configure_provider_selection() {
     "openai" \
     "false" \
     "validate_provider"
+  
+  echo -e "${BLUE}[DEBUG] LLM_PROVIDER set to: $LLM_PROVIDER${RESET}" >&2
 }
 
 configure_llm_model() {
   local provider="${LLM_PROVIDER:-openai}"
+  
+  # Debug: Log function entry
+  echo -e "${BLUE}[DEBUG] configure_llm_model started${RESET}" >&2
+  echo -e "${BLUE}[DEBUG] Provider: $provider${RESET}" >&2
   
   # Skip for llamacpp (uses local endpoint)
   if [[ "$provider" == "llamacpp" ]]; then
@@ -720,6 +752,8 @@ configure_llm_model() {
     anthropic) default_model="claude-3-5-haiku-20241022" ;;
   esac
   
+  echo -e "${BLUE}[DEBUG] Default model for $provider: $default_model${RESET}" >&2
+  
   # Iterative model selection with retry limit (max 5 attempts)
   local max_attempts=5
   local attempt=0
@@ -737,7 +771,9 @@ configure_llm_model() {
     fi
     
     # Interactive model selection
+    echo -e "${BLUE}[DEBUG] Calling select_model_interactive (attempt $attempt)${RESET}" >&2
     selected_model=$(select_model_interactive "llm" "$provider" "$default_model")
+    echo -e "${BLUE}[DEBUG] Returned selected_model: '$selected_model'${RESET}" >&2
     
     if [[ -n "$selected_model" && "$selected_model" != "$default_model" ]]; then
       LLM_MODEL="$selected_model"
@@ -756,6 +792,7 @@ configure_llm_model() {
       warn "Model selection cancelled or invalid."
       prompt "Try again? (Y/n) "
       if ! is_interactive; then
+        err "[DEBUG] Non-interactive mode detected in retry loop - exiting"
         err "Cannot read input in non-interactive mode"
         exit 1
       fi
@@ -774,6 +811,8 @@ configure_llm_model() {
     echo ""
     echo -e "  ${YELLOW}Using default after $attempt attempts:${RESET} $LLM_MODEL"
   fi
+  
+  echo -e "${BLUE}[DEBUG] Final LLM_MODEL: $LLM_MODEL${RESET}" >&2
 }
 
 configure_embedding_provider() {
