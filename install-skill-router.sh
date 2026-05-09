@@ -39,7 +39,134 @@ declare \
   SSH_KNOWN_HOSTS \
   AUTO_SKILL_ENABLED \
   AUTO_SKILL_CONTRIBUTE \
-  AUTO_SKILL_MODEL
+  AUTO_SKILL_MODEL \
+  LLM_ENDPOINT_URL \
+  LLM_ENDPOINT_API_KEY
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Usage function for CLI arguments
+# ─────────────────────────────────────────────────────────────────────────────
+
+show_usage() {
+  cat <<EOF
+Usage: $0 [OPTIONS]
+
+Configure and install the Skill Router Docker container.
+
+OPTIONS:
+  -h, --help            Show this help message and exit
+  -i, --interactive     Force interactive mode (default behavior)
+  -c, --config FILE     Non-interactive mode using config file
+  -n, --no-interactive  Non-interactive mode with default config file (install-skill-router.conf)
+
+CONFIG FILE FORMAT:
+  The config file should contain key=value pairs, one per line.
+  Comments are allowed (lines starting with #).
+
+  Example config file (install-skill-router.conf):
+    # Required API Configuration
+    OPENAI_API_KEY=sk-...
+    
+    # LLM Provider Selection
+    LLM_PROVIDER=openai          # Options: openai, anthropic, llamacpp
+    LLM_MODEL=gpt-4o             # Model ID (defaults to provider default)
+    
+    # Optional: Custom LLM Endpoint (LiteLLM, ollama, vLLM, etc.)
+    LLM_ENDPOINT_URL=https://api.openai.com/v1
+    LLM_ENDPOINT_API_KEY=sk-...  # Optional: omit for no-key endpoints like ollama
+    
+    # Embedding Configuration
+    EMBEDDING_PROVIDER=openai    # Options: openai, anthropic, llamacpp
+    EMBEDDING_MODEL=text-embedding-3-small
+    
+    # Networking
+    PORT=3000                    # Host port to bind container
+    
+    # GitHub Integration
+    GITHUB_ENABLED=true          # Enable remote skill loading
+    GITHUB_TOKEN=ghp_...         # Optional: GitHub token for private repos
+    
+    # SSH Configuration (optional)
+    SSH_KEY_PATH=/path/to/id_rsa
+    SSH_AGENT_SOCKET=/path/to/socket
+    SSH_KNOWN_HOSTS=/path/to/known_hosts
+    
+    # Auto-Skill Configuration
+    AUTO_SKILL_ENABLED=true
+    AUTO_SKILL_CONTRIBUTE=true
+    AUTO_SKILL_MODEL=gpt-4o-mini
+
+  Required: OPENAI_API_KEY (unless using LLM_ENDPOINT_URL with no auth)
+  Optional: All other settings have sensible defaults
+
+EXAMPLES:
+  Interactive mode (default):
+    $0
+
+  Non-interactive with config file:
+    $0 --config install-skill-router.conf
+    $0 -c /path/to/config
+
+  Custom endpoint (no-key mode like ollama):
+    $0 -c install-skill-router.conf
+    # In config file:
+    # LLM_ENDPOINT_URL=http://localhost:11434/v1
+    # LLM_ENDPOINT_API_KEY=dummy  # Required but not validated
+
+EOF
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CLI argument parsing
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Parse CLI arguments
+MODE="interactive"  # Default to interactive
+CONFIG_FILE=""
+show_help_flag=false
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -h|--help)
+      show_help_flag=true
+      shift
+      ;;
+    -i|--interactive)
+      MODE="interactive"
+      shift
+      ;;
+    -c|--config)
+      if [[ $# -lt 2 || "$2" == --* ]]; then
+        echo "Error: --config requires a file path"
+        exit 1
+      fi
+      CONFIG_FILE="$2"
+      MODE="noninteractive"
+      shift 2
+      ;;
+    -n|--no-interactive)
+      # Make it a toggle flag - defaults to "install-skill-router.conf" if no argument
+      if [[ $# -ge 2 && "$2" != --* ]]; then
+        CONFIG_FILE="$2"
+      else
+        CONFIG_FILE="install-skill-router.conf"
+      fi
+      MODE="noninteractive"
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      show_usage
+      exit 1
+      ;;
+  esac
+done
+
+# Show help if requested
+if [[ "$show_help_flag" == "true" ]]; then
+  show_usage
+  exit 0
+fi
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Validation functions
@@ -96,6 +223,91 @@ validate_file_exists() {
   return 0
 }
 
+validate_url() {
+  local url="$1"
+  local name="$2"
+  
+  # Check if URL starts with http:// or https://
+  if [[ ! "$url" =~ ^https?:// ]]; then
+    err "$name must start with http:// or https://"
+    return 1
+  fi
+  
+  # Basic length validation
+  if [[ ${#url} -lt 10 ]]; then
+    err "$name appears too short (are you sure it's valid?)"
+    return 1
+  fi
+  
+  ok "$name format looks valid"
+  return 0
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Config file parser for non-interactive mode
+# ─────────────────────────────────────────────────────────────────────────────
+
+parse_config_file() {
+  local config_file="$1"
+  
+  if [[ ! -f "$config_file" ]]; then
+    err "Config file not found: $config_file"
+    return 1
+  fi
+  
+  info "Reading configuration from: $config_file"
+  
+  # Track known variables for validation
+  declare -A known_vars=()
+  for var in OPENAI_API_KEY PORT LLM_PROVIDER LLM_MODEL EMBEDDING_MODEL ANTHROPIC_API_KEY LLAMACPP_URL EMBEDDING_PROVIDER GITHUB_ENABLED GITHUB_TOKEN SSH_KEY_PATH SSH_AGENT_SOCKET SSH_KNOWN_HOSTS AUTO_SKILL_ENABLED AUTO_SKILL_CONTRIBUTE AUTO_SKILL_MODEL LLM_ENDPOINT_URL LLM_ENDPOINT_API_KEY; do
+    known_vars[$var]=1
+  done
+  
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    # Skip empty lines and comments
+    [[ -z "$line" ]] && continue
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    
+    # Skip lines without = sign
+    [[ "$line" != *"="* ]] && continue
+    
+    # Extract key and value
+    local key="${line%%=*}"
+    local value="${line#*=}"
+    
+    # Trim whitespace from key
+    key="$(echo "$key" | xargs)"
+    # Preserve quoted values, only trim unquoted whitespace
+    if [[ "$value" =~ ^\".*\"$ ]] || [[ "$value" =~ ^\'.*\'$ ]]; then
+      # Quoted value - preserve content but trim outer quotes if they exist
+      value="${value%\"}"
+      value="${value#\"}"
+      value="${value%\'}"
+      value="${value#\'}"
+    else
+      # Unquoted value - trim whitespace
+      value="$(echo "$value" | xargs)"
+    fi
+    
+    # Skip if key is empty
+    [[ -z "$key" ]] && continue
+    
+    # Warn about unknown variables
+    if [[ -z "${known_vars[$key]:-}" ]]; then
+      warn "Unknown configuration variable: $key"
+    fi
+    
+    # Set the variable (only if it exists in our global vars)
+    if declare -p "$key" &>/dev/null; then
+      eval "$key=\"\$value\""
+      info "  Loaded: $key"
+    fi
+  done < "$config_file"
+  
+  ok "Configuration loaded successfully"
+  return 0
+}
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Model fetching functions for interactive selection
 # ─────────────────────────────────────────────────────────────────────────────
@@ -107,15 +319,11 @@ get_openai_models() {
     return 1
   fi
   
-  local response http_code header_file
-  # Use --config to pass auth header from stdin to avoid API key exposure in process list
+  local response http_code
+  # Use -H header directly to avoid API key exposure in temp files
   # Add timeout flags to prevent hanging
-  # Create header file in temp to avoid CLI exposure
-  header_file=$(mktemp)
-  trap "rm -f '$header_file'" EXIT
-  echo 'header = "Authorization: Bearer '"$api_key"'"' > "$header_file"
   http_code=$(curl -s -f --connect-timeout 10 --max-time 60 -X GET \
-    --config "$header_file" \
+    -H "Authorization: Bearer $api_key" \
     "https://api.openai.com/v1/models" \
     -w "\n%{http_code}" 2>/dev/null) || return 1
   # Zero out API key after use
@@ -153,15 +361,11 @@ get_anthropic_models() {
     return 1
   fi
   
-  local response http_code header_file
-  # Use --config to pass auth header from stdin to avoid API key exposure in process list
+  local response http_code
+  # Use -H header directly to avoid API key exposure in temp files
   # Add timeout flags to prevent hanging
-  # Create header file in temp to avoid CLI exposure
-  header_file=$(mktemp)
-  trap "rm -f '$header_file'" EXIT
-  echo 'header = "x-api-key: '"$api_key"'"' > "$header_file"
   http_code=$(curl -s -f --connect-timeout 10 --max-time 60 -X GET \
-    --config "$header_file" \
+    -H "x-api-key: $api_key" \
     -H "anthropic-version: 2023-06-01" \
     "https://api.anthropic.com/v1/models" \
     -w "\n%{http_code}" 2>/dev/null) || return 1
@@ -1539,98 +1743,144 @@ UNIT
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Main interactive workflow
+# Mode selection (Interactive vs Non-interactive)
 # ─────────────────────────────────────────────────────────────────────────────
 
-show_intro
-
-# Default values for interactive mode
-OPENAI_API_KEY="${OPENAI_API_KEY:-}"
-PORT="${PORT:-3000}"
-LLM_PROVIDER="${LLM_PROVIDER:-openai}"
-LLM_MODEL="${LLM_MODEL:-}"
-EMBEDDING_MODEL="${EMBEDDING_MODEL:-}"
-ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"
-LLAMACPP_URL="${LLAMACPP_URL:-http://host.docker.internal:8080}"
-EMBEDDING_PROVIDER="${EMBEDDING_PROVIDER:-openai}"
-GITHUB_ENABLED="${GITHUB_ENABLED:-true}"
-GITHUB_TOKEN="${GITHUB_TOKEN:-}"
-SSH_KEY_PATH="${SSH_KEY_PATH:-}"
-SSH_AGENT_SOCKET="${SSH_AGENT_SOCKET:-}"
-SSH_KNOWN_HOSTS="${SSH_KNOWN_HOSTS:-}"
-AUTO_SKILL_ENABLED="${AUTO_SKILL_ENABLED:-true}"
-AUTO_SKILL_CONTRIBUTE="${AUTO_SKILL_CONTRIBUTE:-true}"
-AUTO_SKILL_MODEL="${AUTO_SKILL_MODEL:-gpt-4o-mini}"
-
-# Interactive configuration
-configure_required_api
-configure_provider_selection
-configure_llm_model
-configure_embedding_provider
-configure_embedding_model
-configure_anthropic_key
-configure_llamacpp_url
-configure_networking
-configure_github
-configure_github_token
-configure_ssh
-configure_auto_skill
-
-# Final confirmation loop
-while true; do
-  if get_final_confirmation; then
-    break
+# Mode selection
+if [[ "$MODE" == "noninteractive" ]]; then
+  # Non-interactive mode
+  print_header
+  echo -e "${BOLD}Non-Interactive Installation Mode${RESET}"
+  echo ""
+  
+  if [[ -z "$CONFIG_FILE" ]]; then
+    err "Config file path required for non-interactive mode"
+    show_usage
+    exit 1
   fi
   
-  # User wants to go back - which section to modify?
-  echo ""
-  echo "Which setting would you like to modify?"
-  echo "  1. OpenAI API Key"
-  echo "  2. LLM Provider"
-  echo "  3. LLM Model"
-  echo "  4. Embedding Provider"
-  echo "  5. Embedding Model"
-  echo "  6. Anthropic API Key"
-  echo "  7. llamacpp URL"
-  echo "  8. Port"
-  echo "  9. GitHub Integration"
-  echo "  10. GitHub Token"
-  echo "  11. SSH Configuration"
-  echo "  12. Auto-Skill Settings"
-  echo ""
+  if [[ ! -f "$CONFIG_FILE" ]]; then
+    err "Config file not found: $CONFIG_FILE"
+    exit 1
+  fi
   
-  prompt "Enter your choice (1-12) or 'q' to quit:"
-  read -r choice
+  if ! parse_config_file "$CONFIG_FILE"; then
+    err "Failed to parse config file"
+    exit 1
+  fi
   
-  case "$choice" in
-    1) configure_required_api ;;
-    2) configure_provider_selection ;;
-    3) configure_llm_model ;;
-    4) configure_embedding_provider ;;
-    5) configure_embedding_model ;;
-    6) configure_anthropic_key ;;
-    7) configure_llamacpp_url ;;
-    8) configure_networking ;;
-    9) configure_github ;;
-    10) configure_github_token ;;
-    11) configure_ssh ;;
-    12) configure_auto_skill ;;
-    q|Q) 
-      echo "Installation cancelled."
+  # Validate required settings for non-interactive mode
+  if [[ -z "$OPENAI_API_KEY" && -z "$LLM_ENDPOINT_URL" ]]; then
+    err "OPENAI_API_KEY or LLM_ENDPOINT_URL is required in non-interactive mode"
+    echo "See: $0 --help"
+    exit 1
+  fi
+  
+  # Validate URLs if set
+  if [[ -n "${LLM_ENDPOINT_URL:-}" ]]; then
+    if ! validate_url "$LLM_ENDPOINT_URL" "LLM_ENDPOINT_URL"; then
+      echo "See: $0 --help"
       exit 1
-      ;;
-    *) 
-      err "Invalid choice. Please try again."
-      sleep 1
-      ;;
-  esac
-done
-
-# Run the actual installation
-print_header
-echo -e "${BOLD}Starting installation...${RESET}"
-echo ""
-
-# For now, use default values for integration flags
-# These would normally come from command-line arguments
-run_installation "false" "false" "" "" "false" ""
+    fi
+  fi
+  
+  # Skip interactive configuration, go straight to installation
+  print_header
+  echo -e "${BOLD}Starting installation...${RESET}"
+  echo ""
+  run_installation "false" "false" "" "" "false" ""
+else
+  # Interactive mode (existing behavior)
+  show_intro
+  
+  # Default values for interactive mode
+  OPENAI_API_KEY="${OPENAI_API_KEY:-}"
+  PORT="${PORT:-3000}"
+  LLM_PROVIDER="${LLM_PROVIDER:-openai}"
+  LLM_MODEL="${LLM_MODEL:-}"
+  EMBEDDING_MODEL="${EMBEDDING_MODEL:-}"
+  ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"
+  LLAMACPP_URL="${LLAMACPP_URL:-http://host.docker.internal:8080}"
+  EMBEDDING_PROVIDER="${EMBEDDING_PROVIDER:-openai}"
+  GITHUB_ENABLED="${GITHUB_ENABLED:-true}"
+  GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+  SSH_KEY_PATH="${SSH_KEY_PATH:-}"
+  SSH_AGENT_SOCKET="${SSH_AGENT_SOCKET:-}"
+  SSH_KNOWN_HOSTS="${SSH_KNOWN_HOSTS:-}"
+  AUTO_SKILL_ENABLED="${AUTO_SKILL_ENABLED:-true}"
+  AUTO_SKILL_CONTRIBUTE="${AUTO_SKILL_CONTRIBUTE:-true}"
+  AUTO_SKILL_MODEL="${AUTO_SKILL_MODEL:-gpt-4o-mini}"
+  
+  # Interactive configuration
+  configure_required_api
+  configure_provider_selection
+  configure_llm_model
+  configure_embedding_provider
+  configure_embedding_model
+  configure_anthropic_key
+  configure_llamacpp_url
+  configure_networking
+  configure_github
+  configure_github_token
+  configure_ssh
+  configure_auto_skill
+  
+  # Final confirmation loop
+  while true; do
+    if get_final_confirmation; then
+      break
+    fi
+    
+    # User wants to go back - which section to modify?
+    echo ""
+    echo "Which setting would you like to modify?"
+    echo "  1. OpenAI API Key"
+    echo "  2. LLM Provider"
+    echo "  3. LLM Model"
+    echo "  4. Embedding Provider"
+    echo "  5. Embedding Model"
+    echo "  6. Anthropic API Key"
+    echo "  7. llamacpp URL"
+    echo "  8. Port"
+    echo "  9. GitHub Integration"
+    echo "  10. GitHub Token"
+    echo "  11. SSH Configuration"
+    echo "  12. Auto-Skill Settings"
+    echo ""
+    
+    prompt "Enter your choice (1-12) or 'q' to quit:"
+    read -r choice
+    
+    case "$choice" in
+      1) configure_required_api ;;
+      2) configure_provider_selection ;;
+      3) configure_llm_model ;;
+      4) configure_embedding_provider ;;
+      5) configure_embedding_model ;;
+      6) configure_anthropic_key ;;
+      7) configure_llamacpp_url ;;
+      8) configure_networking ;;
+      9) configure_github ;;
+      10) configure_github_token ;;
+      11) configure_ssh ;;
+      12) configure_auto_skill ;;
+      q|Q) 
+        echo "Installation cancelled."
+        exit 1
+        ;;
+      *) 
+        err "Invalid choice. Please try again."
+        sleep 1
+        ;;
+    esac
+  done
+  
+  # Run the actual installation
+  print_header
+  echo -e "${BOLD}Starting installation...${RESET}"
+  echo ""
+  
+  # For now, use default values for integration flags
+  # These would normally come from command-line arguments
+  run_installation "false" "false" "" "" "false" ""
+fi

@@ -1,0 +1,117 @@
+# Skill Router Installation Configuration File
+#
+# This file contains configuration settings for non-interactive installation.
+# Copy this file to install-skill-router.conf and edit the values as needed.
+#
+# To use: ./install-skill-router.sh --config install-skill-router.conf
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Required API Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Your OpenAI API key for embeddings and LLM access
+# Required if not using LLM_ENDPOINT_URL
+OPENAI_API_KEY=sk-...
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LLM Provider Selection
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Choose your preferred LLM provider
+# Options: openai, anthropic, llamacpp (for local)
+LLM_PROVIDER=openai
+
+# Model ID (defaults to provider default if not specified)
+# For OpenAI: gpt-4o, gpt-4o-mini, gpt-4-turbo, etc.
+# For Anthropic: claude-3-5-sonnet, claude-3-5-haiku, etc.
+# For llamacpp: Leave empty (uses local endpoint)
+LLM_MODEL=gpt-4o-mini
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Optional: Custom LLM Endpoint (LiteLLM, ollama, vLLM, etc.)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# If you want to use a custom LLM endpoint (like LiteLLM or ollama):
+# Set LLM_ENDPOINT_URL to your endpoint base URL
+# LLM_ENDPOINT_API_KEY is required but not validated (use 'dummy' for no-key endpoints like ollama)
+
+# Example for ollama (no authentication):
+# LLM_ENDPOINT_URL=http://localhost:11434/v1
+# LLM_ENDPOINT_API_KEY=dummy
+
+# Example for LiteLLM:
+# LLM_ENDPOINT_URL=https://api.litellm.com/v1
+# LLM_ENDPOINT_API_KEY=sk-...
+
+LLM_ENDPOINT_URL=
+LLM_ENDPOINT_API_KEY=
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Embedding Provider Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Choose your embedding provider
+# Options: openai, llamacpp (for local embeddings)
+EMBEDDING_PROVIDER=openai
+
+# Embedding model for skill search and routing
+# For OpenAI: text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002
+# For llamacpp: Leave empty (uses local endpoint)
+EMBEDDING_MODEL=text-embedding-3-small
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Anthropic API Key (Required if using anthropic provider)
+# ─────────────────────────────────────────────────────────────────────────────
+
+ANTHROPIC_API_KEY=
+
+# ─────────────────────────────────────────────────────────────────────────────
+# llamacpp URL (Required if using llamacpp provider)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# URL for your local llama.cpp server
+LLAMACPP_URL=http://host.docker.internal:8080
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Networking Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Host port to bind the container to
+PORT=3000
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GitHub Integration (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable remote skill loading from GitHub
+GITHUB_ENABLED=true
+
+# GitHub personal access token (optional, for higher rate limits)
+# Create at: https://github.com/settings/tokens
+GITHUB_TOKEN=
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SSH Configuration (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Path to SSH private key for git authentication (if accessing private repos)
+SSH_KEY_PATH=
+
+# Path to SSH agent socket for agent forwarding
+SSH_AGENT_SOCKET=
+
+# Path to known_hosts file (optional)
+SSH_KNOWN_HOSTS=
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Auto-Skill Generation (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable/disable automatic skill generation
+AUTO_SKILL_ENABLED=true
+
+# Enable/disable contribution to git (creates pull requests)
+AUTO_SKILL_CONTRIBUTE=true
+
+# LLM model for skill generation
+AUTO_SKILL_MODEL=gpt-4o-mini
