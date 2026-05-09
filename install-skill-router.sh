@@ -478,25 +478,25 @@ select_model_interactive() {
     echo ""
     
     # Get user selection
-    prompt "Select a model by number (or 0 to enter custom): "
-    read -r choice
-    
-    if [[ "$choice" =~ ^[0-9]+$ ]]; then
-      if [[ "$choice" -eq 0 ]]; then
-        # Custom model entry
-        prompt "Enter custom ${model_type} model name (default: $default_model): "
-        read -r custom_model
-        echo "${custom_model:-$default_model}"
-        return 0
-      elif [[ "$choice" -ge 1 && "$choice" -le ${#models[@]} ]]; then
-        selected_model="${models[$((choice-1))]}"
-        
-        # Verify selection
-        echo ""
-        echo -e "  ${CYAN}Selected:${RESET} $selected_model"
-        prompt "Confirm this selection? (Y/n)"
-        read -r response
-        response="${response:-Y}"
+     prompt "Select a model by number (or 0 to enter custom): "
+     read -r -t 0 choice || choice=""
+     
+     if [[ "$choice" =~ ^[0-9]+$ ]]; then
+       if [[ "$choice" -eq 0 ]]; then
+         # Custom model entry
+         prompt "Enter custom ${model_type} model name (default: $default_model): "
+         read -r -t 0 custom_model || custom_model=""
+         echo "${custom_model:-$default_model}"
+         return 0
+       elif [[ "$choice" -ge 1 && "$choice" -le ${#models[@]} ]]; then
+         selected_model="${models[$((choice-1))]}"
+         
+         # Verify selection
+         echo ""
+         echo -e "  ${CYAN}Selected:${RESET} $selected_model"
+         prompt "Confirm this selection? (Y/n)"
+         read -r -t 0 response || response=""
+         response="${response:-Y}"
         
         if [[ "$response" =~ ^[Yy]$ ]]; then
           echo "$selected_model"
@@ -515,8 +515,8 @@ select_model_interactive() {
   echo -e "  ${YELLOW}Ensure your API key is valid and you have internet connectivity.${RESET}"
   echo ""
   prompt "Enter ${model_type} model name (default: $default_model): "
-  read -r custom_model
-  local result="${custom_model:-$default_model}"
+   read -r -t 0 custom_model || custom_model=""
+   local result="${custom_model:-$default_model}"
   echo "$result"
   echo -e "${BLUE}[DEBUG] select_model_interactive returning: '$result'${RESET}" >&2
 }
@@ -553,7 +553,7 @@ show_intro() {
     err "Cannot read input in non-interactive mode"
     exit 1
   fi
-  read -r
+  read -r -t 0 || true
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -649,25 +649,25 @@ configure_variable() {
   fi
   echo ""
   
-  # Ask user
-  prompt "Keep current value? (Y/n)"
-  read -r response
-  response="${response:-Y}"
-  
-  if [[ "$response" =~ ^[Yy]$ ]]; then
-    # Keep current value (already set, no eval needed)
-    return 0
-  fi
-  
-  # User wants to change the value
-  if [[ -n "$default_value" && "$current_value" == "Not set" ]]; then
-    prompt "Enter new value (default: $default_value):"
-  else
-    prompt "Enter new value:"
-  fi
-  
-  read -r new_value
-  new_value="${new_value:-$default_value}"
+ # Ask user
+   prompt "Keep current value? (Y/n)"
+   read -r -t 0 response || response=""
+   response="${response:-Y}"
+   
+   if [[ "$response" =~ ^[Yy]$ ]]; then
+     # Keep current value (already set, no eval needed)
+     return 0
+   fi
+   
+   # User wants to change the value
+   if [[ -n "$default_value" && "$current_value" == "Not set" ]]; then
+     prompt "Enter new value (default: $default_value):"
+   else
+     prompt "Enter new value:"
+   fi
+   
+   read -r -t 0 new_value || new_value=""
+   new_value="${new_value:-$default_value}"
   
   # Sanitize user input to prevent shell metacharacter injection (Code Injection Prevention)
   # Similar to config parser lines 301-303
@@ -790,14 +790,14 @@ configure_llm_model() {
       # User didn't confirm, prompt to try again
       echo ""
       warn "Model selection cancelled or invalid."
-      prompt "Try again? (Y/n) "
-      if ! is_interactive; then
-        err "[DEBUG] Non-interactive mode detected in retry loop - exiting"
-        err "Cannot read input in non-interactive mode"
-        exit 1
-      fi
-      read -r retry_response
-      retry_response="${retry_response:-Y}"
+     prompt "Try again? (Y/n) "
+       if ! is_interactive; then
+         err "[DEBUG] Non-interactive mode detected in retry loop - exiting"
+         err "Cannot read input in non-interactive mode"
+         exit 1
+       fi
+       read -r -t 0 retry_response || retry_response=""
+       retry_response="${retry_response:-Y}"
       
       if [[ ! "$retry_response" =~ ^[Yy]$ ]]; then
         user_confirmed=true
@@ -881,14 +881,14 @@ configure_embedding_model() {
     else
       # User didn't confirm, prompt to try again
       echo ""
-      warn "Model selection cancelled or invalid."
-      prompt "Try again? (Y/n) "
-      if ! is_interactive; then
-        err "Cannot read input in non-interactive mode"
-        exit 1
-      fi
-      read -r retry_response
-      retry_response="${retry_response:-Y}"
+     warn "Model selection cancelled or invalid."
+       prompt "Try again? (Y/n) "
+       if ! is_interactive; then
+         err "Cannot read input in non-interactive mode"
+         exit 1
+       fi
+       read -r -t 0 retry_response || retry_response=""
+       retry_response="${retry_response:-Y}"
       
       if [[ ! "$retry_response" =~ ^[Yy]$ ]]; then
         user_confirmed=true
@@ -1112,16 +1112,16 @@ print_summary() {
 
 get_final_confirmation() {
    print_summary
-   prompt "Do you want to proceed with this configuration?"
-   echo "  (Y)es - Start installation"
-   echo "  (N)o - Go back and modify settings"
-   echo ""
-   if ! is_interactive; then
-     err "Cannot read input in non-interactive mode"
-     exit 1
-   fi
-   read -r response
-   response="${response:-Y}"
+ prompt "Do you want to proceed with this configuration?"
+    echo "  (Y)es - Start installation"
+    echo "  (N)o - Go back and modify settings"
+    echo ""
+    if ! is_interactive; then
+      err "Cannot read input in non-interactive mode"
+      exit 1
+    fi
+    read -r -t 0 response || response=""
+    response="${response:-Y}"
   
   if [[ "$response" =~ ^[Yy]$ ]]; then
     return 0
@@ -1924,6 +1924,26 @@ if [[ "$MODE" == "noninteractive" ]]; then
   print_header
   echo -e "${BOLD}Starting installation...${RESET}"
   echo ""
+  
+  # Default values for non-interactive mode (must be set before run_installation
+  # because set -euo pipefail requires all variables to be bound)
+  OPENAI_API_KEY="${OPENAI_API_KEY:-}"
+  PORT="${PORT:-3000}"
+  LLM_PROVIDER="${LLM_PROVIDER:-openai}"
+  LLM_MODEL="${LLM_MODEL:-}"
+  EMBEDDING_MODEL="${EMBEDDING_MODEL:-}"
+  ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"
+  LLAMACPP_URL="${LLAMACPP_URL:-http://host.docker.internal:8080}"
+  EMBEDDING_PROVIDER="${EMBEDDING_PROVIDER:-openai}"
+  GITHUB_ENABLED="${GITHUB_ENABLED:-true}"
+  GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+  SSH_KEY_PATH="${SSH_KEY_PATH:-}"
+  SSH_AGENT_SOCKET="${SSH_AGENT_SOCKET:-}"
+  SSH_KNOWN_HOSTS="${SSH_KNOWN_HOSTS:-}"
+  AUTO_SKILL_ENABLED="${AUTO_SKILL_ENABLED:-true}"
+  AUTO_SKILL_CONTRIBUTE="${AUTO_SKILL_CONTRIBUTE:-true}"
+  AUTO_SKILL_MODEL="${AUTO_SKILL_MODEL:-gpt-4o-mini}"
+  
   run_installation "false" "false" "" "" "false" ""
 else
   # Interactive mode (existing behavior)
@@ -1984,12 +2004,12 @@ else
     echo "  12. Auto-Skill Settings"
      echo ""
      
-     prompt "Enter your choice (1-12) or 'q' to quit:"
-     if ! is_interactive; then
-       err "Cannot read input in non-interactive mode"
-       exit 1
-     fi
-     read -r choice
+    prompt "Enter your choice (1-12) or 'q' to quit:"
+      if ! is_interactive; then
+        err "Cannot read input in non-interactive mode"
+        exit 1
+      fi
+      read -r -t 0 choice || choice=""
      
      case "$choice" in
       1) configure_required_api ;;
