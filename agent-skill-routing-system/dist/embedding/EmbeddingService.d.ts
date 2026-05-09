@@ -1,5 +1,16 @@
 import { EmbeddingResponse } from '../core/types';
-export type EmbeddingProvider = 'openai' | 'llamacpp';
+export type EmbeddingProvider = 'openai' | 'llamacpp' | 'emulation';
+/**
+ * JSON schema for embedding output validation
+ */
+interface EmbeddingJsonSchema {
+    type: 'array';
+    items: {
+        type: 'number';
+    };
+    minItems: number;
+    maxItems: number;
+}
 /**
  * Configuration for the embedding service
  */
@@ -11,6 +22,9 @@ export interface EmbeddingServiceConfig {
     dimensions: number;
     cacheDirectory?: string;
     batchSize: number;
+    promptTemplate?: string;
+    maxRetries?: number;
+    jsonSchema?: EmbeddingJsonSchema;
 }
 /**
  * Embedding service supporting OpenAI and llama.cpp providers
@@ -38,8 +52,8 @@ export declare class EmbeddingService {
      */
     private processBatch;
     /**
-     * Generate embedding from API (OpenAI or llama.cpp)
-     */
+       * Generate embedding from API (OpenAI or llama.cpp)
+       */
     private generateEmbeddingFromAPI;
     /**
       * Generate embeddings from API in batch (OpenAI or llama.cpp)
@@ -49,6 +63,36 @@ export declare class EmbeddingService {
      * Generate a deterministic placeholder embedding for testing
      */
     private generatePlaceholderEmbedding;
+    /**
+     * Generate embedding from LLM via prompt emulation
+     * Uses LLM API to generate embeddings through text prompts
+     */
+    private generateEmbeddingFromEmulation;
+    /**
+      * Build the prompt for LLM-based embedding generation
+      */
+    private buildEmulationPrompt;
+    /**
+     * Call LLM API and extract embedding from response
+     */
+    private callLlmForEmbedding;
+    /**
+       * Parse JSON embedding from LLM response with recovery
+       * Parse-Don't-Validate: parse at boundary (JSON string), trust parsed data internally
+       */
+    private parseJsonEmbedding;
+    /**
+     * Extract JSON array from text using regex pattern matching
+     */
+    private extractJsonArray;
+    /**
+     * Validate that array contains only numbers and has correct dimensions
+     */
+    private isValidNumberArray;
+    /**
+     * Sleep for specified milliseconds
+     */
+    private sleep;
     /**
       * Save embedding to cache file
       */
@@ -72,4 +116,5 @@ export declare class EmbeddingService {
      */
     private hashString;
 }
+export {};
 //# sourceMappingURL=EmbeddingService.d.ts.map
