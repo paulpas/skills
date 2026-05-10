@@ -9,7 +9,6 @@ on:
     paths:
       - 'skills/**/SKILL.md'
       - 'scripts/**/*.py'
-      - 'agent-skill-routing-system/scripts/**/*.py'
       - '.github/workflows/skill-relationships.yml'
   pull_request:
     branches:
@@ -160,11 +159,11 @@ jobs:
         run: |
           echo "## 📊 Skill Relationship Updates" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "### Files Modified:" >> $GITHUB_STEP_SUMMARY
           git diff --name-only >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ -f "SKILL_RELATIONSHIPS_ANALYSIS.md" ]; then
             echo "### Relationship Analysis:" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
@@ -180,9 +179,9 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           git add skills-index.json README.md SKILL_RELATIONSHIPS_ANALYSIS.md TRIGGER_ENHANCEMENTS.md 2>/dev/null || true
-          
+
           if ! git diff --cached --quiet; then
             git commit -m "chore: update skill relationships and indexes" -m "- Regenerated skills-index.json" -m "- Updated README with latest skill catalog" -m "- Recalculated skill relationships and bidirectionality" -m "- Analyzed and fixed skill relationship gaps" -m "[skip ci]" || echo "No changes to commit"
             git push origin HEAD:${{ github.ref }} || echo "Push failed (may already be updated)"

@@ -13,10 +13,10 @@
   "scripts": {
     "lint": "eslint 'src/**/*.ts' --fix",
     "format:check": "prettier --check 'src/**/*.{ts,tsx,js,jsx,json,md}'",
-    "test:unit": "jest --selectTests --testPathPattern='src/**/*.test.ts'",
-    "test:integration": "jest --selectTests --testPathPattern='src/**/*.integration.test.ts'",
+    "test:unit": "jest --testPathPattern='src/**/*.test.ts'",
+    "test:integration": "jest --testPathPattern='src/**/*.integration.test.ts'",
     "test:coverage": "jest --coverage",
     "typecheck": "tsc --noEmit",
-    "build": "tsc --project tsconfig.json"
+    "build": "tsc --project agent-skill-routing-system/tsconfig.json"
   }
 }
