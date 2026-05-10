@@ -41,7 +41,11 @@ declare \
   AUTO_SKILL_CONTRIBUTE \
   AUTO_SKILL_MODEL \
   LLM_ENDPOINT_URL \
-  LLM_ENDPOINT_API_KEY
+  LLM_ENDPOINT_API_KEY \
+  OPENAI_BASE_URL \
+  GITHUB_RAW_BASE_URL \
+  GITHUB_SKILLS_REPO \
+  SYNC_INTERVAL
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Helper function to check if stdin is a terminal (interactive mode)
@@ -270,7 +274,7 @@ parse_config_file() {
   
   # Track known variables for validation
   declare -A known_vars=()
-  for var in OPENAI_API_KEY PORT LLM_PROVIDER LLM_MODEL EMBEDDING_MODEL ANTHROPIC_API_KEY LLAMACPP_URL EMBEDDING_PROVIDER GITHUB_ENABLED GITHUB_TOKEN SSH_KEY_PATH SSH_AGENT_SOCKET SSH_KNOWN_HOSTS AUTO_SKILL_ENABLED AUTO_SKILL_CONTRIBUTE AUTO_SKILL_MODEL LLM_ENDPOINT_URL LLM_ENDPOINT_API_KEY; do
+  for var in OPENAI_API_KEY PORT LLM_PROVIDER LLM_MODEL EMBEDDING_MODEL ANTHROPIC_API_KEY LLAMACPP_URL EMBEDDING_PROVIDER GITHUB_ENABLED GITHUB_TOKEN SSH_KEY_PATH SSH_AGENT_SOCKET SSH_KNOWN_HOSTS AUTO_SKILL_ENABLED AUTO_SKILL_CONTRIBUTE AUTO_SKILL_MODEL LLM_ENDPOINT_URL LLM_ENDPOINT_API_KEY OPENAI_BASE_URL GITHUB_RAW_BASE_URL GITHUB_SKILLS_REPO SYNC_INTERVAL; do
     known_vars[$var]=1
   done
   
@@ -308,10 +312,10 @@ parse_config_file() {
       warn "Unknown configuration variable: $key"
     fi
     
-    # Sanitize value to remove shell metacharacters (Code Injection Prevention)
-    value="${value//\$/\\\$}"
-    value="${value//\`/\\\\\`}"
-    value="${value//\"/\\\\\"}"
+    # NOTE: Do not mangle the value with backslash-escapes here.
+    # Values flow only into `declare -g "$key=$value"` (no shell expansion)
+    # and into a `docker run -e KEY=VAL` array (also no shell expansion).
+    # Escaping $/`/" here corrupts API keys and base URLs.
     
     # Set the variable (only if it exists in our global vars)
     # Use -g to ensure we set global variables, not local ones
@@ -669,11 +673,9 @@ configure_variable() {
    read -r -t 0 new_value || new_value=""
    new_value="${new_value:-$default_value}"
   
-  # Sanitize user input to prevent shell metacharacter injection (Code Injection Prevention)
-  # Similar to config parser lines 301-303
-  new_value="${new_value//\$/\\\$}"
-  new_value="${new_value//\`/\\\\\`}"
-  new_value="${new_value//\"/\\\\\"}"
+  # NOTE: Do not escape $/`/" here. Values flow into `declare -g` (no expansion)
+  # and into the `docker run -e KEY=VAL` array (no shell expansion). Escaping
+  # corrupts API keys and base URLs.
   
   # Validate if validation function provided
   if [[ -n "$validation_func" ]]; then
@@ -1375,26 +1377,36 @@ run_installation() {
      SSH_VOLUMES="$SSH_VOLUMES -v $(realpath "$SSH_KNOWN_HOSTS"):/home/appuser/.ssh/known_hosts:ro"
    fi
   
- # Build environment variables (Quote all values)
-   ENV_VARS="-e OPENAI_API_KEY=\"${OPENAI_API_KEY:-}\""
-   ENV_VARS="$ENV_VARS -e LLM_PROVIDER=\"${LLM_PROVIDER:-}\""
-   ENV_VARS="$ENV_VARS ${LLM_MODEL:+-e LLM_MODEL=\"${LLM_MODEL:-}\"}"
-   ENV_VARS="$ENV_VARS ${EMBEDDING_MODEL:+-e EMBEDDING_MODEL=\"${EMBEDDING_MODEL:-}\"}"
-   ENV_VARS="$ENV_VARS ${ANTHROPIC_API_KEY:+-e ANTHROPIC_API_KEY=\"${ANTHROPIC_API_KEY:-}\"}"
-   ENV_VARS="$ENV_VARS ${LLAMACPP_URL:+-e LLAMACPP_URL=\"${LLAMACPP_URL:-}\"}"
-   ENV_VARS="$ENV_VARS -e EMBEDDING_PROVIDER=\"${EMBEDDING_PROVIDER:-}\""
-   ENV_VARS="$ENV_VARS -e GITHUB_SKILLS_ENABLED=\"${GITHUB_ENABLED:-}\""
-   ENV_VARS="$ENV_VARS -e SKILL_SYNC_INTERVAL=\"${SYNC_INTERVAL:-3600}\""
-   ENV_VARS="$ENV_VARS ${GITHUB_TOKEN:+-e GITHUB_TOKEN=\"${GITHUB_TOKEN:-}\"}"
+  # Build environment variables as an array (each value passes through cleanly,
+  # no literal quote characters, no shell escaping artifacts)
+  ENV_ARGS=()
+  ENV_ARGS+=(-e "OPENAI_API_KEY=${OPENAI_API_KEY:-}")
+  # OPENAI_BASE_URL takes precedence; fall back to LLM_ENDPOINT_URL for backward compat
+  if [[ -n "${OPENAI_BASE_URL:-}" ]]; then
+    ENV_ARGS+=(-e "OPENAI_BASE_URL=$OPENAI_BASE_URL")
+  elif [[ -n "${LLM_ENDPOINT_URL:-}" ]]; then
+    ENV_ARGS+=(-e "OPENAI_BASE_URL=$LLM_ENDPOINT_URL")
+  fi
+  ENV_ARGS+=(-e "LLM_PROVIDER=${LLM_PROVIDER:-openai}")
+  [[ -n "${LLM_MODEL:-}" ]]            && ENV_ARGS+=(-e "LLM_MODEL=$LLM_MODEL")
+  [[ -n "${EMBEDDING_MODEL:-}" ]]      && ENV_ARGS+=(-e "EMBEDDING_MODEL=$EMBEDDING_MODEL")
+  [[ -n "${ANTHROPIC_API_KEY:-}" ]]    && ENV_ARGS+=(-e "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY")
+  [[ -n "${LLAMACPP_URL:-}" ]]         && ENV_ARGS+=(-e "LLAMACPP_URL=$LLAMACPP_URL")
+  ENV_ARGS+=(-e "EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-openai}")
+  ENV_ARGS+=(-e "GITHUB_SKILLS_ENABLED=${GITHUB_ENABLED:-true}")
+  ENV_ARGS+=(-e "SKILL_SYNC_INTERVAL=${SYNC_INTERVAL:-3600}")
+  [[ -n "${GITHUB_TOKEN:-}" ]]         && ENV_ARGS+=(-e "GITHUB_TOKEN=$GITHUB_TOKEN")
+  [[ -n "${GITHUB_RAW_BASE_URL:-}" ]]  && ENV_ARGS+=(-e "GITHUB_RAW_BASE_URL=$GITHUB_RAW_BASE_URL")
+  [[ -n "${GITHUB_SKILLS_REPO:-}" ]]   && ENV_ARGS+=(-e "GITHUB_SKILLS_REPO=$GITHUB_SKILLS_REPO")
   
   if [[ -n "$SSH_AGENT_SOCKET" ]]; then
-    ENV_VARS="$ENV_VARS -e SSH_AUTH_SOCK=/tmp/ssh-agent.sock"
+    ENV_ARGS+=(-e "SSH_AUTH_SOCK=/tmp/ssh-agent.sock")
   fi
   
-  ENV_VARS="$ENV_VARS -e AUTO_SKILL_ENABLED=${AUTO_SKILL_ENABLED}"
-  ENV_VARS="$ENV_VARS -e AUTO_SKILL_CONTRIBUTE=${AUTO_SKILL_CONTRIBUTE}"
-  ENV_VARS="$ENV_VARS -e AUTO_SKILL_MODEL=${AUTO_SKILL_MODEL}"
-  ENV_VARS="$ENV_VARS -e SKILL_CACHE_DIR=${SKILL_CACHE_DIR:-/cache/skills}"
+  ENV_ARGS+=(-e "AUTO_SKILL_ENABLED=${AUTO_SKILL_ENABLED}")
+  ENV_ARGS+=(-e "AUTO_SKILL_CONTRIBUTE=${AUTO_SKILL_CONTRIBUTE}")
+  ENV_ARGS+=(-e "AUTO_SKILL_MODEL=${AUTO_SKILL_MODEL}")
+  ENV_ARGS+=(-e "SKILL_CACHE_DIR=${SKILL_CACHE_DIR:-/cache/skills}")
   
   # Validate skills directory
   if [[ ! -d "${ROUTER_DIR%/agent-skill-routing-system}/skills" ]]; then
@@ -1415,7 +1427,7 @@ run_installation() {
     --name skill-router \
     --restart unless-stopped \
     -p "${PORT}:3000" \
-    $ENV_VARS \
+    "${ENV_ARGS[@]}" \
     "${VOLUMES[@]}" \
     skill-router:latest
   
@@ -1906,8 +1918,8 @@ if [[ "$MODE" == "noninteractive" ]]; then
   fi
   
   # Validate required settings for non-interactive mode
-  if [[ -z "$OPENAI_API_KEY" && -z "$LLM_ENDPOINT_URL" ]]; then
-    err "OPENAI_API_KEY or LLM_ENDPOINT_URL is required in non-interactive mode"
+  if [[ -z "$OPENAI_API_KEY" && -z "$LLM_ENDPOINT_URL" && -z "${OPENAI_BASE_URL:-}" ]]; then
+    err "OPENAI_API_KEY, OPENAI_BASE_URL, or LLM_ENDPOINT_URL is required in non-interactive mode"
     echo "See: $0 --help"
     exit 1
   fi
@@ -1928,6 +1940,7 @@ if [[ "$MODE" == "noninteractive" ]]; then
   # Default values for non-interactive mode (must be set before run_installation
   # because set -euo pipefail requires all variables to be bound)
   OPENAI_API_KEY="${OPENAI_API_KEY:-}"
+  OPENAI_BASE_URL="${OPENAI_BASE_URL:-${LLM_ENDPOINT_URL:-}}"
   PORT="${PORT:-3000}"
   LLM_PROVIDER="${LLM_PROVIDER:-openai}"
   LLM_MODEL="${LLM_MODEL:-}"
@@ -1937,6 +1950,9 @@ if [[ "$MODE" == "noninteractive" ]]; then
   EMBEDDING_PROVIDER="${EMBEDDING_PROVIDER:-openai}"
   GITHUB_ENABLED="${GITHUB_ENABLED:-true}"
   GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+  GITHUB_RAW_BASE_URL="${GITHUB_RAW_BASE_URL:-https://raw.githubusercontent.com/paulpas/skills/main}"
+  GITHUB_SKILLS_REPO="${GITHUB_SKILLS_REPO:-https://github.com/paulpas/skills}"
+  SYNC_INTERVAL="${SYNC_INTERVAL:-3600}"
   SSH_KEY_PATH="${SSH_KEY_PATH:-}"
   SSH_AGENT_SOCKET="${SSH_AGENT_SOCKET:-}"
   SSH_KNOWN_HOSTS="${SSH_KNOWN_HOSTS:-}"
@@ -1951,6 +1967,7 @@ else
   
   # Default values for interactive mode
   OPENAI_API_KEY="${OPENAI_API_KEY:-}"
+  OPENAI_BASE_URL="${OPENAI_BASE_URL:-${LLM_ENDPOINT_URL:-}}"
   PORT="${PORT:-3000}"
   LLM_PROVIDER="${LLM_PROVIDER:-openai}"
   LLM_MODEL="${LLM_MODEL:-}"
@@ -1960,6 +1977,9 @@ else
   EMBEDDING_PROVIDER="${EMBEDDING_PROVIDER:-openai}"
   GITHUB_ENABLED="${GITHUB_ENABLED:-true}"
   GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+  GITHUB_RAW_BASE_URL="${GITHUB_RAW_BASE_URL:-https://raw.githubusercontent.com/paulpas/skills/main}"
+  GITHUB_SKILLS_REPO="${GITHUB_SKILLS_REPO:-https://github.com/paulpas/skills}"
+  SYNC_INTERVAL="${SYNC_INTERVAL:-3600}"
   SSH_KEY_PATH="${SSH_KEY_PATH:-}"
   SSH_AGENT_SOCKET="${SSH_AGENT_SOCKET:-}"
   SSH_KNOWN_HOSTS="${SSH_KNOWN_HOSTS:-}"

@@ -5,6 +5,15 @@ import { Logger } from '../observability/Logger';
 
 export type LLMProvider = 'openai' | 'anthropic' | 'llamacpp';
 
+/**
+ * Resolve the OpenAI-compatible base URL.
+ * Honors OPENAI_BASE_URL / OPENAI_API_BASE for LiteLLM, ollama, vLLM, etc.
+ */
+function resolveOpenAIBase(): string {
+  const raw = process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE || 'https://api.openai.com';
+  return raw.replace(/\/v1\/?$/, '').replace(/\/+$/, '');
+}
+
 export interface LLMRankerConfig {
   provider?: LLMProvider;
   /** OpenAI API key (required for openai provider; also used for embeddings) */
@@ -177,7 +186,7 @@ Rules:
       switch (this.config.provider) {
         case 'anthropic': return await this.callAnthropic(prompt);
         case 'llamacpp':  return await this.callOpenAICompatible(prompt, this.config.llamacppBaseUrl);
-        default:          return await this.callOpenAICompatible(prompt, 'https://api.openai.com');
+        default:          return await this.callOpenAICompatible(prompt, resolveOpenAIBase());
       }
     } catch (error) {
       this.logger.error('LLM call failed, using fallback ranking', {

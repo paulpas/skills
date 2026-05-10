@@ -8,6 +8,16 @@ import { Logger } from '../observability/Logger';
 export type EmbeddingProvider = 'openai' | 'llamacpp' | 'emulation';
 
 /**
+ * Resolve the OpenAI-compatible base URL.
+ * Honors OPENAI_BASE_URL / OPENAI_API_BASE for LiteLLM, ollama, vLLM, etc.
+ * Strips trailing slash and trailing `/v1` so callers can append `/v1/...`.
+ */
+function resolveOpenAIBase(): string {
+  const raw = process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE || 'https://api.openai.com';
+  return raw.replace(/\/v1\/?$/, '').replace(/\/+$/, '');
+}
+
+/**
  * Default prompt template for embedding emulation via LLM
  */
 const EMBEDDING_PROMPT_TEMPLATE =
@@ -242,7 +252,7 @@ export class EmbeddingService {
     try {
       const baseUrl = this.config.provider === 'llamacpp'
         ? this.config.llamacppBaseUrl
-        : 'https://api.openai.com';
+        : resolveOpenAIBase();
 
       const apiKey = this.config.provider === 'llamacpp'
         ? (this.config.apiKey || 'no-key')
@@ -298,7 +308,7 @@ export class EmbeddingService {
      try {
        const baseUrl = this.config.provider === 'llamacpp'
          ? this.config.llamacppBaseUrl
-         : 'https://api.openai.com';
+         : resolveOpenAIBase();
 
        const apiKey = this.config.provider === 'llamacpp'
          ? (this.config.apiKey || 'no-key')
@@ -463,7 +473,7 @@ export class EmbeddingService {
       // Determine LLM endpoint based on provider configuration
       const baseUrl = this.config.provider === 'llamacpp'
         ? this.config.llamacppBaseUrl
-        : 'https://api.openai.com';
+        : resolveOpenAIBase();
       
       const apiKey = this.config.provider === 'llamacpp'
         ? (this.config.apiKey || 'no-key')
