@@ -3,6 +3,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LLMRanker = void 0;
 const Logger_1 = require("../observability/Logger");
+/**
+ * Resolve the OpenAI-compatible base URL.
+ * Honors OPENAI_BASE_URL / OPENAI_API_BASE for LiteLLM, ollama, vLLM, etc.
+ */
+function resolveOpenAIBase() {
+    const raw = process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE || 'https://api.openai.com';
+    return raw.replace(/\/v1\/?$/, '').replace(/\/+$/, '');
+}
 class LLMRanker {
     config;
     logger;
@@ -142,7 +150,7 @@ Rules:
             switch (this.config.provider) {
                 case 'anthropic': return await this.callAnthropic(prompt);
                 case 'llamacpp': return await this.callOpenAICompatible(prompt, this.config.llamacppBaseUrl);
-                default: return await this.callOpenAICompatible(prompt, 'https://api.openai.com');
+                default: return await this.callOpenAICompatible(prompt, resolveOpenAIBase());
             }
         }
         catch (error) {

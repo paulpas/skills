@@ -190,25 +190,45 @@ export class SkillRegistry implements SkillRegistryWithCompression {
     if (!response.ok) {
       throw new Error(`Failed to fetch skills index: ${response.status}`);
     }
-    const entries = await response.json() as Array<{
-      name: string;
-      description: string;
-      domain: string;
-      tags: string[];
-      path: string;
-    }>;
+    // Tolerate multiple index schemas:
+    //   1. Bare array of entries (legacy)
+    //   2. { entries: [...] } (older agent-skill-router format)
+    //   3. { skills: [...] } (current paulpas/skills format)
+    const json = await response.json() as any;
+    const entries: Array<any> = Array.isArray(json)
+      ? json
+      : Array.isArray(json?.entries)
+      ? json.entries
+      : Array.isArray(json?.skills)
+      ? json.skills
+      : [];
+    if (entries.length === 0) {
+      throw new Error('Skills index has no skills/entries array');
+    }
     this.logger.info('[INDEX] Skills index loaded', { count: entries.length, durationMs: Date.now() - t0 });
 
     for (const entry of entries) {
+      // Map both old and new field names defensively
+      const tags: string[] = Array.isArray(entry.tags)
+        ? entry.tags
+        : typeof entry.triggers === 'string'
+        ? entry.triggers.split(/,\s*/).filter((t: string) => t.length > 0)
+        : Array.isArray(entry.triggers)
+        ? entry.triggers
+        : [];
+      const sourceFile: string =
+        entry.path ||
+        entry.source ||
+        (entry.domain && entry.name ? `skills/${entry.domain}/${entry.name}/SKILL.md` : '');
       const metadata: SkillMetadata = {
         name: entry.name,
         category: entry.domain,
-        description: entry.description,
-        tags: entry.tags,
+        description: entry.description || '',
+        tags,
         input_schema: { type: 'object', properties: {}, required: [] },
         output_schema: { type: 'object', properties: {}, required: [] },
       };
-      const skill: SkillDefinition = { metadata, sourceFile: entry.path, rawContent: '' };
+      const skill: SkillDefinition = { metadata, sourceFile, rawContent: '' };
       if (!this.skills.has(entry.name)) {
         this.addSkill(skill);
       }
@@ -278,7 +298,7 @@ export class SkillRegistry implements SkillRegistryWithCompression {
       }
     }
 
-    // 4. Fetch from GitHub raw
+    // 4. Fetch from GitHub raw — honor GITHUB_RAW_BASE_URL env var
     const skill = this.skills.get(name);
     // If sourceFile not set, try to infer from domain metadata
     let skillPath = skill?.sourceFile;
@@ -286,7 +306,15 @@ export class SkillRegistry implements SkillRegistryWithCompression {
       const domain = skill?.metadata.category || 'programming';
       skillPath = `skills/${domain}/${name}/SKILL.md`;
     }
-    const rawUrl = `https://raw.githubusercontent.com/paulpas/agent-skill-router/main/${skillPath}`;
+    // Defensive: strip container-absolute path prefix and leading slashes
+    const cleanPath = skillPath
+      .replace(/^\/?app\/skills\//, 'skills/')
+      .replace(/^\/+/, '');
+    const githubRawBase = (
+      process.env.GITHUB_RAW_BASE_URL ||
+      'https://raw.githubusercontent.com/paulpas/skills/main'
+    ).replace(/\/+$/, '');
+    const rawUrl = `${githubRawBase}/${cleanPath}`;
     this.logger.info('[ON-DEMAND] fetching skill from GitHub', { name, url: rawUrl });
     const t0 = Date.now();
     const response = await fetch(rawUrl);

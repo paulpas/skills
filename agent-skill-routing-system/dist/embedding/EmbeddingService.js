@@ -9,6 +9,15 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const Logger_1 = require("../observability/Logger");
 /**
+ * Resolve the OpenAI-compatible base URL.
+ * Honors OPENAI_BASE_URL / OPENAI_API_BASE for LiteLLM, ollama, vLLM, etc.
+ * Strips trailing slash and trailing `/v1` so callers can append `/v1/...`.
+ */
+function resolveOpenAIBase() {
+    const raw = process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE || 'https://api.openai.com';
+    return raw.replace(/\/v1\/?$/, '').replace(/\/+$/, '');
+}
+/**
  * Default prompt template for embedding emulation via LLM
  */
 const EMBEDDING_PROMPT_TEMPLATE = 'Represent the following text as a JSON array of 64 floats capturing its semantic meaning. ' +
@@ -181,7 +190,7 @@ class EmbeddingService {
         try {
             const baseUrl = this.config.provider === 'llamacpp'
                 ? this.config.llamacppBaseUrl
-                : 'https://api.openai.com';
+                : resolveOpenAIBase();
             const apiKey = this.config.provider === 'llamacpp'
                 ? (this.config.apiKey || 'no-key')
                 : this.config.apiKey;
@@ -230,7 +239,7 @@ class EmbeddingService {
         try {
             const baseUrl = this.config.provider === 'llamacpp'
                 ? this.config.llamacppBaseUrl
-                : 'https://api.openai.com';
+                : resolveOpenAIBase();
             const apiKey = this.config.provider === 'llamacpp'
                 ? (this.config.apiKey || 'no-key')
                 : this.config.apiKey;
@@ -375,7 +384,7 @@ class EmbeddingService {
             // Determine LLM endpoint based on provider configuration
             const baseUrl = this.config.provider === 'llamacpp'
                 ? this.config.llamacppBaseUrl
-                : 'https://api.openai.com';
+                : resolveOpenAIBase();
             const apiKey = this.config.provider === 'llamacpp'
                 ? (this.config.apiKey || 'no-key')
                 : (this.config.apiKey || process.env.OPENAI_API_KEY || '');

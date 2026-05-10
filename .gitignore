@@ -46,3 +46,6 @@ Thumbs.db
 
 # Documentation symlinks (replaced by new consolidation)
 FAQ.md
+
+# Local installer config (contains API keys)
+install-skill-router.conf
