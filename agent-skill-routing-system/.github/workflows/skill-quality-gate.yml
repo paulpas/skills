@@ -29,7 +29,7 @@ jobs:
           python3 << 'EOF'
           import os, re
           non_english = []
-          
+
           if os.path.exists('skills'):
             for domain in os.listdir('skills'):
               domain_path = f'skills/{domain}'
@@ -43,13 +43,13 @@ jobs:
                     # Chinese, Japanese, Korean, Arabic, Cyrillic
                     if re.search(r'[\u4e00-\u9fff]|[\u3040-\u309f]|[\u30a0-\u30ff]|[\u0600-\u06ff]|[\u0400-\u04ff]', content):
                       non_english.append(f'{domain}/{skill}')
-          
+
           if non_english:
             print(f'❌ FAILED: Found {len(non_english)} non-English skills')
             for skill in non_english:
               print(f'   - {skill}')
             exit(1)
-          
+
           print(f'✅ PASSED: Language check (all English)')
           EOF
 
@@ -58,7 +58,7 @@ jobs:
           python3 << 'EOF'
           import os, re
           missing = []
-          
+
           if os.path.exists('skills'):
             for domain in os.listdir('skills'):
               domain_path = f'skills/{domain}'
@@ -74,7 +74,7 @@ jobs:
                       content = f.read()
                       if not re.search(r'(BAD|GOOD|❌|✅)', content):
                         missing.append(f'{domain}/{skill}')
-          
+
           if missing and len(missing) > 10:
             print(f'❌ FAILED: Too many skills ({len(missing)}) missing examples')
             for skill in missing[:5]:
@@ -94,9 +94,9 @@ jobs:
         run: |
           python3 << 'EOF'
           import os, re, yaml
-          
+
           errors = []
-          
+
           if os.path.exists('skills'):
             for domain in os.listdir('skills'):
               domain_path = f'skills/{domain}'
@@ -120,7 +120,7 @@ jobs:
                         errors.append(f'{domain}/{skill}: Missing YAML frontmatter')
                   except Exception as e:
                     errors.append(f'{domain}/{skill}: {str(e)}')
-          
+
           if errors:
             print(f'❌ FAILED: {len(errors)} frontmatter errors')
             for error in errors[:5]:
@@ -128,7 +128,7 @@ jobs:
             if len(errors) > 5:
               print(f'   ... and {len(errors)-5} more')
             exit(1)
-          
+
           print(f'✅ PASSED: YAML frontmatter validation')
           EOF
 
@@ -136,10 +136,10 @@ jobs:
         run: |
           python3 << 'EOF'
           import os, re, yaml
-          
+
           required_fields = ['name', 'description', 'license', 'compatibility', 'metadata']
           missing_fields = []
-          
+
           if os.path.exists('skills'):
             for domain in os.listdir('skills'):
               domain_path = f'skills/{domain}'
@@ -156,7 +156,7 @@ jobs:
                       for field in required_fields:
                         if field not in fm:
                           missing_fields.append(f'{domain}/{skill}: missing {field}')
-          
+
           if missing_fields:
             print(f'❌ FAILED: {len(missing_fields)} skills missing required fields')
             for error in missing_fields[:5]:
@@ -164,7 +164,7 @@ jobs:
             if len(missing_fields) > 5:
               print(f'   ... and {len(missing_fields)-5} more')
             exit(1)
-          
+
           print(f'✅ PASSED: Required metadata fields')
           EOF
 
@@ -177,7 +177,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
