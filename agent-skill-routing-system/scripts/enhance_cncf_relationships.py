@@ -161,7 +161,7 @@ class CNFCEnhancer:
     def find_cncf_skills(self) -> Dict[str, SkillInfo]:
         """Find all cncf-* skills."""
         skills = {}
-        for skill_dir in self.skills_dir.glob("cncf-*/"):
+        for skill_dir in self.skills_dir.rglob("cncf/*/"):
             skill_file = skill_dir / "SKILL.md"
             if skill_file.exists():
                 name = skill_dir.name

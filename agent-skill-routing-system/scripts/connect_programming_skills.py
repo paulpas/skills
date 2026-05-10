@@ -66,7 +66,7 @@ class ProgrammingSkillConnector:
     def find_programming_skills(self) -> Dict[str, SkillInfo]:
         """Find all programming-* skills."""
         skills = {}
-        for skill_dir in self.skills_dir.glob("programming-*/"):
+        for skill_dir in self.skills_dir.rglob("programming/*/"):
             skill_file = skill_dir / "SKILL.md"
             if skill_file.exists():
                 name = skill_dir.name
