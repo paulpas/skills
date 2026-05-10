@@ -1,3 +1,4 @@
+# Required secrets: GITHUB_TOKEN, NPM_TOKEN (for publishing to npm registry)
 name: Release Pipeline
 
 on:
