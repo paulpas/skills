@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ai anomaly detection, ai-anomaly-detection, anomalous, detect, market
-  related-skills: ai-explainable-ai, ai-feature-engineering, ai-time-series-forecasting
+  related-skills: ai-explainable-ai, ai-feature-engineering, ai-llm-orchestration, ai-time-series-forecasting
 ---
 
 

@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: backtest lookahead bias, backtest-lookahead-bias, backtesting, preventing,
     strict, unit tests, testing, test automation
-  related-skills: backtest-position-exits, backtest-sharpe-ratio, backtest-walk-forward,
+  related-skills: backtest-position-exits, backtest-sharpe-ratio, backtest-walk-forward, paper-performance-attribution
     fundamentals-trading-plan
 ---
 

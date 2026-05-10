@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: experimental design, DOE, factorial design, randomization, blocking, how
     do I design experiments
-  related-skills: ds-ab-testing, ds-online-experiments, ds-randomized-experiments,
+  related-skills: ds-ab-testing, ds-online-experiments, ds-randomized-experiments, ds-statistical-power
     ds-statistical-power
 ---
 

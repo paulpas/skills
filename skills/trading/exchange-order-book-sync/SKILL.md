@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: exchange order book sync, exchange-order-book-sync, management, state,
     synchronization
-  related-skills: exchange-order-execution-api, exchange-rate-limiting, execution-vwap,
+  related-skills: exchange-order-execution-api, exchange-rate-limiting, execution-twap-vwap, execution-vwap
     technical-false-signal-filtering
 ---
 
@@ -355,4 +355,26 @@ class OrderBookAggregator:
         if best_bid and best_ask:
             return best_ask - best_bid
         return None
+``````python
+# Additional example: Order book reconciliation
+def reconcile_order_book(current_book: OrderBook, snapshot: OrderBookSnapshot):
+    """Reconcile order book with full snapshot to correct drift."""
+    # Compare sequence numbers
+    if current_book.sequence_number >= snapshot.sequence_number:
+        return False  # Current is ahead
+    
+    # Reset to snapshot and reapply deltas
+    current_book.bids = OrderedDict()
+    current_book.asks = OrderedDict()
+    
+    # Rebuild from snapshot
+    for level in snapshot.bids:
+        current_book.bids[level.price] = level
+    
+    for level in snapshot.asks:
+        current_book.asks[level.price] = level
+    
+    current_book.sequence_number = snapshot.sequence_number
+    return True
+```
 ```

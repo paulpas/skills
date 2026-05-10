@@ -10,7 +10,7 @@ metadata:
   role: orchestration
   scope: orchestration
   output-format: analysis
-  related-skills: agent-task-routing, agent-confidence-based-selector
+  related-skills: agent-confidence-based-selector, agent-task-routing
 ---
 
 # Zendesk Automation

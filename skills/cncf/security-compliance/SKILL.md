@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: cncf-kubernetes-debugging, agent-network-troubleshooting, agent-database-admin
+  related-skills: agent-database-admin, agent-network-troubleshooting, cncf-kubernetes-debugging
 ---
 
 # Security Compliance and Auditing

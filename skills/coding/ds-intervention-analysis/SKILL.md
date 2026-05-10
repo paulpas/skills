@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: treatment effects, intervention analysis, CATE, heterogeneous effects,
     treatment response
-  related-skills: ds-causal-inference, ds-observational-studies, ds-randomized-experiments,
+  related-skills: ds-causal-inference, ds-observational-studies, ds-randomized-experiments, ds-synthetic-control
     ds-synthetic-control
 ---
 

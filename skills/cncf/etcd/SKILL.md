@@ -241,8 +241,7 @@ spec:
       cpu: "500m"
 ```
 
-  related-skills: 
----
+  related-skills: null
 
 ## Fundamentals
 

@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: regression evaluation, MSE, RMSE, MAE, R-squared, regression metrics,
     how do i evaluate
-  related-skills: ds-cross-validation, ds-linear-regression, ds-metrics-and-kpis,
+  related-skills: ds-cross-validation, ds-linear-regression, ds-metrics-and-kpis, ds-time-series-forecasting
     ds-model-selection
 ---
 

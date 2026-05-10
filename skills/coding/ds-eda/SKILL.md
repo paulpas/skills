@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: exploratory data analysis, EDA, summary statistics, distributions, data
     exploration, how do i explore data
-  related-skills: ds-correlation-analysis, ds-data-profiling, ds-data-visualization,
+  related-skills: ds-correlation-analysis, ds-data-profiling, ds-data-visualization, ds-dimensionality-reduction
     ds-missing-data
 ---
 

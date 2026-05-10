@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: maximum likelihood, MLE, likelihood estimation, likelihood function, optimization,
     performance, speed
-  related-skills: ds-bayesian-inference, ds-hypothesis-testing, ds-linear-regression,
+  related-skills: ds-bayesian-inference, ds-distribution-fitting, ds-hypothesis-testing, ds-linear-regression
     ds-monte-carlo
 ---
 

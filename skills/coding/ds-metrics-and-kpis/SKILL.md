@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: metrics, KPI, key performance indicator, business metrics, metric definition,
     how do I choose metrics, cloudwatch, optimization
-  related-skills: ds-ab-testing, ds-classification-metrics, ds-online-experiments,
+  related-skills: ds-ab-testing, ds-classification-metrics, ds-online-experiments, ds-regression-evaluation
     ds-regression-evaluation
 ---
 

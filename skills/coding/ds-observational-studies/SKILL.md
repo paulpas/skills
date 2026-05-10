@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: observational studies, propensity score, matching, stratification, observational
     data, adjustment
-  related-skills: ds-causal-inference, ds-intervention-analysis, ds-randomized-experiments,
+  related-skills: ds-causal-inference, ds-instrumental-variables, ds-intervention-analysis, ds-randomized-experiments
     ds-synthetic-control
 ---
 

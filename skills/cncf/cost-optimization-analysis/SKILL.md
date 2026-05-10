@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: cncf-cost-optimization, cncf-kubernetes-debugging, agent-database-admin
+  related-skills: agent-database-admin, cncf-cost-optimization, cncf-kubernetes-debugging
 ---
 
 # Cloud Cost Optimization Analysis

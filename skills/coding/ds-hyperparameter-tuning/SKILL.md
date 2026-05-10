@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: hyperparameter tuning, grid search, random search, bayesian optimization,
     how do I tune parameters
-  related-skills: ds-bias-variance-tradeoff, ds-cross-validation, ds-model-selection,
+  related-skills: ds-bias-variance-tradeoff, ds-cross-validation, ds-model-selection, ds-support-vector-machines
     ds-tree-methods
 ---
 

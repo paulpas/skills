@@ -10,8 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: jaeger, distributed-tracing project, jaeger architecture, jaeger integration, how do i deploy jaeger, jaeger in kubernetes
-  related-skills: 
----
+  related-skills: ---
 
 ## Purpose and Use Cases
 

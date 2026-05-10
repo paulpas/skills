@@ -10,7 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: health checks, liveness probes, readiness probes, health monitoring, health endpoint, service health, health check implementation, health check testing
-  related-skills: cncf-kubernetes-debugging, agent-docker-debugging, coding-fastapi-patterns
+  related-skills: agent-docker-debugging, cncf-kubernetes-debugging, coding-fastapi-patterns
 ---
 
 # Health Check Patterns

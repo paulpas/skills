@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: cross-validation, k-fold, stratified cross-validation, time-series cross-validation,
     validation
-  related-skills: ds-classification-metrics, ds-hyperparameter-tuning, ds-model-selection,
+  related-skills: ds-bias-variance-tradeoff, ds-classification-metrics, ds-hyperparameter-tuning, ds-model-selection
     ds-regression-evaluation
 ---
 

@@ -375,8 +375,7 @@ rules:
   - apiGroups: ["batch"]
     resources: ["jobs"]
     verbs: ["get", "list", "create", "delete"]
-  related-skills: 
----
+  related-skills: null
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -689,8 +688,7 @@ chaos-test:
 ### Terminology Glossary
 
 | Term | Definition |
-|  related-skills: 
-------|------------|
+|  related-skills: null
 | **ChaosExperiment** | Kubernetes resource defining a chaos scenario |
 | **ChaosEngine** | Main orchestration resource for chaos execution |
 | **ChaosResult** | Result of chaos experiment execution |
@@ -779,8 +777,7 @@ metadata:
   name: chaos-web-namespace-1
   namespace: namespace-1
 spec: ...
-  related-skills: 
----
+  related-skills: null
 apiVersion: litmuschaos.io/v1alpha1
 kind: ChaosEngine
 metadata:

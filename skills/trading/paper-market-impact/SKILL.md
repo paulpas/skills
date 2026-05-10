@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: modeling, order, paper market impact, paper-market-impact, simulation
-  related-skills: fundamentals-market-regimes, fundamentals-trading-plan
+  related-skills: fundamentals-market-regimes, fundamentals-trading-plan, paper-commission-model
 ---
 
 

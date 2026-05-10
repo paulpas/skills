@@ -10,7 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: grpc development, grpc debugging, protocol buffers, rpc services, grpc errors, stream handling, unary calls, grpc gateway
-  related-skills: coding-fastapi-patterns, coding-rest-api-patterns, agent-docker-debugging
+  related-skills: agent-docker-debugging, coding-fastapi-patterns, coding-rest-api-patterns
 
 ---
 

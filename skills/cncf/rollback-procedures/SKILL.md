@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: cncf-kubernetes-debugging, cncf-deployment-patterns, cncf-argocd
+  related-skills: cncf-argocd, cncf-deployment-patterns, cncf-kubernetes-debugging
 ---
 
 # Rollback Procedures

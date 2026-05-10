@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: breakdown, diversification, portfolio, risk correlation risk, risk-correlation-risk
-  related-skills: ai-multi-asset-model, fundamentals-risk-management-basics
+  related-skills: ai-multi-asset-model, fundamentals-risk-management-basics, fundamentals-trading-edge, fundamentals-trading-plan
 ---
 
 
@@ -218,4 +218,6 @@ class CorrelationRiskManager:
             'avg_correlation_increase': float(shock_amount),
             'max_correlation': float(new_corr.max().max())
         }
+``````
+```
 ```

@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: data candle data, data-candle-data, ohlcv, processing, timeframe
-  related-skills: ai-order-flow-analysis, data-alternative-data
+  related-skills: ai-order-flow-analysis, data-alternative-data, data-backfill-strategy
 ---
 
 

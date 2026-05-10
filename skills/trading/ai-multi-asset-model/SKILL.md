@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ai multi asset model, ai-multi-asset-model, inter-asset, portfolio, relationships
-  related-skills: backtest-drawdown-analysis, fundamentals-risk-management-basics
+  related-skills: backtest-drawdown-analysis, fundamentals-risk-management-basics, risk-correlation-risk
 ---
 
 

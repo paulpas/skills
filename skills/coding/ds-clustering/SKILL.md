@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: clustering, k-means, hierarchical clustering, DBSCAN, mixture models,
     how do I cluster data
-  related-skills: ds-anomaly-detection, ds-association-rules, ds-community-detection,
+  related-skills: ds-anomaly-detection, ds-association-rules, ds-community-detection, ds-dimensionality-reduction
     ds-dimensionality-reduction
 ---
 

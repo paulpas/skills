@@ -13,7 +13,7 @@ metadata:
   output-format: code
   triggers: code quality, clean code, linting, code formatting, testing policies,
     cyclomatic complexity, code standards, automated enforcement
-  related-skills: git-advanced, architectural-patterns
+  related-skills: architectural-patterns, git-advanced
 ---
 
 

@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: feature engineering, feature creation, feature transformation, how do
     I engineer features, feature design
-  related-skills: ds-categorical-encoding, ds-feature-scaling-normalization, ds-feature-selection,
+  related-skills: ds-categorical-encoding, ds-dimensionality-reduction, ds-feature-scaling-normalization, ds-feature-selection
     ds-missing-data
 ---
 

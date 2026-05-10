@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: cncf-kubernetes-debugging, agent-network-troubleshooting, cncf-istio
+  related-skills: agent-network-troubleshooting, cncf-istio, cncf-kubernetes-debugging
 ---
 
 # Service Mesh Debugging

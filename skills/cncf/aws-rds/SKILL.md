@@ -13,7 +13,7 @@ metadata:
   output-format: manifests
   triggers: rds, relational database, mysql, postgresql, multi-az, database failover,
     read replica, automated backup
-  related-skills: aws-auto-scaling, aws-cloudformation, aws-cloudwatch
+  related-skills: aws-auto-scaling, aws-cloudformation, aws-cloudwatch, aws-kms
 ---
 
 

@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: code
   triggers: disaster recovery, backup strategy, recovery procedures, cross region replication, rpo rto, backup validation, how do i plan dr
-  related-skills: cncf-velero, cncf-argocd
+  related-skills: cncf-argocd, cncf-velero
 ---
 
 # Disaster Recovery Planning for Kubernetes Clusters

@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: causal inference, causality, causal models, DAG, confounding, how do i
     determine causation, airflow, data pipelines
-  related-skills: ds-intervention-analysis, ds-observational-studies, ds-randomized-experiments,
+  related-skills: ds-instrumental-variables, ds-intervention-analysis, ds-observational-studies, ds-randomized-experiments
     ds-synthetic-control
 ---
 

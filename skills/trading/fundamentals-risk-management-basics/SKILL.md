@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: fundamentals risk management basics, fundamentals-risk-management-basics,
     position, sizing, stop-loss
-  related-skills: backtest-drawdown-analysis, exchange-order-execution-api
+  related-skills: backtest-drawdown-analysis, backtest-position-sizing, exchange-order-execution-api, risk-correlation-risk
 ---
 
 
@@ -381,4 +381,20 @@ Before completing your task, verify:
 - Portfolio Risk Metrics - Markowitz (1952)
 
 ## Base Directory
-file:///home/paulpas/git/ideas/trading_bot/skills/trading-fundamentals
+file:///home/paulpas/git/ideas/trading_bot/skills/trading-fundamentals```python
+# Risk Management Example: Calculating VaR
+def calculate_var(returns: np.ndarray, confidence: float = 0.95) -> float:
+    """Calculate Value at Risk using historical simulation."""
+    sorted_returns = np.sort(returns)
+    index = int((1 - confidence) * len(sorted_returns))
+    return abs(sorted_returns[index])
+
+# Risk Management Example: Expected Shortfall
+def calculate_expected_shortfall(returns: np.ndarray, confidence: float = 0.95) -> float:
+    """Calculate Expected Shortfall (Conditional VaR)."""
+    sorted_returns = np.sort(returns)
+    index = int((1 - confidence) * len(sorted_returns))
+    return abs(sorted_returns[:index].mean())
+```
+```
+```

@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: A/B testing, A/B test, statistical test, power analysis, sample size,
     how do I design tests, unit tests, testing
-  related-skills: ds-classification-metrics, ds-experimental-design, ds-hypothesis-testing,
+  related-skills: ds-classification-metrics, ds-experimental-design, ds-hypothesis-testing, ds-metrics-and-kpis
     ds-statistical-power
 ---
 

@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: breaker, circuit, exchange rate limiting, exchange-rate-limiting, strategies
-  related-skills: exchange-order-book-sync, technical-false-signal-filtering
+  related-skills: exchange-order-book-sync, exchange-order-execution-api, technical-false-signal-filtering
 ---
 
 

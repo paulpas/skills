@@ -13,7 +13,7 @@ metadata:
   output-format: manifests
   triggers: ec2, compute instances, auto-scaling, load balancing, asg, launch template,
     instance types, ebs volumes
-  related-skills: aws-auto-scaling, aws-cloudformation, aws-cloudwatch
+  related-skills: aws-auto-scaling, aws-cloudformation, aws-cloudwatch, aws-iam
 ---
 
 

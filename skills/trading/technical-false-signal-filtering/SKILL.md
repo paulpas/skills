@@ -11,7 +11,7 @@ metadata:
   output-format: code
   triggers: analysis, robust, technical false signal filtering, technical-false-signal-filtering,
     techniques
-  related-skills: fundamentals-trading-plan, technical-cycle-analysis, technical-indicator-confluence,
+  related-skills: execution-vwap, fundamentals-trading-plan, technical-cycle-analysis, technical-indicator-confluence
     technical-momentum-indicators
 ---
 

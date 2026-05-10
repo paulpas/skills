@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: backtest walk forward, backtest-walk-forward, optimization, robust, walk-forward,
     performance, speed
-  related-skills: backtest-lookahead-bias, fundamentals-trading-plan
+  related-skills: backtest-lookahead-bias, backtest-position-exits, fundamentals-trading-plan
 ---
 
 

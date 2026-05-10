@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: calculation, data order book, data-order-book, handling, spread
-  related-skills: ai-order-flow-analysis, exchange-order-execution-api, fundamentals-market-structure
+  related-skills: ai-order-flow-analysis, exchange-order-execution-api, fundamentals-market-structure, technical-market-microstructure
 ---
 
 

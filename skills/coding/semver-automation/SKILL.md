@@ -13,7 +13,7 @@ metadata:
   output-format: code
   triggers: semantic versioning, semver, version bumping, conventional commits, semantic-release,
     changelog automation, release automation, git tags
-  related-skills: git-advanced, git-branching-strategies
+  related-skills: cve-dependency-management, git-advanced, git-branching-strategies
 ---
 
 

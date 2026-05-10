@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: adaptation, detection, fundamentals market regimes, fundamentals-market-regimes,
     regime
-  related-skills: fundamentals-trading-edge, paper-commission-model, paper-market-impact
+  related-skills: fundamentals-trading-edge, paper-commission-model, paper-market-impact, paper-realistic-simulation
 ---
 
 

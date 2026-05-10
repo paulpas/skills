@@ -149,8 +149,7 @@ class Signal:
     metadata: dict = field(default_factory=dict)
 ```
 
-  related-skills: 
----
+  related-skills: null
 
 ### 5. `SignalGenerator` Protocol Pattern
 

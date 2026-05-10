@@ -11,7 +11,7 @@ metadata:
   output-format: code
   triggers: backtest sharpe ratio, backtest-sharpe-ratio, calculation, optimization,
     performance, risk-adjusted, speed
-  related-skills: backtest-lookahead-bias, fundamentals-trading-plan
+  related-skills: backtest-lookahead-bias, backtest-position-exits, fundamentals-trading-plan
 ---
 
 

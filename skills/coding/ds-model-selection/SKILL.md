@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: model selection, AIC, BIC, validation curves, learning curves, model comparison
-  related-skills: ds-bias-variance-tradeoff, ds-cross-validation, ds-hyperparameter-tuning,
+  related-skills: ds-bias-variance-tradeoff, ds-cross-validation, ds-ensemble-methods, ds-hyperparameter-tuning
     ds-regression-evaluation
 ---
 

@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: cicd-pipeline-troubleshooting, cncf-tekton, cncf-argocd
+  related-skills: cicd-pipeline-troubleshooting, cncf-argocd, cncf-tekton
 ---
 
 # CI/CD Pipeline Debugging

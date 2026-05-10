@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: model fairness, fairness metrics, bias detection, debiasing, fair machine
     learning, how do I check bias
-  related-skills: ds-explainability, ds-model-interpretation, ds-model-robustness,
+  related-skills: ds-explainability, ds-model-interpretation, ds-model-robustness, ds-privacy-ml
     ds-privacy-ml
 ---
 

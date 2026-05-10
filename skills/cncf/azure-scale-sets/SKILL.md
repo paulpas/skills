@@ -10,7 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: scale sets, vmss, auto-scaling, scaling, vm groups, autoscaling
-  related-skills: azure-load-balancer, azure-monitor, azure-virtual-networks
+  related-skills: azure-load-balancer, azure-monitor, azure-virtual-machines, azure-virtual-networks
 ---
 
 

@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: monte carlo, sampling, simulation, stochastic, markov chain, mcmc, how
     do i simulate
-  related-skills: ds-bayesian-inference, ds-confidence-intervals, ds-distribution-fitting,
+  related-skills: ds-bayesian-inference, ds-confidence-intervals, ds-distribution-fitting, ds-kernel-density
     ds-kernel-density
 ---
 

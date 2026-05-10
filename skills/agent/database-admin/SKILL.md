@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: infrastructure
   output-format: code
-  related-skills: cncf-postgresql, cncf-azure-managed-database
+  related-skills: cncf-azure-managed-database, cncf-postgresql
 ---
 
 # Database Administration

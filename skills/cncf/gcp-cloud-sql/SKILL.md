@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: cloud sql, relational database, mysql, postgresql, managed database, postgres,
     sql database
-  related-skills: gcp-cloud-kms, gcp-cloud-monitoring, gcp-vpc
+  related-skills: gcp-cloud-kms, gcp-cloud-monitoring, gcp-iam, gcp-vpc
 ---
 
 
