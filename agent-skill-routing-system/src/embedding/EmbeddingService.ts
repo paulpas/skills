@@ -456,17 +456,29 @@ export class EmbeddingService {
 
   /**
    * Call LLM API and extract embedding from response
+   * Support configurable LLM endpoint (OpenAI or llama.cpp) for emulation mode
    */
   private async callLlmForEmbedding(prompt: string, expectedDimensions: number): Promise<number[] | undefined> {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      // Determine LLM endpoint based on provider configuration
+      const baseUrl = this.config.provider === 'llamacpp'
+        ? this.config.llamacppBaseUrl
+        : 'https://api.openai.com';
+      
+      const apiKey = this.config.provider === 'llamacpp'
+        ? (this.config.apiKey || 'no-key')
+        : (this.config.apiKey || process.env.OPENAI_API_KEY || '');
+
+      const model = this.config.model || (this.config.provider === 'llamacpp' ? 'local-embedding-model' : 'gpt-4o-mini');
+      
+      const response = await fetch(`${baseUrl}/v1/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey || process.env.OPENAI_API_KEY || ''}`,
+          'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: this.config.model || 'gpt-4o-mini',
+          model,
           messages: [{ role: 'user', content: prompt }],
           response_format: { type: 'json_object' },
         }),
@@ -486,7 +498,9 @@ export class EmbeddingService {
       this.logger.error('[Emulation] LLM call failed', {
         error: error instanceof Error ? error.message : String(error),
       });
-      throw error;
+      // Return undefined to trigger fallback behavior in calling function
+      // Don't throw - allow deterministic fallback to be used
+      return undefined;
     }
   }
 
@@ -528,52 +542,73 @@ export class EmbeddingService {
 
     // Recovery 2: Generate deterministic fallback embedding
     this.logger.warn('[Emulation] All parsing strategies failed, using deterministic fallback');
-    throw new Error(`Failed to parse valid embedding from LLM response (expected ${expectedDimensions}-dimensional array of numbers)`);
+    return this.generatePlaceholderEmbedding(jsonString);
   }
 
   /**
-   * Extract JSON array from text using regex pattern matching
+   * Parse JSON embedding from LLM response with recovery
+   * Parse-Don't-Validate: parse at boundary (JSON string), trust parsed data internally
    */
-  private extractJsonArray(text: string): string | undefined {
-    // Match JSON array pattern: [numbers, separated, by, commas]
-    const jsonRegex = /\[\s*(?:-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\s*,\s*)*-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\s*\]/;
-    const match = text.match(jsonRegex);
-    return match ? match[0] : undefined;
-  }
 
   /**
-   * Validate that array contains only numbers and has correct dimensions
-   */
-  private isValidNumberArray(value: unknown, expectedDimensions: number): boolean {
-    // Early exit: must be an array
-    if (!Array.isArray(value)) {
-      return false;
-    }
+    * Extract JSON array from text using regex pattern matching
+    */
+   private extractJsonArray(text: string): string | undefined {
+     // Match JSON array pattern: [numbers, separated, by, commas]
+     // Supports negative numbers at any position (including last element)
+     const jsonRegex = /\[\s*(?:-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\s*,\s*)*-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\s*\]/;
+     const match = text.match(jsonRegex);
+     return match ? match[0] : undefined;
+   }
 
-    // Validate dimensions
-    if (value.length !== expectedDimensions) {
-      this.logger.debug('[Emulation] Dimension mismatch', {
-        actual: value.length,
-        expected: expectedDimensions,
-      });
-      return false;
-    }
+ /**
+    * Validate that array contains only numbers and has correct dimensions
+    * Optionally validate range for similarity calculation compatibility
+    */
+   private isValidNumberArray(value: unknown, expectedDimensions: number, validateRange: boolean = false): boolean {
+     // Early exit: must be an array
+     if (!Array.isArray(value)) {
+       return false;
+     }
+
+     // Validate dimensions
+     if (value.length !== expectedDimensions) {
+       this.logger.debug('[Emulation] Dimension mismatch', {
+         actual: value.length,
+         expected: expectedDimensions,
+       });
+       return false;
+     }
 
     // Validate all elements are numbers
-    return value.every((item) => typeof item === 'number' && !isNaN(item));
-  }
+      for (const item of value) {
+        if (typeof item !== 'number' || isNaN(item)) {
+          return false;
+        }
+        // Validate normalized range if requested
+        if (validateRange && (item < -1 || item > 1)) {
+          this.logger.debug('[Emulation] Range validation failed', {
+            value: item,
+            expectedRange: '[-1, 1]',
+          });
+          return false;
+        }
+      }
 
-  /**
+    return true;
+   }
+
+ /**
    * Sleep for specified milliseconds
    */
-  private sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+   private sleep(ms: number): Promise<void> {
+     return new Promise((resolve) => setTimeout(resolve, ms));
+   }
 
-  /**
-    * Save embedding to cache file
-    */
-  private async saveToCacheFile(
+   /**
+     * Save embedding to cache file
+     */
+   private async saveToCacheFile(
     text: string,
     result: EmbeddingResponse,
     subdirectory?: string
