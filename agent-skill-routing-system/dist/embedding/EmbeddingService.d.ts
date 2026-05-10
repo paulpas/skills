@@ -74,6 +74,7 @@ export declare class EmbeddingService {
     private buildEmulationPrompt;
     /**
      * Call LLM API and extract embedding from response
+     * Support configurable LLM endpoint (OpenAI or llama.cpp) for emulation mode
      */
     private callLlmForEmbedding;
     /**
@@ -82,16 +83,21 @@ export declare class EmbeddingService {
        */
     private parseJsonEmbedding;
     /**
-     * Extract JSON array from text using regex pattern matching
+     * Parse JSON embedding from LLM response with recovery
+     * Parse-Don't-Validate: parse at boundary (JSON string), trust parsed data internally
      */
+    /**
+      * Extract JSON array from text using regex pattern matching
+      */
     private extractJsonArray;
     /**
-     * Validate that array contains only numbers and has correct dimensions
-     */
+       * Validate that array contains only numbers and has correct dimensions
+       * Optionally validate range for similarity calculation compatibility
+       */
     private isValidNumberArray;
     /**
-     * Sleep for specified milliseconds
-     */
+      * Sleep for specified milliseconds
+      */
     private sleep;
     /**
       * Save embedding to cache file
