@@ -322,7 +322,9 @@ def apply_fixes(skills_dir, analysis_report_path):
         # Ensure minimum of 2 (if we have at least 2 available)
         if len(related_skills) < 2 and len(related_skills) > 0:
             # Keep what we have; we can't force minimum
-            pass
+            print(
+                f"Warning: Cannot enforce minimum 2 relationships for {skill_name} (only {len(related_skills)} available)"
+            )
 
         # Remove self-references
         related_skills.discard(skill_name)
