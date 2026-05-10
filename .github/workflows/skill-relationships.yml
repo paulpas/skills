@@ -56,7 +56,7 @@ jobs:
         id: detect_changes
         run: |
           echo "Detecting changes in SKILL.md files..."
-          if git diff --quiet origin/${{ github.base_ref || 'main' }}...HEAD -- 'skills/**/SKILL.md' 2>/dev/null || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if git diff --quiet origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD -- 'skills/**/SKILL.md' 2>/dev/null || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "skill_files_changed=true" >> $GITHUB_OUTPUT
             echo "✅ SKILL.md files detected"
           else
@@ -80,69 +80,66 @@ jobs:
 
       - name: Phase 2 - Generate Index
         id: index_gen
-        if: steps.validation.outcome != 'failure'
+        if: steps.validation.outcome == 'success'
         run: |
           echo "📑 Generating skills-index.json..."
-          if [ -f "generate_index.py" ]; then
-            python generate_index.py 2>&1 | tee index_gen.log
+          if [ -f "scripts/generate_index.py" ]; then
+            python scripts/generate_index.py 2>&1 | tee index_gen.log
             echo "✅ Index generated"
           fi
 
       - name: Phase 3 - Analyze Relationships
         id: analyze
-        if: steps.validation.outcome != 'failure'
+        if: steps.validation.outcome == 'success'
         continue-on-error: true
         run: |
           echo "🔗 Analyzing skill relationships..."
-          if [ -f "agent-skill-routing-system/scripts/analyze_skill_relationships.py" ]; then
-            python agent-skill-routing-system/scripts/analyze_skill_relationships.py 2>&1 | tee analyze.log
+          if [ -f "scripts/analyze_skill_relationships.py" ]; then
+            python scripts/analyze_skill_relationships.py 2>&1 | tee analyze.log
             echo "✅ Relationship analysis completed"
           fi
 
       - name: Phase 4 - Fix Relationships
         id: fix_relationships
-        if: steps.validation.outcome != 'failure'
+        if: steps.validation.outcome == 'success'
         continue-on-error: true
         run: |
           echo "🔧 Fixing skill relationships..."
-          if [ -f "agent-skill-routing-system/scripts/fix_skill_relationships.py" ]; then
-            python agent-skill-routing-system/scripts/fix_skill_relationships.py 2>&1 | tee fix_relationships.log
+          if [ -f "scripts/fix_skill_relationships.py" ]; then
+            python scripts/fix_skill_relationships.py 2>&1 | tee fix_relationships.log
             echo "✅ Relationships fixed"
           fi
 
       - name: Phase 5 - Enforce Bidirectionality
         id: bidirectional
-        if: steps.validation.outcome != 'failure'
+        if: steps.validation.outcome == 'success'
         continue-on-error: true
         run: |
           echo "🔀 Enforcing bidirectional relationships..."
-          if [ -f "agent-skill-routing-system/scripts/enforce_bidirectionality.py" ]; then
-            python agent-skill-routing-system/scripts/enforce_bidirectionality.py 2>&1 | tee bidirectional.log
+          if [ -f "scripts/enforce_bidirectionality.py" ]; then
+            python scripts/enforce_bidirectionality.py 2>&1 | tee bidirectional.log
             echo "✅ Bidirectionality enforced"
           fi
 
       - name: Phase 6 - Enhance CNCF Relationships
         id: cncf
-        if: steps.validation.outcome != 'failure'
+        if: steps.validation.outcome == 'success'
         continue-on-error: true
         run: |
           echo "☸️  Enhancing CNCF relationships..."
-          if [ -f "agent-skill-routing-system/scripts/enhance_cncf_relationships.py" ]; then
-            python agent-skill-routing-system/scripts/enhance_cncf_relationships.py 2>&1 | tee cncf.log
+          if [ -f "scripts/enhance_cncf_relationships.py" ]; then
+            python scripts/enhance_cncf_relationships.py 2>&1 | tee cncf.log
             echo "✅ CNCF relationships enhanced"
           fi
 
       - name: Phase 7 - Generate README
         id: readme
-        if: steps.validation.outcome != 'failure'
+        if: steps.validation.outcome == 'success'
         continue-on-error: true
         run: |
           echo "📚 Generating README with skill catalog..."
           if [ -f "scripts/generate_readme.py" ]; then
             python scripts/generate_readme.py 2>&1 | tee readme.log
-            echo "✅ README generated"
-          elif [ -f "generate_readme.py" ]; then
-            python generate_readme.py 2>&1 | tee readme.log
             echo "✅ README generated"
           fi
 

@@ -5,6 +5,18 @@
     "@typescript-eslint/parser": "^8.59.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.5"
+    "eslint-plugin-prettier": "^5.5.5",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "lint": "eslint 'src/**/*.ts' --fix",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "test:unit": "jest --selectTests --testPathPattern='src/**/*.test.ts'",
+    "test:integration": "jest --selectTests --testPathPattern='src/**/*.integration.test.ts'",
+    "test:coverage": "jest --coverage",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.json"
   }
 }
