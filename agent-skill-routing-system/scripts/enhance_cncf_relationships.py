@@ -194,8 +194,8 @@ class CNFCEnhancer:
                 if match:
                     skills_str = match.group(1).strip()
                     return {s.strip() for s in skills_str.split(",") if s.strip()}
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Error extracting related skills from {skill_file}: {e}")
         return set()
 
     def find_orphaned_skills(self) -> List[str]:
