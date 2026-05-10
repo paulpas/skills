@@ -127,8 +127,7 @@ class SignalEvent(BaseModel):
         return v
 ```
 
-  related-skills: 
----
+  related-skills: null
 
 ### 5. `@model_validator(mode="after")` — Cross-Field Validation
 

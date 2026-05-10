@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: key vault, key management, secrets, certificate management, encryption
     keys, acm, kms, secrets management
-  related-skills: azure-automation, azure-blob-storage, azure-functions
+  related-skills: azure-automation, azure-blob-storage, azure-functions, notary-project
 ---
 
 

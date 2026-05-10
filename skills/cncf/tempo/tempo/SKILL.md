@@ -10,8 +10,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: tempo, tracing project, tempo architecture, tempo integration, how do i deploy tempo, tempo in kubernetes
-  related-skills: 
----
+  related-skills: ---
 
 ## Purpose and Use Cases
 

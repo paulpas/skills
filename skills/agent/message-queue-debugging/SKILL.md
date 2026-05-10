@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: agent-message-queue-troubleshooting, agent-database-admin, cncf-kubernetes-debugging
+  related-skills: agent-database-admin, agent-message-queue-troubleshooting, cncf-kubernetes-debugging
 ---
 
 # Message Queue Debugging

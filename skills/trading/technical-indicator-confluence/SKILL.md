@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: confirming, systems, technical indicator confluence, technical-indicator-confluence,
     validation
-  related-skills: fundamentals-trading-plan, technical-cycle-analysis
+  related-skills: fundamentals-trading-plan, technical-cycle-analysis, technical-false-signal-filtering
 ---
 
 

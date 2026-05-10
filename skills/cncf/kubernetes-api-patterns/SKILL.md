@@ -10,7 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: kubernetes api, k8s api, crd development, api groups, subresources, watch api, admission webhooks, client libraries
-  related-skills: cncf-kubernetes-debugging, coding-grpc-patterns, cncf-tekton
+  related-skills: cncf-kubernetes-debugging, cncf-tekton, coding-grpc-patterns
 ---
 
 # Kubernetes API Patterns

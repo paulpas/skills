@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: exchange order execution api, exchange-order-execution-api, management,
     systems, trading
-  related-skills: exchange-order-book-sync, exchange-rate-limiting, execution-twap,
+  related-skills: ai-order-flow-analysis, exchange-order-book-sync, exchange-rate-limiting, execution-twap
     technical-false-signal-filtering
 ---
 
@@ -253,4 +253,30 @@ class OrderExecutor:
         if order_id in self.order_callbacks:
             for callback in self.order_callbacks[order_id]:
                 callback(order_id, status)
+
+### Usage Example
+
+```python
+# Create an order executor with exchange adapter
+executor = OrderExecutor(exchange=binance_adapter)
+
+# Create a buy order
+order = Order(
+    id=str(uuid.uuid4()),
+    symbol="BTC/USDT",
+    side=OrderSide.BUY,
+    order_type=OrderType.LIMIT,
+    quantity=0.1,
+    price=45000.0
+)
+
+# Submit the order
+result = executor.place_order(order)
+print(f"Order placed: {result}")
+
+# Monitor order status
+active_orders = executor.get_active_orders(symbol="BTC/USDT")
+for order in active_orders:
+    print(f"Order {order.id}: {order.status}")
+```
 ```

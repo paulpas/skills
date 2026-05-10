@@ -10,7 +10,7 @@ metadata:
   role: implementation
   scope: implementation
   output-format: code
-  related-skills: agent-network-troubleshooting, agent-docker-debugging, cncf-service-mesh-debugging
+  related-skills: agent-docker-debugging, agent-network-troubleshooting, cncf-service-mesh-debugging
 ---
 
 # Networking Troubleshooting

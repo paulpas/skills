@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: automation, runbooks, update management, orchestration, automation account,
     jenkins, ci/cd pipeline, continuous integration
-  related-skills: azure-monitor
+  related-skills: azure-key-vault, azure-monitor, azure-rbac, azure-virtual-machines
 ---
 
 

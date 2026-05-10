@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: cloud functions, serverless, functions, event-driven, function deployment,
     eventbridge, kubernetes deployment, container orchestration
-  related-skills: gcp-cloud-monitoring
+  related-skills: gcp-cloud-monitoring, gcp-cloud-tasks, gcp-container-registry, gcp-secret-manager
 ---
 
 

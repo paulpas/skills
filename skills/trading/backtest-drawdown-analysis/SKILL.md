@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: backtest drawdown analysis, backtest-drawdown-analysis, maximum, recovery,
     value-at-risk
-  related-skills: backtest-position-sizing, exchange-order-execution-api, fundamentals-risk-management-basics,
+  related-skills: backtest-position-sizing, exchange-order-execution-api, fundamentals-risk-management-basics, risk-position-sizing
     risk-position-sizing
 ---
 

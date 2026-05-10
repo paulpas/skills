@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: neural networks, deep learning, backpropagation, CNN, RNN, transformers,
     how do i use deep learning, hugging face
-  related-skills: ds-categorical-encoding, ds-ensemble-methods, ds-hyperparameter-tuning,
+  related-skills: ds-categorical-encoding, ds-ensemble-methods, ds-hyperparameter-tuning, ds-support-vector-machines
     ds-tree-methods
 ---
 

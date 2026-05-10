@@ -574,8 +574,7 @@ jobs:
 ### Terminology Glossary
 
 | Term | Definition |
-|  related-skills: 
-------|------------|
+|  related-skills: null
 | **Stub** | Client-side proxy that makes gRPC calls appear as local method calls |
 | **Server** | Service implementation that receives and processes gRPC requests |
 | **Channel** | Connection management object handle |

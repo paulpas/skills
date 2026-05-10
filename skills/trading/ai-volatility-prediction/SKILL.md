@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: ai volatility prediction, ai-volatility-prediction, forecast, management,
     option
-  related-skills: ai-anomaly-detection, ai-explainable-ai
+  related-skills: ai-anomaly-detection, ai-explainable-ai, technical-cycle-analysis
 ---
 
 

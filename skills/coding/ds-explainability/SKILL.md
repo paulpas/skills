@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: explainability, interpretability, transparency, understanding models,
     how do I explain predictions
-  related-skills: ds-model-fairness, ds-model-interpretation, ds-model-robustness,
+  related-skills: ds-model-fairness, ds-model-interpretation, ds-model-robustness, ds-reproducible-research
     ds-reproducible-research
 ---
 

@@ -11,7 +11,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: secrets, secret management, secret rotation, credential management, password
-  related-skills: azure-functions
+  related-skills: azure-aks, azure-automation, azure-blob-storage, azure-cdn
 ---
 
 

@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: asset, cross-market, relationships, technical intermarket analysis, technical-intermarket-analysis
-  related-skills: fundamentals-trading-plan, technical-cycle-analysis
+  related-skills: ai-regime-classification, fundamentals-trading-plan, technical-cycle-analysis
 ---
 
 
@@ -244,4 +244,6 @@ class IntermarketAnalyzer:
             signals[name] = model.params[1]  # Beta coefficient
         
         return signals
+``````
+```
 ```

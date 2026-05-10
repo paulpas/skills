@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: resource manager, arm templates, infrastructure as code, iac, deployment,
     cloudformation, kubernetes deployment, rolling updates
-  related-skills: azure-aks, azure-sql-database, azure-virtual-networks
+  related-skills: azure-aks, azure-sql-database, azure-virtual-networks, gcp-deployment-manager
 ---
 
 

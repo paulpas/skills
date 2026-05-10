@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: bayesian inference, bayes, prior, posterior, probabilistic inference,
     how do i do bayesian
-  related-skills: ds-confidence-intervals, ds-hypothesis-testing, ds-maximum-likelihood,
+  related-skills: ds-confidence-intervals, ds-hypothesis-testing, ds-maximum-likelihood, ds-monte-carlo
     ds-monte-carlo
 ---
 

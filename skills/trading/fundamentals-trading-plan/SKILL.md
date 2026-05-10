@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: cloud infrastructure, framework, fundamentals trading plan, fundamentals-trading-plan,
     management, structure
-  related-skills: fundamentals-trading-edge, risk-correlation-risk
+  related-skills: fundamentals-trading-edge, paper-commission-model, risk-correlation-risk, technical-support-resistance
 ---
 
 

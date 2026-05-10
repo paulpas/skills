@@ -12,7 +12,7 @@ metadata:
   output-format: code
   triggers: feature selection, feature importance, recursive elimination, univariate
     selection, feature selection methods
-  related-skills: ds-feature-engineering, ds-feature-interaction, ds-hyperparameter-tuning,
+  related-skills: ds-feature-engineering, ds-feature-interaction, ds-hyperparameter-tuning, ds-model-interpretation
     ds-model-interpretation
 ---
 

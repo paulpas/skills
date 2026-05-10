@@ -11,7 +11,7 @@ metadata:
   output-format: manifests
   triggers: cloud dns, dns, domain name, health checks, traffic routing, route53,
     domain management
-  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-compute-engine,
+  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-compute-engine, gcp-vpc
     gcp-vpc
 ---
 

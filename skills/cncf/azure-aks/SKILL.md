@@ -11,7 +11,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: aks, kubernetes, container orchestration, k8s, managed kubernetes
-  related-skills: azure-container-registry, azure-monitor, azure-resource-manager,
+  related-skills: azure-container-registry, azure-monitor, azure-resource-manager, azure-virtual-networks
     azure-traffic-manager
 ---
 

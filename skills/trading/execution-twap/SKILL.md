@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: average, execution twap, execution-twap, price, time-weighted
-  related-skills: exchange-order-book-sync, technical-false-signal-filtering
+  related-skills: exchange-order-book-sync, exchange-order-execution-api, technical-false-signal-filtering
 ---
 
 
@@ -328,4 +328,29 @@ class TWAPExecutor:
     def get_metrics(self) -> TWAPMetrics:
         """Get TWAP metrics."""
         return self.metrics
+```
+### Usage Example
+
+```python
+# Create TWAP executor with a 6-hour execution window
+twap = TWAPExecutor(
+    symbol="BTC/USDT",
+    side=OrderSide.BUY,
+    total_quantity=10.0,
+    duration_seconds=21600,  # 6 hours
+    exchange=binance_adapter
+)
+
+# Start execution
+twap.start()
+
+# Monitor progress
+while not twap.is_complete():
+    progress = twap.get_progress()
+    print(f"Progress: {progress['fill_percentage']:.1f}% complete")
+    time.sleep(60)
+
+# Get final metrics
+metrics = twap.get_metrics()
+print(f"Total filled: {metrics.filled_quantity} @ {metrics.avg_fill_price} BPS slippage: {metrics.slippage_bps}")
 ```

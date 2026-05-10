@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: cycles, market, periodic, technical cycle analysis, technical-cycle-analysis
-  related-skills: ai-time-series-forecasting, ai-volatility-prediction, fundamentals-trading-plan,
+  related-skills: ai-time-series-forecasting, ai-volatility-prediction, fundamentals-trading-plan, technical-support-resistance
     technical-false-signal-filtering
 ---
 
@@ -220,4 +220,6 @@ class CycleAnalyzer:
         results['long'] = [c for c in results['long'] if c.period > 200]
         
         return results
+``````
+```
 ```

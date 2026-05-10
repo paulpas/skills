@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: cloud cdn, cdn, content delivery, caching, global distribution, cloudfront,
     elasticache, redis
-  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-cloud-storage,
+  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-cloud-storage, gcp-compute-engine
     gcp-compute-engine
 ---
 

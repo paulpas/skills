@@ -14,7 +14,7 @@ metadata:
   triggers: analyzes, code review, code-review, diffs, files
   author: https://github.com/Jeffallan
   source: https://github.com/farmage/opencode-skills
-  related-skills: null
+  related-skills: dry-principles, humanizer, null, secure-release-pipeline
 ---
 
 

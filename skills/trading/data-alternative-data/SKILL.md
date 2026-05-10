@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: data alternative data, data-alternative-data, ingestion, pipelines, trading
-  related-skills: ai-order-flow-analysis, data-backfill-strategy, data-candle-data
+  related-skills: ai-order-flow-analysis, data-backfill-strategy, data-candle-data, exchange-failover-handling
 ---
 
 

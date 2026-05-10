@@ -21,7 +21,7 @@ metadata:
 ---
 
 
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 
 # Skill: programming-algorithms
@@ -52,7 +52,7 @@ metadata:
 - **Proof first, optimize later:** Ensure correctness before micro-optimizations
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Table of Contents
 
@@ -71,7 +71,7 @@ metadata:
 13. [Algorithm Selection Guide](#algorithm-selection-guide)
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Sorting Algorithms
 
@@ -244,7 +244,7 @@ metadata:
   - Memory-constrained but need better performance
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Searching Algorithms
 
@@ -350,7 +350,7 @@ metadata:
   - O(√n) is acceptable
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Graph Algorithms
 
@@ -621,7 +621,7 @@ metadata:
   - VLSI design
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Dynamic Programming
 
@@ -929,7 +929,7 @@ metadata:
   - Bitmask DP
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Greedy Algorithms
 
@@ -1095,7 +1095,7 @@ metadata:
   - Greedy doesn't work, use DP
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## String Algorithms
 
@@ -1343,7 +1343,7 @@ metadata:
   - Memoization for optimization
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Mathematical Algorithms
 
@@ -1913,7 +1913,7 @@ metadata:
   - Library recommended
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Backtracking Algorithms
 
@@ -2137,7 +2137,7 @@ metadata:
   - Symmetry breaking
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Numerical Algorithms
 
@@ -2372,7 +2372,7 @@ metadata:
   - Superlinear convergence
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Probabilistic Algorithms
 
@@ -2540,7 +2540,7 @@ metadata:
   - Rolling hash application
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Streaming Algorithms
 
@@ -2676,7 +2676,7 @@ metadata:
   - Logarithmic space
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Algorithm Selection Guide
 
@@ -2861,7 +2861,7 @@ metadata:
 | Heavy hitters | Full stream | ε | Lossy Counting | O(1/ε) space |
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Code Patterns for Implementation
 
@@ -3050,7 +3050,7 @@ def two_pointers(arr1, arr2):
 ```
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Common Pitfalls
 
@@ -3118,7 +3118,7 @@ def two_pointers(arr1, arr2):
 5. **Edge Cases**: Always test with empty input, single element, max size.
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## References
 
@@ -3174,7 +3174,7 @@ def two_pointers(arr1, arr2):
 8. **Fenwick Trees** - Prefix sums
 
 ---
-  related-skills: programming-abl-v10-learning, programming-abl-v12-learning
+  related-skills: abl-v10-learning, abl-v12-learning
 
 ## Conclusion
 

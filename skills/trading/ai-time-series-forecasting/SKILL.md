@@ -11,7 +11,7 @@ metadata:
   output-format: code
   triggers: ai time series forecasting, ai-time-series-forecasting, market, prediction,
     price
-  related-skills: ai-anomaly-detection, ai-explainable-ai
+  related-skills: ai-anomaly-detection, ai-explainable-ai, technical-cycle-analysis
 ---
 
 

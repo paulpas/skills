@@ -12,7 +12,7 @@ metadata:
   role: implementation
   scope: infrastructure
   output-format: code
-  related-skills: cncf-pulumi, cncf-aws-cloudformation, cncf-helm
+  related-skills: cncf-aws-cloudformation, cncf-helm, cncf-pulumi
 ---
 
 

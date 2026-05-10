@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: ai explainable ai, ai-explainable-ai, trading, trusting, understanding
-  related-skills: ai-anomaly-detection, ai-feature-engineering, ai-time-series-forecasting
+  related-skills: ai-anomaly-detection, ai-feature-engineering, ai-llm-orchestration, ai-time-series-forecasting
 ---
 
 

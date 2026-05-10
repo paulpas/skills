@@ -12,7 +12,7 @@ metadata:
   output-format: manifests
   triggers: blob storage, object storage, azure storage, storage account, blob, how
     do i store files, s3, file storage
-  related-skills: azure-cdn, azure-monitor
+  related-skills: azure-cdn, azure-key-vault, azure-monitor, azure-rbac
 ---
 
 

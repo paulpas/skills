@@ -11,7 +11,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: markdown best practices, markdown-best-practices, opencode, skills, syntax
-  related-skills: null
+  related-skills: humanizer, null
 ---
 
 

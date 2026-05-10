@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T04:00:45.482184Z",
+  "generatedAt": "2026-05-10T19:05:25.773367Z",
   "totalSkills": 559,
   "domains": {
     "agent": 228,
@@ -37,7 +37,7 @@
         "ds-classification-metrics",
         "ds-experimental-design",
         "ds-hypothesis-testing",
-        "ds-statistical-power"
+        "ds-metrics-and-kpis ds-statistical-power"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-ab-testing/SKILL.md"
@@ -58,8 +58,8 @@
         "agent acceptance-orchestrator"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/acceptance-orchestrator/SKILL.md"
@@ -80,8 +80,8 @@
         "agent address-github-comments"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/address-github-comments/SKILL.md"
@@ -104,6 +104,7 @@
         "advanced git"
       ],
       "relatedSkills": [
+        "code-quality-policies",
         "git-branching-strategies",
         "semver-automation"
       ],
@@ -126,8 +127,8 @@
         "agent agent-evaluation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/agent-evaluation/SKILL.md"
@@ -148,8 +149,8 @@
         "agent agent-manager-skill"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/agent-manager-skill/SKILL.md"
@@ -170,8 +171,8 @@
         "agent agent-memory-systems"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/agent-memory-systems/SKILL.md"
@@ -192,8 +193,8 @@
         "agent ai-agent-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ai-agent-development/SKILL.md"
@@ -214,8 +215,8 @@
         "agent ai-agents-architect"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ai-agents-architect/SKILL.md"
@@ -236,8 +237,8 @@
         "agent ai-dev-jobs-mcp"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ai-dev-jobs-mcp/SKILL.md"
@@ -258,8 +259,8 @@
         "agent ai-ml"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ai-ml/SKILL.md"
@@ -282,8 +283,8 @@
         "airflow"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/airflow-dag-patterns/SKILL.md"
@@ -304,8 +305,8 @@
         "agent airtable-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/airtable-automation/SKILL.md"
@@ -328,7 +329,7 @@
         "azure-container-registry",
         "azure-monitor",
         "azure-resource-manager",
-        "azure-traffic-manager"
+        "azure-virtual-networks azure-traffic-manager"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-aks/SKILL.md"
@@ -367,7 +368,8 @@
       "relatedSkills": [
         "ai-order-flow-analysis",
         "data-backfill-strategy",
-        "data-candle-data"
+        "data-candle-data",
+        "exchange-failover-handling"
       ],
       "version": "1.0.0",
       "source": "skills/trading/data-alternative-data/SKILL.md"
@@ -388,8 +390,8 @@
         "agent analyze-project"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/analyze-project/SKILL.md"
@@ -410,8 +412,8 @@
         "agent andruia-consultant"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/andruia-consultant/SKILL.md"
@@ -432,8 +434,8 @@
         "agent andruia-niche-intelligence"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/andruia-niche-intelligence/SKILL.md"
@@ -454,8 +456,8 @@
         "agent andruia-skill-smith"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/andruia-skill-smith/SKILL.md"
@@ -500,6 +502,7 @@
       "relatedSkills": [
         "ai-explainable-ai",
         "ai-feature-engineering",
+        "ai-llm-orchestration",
         "ai-time-series-forecasting"
       ],
       "version": "1.0.0",
@@ -521,8 +524,8 @@
         "agent antigravity-skill-orchestrator"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/antigravity-skill-orchestrator/SKILL.md"
@@ -543,8 +546,8 @@
         "agent antigravity-workflows"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/antigravity-workflows/SKILL.md"
@@ -565,8 +568,8 @@
         "agent api-documentation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/api-documentation/SKILL.md"
@@ -589,8 +592,8 @@
         "vulnerability scanning"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/api-security-testing/SKILL.md"
@@ -611,8 +614,8 @@
         "agent apify-actor-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-actor-development/SKILL.md"
@@ -633,8 +636,8 @@
         "agent apify-actorization"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-actorization/SKILL.md"
@@ -655,8 +658,8 @@
         "agent apify-audience-analysis"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-audience-analysis/SKILL.md"
@@ -677,8 +680,8 @@
         "agent apify-brand-reputation-monitoring"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-brand-reputation-monitoring/SKILL.md"
@@ -699,8 +702,8 @@
         "agent apify-competitor-intelligence"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-competitor-intelligence/SKILL.md"
@@ -721,8 +724,8 @@
         "agent apify-content-analytics"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-content-analytics/SKILL.md"
@@ -743,8 +746,8 @@
         "agent apify-ecommerce"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-ecommerce/SKILL.md"
@@ -765,8 +768,8 @@
         "agent apify-influencer-discovery"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-influencer-discovery/SKILL.md"
@@ -787,8 +790,8 @@
         "agent apify-lead-generation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-lead-generation/SKILL.md"
@@ -809,8 +812,8 @@
         "agent apify-market-research"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-market-research/SKILL.md"
@@ -831,8 +834,8 @@
         "agent apify-trend-analysis"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-trend-analysis/SKILL.md"
@@ -853,8 +856,8 @@
         "agent apify-ultimate-scraper"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/apify-ultimate-scraper/SKILL.md"
@@ -913,8 +916,8 @@
         "agent ask-questions-if-underspecified"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ask-questions-if-underspecified/SKILL.md"
@@ -958,8 +961,8 @@
         "agent audio-transcriber"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/audio-transcriber/SKILL.md"
@@ -980,8 +983,8 @@
         "agent audit-context-building"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/audit-context-building/SKILL.md"
@@ -1002,8 +1005,8 @@
         "agent auri-core"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/auri-core/SKILL.md"
@@ -1050,7 +1053,10 @@
         "continuous integration"
       ],
       "relatedSkills": [
-        "azure-monitor"
+        "azure-key-vault",
+        "azure-monitor",
+        "azure-rbac",
+        "azure-virtual-machines"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-automation/SKILL.md"
@@ -1073,6 +1079,7 @@
         "git tags"
       ],
       "relatedSkills": [
+        "cve-dependency-management",
         "git-advanced",
         "git-branching-strategies"
       ],
@@ -1097,7 +1104,7 @@
         "gcp-cloud-load-balancing",
         "gcp-cloud-monitoring",
         "gcp-compute-engine",
-        "gcp-gke"
+        "gcp-gke gcp-gke"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/gcp-autoscaling/SKILL.md"
@@ -1175,8 +1182,8 @@
         "agent bash-scripting"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/bash-scripting/SKILL.md"
@@ -1200,7 +1207,7 @@
         "ds-confidence-intervals",
         "ds-hypothesis-testing",
         "ds-maximum-likelihood",
-        "ds-monte-carlo"
+        "ds-monte-carlo ds-monte-carlo"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-bayesian-inference/SKILL.md"
@@ -1223,8 +1230,8 @@
         "xray"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/bdistill-behavioral-xray/SKILL.md"
@@ -1245,8 +1252,8 @@
         "agent behavioral-modes"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/behavioral-modes/SKILL.md"
@@ -1286,7 +1293,10 @@
         "skills",
         "syntax"
       ],
-      "relatedSkills": [],
+      "relatedSkills": [
+        "humanizer",
+        "null"
+      ],
       "version": "1.0.0",
       "source": "skills/coding/markdown-best-practices/SKILL.md"
     },
@@ -1329,8 +1339,8 @@
         "agent bitbucket-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/bitbucket-automation/SKILL.md"
@@ -1354,7 +1364,9 @@
       ],
       "relatedSkills": [
         "azure-cdn",
-        "azure-monitor"
+        "azure-key-vault",
+        "azure-monitor",
+        "azure-rbac"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-blob-storage/SKILL.md"
@@ -1375,8 +1387,8 @@
         "agent blueprint"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/blueprint/SKILL.md"
@@ -1420,8 +1432,8 @@
         "agent build"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/build/SKILL.md"
@@ -1505,7 +1517,8 @@
       ],
       "relatedSkills": [
         "ai-order-flow-analysis",
-        "data-alternative-data"
+        "data-alternative-data",
+        "data-backfill-strategy"
       ],
       "version": "1.0.0",
       "source": "skills/trading/data-candle-data/SKILL.md"
@@ -1550,10 +1563,10 @@
         "data pipelines"
       ],
       "relatedSkills": [
+        "ds-instrumental-variables",
         "ds-intervention-analysis",
         "ds-observational-studies",
-        "ds-randomized-experiments",
-        "ds-synthetic-control"
+        "ds-randomized-experiments ds-synthetic-control"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-causal-inference/SKILL.md"
@@ -1574,8 +1587,8 @@
         "agent cc-skill-backend-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-backend-patterns/SKILL.md"
@@ -1596,8 +1609,8 @@
         "agent cc-skill-clickhouse-io"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-clickhouse-io/SKILL.md"
@@ -1618,8 +1631,8 @@
         "agent cc-skill-coding-standards"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-coding-standards/SKILL.md"
@@ -1640,8 +1653,8 @@
         "agent cc-skill-continuous-learning"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-continuous-learning/SKILL.md"
@@ -1662,8 +1675,8 @@
         "agent cc-skill-frontend-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-frontend-patterns/SKILL.md"
@@ -1684,8 +1697,8 @@
         "agent cc-skill-project-guidelines-example"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-project-guidelines-example/SKILL.md"
@@ -1708,8 +1721,8 @@
         "security"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-security-review/SKILL.md"
@@ -1730,8 +1743,8 @@
         "agent cc-skill-strategic-compact"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cc-skill-strategic-compact/SKILL.md"
@@ -1797,8 +1810,8 @@
         "agent changelog-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/changelog-automation/SKILL.md"
@@ -1836,8 +1849,8 @@
         "agent ci-cd-pipeline-analyzer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ci-cd-pipeline-analyzer/SKILL.md"
@@ -1858,8 +1871,8 @@
         "agent cicd-automation-workflow-automate"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cicd-automation-workflow-automate/SKILL.md"
@@ -1883,8 +1896,8 @@
       ],
       "relatedSkills": [
         "cicd-pipeline-troubleshooting",
-        "cncf-tekton",
-        "cncf-argocd"
+        "cncf-argocd",
+        "cncf-tekton"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cicd-pipeline-debugging/SKILL.md"
@@ -1907,9 +1920,10 @@
         "how do i debug pipelines"
       ],
       "relatedSkills": [
-        "cncf-tekton",
+        "cicd-pipeline-debugging",
         "cncf-argocd",
-        "cncf-flux"
+        "cncf-flux",
+        "cncf-tekton"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cicd-pipeline-troubleshooting/SKILL.md"
@@ -1958,8 +1972,8 @@
         "jenkins"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/circleci-automation/SKILL.md"
@@ -2004,8 +2018,8 @@
         "agent clickup-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/clickup-automation/SKILL.md"
@@ -2026,8 +2040,8 @@
         "agent closed-loop-delivery"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/closed-loop-delivery/SKILL.md"
@@ -2053,7 +2067,7 @@
         "gcp-cloud-load-balancing",
         "gcp-cloud-monitoring",
         "gcp-cloud-storage",
-        "gcp-compute-engine"
+        "gcp-compute-engine gcp-compute-engine"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/gcp-cloud-cdn/SKILL.md"
@@ -2074,8 +2088,8 @@
         "agent cloud-devops"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/cloud-devops/SKILL.md"
@@ -2100,7 +2114,7 @@
         "gcp-cloud-load-balancing",
         "gcp-cloud-monitoring",
         "gcp-compute-engine",
-        "gcp-vpc"
+        "gcp-vpc gcp-vpc"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/gcp-cloud-dns/SKILL.md"
@@ -2123,7 +2137,10 @@
         "container orchestration"
       ],
       "relatedSkills": [
-        "gcp-cloud-monitoring"
+        "gcp-cloud-monitoring",
+        "gcp-cloud-tasks",
+        "gcp-container-registry",
+        "gcp-secret-manager"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/gcp-cloud-functions/SKILL.md"
@@ -2145,6 +2162,7 @@
       "relatedSkills": [
         "gcp-cloud-sql",
         "gcp-cloud-storage",
+        "gcp-iam",
         "gcp-secret-manager"
       ],
       "version": "1.0.0",
@@ -2268,6 +2286,7 @@
       "relatedSkills": [
         "gcp-cloud-kms",
         "gcp-cloud-monitoring",
+        "gcp-iam",
         "gcp-vpc"
       ],
       "version": "1.0.0",
@@ -2438,7 +2457,7 @@
         "ds-anomaly-detection",
         "ds-association-rules",
         "ds-community-detection",
-        "ds-dimensionality-reduction"
+        "ds-dimensionality-reduction ds-dimensionality-reduction"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-clustering/SKILL.md"
@@ -2476,8 +2495,8 @@
         "agent code-correctness-verifier"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/code-correctness-verifier/SKILL.md"
@@ -2520,8 +2539,8 @@
         "agent commit"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/commit/SKILL.md"
@@ -2588,8 +2607,8 @@
         "agent concise-planning"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/concise-planning/SKILL.md"
@@ -2610,8 +2629,8 @@
         "agent conductor-implement"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-implement/SKILL.md"
@@ -2632,8 +2651,8 @@
         "agent conductor-manage"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-manage/SKILL.md"
@@ -2654,8 +2673,8 @@
         "agent conductor-new-track"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-new-track/SKILL.md"
@@ -2676,8 +2695,8 @@
         "agent conductor-revert"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-revert/SKILL.md"
@@ -2698,8 +2717,8 @@
         "agent conductor-setup"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-setup/SKILL.md"
@@ -2720,8 +2739,8 @@
         "agent conductor-status"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-status/SKILL.md"
@@ -2742,8 +2761,8 @@
         "agent conductor-validator"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conductor-validator/SKILL.md"
@@ -2764,8 +2783,8 @@
         "agent confidence-based-selector"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/confidence-based-selector/SKILL.md"
@@ -2826,8 +2845,8 @@
         "agent container-inspector"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/container-inspector/SKILL.md"
@@ -2932,8 +2951,8 @@
         "agent context-window-management"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/context-window-management/SKILL.md"
@@ -2954,8 +2973,8 @@
         "agent context7-auto-research"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/context7-auto-research/SKILL.md"
@@ -3002,8 +3021,8 @@
         "agent conversation-memory"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/conversation-memory/SKILL.md"
@@ -3066,7 +3085,9 @@
       ],
       "relatedSkills": [
         "ai-multi-asset-model",
-        "fundamentals-risk-management-basics"
+        "fundamentals-risk-management-basics",
+        "fundamentals-trading-edge",
+        "fundamentals-trading-plan"
       ],
       "version": "1.0.0",
       "source": "skills/trading/risk-correlation-risk/SKILL.md"
@@ -3132,7 +3153,10 @@
         "gcp billing"
       ],
       "relatedSkills": [
-        "cncf-opencost"
+        "cncf-opencost",
+        "disaster-recovery",
+        "gcp-cloud-functions",
+        "gcp-deployment-manager"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/cost-optimization/SKILL.md"
@@ -3155,9 +3179,9 @@
         "cost allocation"
       ],
       "relatedSkills": [
+        "agent-database-admin",
         "cncf-cost-optimization",
-        "cncf-kubernetes-debugging",
-        "agent-database-admin"
+        "cncf-kubernetes-debugging"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/cost-optimization-analysis/SKILL.md"
@@ -3178,8 +3202,8 @@
         "agent create-branch"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/create-branch/SKILL.md"
@@ -3200,8 +3224,8 @@
         "agent create-issue-gate"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/create-issue-gate/SKILL.md"
@@ -3222,8 +3246,8 @@
         "agent create-pr"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/create-pr/SKILL.md"
@@ -3243,10 +3267,10 @@
         "validation"
       ],
       "relatedSkills": [
+        "ds-bias-variance-tradeoff",
         "ds-classification-metrics",
         "ds-hyperparameter-tuning",
-        "ds-model-selection",
-        "ds-regression-evaluation"
+        "ds-model-selection ds-regression-evaluation"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-cross-validation/SKILL.md"
@@ -3327,7 +3351,7 @@
         "ai-time-series-forecasting",
         "ai-volatility-prediction",
         "fundamentals-trading-plan",
-        "technical-false-signal-filtering"
+        "technical-support-resistance technical-false-signal-filtering"
       ],
       "version": "1.0.0",
       "source": "skills/trading/technical-cycle-analysis/SKILL.md"
@@ -3533,8 +3557,8 @@
         "agent database"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/database/SKILL.md"
@@ -3557,8 +3581,8 @@
         "redis memory"
       ],
       "relatedSkills": [
-        "cncf-postgresql",
-        "cncf-azure-managed-database"
+        "cncf-azure-managed-database",
+        "cncf-postgresql"
       ],
       "version": "1.0.0",
       "source": "skills/agent/database-admin/SKILL.md"
@@ -3579,8 +3603,8 @@
         "agent dependency-graph-builder"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/dependency-graph-builder/SKILL.md"
@@ -3649,8 +3673,8 @@
         "agent development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/development/SKILL.md"
@@ -3671,8 +3695,8 @@
         "agent diary"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/diary/SKILL.md"
@@ -3693,8 +3717,8 @@
         "agent diff-quality-analyzer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/diff-quality-analyzer/SKILL.md"
@@ -3740,8 +3764,8 @@
         "how do i plan dr"
       ],
       "relatedSkills": [
-        "cncf-velero",
-        "cncf-argocd"
+        "cncf-argocd",
+        "cncf-velero"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/disaster-recovery/SKILL.md"
@@ -3762,8 +3786,8 @@
         "agent dispatching-parallel-agents"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/dispatching-parallel-agents/SKILL.md"
@@ -3829,8 +3853,8 @@
         "agent documentation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/documentation/SKILL.md"
@@ -3873,7 +3897,7 @@
         "backtest-position-sizing",
         "exchange-order-execution-api",
         "fundamentals-risk-management-basics",
-        "risk-position-sizing"
+        "risk-position-sizing risk-position-sizing"
       ],
       "version": "1.0.0",
       "source": "skills/trading/backtest-drawdown-analysis/SKILL.md"
@@ -3979,8 +4003,8 @@
         "agent dynamic-replanner"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/dynamic-replanner/SKILL.md"
@@ -4029,8 +4053,8 @@
         "unit tests"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/e2e-testing/SKILL.md"
@@ -4055,7 +4079,8 @@
       "relatedSkills": [
         "aws-auto-scaling",
         "aws-cloudformation",
-        "aws-cloudwatch"
+        "aws-cloudwatch",
+        "aws-iam"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/aws-ec2/SKILL.md"
@@ -4105,7 +4130,7 @@
         "ds-correlation-analysis",
         "ds-data-profiling",
         "ds-data-visualization",
-        "ds-missing-data"
+        "ds-dimensionality-reduction ds-missing-data"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-eda/SKILL.md"
@@ -4243,8 +4268,8 @@
         "agent error-trace-explainer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/error-trace-explainer/SKILL.md"
@@ -4305,8 +4330,8 @@
         "agent executing-plans"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/executing-plans/SKILL.md"
@@ -4330,7 +4355,7 @@
         "ds-ab-testing",
         "ds-online-experiments",
         "ds-randomized-experiments",
-        "ds-statistical-power"
+        "ds-statistical-power ds-statistical-power"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-experimental-design/SKILL.md"
@@ -4353,7 +4378,7 @@
         "ds-model-fairness",
         "ds-model-interpretation",
         "ds-model-robustness",
-        "ds-reproducible-research"
+        "ds-reproducible-research ds-reproducible-research"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-explainability/SKILL.md"
@@ -4375,6 +4400,7 @@
       "relatedSkills": [
         "ai-anomaly-detection",
         "ai-feature-engineering",
+        "ai-llm-orchestration",
         "ai-time-series-forecasting"
       ],
       "version": "1.0.0",
@@ -4417,8 +4443,8 @@
         "agent failure-mode-analysis"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/failure-mode-analysis/SKILL.md"
@@ -4439,8 +4465,8 @@
         "agent fal-audio"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/fal-audio/SKILL.md"
@@ -4481,10 +4507,10 @@
         "techniques"
       ],
       "relatedSkills": [
+        "execution-vwap",
         "fundamentals-trading-plan",
         "technical-cycle-analysis",
-        "technical-indicator-confluence",
-        "technical-momentum-indicators"
+        "technical-indicator-confluence technical-momentum-indicators"
       ],
       "version": "1.0.0",
       "source": "skills/trading/technical-false-signal-filtering/SKILL.md"
@@ -4505,9 +4531,9 @@
       ],
       "relatedSkills": [
         "ds-categorical-encoding",
+        "ds-dimensionality-reduction",
         "ds-feature-scaling-normalization",
-        "ds-feature-selection",
-        "ds-missing-data"
+        "ds-feature-selection ds-missing-data"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-feature-engineering/SKILL.md"
@@ -4596,7 +4622,7 @@
         "ds-feature-engineering",
         "ds-feature-interaction",
         "ds-hyperparameter-tuning",
-        "ds-model-interpretation"
+        "ds-model-interpretation ds-model-interpretation"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-feature-selection/SKILL.md"
@@ -4641,8 +4667,8 @@
         "agent filesystem-context"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/filesystem-context/SKILL.md"
@@ -4684,8 +4710,8 @@
         "agent finishing-a-development-branch"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/finishing-a-development-branch/SKILL.md"
@@ -4809,8 +4835,8 @@
         "agent freshdesk-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/freshdesk-automation/SKILL.md"
@@ -4831,8 +4857,8 @@
         "agent full-stack-orchestration-full-stack-feature"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md"
@@ -4879,8 +4905,8 @@
         "agent gemini-api-integration"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/gemini-api-integration/SKILL.md"
@@ -4901,8 +4927,8 @@
         "agent gh-review-requests"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/gh-review-requests/SKILL.md"
@@ -4923,8 +4949,8 @@
         "agent git-advanced-workflows"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-advanced-workflows/SKILL.md"
@@ -4945,8 +4971,8 @@
         "agent git-hooks-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-hooks-automation/SKILL.md"
@@ -4967,8 +4993,8 @@
         "agent git-pr-workflows-git-workflow"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-pr-workflows-git-workflow/SKILL.md"
@@ -4989,8 +5015,8 @@
         "agent git-pr-workflows-onboard"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-pr-workflows-onboard/SKILL.md"
@@ -5011,8 +5037,8 @@
         "agent git-pr-workflows-pr-enhance"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-pr-workflows-pr-enhance/SKILL.md"
@@ -5033,8 +5059,8 @@
         "agent git-pushing"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-pushing/SKILL.md"
@@ -5055,8 +5081,8 @@
         "agent github-actions-templates"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/github-actions-templates/SKILL.md"
@@ -5077,8 +5103,8 @@
         "agent github-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/github-automation/SKILL.md"
@@ -5099,8 +5125,8 @@
         "agent github-workflow-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/github-workflow-automation/SKILL.md"
@@ -5121,8 +5147,8 @@
         "agent gitlab-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/gitlab-automation/SKILL.md"
@@ -5143,8 +5169,8 @@
         "agent gitlab-ci-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/gitlab-ci-patterns/SKILL.md"
@@ -5213,8 +5239,8 @@
         "agent goal-to-milestones"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/goal-to-milestones/SKILL.md"
@@ -5235,8 +5261,8 @@
         "agent google-analytics-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/google-analytics-automation/SKILL.md"
@@ -5257,8 +5283,8 @@
         "agent google-docs-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/google-docs-automation/SKILL.md"
@@ -5279,8 +5305,8 @@
         "agent google-drive-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/google-drive-automation/SKILL.md"
@@ -5324,9 +5350,9 @@
         "grpc gateway"
       ],
       "relatedSkills": [
+        "agent-docker-debugging",
         "coding-fastapi-patterns",
-        "coding-rest-api-patterns",
-        "agent-docker-debugging"
+        "coding-rest-api-patterns"
       ],
       "version": "1.0.0",
       "source": "skills/coding/grpc-patterns/SKILL.md"
@@ -5393,8 +5419,8 @@
         "health check testing"
       ],
       "relatedSkills": [
-        "cncf-kubernetes-debugging",
         "agent-docker-debugging",
+        "cncf-kubernetes-debugging",
         "coding-fastapi-patterns"
       ],
       "version": "1.0.0",
@@ -5437,8 +5463,8 @@
         "agent helpdesk-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/helpdesk-automation/SKILL.md"
@@ -5459,8 +5485,8 @@
         "agent hierarchical-agent-memory"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/hierarchical-agent-memory/SKILL.md"
@@ -5481,8 +5507,8 @@
         "agent hosted-agents"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/hosted-agents/SKILL.md"
@@ -5503,8 +5529,8 @@
         "agent hosted-agents-v2-py"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/hosted-agents-v2-py/SKILL.md"
@@ -5525,8 +5551,8 @@
         "agent hot-path-detector"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/hot-path-detector/SKILL.md"
@@ -5565,8 +5591,8 @@
         "agent hubspot-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/hubspot-automation/SKILL.md"
@@ -5642,7 +5668,7 @@
         "ds-bias-variance-tradeoff",
         "ds-cross-validation",
         "ds-model-selection",
-        "ds-tree-methods"
+        "ds-support-vector-machines ds-tree-methods"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-hyperparameter-tuning/SKILL.md"
@@ -5782,9 +5808,9 @@
         "incident documentation"
       ],
       "relatedSkills": [
+        "agent-database-admin",
         "cncf-kubernetes-debugging",
-        "cncf-security-compliance",
-        "agent-database-admin"
+        "cncf-security-compliance"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/incident-response-runbooks/SKILL.md"
@@ -5805,7 +5831,8 @@
       ],
       "relatedSkills": [
         "fundamentals-trading-plan",
-        "technical-cycle-analysis"
+        "technical-cycle-analysis",
+        "technical-false-signal-filtering"
       ],
       "version": "1.0.0",
       "source": "skills/trading/technical-indicator-confluence/SKILL.md"
@@ -5826,8 +5853,8 @@
         "agent infra-drift-detector"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/infra-drift-detector/SKILL.md"
@@ -5893,8 +5920,8 @@
         "agent inngest"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/inngest/SKILL.md"
@@ -5938,8 +5965,8 @@
         "agent intercom-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/intercom-automation/SKILL.md"
@@ -5959,6 +5986,7 @@
         "technical-intermarket-analysis"
       ],
       "relatedSkills": [
+        "ai-regime-classification",
         "fundamentals-trading-plan",
         "technical-cycle-analysis"
       ],
@@ -5983,7 +6011,7 @@
         "ds-causal-inference",
         "ds-observational-studies",
         "ds-randomized-experiments",
-        "ds-synthetic-control"
+        "ds-synthetic-control ds-synthetic-control"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-intervention-analysis/SKILL.md"
@@ -6025,8 +6053,8 @@
         "agent issues"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/issues/SKILL.md"
@@ -6068,8 +6096,8 @@
         "agent iterate-pr"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/iterate-pr/SKILL.md"
@@ -6113,8 +6141,8 @@
         "container orchestration"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/k8s-debugger/SKILL.md"
@@ -6198,7 +6226,8 @@
       "relatedSkills": [
         "azure-automation",
         "azure-blob-storage",
-        "azure-functions"
+        "azure-functions",
+        "notary-project"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-key-vault/SKILL.md"
@@ -6235,7 +6264,10 @@
         "password"
       ],
       "relatedSkills": [
-        "azure-functions"
+        "azure-aks",
+        "azure-automation",
+        "azure-blob-storage",
+        "azure-cdn"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-keyvault-secrets/SKILL.md"
@@ -6470,8 +6502,8 @@
       ],
       "relatedSkills": [
         "cncf-kubernetes-debugging",
-        "coding-grpc-patterns",
-        "cncf-tekton"
+        "cncf-tekton",
+        "coding-grpc-patterns"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/kubernetes-api-patterns/SKILL.md"
@@ -6519,8 +6551,8 @@
         "deployment"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/kubernetes-deployment/SKILL.md"
@@ -6690,8 +6722,8 @@
         "lambda"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/lambda-lang/SKILL.md"
@@ -6712,8 +6744,8 @@
         "agent langgraph"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/langgraph/SKILL.md"
@@ -6762,8 +6794,8 @@
       "relatedSkills": [
         "ds-feature-engineering",
         "ds-feature-scaling-normalization",
-        "ds-logistic-regression",
-        "ds-regression-evaluation"
+        "ds-instrumental-variables",
+        "ds-logistic-regression ds-regression-evaluation"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-linear-regression/SKILL.md"
@@ -6810,8 +6842,8 @@
         "agent lint-and-validate"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/lint-and-validate/SKILL.md"
@@ -6832,8 +6864,8 @@
         "agent linux-troubleshooting"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/linux-troubleshooting/SKILL.md"
@@ -7017,7 +7049,7 @@
         "backtest-position-exits",
         "backtest-sharpe-ratio",
         "backtest-walk-forward",
-        "fundamentals-trading-plan"
+        "paper-performance-attribution fundamentals-trading-plan"
       ],
       "version": "1.0.0",
       "source": "skills/trading/backtest-lookahead-bias/SKILL.md"
@@ -7038,8 +7070,8 @@
         "agent m365-agents-dotnet"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/m365-agents-dotnet/SKILL.md"
@@ -7060,8 +7092,8 @@
         "agent m365-agents-ts"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/m365-agents-ts/SKILL.md"
@@ -7082,8 +7114,8 @@
         "agent make-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/make-automation/SKILL.md"
@@ -7166,7 +7198,8 @@
       ],
       "relatedSkills": [
         "fundamentals-market-regimes",
-        "fundamentals-trading-plan"
+        "fundamentals-trading-plan",
+        "paper-commission-model"
       ],
       "version": "1.0.0",
       "source": "skills/trading/paper-market-impact/SKILL.md"
@@ -7209,7 +7242,8 @@
       "relatedSkills": [
         "fundamentals-trading-edge",
         "paper-commission-model",
-        "paper-market-impact"
+        "paper-market-impact",
+        "paper-realistic-simulation"
       ],
       "version": "1.0.0",
       "source": "skills/trading/fundamentals-market-regimes/SKILL.md"
@@ -7253,9 +7287,9 @@
       ],
       "relatedSkills": [
         "ds-bayesian-inference",
+        "ds-distribution-fitting",
         "ds-hypothesis-testing",
-        "ds-linear-regression",
-        "ds-monte-carlo"
+        "ds-linear-regression ds-monte-carlo"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-maximum-likelihood/SKILL.md"
@@ -7276,8 +7310,8 @@
         "agent mcp-builder"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/mcp-builder/SKILL.md"
@@ -7298,8 +7332,8 @@
         "agent mcp-builder-ms"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/mcp-builder-ms/SKILL.md"
@@ -7320,8 +7354,8 @@
         "agent memory-systems"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/memory-systems/SKILL.md"
@@ -7342,8 +7376,8 @@
         "agent memory-usage-analyzer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/memory-usage-analyzer/SKILL.md"
@@ -7366,8 +7400,8 @@
         "queue monitoring"
       ],
       "relatedSkills": [
-        "agent-message-queue-troubleshooting",
         "agent-database-admin",
+        "agent-message-queue-troubleshooting",
         "cncf-kubernetes-debugging"
       ],
       "version": "1.0.0",
@@ -7417,7 +7451,7 @@
         "ds-ab-testing",
         "ds-classification-metrics",
         "ds-online-experiments",
-        "ds-regression-evaluation"
+        "ds-regression-evaluation ds-regression-evaluation"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-metrics-and-kpis/SKILL.md"
@@ -7461,8 +7495,8 @@
         "agent ml-pipeline-workflow"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/ml-pipeline-workflow/SKILL.md"
@@ -7507,7 +7541,7 @@
         "ds-explainability",
         "ds-model-interpretation",
         "ds-model-robustness",
-        "ds-privacy-ml"
+        "ds-privacy-ml ds-privacy-ml"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-model-fairness/SKILL.md"
@@ -7579,8 +7613,8 @@
       "relatedSkills": [
         "ds-bias-variance-tradeoff",
         "ds-cross-validation",
-        "ds-hyperparameter-tuning",
-        "ds-regression-evaluation"
+        "ds-ensemble-methods",
+        "ds-hyperparameter-tuning ds-regression-evaluation"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-model-selection/SKILL.md"
@@ -7669,7 +7703,7 @@
         "ds-bayesian-inference",
         "ds-confidence-intervals",
         "ds-distribution-fitting",
-        "ds-kernel-density"
+        "ds-kernel-density ds-kernel-density"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-monte-carlo/SKILL.md"
@@ -7690,8 +7724,8 @@
         "agent multi-advisor"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/multi-advisor/SKILL.md"
@@ -7712,8 +7746,8 @@
         "agent multi-agent-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/multi-agent-patterns/SKILL.md"
@@ -7734,8 +7768,8 @@
         "agent multi-agent-task-orchestrator"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/multi-agent-task-orchestrator/SKILL.md"
@@ -7756,7 +7790,8 @@
       ],
       "relatedSkills": [
         "backtest-drawdown-analysis",
-        "fundamentals-risk-management-basics"
+        "fundamentals-risk-management-basics",
+        "risk-correlation-risk"
       ],
       "version": "1.0.0",
       "source": "skills/trading/ai-multi-asset-model/SKILL.md"
@@ -7777,8 +7812,8 @@
         "agent multi-skill-executor"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/multi-skill-executor/SKILL.md"
@@ -7799,8 +7834,8 @@
         "agent n8n-code-javascript"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-code-javascript/SKILL.md"
@@ -7821,8 +7856,8 @@
         "agent n8n-code-python"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-code-python/SKILL.md"
@@ -7843,8 +7878,8 @@
         "agent n8n-expression-syntax"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-expression-syntax/SKILL.md"
@@ -7865,8 +7900,8 @@
         "agent n8n-mcp-tools-expert"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-mcp-tools-expert/SKILL.md"
@@ -7887,8 +7922,8 @@
         "agent n8n-node-configuration"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-node-configuration/SKILL.md"
@@ -7909,8 +7944,8 @@
         "agent n8n-validation-expert"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-validation-expert/SKILL.md"
@@ -7931,8 +7966,8 @@
         "agent n8n-workflow-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/n8n-workflow-patterns/SKILL.md"
@@ -7979,8 +8014,8 @@
         "agent network-diagnostics"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/network-diagnostics/SKILL.md"
@@ -8052,8 +8087,8 @@
         "firewall rules"
       ],
       "relatedSkills": [
-        "agent-network-troubleshooting",
         "agent-docker-debugging",
+        "agent-network-troubleshooting",
         "cncf-service-mesh-debugging"
       ],
       "version": "1.0.0",
@@ -8080,7 +8115,7 @@
         "ds-categorical-encoding",
         "ds-ensemble-methods",
         "ds-hyperparameter-tuning",
-        "ds-tree-methods"
+        "ds-support-vector-machines ds-tree-methods"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-neural-networks/SKILL.md"
@@ -8140,8 +8175,8 @@
         "agent not-human-search-mcp"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/not-human-search-mcp/SKILL.md"
@@ -8162,8 +8197,8 @@
         "agent notion-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/notion-automation/SKILL.md"
@@ -8225,9 +8260,9 @@
       ],
       "relatedSkills": [
         "ds-causal-inference",
+        "ds-instrumental-variables",
         "ds-intervention-analysis",
-        "ds-randomized-experiments",
-        "ds-synthetic-control"
+        "ds-randomized-experiments ds-synthetic-control"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-observational-studies/SKILL.md"
@@ -8407,7 +8442,8 @@
       "relatedSkills": [
         "ai-order-flow-analysis",
         "exchange-order-execution-api",
-        "fundamentals-market-structure"
+        "fundamentals-market-structure",
+        "technical-market-microstructure"
       ],
       "version": "1.0.0",
       "source": "skills/trading/data-order-book/SKILL.md"
@@ -8450,8 +8486,8 @@
       "relatedSkills": [
         "exchange-order-execution-api",
         "exchange-rate-limiting",
-        "execution-vwap",
-        "technical-false-signal-filtering"
+        "execution-twap-vwap",
+        "execution-vwap technical-false-signal-filtering"
       ],
       "version": "1.0.0",
       "source": "skills/trading/exchange-order-book-sync/SKILL.md"
@@ -8471,10 +8507,10 @@
         "trading"
       ],
       "relatedSkills": [
+        "ai-order-flow-analysis",
         "exchange-order-book-sync",
         "exchange-rate-limiting",
-        "execution-twap",
-        "technical-false-signal-filtering"
+        "execution-twap technical-false-signal-filtering"
       ],
       "version": "1.0.0",
       "source": "skills/trading/exchange-order-execution-api/SKILL.md"
@@ -8518,8 +8554,8 @@
         "agent os-scripting"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/os-scripting/SKILL.md"
@@ -8558,8 +8594,8 @@
         "agent outlook-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/outlook-automation/SKILL.md"
@@ -8580,8 +8616,8 @@
         "agent outlook-calendar-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/outlook-calendar-automation/SKILL.md"
@@ -8602,8 +8638,8 @@
         "agent parallel-agents"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/parallel-agents/SKILL.md"
@@ -8624,8 +8660,8 @@
         "agent parallel-skill-runner"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/parallel-skill-runner/SKILL.md"
@@ -8714,8 +8750,8 @@
         "performance"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/performance-profiler/SKILL.md"
@@ -8736,8 +8772,8 @@
         "agent pipecat-friday-agent"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/pipecat-friday-agent/SKILL.md"
@@ -8758,8 +8794,8 @@
         "agent plan-writing"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/plan-writing/SKILL.md"
@@ -8780,8 +8816,8 @@
         "agent planning-with-files"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/planning-with-files/SKILL.md"
@@ -8829,8 +8865,7 @@
       "relatedSkills": [
         "backtest-lookahead-bias",
         "backtest-sharpe-ratio",
-        "backtest-walk-forward",
-        "fundamentals-trading-plan"
+        "backtest-walk-forward fundamentals-trading-plan"
       ],
       "version": "1.0.0",
       "source": "skills/trading/backtest-position-exits/SKILL.md"
@@ -8852,8 +8887,7 @@
       "relatedSkills": [
         "backtest-drawdown-analysis",
         "exchange-order-execution-api",
-        "fundamentals-risk-management-basics",
-        "risk-position-sizing"
+        "fundamentals-risk-management-basics risk-position-sizing"
       ],
       "version": "1.0.0",
       "source": "skills/trading/backtest-position-sizing/SKILL.md"
@@ -8897,8 +8931,8 @@
         "postgresql"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/postgresql-optimization/SKILL.md"
@@ -8919,8 +8953,8 @@
         "agent pr-writer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/pr-writer/SKILL.md"
@@ -9031,8 +9065,8 @@
         "agent prompt-engineer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/prompt-engineer/SKILL.md"
@@ -9055,9 +9089,9 @@
         "cloudformation"
       ],
       "relatedSkills": [
-        "cncf-terraform",
         "cncf-aws-cloudformation",
-        "cncf-helm"
+        "cncf-helm",
+        "cncf-terraform"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/pulumi/SKILL.md"
@@ -9078,8 +9112,8 @@
         "agent pydantic-ai"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/pydantic-ai/SKILL.md"
@@ -9100,8 +9134,8 @@
         "agent python-fastapi-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/python-fastapi-development/SKILL.md"
@@ -9124,8 +9158,8 @@
         "automated enforcement"
       ],
       "relatedSkills": [
-        "git-advanced",
-        "architectural-patterns"
+        "architectural-patterns",
+        "git-advanced"
       ],
       "version": "1.0.0",
       "source": "skills/coding/code-quality-policies/SKILL.md"
@@ -9146,8 +9180,8 @@
         "agent query-optimizer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/query-optimizer/SKILL.md"
@@ -9168,8 +9202,8 @@
         "agent rag-implementation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/rag-implementation/SKILL.md"
@@ -9214,6 +9248,7 @@
       ],
       "relatedSkills": [
         "exchange-order-book-sync",
+        "exchange-order-execution-api",
         "technical-false-signal-filtering"
       ],
       "version": "1.0.0",
@@ -9284,7 +9319,8 @@
       "relatedSkills": [
         "aws-auto-scaling",
         "aws-cloudformation",
-        "aws-cloudwatch"
+        "aws-cloudwatch",
+        "aws-kms"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/aws-rds/SKILL.md"
@@ -9305,8 +9341,8 @@
         "agent react-nextjs-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/react-nextjs-development/SKILL.md"
@@ -9348,8 +9384,8 @@
         "agent recallmax"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/recallmax/SKILL.md"
@@ -9370,8 +9406,8 @@
         "agent receiving-code-review"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/receiving-code-review/SKILL.md"
@@ -9434,8 +9470,8 @@
         "agent regression-detector"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/regression-detector/SKILL.md"
@@ -9460,7 +9496,7 @@
         "ds-cross-validation",
         "ds-linear-regression",
         "ds-metrics-and-kpis",
-        "ds-model-selection"
+        "ds-time-series-forecasting ds-model-selection"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-regression-evaluation/SKILL.md"
@@ -9544,8 +9580,8 @@
         "agent render-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/render-automation/SKILL.md"
@@ -9590,8 +9626,8 @@
         "agent requesting-code-review"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/requesting-code-review/SKILL.md"
@@ -9616,7 +9652,8 @@
       "relatedSkills": [
         "azure-aks",
         "azure-sql-database",
-        "azure-virtual-networks"
+        "azure-virtual-networks",
+        "gcp-deployment-manager"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-resource-manager/SKILL.md"
@@ -9637,8 +9674,8 @@
         "agent resource-optimizer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/resource-optimizer/SKILL.md"
@@ -9657,7 +9694,12 @@
         "diffs",
         "files"
       ],
-      "relatedSkills": [],
+      "relatedSkills": [
+        "dry-principles",
+        "humanizer",
+        "null",
+        "secure-release-pipeline"
+      ],
       "version": "1.1.0",
       "source": "skills/coding/code-review/SKILL.md"
     },
@@ -9700,7 +9742,9 @@
       ],
       "relatedSkills": [
         "backtest-drawdown-analysis",
-        "exchange-order-execution-api"
+        "backtest-position-sizing",
+        "exchange-order-execution-api",
+        "risk-correlation-risk"
       ],
       "version": "1.0.0",
       "source": "skills/trading/fundamentals-risk-management-basics/SKILL.md"
@@ -9723,9 +9767,9 @@
         "rollback procedures"
       ],
       "relatedSkills": [
-        "cncf-kubernetes-debugging",
+        "cncf-argocd",
         "cncf-deployment-patterns",
-        "cncf-argocd"
+        "cncf-kubernetes-debugging"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/rollback-procedures/SKILL.md"
@@ -9789,8 +9833,8 @@
         "agent runtime-log-analyzer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/runtime-log-analyzer/SKILL.md"
@@ -9839,6 +9883,7 @@
       "relatedSkills": [
         "azure-load-balancer",
         "azure-monitor",
+        "azure-virtual-machines",
         "azure-virtual-networks"
       ],
       "version": "1.0.0",
@@ -9860,8 +9905,8 @@
         "agent schema-inference-engine"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/schema-inference-engine/SKILL.md"
@@ -9947,8 +9992,8 @@
         "security"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/security-audit/SKILL.md"
@@ -9971,9 +10016,9 @@
         "security controls"
       ],
       "relatedSkills": [
-        "cncf-kubernetes-debugging",
+        "agent-database-admin",
         "agent-network-troubleshooting",
-        "agent-database-admin"
+        "cncf-kubernetes-debugging"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/security-compliance/SKILL.md"
@@ -10015,8 +10060,8 @@
         "agent self-critique-engine"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/self-critique-engine/SKILL.md"
@@ -10037,8 +10082,8 @@
         "agent sendgrid-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/sendgrid-automation/SKILL.md"
@@ -10128,9 +10173,9 @@
         "mesh monitoring"
       ],
       "relatedSkills": [
-        "cncf-kubernetes-debugging",
         "agent-network-troubleshooting",
-        "cncf-istio"
+        "cncf-istio",
+        "cncf-kubernetes-debugging"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/service-mesh-debugging/SKILL.md"
@@ -10153,6 +10198,7 @@
       ],
       "relatedSkills": [
         "backtest-lookahead-bias",
+        "backtest-position-exits",
         "fundamentals-trading-plan"
       ],
       "version": "1.0.0",
@@ -10195,8 +10241,8 @@
         "agent shopify-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/shopify-automation/SKILL.md"
@@ -10217,8 +10263,8 @@
         "agent skill-creator"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-creator/SKILL.md"
@@ -10239,8 +10285,8 @@
         "agent skill-creator-ms"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-creator-ms/SKILL.md"
@@ -10261,8 +10307,8 @@
         "agent skill-developer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-developer/SKILL.md"
@@ -10283,8 +10329,8 @@
         "agent skill-improver"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-improver/SKILL.md"
@@ -10305,8 +10351,8 @@
         "agent skill-installer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-installer/SKILL.md"
@@ -10327,8 +10373,8 @@
         "agent skill-optimizer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-optimizer/SKILL.md"
@@ -10349,8 +10395,8 @@
         "agent skill-rails-upgrade"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-rails-upgrade/SKILL.md"
@@ -10371,8 +10417,8 @@
         "agent skill-router"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-router/SKILL.md"
@@ -10393,8 +10439,8 @@
         "agent skill-scanner"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-scanner/SKILL.md"
@@ -10415,8 +10461,8 @@
         "agent skill-seekers"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-seekers/SKILL.md"
@@ -10437,8 +10483,8 @@
         "agent skill-sentinel"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-sentinel/SKILL.md"
@@ -10459,8 +10505,8 @@
         "agent skill-writer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-writer/SKILL.md"
@@ -10481,8 +10527,8 @@
         "agent slack-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/slack-automation/SKILL.md"
@@ -10677,8 +10723,8 @@
         "agent stacktrace-root-cause"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/stacktrace-root-cause/SKILL.md"
@@ -10829,8 +10875,8 @@
         "agent stripe-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/stripe-automation/SKILL.md"
@@ -10851,8 +10897,8 @@
         "agent subagent-driven-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/subagent-driven-development/SKILL.md"
@@ -10980,8 +11026,8 @@
         "agent task-decomposition-engine"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/task-decomposition-engine/SKILL.md"
@@ -11002,8 +11048,8 @@
         "agent task-intelligence"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/task-intelligence/SKILL.md"
@@ -11067,8 +11113,8 @@
         "agent temporal-golang-pro"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/temporal-golang-pro/SKILL.md"
@@ -11089,8 +11135,8 @@
         "agent temporal-python-pro"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/temporal-python-pro/SKILL.md"
@@ -11113,9 +11159,9 @@
         "terraform troubleshooting"
       ],
       "relatedSkills": [
-        "cncf-pulumi",
         "cncf-aws-cloudformation",
-        "cncf-helm"
+        "cncf-helm",
+        "cncf-pulumi"
       ],
       "version": "1.0.0",
       "source": "skills/cncf/terraform/SKILL.md"
@@ -11138,8 +11184,8 @@
         "cloudformation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/terraform-infrastructure/SKILL.md"
@@ -11162,8 +11208,8 @@
         "oracle"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/test-oracle-generator/SKILL.md"
@@ -11186,8 +11232,8 @@
         "testing"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/testing-qa/SKILL.md"
@@ -11292,7 +11338,8 @@
       ],
       "relatedSkills": [
         "ai-anomaly-detection",
-        "ai-explainable-ai"
+        "ai-explainable-ai",
+        "technical-cycle-analysis"
       ],
       "version": "1.0.0",
       "source": "skills/trading/ai-time-series-forecasting/SKILL.md"
@@ -11358,8 +11405,8 @@
         "agent track-management"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/track-management/SKILL.md"
@@ -11402,6 +11449,7 @@
       "relatedSkills": [
         "fundamentals-market-regimes",
         "fundamentals-trading-plan",
+        "fundamentals-trading-psychology",
         "risk-correlation-risk"
       ],
       "version": "1.0.0",
@@ -11424,7 +11472,9 @@
       ],
       "relatedSkills": [
         "fundamentals-trading-edge",
-        "risk-correlation-risk"
+        "paper-commission-model",
+        "risk-correlation-risk",
+        "technical-support-resistance"
       ],
       "version": "1.0.0",
       "source": "skills/trading/fundamentals-trading-plan/SKILL.md"
@@ -11493,7 +11543,7 @@
         "ds-ensemble-methods",
         "ds-hyperparameter-tuning",
         "ds-neural-networks",
-        "ds-support-vector-machines"
+        "ds-support-vector-machines ds-support-vector-machines"
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-tree-methods/SKILL.md"
@@ -11535,8 +11585,8 @@
         "agent trigger-dev"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/trigger-dev/SKILL.md"
@@ -11557,6 +11607,7 @@
       ],
       "relatedSkills": [
         "exchange-order-book-sync",
+        "exchange-order-execution-api",
         "technical-false-signal-filtering"
       ],
       "version": "1.0.0",
@@ -11617,8 +11668,8 @@
         "agent upstash-qstash"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/upstash-qstash/SKILL.md"
@@ -11639,8 +11690,8 @@
         "agent using-superpowers"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/using-superpowers/SKILL.md"
@@ -11773,8 +11824,8 @@
         "agent verification-before-completion"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/verification-before-completion/SKILL.md"
@@ -11795,8 +11846,8 @@
         "agent viboscope"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/viboscope/SKILL.md"
@@ -11885,8 +11936,8 @@
         "agent voice-ai-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/voice-ai-development/SKILL.md"
@@ -11928,7 +11979,8 @@
       ],
       "relatedSkills": [
         "ai-anomaly-detection",
-        "ai-explainable-ai"
+        "ai-explainable-ai",
+        "technical-cycle-analysis"
       ],
       "version": "1.0.0",
       "source": "skills/trading/ai-volatility-prediction/SKILL.md"
@@ -12066,6 +12118,7 @@
       ],
       "relatedSkills": [
         "backtest-lookahead-bias",
+        "backtest-position-exits",
         "fundamentals-trading-plan"
       ],
       "version": "1.0.0",
@@ -12106,8 +12159,8 @@
         "vulnerability scanning"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/web-security-testing/SKILL.md"
@@ -12170,8 +12223,8 @@
         "agent wordpress"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/wordpress/SKILL.md"
@@ -12192,8 +12245,8 @@
         "agent wordpress-plugin-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/wordpress-plugin-development/SKILL.md"
@@ -12214,8 +12267,8 @@
         "agent wordpress-theme-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/wordpress-theme-development/SKILL.md"
@@ -12236,8 +12289,8 @@
         "agent wordpress-woocommerce-development"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/wordpress-woocommerce-development/SKILL.md"
@@ -12260,8 +12313,8 @@
         "ci/cd"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/workflow-automation/SKILL.md"
@@ -12282,8 +12335,8 @@
         "agent workflow-orchestration-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/workflow-orchestration-patterns/SKILL.md"
@@ -12304,8 +12357,8 @@
         "agent workflow-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/workflow-patterns/SKILL.md"
@@ -12326,8 +12379,8 @@
         "agent writing-plans"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/writing-plans/SKILL.md"
@@ -12348,8 +12401,8 @@
         "agent writing-skills"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/writing-skills/SKILL.md"
@@ -12370,8 +12423,8 @@
         "agent zapier-make-patterns"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/zapier-make-patterns/SKILL.md"
@@ -12392,8 +12445,8 @@
         "agent zendesk-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/zendesk-automation/SKILL.md"
@@ -12414,8 +12467,8 @@
         "agent zipai-optimizer"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/zipai-optimizer/SKILL.md"
@@ -12436,8 +12489,8 @@
         "agent zoom-automation"
       ],
       "relatedSkills": [
-        "agent-task-routing",
-        "agent-confidence-based-selector"
+        "agent-confidence-based-selector",
+        "agent-task-routing"
       ],
       "version": "1.0.0",
       "source": "skills/agent/zoom-automation/SKILL.md"

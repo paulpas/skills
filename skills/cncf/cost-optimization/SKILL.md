@@ -10,7 +10,7 @@ metadata:
   scope: implementation
   output-format: code
   triggers: cost optimization, right sizing, reserved instances, spot instances, multi cloud costs, aws cost analysis, azure cost, gcp billing
-  related-skills: cncf-opencost
+  related-skills: cncf-opencost, disaster-recovery, gcp-cloud-functions, gcp-deployment-manager
 ---
 
 # Cloud Cost Optimization

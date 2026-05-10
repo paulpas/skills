@@ -11,7 +11,7 @@ metadata:
   output-format: code
   triggers: competitive, finding, fundamentals trading edge, fundamentals-trading-edge,
     maintaining
-  related-skills: fundamentals-market-regimes, fundamentals-trading-plan, risk-correlation-risk
+  related-skills: fundamentals-market-regimes, fundamentals-trading-plan, fundamentals-trading-psychology, risk-correlation-risk
 ---
 
 

@@ -11,7 +11,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: autoscaling, auto-scaling, scaling, horizontal scaling, vertical scaling
-  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-compute-engine,
+  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-compute-engine, gcp-gke
     gcp-gke
 ---
 

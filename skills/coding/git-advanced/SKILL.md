@@ -13,7 +13,7 @@ metadata:
   output-format: code
   triggers: git rebase, git cherry-pick, git bisect, git reflog, worktrees, filter-branch,
     multi-repo, advanced git
-  related-skills: git-branching-strategies, semver-automation
+  related-skills: code-quality-policies, git-branching-strategies, semver-automation
 ---
 
 

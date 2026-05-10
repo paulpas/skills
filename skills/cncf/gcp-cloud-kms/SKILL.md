@@ -11,7 +11,7 @@ metadata:
   scope: infrastructure
   output-format: manifests
   triggers: kms, key management, encryption, encryption keys, key rotation
-  related-skills: gcp-cloud-sql, gcp-cloud-storage, gcp-secret-manager
+  related-skills: gcp-cloud-sql, gcp-cloud-storage, gcp-iam, gcp-secret-manager
 ---
 
 
