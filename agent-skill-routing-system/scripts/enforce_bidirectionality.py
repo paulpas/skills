@@ -45,7 +45,7 @@ class BidirectionalityEnforcer:
     def find_all_skills(self) -> Dict[str, SkillInfo]:
         """Find all skills in the skills directory."""
         skills = {}
-        for skill_dir in self.skills_dir.glob("*/"):
+        for skill_dir in self.skills_dir.rglob("*/"):
             if not skill_dir.is_dir():
                 continue
 

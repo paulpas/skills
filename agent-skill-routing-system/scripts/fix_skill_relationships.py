@@ -174,7 +174,7 @@ def get_all_skills(skills_dir):
         return sorted(
             [
                 d.name
-                for d in skills_dir.iterdir()
+                for d in skills_dir.rglob("*/")
                 if d.is_dir() and (d / "SKILL.md").exists()
             ]
         )
