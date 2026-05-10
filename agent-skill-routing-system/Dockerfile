@@ -26,7 +26,7 @@
 # See LLM_COMPRESSION.md for scaling details and cache tuning
 
 # Stage 1: Builder
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY package*.json tsconfig.json ./
 RUN npm ci
@@ -50,7 +50,7 @@ ARG SKILL_COMPRESSION_MEMORY_TTL_MINUTES=60
 ARG SKILL_COMPRESSION_DISK_TTL_DAYS=7
 ARG SKILL_COMPRESSION_LAZY_WRITE_INTERVAL_MS=5000
 
-FROM node:20-alpine AS runtime
+FROM node:24-alpine AS runtime
 
 # Install git and openssh-client for skill repository management with SSH support
 RUN apk add --no-cache git openssh-client
