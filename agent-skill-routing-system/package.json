@@ -33,7 +33,7 @@
     "openai": "^4.47.1",
     "uuid": "^9.0.1",
     "yaml": "^2.9.0",
-    "zod": "^3.22.4"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
