@@ -10,7 +10,7 @@ anthropic>=0.7.0
 groq>=0.4.0
 
 # Token counting for OpenAI models
-tiktoken>=0.5.0
+tiktoken>=0.12.0
 
 # HTTP requests (for Ollama and general use)
 requests>=2.31.0
