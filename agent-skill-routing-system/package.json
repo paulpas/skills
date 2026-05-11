@@ -25,13 +25,13 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "^8.20.0",
-    "fastify": "^4.26.0",
+    "fastify": "^5.8.5",
     "glob": "^13.0.6",
     "json-schema": "^0.4.0",
     "lodash": "^4.17.21",
     "nanoid": "^5.1.11",
     "openai": "^6.37.0",
-    "uuid": "^9.0.1",
+    "uuid": "^14.0.0",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },
