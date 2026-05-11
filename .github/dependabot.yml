@@ -1,0 +1,52 @@
+version: 2
+updates:
+  # GitHub Actions versions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'ci'
+      include: 'scope'
+
+  # Root npm
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+      include: 'scope'
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+
+  # Subproject npm
+  - package-ecosystem: npm
+    directory: /agent-skill-routing-system
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+      include: 'scope'
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+
+  # Python (used by scripts/)
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+      include: 'scope'
