@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "id": "skill-reporting-rule",
+      "name": "Always report loaded skills",
+      "description": "After every task that loads skills, end your response with: > 📖 skill: <skill-names>",
+      "scope": "persistent",
+      "action": "End every response that uses skills with the skill citation line in the format: > 📖 skill: <skill-name-1>, <skill-name-2>",
+      "enabled": true
+    }
+  ]
+}
