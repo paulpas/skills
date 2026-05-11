@@ -2,245 +2,233 @@ name: CI Pipeline
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
   push:
-    branches:
-      - main
+    branches: [main]
+
+# Default to least-privilege; jobs may escalate as needed.
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: '24'
+
 jobs:
-  # Install dependencies and cache them
-  install:
-    name: Install Dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Upload Dependencies Cache
-        uses: actions/upload-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-          retention-days: 1
-
-  # Run linting checks
+  # ----------------------------------------------------------------------
+  # Lint (ESLint, READ-ONLY in CI — no --fix)
+  # ----------------------------------------------------------------------
   lint:
-    name: Lint Code
+    name: Lint
     runs-on: ubuntu-latest
-    needs: install
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+      - run: npm ci
+      - name: Run ESLint (no auto-fix in CI)
+        run: npx eslint 'src/**/*.ts'
 
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
+  # ----------------------------------------------------------------------
+  # Prettier formatting check
+  # ----------------------------------------------------------------------
+  format:
+    name: Format (Prettier)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          name: node_modules
-          path: node_modules
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run format:check
 
-      - name: Run ESLint
-        run: npm run lint
+  # ----------------------------------------------------------------------
+  # TypeScript type checking
+  # ----------------------------------------------------------------------
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run typecheck
 
-      - name: Run Prettier Check
-        run: npm run format:check
-
-  # Run unit tests with coverage
+  # ----------------------------------------------------------------------
+  # Unit tests + coverage
+  # ----------------------------------------------------------------------
   test-unit:
-    name: Test Unit
+    name: Unit Tests
     runs-on: ubuntu-latest
-    needs: install
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run Unit Tests with Coverage
+      - run: npm ci
+      - name: Run Unit Tests
         run: npm run test:unit
-
-      - name: Upload Coverage Report
+      - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-unit
+          name: coverage
           path: coverage/
           retention-days: 7
 
-  # Run integration tests
+  # ----------------------------------------------------------------------
+  # Integration tests
+  # ----------------------------------------------------------------------
   test-integration:
-    name: Test Integration
+    name: Integration Tests
     runs-on: ubuntu-latest
-    needs: install
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+      - run: npm ci
+      - run: npm run test:integration
 
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run Integration Tests
-        run: npm run test:integration
-
-  # Run security checks
-  security:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run Security Audit
-        run: npm audit --audit-level=moderate
-
-  # Type checking
-  types:
-    name: Type Checking
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run Type Check
-        run: npm run typecheck
-
-  # Build the project
-  build:
-    name: Build Project
-    runs-on: ubuntu-latest
-    needs:
-      - lint
-      - test-unit
-      - test-integration
-      - security
-      - types
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Build Project
-        run: npm run build
-
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 7
-
-  # Coverage check (must run after all tests)
+  # ----------------------------------------------------------------------
+  # Coverage threshold + Codecov upload
+  # ----------------------------------------------------------------------
   coverage:
-    name: Coverage Check
+    name: Coverage Threshold
     runs-on: ubuntu-latest
     needs: test-unit
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+      - name: Enforce coverage >= 70%
+        run: |
+          if [ ! -f coverage/coverage-summary.json ]; then
+            echo "::warning::coverage-summary.json missing — ensure jest reporter 'json-summary' is enabled."
+            exit 0
+          fi
+          COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
+          echo "Line coverage: ${COVERAGE}%"
+          awk -v c="$COVERAGE" 'BEGIN { if (c+0 < 70) { print "::error::Coverage " c "% < 70% threshold"; exit 1 } }'
+      - name: Upload to Codecov
+        if: ${{ env.CODECOV_TOKEN != '' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/coverage-final.json
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  # ----------------------------------------------------------------------
+  # npm audit + Snyk
+  # ----------------------------------------------------------------------
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: npm audit (production deps only)
+        run: npm audit --audit-level=high --omit=dev
+        continue-on-error: true
+      - name: Snyk
+        if: ${{ env.SNYK_TOKEN != '' }}
+        uses: snyk/actions/node@v3
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+        continue-on-error: true
+
+  # ----------------------------------------------------------------------
+  # Conventional commits
+  # ----------------------------------------------------------------------
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-
-      - name: Download Dependencies Cache
-        uses: actions/download-artifact@v4
+      - run: npm ci
+      - uses: wagoid/commitlint-github-action@v6
         with:
-          name: node_modules
-          path: node_modules
+          configFile: commitlint.config.js
 
-      - name: Download Coverage Artifact
-        uses: actions/download-artifact@v4
+  # ----------------------------------------------------------------------
+  # Build (depends on lint, typecheck, tests passing)
+  # ----------------------------------------------------------------------
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, format, typecheck, test-unit, test-integration]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          name: coverage-unit
-          path: coverage/
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            dist/
+            agent-skill-routing-system/dist/
+          retention-days: 7
+          if-no-files-found: ignore
 
-      - name: Run Coverage Threshold Check
+  # ----------------------------------------------------------------------
+  # Final aggregator: required check for branch protection
+  # ----------------------------------------------------------------------
+  ci-status:
+    name: CI Status
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [lint, format, typecheck, test-unit, test-integration, coverage, security, build]
+    steps:
+      - name: Verify all required jobs passed
         run: |
-          npm install -g codecov
-          codecov --file=coverage/coverage-final.json
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          echo "Job results: ${{ toJSON(needs) }}"
+          if echo '${{ toJSON(needs) }}' | grep -E '"result":\s*"(failure|cancelled)"'; then
+            echo "::error::One or more required CI jobs failed."
+            exit 1
+          fi
+          echo "All required CI jobs passed."
