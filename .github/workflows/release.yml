@@ -56,8 +56,8 @@ jobs:
         run: npm audit --audit-level=high --omit=dev
         continue-on-error: true
       - name: Semantic Release
-        id: semantic
-        uses: cycjimmy/semantic-release-action@v4
+         id: semantic
+         uses: release-flow/semantic-release-action@v5
         with:
           semantic_version: 24
           extra_plugins: |

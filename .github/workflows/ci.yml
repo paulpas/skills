@@ -33,7 +33,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Run ESLint (no auto-fix in CI)
-        run: npx eslint 'src/**/*.ts'
+         run: npx eslint 'src/**/*.ts' 'agent-skill-routing-system/src/**/*.ts'
 
   # ----------------------------------------------------------------------
   # Prettier formatting check
@@ -138,7 +138,7 @@ jobs:
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/coverage-final.json
+          files: coverage/coverage-summary.json
           fail_ci_if_error: false
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
