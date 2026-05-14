@@ -1,0 +1,15 @@
+name: 'Setup Node.js Environment'
+description: 'Common setup steps: checkout, Node.js, and npm ci'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v6
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - shell: bash
+      run: npm ci

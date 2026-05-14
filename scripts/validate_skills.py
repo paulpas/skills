@@ -6,26 +6,27 @@ Checks for required fields and proper formatting.
 
 import os
 import sys
-import yaml
 from pathlib import Path
 from datetime import datetime
 
+try:
+    import yaml
+except ImportError:
+    print("❌ PyYAML not installed. Install with: pip install pyyaml")
+    sys.exit(1)
 
-def parse_yaml_frontmatter(content: str) -> tuple[dict, str]:
-    """Extract YAML frontmatter and body from Markdown content."""
-    if not content.startswith("---"):
-        return None, content
-
-    parts = content.split("---", 2)
-    if len(parts) < 3:
-        return None, content
-
-    try:
-        yaml_frontmatter = yaml.safe_load(parts[1])
-        body = parts[2]
-        return yaml_frontmatter, body
-    except yaml.YAMLError:
-        return None, content
+# Add scripts directory to path for utils module
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+from utils import (
+    Colors,
+    DOMAINS,
+    get_domain_defaults,
+    get_skills_directory,
+    format_error,
+    parse_yaml_frontmatter,
+)
 
 
 def validate_skill(file_path: Path) -> dict:
@@ -50,7 +51,12 @@ def validate_skill(file_path: Path) -> dict:
         result["errors"].append("Missing YAML frontmatter delimiter (---)")
         return result
 
-    yaml_frontmatter, body = parse_yaml_frontmatter(content)
+    yaml_frontmatter, body, error = parse_yaml_frontmatter(content)
+
+    if error:
+        result["valid"] = False
+        result["errors"].append("YAML parse error in frontmatter")
+        return result
 
     if yaml_frontmatter is None:
         result["valid"] = False
@@ -102,7 +108,7 @@ def validate_skill(file_path: Path) -> dict:
     # Check content structure
     required_sections = ["When to Use", "Core Workflow"]
     for section in required_sections:
-        if f"## {section}" not in body and f"## {section}" not in body:
+        if f"## {section}" not in body:
             result["warnings"].append(f"Missing section: {section}")
 
     # Check file size
@@ -122,7 +128,7 @@ def main():
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
 
-    skills_dir = Path("/home/paulpas/git/agent-skill-router/skills")
+    skills_dir = get_skills_directory()
 
     if not skills_dir.exists():
         print(f"Error: Skills directory not found: {skills_dir}")
