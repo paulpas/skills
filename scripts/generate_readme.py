@@ -9,29 +9,24 @@ a dynamic README section with:
 - Complete Skills Index (alphabetical table)
 """
 
+import argparse
 import os
 import re
 import sys
-import argparse
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Tuple, Optional
-import yaml
 
-
-def truncate_at_word_boundary(text: str, max_length: int = 60) -> str:
-    """Truncate text at word boundary with ellipsis if needed."""
-    if len(text) <= max_length:
-        return text
-
-    truncated = text[:max_length]
-    last_space = truncated.rfind(" ")
-
-    if last_space > 0:
-        return text[:last_space] + "..."
-    else:
-        return text[: max_length - 3] + "..."
-
+# Add current directory to path for utils module
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from utils import (
+    Colors,
+    DOMAINS,
+    get_skills_directory,
+    parse_yaml_frontmatter,
+    extract_h1_title,
+    truncate_at_word_boundary,
+)
 
 def format_description_for_readme(description: str) -> str:
     """Format description for README display with proper length and readability."""
@@ -49,23 +44,6 @@ def format_triggers_for_readme(trigger_list: List[str], max_count: int = 15) -> 
     return formatted
 
 
-# Color codes for terminal output
-class Colors:
-    RED = "\033[91m"
-    GREEN = "\033[92m"
-    YELLOW = "\033[93m"
-    BLUE = "\033[94m"
-    RESET = "\033[0m"
-
-
-def extract_h1_title(content: str) -> Optional[str]:
-    """Extract H1 title from markdown content."""
-    for line in content.split("\n"):
-        if line.startswith("# "):
-            return line[2:].strip()
-    return None
-
-
 def parse_skill(skill_dir: Path) -> Optional[Dict]:
     """Parse a single skill directory and extract metadata."""
     skill_md = skill_dir / "SKILL.md"
@@ -78,84 +56,63 @@ def parse_skill(skill_dir: Path) -> Optional[Dict]:
         return None
 
     try:
-        with open(skill_md, "r", encoding="utf-8") as f:
-            content = f.read()
-
-        # Split YAML frontmatter from markdown content
-        if not content.startswith("---"):
-            print(
-                f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: no YAML frontmatter{Colors.RESET}",
-                file=sys.stderr,
-            )
-            return None
-
-        # Find the closing --- marker
-        parts = content.split("---", 2)
-        if len(parts) < 3:
-            print(
-                f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: malformed YAML frontmatter{Colors.RESET}",
-                file=sys.stderr,
-            )
-            return None
-
-        yaml_content = parts[1]
-        markdown_content = parts[2]
-
-        # Parse YAML
-        try:
-            metadata_dict = yaml.safe_load(yaml_content)
-        except yaml.YAMLError as e:
-            print(
-                f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: invalid YAML - {str(e)}{Colors.RESET}",
-                file=sys.stderr,
-            )
-            return None
-
-        if not metadata_dict:
-            print(
-                f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: empty YAML{Colors.RESET}",
-                file=sys.stderr,
-            )
-            return None
-
-        # Extract required fields
-        name = metadata_dict.get("name")
-        description = metadata_dict.get("description")
-
-        if not name or not description:
-            print(
-                f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: missing name or description{Colors.RESET}",
-                file=sys.stderr,
-            )
-            return None
-
-        # Extract metadata nested fields
-        metadata = metadata_dict.get("metadata", {})
-        domain = metadata.get("domain", "unknown")
-        role = metadata.get("role", "unknown")
-        triggers = metadata.get("triggers", "")
-
-        # Extract H1 title from markdown content
-        title = extract_h1_title(markdown_content)
-        if not title:
-            title = name  # fallback to name if no H1 found
-
-        return {
-            "name": name,
-            "title": title,
-            "description": description,
-            "domain": domain,
-            "role": role,
-            "triggers": triggers,
-            "trigger_list": [t.strip() for t in triggers.split(",") if t.strip()],
-        }
-
+        content = skill_md.read_text(encoding="utf-8")
     except Exception as e:
         print(
-            f"{Colors.RED}✗ Error parsing {skill_dir.name}: {str(e)}{Colors.RESET}",
+            f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: failed to read file - {str(e)}{Colors.RESET}",
             file=sys.stderr,
         )
         return None
+
+    # Parse YAML frontmatter using shared utility
+    metadata_dict, markdown_content, error = parse_yaml_frontmatter(content)
+
+    if error:
+        print(
+            f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: YAML parse error{Colors.RESET}",
+            file=sys.stderr,
+        )
+        return None
+
+    if metadata_dict is None:
+        # Distinguish between no frontmatter and parse error
+        print(
+            f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: no YAML frontmatter or invalid YAML{Colors.RESET}",
+            file=sys.stderr,
+        )
+        return None
+
+    # Extract required fields
+    name = metadata_dict.get("name")
+    description = metadata_dict.get("description")
+
+    if not name or not description:
+        print(
+            f"{Colors.YELLOW}⚠ Skipping {skill_dir.name}: missing name or description{Colors.RESET}",
+            file=sys.stderr,
+        )
+        return None
+
+    # Extract metadata nested fields
+    metadata = metadata_dict.get("metadata", {})
+    domain = metadata.get("domain", "unknown")
+    role = metadata.get("role", "unknown")
+    triggers = metadata.get("triggers", "")
+
+    # Extract H1 title from markdown content
+    title = extract_h1_title(markdown_content)
+    if not title:
+        title = name  # fallback to name if no H1 found
+
+    return {
+        "name": name,
+        "title": title,
+        "description": description,
+        "domain": domain,
+        "role": role,
+        "triggers": triggers,
+        "trigger_list": [t.strip() for t in triggers.split(",") if t.strip()],
+    }
 
 
 def read_all_skills(skills_root: Path) -> List[Dict]:
@@ -168,9 +125,6 @@ def read_all_skills(skills_root: Path) -> List[Dict]:
             file=sys.stderr,
         )
         return skills
-
-    # Define domains
-    DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
 
     # Scan each domain directory
     for domain in sorted(DOMAINS):
@@ -329,8 +283,7 @@ def update_readme(readme_path: Path, generated_content: str) -> bool:
         )
         return False
 
-    with open(readme_path, "r", encoding="utf-8") as f:
-        content = f.read()
+    content = readme_path.read_text(encoding="utf-8")
 
     # Check for markers
     start_marker = "<!-- AUTO-GENERATED SKILLS INDEX START -->"
@@ -347,8 +300,7 @@ def update_readme(readme_path: Path, generated_content: str) -> bool:
         pattern = f"{re.escape(start_marker)}.*?{re.escape(end_marker)}"
         content = re.sub(pattern, generated_content, content, flags=re.DOTALL)
 
-    with open(readme_path, "w", encoding="utf-8") as f:
-        f.write(content)
+    readme_path.write_text(content, encoding="utf-8")
 
     return True
 
@@ -398,8 +350,7 @@ def main():
     # Output or update
     if args.output:
         output_path = Path(args.output)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(generated_content)
+        output_path.write_text(generated_content, encoding="utf-8")
         print(f"{Colors.GREEN}✓ Wrote to {output_path}{Colors.RESET}")
     else:
         if update_readme(readme_path, generated_content):

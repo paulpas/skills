@@ -21,29 +21,24 @@ except ImportError:
     print("❌ PyYAML not installed. Install with: pip install pyyaml")
     sys.exit(1)
 
-
-def parse_yaml_frontmatter(content: str) -> Optional[dict]:
-    """Extract YAML frontmatter from SKILL.md content."""
-    match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
-    if not match:
-        return None
-
-    try:
-        return yaml.safe_load(match.group(1))
-    except yaml.YAMLError as e:
-        print(f"   ⚠️  YAML parsing error: {e}")
-        return None
+# Add current directory to path for utils module
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+from utils import (
+    Colors,
+    DOMAINS,
+    get_domain_defaults,
+    get_skills_directory,
+    format_error,
+    parse_yaml_frontmatter,
+    normalize_triggers,
+)
 
 
 def extract_triggers(metadata: dict) -> list:
-    """Extract and normalize triggers from metadata."""
-    triggers_str = metadata.get("metadata", {}).get("triggers", "")
-    if not triggers_str:
-        return []
-
-    # Split by comma and clean up whitespace
-    triggers = [t.strip() for t in triggers_str.split(",")]
-    return [t for t in triggers if t]
+    """Extract triggers from metadata using normalize_triggers utility."""
+    return normalize_triggers(metadata.get("metadata", {}).get("triggers"))
 
 
 def extract_related_skills(metadata: dict) -> list:
@@ -89,24 +84,29 @@ def scan_skills_directory(skills_root: Path) -> tuple[list, dict]:
 
             try:
                 content = skill_md.read_text(encoding="utf-8")
-                metadata = parse_yaml_frontmatter(content)
+                # Parse YAML frontmatter - utils returns (dict, str, error) tuple
+                metadata_dict, body, error = parse_yaml_frontmatter(content)
 
-                if not metadata:
+                if error:
+                    stats["warnings"].append(f"YAML parse error in {skill_dir}")
+                    continue
+
+                if metadata_dict is None:
                     stats["warnings"].append(f"No frontmatter in {skill_dir}")
                     continue
 
                 # Extract domain from directory (remove prefix like "cncf-" from skill name)
-                skill_name = metadata.get("name", skill_dir.name)
+                skill_name = metadata_dict.get("name", skill_dir.name)
 
                 # Get metadata section
-                meta = metadata.get("metadata", {})
-                triggers = extract_triggers(metadata)
-                related = extract_related_skills(metadata)
+                meta = metadata_dict.get("metadata", {})
+                triggers = extract_triggers(metadata_dict)
+                related = extract_related_skills(metadata_dict)
 
                 skill_entry = {
                     "name": skill_name,
                     "domain": domain_name,
-                    "description": metadata.get("description", ""),
+                    "description": metadata_dict.get("description", ""),
                     "role": meta.get("role", "implementation"),
                     "scope": meta.get("scope", "implementation"),
                     "outputFormat": meta.get("output-format", "code"),
@@ -126,7 +126,10 @@ def scan_skills_directory(skills_root: Path) -> tuple[list, dict]:
                 stats["domains_with_count"][domain_name] = stats["domains"][domain_name]
 
             except Exception as e:
-                stats["errors"].append(f"Error processing {skill_dir}: {e}")
+                error_msg = format_error(
+                    "generate_index.py", domain_name, skill_dir.name, f"Error: {e}"
+                )
+                stats["errors"].append(error_msg)
 
     return skills, stats
 

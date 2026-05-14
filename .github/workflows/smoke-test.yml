@@ -1,0 +1,78 @@
+name: Smoke Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker container
+        working-directory: agent-skill-routing-system
+        run: |
+          docker build -t skill-router-smoke-test:latest .
+
+      - name: Run container and test API
+        run: |
+          docker run -d --rm --name skill-router-smoke-test -p 3000:3000 skill-router-smoke-test:latest
+          echo "Waiting for container to be ready..."
+          sleep 5
+
+          echo "Testing /health endpoint..."
+          HEALTH_RESPONSE=$(curl -s http://localhost:3000/health)
+          if echo "$HEALTH_RESPONSE" | grep -q '"status":"healthy"'; then
+            echo "✅ /health endpoint OK"
+          else
+            echo "❌ /health endpoint failed"
+            docker logs skill-router-smoke-test
+            docker stop skill-router-smoke-test
+            exit 1
+          fi
+
+          echo "Testing /skills endpoint..."
+          SKILLS_RESPONSE=$(curl -s http://localhost:3000/skills)
+          SKILLS_COUNT=$(echo "$SKILLS_RESPONSE" | grep -o '"name"' | wc -l)
+          echo "Found $SKILLS_COUNT skills"
+          if [ "$SKILLS_COUNT" -gt 0 ]; then
+            echo "✅ /skills endpoint OK"
+          else
+            echo "❌ /skills endpoint failed"
+            docker logs skill-router-smoke-test
+            docker stop skill-router-smoke-test
+            exit 1
+          fi
+
+          echo "Testing /route endpoint..."
+          ROUTE_RESPONSE=$(curl -s -X POST http://localhost:3000/route \
+            -H "Content-Type: application/json" \
+            -d '{"task": "Implement stop-loss strategies", "context": {}, "constraints": {"maxSkills": 3}}')
+          if echo "$ROUTE_RESPONSE" | grep -q '"topSkill"'; then
+            echo "✅ /route endpoint OK"
+          else
+            echo "❌ /route endpoint failed"
+            docker logs skill-router-smoke-test
+            docker stop skill-router-smoke-test
+            exit 1
+          fi
+
+          echo "✅ All API tests passed!"
+
+          # Cleanup
+          docker stop skill-router-smoke-test
+
+      - name: Cleanup on failure
+        if: failure()
+        run: |
+          docker stop skill-router-smoke-test || true
+          docker logs skill-router-smoke-test || true

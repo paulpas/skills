@@ -196,6 +196,10 @@ def enhance_triggers(current_triggers: str) -> str:
     current_list = [t.strip() for t in current_triggers.split(",")]
     current_list_lower = [t.lower() for t in current_list]
 
+    # Guard clause for empty enhancements
+    if not enhancements:
+        return ", ".join(current_list)
+
     # Start with originals (preserve original casing)
     result = set(current_list)
 
