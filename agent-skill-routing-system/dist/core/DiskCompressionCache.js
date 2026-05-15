@@ -29,6 +29,7 @@ class DiskCompressionCache {
     // Lazy write buffer
     writeBuffer = new Map();
     flushScheduled = false;
+    // eslint-disable-next-line no-undef
     flushTimer = null;
     FLUSH_INTERVAL_MS = 5000; // 5 seconds
     FLUSH_THRESHOLD = 50; // reduced from 100 for faster batching at scale
@@ -496,7 +497,7 @@ class DiskCompressionCache {
             this.metadataCache.set(cacheKey, metadata);
             return metadata;
         }
-        catch (error) {
+        catch {
             // File doesn't exist or parse failed
             return null;
         }

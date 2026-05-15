@@ -27,6 +27,7 @@ class InMemoryCompressionCache {
     hits = 0;
     misses = 0;
     expirations = 0;
+    // eslint-disable-next-line no-undef
     cleanupTimer = null;
     /**
      * Create a new in-memory cache

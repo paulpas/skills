@@ -191,11 +191,12 @@ describe('DiskCompressionCache', () => {
     expect(true).toBe(true);
   });
 
-  it('should handle invalid inputs gracefully', async () => {
-    // Should not throw
-    await cache.saveCompressedVersions('', '', undefined as any);
-    await cache.updateAccessTime('', '', 'brief');
-    await cache.deleteAll('', '');
+it('should handle invalid inputs gracefully', async () => {
+     // Should not throw
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     await cache.saveCompressedVersions('', '', undefined as any);
+     await cache.updateAccessTime('', '', 'brief');
+     await cache.deleteAll('', '');
     
     expect(true).toBe(true);
   });

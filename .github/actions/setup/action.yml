@@ -4,7 +4,7 @@ description: 'Common setup steps: checkout, Node.js, and npm ci'
 runs:
   using: 'composite'
   steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v5
 
     - uses: actions/setup-node@v4
       with:

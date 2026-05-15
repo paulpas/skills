@@ -315,7 +315,7 @@ export class SafetyLayer {
         return { isValid: true, errors, warnings };
       }
 
-      const schema = inputSchema as any;
+      const schema = inputSchema as { properties?: Record<string, unknown>; required?: string[] };
       const properties = schema.properties || {};
       const required = schema.required || [];
 
@@ -327,11 +327,12 @@ export class SafetyLayer {
 
       for (const [field, value] of Object.entries(inputs)) {
         const fieldSchema = properties[field];
-        if (fieldSchema && fieldSchema.type) {
+        if (fieldSchema && typeof fieldSchema === 'object' && 'type' in fieldSchema) {
+          const fieldSchemaTyped = fieldSchema as { type: string };
           const actualType = typeof value;
-          if (actualType !== fieldSchema.type) {
+          if (actualType !== fieldSchemaTyped.type) {
             errors.push(
-              `Type mismatch for "${field}": expected ${fieldSchema.type}, got ${actualType}`
+              `Type mismatch for "${field}": expected ${fieldSchemaTyped.type}, got ${actualType}`
             );
           }
         }

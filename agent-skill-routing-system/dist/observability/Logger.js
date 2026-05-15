@@ -119,6 +119,7 @@ class Logger {
         const modelInfo = entry.modelName
             ? ` [model: ${entry.modelName}, input: ${entry.inputTokens ?? 0} tokens, output: ${entry.outputTokens ?? 0} tokens]`
             : '';
+        // eslint-disable-next-line no-console
         console.log(`${color}[${timestamp}] [${entry.category}] ${entry.message}${dataStr}${modelInfo}${reset}`);
     }
     /**

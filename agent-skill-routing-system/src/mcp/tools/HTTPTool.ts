@@ -4,11 +4,13 @@ import { BaseMCPTool, IMCPTool } from '../types';
 
 // undici is a runtime dependency, not a type-only import
 // This file requires undici at runtime
-// Using type declaration file that comes with @types/node
-declare function fetch(input: string, init?: unknown): Promise<{ ok: boolean; status: number; text(): Promise<string>; headers: { entries(): IterableIterator<[string, string]> } }>;
+// Using type declaration file that comes with @types/node - fetch is only used for type inference
+       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       declare const fetch: (input: string, init?: unknown) => Promise<{ ok: boolean; status: number; text(): Promise<string>; headers: { entries(): IterableIterator<[string, string]> } }>;
 
-// Type declaration for undici's fetch when used directly
-declare const undiciFetch: typeof fetch;
+       // Type declaration for undici's fetch when used directly
+          
+         declare const undiciFetch: typeof fetch;
 
 /**
  * MCP Tool result

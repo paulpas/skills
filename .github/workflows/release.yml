@@ -55,9 +55,9 @@ jobs:
       - name: Audit production deps
         run: npm audit --audit-level=high --omit=dev
         continue-on-error: true
-      - name: Semantic Release
-         id: semantic
-         uses: release-flow/semantic-release-action@v5
+     - name: Semantic Release
+        id: semantic
+        uses: release-flow/semantic-release-action@v5
         with:
           semantic_version: 24
           extra_plugins: |

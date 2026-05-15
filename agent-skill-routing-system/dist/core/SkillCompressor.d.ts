@@ -4,7 +4,7 @@
 export interface CompressionTransformation {
     name: string;
     pattern: RegExp;
-    replacement: string | ((match: string, ...args: any[]) => string);
+    replacement: string | ((match: string, ...args: unknown[]) => string);
     skipInCodeBlocks: boolean;
 }
 /**

@@ -9,6 +9,9 @@ import { DiskCompressionCache } from '../core/DiskCompressionCache';
 import { Logger } from '../observability/Logger';
 import { CompressionMetrics } from '../utils/CompressionMetrics';
 
+// Timeout type - use setTimeout return type as a proxy for NodeJS.Timeout
+type Timeout = ReturnType<typeof setTimeout>;
+
 /**
  * Cleanup result with metrics
  */
@@ -36,7 +39,7 @@ export class CompressionCleanupJob {
   private skillsDirectory: string;
   private maxAgeDays: number;
   private logger: Logger;
-  private cleanupTimer: NodeJS.Timeout | null = null;
+  private cleanupTimer: Timeout | null = null;
   private isRunning = false;
   private scheduleInterval: string;
 

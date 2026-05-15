@@ -190,49 +190,57 @@ export class SkillRegistry implements SkillRegistryWithCompression {
     if (!response.ok) {
       throw new Error(`Failed to fetch skills index: ${response.status}`);
     }
-    // Tolerate multiple index schemas:
-    //   1. Bare array of entries (legacy)
-    //   2. { entries: [...] } (older agent-skill-router format)
-    //   3. { skills: [...] } (current paulpas/skills format)
-    const json = await response.json() as any;
-    const entries: Array<any> = Array.isArray(json)
-      ? json
-      : Array.isArray(json?.entries)
-      ? json.entries
-      : Array.isArray(json?.skills)
-      ? json.skills
-      : [];
-    if (entries.length === 0) {
-      throw new Error('Skills index has no skills/entries array');
-    }
-    this.logger.info('[INDEX] Skills index loaded', { count: entries.length, durationMs: Date.now() - t0 });
-
-    for (const entry of entries) {
-      // Map both old and new field names defensively
-      const tags: string[] = Array.isArray(entry.tags)
-        ? entry.tags
-        : typeof entry.triggers === 'string'
-        ? entry.triggers.split(/,\s*/).filter((t: string) => t.length > 0)
-        : Array.isArray(entry.triggers)
-        ? entry.triggers
-        : [];
-      const sourceFile: string =
-        entry.path ||
-        entry.source ||
-        (entry.domain && entry.name ? `skills/${entry.domain}/${entry.name}/SKILL.md` : '');
-      const metadata: SkillMetadata = {
-        name: entry.name,
-        category: entry.domain,
-        description: entry.description || '',
-        tags,
-        input_schema: { type: 'object', properties: {}, required: [] },
-        output_schema: { type: 'object', properties: {}, required: [] },
-      };
-      const skill: SkillDefinition = { metadata, sourceFile, rawContent: '' };
-      if (!this.skills.has(entry.name)) {
-        this.addSkill(skill);
+// Tolerate multiple index schemas:
+      //   1. Bare array of entries (legacy)
+      //   2. { entries: [...] } (older agent-skill-router format)
+      //   3. { skills: [...] } (current paulpas/skills format)
+      const json = await response.json() as unknown;
+      interface SkillsIndex {
+        entries?: unknown;
+        skills?: unknown;
       }
-    }
+      const entries: Array<Record<string, unknown>> = Array.isArray(json)
+        ? json as Array<Record<string, unknown>>
+        : typeof json === 'object' && json !== null && 'entries' in json
+        ? Array.isArray((json as SkillsIndex).entries)
+          ? (json as SkillsIndex).entries as Array<Record<string, unknown>>
+          : []
+        : typeof json === 'object' && json !== null && 'skills' in json
+        ? Array.isArray((json as SkillsIndex).skills)
+          ? (json as SkillsIndex).skills as Array<Record<string, unknown>>
+          : []
+        : [];
+     if (entries.length === 0) {
+       throw new Error('Skills index has no skills/entries array');
+     }
+     this.logger.info('[INDEX] Skills index loaded', { count: entries.length, durationMs: Date.now() - t0 });
+
+     for (const entry of entries) {
+       // Map both old and new field names defensively
+       const tags: string[] = Array.isArray(entry.tags)
+         ? entry.tags
+         : typeof entry.triggers === 'string'
+         ? entry.triggers.split(/,\s*/).filter((t: string) => t.length > 0)
+         : Array.isArray(entry.triggers)
+         ? entry.triggers
+         : [];
+       const sourceFile: string =
+         (entry.path as string) ||
+         (entry.source as string) ||
+         (entry.domain && entry.name ? `skills/${String(entry.domain)}/${String(entry.name)}/SKILL.md` : '');
+       const metadata: SkillMetadata = {
+         name: String(entry.name),
+         category: String(entry.domain),
+         description: String(entry.description || ''),
+         tags,
+         input_schema: { type: 'object', properties: {}, required: [] },
+         output_schema: { type: 'object', properties: {}, required: [] },
+       };
+       const skill: SkillDefinition = { metadata, sourceFile, rawContent: '' };
+       if (!this.skills.has(String(entry.name))) {
+         this.addSkill(skill);
+       }
+     }
 
     if (this.config.generateEmbeddings) {
       await this.generateMissingEmbeddings();
@@ -1152,16 +1160,24 @@ export class SkillRegistry implements SkillRegistryWithCompression {
     return value;
   }
 
-  /**
-   * Initialize the LLM-based compressor with an LLM client
-   * Called once after LLM client is available
-   */
-  setLLMClient(llmClient: any): void {
+/**
+      * Initialize the LLM-based compressor with an LLM client
+      * Called once after LLM client is available
+      */
+    setLLMClient(llmClient: unknown): void {
     if (!llmClient) {
       this.logger.warn('Attempted to set null LLM client');
       return;
     }
-    this.llmCompressor = new LLMSkillCompressor(llmClient);
+    if (typeof llmClient !== 'object' || llmClient === null) {
+      this.logger.error('Invalid LLM client: expected object', { type: typeof llmClient });
+      return;
+    }
+    if (!('createCompletion' in llmClient)) {
+      this.logger.error('Invalid LLM client: missing createCompletion method');
+      return;
+    }
+    this.llmCompressor = new LLMSkillCompressor(llmClient as import('./LLMSkillCompressor').LLMClient);
     this.logger.info('LLM compressor initialized');
   }
 

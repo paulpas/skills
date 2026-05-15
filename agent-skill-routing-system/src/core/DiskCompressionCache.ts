@@ -51,11 +51,12 @@ export class DiskCompressionCache {
   private skillsDirectory: string;
   private logger: Logger;
   
-  // Lazy write buffer
-  private writeBuffer: Map<string, WriteBufferEntry> = new Map();
-  private flushScheduled = false;
-  private flushTimer: NodeJS.Timeout | null = null;
-  private readonly FLUSH_INTERVAL_MS = 5000; // 5 seconds
+// Lazy write buffer
+   private writeBuffer: Map<string, WriteBufferEntry> = new Map();
+   private flushScheduled = false;
+   // eslint-disable-next-line no-undef
+   private flushTimer: NodeJS.Timeout | null = null;
+   private readonly FLUSH_INTERVAL_MS = 5000; // 5 seconds
   private readonly FLUSH_THRESHOLD = 50; // reduced from 100 for faster batching at scale
 
   // Batch compression for 1,778 skills
@@ -622,9 +623,9 @@ export class DiskCompressionCache {
       // Cache in memory
       this.metadataCache.set(cacheKey, metadata);
 
-      return metadata;
-    } catch (error) {
-      // File doesn't exist or parse failed
+return metadata;
+     } catch {
+       // File doesn't exist or parse failed
       return null;
     }
   }

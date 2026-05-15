@@ -540,14 +540,14 @@ export class EmbeddingService {
     // Recovery 1: Extract JSON array from text using regex
     const extracted = this.extractJsonArray(jsonString);
     if (extracted) {
-      try {
-        const parsed = JSON.parse(extracted);
-        if (Array.isArray(parsed) && this.isValidNumberArray(parsed, expectedDimensions)) {
-          return parsed;
-        }
-      } catch (error) {
-        this.logger.debug('[Emulation] Regex extraction failed, using fallback');
-      }
+try {
+         const parsed = JSON.parse(extracted);
+         if (Array.isArray(parsed) && this.isValidNumberArray(parsed, expectedDimensions)) {
+           return parsed;
+         }
+       } catch {
+         this.logger.debug('[Emulation] Regex extraction failed, using fallback');
+       }
     }
 
     // Recovery 2: Generate deterministic fallback embedding

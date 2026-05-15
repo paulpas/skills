@@ -8,7 +8,7 @@
 export interface CompressionTransformation {
   name: string;
   pattern: RegExp;
-  replacement: string | ((match: string, ...args: any[]) => string);
+  replacement: string | ((match: string, ...args: unknown[]) => string);
   skipInCodeBlocks: boolean;
 }
 
@@ -320,10 +320,10 @@ export class SkillCompressor {
         compressionLevel: level,
         tokensSaved,
         ratio,
-        isCompressed: true,
-      };
-    } catch (error) {
-      // Fail fast: if compression fails, return original content
+isCompressed: true,
+       };
+     } catch {
+       // Fail fast: if compression fails, return original content
       return {
         content,
         originalLength: content.length,

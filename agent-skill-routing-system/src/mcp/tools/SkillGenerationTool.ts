@@ -117,14 +117,15 @@ export class SkillGenerationTool extends BaseMCPTool implements IMCPTool {
         };
       }
 
-      // Save skill file
-      const savedPath = await this.saveSkillFile(skillContent, domain, topic, contribute);
-      console.log('Skill saved successfully', {
-        path: savedPath,
-        size: skillContent.fullContent.length,
-        domain: domain || skillContent.frontmatter.domain,
-        topic: topic || skillContent.frontmatter.name,
-      });
+// Save skill file
+       const savedPath = await this.saveSkillFile(skillContent, domain, topic, contribute);
+       // eslint-disable-next-line no-console
+       console.log('Skill saved successfully', {
+         path: savedPath,
+         size: skillContent.fullContent.length,
+         domain: domain || skillContent.frontmatter.domain,
+         topic: topic || skillContent.frontmatter.name,
+       });
 
       return {
         success: true,
@@ -196,12 +197,13 @@ export class SkillGenerationTool extends BaseMCPTool implements IMCPTool {
     domain?: string,
     topic?: string
   ): Promise<SkillContent | null> {
-    console.log('Generating skill', {
-      task: task.slice(0, 100),
-      domain,
-      topic,
-      model: this.model,
-    });
+// eslint-disable-next-line no-console
+       console.log('Generating skill', {
+         task: task.slice(0, 100),
+         domain,
+         topic,
+         model: this.model,
+       });
 
     // Step 1: Extract domain and topic from task if not provided
     let extractedDomain = domain;
@@ -227,8 +229,9 @@ export class SkillGenerationTool extends BaseMCPTool implements IMCPTool {
     const role = this.getDefaultRole(extractedDomain!);
     const outputFormat = this.getDefaultOutputFormat(extractedDomain!);
 
-    for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
-      console.log(`LLM generation attempt ${attempt}/${this.maxRetries}`);
+for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
+         // eslint-disable-next-line no-console
+         console.log(`LLM generation attempt ${attempt}/${this.maxRetries}`);
 
       const content = await this.generateSkillContent(
         extractedDomain!,
@@ -455,12 +458,14 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
        usage?: { prompt_tokens?: number; completion_tokens?: number };
      };
 
-     const content = data.choices[0].message.content;
-     console.debug('OpenAI-compatible API response received', {
-       model: this.model,
-       inputTokens: data.usage?.prompt_tokens,
-       outputTokens: data.usage?.completion_tokens,
-     });
+ 
+         const content = data.choices[0].message.content;
+         // eslint-disable-next-line no-console
+         console.debug('OpenAI-compatible API response received', {
+           model: this.model,
+           inputTokens: data.usage?.prompt_tokens,
+           outputTokens: data.usage?.completion_tokens,
+         });
 
      return content;
    }

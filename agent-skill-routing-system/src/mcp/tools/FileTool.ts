@@ -68,17 +68,19 @@ export class FileTool extends BaseMCPTool implements IMCPTool {
           output = await this.readFile(resolvedPath);
           break;
 
-        case 'write':
-          this.validateArgs(args, ['content']);
-          const content = String(args.content);
-          output = await this.writeFile(resolvedPath, content);
-          break;
+case 'write': {
+           this.validateArgs(args, ['content']);
+           const content = String(args.content);
+           output = await this.writeFile(resolvedPath, content);
+           break;
+         }
 
-        case 'append':
-          this.validateArgs(args, ['content']);
-          const appendContent = String(args.content);
-          output = await this.appendFile(resolvedPath, appendContent);
-          break;
+case 'append': {
+           this.validateArgs(args, ['content']);
+           const appendContent = String(args.content);
+           output = await this.appendFile(resolvedPath, appendContent);
+           break;
+         }
 
         case 'exists':
           output = await this.fileExists(resolvedPath);

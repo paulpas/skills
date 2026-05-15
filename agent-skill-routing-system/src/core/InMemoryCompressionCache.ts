@@ -46,11 +46,12 @@ export class InMemoryCompressionCache {
   private readonly ttlMs: number;
   private readonly CLEANUP_INTERVAL_MS = 60 * 1000; // 1 minute
 
-  // Statistics
-  private hits = 0;
-  private misses = 0;
-  private expirations = 0;
-  private cleanupTimer: NodeJS.Timeout | null = null;
+// Statistics
+   private hits = 0;
+   private misses = 0;
+   private expirations = 0;
+   // eslint-disable-next-line no-undef
+   private cleanupTimer: NodeJS.Timeout | null = null;
 
   /**
    * Create a new in-memory cache
