@@ -54,16 +54,20 @@ jobs:
           fi
 
           echo "Testing /route endpoint..."
-          ROUTE_RESPONSE=$(curl -s -X POST http://localhost:3000/route \
-            -H "Content-Type: application/json" \
-            -d '{"task": "Implement stop-loss strategies", "context": {}, "constraints": {"maxSkills": 3}}')
-          if echo "$ROUTE_RESPONSE" | grep -q '"topSkill"'; then
-            echo "✅ /route endpoint OK"
+          if [ -n "$OPENAI_API_KEY" ]; then
+            ROUTE_RESPONSE=$(curl -s -X POST http://localhost:3000/route \
+              -H "Content-Type: application/json" \
+              -d '{"task": "Implement stop-loss strategies", "context": {}, "constraints": {"maxSkills": 3}}')
+            if echo "$ROUTE_RESPONSE" | grep -q '"selectedSkills"'; then
+              echo "✅ /route endpoint OK"
+            else
+              echo "❌ /route endpoint failed"
+              docker logs skill-router-smoke-test
+              docker stop skill-router-smoke-test
+              exit 1
+            fi
           else
-            echo "❌ /route endpoint failed"
-            docker logs skill-router-smoke-test
-            docker stop skill-router-smoke-test
-            exit 1
+            echo "⏭️ Skipping /route endpoint test (OPENAI_API_KEY not set)"
           fi
 
           echo "✅ All API tests passed!"
