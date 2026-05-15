@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Run ESLint (no auto-fix in CI)
         run: npx eslint 'src/**/*.ts' 'agent-skill-routing-system/src/**/*.ts'
@@ -38,6 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - run: npm run format:check
 
@@ -49,6 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - run: npm run typecheck
 
@@ -60,6 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: Run Unit Tests
         run: npm run test:unit
@@ -78,6 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - run: npm run test:integration
 
@@ -90,6 +95,7 @@ jobs:
     needs: test-unit
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - uses: actions/download-artifact@v8
         with:
@@ -105,7 +111,7 @@ jobs:
           echo "Line coverage: ${COVERAGE}%"
           awk -v c="$COVERAGE" 'BEGIN { if (c+0 < 70) { print "::error::Coverage " c "% < 70% threshold"; exit 1 } }'
       - name: Upload to Codecov
-        if: ${{ env.CODECOV_TOKEN != '' }}
+        if: ${{ secrets.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -122,13 +128,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - name: npm audit (production deps only)
         run: npm audit --audit-level=high --omit=dev
         continue-on-error: true
       - name: Snyk
-        if: ${{ env.SNYK_TOKEN != '' }}
-        uses: snyk/actions/node@v3
+        if: ${{ secrets.SNYK_TOKEN != '' }}
+        uses: snyk/actions/node@v0.4.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -144,6 +151,7 @@ jobs:
     if: github.event_name == 'pull_request'
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - uses: wagoid/commitlint-github-action@v6
         with:
@@ -158,6 +166,7 @@ jobs:
     needs: [lint, format, typecheck, test-unit, test-integration]
     timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - run: npm run build
       - uses: actions/upload-artifact@v4
