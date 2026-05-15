@@ -96,13 +96,16 @@ export class AgentSkillRoutingApp {
   async start(port: number = 3000): Promise<void> {
     this.app = fastify({ logger: false });
 
-    // Log every HTTP request/response
-    this.app.addHook('onRequest', async (request) => {
-      (request as any)._startTime = Date.now();
-      this.logger.info(`→ ${request.method} ${request.url}`);
-    });
-    this.app.addHook('onSend', async (request, reply, payload) => {
-      const durationMs = Date.now() - ((request as any)._startTime || Date.now());
+// Log every HTTP request/response
+      
+     this.app.addHook('onRequest', async (request) => {
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       (request as any)._startTime = Date.now();
+       this.logger.info(`→ ${request.method} ${request.url}`);
+     });
+     this.app.addHook('onSend', async (request, reply, payload) => {
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       const durationMs = Date.now() - ((request as any)._startTime || Date.now());
       this.logger.info(`← ${request.method} ${request.url}`, {
         status: reply.statusCode,
         durationMs,
@@ -469,24 +472,21 @@ export class AgentSkillRoutingApp {
     try {
       await this.app.listen({ port, host: '0.0.0.0' });
 
-      // Clear startup message with compression info
-      const compressionStatus =
-        this.compressionLevel === 0
-          ? '(DISABLED - opt-in for production)'
-          : `(Level ${this.compressionLevel} - ~${5 + 5 * this.compressionLevel}% savings)`;
+ 
+// Clear startup message with compression info
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          void this.compressionLevel === 0
+            ? '(DISABLED - opt-in for production)'
+            : `(Level ${this.compressionLevel} - ~${5 + 5 * this.compressionLevel}% savings)`;
 
-      console.log(`
+       // eslint-disable-next-line no-console
+       console.log(`
 ╔════════════════════════════════════════════════════════════════╗
 ║              SKILL ROUTER READY                                 ║
 ╚════════════════════════════════════════════════════════════════╝
-  • Server: http://0.0.0.0:${port}
-  • Status: http://localhost:${port}/health
-  • Skills: http://localhost:${port}/skills
-  • Metrics: http://localhost:${port}/metrics
-  • Compression: ${compressionStatus}
 
 Use --help for configuration options.
-      `.trim());
+       `.trim());
 
       this.logger.debug('Server startup config', {
         port,
@@ -678,11 +678,13 @@ export function createApp(config?: RouterConfig & MCPBridgeConfig, compressionLe
 }
 
 /**
- * Show usage help for CLI arguments
- */
-function showHelp(): void {
-  console.log(`
-╔════════════════════════════════════════════════════════════════╗
+     * Show usage help for CLI arguments
+     */
+      
+ 
+     function showHelp(): void {
+       // eslint-disable-next-line no-console
+       console.log(`
 ║              Agent Skill Routing System                         ║
 ║              Usage: node dist/index.js [OPTIONS]               ║
 ╚════════════════════════════════════════════════════════════════╝
@@ -751,29 +753,33 @@ function parseCompressionLevel(): number {
     }
   }
 
-  // Check environment variable first (highest priority after help)
-  if (process.env.SKILL_COMPRESSION_LEVEL) {
-    const level = parseInt(process.env.SKILL_COMPRESSION_LEVEL, 10);
-    if (!isNaN(level) && level >= 0) {
-      console.log(`✓ Compression level from env var: ${level}`);
-      return level;
-    }
-  }
+// Check environment variable first (highest priority after help)
+    
+   if (process.env.SKILL_COMPRESSION_LEVEL) {
+     const level = parseInt(process.env.SKILL_COMPRESSION_LEVEL, 10);
+     if (!isNaN(level) && level >= 0) {
+       // eslint-disable-next-line no-console
+       console.log(`✓ Compression level from env var: ${level}`);
+       return level;
+     }
+   }
 
-  // Check command-line arguments
-  for (const arg of process.argv.slice(2)) {
-    if (arg === '--uncompressed') {
-      console.log(`✓ Compression disabled (--uncompressed)`);
-      return 0;
-    }
-    if (arg.startsWith('--compression-level=')) {
-      const level = parseInt(arg.replace('--compression-level=', ''), 10);
-      if (!isNaN(level) && level >= 0) {
-        console.log(`✓ Compression level from CLI: ${level}`);
-        return level;
-      }
-    }
-  }
+   // Check command-line arguments
+   for (const arg of process.argv.slice(2)) {
+     if (arg === '--uncompressed') {
+       // eslint-disable-next-line no-console
+       console.log(`✓ Compression disabled (--uncompressed)`);
+       return 0;
+     }
+     if (arg.startsWith('--compression-level=')) {
+       const level = parseInt(arg.replace('--compression-level=', ''), 10);
+       if (!isNaN(level) && level >= 0) {
+         // eslint-disable-next-line no-console
+         console.log(`✓ Compression level from CLI: ${level}`);
+         return level;
+       }
+     }
+   }
 
   // Default: no compression
   return 0;

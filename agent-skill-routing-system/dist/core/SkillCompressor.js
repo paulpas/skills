@@ -265,7 +265,7 @@ class SkillCompressor {
                 isCompressed: true,
             };
         }
-        catch (error) {
+        catch {
             // Fail fast: if compression fails, return original content
             return {
                 content,

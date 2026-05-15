@@ -152,14 +152,14 @@ export class Router {
       20
     );
 
-    this.logger.info('Vector search candidates', {
-      taskId,
-      candidateCount: candidates.length,
-      topCandidates: candidates.slice(0, 5).map(c => ({
-        name: c.skill.metadata.name,
-        similarity: (c as any).score ?? (c as any).similarity ?? null,
-      })),
-    });
+this.logger.info('Vector search candidates', {
+       taskId,
+       candidateCount: candidates.length,
+       topCandidates: candidates.slice(0, 5).map(c => ({
+         name: c.skill.metadata.name,
+         similarity: 'score' in c ? (c as { score: number }).score : null,
+       })),
+     });
 
     this.logger.debug('Found candidate skills', {
       taskId,

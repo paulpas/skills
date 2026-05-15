@@ -243,7 +243,7 @@ export class LLMSkillCompressor {
   private buildCompressionPrompt(
     skillContent: string,
     targetStyle: 'brief' | 'moderate' | 'detailed'
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
   ): string {
     const tokenTargets = {
       brief: { min: 200, max: 400, removal: 'aggressive' },
@@ -286,7 +286,7 @@ Return ONLY the compressed Markdown content (including YAML frontmatter if prese
    */
   private validateMarkdownOutput(
     content: string
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
   ): ValidationResult {
     const errors: string[] = [];
 

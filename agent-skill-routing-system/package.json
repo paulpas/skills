@@ -12,7 +12,10 @@
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
     "check": "tsc --noEmit",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "test:unit": "jest --testPathPatterns='src/**/*.test.ts'",
+    "test:integration": "jest --testPathPatterns='src/**/*.integration.test.ts'",
+    "test:coverage": "jest --coverage --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary"
   },
   "keywords": [
     "agentic",

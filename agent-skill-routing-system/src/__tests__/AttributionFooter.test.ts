@@ -24,23 +24,26 @@ describe('AttributionFooter', () => {
       expect(footer).toBe('');
     });
 
-    it('returns empty string when skills is undefined', () => {
-      const footer = AttributionFooter.generate({ skills: undefined as any });
-      expect(footer).toBe('');
-    });
+it('returns empty string when skills is undefined', () => {
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       const footer = AttributionFooter.generate({ skills: undefined as any });
+       expect(footer).toBe('');
+     });
 
-    it('returns empty string when skills is null', () => {
-      const footer = AttributionFooter.generate({ skills: null as any });
+     it('returns empty string when skills is null', () => {
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       const footer = AttributionFooter.generate({ skills: null as any });
       expect(footer).toBe('');
     });
 
     it('throws error for invalid format', () => {
-      expect(() => {
-        AttributionFooter.generate({
-          skills: mockSkills,
-          format: 'invalid' as any,
-        });
-      }).toThrow('Invalid attribution format');
+expect(() => {
+          
+         AttributionFooter.generate({
+           skills: mockSkills,
+           format: 'invalid' as any,
+         });
+       }).toThrow('Invalid attribution format');
     });
 
     it('generates markdown format by default', () => {

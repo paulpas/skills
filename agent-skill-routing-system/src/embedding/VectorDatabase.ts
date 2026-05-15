@@ -443,19 +443,19 @@ export class VectorDatabase {
       const data = await fs.readFile(indexFile, 'utf-8');
       const indexData = JSON.parse(data);
 
-      this.skills = indexData.skills.map((skill: any) => ({
-        metadata: {
-          name: skill.name,
-          category: skill.category,
-          description: '',
-          tags: [],
-          input_schema: {},
-          output_schema: {},
-          embedding: skill.embedding,
-        },
-        sourceFile: '',
-        rawContent: '',
-      }));
+this.skills = indexData.skills.map((skill: { name: string; category: string; embedding: number[] }) => ({
+         metadata: {
+           name: skill.name,
+           category: skill.category,
+           description: '',
+           tags: [],
+           input_schema: {},
+           output_schema: {},
+           embedding: skill.embedding,
+         },
+         sourceFile: '',
+         rawContent: '',
+       }));
 
       // Restore token stats if present
       if (indexData.tokenStats) {

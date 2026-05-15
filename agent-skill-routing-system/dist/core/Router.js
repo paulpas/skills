@@ -93,7 +93,7 @@ class Router {
             candidateCount: candidates.length,
             topCandidates: candidates.slice(0, 5).map(c => ({
                 name: c.skill.metadata.name,
-                similarity: c.score ?? c.similarity ?? null,
+                similarity: 'score' in c ? c.score : null,
             })),
         });
         this.logger.debug('Found candidate skills', {

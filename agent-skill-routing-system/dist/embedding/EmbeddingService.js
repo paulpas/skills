@@ -450,7 +450,7 @@ class EmbeddingService {
                     return parsed;
                 }
             }
-            catch (error) {
+            catch {
                 this.logger.debug('[Emulation] Regex extraction failed, using fallback');
             }
         }

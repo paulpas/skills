@@ -247,10 +247,11 @@ class SafetyLayer {
             }
             for (const [field, value] of Object.entries(inputs)) {
                 const fieldSchema = properties[field];
-                if (fieldSchema && fieldSchema.type) {
+                if (fieldSchema && typeof fieldSchema === 'object' && 'type' in fieldSchema) {
+                    const fieldSchemaTyped = fieldSchema;
                     const actualType = typeof value;
-                    if (actualType !== fieldSchema.type) {
-                        errors.push(`Type mismatch for "${field}": expected ${fieldSchema.type}, got ${actualType}`);
+                    if (actualType !== fieldSchemaTyped.type) {
+                        errors.push(`Type mismatch for "${field}": expected ${fieldSchemaTyped.type}, got ${actualType}`);
                     }
                 }
             }

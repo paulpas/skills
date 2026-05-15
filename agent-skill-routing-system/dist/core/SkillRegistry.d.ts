@@ -207,10 +207,10 @@ export declare class SkillRegistry implements SkillRegistryWithCompression {
     /** Strip surrounding single or double quotes from a YAML scalar value */
     private unquoteFrontmatterValue;
     /**
-     * Initialize the LLM-based compressor with an LLM client
-     * Called once after LLM client is available
-     */
-    setLLMClient(llmClient: any): void;
+          * Initialize the LLM-based compressor with an LLM client
+          * Called once after LLM client is available
+          */
+    setLLMClient(llmClient: unknown): void;
     /**
      * Pre-compute compressed versions for a skill (fire-and-forget, async)
      * Called after loading a skill to populate caches

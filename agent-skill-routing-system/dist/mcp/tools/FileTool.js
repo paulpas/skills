@@ -39,16 +39,18 @@ class FileTool extends types_1.BaseMCPTool {
                 case 'read':
                     output = await this.readFile(resolvedPath);
                     break;
-                case 'write':
+                case 'write': {
                     this.validateArgs(args, ['content']);
                     const content = String(args.content);
                     output = await this.writeFile(resolvedPath, content);
                     break;
-                case 'append':
+                }
+                case 'append': {
                     this.validateArgs(args, ['content']);
                     const appendContent = String(args.content);
                     output = await this.appendFile(resolvedPath, appendContent);
                     break;
+                }
                 case 'exists':
                     output = await this.fileExists(resolvedPath);
                     break;

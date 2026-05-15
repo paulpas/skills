@@ -127,10 +127,14 @@ class SkillRegistry {
         const json = await response.json();
         const entries = Array.isArray(json)
             ? json
-            : Array.isArray(json?.entries)
-                ? json.entries
-                : Array.isArray(json?.skills)
-                    ? json.skills
+            : typeof json === 'object' && json !== null && 'entries' in json
+                ? Array.isArray(json.entries)
+                    ? json.entries
+                    : []
+                : typeof json === 'object' && json !== null && 'skills' in json
+                    ? Array.isArray(json.skills)
+                        ? json.skills
+                        : []
                     : [];
         if (entries.length === 0) {
             throw new Error('Skills index has no skills/entries array');
@@ -147,17 +151,17 @@ class SkillRegistry {
                         : [];
             const sourceFile = entry.path ||
                 entry.source ||
-                (entry.domain && entry.name ? `skills/${entry.domain}/${entry.name}/SKILL.md` : '');
+                (entry.domain && entry.name ? `skills/${String(entry.domain)}/${String(entry.name)}/SKILL.md` : '');
             const metadata = {
-                name: entry.name,
-                category: entry.domain,
-                description: entry.description || '',
+                name: String(entry.name),
+                category: String(entry.domain),
+                description: String(entry.description || ''),
                 tags,
                 input_schema: { type: 'object', properties: {}, required: [] },
                 output_schema: { type: 'object', properties: {}, required: [] },
             };
             const skill = { metadata, sourceFile, rawContent: '' };
-            if (!this.skills.has(entry.name)) {
+            if (!this.skills.has(String(entry.name))) {
                 this.addSkill(skill);
             }
         }
@@ -954,12 +958,20 @@ class SkillRegistry {
         return value;
     }
     /**
-     * Initialize the LLM-based compressor with an LLM client
-     * Called once after LLM client is available
-     */
+          * Initialize the LLM-based compressor with an LLM client
+          * Called once after LLM client is available
+          */
     setLLMClient(llmClient) {
         if (!llmClient) {
             this.logger.warn('Attempted to set null LLM client');
+            return;
+        }
+        if (typeof llmClient !== 'object' || llmClient === null) {
+            this.logger.error('Invalid LLM client: expected object', { type: typeof llmClient });
+            return;
+        }
+        if (!('createCompletion' in llmClient)) {
+            this.logger.error('Invalid LLM client: missing createCompletion method');
             return;
         }
         this.llmCompressor = new LLMSkillCompressor_1.LLMSkillCompressor(llmClient);

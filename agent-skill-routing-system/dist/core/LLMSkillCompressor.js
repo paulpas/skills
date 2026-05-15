@@ -171,9 +171,7 @@ class LLMSkillCompressor {
      * Build the compression prompt for the LLM
      * Intentional: descriptive prompt structure
      */
-    buildCompressionPrompt(skillContent, targetStyle
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ) {
+    buildCompressionPrompt(skillContent, targetStyle) {
         const tokenTargets = {
             brief: { min: 200, max: 400, removal: 'aggressive' },
             moderate: { min: 500, max: 800, removal: 'balanced' },
@@ -210,9 +208,7 @@ Return ONLY the compressed Markdown content (including YAML frontmatter if prese
      * Validate markdown output
      * Parse: syntax check + title + code blocks
      */
-    validateMarkdownOutput(content
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ) {
+    validateMarkdownOutput(content) {
         const errors = [];
         // Guard: check content exists
         if (!content || content.length < 50) {
