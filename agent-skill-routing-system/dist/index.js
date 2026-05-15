@@ -418,11 +418,11 @@ class AgentSkillRoutingApp {
         // Bind port IMMEDIATELY — skills load in background below
         try {
             await this.app.listen({ port, host: '0.0.0.0' });
-            // Clear startup message with compression info
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            void this.compressionLevel === 0
+            // Compression info for reference - assigned but not used
+            const compressionInfo = this.compressionLevel === 0
                 ? '(DISABLED - opt-in for production)'
                 : `(Level ${this.compressionLevel} - ~${5 + 5 * this.compressionLevel}% savings)`;
+            void compressionInfo;
             // eslint-disable-next-line no-console
             console.log(`
 ╔════════════════════════════════════════════════════════════════╗

@@ -135,7 +135,7 @@ Some content here that is long enough to pass validation checks.`;
       // Note: If validation fails, it may be due to content length
       // The validation requires content > 50 chars including YAML frontmatter
       if (!result?.brief.isValid) {
-        console.log('Validation errors:', result?.brief.validationErrors);
+        // Validation may fail for content length in test environment
       }
       expect(result?.brief.isValid).toBe(true);
       expect(result?.brief.validationErrors).toHaveLength(0);

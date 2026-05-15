@@ -36,15 +36,15 @@ it('returns empty string when skills is undefined', () => {
       expect(footer).toBe('');
     });
 
-    it('throws error for invalid format', () => {
-expect(() => {
-          
-         AttributionFooter.generate({
-           skills: mockSkills,
-           format: 'invalid' as any,
-         });
-       }).toThrow('Invalid attribution format');
-    });
+ it('throws error for invalid format', () => {
+    expect(() => {
+      AttributionFooter.generate({
+        skills: mockSkills,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        format: 'invalid' as any,
+      });
+    }).toThrow('Invalid attribution format');
+  });
 
     it('generates markdown format by default', () => {
       const footer = AttributionFooter.generate({ skills: mockSkills });
