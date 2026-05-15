@@ -99,13 +99,13 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-13 23:49:37 UTC  
-> **Total skills:** 558
+> **Last updated:** 2026-05-15 15:41:45 UTC  
+> **Total skills:** 559
 
 ## Skills by Domain
 
 
-### Agent (228 skills)
+### Agent (229 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -212,6 +212,7 @@ MIT — All skills are freely available and redistributable.
 | [git-pr-workflows-onboard](skills/agent/git-pr-workflows-onboard/SKILL.md) | Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pr-workflows-onboard, git pr workflows onboard, how do i git-pr-workflows-onboard, orchestrate git-pr-workflows-onboard, automate git-pr-workflows-onboard, agent git-pr-workflows-onboard |
 | [git-pr-workflows-pr-enhance](skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pr-workflows-pr-enhance, git pr workflows pr enhance, how do i git-pr-workflows-pr-enhance, orchestrate git-pr-workflows-pr-enhance, automate git-pr-workflows-pr-enhance, agent git-pr-workflows-pr-enhance |
 | [git-pushing](skills/agent/git-pushing/SKILL.md) | Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | git-pushing, git pushing, how do i git-pushing, orchestrate git-pushing, automate git-pushing, agent git-pushing |
+| [github-actions-status](skills/agent/github-actions-status/SKILL.md) | View and monitor GitHub Actions workflow runs, statuses, and logs using the gh CLI. Lists workflows, inspects run details, follows logs, checks commit statuses, and triggers new runs. | github actions, ci/cd, workflow, gh run, gh workflow, pipeline, build status, ci status, action status, check runs |
 | [github-actions-templates](skills/agent/github-actions-templates/SKILL.md) | Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | github-actions-templates, github actions templates, how do i github-actions-templates, orchestrate github-actions-templates, automate github-actions-templates, agent github-actions-templates |
 | [github-automation](skills/agent/github-automation/SKILL.md) | Implements intelligent github automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | github-automation, github automation, how do i github-automation, orchestrate github-automation, automate github-automation, agent github-automation |
 | [github-workflow-automation](skills/agent/github-workflow-automation/SKILL.md) | Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | github-workflow-automation, github workflow automation, how do i github-workflow-automation, orchestrate github-workflow-automation, automate github-workflow-automation, agent github-workflow-automation |
@@ -1499,6 +1500,7 @@ MIT — All skills are freely available and redistributable.
 | [git-pr-workflows-onboard](skills/agent/git-pr-workflows-onboard/SKILL.md) | Agent | Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [git-pr-workflows-pr-enhance](skills/agent/git-pr-workflows-pr-enhance/SKILL.md) | Agent | Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [git-pushing](skills/agent/git-pushing/SKILL.md) | Agent | Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [github-actions-status](skills/agent/github-actions-status/SKILL.md) | Agent | View and monitor GitHub Actions workflow runs, statuses, and logs using the gh CLI. Lists workflows, inspects run details, follows logs, checks commit statuses, and triggers new runs. | Information |
 | [github-actions-templates](skills/agent/github-actions-templates/SKILL.md) | Agent | Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [github-automation](skills/agent/github-automation/SKILL.md) | Agent | Implements intelligent github automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [github-workflow-automation](skills/agent/github-workflow-automation/SKILL.md) | Agent | Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
