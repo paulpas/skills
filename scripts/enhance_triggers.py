@@ -306,7 +306,8 @@ def enhance_all_skills(skills_root: Path) -> Tuple[List[Dict], int, int]:
     Enhance triggers for all skills.
     Returns: (list of updated skills, total processed, total with changes)
     """
-    DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+    from domain_discovery import get_domain_list
+    DOMAINS = get_domain_list()
     skill_dirs = []
     for domain in DOMAINS:
         domain_path = skills_root / domain

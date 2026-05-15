@@ -16,10 +16,11 @@ license: MIT
 compatibility: opencode
 metadata:
   version: "1.0.0"
-  domain: coding                                    # agent, cncf, coding, trading, programming
+  domain: coding                                    # agent, cncf, coding, trading, programming, writing
   role: implementation                              # implementation, reference, review, orchestration
   scope: implementation                             # implementation, infrastructure, orchestration, review
-  output-format: code                               # code, manifests, analysis, report
+  output-format: code                               # DEPRECATED: use content-types below
+  content-types: [code, guidance, do-dont, examples] # guidance, examples, do-dont, config, code, diagrams
   triggers: keyword1, keyword2, keyword3, how-do-i, vernacular-term, business-phrase, another-term, related-concept
   related-skills: other-skill-name-1, other-skill-name-2
   maturity: stable                                  # draft, beta, stable
@@ -185,6 +186,68 @@ def advanced_pattern(data: list[dict], options: dict) -> list[dict]:
 
 ---
 
+## Configuration Examples
+
+Include this section when `content-types` includes `config`. Provide YAML/JSON/ENV config snippets with explanations.
+
+```yaml
+# Example configuration file
+key: value
+# Comment explaining the configuration
+```
+
+---
+
+## Example Scenarios
+
+Include this section when `content-types` includes `examples`. Provide concrete input/output scenarios.
+
+### Scenario 1: [Description]
+
+**Input:**
+```json
+{
+  "example": "input data"
+}
+```
+
+**Output:**
+```
+Expected result or response
+```
+
+---
+
+## Best Practices
+
+Include this section when `content-types` includes `do-dont`. Provide detailed guidance with what to do and what not to do.
+
+### What to Do
+
+- **Do this** — with specific reasoning and impact
+- **Do that** — with specific reasoning and impact
+- **Do another** — with specific reasoning and impact
+
+### What NOT to Do
+
+- **Don't do this** — why it's problematic and what to do instead
+- **Avoid that** — common mistake to prevent
+- **Don't use that** — anti-pattern to avoid
+
+---
+
+## Architecture/Flow Diagrams
+
+Include this section when `content-types` includes `diagrams`. Provide ASCII diagrams for architecture, flows, and system design.
+
+```
+┌──────────┐     ┌──────────┐     ┌──────────┐
+│  Source   │────▶│  Process │────▶│  Output  │
+└──────────┘     └──────────┘     └──────────┘
+```
+
+---
+
 ## Constraints
 
 These are non-negotiable rules that apply to all code using this skill.
@@ -277,7 +340,7 @@ Example output format:
 Before submitting this skill:
 
 - [ ] All sections completed (no TODO or placeholder text)
-- [ ] BAD and GOOD examples are actual working code
+- [ ] Examples match content-types (code blocks if `code`, configs if `config`, do/dont if `do-dont`)
 - [ ] Examples validate against [framework]
 - [ ] All triggers are specific (not ultra-generic)
 - [ ] Related-skills are bidirectional
@@ -285,6 +348,7 @@ Before submitting this skill:
 - [ ] File size > 2000 bytes
 - [ ] YAML frontmatter is valid
 - [ ] Metadata fields all present
+- [ ] `output-format` field is marked as deprecated (use `content-types` instead)
 
 ---
 
@@ -326,17 +390,38 @@ Replace placeholders based on your domain:
 | `cncf` | `role: reference` | Cloud-native best practices |
 | `agent` | `role: orchestration` | Agent choreography patterns |
 | `programming` | `role: reference` | Algorithm design principles |
+| `writing` | `role: reference` | Style guidelines + examples |
 
-### Step 3: Fill in Content
+### Step 3: Define Content Types
+
+Specify `content-types` in the frontmatter to control what sections are required:
+
+| Content Type | Required Sections | Example |
+|-------------|-------------------|---------|
+| `code` | Implementation Patterns (BAD/GOOD) | Coding skills that produce code |
+| `config` | Configuration Examples | Kubernetes, Docker, etc. |
+| `do-dont` | Best Practices (What to Do / What NOT to Do) | Troubleshooting, anti-patterns |
+| `examples` | Example Scenarios | Demonstrations, samples |
+| `guidance` | TL;DR, Core Workflow, Constraints | Always included |
+| `diagrams` | Architecture/Flow Diagrams | System design, architecture |
+
+**Default behavior:** If `content-types` is not specified, defaults to `["code", "guidance"]`.
+
+### Step 4: Fill in Content
 
 1. **Describe your skill** (1–2 sentences) — what does loading this make the model do?
 2. **List when to use it** — 3+ specific scenarios
 3. **List when NOT to use it** — 3+ anti-patterns or alternatives
 4. **Provide workflow** — 3–5 concrete steps with checkpoints
-5. **Include patterns** — At least one ❌ BAD and ✅ GOOD pair
+5. **Include patterns** — Based on `content-types`:
+   - `code`: At least one ❌ BAD and ✅ GOOD code pair
+   - `config`: At least one configuration snippet with explanation
+   - `do-dont`: Both "What to Do" and "What NOT to Do" sections
+   - `examples`: At least one concrete input/output scenario
+   - `diagrams`: At least one ASCII diagram
 6. **State constraints** — What's mandatory and forbidden?
 
-### Step 4: Validate
+### Step 5: Validate
 
 Run the validation script:
 
@@ -353,7 +438,7 @@ Expected output:
 ✅ Ready for submission
 ```
 
-### Step 5: Submit
+### Step 6: Submit
 
 ```bash
 git add skills/<domain>/<topic>/SKILL.md
@@ -368,13 +453,15 @@ git push origin feature/<topic>
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
-| **No BAD examples** | Doesn't show what to avoid | Always include ❌ BAD pattern |
+| **No BAD examples** | Doesn't show what to avoid | Always include ❌ BAD pattern (if `code` in content-types) |
 | **Vague "When to Use"** | Model doesn't know when to apply skill | Use specific scenarios, not concepts |
 | **Placeholder text** | Incomplete skill confuses model | Remove all TODO, FIXME, example.com |
 | **Metadata missing** | Skill won't route or load | Check all required fields in frontmatter |
 | **Non-English content** | Fails quality gates | Audit with language checker |
 | **Generic constraints** | Doesn't enforce behavior | Make constraints specific + actionable |
 | **No philosophy alignment** | Code quality suffers | Verify against 5 Laws or framework |
+| **Wrong content-types** | Generates irrelevant sections | Match content-types to skill purpose |
+| **Missing output-format deprecation** | Schema inconsistency | Add `# DEPRECATED` comment to output-format field |
 
 ---
 
@@ -387,6 +474,7 @@ See: `skills/coding/code-review/SKILL.md`
 - Focus: Philosophy (5 Laws)
 - Examples: TypeScript/Python code
 - Constraints: SOLID principles + elegance
+- Content-types: `code, guidance, do-dont, examples`
 
 ### Trading Skill Example
 
@@ -395,6 +483,7 @@ See: `skills/trading/risk-stop-loss/SKILL.md`
 - Focus: Risk safety
 - Examples: Python with type hints
 - Constraints: Emergency stops mandatory
+- Content-types: `code, guidance, config, do-dont`
 
 ### CNCF Skill Example
 
@@ -403,6 +492,16 @@ See: `skills/cncf/kubernetes/SKILL.md`
 - Focus: Production readiness
 - Examples: Real YAML manifests
 - Constraints: Security + reliability
+- Content-types: `guidance, examples, do-dont, config`
+
+### Writing Skill Example
+
+See: `skills/writing/style-guide/SKILL.md`
+
+- Focus: Style and clarity
+- Examples: Before/after text comparisons
+- Constraints: Consistency, readability
+- Content-types: `guidance, examples, do-dont`
 
 ---
 
@@ -415,6 +514,6 @@ See: `skills/cncf/kubernetes/SKILL.md`
 
 ---
 
-**Template Version:** 1.0.0  
-**Last Updated:** 2026-04-26  
+**Template Version:** 1.1.0  
+**Last Updated:** 2026-05-15  
 **Maintained By:** @paulpas

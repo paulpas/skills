@@ -21,12 +21,12 @@ from typing import Dict, List, Tuple, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from utils import (
     Colors,
-    DOMAINS,
     get_skills_directory,
     parse_yaml_frontmatter,
     extract_h1_title,
     truncate_at_word_boundary,
 )
+from domain_discovery import get_domain_list
 
 def format_description_for_readme(description: str) -> str:
     """Format description for README display with proper length and readability."""
@@ -127,7 +127,7 @@ def read_all_skills(skills_root: Path) -> List[Dict]:
         return skills
 
     # Scan each domain directory
-    for domain in sorted(DOMAINS):
+    for domain in sorted(get_domain_list()):
         domain_path = skills_root / domain
         if not domain_path.exists():
             continue

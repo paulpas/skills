@@ -21,12 +21,12 @@ if SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 from utils import (
     Colors,
-    DOMAINS,
     get_domain_defaults,
     get_skills_directory,
     format_error,
     parse_yaml_frontmatter,
 )
+from domain_discovery import get_domain_list
 
 
 def validate_skill(file_path: Path) -> dict:

@@ -4,6 +4,7 @@
 import { BaseMCPTool, IMCPTool } from '../types';
 import * as path from 'path';
 import * as fs from 'fs/promises';
+import { DomainRegistry } from '../../core/DomainRegistry';
 
 /**
  * Skill metadata structure for skill generation
@@ -17,7 +18,8 @@ export interface SkillMetadata {
   domain: string;
   role: string;
   scope: string;
-  'output-format': string;
+  'output-format'?: string;
+  'content-types'?: string;
   triggers: string;
   'related-skills'?: string;
   author?: string;
@@ -208,9 +210,10 @@ export class SkillGenerationTool extends BaseMCPTool implements IMCPTool {
     // Step 1: Extract domain and topic from task if not provided
     let extractedDomain = domain;
     let extractedTopic = topic;
+    let extractionResult: { domain: string; topic: string; contentTypes?: string } | null = null;
 
     if (!extractedDomain || !extractedTopic) {
-      const extractionResult = await this.extractDomainAndTopic(task);
+      extractionResult = await this.extractDomainAndTopic(task);
       if (!extractionResult) {
         throw new Error('Failed to extract domain and topic from task');
       }
@@ -218,27 +221,31 @@ export class SkillGenerationTool extends BaseMCPTool implements IMCPTool {
       extractedTopic = extractedTopic || extractionResult.topic;
     }
 
-    // Validate domain
-    const validDomains = ['agent', 'cncf', 'coding', 'programming', 'trading'];
-    if (!validDomains.includes(extractedDomain!)) {
-      throw new Error(`Invalid domain: ${extractedDomain}. Valid domains: ${validDomains.join(', ')}`);
+    // Validate domain: any directory name is valid (dynamic domain discovery)
+    // We only verify the domain name is well-formed (not empty, safe characters)
+    if (!extractedDomain || extractedDomain.trim() === '') {
+      throw new Error('Domain cannot be empty');
     }
 
-    // Step 2: Generate skill content
+   // Step 2: Generate skill content
     const skillDescription = this.generateSkillDescription(task, extractedDomain!, extractedTopic!);
     const role = this.getDefaultRole(extractedDomain!);
     const outputFormat = this.getDefaultOutputFormat(extractedDomain!);
 
+    // Get content-types from extraction (LLM determined) or domain defaults
+    const contentTypes = extractionResult?.contentTypes || DomainRegistry.getInstance().getDomainDefaults(extractedDomain!).contentTypes.join(', ');
+
 for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
-         // eslint-disable-next-line no-console
-         console.log(`LLM generation attempt ${attempt}/${this.maxRetries}`);
+          // eslint-disable-next-line no-console
+          console.log(`LLM generation attempt ${attempt}/${this.maxRetries}`);
 
       const content = await this.generateSkillContent(
         extractedDomain!,
         extractedTopic!,
         skillDescription,
         role,
-        outputFormat
+        outputFormat,
+        contentTypes
       );
 
       if (content) {
@@ -257,22 +264,36 @@ for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
     return null;
   }
 
-  /**
-   * Extract domain and topic from task using LLM
-   */
-  private async extractDomainAndTopic(task: string): Promise<{ domain: string; topic: string } | null> {
-    const prompt = `Extract the domain and topic from this task description.
+ /**
+    * Extract domain and topic from task using LLM
+    */
+   private async extractDomainAndTopic(task: string): Promise<{
+    domain: string;
+    topic: string;
+    contentTypes?: string;
+  } | null> {
+    const prompt = `Extract the domain, topic, and appropriate content-types from this task description.
 
 Task: "${task}"
 
 Return a JSON object with:
-- domain: one of (agent, cncf, coding, programming, trading)
+- domain: a short kebab-case domain name (e.g., "coding", "cncf", "writing", "devops")
 - topic: kebab-case topic name (e.g., "code-review", "risk-stop-loss")
+- content-types: an array of content types from: guidance, examples, do-dont, config, code, diagrams
+
+Content-type guidance:
+- If the task involves writing code, algorithms, or programming → include "code"
+- If the task involves configuration files (YAML, JSON, .env) → include "config"
+- If the task involves best practices, guidelines, or advice → include "guidance"
+- If the task involves troubleshooting, comparisons, or anti-patterns → include "do-dont"
+- If the task involves examples, samples, or demonstrations → include "examples"
+- If the task involves architecture, workflows, or system design → include "diagrams"
 
 Examples:
-- Task: "Create a code review skill" → {"domain": "coding", "topic": "code-review"}
-- Task: "Build a stop loss mechanism" → {"domain": "trading", "topic": "risk-stop-loss"}
-- Task: "Create a Kubernetes deployment skill" → {"domain": "cncf", "topic": "kubernetes"}
+- Task: "Create a code review skill" → {"domain": "coding", "topic": "code-review", "content-types": ["code", "guidance", "do-dont"]}
+- Task: "Build a stop loss mechanism" → {"domain": "trading", "topic": "risk-stop-loss", "content-types": ["code", "guidance", "do-dont", "config"]}
+- Task: "Create a Kubernetes deployment skill" → {"domain": "cncf", "topic": "kubernetes", "content-types": ["guidance", "examples", "do-dont", "config"]}
+- Task: "Create a technical writing style guide" → {"domain": "writing", "topic": "style-guide", "content-types": ["guidance", "examples", "do-dont"]}
 
 Respond with ONLY the JSON object, no other text.`;
 
@@ -288,6 +309,7 @@ Respond with ONLY the JSON object, no other text.`;
       return {
         domain: result.domain || 'coding',
         topic: result.topic || 'new-skill',
+        contentTypes: Array.isArray(result.contentTypes) ? result.contentTypes.join(', ') : undefined,
       };
     } catch (error) {
       console.error('LLM parsing failed', {
@@ -297,21 +319,22 @@ Respond with ONLY the JSON object, no other text.`;
       const domain = 'coding';
       const topic = task.toLowerCase().replace(/[^a-z0-9-]/g, '-').substring(0, 50).replace(/-+/g, '-').replace(/^-|-$/g, '');
       console.warn('Using fallback extraction', { domain, topic });
-      return { domain, topic };
+      return { domain, topic, contentTypes: 'code, guidance' };
     }
   }
 
-  /**
-   * Generate skill content using LLM
-   */
-  private async generateSkillContent(
+ /**
+    * Generate skill content using LLM
+    */
+   private async generateSkillContent(
     domain: string,
     topic: string,
     description: string,
     role: string,
-    outputFormat: string
+    outputFormat: string | null,
+    contentTypes: string
   ): Promise<SkillContent | null> {
-    const generationPrompt = this.buildGenerationPrompt(domain, topic, description, role, outputFormat);
+    const generationPrompt = this.buildGenerationPrompt(domain, topic, description, role, outputFormat, contentTypes);
 
     try {
       const response = await this.callOpenAI({
@@ -342,23 +365,63 @@ Respond with ONLY the JSON object, no other text.`;
     }
   }
 
-  /**
-   * Build the generation prompt for skill content
-   */
-  private buildGenerationPrompt(
+/**
+    * Build the generation prompt for skill content
+    */
+   private buildGenerationPrompt(
     domain: string,
     topic: string,
     description: string,
     role: string,
-    outputFormat: string
+    outputFormat: string | null,
+    contentTypes: string
   ): string {
+    // Parse content-types from comma-separated string
+    const types = contentTypes
+      .split(',')
+      .map((t) => t.trim().toLowerCase())
+      .filter((t) => t.length > 0);
+
+    // Build section guidance based on content-types
+    const sections: string[] = [];
+    sections.push('1. H1 Title: Human-readable name (not kebab-case)');
+    sections.push('2. Role/purpose paragraph: 1-3 sentences from model\'s perspective');
+    sections.push('3. ## TL;DR Checklist: 3-5 actionable items');
+
+    if (types.includes('do-dont')) {
+      sections.push('4. ## TL;DR for Code Generation: 3-7 specific constraints (REQUIRED for role=implementation)');
+    }
+    sections.push('5. ## When to Use: Bulleted list of concrete situations');
+    sections.push('6. ## When NOT to Use: Anti-patterns and exclusions (for complex skills)');
+    sections.push('7. ## Core Workflow: Numbered steps with checkpoints');
+
+    if (types.includes('code')) {
+      sections.push('8. ## Implementation Patterns: Typed code with BAD/GOOD examples');
+    }
+    if (types.includes('config')) {
+      sections.push('8. ## Configuration Examples: YAML/JSON/ENV config snippets with explanations');
+    }
+    if (types.includes('examples')) {
+      sections.push('8. ## Example Scenarios: Concrete input/output examples demonstrating the skill');
+    }
+    if (types.includes('do-dont')) {
+      sections.push(`8. ## ${types.includes('code') || types.includes('config') ? 'Advanced' : 'Best Practices'}: Detailed ${types.includes('do-dont') ? 'What to Do / What NOT to Do' : 'guidance'} with concrete examples`);
+    }
+    if (types.includes('diagrams')) {
+      sections.push(`8. ## Architecture/Flow Diagrams: ASCII diagrams illustrating key concepts`);
+    }
+
+    sections.push(`${types.includes('code') || types.includes('config') || types.includes('examples') ? '9' : '8'}. ## Constraints: MUST DO / MUST NOT DO sections`);
+    sections.push(`${types.includes('examples') || types.includes('diagrams') ? '10' : '9'}. ## Output Template: What the model produces (for review/analysis roles)`);
+    sections.push('11. ## Related Skills: Table if metadata.related-skills exists');
+
     return `You are creating a SKILL.md file for the agent-skill-router repository.
 
 DOMAIN: ${domain}
 TOPIC: ${topic}
 DESCRIPTION: ${description}
 ROLE: ${role}
-OUTPUT FORMAT: ${outputFormat}
+CONTENT TYPES: [${contentTypes || 'code, guidance'}]
 
 Create a complete, high-quality SKILL.md file following SKILL_FORMAT_SPEC.md requirements:
 
@@ -371,43 +434,66 @@ Create a complete, high-quality SKILL.md file following SKILL_FORMAT_SPEC.md req
 - metadata.domain: ${domain}
 - metadata.role: ${role}
 - metadata.scope: ${this.getDefaultScope(domain)}
-- metadata.output-format: ${outputFormat}
+- metadata.output-format: ${outputFormat || 'code'} # DEPRECATED (use content-types below)
+- metadata.content-types: [${contentTypes || 'code, guidance'}]
 - metadata.triggers: 5-8 comma-separated keywords (technical + conversational)
 - metadata.related-skills: comma-separated related skill names (optional)
 
 **Content Section Requirements:**
-1. H1 Title: Human-readable name (not kebab-case)
-2. Role/purpose paragraph: 1-3 sentences from model's perspective
-3. ## TL;DR Checklist: 3-5 actionable items
-4. ## TL;DR for Code Generation: 3-7 specific constraints (REQUIRED for role=implementation)
-5. ## When to Use: Bulleted list of concrete situations
-6. ## When NOT to Use: Anti-patterns and exclusions (for complex skills)
-7. ## Core Workflow: Numbered steps with checkpoints
-8. ## Implementation Patterns: Typed Python code with BAD/GOOD examples
-9. ## Constraints: MUST DO / MUST NOT DO sections
-10. ## Output Template: What the model produces (for review/analysis roles)
-11. ## Related Skills: Table if metadata.related-skills exists
+${sections.join('\n')}
 
-**Domain-Specific Requirements:**
-${this.getDomainRequirements(domain)}
+**Content-Type Specific Guidance:**
+${this.getContentTypesGuidance(types)}
 
 **Quality Gate Requirements:**
 - File size: ≥3000 bytes
-- At least 2 code blocks for implementation skills
+- If content-types includes "code": at least 2 code blocks (BAD/GOOD pairs)
+- If content-types includes "config": at least 1 configuration block (YAML/JSON)
+- If content-types includes "do-dont": both "What to Do" and "What NOT to Do" present
+- If content-types includes "examples": at least 1 concrete input/output example
+- If content-types does NOT include "code": code blocks are optional (guidance/examples sufficient)
 - No sentinel string "Implementing this specific pattern or feature"
 - 3-8 triggers in metadata
 - All required sections present
-- Real code examples, not placeholders
+- Real examples, not placeholders
 - Domain-specific constraints in MUST DO/MUST NOT DO
 
 **Important:**
-- Use typed Python signatures with docstrings for all functions
-- Include BAD vs GOOD code examples
-- Add concrete, actionable constraints
+- Match code style to content-types: only include code if "code" is in the content-types
+- For "config" content-types: use real YAML/JSON configs with comments
+- For "do-dont": be specific about what to do and what NOT to do
+- For "guidance": focus on clear, actionable advice
+- For "examples": provide concrete, realistic scenarios
 - Use domain-specific language and terminology
 - Make the skill actionable and specific
 
 Generate the complete SKILL.md file content. Start with --- for YAML frontmatter.`;
+  }
+
+  /**
+   * Generate content-type specific guidance for the LLM prompt
+   */
+  private getContentTypesGuidance(types: string[]): string {
+    const guidance: string[] = [];
+    if (types.includes('code')) {
+      guidance.push('- **Code**: Provide typed code with BAD/GOOD pairs. Use typed signatures with docstrings.');
+    }
+    if (types.includes('config')) {
+      guidance.push('- **Config**: Provide YAML/JSON/ENV config snippets with comments explaining each section.');
+    }
+    if (types.includes('do-dont')) {
+      guidance.push('- **Do/Don\'t**: Be explicit. "What to Do" with reasons. "What NOT to Do" with anti-patterns.');
+    }
+    if (types.includes('examples')) {
+      guidance.push('- **Examples**: Provide concrete input/output scenarios, not abstract descriptions.');
+    }
+    if (types.includes('guidance')) {
+      guidance.push('- **Guidance**: Clear, actionable advice with specific reasons and impact.');
+    }
+    if (types.includes('diagrams')) {
+      guidance.push('- **Diagrams**: ASCII art for architecture, flows, and system diagrams.');
+    }
+    return guidance.join('\n');
   }
 
   /**
@@ -498,45 +584,26 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
     return defaults[domain] || 'implementation';
   }
 
-  /**
-   * Get default output format for domain
+ /**
+   * Output format is now determined by content-types (deprecated).
+   * Returns null — content-types replaces this entirely.
    */
-  private getDefaultOutputFormat(domain: string): string {
-    const defaults: Record<string, string> = {
-      agent: 'analysis',
-      cncf: 'manifests',
-      coding: 'code',
-      programming: 'code',
-      trading: 'code',
-    };
-    return defaults[domain] || 'code';
+  private getDefaultOutputFormat(_domain: string): string | null {
+    // Deprecated: content-types replaces output-format
+    return null;
   }
 
-  /**
-   * Get domain-specific requirements
-   */
-  private getDomainRequirements(domain: string): string {
-    const requirements: Record<string, string> = {
-      agent: '- Include ASCII flow diagram for orchestration logic\n- Reference code-philosophy (5 Laws of Elegant Defense)\n- Fallback/error routing for every branching point',
-      cncf: '- Complete working YAML manifest example\n- Architecture diagram or table\n- Common Pitfalls section',
-      coding: '- At least one BAD vs GOOD code example pair\n- MUST DO/MUST NOT DO constraints\n- Reference to standard (OWASP, SOLID, etc.)',
-      trading: '- Python functions with typed signatures and docstrings\n- Risk constraints section\n- File path conventions (risk_engine/, data_pipeline/, execution/, tests/)',
-      programming: '- Implementation in specific language\n- Complexity table\n- Algorithm steps',
-    };
-    return requirements[domain] || '';
-  }
-
-  /**
-   * Generate skill description from task
-   */
+/**
+    * Generate skill description from task
+    */
   private generateSkillDescription(task: string, domain: string, topic: string): string {
     return `Creates a skill for ${topic} in the ${domain} domain to address tasks like: "${task.substring(0, 100)}${task.length > 100 ? '...' : ''}"`;
   }
 
-  /**
-   * Validate skill content against quality gates
-   */
-  private validateSkillContent(skillContent: SkillContent): { isValid: boolean; issues: string[] } {
+/**
+    * Validate skill content against quality gates
+    */
+   private validateSkillContent(skillContent: SkillContent): { isValid: boolean; issues: string[] } {
     const issues: string[] = [];
     const content = skillContent.fullContent;
 
@@ -555,17 +622,58 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
       issues.push('Missing YAML frontmatter delimiter (---)');
     }
 
-    // Check for code blocks in implementation skills
-    const role = skillContent.frontmatter.role;
-    if (role === 'implementation') {
+    // Extract content-types from frontmatter (if present)
+    const frontmatter = skillContent.frontmatter;
+    const contentTypesRaw = frontmatter['content-types'] || '';
+    const contentTypes = typeof contentTypesRaw === 'string'
+      ? contentTypesRaw.split(',').map((t: string) => t.trim().toLowerCase()).filter(Boolean)
+      : [];
+
+    const hasCode = contentTypes.includes('code');
+    const hasConfig = contentTypes.includes('config');
+    const hasDoDont = contentTypes.includes('do-dont');
+    const hasExamples = contentTypes.includes('examples');
+
+    // Check for code blocks — only required if content-types includes "code"
+    if (hasCode) {
       const codeBlocks = (content.match(/```/g) || []).length;
       if (codeBlocks < 4) { // At least 2 complete code blocks
         issues.push(`Implementation skill has fewer than 2 code blocks (found ${codeBlocks / 2})`);
       }
     }
+    // Skills without "code" in content-types don't need code blocks
+
+    // Check for config blocks — required if content-types includes "config"
+    if (hasConfig) {
+      const configBlocks = (content.match(/```/g) || []).length;
+      const hasConfigCodeFence = /```(?:yaml|json|env|text)/i.test(content);
+      if (!hasConfigCodeFence || configBlocks < 4) {
+        issues.push(`Skill with "config" content-type requires at least 1 config block (YAML/JSON) and code fences`);
+      }
+    }
+
+    // Check for do/don't sections — required if content-types includes "do-dont"
+    if (hasDoDont) {
+      const hasDoSection = /What to Do|MUST DO|Do this|Positive/.test(content);
+      const hasDontSection = /What NOT to Do|MUST NOT DO|Don\'t|Anti-pattern|Negative/.test(content);
+      if (!hasDoSection) {
+        issues.push('Skill with "do-dont" content-type requires a "What to Do" or "MUST DO" section');
+      }
+      if (!hasDontSection) {
+        issues.push('Skill with "do-dont" content-type requires a "What NOT to Do" or "MUST NOT DO" section');
+      }
+    }
+
+    // Check for examples — required if content-types includes "examples"
+    if (hasExamples) {
+      const exampleCount = (content.match(/```/g) || []).length;
+      if (exampleCount < 2) {
+        issues.push('Skill with "examples" content-type requires at least 1 example block');
+      }
+    }
 
     // Check triggers count
-    const triggers = skillContent.frontmatter.triggers;
+    const triggers = frontmatter.triggers;
     if (triggers) {
       const triggerCount = triggers.split(',').filter(t => t.trim()).length;
       if (triggerCount < 3) {
@@ -575,7 +683,7 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
       }
     }
 
-    // Check required sections
+    // Check required sections (always required regardless of content-types)
     const requiredSections = ['## When to Use', '## Core Workflow'];
     for (const section of requiredSections) {
       if (!content.includes(section)) {
@@ -701,7 +809,7 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
   /**
    * Get tool specification
    */
-  getSpecification(): ToolSpec {
+getSpecification(): ToolSpec {
     return {
       name: this.name,
       description: this.description,
@@ -714,8 +822,7 @@ Generate the complete SKILL.md file content. Start with --- for YAML frontmatter
           },
           domain: {
             type: 'string',
-            description: 'The domain category (agent, cncf, coding, programming, trading)',
-            enum: ['agent', 'cncf', 'coding', 'programming', 'trading'],
+            description: 'The domain category (optional — auto-detected from task if not provided). Any directory name under skills/ is valid.',
           },
           topic: {
             type: 'string',

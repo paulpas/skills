@@ -28,6 +28,8 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
+from domain_discovery import get_domain_list, get_domain_defaults as _get_dd_defaults
+
 try:
     import yaml
 except ImportError:
@@ -73,8 +75,24 @@ class Colors:
 # 2. DOMAIN CONFIGURATION
 # =============================================================================
 
-DOMAINS: List[str] = ["agent", "cncf", "coding", "programming", "trading"]
+# Dynamically discovered from skills/ directory — no hardcoded list
+# DOMAINS is now a function for lazy evaluation
+def get_domains(skills_dir: Optional[str] = None) -> List[str]:
+    """Get the list of domains by scanning the skills directory.
+    
+    Replaces the old hardcoded DOMAINS list.
+    
+    Args:
+        skills_dir: Optional path to skills directory (uses env var or default)
+    
+    Returns:
+        Sorted list of domain directory names
+    """
+    return get_domain_list(skills_dir or str(get_skills_directory()))
 
+
+# Keep DOMAIN_DEFAULTS for backward compatibility with existing code
+# that imports it directly. New code should use domain_discovery.get_domain_defaults().
 DOMAIN_DEFAULTS: Dict[str, Dict[str, str]] = {
     "agent": {
         "role": "orchestration",
@@ -106,31 +124,32 @@ DOMAIN_DEFAULTS: Dict[str, Dict[str, str]] = {
 
 def get_domain_defaults(domain: str) -> Dict[str, str]:
     """Get default metadata values for a domain.
-
+    
+    Now accepts any domain name — returns sensible defaults for unknown domains.
+    For known domains, returns values from domain_discovery module.
+    
     Args:
-        domain: Domain name (e.g., 'agent', 'coding')
-
+        domain: Domain name (e.g., 'agent', 'coding', 'writing')
+    
     Returns:
-        Dictionary with default role, scope, and output-format
-
-    Raises:
-        ValueError: If domain is not recognized
-
+        Dictionary with default role, scope, and output-format.
+        Never raises — always returns a valid dict.
+    
     Examples:
-        >>> get_domain_defaults('coding')
-        {'role': 'implementation', 'scope': 'implementation', 'output-format': 'code'}
-        >>> get_domain_defaults('unknown')
-        Traceback (most recent call last):
-            ...
-        ValueError: Unknown domain: unknown
+        >>> defaults = get_domain_defaults('coding')
+        >>> defaults['role']
+        'implementation'
+        >>> defaults = get_domain_defaults('unknown-domain')
+        >>> defaults['role']
+        'reference'
     """
-    # Early Exit - Guard clause
-    if not isinstance(domain, str):
-        raise TypeError(f"Domain must be a string, got {type(domain).__name__}")
-    if domain not in DOMAINS:
-        raise ValueError(f"Unknown domain: {domain}")
-
-    return dict(DOMAIN_DEFAULTS[domain])
+    # Use domain_discovery for defaults
+    dd = _get_dd_defaults(domain)
+    return {
+        "role": dd["role"],
+        "scope": dd["scope"],
+        "output-format": dd["role"] if dd["role"] in ("implementation", "orchestration") else "code",
+    }
 
 
 # =============================================================================
@@ -178,10 +197,12 @@ def get_skill_path(domain: str, name: str) -> Path:
         >>> path.name
         'SKILL.md'
     """
-    if domain not in DOMAINS:
-        raise ValueError(f"Unknown domain: {domain}")
-
+    # Accept any directory name — domains are dynamically discovered
     skills_dir = get_skills_directory()
+    domain_path = skills_dir / domain
+    if not domain_path.is_dir():
+        raise ValueError(f"Domain directory does not exist: {domain}")
+
     return skills_dir / domain / name / "SKILL.md"
 
 

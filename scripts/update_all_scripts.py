@@ -15,7 +15,8 @@ scripts_to_check = [
     "connect_trading_skills.py",
 ]
 
-DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+from domain_discovery import get_domain_list
+DOMAINS = get_domain_list()
 
 for script_name in scripts_to_check:
     script_path = scripts_dir / script_name
@@ -28,7 +29,10 @@ for script_name in scripts_to_check:
 
     original = content
 
-    # Check if already updated (has DOMAINS list)
+    # Check if already updated (uses domain_discovery import or old hardcoded format)
+    if 'from domain_discovery' in content:
+        print(f"✅ {script_name} - already uses dynamic domain discovery")
+        continue
     if 'DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]' in content:
         print(f"✅ {script_name} - already uses domain structure")
         continue
@@ -40,7 +44,9 @@ for script_name in scripts_to_check:
     ):
         content = content.replace(
             "skill_dirs = sorted([d for d in SKILLS_ROOT.iterdir() if d.is_dir()])",
-            """DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+            """from domain_discovery import get_domain_list
+
+DOMAINS = get_domain_list()
     skill_dirs = []
     for domain in DOMAINS:
         domain_path = SKILLS_ROOT / domain
@@ -56,7 +62,9 @@ for script_name in scripts_to_check:
     ):
         content = content.replace(
             "skill_dirs = sorted([d for d in skills_root.iterdir() if d.is_dir()])",
-            """DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+            """from domain_discovery import get_domain_list
+
+DOMAINS = get_domain_list()
     skill_dirs = []
     for domain in DOMAINS:
         domain_path = skills_root / domain
