@@ -290,7 +290,16 @@ this.logger.info('Vector search candidates', {
     }
 
     // Filter by minimum score
-    filtered = filtered.filter((skill) => skill.score >= 0.5);
+    // Use 0.3 threshold when we have fallback skills (LLM unavailable)
+    const hasFallback = rankedSkills.some(s => s.reasoning?.includes('fallback'));
+    const minScore = hasFallback ? 0.3 : 0.5;
+    filtered = filtered.filter((skill) => skill.score >= minScore);
+
+    // Ensure at least one skill is returned (fallback behavior)
+    if (filtered.length === 0 && rankedSkills.length > 0) {
+      this.logger.warn('All skills filtered, returning first candidate as fallback');
+      filtered = [rankedSkills[0]];
+    }
 
     return filtered;
   }

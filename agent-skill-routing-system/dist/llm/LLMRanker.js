@@ -78,8 +78,9 @@ class LLMRanker {
             candidateCount: limited.length,
             candidates: limited.map(c => c.metadata.name),
         });
+        const candidateNames = limited.map(c => c.metadata.name);
         const t0 = Date.now();
-        const response = await this.callLLM(prompt);
+        const response = await this.callLLM(prompt, limited);
         const durationMs = Date.now() - t0;
         // Log raw LLM response
         this.logger.debug('LLM raw response', {
@@ -87,7 +88,7 @@ class LLMRanker {
             responseLength: response.length,
             response: response.slice(0, 500), // truncate very long responses
         });
-        const rankings = this.parseRankingResponse(response, limited.map(c => c.metadata.name));
+        const rankings = this.parseRankingResponse(response, candidateNames);
         // Log parsed rankings
         this.logger.info('LLM ranking result', {
             durationMs,
@@ -145,7 +146,7 @@ Rules:
 - include only skills with score >= 0.3
 - order by score descending`;
     }
-    async callLLM(prompt) {
+    async callLLM(prompt, candidates) {
         try {
             switch (this.config.provider) {
                 case 'anthropic': return await this.callAnthropic(prompt);
@@ -154,12 +155,18 @@ Rules:
             }
         }
         catch (error) {
-            this.logger.error('LLM call failed, using fallback ranking', {
+            this.logger.warn('LLM call failed, using fallback ranking', {
                 provider: this.config.provider,
                 model: this.config.model,
                 error: error instanceof Error ? error.message : String(error),
             });
-            return this.fallbackRanking();
+            const fallback = this.fallbackRanking(candidates);
+            this.logger.info('Fallback ranking response', {
+                fallback,
+                candidateCount: candidates.length,
+                firstCandidate: candidates[0]?.metadata.name ?? null,
+            });
+            return fallback;
         }
     }
     /** OpenAI-compatible endpoint (used for both openai and llamacpp) */
@@ -225,11 +232,28 @@ Rules:
         return textBlock.text;
     }
     parseRankingResponse(response, availableSkills) {
+        this.logger.info('Parsing ranking response', {
+            responseLength: response.length,
+            responsePreview: response.slice(0, 200),
+            availableSkills: availableSkills.slice(0, 5),
+        });
         try {
             const jsonMatch = response.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
+                this.logger.info('JSON match found', {
+                    jsonMatch: jsonMatch[0].slice(0, 200),
+                });
                 const json = JSON.parse(jsonMatch[0]);
-                return (json.rankings || []).filter(r => availableSkills.includes(r.skillName));
+                const rankings = json.rankings || [];
+                this.logger.info('Rankings parsed', {
+                    rankingsCount: rankings.length,
+                    rankings,
+                });
+                const filtered = rankings.filter(r => availableSkills.includes(r.skillName));
+                this.logger.info('Rankings filtered', {
+                    filteredCount: filtered.length,
+                });
+                return filtered;
             }
         }
         catch (error) {
@@ -250,8 +274,19 @@ Rules:
         }
         return rankings;
     }
-    fallbackRanking() {
-        return JSON.stringify({ rankings: [{ skillName: 'fallback', score: 0.5, reason: 'LLM unavailable' }] });
+    fallbackRanking(candidates) {
+        if (candidates.length === 0) {
+            return JSON.stringify({ rankings: [] });
+        }
+        // Use the first candidate as the fallback skill
+        const firstSkill = candidates[0];
+        return JSON.stringify({
+            rankings: [{
+                    skillName: firstSkill.metadata.name,
+                    score: 0.3, // Lower score to indicate fallback status
+                    reason: 'LLM unavailable, using default',
+                }],
+        });
     }
     getModel() { return this.config.model; }
     getProvider() { return this.config.provider; }
