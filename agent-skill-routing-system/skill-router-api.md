@@ -83,9 +83,9 @@ Triggers an immediate `git fetch + reset` and re-indexes all skills. Use after p
 
 ## Skill Citation
 
-When `route_to_skill` loads skills, end your response with one compact line:
+When `route_to_skill` loads skills, end your response with one compact line with any number of combinations of:
 
-`> 📖 skill: <name-1>, <name-2>`
+`> 📖 skill(local cache): <name-1>, <name-2> | 📖 skill(remotely sourced): <name-1>, <name-2> | 📖 skill(LLM compressed): <name-1>, <name-2>`
 
 List all loaded skill names comma-separated. Omit entirely if no skill was loaded this turn.
 
