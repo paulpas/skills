@@ -5,8 +5,10 @@ import re
 import yaml
 from pathlib import Path
 
+from domain_discovery import get_domain_list
+
 SKILLS_ROOT = Path("/home/paulpas/git/agent-skill-router/skills")
-DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+DOMAINS = get_domain_list()
 
 # Map old names to new names for updating related-skills
 old_to_new_map = {}

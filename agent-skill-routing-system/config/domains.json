@@ -1,0 +1,34 @@
+{
+  "domains": {
+    "agent": {
+      "role": "orchestration",
+      "scope": "orchestration",
+      "contentTypes": ["guidance", "examples", "do-dont"],
+      "description": "Agent orchestration and choreography skills"
+    },
+    "cncf": {
+      "role": "reference",
+      "scope": "infrastructure",
+      "contentTypes": ["guidance", "examples", "do-dont", "config"],
+      "description": "Cloud Native Computing Foundation skills"
+    },
+    "coding": {
+      "role": "implementation",
+      "scope": "implementation",
+      "contentTypes": ["code", "guidance", "do-dont", "examples"],
+      "description": "Software coding and implementation skills"
+    },
+    "programming": {
+      "role": "reference",
+      "scope": "implementation",
+      "contentTypes": ["code", "guidance", "examples", "diagrams"],
+      "description": "Programming concepts and algorithms"
+    },
+    "trading": {
+      "role": "implementation",
+      "scope": "implementation",
+      "contentTypes": ["code", "guidance", "config", "do-dont"],
+      "description": "Algorithmic trading skills"
+    }
+  }
+}

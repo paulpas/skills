@@ -8,6 +8,7 @@ import path from 'path';
 import { DiskCompressionCache } from '../core/DiskCompressionCache';
 import { Logger } from '../observability/Logger';
 import { CompressionMetrics } from '../utils/CompressionMetrics';
+import { DomainRegistry } from '../core/DomainRegistry';
 
 // Timeout type - use setTimeout return type as a proxy for NodeJS.Timeout
 type Timeout = ReturnType<typeof setTimeout>;
@@ -292,7 +293,11 @@ export class CompressionCleanupJob {
    * Scan available domains in skills directory
    */
   private async scanDomains(): Promise<string[]> {
-    const domains = ['agent', 'cncf', 'coding', 'programming', 'trading'];
+    // Use DomainRegistry for dynamic domain discovery instead of hardcoded list
+    // This ensures writing/ and coding/ domains (which exist on disk) are included,
+    // while swe (which doesn't exist) is excluded
+    const domainRegistry = DomainRegistry.getInstance();
+    const domains = await domainRegistry.discoverDomains(this.skillsDirectory);
     const available: string[] = [];
 
     for (const domain of domains) {

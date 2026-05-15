@@ -10,8 +10,10 @@ import re
 import yaml
 from pathlib import Path
 
+from domain_discovery import get_domain_list
+
 SKILLS_ROOT = Path("/home/paulpas/git/agent-skill-router/skills")
-DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+DOMAINS = get_domain_list()
 
 
 def get_domain_for_skill(skill_path):

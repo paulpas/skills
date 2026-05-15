@@ -8,8 +8,10 @@ import re
 import shutil
 from pathlib import Path
 
+from domain_discovery import get_domain_list
+
 SKILLS_ROOT = Path("/home/paulpas/git/agent-skill-router/skills")
-DOMAINS = ["agent", "cncf", "coding", "programming", "trading"]
+DOMAINS = get_domain_list()
 
 # Map old names to new names
 migrations = []
