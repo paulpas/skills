@@ -145,11 +145,8 @@ EOF
 compute_sha256() {
   if command -v sha256sum &>/dev/null; then
     sha256sum "$1" | awk '{print $1}'
-  elif command -v shasum &>/dev/null; then
-    shasum -a 256 "$1" | awk '{print $1}'
   else
-    # Fallback: use python3
-    python3 -c "import hashlib; print(hashlib.sha256(open('$1','rb').read()).hexdigest())"
+    shasum -a 256 "$1" | awk '{print $1}'
   fi
 }
 
