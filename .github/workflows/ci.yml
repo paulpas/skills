@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: ./.github/actions/setup
-    - name: Run ESLint (no auto-fix in CI)
+      - name: Run ESLint (no auto-fix in CI)
         run: npx eslint 'src/**/*.ts' 'agent-skill-routing-system/src/**/*.ts'
 
   # ----------------------------------------------------------------------
