@@ -74,6 +74,13 @@ OPTIONS:
   -c, --config FILE     Non-interactive mode using config file
   -n, --no-interactive  Non-interactive mode with default config file (install-skill-router.conf)
 
+  Integration flags (can be combined):
+      --integrate-opencode          Add skill-router to OpenCode IDE config (opencode.json)
+      --opencode-config FILE        Path to opencode.json (default: auto-detect)
+      --integrate-claude            Add skill-router to Claude Desktop config (claude.json)
+      --claude-config FILE          Path to claude.json (default: auto-detect)
+      --skills-dir DIR              Path to agent-skill-routing-system (default: auto-detect)
+
 CONFIG FILE FORMAT:
   The config file should contain key=value pairs, one per line.
   Comments are allowed (lines starting with #).
@@ -139,6 +146,11 @@ EOF
 MODE="interactive"  # Default to interactive
 CONFIG_FILE=""
 show_help_flag=false
+MODE_INTEGRATE_OPENCODE="false"
+MODE_INTEGRATE_CLAUDE="false"
+MODE_OPENCODE_CONFIG=""
+MODE_CLAUDE_CONFIG=""
+MODE_SKILLS_DIR=""
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -168,6 +180,38 @@ while [[ $# -gt 0 ]]; do
       fi
       MODE="noninteractive"
       shift
+      ;;
+    --integrate-opencode)
+      MODE_INTEGRATE_OPENCODE="true"
+      shift
+      ;;
+    --opencode-config)
+      if [[ $# -lt 2 || "$2" == --* ]]; then
+        echo "Error: --opencode-config requires a file path"
+        exit 1
+      fi
+      MODE_OPENCODE_CONFIG="$2"
+      shift 2
+      ;;
+    --integrate-claude)
+      MODE_INTEGRATE_CLAUDE="true"
+      shift
+      ;;
+    --claude-config)
+      if [[ $# -lt 2 || "$2" == --* ]]; then
+        echo "Error: --claude-config requires a file path"
+        exit 1
+      fi
+      MODE_CLAUDE_CONFIG="$2"
+      shift 2
+      ;;
+    --skills-dir)
+      if [[ $# -lt 2 || "$2" == --* ]]; then
+        echo "Error: --skills-dir requires a directory path"
+        exit 1
+      fi
+      MODE_SKILLS_DIR="$2"
+      shift 2
       ;;
     *)
       echo "Unknown option: $1"
@@ -1959,8 +2003,8 @@ if [[ "$MODE" == "noninteractive" ]]; then
   AUTO_SKILL_ENABLED="${AUTO_SKILL_ENABLED:-true}"
   AUTO_SKILL_CONTRIBUTE="${AUTO_SKILL_CONTRIBUTE:-true}"
   AUTO_SKILL_MODEL="${AUTO_SKILL_MODEL:-gpt-4o-mini}"
-  
-  run_installation "false" "false" "" "" "false" ""
+
+  run_installation "$MODE_INTEGRATE_OPENCODE" "$MODE_INTEGRATE_CLAUDE" "$MODE_OPENCODE_CONFIG" "$MODE_CLAUDE_CONFIG" "false" "$MODE_SKILLS_DIR"
 else
   # Interactive mode (existing behavior)
   show_intro
@@ -2060,7 +2104,5 @@ else
   echo -e "${BOLD}Starting installation...${RESET}"
   echo ""
   
-  # For now, use default values for integration flags
-  # These would normally come from command-line arguments
-  run_installation "false" "false" "" "" "false" ""
+  run_installation "$MODE_INTEGRATE_OPENCODE" "$MODE_INTEGRATE_CLAUDE" "$MODE_OPENCODE_CONFIG" "$MODE_CLAUDE_CONFIG" "false" "$MODE_SKILLS_DIR"
 fi
