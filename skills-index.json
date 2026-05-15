@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-14T07:32:53.569921Z",
-  "totalSkills": 559,
+  "generatedAt": "2026-05-15T15:41:44.896146Z",
+  "totalSkills": 560,
   "domains": {
-    "agent": 228,
+    "agent": 229,
     "cncf": 162,
     "coding": 82,
     "programming": 3,
@@ -12,6 +12,7 @@
   "roles": {
     "orchestration": 220,
     "implementation": 184,
+    "information": 1,
     "reference": 154,
     "review": 1
   },
@@ -5064,6 +5065,29 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/git-pushing/SKILL.md"
+    },
+    {
+      "name": "github-actions-status",
+      "domain": "agent",
+      "description": "View and monitor GitHub Actions workflow runs, statuses, and logs using the gh CLI. Lists workflows, inspects run details, follows logs, checks commit statuses, and triggers new runs.",
+      "role": "information",
+      "scope": "implementation",
+      "outputFormat": "markdown",
+      "triggers": [
+        "github actions",
+        "ci/cd",
+        "workflow",
+        "gh run",
+        "gh workflow",
+        "pipeline",
+        "build status",
+        "ci status",
+        "action status",
+        "check runs"
+      ],
+      "relatedSkills": [],
+      "version": "1.0.0",
+      "source": "skills/agent/github-actions-status/SKILL.md"
     },
     {
       "name": "github-actions-templates",
