@@ -21,4 +21,4 @@ pydantic>=2.13.4
 # Development/optional
 pytest>=9.0.3
 black>=26.3.1
-flake8>=6.0.0
+flake8>=7.3.0
