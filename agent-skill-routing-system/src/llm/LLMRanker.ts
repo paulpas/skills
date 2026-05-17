@@ -44,7 +44,7 @@ export class LLMRanker {
       llamacppBaseUrl: config.llamacppBaseUrl || process.env.LLAMACPP_BASE_URL || 'http://localhost:8080',
       model: config.model || process.env.LLM_MODEL || this.defaultModel(provider),
       temperature: config.temperature ?? 0,
-      maxTokens: config.maxTokens ?? 400,
+      maxTokens: config.maxTokens ?? 2000,
       maxCandidates: config.maxCandidates ?? 10,
     };
     this.logger = new Logger('LLMRanker');
@@ -234,7 +234,7 @@ Rules:
     }
 
     const data = await response.json() as { 
-      choices: { message: { content: string } }[];
+      choices: { message: { content?: string; reasoning_content?: string } }[];
       usage?: { prompt_tokens?: number; completion_tokens?: number };
     };
     
@@ -243,7 +243,9 @@ Rules:
     this.inputTokens = usage.prompt_tokens ?? 0;
     this.outputTokens = usage.completion_tokens ?? 0;
     
-    return data.choices[0].message.content;
+    const message = data.choices[0]?.message;
+    // Reasoning models (Qwen3, etc.) return reasoning_content instead of content
+    return message?.reasoning_content ?? message?.content ?? '';
   }
 
   /** Anthropic Messages API */
@@ -283,6 +285,67 @@ Rules:
     return textBlock.text;
   }
 
+  /**
+   * Extract a valid JSON object from a response string, handling
+   * reasoning-model noise (thinking text before/after the JSON).
+   * Uses brace-counting to find the matching closing brace.
+   */
+  private extractJsonObject(text: string): string | null {
+    // Try to find the first complete JSON object using brace counting
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (ch === '\\') {
+        escape = true;
+        continue;
+      }
+      if (ch === '"') {
+        inString = !inString;
+        continue;
+      }
+      if (inString) continue;
+
+      if (ch === '{') {
+        if (depth === 0) {
+          // Start of a potential JSON object — find its matching close
+          let closeDepth = 1;
+          let j = i + 1;
+          let stringOpen = false;
+          let esc = false;
+
+          while (j < text.length && closeDepth > 0) {
+            const c = text[j];
+            if (esc) { esc = false; j++; continue; }
+            if (c === '\\') { esc = true; j++; continue; }
+            if (c === '"') { stringOpen = !stringOpen; j++; continue; }
+            if (stringOpen) { j++; continue; }
+            if (c === '{') closeDepth++;
+            else if (c === '}') closeDepth--;
+            j++;
+          }
+
+          if (closeDepth === 0) {
+            return text.slice(i, j);
+          }
+          // Mismatched braces — skip and continue searching
+        } else {
+          depth++;
+        }
+      } else if (ch === '}') {
+        if (depth > 0) depth--;
+      }
+    }
+    return null;
+  }
+
   private parseRankingResponse(response: string, availableSkills: string[]): SkillRanking[] {
     this.logger.info('Parsing ranking response', {
       responseLength: response.length,
@@ -290,28 +353,31 @@ Rules:
       availableSkills: availableSkills.slice(0, 5),
     });
 
-    try {
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        this.logger.info('JSON match found', {
-          jsonMatch: jsonMatch[0].slice(0, 200),
-        });
-        const json = JSON.parse(jsonMatch[0]) as { rankings?: SkillRanking[] };
+    // Extract JSON using brace-matching to handle reasoning-model noise
+    const jsonStr = this.extractJsonObject(response);
+
+    if (jsonStr) {
+      try {
+        const json = JSON.parse(jsonStr) as { rankings?: SkillRanking[] };
         const rankings = json.rankings || [];
         this.logger.info('Rankings parsed', {
           rankingsCount: rankings.length,
-          rankings,
+          rankings: rankings.slice(0, 3).map(r => ({
+            skill: r.skillName,
+            score: r.score,
+            reason: r.reason?.slice(0, 80),
+          })),
         });
         const filtered = rankings.filter(r => availableSkills.includes(r.skillName));
         this.logger.info('Rankings filtered', {
           filteredCount: filtered.length,
         });
         return filtered;
+      } catch (error) {
+        this.logger.warn('Failed to parse LLM ranking response as JSON', {
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
-    } catch (error) {
-      this.logger.warn('Failed to parse LLM ranking response as JSON', {
-        error: error instanceof Error ? error.message : String(error),
-      });
     }
 
     // line-by-line fallback
