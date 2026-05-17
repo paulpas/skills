@@ -99,8 +99,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-15 20:27:34 UTC  
-> **Total skills:** 586
+> **Last updated:** 2026-05-17 15:45:26 UTC  
+> **Total skills:** 589
 
 ## Skills by Domain
 
@@ -340,7 +340,7 @@ MIT — All skills are freely available and redistributable.
 | [zoom-automation](skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zoom-automation, zoom automation, how do i zoom-automation, orchestrate zoom-automation, automate zoom-automation, agent zoom-automation |
 
 
-### Cncf (168 skills)
+### Cncf (169 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -456,6 +456,7 @@ MIT — All skills are freely available and redistributable.
 | [longhorn](skills/cncf/longhorn/SKILL.md) | "Longhorn in Cloud Native Storage - cloud native architecture, patterns" pitfalls, and best practices | cdn, infrastructure as code, longhorn, monitoring, native, storage, cloudformation, cloudfront |
 | [manager](skills/cncf/manager/SKILL.md) | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes | cert manager, cert-manager, cloud-native, engineering |
 | [monitor](skills/cncf/monitor/SKILL.md) | "Provides Monitoring and logging for Azure resources with alerting and observability" | azure monitor, monitoring, logging, observability, metrics, alerts, cloudwatch |
+| [multi-stage-deployment](skills/cncf/multi-stage-deployment/SKILL.md) | Designs multi-stage deployment pipelines that reduce risk through progressive disclosure, environment parity, and quality-gated stage transitions from development to production. | multi-stage deployment, deployment stages, environment parity, deployment pipeline, stage gates, dev staging pre-prod, deployment readiness, progressive delivery |
 | [nats](skills/cncf/nats/SKILL.md) | "NATS in Cloud Native Messaging - cloud native architecture, patterns" pitfalls, and best practices | cdn, infrastructure as code, messaging, monitoring, native, nats, cloudformation, cloudfront |
 | [network-interface-cni](skills/cncf/network-interface-cni/SKILL.md) | "Container Network Interface in Cloud Native Network - cloud native architecture" patterns, pitfalls, and best practices | architecture, cdn, container network interface cni, container-network-interface-cni, infrastructure as code, monitoring, native, cloudformation |
 | [networking-troubleshooting](skills/cncf/networking-troubleshooting/SKILL.md) | Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis | iptables debugging, dns issues, load balancer problems, network policies, kubernetes networking, container networking, vpn troubleshooting, firewall rules |
@@ -621,16 +622,18 @@ MIT — All skills are freely available and redistributable.
 | [web-applications](skills/go/web-applications/SKILL.md) | Builds production Go web applications with HTTP handlers, routing, middleware, template rendering, and REST API design following idiomatic Go patterns. | go web, go http, go router, go middleware, go rest api, go templates, go websocket |
 
 
-### Linux (8 skills)
+### Linux (10 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
+| [cloud-linux-engineering](skills/linux/cloud-linux-engineering/SKILL.md) | Engineers Linux systems for cloud-native environments with cloud-init bootstrapping, IMDSv2 security, ephemeral lifecycle management, spot instance handling, and cloud observability integration. | cloud-init, IMDSv2, ephemeral instance, cloud metadata, spot instance, user-data, instance metadata, cloud observability, cloud SSH keys, instance lifecycle |
 | [hardware-provisioning](skills/linux/hardware-provisioning/SKILL.md) | Plans and provisions Linux systems for cloud instances and on-prem hardware with workload-appropriate sizing, RAID, and hardware abstraction. | hardware provisioning, instance sizing, RAID configuration, SSD, cloud instance, on-prem hardware, disk sizing, CPU architecture |
 | [kernel-tuning](skills/linux/kernel-tuning/SKILL.md) | Tunes Linux kernel parameters for workload optimization across cloud VMs and bare metal with hardware-aware adjustments for CPU, memory, and network performance. | kernel tuning, sysctl, NUMA, interrupt affinity, page cache, TCP tuning, kernel parameters, performance tuning |
 | [linux-security](skills/linux/linux-security/SKILL.md) | Hardens Linux systems against common attack vectors with security baselines, access controls, and audit frameworks for cloud and on-prem environments. | linux security, hardening, CIS benchmark, SELinux, AppArmor, SSH hardening, file integrity, audit framework |
 | [linux-services](skills/linux/linux-services/SKILL.md) | Manages Linux services with systemd for reliable operation, dependency ordering, resource isolation, and automated recovery in cloud and on-prem environments. | systemd, service management, unit file, service restart, socket activation, systemd timer, journal, service dependency |
 | [networking](skills/linux/networking/SKILL.md) | Configures and optimizes Linux networking for cloud virtual networks and on-prem data center infrastructure with performance and security focus. | linux networking, bond interface, VLAN, bridge, network namespace, nftables, routing, cloud networking, VPC |
 | [observability](skills/linux/observability/SKILL.md) | Implements Linux system observability with metrics, logs, and performance profiling for proactive infrastructure management across cloud and on-prem environments. | linux observability, system metrics, log collection, performance profiling, eBPF, perf, capacity planning, monitoring |
+| [on-prem-infrastructure](skills/linux/on-prem-infrastructure/SKILL.md) | Engineers on-premises infrastructure including IPMI/iLO/iDRAC remote management, PXE deployment, network storage (NFS/iSCSI/FC), multipath I/O, and datacenter physical operations for bare-metal Linux systems. | IPMI, iLO, iDRAC, PXE boot, iSCSI, multipath, bare-metal provisioning, datacenter rack |
 | [resource-management](skills/linux/resource-management/SKILL.md) | Manages Linux system resources using cgroups v2, namespaces, and systemd for workload isolation and resource guarantees in cloud and on-prem environments. | cgroups, resource management, cpu limit, memory limit, systemd resource, OOM, workload isolation, resource quota |
 | [storage-architecture](skills/linux/storage-architecture/SKILL.md) | Designs and implements Linux storage architectures for cloud block storage and on-prem SAN/NAS with performance and durability guarantees. | storage architecture, LVM, filesystem, XFS, ext4, btrfs, cloud storage, NVMe, mount options, storage monitoring |
 
@@ -735,7 +738,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (209 skills)
+### Implementation (Build Features) (211 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -764,6 +767,7 @@ MIT — All skills are freely available and redistributable.
 | [cicd-pipeline-troubleshooting](skills/agent/cicd-pipeline-troubleshooting/SKILL.md) | Agent | Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns. |
 | [classification-metrics](skills/coding/classification-metrics/SKILL.md) | Coding | "Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification metrics" |
 | [cloud-development](skills/go/cloud-development/SKILL.md) | Go | Develops cloud-native Go applications with context propagation, graceful shutdown, health checks, and configuration management for production. |
+| [cloud-linux-engineering](skills/linux/cloud-linux-engineering/SKILL.md) | Linux | Engineers Linux systems for cloud-native environments with cloud-init bootstrapping, IMDSv2 security, ephemeral lifecycle management, spot instance handling, and cloud observability integration. |
 | [clustering](skills/coding/clustering/SKILL.md) | Coding | "Implements clustering algorithms including K-means, hierarchical clustering, DBSCAN, Gaussian mixture models, and spectral clustering" |
 | [commission-model](skills/trading/commission-model/SKILL.md) | Trading | "Implements commission model and fee structure simulation for risk management and algorithmic trading execution." |
 | [community-detection](skills/coding/community-detection/SKILL.md) | Coding | "Detects communities and clusters in graphs using modularity optimization, spectral methods, and graph partitioning algorithms" |
@@ -871,6 +875,7 @@ MIT — All skills are freely available and redistributable.
 | [normalization](skills/coding/normalization/SKILL.md) | Coding | 'Provides Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization' |
 | [observability](skills/linux/observability/SKILL.md) | Linux | Implements Linux system observability with metrics, logs, and performance profiling for proactive infrastructure management across cloud and on-prem environments. |
 | [observational-studies](skills/coding/observational-studies/SKILL.md) | Coding | "Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias" |
+| [on-prem-infrastructure](skills/linux/on-prem-infrastructure/SKILL.md) | Linux | Engineers on-premises infrastructure including IPMI/iLO/iDRAC remote management, PXE deployment, network storage (NFS/iSCSI/FC), multipath I/O, and datacenter physical operations for bare-metal Linux systems. |
 | [online-experiments](skills/coding/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms" |
 | [order-book](skills/trading/order-book/SKILL.md) | Trading | "Order book data handling, spread calculation, liquidity measurement" and cross-exchange normalization |
 | [order-book-impact](skills/trading/order-book-impact/SKILL.md) | Trading | "Provides Order Book Impact Measurement and Market Microstructure Analysis" |
@@ -950,7 +955,7 @@ MIT — All skills are freely available and redistributable.
 | [websocket-streaming](skills/trading/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing for risk management and algorithmic trading execution." |
 
 
-### Reference (Learn & Understand) (155 skills)
+### Reference (Learn & Understand) (156 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1058,6 +1063,7 @@ MIT — All skills are freely available and redistributable.
 | [longhorn](skills/cncf/longhorn/SKILL.md) | Cncf | "Longhorn in Cloud Native Storage - cloud native architecture, patterns" pitfalls, and best practices |
 | [manager](skills/cncf/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes |
 | [monitor](skills/cncf/monitor/SKILL.md) | Cncf | "Provides Monitoring and logging for Azure resources with alerting and observability" |
+| [multi-stage-deployment](skills/cncf/multi-stage-deployment/SKILL.md) | Cncf | Designs multi-stage deployment pipelines that reduce risk through progressive disclosure, environment parity, and quality-gated stage transitions from development to production. |
 | [nats](skills/cncf/nats/SKILL.md) | Cncf | "NATS in Cloud Native Messaging - cloud native architecture, patterns" pitfalls, and best practices |
 | [network-interface-cni](skills/cncf/network-interface-cni/SKILL.md) | Cncf | "Container Network Interface in Cloud Native Network - cloud native architecture" patterns, pitfalls, and best practices |
 | [o](skills/cncf/o/SKILL.md) | Cncf | "Provides CRI-O in Container Runtime - OCI-compliant container runtime for Kubernetes" |
@@ -1448,6 +1454,7 @@ MIT — All skills are freely available and redistributable.
 | [cloud-dns](skills/cncf/cloud-dns/SKILL.md) | Cncf | Manages DNS with health checks, traffic routing, and low-latency resolution | Reference |
 | [cloud-functions](skills/cncf/cloud-functions/SKILL.md) | Cncf | Deploys serverless functions triggered by events with automatic scaling and GCP service integration | Reference |
 | [cloud-kms](skills/cncf/cloud-kms/SKILL.md) | Cncf | "Manages encryption keys for data protection with automated rotation and auditing" | Reference |
+| [cloud-linux-engineering](skills/linux/cloud-linux-engineering/SKILL.md) | Linux | Engineers Linux systems for cloud-native environments with cloud-init bootstrapping, IMDSv2 security, ephemeral lifecycle management, spot instance handling, and cloud observability integration. | Implementation |
 | [cloud-load-balancing](skills/cncf/cloud-load-balancing/SKILL.md) | Cncf | "Provides Distributes traffic across instances with automatic failover and health checking" | Reference |
 | [cloud-monitoring](skills/cncf/cloud-monitoring/SKILL.md) | Cncf | "Monitors GCP resources with metrics, logging, and alerting for operational visibility" | Reference |
 | [cloud-operations](skills/cncf/cloud-operations/SKILL.md) | Cncf | "Provides Systems management including monitoring, logging, error reporting, and diagnostics" | Reference |
@@ -1714,6 +1721,7 @@ MIT — All skills are freely available and redistributable.
 | [multi-agent-task-orchestrator](skills/agent/multi-agent-task-orchestrator/SKILL.md) | Agent | Implements intelligent multi agent task orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [multi-asset-model](skills/trading/multi-asset-model/SKILL.md) | Trading | "Provides Model inter-asset relationships for portfolio and cross-asset strategies" | Implementation |
 | [multi-skill-executor](skills/agent/multi-skill-executor/SKILL.md) | Agent | Implements intelligent multi skill executor with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [multi-stage-deployment](skills/cncf/multi-stage-deployment/SKILL.md) | Cncf | Designs multi-stage deployment pipelines that reduce risk through progressive disclosure, environment parity, and quality-gated stage transitions from development to production. | Reference |
 | [n8n-code-javascript](skills/agent/n8n-code-javascript/SKILL.md) | Agent | Implements intelligent n8n code javascript with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [n8n-code-python](skills/agent/n8n-code-python/SKILL.md) | Agent | Implements intelligent n8n code python with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [n8n-expression-syntax](skills/agent/n8n-expression-syntax/SKILL.md) | Agent | Implements intelligent n8n expression syntax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
@@ -1736,6 +1744,7 @@ MIT — All skills are freely available and redistributable.
 | [oathkeeper](skills/cncf/oathkeeper/SKILL.md) | Cncf | "Oathkeeper in Identity & Access - cloud native architecture, patterns" pitfalls, and best practices | Reference |
 | [observability](skills/linux/observability/SKILL.md) | Linux | Implements Linux system observability with metrics, logs, and performance profiling for proactive infrastructure management across cloud and on-prem environments. | Implementation |
 | [observational-studies](skills/coding/observational-studies/SKILL.md) | Coding | "Analyzes observational data using matching methods, propensity scores, stratification, and adjustment for confounding bias" | Implementation |
+| [on-prem-infrastructure](skills/linux/on-prem-infrastructure/SKILL.md) | Linux | Engineers on-premises infrastructure including IPMI/iLO/iDRAC remote management, PXE deployment, network storage (NFS/iSCSI/FC), multipath I/O, and datacenter physical operations for bare-metal Linux systems. | Implementation |
 | [online-experiments](skills/coding/online-experiments/SKILL.md) | Coding | "Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning algorithms" | Implementation |
 | [opencost](skills/cncf/opencost/SKILL.md) | Cncf | "OpenCost in Kubernetes Cost Monitoring - cloud native architecture, patterns" pitfalls, and best practices | Reference |
 | [openfeature](skills/cncf/openfeature/SKILL.md) | Cncf | "OpenFeature in Feature Flagging - cloud native architecture, patterns" pitfalls, and best practices | Reference |
