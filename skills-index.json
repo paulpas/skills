@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-05-16T04:01:13.055488Z",
-  "totalSkills": 586,
+  "generatedAt": "2026-05-17T15:45:25.725548Z",
+  "totalSkills": 589,
   "domains": {
     "agent": 229,
-    "cncf": 168,
+    "cncf": 169,
     "coding": 82,
     "go": 12,
-    "linux": 8,
+    "linux": 10,
     "programming": 3,
     "trading": 83,
     "writing": 1
   },
   "roles": {
     "orchestration": 220,
-    "implementation": 209,
+    "implementation": 211,
     "information": 1,
-    "reference": 155,
+    "reference": 156,
     "review": 1
   },
   "skills": [
@@ -2294,6 +2294,34 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/gcp-cloud-kms/SKILL.md"
+    },
+    {
+      "name": "cloud-linux-engineering",
+      "domain": "linux",
+      "description": "Engineers Linux systems for cloud-native environments with cloud-init bootstrapping, IMDSv2 security, ephemeral lifecycle management, spot instance handling, and cloud observability integration.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "cloud-init",
+        "IMDSv2",
+        "ephemeral instance",
+        "cloud metadata",
+        "spot instance",
+        "user-data",
+        "instance metadata",
+        "cloud observability",
+        "cloud SSH keys",
+        "instance lifecycle"
+      ],
+      "relatedSkills": [
+        "linux-services",
+        "networking",
+        "resource-management",
+        "linux-security"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/cloud-linux-engineering/SKILL.md"
     },
     {
       "name": "cloud-load-balancing",
@@ -8290,6 +8318,34 @@
       "source": "skills/agent/multi-skill-executor/SKILL.md"
     },
     {
+      "name": "multi-stage-deployment",
+      "domain": "cncf",
+      "description": "Designs multi-stage deployment pipelines that reduce risk through progressive disclosure, environment parity, and quality-gated stage transitions from development to production.",
+      "role": "reference",
+      "scope": "infrastructure",
+      "outputFormat": "analysis",
+      "triggers": [
+        "multi-stage deployment",
+        "deployment stages",
+        "environment parity",
+        "deployment pipeline",
+        "stage gates",
+        "dev staging pre-prod",
+        "deployment readiness",
+        "progressive delivery"
+      ],
+      "relatedSkills": [
+        "deployment-philosophy",
+        "blue-green-deployment",
+        "canary-deployment",
+        "state-management",
+        "rollback-strategy",
+        "deployment-orchestration"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/multi-stage-deployment/SKILL.md"
+    },
+    {
       "name": "n8n-code-javascript",
       "domain": "agent",
       "description": "Implements intelligent n8n code javascript with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -8791,6 +8847,32 @@
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-observational-studies/SKILL.md"
+    },
+    {
+      "name": "on-prem-infrastructure",
+      "domain": "linux",
+      "description": "Engineers on-premises infrastructure including IPMI/iLO/iDRAC remote management, PXE deployment, network storage (NFS/iSCSI/FC), multipath I/O, and datacenter physical operations for bare-metal Linux systems.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "IPMI",
+        "iLO",
+        "iDRAC",
+        "PXE boot",
+        "iSCSI",
+        "multipath",
+        "bare-metal provisioning",
+        "datacenter rack"
+      ],
+      "relatedSkills": [
+        "hardware-provisioning",
+        "networking",
+        "kernel-tuning",
+        "linux-security"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/on-prem-infrastructure/SKILL.md"
     },
     {
       "name": "online-experiments",
