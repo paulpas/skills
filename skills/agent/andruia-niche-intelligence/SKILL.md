@@ -1,18 +1,25 @@
 ---
-name: andruia-niche-intelligence
-description: Implements intelligent andruia niche intelligence with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent andruia niche intelligence with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: andruia-niche-intelligence, andruia niche intelligence, how do i andruia-niche-intelligence, orchestrate andruia-niche-intelligence, automate andruia-niche-intelligence, agent andruia-niche-intelligence
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: andruia-niche-intelligence, andruia niche intelligence, how do i andruia-niche-intelligence, orchestrate andruia-niche-intelligence,
+    automate andruia-niche-intelligence, agent andruia-niche-intelligence
+  version: 1.0.0
+name: andruia-niche-intelligence
 ---
-
 # Andruia Niche Intelligence
 
 Orchestrates intelligent skill selection and execution for andruia niche intelligence workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,94 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_niche_intelligence(
+    request: Dict[str, Any],
+    niche_registry: List[Dict[str, Any]],
+    confidence_threshold: float = 0.75
+) -> Dict[str, Any]:
+    """Route requests through niche intelligence pipeline.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 1 (Early Exit) and Law 2 (Make Illegal States Unrepresentable)
+    to validate niche context before scoring.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request.get("context") or not request.get("intent"):
+        raise ValueError("Missing required niche context or intent")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Law 2: Parse and normalize niche features at boundary
+    normalized_request = _normalize_niche_features(request)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    scored_candidates = []
+    for niche in niche_registry:
+        # Law 3: Atomic scoring without mutating registry
+        match_score = _calculate_niche_alignment(normalized_request, niche)
+        historical_success = niche.get("success_rate", 0.0)
+        combined_confidence = (match_score * 0.6) + (historical_success * 0.4)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        if combined_confidence >= confidence_threshold:
+            scored_candidates.append({
+                "niche_id": niche["id"],
+                "confidence": combined_confidence,
+                "routing_priority": niche.get("priority", 1)
+            })
+            
+    if not scored_candidates:
+        return {"status": "no_match", "fallback_required": True}
+        
+    # Law 1: Early exit if only one viable niche
+    if len(scored_candidates) == 1:
+        return {"selected_niche": scored_candidates[0], "status": "routed"}
+        
+    # Return sorted candidates for multi-path routing
+    scored_candidates.sort(key=lambda x: x["confidence"], reverse=True)
+    return {"selected_niche": scored_candidates[0], "alternatives": scored_candidates[1:], "status": "routed"}
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_niche_workflow(
+    selected_niche: Dict[str, Any],
+    workflow_context: Dict[str, Any],
+    fallback_registry: Dict[str, List[str]]
+) -> Dict[str, Any]:
+    """Execute niche intelligence workflow with domain-aware fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) and Law 3 (Atomic Predictability).
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    niche_id = selected_niche["niche_id"]
+    attempt_count = 0
+    max_attempts = selected_niche.get("max_retries", 2)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while attempt_count <= max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Law 2: Validate workflow state before execution
+            validated_state = _validate_workflow_state(workflow_context, niche_id)
             
-            # Success - Atomic Predictability (Law 3)
+            # Execute niche-specific logic
+            result = _invoke_niche_engine(niche_id, validated_state)
+            
+            # Law 3: Return immutable result structure
             return {
-                "success": True,
-                "skill_executed": skill["name"],
+                "niche_id": niche_id,
+                "status": "success",
                 "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "attempts": attempt_count + 1,
+                "confidence_delta": _calculate_confidence_update(result)
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except NicheValidationError as e:
+            # Law 4: Fail immediately on invalid state
+            raise WorkflowExecutionError(f"Niche {niche_id} state invalid: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except TransientNicheError as e:
+            attempt_count += 1
+            if attempt_count > max_attempts:
+                # Law 1: Early exit to fallback chain
+                return _trigger_niche_fallback(niche_id, fallback_registry, workflow_context)
+                
+    # Fallback exhausted
+    return _escalate_to_human_operator(niche_id, workflow_context)
 ```
 
 ### MUST DO
@@ -320,3 +295,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,23 +1,24 @@
 ---
-name: position-sizing
-description: '"''Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and
-  Volatility" Adjustment'''
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
+description: '"''Position Sizing Algorithms: Fixed Fractional, Kelly Criterion, and Volatility" Adjustment'''
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: backtest-drawdown-analysis, exchange-order-execution-api, fundamentals-risk-management-basics risk-position-sizing
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: algorithms, backtest position sizing, backtest-position-sizing, fixed,
-    fractional
-  related-skills: backtest-drawdown-analysis, exchange-order-execution-api, fundamentals-risk-management-basics
-    risk-position-sizing
+  triggers: algorithms, backtest position sizing, backtest-position-sizing, fixed, fractional
+  version: 1.0.0
+name: position-sizing
 ---
-
-
-
 **Role:** Risk Management Specialist — implements dynamic position sizing algorithms to optimize capital allocation while controlling risk exposure and maximizing long-term growth.
 
 **Philosophy:** Capital Preservation First — position sizing is not about maximizing returns but about surviving to trade another day; proper sizing ensures that a few losing trades don't jeopardize the entire account.
@@ -729,3 +730,37 @@ if __name__ == "__main__":
     print(f"Position: ${stats['dollar_position']:,.0f} ({stats['position_size']:.0f} units)")
     print(f"Expected Growth: {stats['expected_growth_rate']:.2%}")
 ```
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

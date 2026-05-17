@@ -1,23 +1,26 @@
 ---
-name: automation
-description: '"Provides Automating semantic versioning in Git repositories for version
-  bumping, changelog generation, and release automation using conventional commits
-  and to"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Automating semantic versioning in Git repositories for version bumping, changelog generation, and
+  release automation using conventional commits and to"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: cve-dependency-management, git-advanced, git-branching-strategies
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: semantic versioning, semver, version bumping, conventional commits, semantic-release,
-    changelog automation, release automation, git tags
-  related-skills: cve-dependency-management, git-advanced, git-branching-strategies
+  triggers: semantic versioning, semver, version bumping, conventional commits, semantic-release, changelog automation, release
+    automation, git tags
+  version: 1.0.0
+name: automation
 ---
-
-
-
 # Semantic Versioning Automation
 
 Implementation guide for automating semantic versioning in Git repositories using conventional commits and release automation tools like semantic-release, including version bumping, changelog generation, and release workflows.

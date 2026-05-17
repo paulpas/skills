@@ -1,22 +1,25 @@
 ---
-name: classification-metrics
-description: '"Evaluates classification models using precision, recall, F1-score,
-  ROC-AUC, confusion matrix, and other classification metrics"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Evaluates classification models using precision, recall, F1-score, ROC-AUC, confusion matrix, and other classification
+  metrics"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-ab-testing, ds-cross-validation, ds-metrics-and-kpis, ds-model-selection
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: classification metrics, precision, recall, F1-score, ROC-AUC, confusion
-    matrix
-  related-skills: ds-ab-testing, ds-cross-validation, ds-metrics-and-kpis, ds-model-selection
+  triggers: classification metrics, precision, recall, F1-score, ROC-AUC, confusion matrix
+  version: 1.0.0
+name: classification-metrics
 ---
-
-
-
 # Classification Metrics
 
 Comprehensive guide to classification metrics in machine learning and data science workflows.
@@ -58,34 +61,106 @@ Classification Metrics is a critical component of the machine learning workflow.
 ### Pattern 1: Basic Classification Metrics
 
 ```python
-# Example pattern for Classification Metrics
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    precision_score, recall_score, f1_score,
+    roc_auc_score, confusion_matrix, classification_report
+)
 
-# Implementation pattern
-pass
+# Generate synthetic binary classification dataset
+X, y = make_classification(n_samples=1000, n_features=10, n_informative=5, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train a baseline classifier
+model = LogisticRegression(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+y_prob = model.predict_proba(X_test)[:, 1]
+
+# Calculate core classification metrics
+metrics = {
+    'precision': precision_score(y_test, y_pred),
+    'recall': recall_score(y_test, y_pred),
+    'f1_score': f1_score(y_test, y_pred),
+    'roc_auc': roc_auc_score(y_test, y_prob),
+    'confusion_matrix': confusion_matrix(y_test, y_pred).tolist()
+}
+
+# Output results
+print(classification_report(y_test, y_pred))
+print(f"ROC-AUC: {metrics['roc_auc']:.4f}")
 ```
 
 ### Pattern 2: Production-Ready Classification Metrics
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
+import numpy as np
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, roc_auc_score
 
 logger = logging.getLogger(__name__)
 
 class ClassificationMetrics:
     """Production implementation of Classification Metrics"""
     
-    def __init__(self):
-        pass
+    def __init__(self, threshold: float = 0.5, metrics_list: Optional[List[str]] = None):
+        self.threshold = threshold
+        self.metrics_list = metrics_list or ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+        
+    def execute(self, y_true: np.ndarray, y_pred: np.ndarray, y_prob: Optional[np.ndarray] = None) -> Dict[str, Any]:
+        """Execute Classification Metrics on predictions"""
+        if y_true.shape != y_pred.shape:
+            raise ValueError("y_true and y_pred must have the same shape")
+            
+        results: Dict[str, Any] = {'status': 'success', 'metrics': {}}
+        
+        for metric_name in self.metrics_list:
+            if metric_name == 'accuracy':
+                results['metrics']['accuracy'] = float(accuracy_score(y_true, y_pred))
+            elif metric_name == 'precision':
+                results['metrics']['precision'] = float(precision_recall_fscore_support(y_true, y_pred, average='weighted')[0])
+            elif metric_name == 'recall':
+                results['metrics']['recall'] = float(precision_recall_fscore_support(y_true, y_pred, average='weighted')[1])
+            elif metric_name == 'f1':
+                results['metrics']['f1'] = float(precision_recall_fscore_support(y_true, y_pred, average='weighted')[2])
+            elif metric_name == 'roc_auc' and y_prob is not None:
+                results['metrics']['roc_auc'] = float(roc_auc_score(y_true, y_prob))
+            else:
+                logger.warning(f"Metric {metric_name} not implemented or skipped")
+                
+        return results
+```
+
+### BAD vs GOOD: Metric Calculation
+
+```python
+# BAD: Hardcoded thresholds, duplicated logic, and no type safety
+def bad_metrics(y_true, y_pred):
+    p = sum((y_pred == 1) & (y_true == 1)) / sum(y_pred == 1)
+    r = sum((y_pred == 1) & (y_true == 1)) / sum(y_true == 1)
+    f1 = 2 * p * r / (p + r)
+    return {'precision': p, 'recall': r, 'f1': f1}
+
+# GOOD: Vectorized operations, reusable components, and proper error handling
+def good_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, float]:
+    """Calculate precision, recall, and F1 using vectorized numpy operations."""
+    if not isinstance(y_true, np.ndarray) or not isinstance(y_pred, np.ndarray):
+        raise TypeError("Inputs must be numpy arrays")
+        
+    tp = np.sum((y_pred == 1) & (y_true == 1))
+    fp = np.sum((y_pred == 1) & (y_true == 0))
+    fn = np.sum((y_pred == 0) & (y_true == 1))
     
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Classification Metrics on data"""
-        return {}
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+    
+    return {'precision': float(precision), 'recall': float(recall), 'f1': float(f1)}
 ```
 
 ## Best Practices
@@ -97,6 +172,8 @@ class ClassificationMetrics:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+- ✅ Follow DRY and SOLID principles to keep metric calculations modular and maintainable
+- ✅ Reference the scikit-learn API design standard for consistent estimator interfaces
 
 ## Common Pitfalls
 
@@ -111,60 +188,81 @@ class ClassificationMetrics:
 ## Complete Working Example
 
 ```python
-# Full working example for Classification Metrics
-import pandas as pd
 import numpy as np
-from typing import Dict, Any
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score,
+    roc_curve, auc, confusion_matrix, ConfusionMatrixDisplay
+)
+from typing import Dict, Tuple, Any
 
-def implement_metrics(data: pd.DataFrame) -> Dict[str, Any]:
+def evaluate_classification_model(
+    X: np.ndarray, 
+    y: np.ndarray, 
+    model: Any, 
+    test_size: float = 0.2, 
+    random_state: int = 42
+) -> Dict[str, Any]:
     """
-    Complete implementation of Classification Metrics.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    Comprehensive evaluation of a classification model.
     
     Args:
-        data: Input DataFrame with required columns
+        X: Feature matrix
+        y: Target vector
+        model: Trained sklearn-compatible classifier
+        test_size: Proportion of data for testing
+        random_state: Random seed for reproducibility
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_metrics(df)
-        >>> print(results)
+        Dictionary containing metrics, predictions, and visualization data
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    if X.shape[0] != y.shape[0]:
+        raise ValueError("Feature matrix and target vector must have matching row counts")
+        
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+    model.fit(X_train, y_train)
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    y_pred = model.predict(X_test)
+    y_prob = model.predict_proba(X_test)[:, 1]
+    
+    metrics = {
+        'accuracy': accuracy_score(y_test, y_pred),
+        'precision': precision_score(y_test, y_pred),
+        'recall': recall_score(y_test, y_pred),
+        'f1': f1_score(y_test, y_pred),
+        'roc_auc': auc(*roc_curve(y_test, y_prob)[:2]),
+        'confusion_matrix': confusion_matrix(y_test, y_pred).tolist()
     }
     
-    return results
+    return {
+        'metrics': metrics,
+        'y_test': y_test,
+        'y_pred': y_pred,
+        'y_prob': y_prob
+    }
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    # Generate dataset
+    X, y = make_classification(n_samples=2000, n_features=8, n_classes=2, random_state=123)
     
-    # Run implementation
-    results = implement_metrics(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    # Initialize and evaluate
+    clf = RandomForestClassifier(n_estimators=100, random_state=42)
+    results = evaluate_classification_model(X, y, clf)
+    
+    # Print metrics
+    for k, v in results['metrics'].items():
+        print(f"{k}: {v:.4f}")
+        
+    # Visualize confusion matrix
+    cm = confusion_matrix(results['y_test'], results['y_pred'])
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Class 0', 'Class 1'])
+    disp.plot(cmap='Blues')
+    plt.title('Confusion Matrix')
+    plt.show()
 ```
 
 ## Related Skills
@@ -184,3 +282,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

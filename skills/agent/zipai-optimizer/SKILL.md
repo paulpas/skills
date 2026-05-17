@@ -1,18 +1,25 @@
 ---
-name: zipai-optimizer
-description: Implements intelligent zipai optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent zipai optimizer with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: zipai-optimizer, zipai optimizer, how do i zipai-optimizer, orchestrate zipai-optimizer, automate zipai-optimizer, agent zipai-optimizer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: zipai-optimizer, zipai optimizer, how do i zipai-optimizer, orchestrate zipai-optimizer, automate zipai-optimizer,
+    agent zipai-optimizer
+  version: 1.0.0
+name: zipai-optimizer
 ---
-
 # Zipai Optimizer
 
 Orchestrates intelligent skill selection and execution for zipai optimizer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,138 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_zipai_task(
+    task_payload: Dict[str, Any],
+    available_modules: List[Dict[str, Any]],
+    routing_config: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Route a zipai optimization task to the most suitable processing module.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates modules against zipai-specific routing criteria:
+    - Context window alignment (token budget matching)
+    - Historical latency percentiles for similar task shapes
+    - Dependency graph compatibility (upstream/downstream readiness)
+    - Current queue depth and resource availability
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_payload: Parsed zipai task with intent, entities, and constraints
+        available_modules: List of active optimizer module metadata
+        routing_config: Thresholds and weights for multi-factor scoring
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision with selected module, confidence score, and execution hints
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_payload.get("intent"):
+        raise ValueError("Zipai task payload missing required 'intent' field")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    task_shape = _extract_task_shape(task_payload)
+    best_module = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for module in available_modules:
+        # Zipai-specific scoring: context alignment + historical performance + queue health
+        context_score = _calculate_context_alignment(task_shape, module["capabilities"])
+        history_score = module.get("p95_latency_score", 0.5)
+        queue_score = 1.0 - (module.get("current_queue_depth", 0) / routing_config.get("max_queue_depth", 100))
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        composite = (
+            context_score * routing_config.get("w_context", 0.4) +
+            history_score * routing_config.get("w_history", 0.35) +
+            queue_score * routing_config.get("w_queue", 0.25)
+        )
+        
+        if composite > best_score and composite >= routing_config.get("min_confidence", 0.7):
+            best_score = composite
+            best_module = module
+            
+    if best_module is None:
+        return {"status": "unroutable", "reason": "no_module_meets_threshold", "score": best_score}
+        
+    # Return immutable routing decision
+    return {
+        "status": "routed",
+        "selected_module": best_module["name"],
+        "confidence": round(best_score, 3),
+        "execution_hints": best_module.get("routing_hints", {}),
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_zipai_module(
+    routing_decision: Dict[str, Any],
+    task_context: Dict[str, Any],
+    fallback_modules: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """Execute a zipai optimizer module with built-in resilience and fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements zipai execution contract:
+    - Validates module state and context compatibility before dispatch
+    - Handles transient failures with exponential backoff
+    - Falls back to alternative modules if primary fails after retries
+    - Maintains execution trace for audit and confidence recalibration
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        routing_decision: Output from route_zipai_task
+        task_context: Full execution context including inputs and state
+        fallback_modules: Ordered list of alternative modules for fallback routing
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, output, timing, and confidence update
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    primary_module = routing_decision.get("selected_module")
+    if not primary_module:
+        raise ValueError("Routing decision missing selected_module")
+        
+    execution_trace = {
+        "primary": primary_module,
+        "attempts": 0,
+        "fallbacks_used": [],
+        "start_time": time.time()
+    }
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    max_retries = routing_decision.get("execution_hints", {}).get("max_retries", 2)
     
     for attempt in range(max_retries + 1):
+        execution_trace["attempts"] = attempt + 1
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            result = _dispatch_module(primary_module, task_context)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "module": primary_module,
+                "output": result,
+                "latency_ms": (time.time() - execution_trace["start_time"]) * 1000,
+                "confidence_delta": 0.05,
+                "trace": execution_trace
             }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except ModuleTimeoutError:
+            if attempt < max_retries:
+                continue
+            # Exhausted retries, trigger fallback chain
+            for fallback in fallback_modules:
+                try:
+                    result = _dispatch_module(fallback["name"], task_context)
+                    execution_trace["fallbacks_used"].append(fallback["name"])
+                    return {
+                        "status": "success_fallback",
+                        "module": fallback["name"],
+                        "output": result,
+                        "latency_ms": (time.time() - execution_trace["start_time"]) * 1000,
+                        "confidence_delta": -0.02,
+                        "trace": execution_trace
+                    }
+                except Exception as e:
+                    continue
+                    
+    return {
+        "status": "failed",
+        "module": primary_module,
+        "error": "All retries and fallbacks exhausted",
+        "trace": execution_trace
+    }
 ```
 
 ### MUST DO
@@ -320,3 +339,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

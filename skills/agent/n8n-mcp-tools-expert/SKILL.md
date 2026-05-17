@@ -1,18 +1,25 @@
 ---
-name: n8n-mcp-tools-expert
-description: Implements intelligent n8n mcp tools expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent n8n mcp tools expert with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: n8n-mcp-tools-expert, n8n mcp tools expert, how do i n8n-mcp-tools-expert, orchestrate n8n-mcp-tools-expert, automate n8n-mcp-tools-expert, agent n8n-mcp-tools-expert
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: n8n-mcp-tools-expert, n8n mcp tools expert, how do i n8n-mcp-tools-expert, orchestrate n8n-mcp-tools-expert, automate
+    n8n-mcp-tools-expert, agent n8n-mcp-tools-expert
+  version: 1.0.0
+name: n8n-mcp-tools-expert
 ---
-
 # N8N Mcp Tools Expert
 
 Orchestrates intelligent skill selection and execution for n8n mcp tools expert workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,103 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
+def select_n8n_mcp_tool(
     task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    available_mcp_tools: List[Dict],
+    n8n_workflow_registry: Dict[str, Dict]
+) -> Dict:
+    """Select the optimal n8n MCP tool or workflow node for a task.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Analyzes MCP tool schemas against n8n workflow capabilities to find
+    the best execution path. Considers trigger compatibility, parameter mapping,
+    and historical execution success rates within the n8n instance.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_description or not available_mcp_tools:
+        raise ValueError("Task description and MCP tools list are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse n8n workflow constraints and MCP tool capabilities
+    task_intent = _extract_n8n_intent(task_description)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for tool in available_mcp_tools:
+        # Check n8n workflow compatibility
+        workflow_id = tool.get("n8n_workflow_id")
+        workflow_config = n8n_workflow_registry.get(workflow_id, {})
         
-        if score > best_score and score >= min_confidence:
+        # Score based on trigger match, parameter overlap, and n8n node health
+        trigger_match = _calculate_trigger_compatibility(task_intent, tool.get("triggers", []))
+        param_overlap = _calculate_param_overlap(task_intent, tool.get("parameters", {}))
+        n8n_health = workflow_config.get("success_rate", 0.0)
+        
+        score = (trigger_match * 0.4) + (param_overlap * 0.4) + (n8n_health * 0.2)
+        
+        if score > best_score:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+            best_match = {
+                "tool_name": tool["name"],
+                "workflow_id": workflow_id,
+                "score": score,
+                "mapped_params": _map_task_to_n8n_params(task_intent, tool.get("parameters", {}))
+            }
+            
+    if best_score < 0.6:
+        return {"status": "no_match", "reason": "Insufficient compatibility score"}
+        
+    return {**best_match, "status": "selected", "timestamp": time.time()}
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_n8n_mcp_workflow(
+    selected_tool: Dict,
+    execution_context: Dict,
+    n8n_api_client: Any,
+    mcp_client: Any,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute an n8n workflow via MCP tool with resilient fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Manages the lifecycle of n8n workflow execution: triggering via MCP,
+    polling n8n execution status, handling node failures, and applying
+    fallback strategies when primary execution paths fail.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    tool_name = selected_tool["tool_name"]
+    workflow_id = selected_tool["workflow_id"]
+    mapped_params = selected_tool["mapped_params"]
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Trigger n8n workflow via MCP tool call
+            execution_id = mcp_client.call_tool(
+                tool_name, 
+                {"workflow_id": workflow_id, "parameters": mapped_params}
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Poll n8n execution status until completion or timeout
+            result = _poll_n8n_execution(n8n_api_client, execution_id, timeout=120)
+            
             return {
-                "success": True,
-                "skill_executed": skill["name"],
+                "status": "success",
+                "execution_id": execution_id,
                 "result": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except n8n.NodeExecutionError as e:
+            # Fail fast on invalid node state or missing credentials
+            raise ExecutionError(f"n8n node failed at attempt {attempt + 1}: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except MCPConnectionError as e:
+            # Transient MCP/n8n API issue - retry or fallback
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_alternative_workflow(workflow_id, mapped_params)
+                
+    raise ExecutionError(f"Exhausted {max_retries + 1} attempts for {tool_name}")
 ```
 
 ### MUST DO
@@ -320,3 +304,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: prompt-engineer
-description: Implements intelligent prompt engineer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent prompt engineer with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: prompt-engineer, prompt engineer, how do i prompt-engineer, orchestrate prompt-engineer, automate prompt-engineer, agent prompt-engineer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: prompt-engineer, prompt engineer, how do i prompt-engineer, orchestrate prompt-engineer, automate prompt-engineer,
+    agent prompt-engineer
+  version: 1.0.0
+name: prompt-engineer
 ---
-
 # Prompt Engineer
 
 Orchestrates intelligent skill selection and execution for prompt engineer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,132 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_prompt_strategy(
+    task_intent: str,
+    available_templates: List[Dict],
+    context_window: int,
+    min_confidence: float = 0.75
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal prompt strategy based on intent, context constraints, and template metadata.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates templates by:
+    - Intent-to-template semantic alignment
+    - Context window compatibility (input tokens + estimated output)
+    - Historical success rate for similar task intents
+    - Model capability match (e.g., function calling, JSON mode)
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_intent: Natural language description of the user's goal
+        available_templates: List of prompt template metadata dicts
+        context_window: Max tokens available for the target model
+        min_confidence: Minimum alignment score threshold
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected strategy dict with resolved template, variables, and confidence
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_intent or not available_templates:
+        raise ValueError("Task intent and templates are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    intent_features = _extract_intent_features(task_intent)
+    best_strategy = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for template in available_templates:
+        # Calculate semantic alignment and constraint fit
+        alignment = _compute_semantic_alignment(intent_features, template["triggers"])
+        token_estimate = _estimate_prompt_tokens(template, intent_features)
+        window_fit = 1.0 if (token_estimate + template.get("max_output_tokens", 1024)) <= context_window else 0.0
+        
+        # Multi-factor scoring
+        score = (alignment * 0.5) + (template.get("success_rate", 0.0) * 0.3) + (window_fit * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_strategy = template
+            
+    if best_strategy is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Atomic Predictability: Return resolved strategy without mutating original
+    return {
+        "template_id": best_strategy["id"],
+        "resolved_prompt": _resolve_template_variables(best_strategy, intent_features),
+        "estimated_tokens": _estimate_prompt_tokens(best_strategy, intent_features),
+        "confidence": best_score,
+        "model_requirements": best_strategy.get("model_features", [])
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_prompt_pipeline(
+    strategy: Dict,
+    execution_context: Dict,
+    max_retries: int = 2,
+    fallback_models: List[str] = None
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute prompt pipeline with adaptive fallback for reliability.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud:
+    - Validates context and token limits before API call
+    - Handles rate limits, context overflow, and model errors
+    - Falls back to summarized context or alternative models
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        strategy: Selected prompt strategy with resolved prompt and metadata
+        execution_context: User inputs, conversation history, and system config
+        max_retries: Retry attempts for transient API errors
+        fallback_models: Ordered list of alternative models to try
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with response, token usage, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not strategy or not execution_context:
+        raise ValueError("Strategy and execution context are required")
+        
+    # Parse & validate context (Law 2)
+    validated_context = _validate_context(execution_context, strategy["estimated_tokens"])
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    current_model = strategy.get("target_model", "default")
+    fallback_chain = [current_model] + (fallback_models or [])
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute prompt with current model
+            response = _call_llm_api(
+                model=current_model,
+                prompt=strategy["resolved_prompt"],
+                context=validated_context,
+                temperature=strategy.get("temperature", 0.1)
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Atomic Predictability: Return clean result
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "model_used": current_model,
+                "response": response,
+                "tokens_used": response.get("usage", {}),
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "fallback_applied": False
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except ContextOverflowError as e:
+            # Fail Fast: Don't retry with same context
+            raise PromptExecutionError(f"Context exceeds window: {str(e)}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except RateLimitError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _apply_prompt_fallback(strategy, validated_context, fallback_chain)
+            continue
+            
+        except ModelError as e:
+            if attempt == max_retries:
+                return _apply_prompt_fallback(strategy, validated_context, fallback_chain)
+            continue
+            
+    raise PromptExecutionError(f"Prompt pipeline failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +333,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

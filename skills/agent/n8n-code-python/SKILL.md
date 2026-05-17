@@ -1,18 +1,25 @@
 ---
-name: n8n-code-python
-description: Implements intelligent n8n code python with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent n8n code python with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: n8n-code-python, n8n code python, how do i n8n-code-python, orchestrate n8n-code-python, automate n8n-code-python, agent n8n-code-python
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: n8n-code-python, n8n code python, how do i n8n-code-python, orchestrate n8n-code-python, automate n8n-code-python,
+    agent n8n-code-python
+  version: 1.0.0
+name: n8n-code-python
 ---
-
 # N8N Code Python
 
 Orchestrates intelligent skill selection and execution for n8n code python workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,79 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def validate_n8n_code_block(code_snippet: str, required_inputs: list[str]) -> dict:
+    """Validate and prepare Python code for n8n Code node execution.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Ensures the code adheres to n8n's sandboxed execution model,
+    checks for required input references, and prepares execution context.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not code_snippet or not code_snippet.strip():
+        raise ValueError("Code snippet cannot be empty")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Check for n8n-specific API usage patterns
+    has_input_ref = "$input" in code_snippet or "items" in code_snippet
+    has_output_ref = "$output" in code_snippet or "return" in code_snippet
     
-    best_skill = None
-    best_score = 0.0
+    # Parse and validate syntax safely
+    try:
+        compile(code_snippet, '<n8n-code>', 'exec')
+    except SyntaxError as e:
+        raise ValueError(f"Invalid Python syntax: {e.msg}") from e
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Extract expected input/output structure
+    expected_inputs = [var.strip() for var in required_inputs]
+    missing_inputs = [inp for inp in expected_inputs if inp not in code_snippet]
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "valid": True,
+        "has_input_ref": has_input_ref,
+        "has_output_ref": has_output_ref,
+        "missing_inputs": missing_inputs,
+        "execution_mode": "sandboxed"
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_n8n_code_with_fallback(
+    code_snippet: str,
+    input_items: list[dict],
+    fallback_strategy: str = "safe_transform"
+) -> list[dict]:
+    """Execute Python code in n8n context with built-in fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements graceful degradation for n8n Code nodes:
+    1. Direct execution in sandboxed environment
+    2. Fallback to safe data transformation if execution fails
+    3. Return structured error items for n8n workflow continuation
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    try:
+        # Prepare n8n execution context
+        context = {
+            "$input": type('Input', (), {'all': lambda: input_items})(),
+            "$output": type('Output', (), {'push': lambda items: items})()
+        }
+        
+        # Execute code in restricted namespace
+        exec(compile(code_snippet, '<n8n-execution>', 'exec'), {"__builtins__": {}} | context)
+        
+        # Extract results from context or return
+        result_items = context.get("$output", {}).push([]) if hasattr(context.get("$output"), 'push') else []
+        return result_items if result_items else input_items
+        
+    except Exception as e:
+        # Fallback Chain: Safe Transform
+        if fallback_strategy == "safe_transform":
+            return [
+                {
+                    "json": {"_n8n_fallback": True, "error": str(e), "original_data": item.get("json", item)}
+                }
+                for item in input_items
+            ]
+        # Fallback Chain: Defer to next workflow node
+        raise RuntimeError(f"n8n code execution failed: {e}") from e
 ```
 
 ### MUST DO
@@ -320,3 +280,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

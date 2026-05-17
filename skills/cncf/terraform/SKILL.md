@@ -1,21 +1,25 @@
 ---
-name: terraform
-description: Implements Terraform infrastructure as code for cloud provisioning with
-  state management, modules, remote backends, and troubleshooting
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements Terraform infrastructure as code for cloud provisioning with state management, modules, remote backends,
+  and troubleshooting
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
-  triggers: terraform, iac, infrastructure as code, terraform state, modules, remote
-    backends, plan apply, terraform troubleshooting
-  role: implementation
-  scope: infrastructure
   output-format: code
   related-skills: cncf-aws-cloudformation, cncf-helm, cncf-pulumi
+  role: implementation
+  scope: infrastructure
+  triggers: terraform, iac, infrastructure as code, terraform state, modules, remote backends, plan apply, terraform troubleshooting
+  version: 1.0.0
+name: terraform
 ---
-
-
 # Terraform Infrastructure as Code
 
 **Category:** infrastructure  
@@ -911,3 +915,12 @@ variable "any_var" {
 ```
 
 *Content generated automatically. Verify against official Terraform documentation before production use.*
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Integrating a CNCF project into Kubernetes infrastructure** — You need to configure, deploy, or troubleshoot a cloud-native tool within a cluster
+- **Designing cloud-native architecture** — You are selecting and integrating CNCF tools to solve specific infrastructure challenges
+- **Resolving operational issues** — A CNCF component is misbehaving, underperforming, or needs configuration changes

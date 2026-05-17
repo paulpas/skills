@@ -1,23 +1,25 @@
 ---
-name: performance-profiler
-description: Implements intelligent performance profiler with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent performance profiler with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: performance-profiler, performance profiler, how do i performance-profiler,
-    orchestrate performance-profiler, automate performance-profiler, agent performance-profiler,
-    optimization, performance
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: performance-profiler, performance profiler, how do i performance-profiler, orchestrate performance-profiler, automate
+    performance-profiler, agent performance-profiler, optimization, performance
+  version: 1.0.0
+name: performance-profiler
 ---
-
-
-
 # Performance Profiler
 
 Orchestrates intelligent skill selection and execution for performance profiler workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,126 +141,141 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_performance_metrics(
+    raw_metrics: List[Dict],
+    baseline_thresholds: Dict[str, float],
+    target_function: str = None
+) -> Dict:
+    """Analyze raw profiling data to identify performance bottlenecks.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements Law 1 (Early Exit) by validating metric structure immediately.
+    Implements Law 3 (Atomic Predictability) by returning a new analysis dict.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        raw_metrics: List of profiling samples (timestamp, function, duration, cpu_percent)
+        baseline_thresholds: Dict of acceptable limits per metric type
+        target_function: Optional filter to focus on a specific code path
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Structured analysis with bottleneck rankings, severity scores, and recommendations
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not raw_metrics:
+        raise ValueError("Profiling data cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Law 2: Parse & validate at boundary
+    validated_samples = []
+    for sample in raw_metrics:
+        if not all(k in sample for k in ("timestamp", "function", "duration_ms")):
+            continue # Skip malformed samples gracefully
+        validated_samples.append(sample)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    if not validated_samples:
+        return {"status": "no_data", "bottlenecks": [], "recommendations": []}
+        
+    # Law 4: Fail fast on invalid thresholds
+    for metric, limit in baseline_thresholds.items():
+        if limit <= 0:
+            raise ValueError(f"Invalid threshold for {metric}: must be positive")
+            
+    # Domain logic: Calculate impact scores and rank bottlenecks
+    function_stats = {}
+    for sample in validated_samples:
+        func = sample["function"]
+        if target_function and func != target_function:
+            continue
+        if func not in function_stats:
+            function_stats[func] = {"total_duration": 0, "call_count": 0, "max_duration": 0}
+        stats = function_stats[func]
+        stats["total_duration"] += sample["duration_ms"]
+        stats["call_count"] += 1
+        stats["max_duration"] = max(stats["max_duration"], sample["duration_ms"])
+        
+    bottlenecks = []
+    for func, stats in function_stats.items():
+        avg_duration = stats["total_duration"] / stats["call_count"]
+        impact_score = (avg_duration * stats["call_count"]) / 1000.0
+        severity = "critical" if impact_score > baseline_thresholds.get("max_impact", 100) else "warning"
+        bottlenecks.append({
+            "function": func,
+            "avg_duration_ms": round(avg_duration, 2),
+            "impact_score": round(impact_score, 2),
+            "severity": severity,
+            "recommendation": f"Optimize {func} or reduce call frequency"
+        })
+        
+    bottlenecks.sort(key=lambda x: x["impact_score"], reverse=True)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "status": "analyzed",
+        "total_samples": len(validated_samples),
+        "bottlenecks": bottlenecks,
+        "recommendations": [b["recommendation"] for b in bottlenecks[:3]]
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def run_profiling_cycle(
+    target_process: str,
+    profiler_config: Dict,
+    fallback_strategy: str = "static_analysis"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a performance profiling cycle with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast) by validating process state before profiling.
+    Implements fallback chain for transient profiling failures.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target_process: Name or PID of the process to profile
+        profiler_config: Dict containing duration, sampling_rate, and output_format
+        fallback_strategy: Method to use if live profiling fails (e.g., static_analysis, cache)
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Profiling results with metadata, timing, and fallback status
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Law 1: Early exit on invalid config
+    if not target_process or not profiler_config.get("duration"):
+        raise ValueError("Target process and duration are required for profiling")
+        
+    # Law 2: Parse & validate profiler state
+    if profiler_config["sampling_rate"] <= 0:
+        raise ValueError("Sampling rate must be positive")
+        
+    attempts = 0
+    max_attempts = profiler_config.get("max_attempts", 2)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while attempts < max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Domain logic: Initiate live profiling session
+            profiler_session = _init_profiler(target_process, profiler_config)
+            profiler_session.start()
+            time.sleep(profiler_config["duration"])
+            raw_data = profiler_session.stop()
             
-            # Success - Atomic Predictability (Law 3)
+            # Law 3: Return new data structure, never mutate session
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "profiler": target_process,
+                "data": raw_data,
+                "attempts": attempts + 1,
+                "fallback_used": False,
+                "timestamp": time.time()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except ProcessUnresponsiveError as e:
+            # Law 4: Fail fast on invalid process state
+            raise ProfilingError(f"Target process {target_process} is unresponsive: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except TransientProfilerError as e:
+            attempts += 1
+            if attempts >= max_attempts:
+                # Fallback chain: Switch to static analysis or cached metrics
+                return _apply_fallback_profiling(target_process, fallback_strategy)
+                
+    # Should not reach here, but Law 4 compliance
+    raise ProfilingError(f"Profiling failed after {max_attempts} attempts")
 ```
 
 ### MUST DO
@@ -325,3 +342,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

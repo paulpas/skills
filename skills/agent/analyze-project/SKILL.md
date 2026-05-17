@@ -1,18 +1,25 @@
 ---
-name: analyze-project
-description: Implements intelligent analyze project with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent analyze project with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: analyze-project, analyze project, how do i analyze-project, orchestrate analyze-project, automate analyze-project, agent analyze-project
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: analyze-project, analyze project, how do i analyze-project, orchestrate analyze-project, automate analyze-project,
+    agent analyze-project
+  version: 1.0.0
+name: analyze-project
 ---
-
 # Analyze Project
 
 Orchestrates intelligent skill selection and execution for analyze project workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,56 +141,52 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_analysis_skill(
+    project_root: Path,
+    tech_stack: Dict[str, Any],
+    available_analyses: List[Dict]
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select the optimal analysis skill based on project structure and tech stack.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates project metadata against available analysis capabilities:
+    - Language/framework compatibility
+    - Existing lockfiles and dependency managers
+    - Historical analysis success rates for similar repos
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        project_root: Path to the target project directory
+        tech_stack: Detected languages, frameworks, and package managers
+        available_analyses: List of analysis skill metadata
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected analysis skill dict or None if no compatible analysis found
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not project_root.exists():
+        raise ValueError(f"Project root not found: {project_root}")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse project structure - Make Illegal States Unrepresentable (Law 2)
+    project_manifest = _extract_project_manifest(project_root, tech_stack)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for analysis in available_analyses:
+        # Domain-specific scoring: check tech stack alignment and lockfile presence
+        stack_match = _calculate_stack_compatibility(tech_stack, analysis["supported_stack"])
+        lockfile_ready = _verify_lockfile(project_root, analysis["required_lockfile"])
+        score = (stack_match * 0.6) + (lockfile_ready * 0.4)
         
-        if score > best_score and score >= min_confidence:
+        if score > best_score and score >= 0.75:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = analysis
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+        
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate inputs
+    result = dict(best_match)
+    result["project_context"] = project_manifest
+    result["selection_confidence"] = best_score
     return result
 ```
 
@@ -191,68 +194,67 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_analysis_pipeline(
+    analysis_skill: Dict,
+    project_context: Dict,
+    fallback_analyses: List[Dict]
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a project analysis with domain-specific fallback chains.
     
     Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    - Invalid project states halt immediately with descriptive errors
+    - No silent failures or partial analysis results
     
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Fallback chain for analysis:
+    1. Retry with adjusted analysis depth/timeout
+    2. Try alternative analysis tool (e.g., yarn -> npm -> pnpm)
+    3. Defer to manual review template for critical security gaps
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        analysis_skill: Selected analysis skill metadata
+        project_context: Parsed project structure and manifest
+        fallback_analyses: Alternative analysis skills from related-skills
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
+        Analysis result with metadata (success, timing, confidence, findings)
         
     Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        AnalysisExecutionError: If all retries and fallbacks exhausted
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    if not _is_analysis_valid(analysis_skill):
+        raise AnalysisExecutionError(f"Invalid analysis configuration: {analysis_skill.get('name')}")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_project = _validate_project_structure(project_context)
     
-    for attempt in range(max_retries + 1):
+    for attempt in range(3):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = _run_analysis_tool(analysis_skill, validated_project)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "analysis_type": analysis_skill["name"],
+                "findings": result["findings"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _calculate_latency(),
+                "confidence": result["confidence"]
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except ProjectStructureError as e:
+            # Fail Fast - Don't try to patch malformed project data (Law 4)
+            raise AnalysisExecutionError(
+                f"Invalid project structure for {analysis_skill['name']}: {str(e)}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+        except ToolExecutionError as e:
+            # Transient tool failure - try fallback analysis
+            if attempt == 2:
+                return _apply_analysis_fallback(analysis_skill, validated_project, fallback_analyses)
+                
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise AnalysisExecutionError(
+        f"Failed to complete {analysis_skill['name']} analysis after 3 attempts"
     )
 ```
 
@@ -320,3 +322,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

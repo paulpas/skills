@@ -1,23 +1,25 @@
 ---
-name: bdistill-behavioral-xray
-description: Implements intelligent bdistill behavioral xray with multi-factor skill
-  selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent bdistill behavioral xray with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: bdistill-behavioral-xray, bdistill behavioral xray, how do i bdistill-behavioral-xray,
-    orchestrate bdistill-behavioral-xray, automate bdistill-behavioral-xray, agent
-    bdistill-behavioral-xray, distributed tracing, xray
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: bdistill-behavioral-xray, bdistill behavioral xray, how do i bdistill-behavioral-xray, orchestrate bdistill-behavioral-xray,
+    automate bdistill-behavioral-xray, agent bdistill-behavioral-xray, distributed tracing, xray
+  version: 1.0.0
+name: bdistill-behavioral-xray
 ---
-
-
-
 # Bdistill Behavioral Xray
 
 Orchestrates intelligent skill selection and execution for bdistill behavioral xray workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,126 +141,116 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_behavioral_trace(
+    trace_data: Dict[str, Any],
+    skill_registry: List[Dict],
+    confidence_threshold: float = 0.75
+) -> Dict[str, Any]:
+    """Analyze behavioral xray trace and route to optimal skill.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by validating trace schema.
+    Implements Law 1 (Early Exit) for malformed or incomplete traces.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not trace_data or "agent_actions" not in trace_data:
+        raise ValueError("Trace must contain agent_actions array")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse & validate trace features (Law 2)
+    parsed_trace = _normalize_trace(trace_data)
+    behavioral_features = {
+        "error_rate": sum(1 for a in parsed_trace if a.get("status") == "error") / max(len(parsed_trace), 1),
+        "avg_latency_ms": sum(a.get("duration_ms", 0) for a in parsed_trace) / max(len(parsed_trace), 1),
+        "confidence_drift": _calculate_confidence_drift(parsed_trace)
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    # Multi-factor scoring against skill registry
+    routed_skill = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in skill_registry:
+        # Domain-specific scoring: match trace patterns to skill triggers
+        pattern_match = _match_trace_patterns(parsed_trace, skill.get("triggers", []))
+        historical_perf = skill.get("success_rate", 0.5)
+        availability = 1.0 if skill.get("status") == "healthy" else 0.0
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        composite_score = (pattern_match * 0.5) + (historical_perf * 0.3) + (availability * 0.2)
+        
+        if composite_score > best_score and composite_score >= confidence_threshold:
+            best_score = composite_score
+            routed_skill = {
+                "name": skill["name"],
+                "score": composite_score,
+                "routing_reason": f"pattern_match={pattern_match:.2f}, perf={historical_perf:.2f}"
+            }
+            
+    if not routed_skill:
+        return {"status": "no_match", "trace_features": behavioral_features}
+        
+    # Law 3: Return new structure, never mutate trace
+    return {
+        "status": "routed",
+        "selected_skill": routed_skill,
+        "trace_features": behavioral_features,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def orchestrate_xray_execution(
+    routed_result: Dict[str, Any],
+    execution_context: Dict[str, Any],
+    fallback_chain: List[str] = None
+) -> Dict[str, Any]:
+    """Execute behavioral xray with adaptive fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast/Loud) for invalid execution states.
+    Implements Law 1 (Early Exit) for critical trace corruption.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    fallback_chain = fallback_chain or ["historical_batch_xray", "human_review"]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if routed_result.get("status") != "routed":
+        raise ValueError("Cannot execute without valid skill routing")
+        
+    target_skill = routed_result["selected_skill"]["name"]
+    trace_data = execution_context.get("trace_data")
     
-    for attempt in range(max_retries + 1):
+    for attempt, fallback_target in enumerate([target_skill] + fallback_chain):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            # Domain-specific execution: run xray analysis on behavioral trace
+            if fallback_target == target_skill:
+                analysis_result = _run_realtime_xray(trace_data, target_skill)
+            elif fallback_target == "historical_batch_xray":
+                analysis_result = _run_historical_batch_xray(trace_data)
+            elif fallback_target == "human_review":
+                analysis_result = _generate_human_review_ticket(trace_data)
+            else:
+                analysis_result = _run_generic_xray(trace_data, fallback_target)
+                
+            # Law 3: Atomic result construction
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "success",
+                "skill_used": fallback_target,
+                "analysis": analysis_result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "confidence": analysis_result.get("confidence_score", 0.0)
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except TraceCorruptionError as e:
+            # Law 4: Fail immediately on invalid trace state
+            raise SkillExecutionError(f"Trace corruption in {fallback_target}: {e}") from e
+        except TransientAnalysisError:
+            # Fallback to next strategy
+            continue
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Law 4: Fail loud if all fallbacks exhausted
+    return {
+        "status": "failed",
+        "skill_used": target_skill,
+        "error": "All fallback strategies exhausted",
+        "trace_features": routed_result.get("trace_features")
+    }
 ```
 
 ### MUST DO
@@ -325,3 +317,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

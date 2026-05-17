@@ -1,18 +1,25 @@
 ---
-name: infra-drift-detector
-description: Implements intelligent infra drift detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent infra drift detector with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: infra-drift-detector, infra drift detector, how do i infra-drift-detector, orchestrate infra-drift-detector, automate infra-drift-detector, agent infra-drift-detector
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: infra-drift-detector, infra drift detector, how do i infra-drift-detector, orchestrate infra-drift-detector, automate
+    infra-drift-detector, agent infra-drift-detector
+  version: 1.0.0
+name: infra-drift-detector
 ---
-
 # Infra Drift Detector
 
 Orchestrates intelligent skill selection and execution for infra drift detector workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -131,129 +138,117 @@ Avoid this skill for:
 
 ## Implementation Patterns
 
-### Pattern 1: Skill Selection Logic
+### Pattern 1: Drift State Comparison & Scoring
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_drift_state(
+    desired_state: Dict[str, Any],
+    current_state: Dict[str, Any],
+    drift_threshold: float = 0.85
+) -> Dict[str, Any]:
+    """Evaluate infrastructure drift between desired and current state.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements Law 2 (Parse at boundary) by validating IaC formats before diffing.
+    Implements Law 1 (Early Exit) by returning immediately on schema mismatches.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        desired_state: Parsed Terraform/CloudFormation/Policy state
+        current_state: Live cloud provider state or last known snapshot
+        drift_threshold: Minimum confidence to trigger auto-remediation
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Drift analysis dict with severity, affected resources, and confidence
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on invalid state formats
+    if not _validate_state_schema(desired_state) or not _validate_state_schema(current_state):
+        raise ValueError("Invalid state format: expected Terraform/CloudFormation schema")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Law 2: Parse inputs at boundary - extract resource IDs and attributes
+    desired_resources = _extract_resources(desired_state)
+    current_resources = _extract_resources(current_state)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    drift_report = {
+        "total_resources": len(desired_resources),
+        "drifted_resources": [],
+        "confidence_score": 0.0,
+        "severity": "low"
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for res_id, desired_attrs in desired_resources.items():
+        current_attrs = current_resources.get(res_id, {})
+        match_ratio = _calculate_attribute_similarity(desired_attrs, current_attrs)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        if match_ratio < drift_threshold:
+            drift_report["drifted_resources"].append({
+                "resource_id": res_id,
+                "match_ratio": match_ratio,
+                "missing_attrs": set(desired_attrs.keys()) - set(current_attrs.keys())
+            })
+            
+    # Law 3: Atomic predictability - return new structure
+    drift_report["confidence_score"] = _compute_overall_confidence(drift_report["drifted_resources"])
+    drift_report["severity"] = "critical" if len(drift_report["drifted_resources"]) > 5 else "moderate"
+    return drift_report
 ```
 
 
-### Pattern 2: Execution with Fallback
+### Pattern 2: Drift Execution & Remediation Routing
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_drift_response(
+    drift_report: Dict[str, Any],
+    routing_config: Dict[str, Any],
+    fallback_handlers: List[str] = None
+) -> Dict[str, Any]:
+    """Execute response workflow for detected infrastructure drift.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast/Loud) by halting on missing remediation configs.
+    Implements fallback chain: auto-remediate -> alert -> defer to human.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        drift_report: Output from evaluate_drift_state
+        routing_config: Maps severity levels to execution pipelines
+        fallback_handlers: Ordered list of fallback skill names
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with applied actions and audit trail
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Law 1: Early exit if no drift detected
+    if not drift_report.get("drifted_resources"):
+        return {"status": "clean", "actions_taken": [], "audit_log": []}
+        
+    # Law 2: Parse routing config at boundary
+    pipeline = routing_config.get(drift_report["severity"], routing_config.get("default"))
+    if not pipeline:
+        raise ValueError(f"No execution pipeline configured for severity: {drift_report['severity']}")
+        
+    audit_log = []
+    actions_taken = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for step in pipeline.get("steps", []):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Law 4: Fail immediately on invalid step config
+            if not _validate_step_config(step):
+                raise ValueError(f"Invalid step configuration: {step.get('id')}")
+                
+            result = _execute_drift_step(step, drift_report)
+            actions_taken.append(result)
+            audit_log.append({"step": step["id"], "status": "success", "timestamp": time.time()})
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+        except TransientAPIError:
+            # Fallback chain: retry -> alternative handler -> human
+            if fallback_handlers:
+                audit_log.append({"step": step["id"], "status": "fallback_triggered", "timestamp": time.time()})
+                return _apply_drift_fallback(fallback_handlers, drift_report, audit_log)
+            raise
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Law 3: Return immutable result structure
+    return {
+        "status": "completed",
+        "actions_taken": actions_taken,
+        "audit_log": audit_log,
+        "drift_resolved": len(actions_taken) == len(drift_report["drifted_resources"])
+    }
 ```
 
 ### MUST DO
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: regression-detector
-description: Implements intelligent regression detector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent regression detector with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: regression-detector, regression detector, how do i regression-detector, orchestrate regression-detector, automate regression-detector, agent regression-detector
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: regression-detector, regression detector, how do i regression-detector, orchestrate regression-detector, automate
+    regression-detector, agent regression-detector
+  version: 1.0.0
+name: regression-detector
 ---
-
 # Regression Detector
 
 Orchestrates intelligent skill selection and execution for regression detector workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,102 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_regression_risk(
+    diff_content: str,
+    test_registry: Dict[str, List[str]],
+    historical_metrics: Dict[str, float]
+) -> Dict:
+    """Analyze code changes to predict regression risk and select appropriate test suites.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Extracts modified files, maps them to relevant tests, and calculates a composite
+    risk score based on change severity, test coverage gaps, and historical flakiness.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        diff_content: Unified diff string of the proposed changes
+        test_registry: Mapping of file paths to their associated test modules
+        historical_metrics: Dict of test names with avg_runtime and failure_rate
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Risk assessment dict with prioritized test suites and confidence score
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    changed_files = _parse_diff_files(diff_content)
+    if not changed_files:
+        return {"risk_score": 0.0, "test_suites": [], "confidence": 0.0}
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    targeted_tests = set()
+    for file_path in changed_files:
+        targeted_tests.update(test_registry.get(file_path, []))
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    risk_score = 0.0
+    for test_name in targeted_tests:
+        history = historical_metrics.get(test_name, {"failure_rate": 0.0, "avg_runtime": 0.0})
+        # Weight by historical failure rate and runtime impact
+        risk_score += history["failure_rate"] * 0.6 + (history["avg_runtime"] / 100.0) * 0.4
+        
+    # Normalize score to 0-1 range
+    normalized_risk = min(risk_score / max(len(targeted_tests), 1), 1.0)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "risk_score": round(normalized_risk, 3),
+        "test_suites": sorted(list(targeted_tests), key=lambda t: historical_metrics.get(t, {}).get("failure_rate", 0), reverse=True),
+        "confidence": 0.85 if len(changed_files) > 0 else 0.0,
+        "changed_files": changed_files
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_regression_scan(
+    test_suites: List[str],
+    baseline_metrics: Dict[str, Any],
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute targeted regression tests and compare results against baseline.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Runs the prioritized test suites, captures execution metrics and output diffs,
+    and identifies regressions by comparing against stored baseline performance.
+    Implements retry logic for flaky tests and generates a structured report.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        test_suites: Ordered list of test modules to execute
+        baseline_metrics: Historical performance baselines for comparison
+        max_retries: Maximum retry attempts for transient test failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Regression report with pass/fail status, metric deltas, and flagged regressions
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    report = {"regressions": [], "metrics": {}, "status": "pending"}
+    executed_tests = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    for test_suite in test_suites:
+        attempts = 0
+        while attempts <= max_retries:
+            try:
+                result = _run_test_suite(test_suite)
+                # Compare against baseline
+                delta = _calculate_metric_delta(result, baseline_metrics.get(test_suite, {}))
+                
+                if delta["runtime_increase"] > 0.20 or delta["error_rate"] > 0.05:
+                    report["regressions"].append({
+                        "test": test_suite,
+                        "type": "performance" if delta["runtime_increase"] > 0.20 else "functional",
+                        "delta": delta
+                    })
+                    
+                report["metrics"][test_suite] = result
+                executed_tests.append(test_suite)
+                break  # Success, move to next
+                
+            except FlakyTestError:
+                attempts += 1
+                if attempts > max_retries:
+                    report["regressions"].append({"test": test_suite, "type": "flaky_timeout", "delta": {}})
+                    break
+                    
+    report["status"] = "regression_detected" if report["regressions"] else "clean"
+    return report
 ```
 
 ### MUST DO
@@ -320,3 +303,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

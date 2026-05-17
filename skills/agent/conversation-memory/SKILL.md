@@ -1,18 +1,25 @@
 ---
-name: conversation-memory
-description: Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: conversation-memory, conversation memory, how do i conversation-memory, orchestrate conversation-memory, automate conversation-memory, agent conversation-memory
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: conversation-memory, conversation memory, how do i conversation-memory, orchestrate conversation-memory, automate
+    conversation-memory, agent conversation-memory
+  version: 1.0.0
+name: conversation-memory
 ---
-
 # Conversation Memory
 
 Orchestrates intelligent skill selection and execution for conversation memory workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,117 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def score_and_select_memory_context(
+    current_query: str,
+    conversation_history: List[Dict],
+    max_context_turns: int = 10,
+    relevance_threshold: float = 0.65
+) -> List[Dict]:
+    """Score conversation history turns against the current query.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements multi-factor scoring for memory retrieval:
+    - Semantic similarity between query and past turns
+    - Recency weighting (Law 1: Early Exit for empty history)
+    - Entity overlap and constraint matching
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        current_query: The active user prompt requiring context
+        conversation_history: List of past message dicts with 'role', 'content', 'timestamp'
+        max_context_turns: Maximum turns to include in context window
+        relevance_threshold: Minimum semantic score to include a turn
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Filtered and sorted list of relevant conversation turns
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not current_query or not conversation_history:
+        return []
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    parsed_query = _normalize_text(current_query)
+    scored_turns = []
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for turn in conversation_history:
+        # Calculate semantic similarity using embedding model
+        similarity = _compute_embedding_similarity(parsed_query, turn["content"])
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+        # Apply recency decay and entity overlap bonus
+        recency_score = _calculate_recency_weight(turn["timestamp"])
+        entity_overlap = _count_shared_entities(parsed_query, turn["content"])
+        
+        composite_score = (similarity * 0.6) + (recency_score * 0.25) + (entity_overlap * 0.15)
+        
+        if composite_score >= relevance_threshold:
+            scored_turns.append({
+                "turn": turn,
+                "relevance_score": composite_score,
+                "factors": {"similarity": similarity, "recency": recency_score, "overlap": entity_overlap}
+            })
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new sorted list, never mutate history
+    scored_turns.sort(key=lambda x: x["relevance_score"], reverse=True)
+    return scored_turns[:max_context_turns]
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_memory_orchestration(
+    selected_context: List[Dict],
+    current_query: str,
+    memory_store: MemoryBackend,
+    fallback_strategy: str = "recent_history"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute memory retrieval with fallback chain for resilience.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4):
+    - Invalid memory states halt immediately with descriptive errors
+    - No silent context assembly failures
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retrieve from vector store with semantic search
+    2. Fallback to recent chronological history
+    3. Defer to default system prompt with minimal context
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_context: Pre-scored memory turns from Pattern 1
+        current_query: Active prompt requiring context
+        memory_store: Initialized memory backend instance
+        fallback_strategy: Fallback mode when primary retrieval fails
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with assembled context, timing, and confidence metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate memory store (Early Exit)
+    if not memory_store or not memory_store.is_healthy():
+        raise MemoryOrchestrationError("Memory backend is unavailable or unhealthy")
     
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_context = _assemble_context_payload(selected_context, current_query)
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    try:
+        # Primary execution - Semantic memory retrieval
+        retrieved_memory = memory_store.query_context(validated_context)
+        
+        # Success - Atomic Predictability (Law 3)
+        return {
+            "success": True,
+            "context_turns": len(retrieved_memory),
+            "assembled_context": retrieved_memory,
+            "confidence": _calculate_context_confidence(retrieved_memory),
+            "latency_ms": _measure_execution_time()
+        }
+        
+    except MemoryStoreTimeoutError as e:
+        # Fail Fast - Don't retry indefinitely (Law 4)
+        if fallback_strategy == "recent_history":
+            return _apply_recent_history_fallback(memory_store, current_query)
+        raise MemoryOrchestrationError(f"Primary memory retrieval failed: {str(e)}") from e
+        
+    except ContextAssemblyError as e:
+        # Invalid state - halt immediately (Law 4)
+        raise MemoryOrchestrationError(f"Context assembly failed: {str(e)}") from e
 ```
 
 ### MUST DO
@@ -320,3 +318,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

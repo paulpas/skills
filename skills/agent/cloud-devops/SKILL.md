@@ -1,18 +1,24 @@
 ---
-name: cloud-devops
-description: Implements intelligent cloud devops with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cloud devops with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: cloud-devops, cloud devops, how do i cloud-devops, orchestrate cloud-devops, automate cloud-devops, agent cloud-devops
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cloud-devops, cloud devops, how do i cloud-devops, orchestrate cloud-devops, automate cloud-devops, agent cloud-devops
+  version: 1.0.0
+name: cloud-devops
 ---
-
 # Cloud Devops
 
 Orchestrates intelligent skill selection and execution for cloud devops workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,118 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def evaluate_cloud_deployment_path(
+    infrastructure_state: Dict,
+    available_devops_skills: List[Dict],
+    cloud_provider: str = "aws"
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Evaluate and select the optimal cloud devops skill for infrastructure changes.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Scores skills based on:
+    - Infrastructure state compatibility (Terraform state, K8s manifests)
+    - Cloud provider region availability and cost constraints
+    - Historical deployment success rates for similar infrastructure changes
+    - Required IAM permissions and service quotas
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        infrastructure_state: Current state of target infrastructure
+        available_devops_skills: List of cloud devops skill metadata
+        cloud_provider: Target cloud provider (aws, gcp, azure)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected skill with deployment context or None if no safe path exists
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not infrastructure_state or not available_devops_skills:
+        raise ValueError("Infrastructure state and skill registry must be populated")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Validate infrastructure state before scoring (Law 2)
+    validated_state = _validate_infrastructure_state(infrastructure_state, cloud_provider)
     
     best_skill = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in available_devops_skills:
+        # Calculate compatibility score based on infrastructure type
+        infra_match = _calculate_infra_compatibility(validated_state, skill)
+        # Factor in historical deployment success
+        history_score = skill.get("deployment_success_rate", 0.0) * 0.4
+        # Check cloud provider region availability
+        region_score = _check_region_availability(skill.get("supported_regions", []), cloud_provider)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
+        composite_score = (infra_match * 0.5) + (history_score * 0.3) + (region_score * 0.2)
+        
+        if composite_score > best_score and composite_score >= 0.75:
+            best_score = composite_score
             best_skill = skill
-    
+            
     if best_skill is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable deployment context (Law 3)
+    return {
+        "skill": dict(best_skill),
+        "deployment_context": validated_state,
+        "confidence": best_score,
+        "provider": cloud_provider
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def orchestrate_cloud_deployment(
+    deployment_plan: Dict,
+    max_retries: int = 2,
+    fallback_strategy: str = "blue-green"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Orchestrate cloud infrastructure deployment with resilient fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements cloud-native resilience patterns:
+    - Validates Terraform/K8s manifests before execution
+    - Retries transient cloud API errors (rate limits, throttling)
+    - Falls back to alternative deployment strategy or region
+    - Triggers manual approval for critical production changes
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        deployment_plan: Infrastructure change specification
+        max_retries: Maximum retry attempts for transient failures
+        fallback_strategy: Fallback deployment method (blue-green, canary, manual)
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Deployment result with state, timing, and rollback information
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    # Pre-flight validation (Law 1 & 2)
+    if not _validate_manifests(deployment_plan.get("manifests", [])):
+        raise CloudDeploymentError("Invalid infrastructure manifests detected")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute cloud provider API / Terraform / Kubectl
+            result = _apply_infrastructure_changes(deployment_plan)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            # Verify post-deployment state
+            if _verify_deployment_health(result["deployment_id"]):
+                return {
+                    "status": "success",
+                    "deployment_id": result["deployment_id"],
+                    "attempts": attempt + 1,
+                    "rollback_url": result.get("rollback_url"),
+                    "timestamp": time.time()
+                }
+                
+        except CloudRateLimitError:
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)  # Exponential backoff
+                continue
+            return _trigger_fallback_deployment(deployment_plan, fallback_strategy)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except CloudStateConflictError as e:
+            # Fail fast on state conflicts (Law 4)
+            raise CloudDeploymentError(f"State conflict during deployment: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # All retries exhausted
+    return _trigger_fallback_deployment(deployment_plan, fallback_strategy)
 ```
 
 ### MUST DO
@@ -320,3 +318,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

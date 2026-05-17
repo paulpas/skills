@@ -1,18 +1,25 @@
 ---
-name: track-management
-description: Implements intelligent track management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent track management with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: track-management, track management, how do i track-management, orchestrate track-management, automate track-management, agent track-management
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: track-management, track management, how do i track-management, orchestrate track-management, automate track-management,
+    agent track-management
+  version: 1.0.0
+name: track-management
 ---
-
 # Track Management
 
 Orchestrates intelligent skill selection and execution for track management workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,113 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def evaluate_track_candidates(
+    request_context: Dict,
+    available_tracks: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Evaluate and select the optimal execution track for a given request.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies multi-factor scoring to route requests through the most appropriate
+    track, considering text alignment, historical throughput, and current load.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        request_context: Parsed user intent and constraints
+        available_tracks: List of track metadata dictionaries
+        min_confidence: Minimum confidence threshold for track activation
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected track dictionary with computed confidence score, or None
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request_context.get("intent"):
+        raise ValueError("Request context missing required 'intent' field")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_tracks:
+        raise ValueError("No tracks available for routing")
+        
+    intent_features = _extract_intent_features(request_context["intent"])
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_track = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for track in available_tracks:
+        # Calculate multi-factor track score
+        alignment = _compute_text_similarity(intent_features, track.get("triggers", []))
+        history = track.get("historical_success_rate", 0.0)
+        load_factor = 1.0 - (track.get("current_load", 0.0) / 100.0)
+        
+        score = (alignment * 0.5) + (history * 0.3) + (load_factor * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_track = track
+            
+    if best_track is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable track selection with metadata
+    return {
+        "track_id": best_track["id"],
+        "track_name": best_track["name"],
+        "confidence": best_score,
+        "selection_timestamp": time.time(),
+        "state": "active"
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_track_with_fallback(
+    selected_track: Dict,
+    execution_context: Dict,
+    fallback_tracks: List[Dict],
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a track with built-in fallback routing for resilience.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements fail-fast validation and automatic track switching when
+    execution conditions change or dependencies fail.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_track: Track metadata returned from evaluation
+        execution_context: Runtime parameters and state
+        fallback_tracks: Ordered list of alternative tracks to route to
+        max_retries: Maximum retry attempts before fallback activation
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with track state, timing, and confidence metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not selected_track.get("track_id"):
+        raise TrackExecutionError("Selected track missing valid track_id")
+        
+    validated_state = _validate_track_state(selected_track, execution_context)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = _run_track_pipeline(selected_track, validated_state)
             
-            # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
+                "track_executed": selected_track["track_id"],
                 "result": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000,
+                "track_state": "completed"
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except TrackDependencyError as e:
+            raise TrackExecutionError(
+                f"Track {selected_track['track_id']} failed dependency check: {e}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except TransientTrackError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+                return _route_to_fallback_track(selected_track, fallback_tracks, execution_context)
+                
+    raise TrackExecutionError(
+        f"Track {selected_track['track_id']} exhausted all retries and fallbacks"
     )
 ```
 
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

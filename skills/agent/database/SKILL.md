@@ -1,18 +1,24 @@
 ---
-name: database
-description: Implements intelligent database with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent database with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: database, database, how do i database, orchestrate database, automate database, agent database
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: database, database, how do i database, orchestrate database, automate database, agent database
+  version: 1.0.0
+name: database
 ---
-
 # Database
 
 Orchestrates intelligent skill selection and execution for database workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,114 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_database_operation(
+    query: str,
+    db_cluster: Dict[str, Any],
+    operation_type: str = "auto"
+) -> Dict[str, Any]:
+    """Route database operations to optimal nodes based on query type and cluster health.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements multi-factor routing for database workflows:
+    - Parses query intent (SELECT, INSERT, UPDATE, DELETE, DDL)
+    - Evaluates node health, replication lag, and connection pool status
+    - Applies read/write splitting with automatic failover routing
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate query and cluster state
+    if not query or not query.strip():
+        raise ValueError("Query cannot be empty")
+    if not db_cluster.get("nodes"):
+        raise ValueError("No database nodes available")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse query intent (Law 2 - Make illegal states unrepresentable)
+    intent = _parse_query_intent(query)
+    is_read = intent in ("SELECT", "SHOW", "DESCRIBE")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Evaluate nodes for routing
+    candidates = []
+    for node in db_cluster["nodes"]:
+        if node["status"] != "healthy":
+            continue
+        lag = node.get("replication_lag_ms", 0)
+        if is_read and lag > db_cluster.get("max_read_lag_ms", 500):
+            continue
+        score = _calculate_node_score(node, is_read, db_cluster["load"])
+        candidates.append({"node": node, "score": score})
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    if not candidates:
+        return {"fallback": "maintenance_mode", "reason": "no_healthy_nodes"}
+        
+    # Sort by score and select optimal node
+    candidates.sort(key=lambda x: x["score"], reverse=True)
+    selected = candidates[0]["node"]
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Return routing decision with metadata (Law 3 - Atomic Predictability)
+    return {
+        "target_node": selected["id"],
+        "operation_type": "read" if is_read else "write",
+        "confidence": candidates[0]["score"],
+        "routing_timestamp": time.time(),
+        "query_intent": intent
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_db_operation(
+    routing_decision: Dict[str, Any],
+    query: str,
+    params: tuple = (),
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute database operation with resilient connection handling and fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements database-specific fallback chain:
+    1. Retry with exponential backoff on transient connection errors
+    2. Failover to read replica or standby node on timeout/lock
+    3. Route to maintenance pool if primary is degraded
+    4. Return structured error with query context for debugging
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    target_node = routing_decision["target_node"]
+    operation = routing_decision["operation_type"]
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Establish connection with timeout (Law 4 - Fail Fast)
+            conn = _acquire_connection(target_node, timeout=5.0)
+            cursor = conn.cursor()
             
-            # Success - Atomic Predictability (Law 3)
+            # Execute with query timeout protection
+            cursor.execute(query, params)
+            result = cursor.fetchall() if operation == "read" else {"rows_affected": cursor.rowcount}
+            
+            # Close connection and return result (Law 3)
+            cursor.close()
+            conn.close()
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
+                "node": target_node,
                 "result": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except ConnectionError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _failover_to_standby(target_node, query, params)
+            time.sleep(0.5 * (2 ** attempt))
+            
+        except QueryTimeoutError as e:
+            # Lock contention or slow query - trigger fallback routing
+            return _reroute_with_backoff(target_node, query, params)
+            
+    return {
+        "success": False,
+        "error": "max_retries_exceeded",
+        "query": query,
+        "node": target_node
+    }
 ```
 
 ### MUST DO
@@ -320,3 +314,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

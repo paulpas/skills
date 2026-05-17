@@ -1,24 +1,26 @@
 ---
-name: hypothesis-testing
-description: Implements hypothesis testing including t-tests, chi-square tests, p-values,
-  and statistical significance evaluation for data-driven decisions
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: Implements hypothesis testing including t-tests, chi-square tests, p-values, and statistical significance evaluation
+  for data-driven decisions
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-ab-testing, ds-bayesian-inference, ds-confidence-intervals, ds-maximum-likelihood
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: hypothesis testing, t-test, chi-square, p-value, statistical significance,
-    how do i test hypotheses, unit tests, testing
-  related-skills: ds-ab-testing, ds-bayesian-inference, ds-confidence-intervals, ds-maximum-likelihood
+  triggers: hypothesis testing, t-test, chi-square, p-value, statistical significance, how do i test hypotheses, unit tests,
+    testing
+  version: 1.0.0
+name: hypothesis-testing
 ---
-
-
-
-
-
 # Hypothesis Testing
 
 Comprehensive guide to hypothesis testing in machine learning and data science workflows.
@@ -60,34 +62,96 @@ Hypothesis Testing is a critical component of the machine learning workflow. Thi
 ### Pattern 1: Basic Hypothesis Testing
 
 ```python
-# Example pattern for Hypothesis Testing
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from scipy import stats
+from typing import Dict, Any, Tuple
 
-# Implementation pattern
-pass
+def perform_independent_t_test(
+    group_a: np.ndarray, 
+    group_b: np.ndarray, 
+    alpha: float = 0.05
+) -> Dict[str, Any]:
+    """
+    Perform an independent two-sample t-test to compare means.
+    
+    Args:
+        group_a: Array of values for the first group
+        group_b: Array of values for the second group
+        alpha: Significance level for the test
+        
+    Returns:
+        Dictionary containing t-statistic, p-value, and conclusion
+    """
+    if len(group_a) < 2 or len(group_b) < 2:
+        raise ValueError("Each group must contain at least two observations")
+        
+    t_stat, p_value = stats.ttest_ind(group_a, group_b, equal_var=False)
+    is_significant = p_value < alpha
+    
+    return {
+        "t_statistic": float(t_stat),
+        "p_value": float(p_value),
+        "significant": bool(is_significant),
+        "alpha": alpha,
+        "conclusion": "Reject null hypothesis" if is_significant else "Fail to reject null hypothesis"
+    }
 ```
 
 ### Pattern 2: Production-Ready Hypothesis Testing
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from scipy import stats
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-class HypothesisTesting:
-    """Production implementation of Hypothesis Testing"""
+class HypothesisTestingEngine:
+    """Production-grade engine for statistical hypothesis testing."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Hypothesis Testing on data"""
-        return {}
+    def __init__(self, alpha: float = 0.05, verbose: bool = False):
+        self.alpha = alpha
+        self.verbose = verbose
+        self.results_log: List[Dict[str, Any]] = []
+        
+    def run_chi_square(self, observed: List[int], expected: List[int]) -> Dict[str, Any]:
+        """Execute chi-square goodness of fit test."""
+        if len(observed) != len(expected):
+            raise ValueError("Observed and expected arrays must have the same length")
+        if any(x < 0 for x in observed) or any(x < 0 for x in expected):
+            raise ValueError("Counts cannot be negative")
+            
+        chi2_stat, p_value = stats.chisquare(f_obs=observed, f_exp=expected)
+        result = {
+            "test": "chi_square",
+            "statistic": float(chi2_stat),
+            "p_value": float(p_value),
+            "significant": bool(p_value < self.alpha),
+            "timestamp": pd.Timestamp.now().isoformat()
+        }
+        self.results_log.append(result)
+        if self.verbose:
+            logger.info(f"Chi-square test completed: p={p_value:.4f}")
+        return result
+        
+    def run_all_tests(self, data: pd.DataFrame, target_col: str, feature_col: str) -> Dict[str, Any]:
+        """Run appropriate tests based on data types."""
+        if target_col not in data.columns or feature_col not in data.columns:
+            raise KeyError(f"Columns '{target_col}' and '{feature_col}' must exist in data")
+            
+        results = {}
+        if data[feature_col].dtype in ['float64', 'int64']:
+            groups = data.groupby(feature_col)[target_col].apply(list)
+            if len(groups) >= 2:
+                results['anova'] = stats.f_oneway(*groups.values())._asdict()
+        else:
+            contingency = pd.crosstab(data[target_col], data[feature_col])
+            results['chi2'] = stats.chi2_contingency(contingency)._asdict()
+            
+        return results
 ```
 
 ## Best Practices
@@ -99,6 +163,26 @@ class HypothesisTesting:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+
+### BAD vs GOOD Example
+
+```python
+# BAD: Bypassing error handling, using magic numbers, and missing type hints
+def bad_test(data):
+    t, p = stats.ttest_ind(data['a'], data['b'])
+    return p < 0.05  # Hardcoded threshold, no validation
+
+# GOOD: Proper validation, type hints, configurable alpha, and clear return structure
+def good_test(group_a: np.ndarray, group_b: np.ndarray, alpha: float = 0.05) -> Dict[str, Any]:
+    if len(group_a) < 2 or len(group_b) < 2:
+        raise ValueError("Insufficient samples for statistical testing")
+    _, p_value = stats.ttest_ind(group_a, group_b, equal_var=False)
+    return {
+        "p_value": float(p_value),
+        "significant": bool(p_value < alpha),
+        "alpha_used": alpha
+    }
+```
 
 ## Common Pitfalls
 
@@ -113,60 +197,74 @@ class HypothesisTesting:
 ## Complete Working Example
 
 ```python
-# Full working example for Hypothesis Testing
-import pandas as pd
 import numpy as np
-from typing import Dict, Any
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+from typing import Dict, Any, Tuple
+import warnings
+warnings.filterwarnings('ignore')
 
-def implement_testing(data: pd.DataFrame) -> Dict[str, Any]:
-    """
-    Complete implementation of Hypothesis Testing.
+def generate_sample_data(n_samples: int = 200, seed: int = 42) -> pd.DataFrame:
+    """Generate synthetic dataset for hypothesis testing demonstration."""
+    np.random.seed(seed)
+    df = pd.DataFrame({
+        'control_group': np.random.normal(loc=50, scale=10, size=n_samples),
+        'treatment_group': np.random.normal(loc=55, scale=10, size=n_samples),
+        'category': np.random.choice(['A', 'B', 'C'], size=n_samples)
+    })
+    return df
+
+def run_comprehensive_tests(df: pd.DataFrame) -> Dict[str, Any]:
+    """Execute multiple hypothesis tests and return structured results."""
+    results: Dict[str, Any] = {}
     
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    # 1. Independent t-test
+    t_stat, t_pval = stats.ttest_ind(df['control_group'], df['treatment_group'], equal_var=False)
+    results['t_test'] = {
+        'statistic': float(t_stat),
+        'p_value': float(t_pval),
+        'significant': bool(t_pval < 0.05),
+        'interpretation': 'Significant difference in means' if t_pval < 0.05 else 'No significant difference'
+    }
     
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_testing(df)
-        >>> print(results)
-    """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
-    
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    # 2. Chi-square test for categorical independence
+    contingency_table = pd.crosstab(df['category'], df['treatment_group'] > 52)
+    chi2, chi_p, dof, expected = stats.chi2_contingency(contingency_table)
+    results['chi_square'] = {
+        'statistic': float(chi2),
+        'p_value': float(chi_p),
+        'degrees_of_freedom': int(dof),
+        'significant': bool(chi_p < 0.05)
     }
     
     return results
 
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+def visualize_results(df: pd.DataFrame, results: Dict[str, Any]) -> None:
+    """Plot distributions and test outcomes."""
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
     
-    # Run implementation
-    results = implement_testing(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    axes[0].hist(df['control_group'], bins=20, alpha=0.5, label='Control', color='blue')
+    axes[0].hist(df['treatment_group'], bins=20, alpha=0.5, label='Treatment', color='red')
+    axes[0].set_title('Group Distributions')
+    axes[0].set_xlabel('Value')
+    axes[0].set_ylabel('Frequency')
+    axes[0].legend()
+    
+    axes[1].bar(['Control', 'Treatment'], 
+                [df['control_group'].mean(), df['treatment_group'].mean()],
+                color=['blue', 'red'], alpha=0.7)
+    axes[1].set_title('Mean Comparison')
+    axes[1].set_ylabel('Mean Value')
+    
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    sample_df = generate_sample_data()
+    test_results = run_comprehensive_tests(sample_df)
+    visualize_results(sample_df, test_results)
+    print("Test Results:", test_results)
 ```
 
 ## Related Skills
@@ -182,7 +280,23 @@ if __name__ == "__main__":
 - Official documentation and papers on Hypothesis Testing
 - Industry best practices and standards
 - Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
+- American Statistical Association (ASA) Statement on p-Values and Statistical Significance
+- DRY (Don't Repeat Yourself) principle for test automation and result reporting
 
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

@@ -1,18 +1,25 @@
 ---
-name: context7-auto-research
-description: Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: context7-auto-research, context7 auto research, how do i context7-auto-research, orchestrate context7-auto-research, automate context7-auto-research, agent context7-auto-research
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: context7-auto-research, context7 auto research, how do i context7-auto-research, orchestrate context7-auto-research,
+    automate context7-auto-research, agent context7-auto-research
+  version: 1.0.0
+name: context7-auto-research
 ---
-
 # Context7 Auto Research
 
 Orchestrates intelligent skill selection and execution for context7 auto research workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,119 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def run_context7_research(
+    query: str,
+    research_config: Dict,
+    max_results: int = 5,
+    fallback_sources: List[str] = None
+) -> Dict:
+    """Execute Context7 auto-research workflow with domain-specific fallbacks.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Handles query expansion, API retrieval, relevance scoring, and
+    research-specific fallback chains (e.g., academic vs. web sources).
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not query or len(query.strip()) < 3:
+        raise ValueError("Research query must be at least 3 characters")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse and expand query for better retrieval (Law 2)
+    expanded_queries = _expand_research_query(query, research_config.get("depth", "standard"))
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    results = []
+    fallback_applied = False
     
-    best_skill = None
-    best_score = 0.0
+    for q in expanded_queries:
+        try:
+            # Domain-specific API call to Context7 research engine
+            raw_data = _call_context7_engine(q, research_config)
+            parsed_findings = _parse_research_output(raw_data)
+            
+            # Score findings based on relevance, citation quality, and recency
+            scored_findings = _score_research_findings(parsed_findings, query)
+            results.extend(scored_findings)
+            
+            if len(results) >= max_results:
+                break
+                
+        except Context7RateLimitError:
+            # Research-specific fallback: switch to cached/archive sources
+            if not fallback_applied and fallback_sources:
+                results.extend(_fetch_from_fallback_sources(fallback_sources, query))
+                fallback_applied = True
+            else:
+                raise ResearchExecutionError("Context7 API rate limited and no fallback sources available")
+                
+        except SparseResultsError:
+            # Expand search scope if initial results are too narrow
+            results.extend(_broaden_research_scope(query, research_config))
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new structure, never mutate config
+    return {
+        "query": query,
+        "findings": sorted(results, key=lambda x: x["relevance_score"], reverse=True)[:max_results],
+        "fallback_used": fallback_applied,
+        "total_sources_checked": len(expanded_queries),
+        "research_timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def validate_and_route_research_output(
+    raw_findings: List[Dict],
+    confidence_threshold: float = 0.75,
+    require_citations: bool = True
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Validate research findings and route based on confidence scores.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements research-specific quality gates:
+    - Citation verification for academic/technical claims
+    - Recency filtering for time-sensitive queries
+    - Adaptive routing to human review if confidence drops
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - Early Exit (Law 1)
+    if not raw_findings:
+        raise ValueError("No research findings to validate")
+        
+    validated_findings = []
+    flagged_for_review = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for finding in raw_findings:
+        # Parse and validate citation structure (Law 2)
+        if require_citations and not _verify_citation_format(finding.get("source", "")):
+            flagged_for_review.append(finding)
+            continue
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+        # Calculate composite confidence score
+        confidence = _calculate_research_confidence(
+            finding["relevance_score"],
+            finding.get("citation_quality", 0.0),
+            finding.get("recency_factor", 1.0)
+        )
+        
+        # Atomic Predictability (Law 3) - create new validated record
+        validated_record = {
+            "id": finding["id"],
+            "content": finding["content"],
+            "confidence": confidence,
+            "requires_review": confidence < confidence_threshold,
+            "routing": "auto" if confidence >= confidence_threshold else "human_review"
+        }
+        
+        if validated_record["requires_review"]:
+            flagged_for_review.append(validated_record)
+        else:
+            validated_findings.append(validated_record)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Fail Loud (Law 4) - Clear routing decision, no silent partial states
+    return {
+        "validated_findings": validated_findings,
+        "flagged_for_review": flagged_for_review,
+        "auto_confidence": len(validated_findings) / max(len(raw_findings), 1),
+        "routing_decision": "auto_complete" if not flagged_for_review else "partial_review"
+    }
 ```
 
 ### MUST DO
@@ -320,3 +320,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

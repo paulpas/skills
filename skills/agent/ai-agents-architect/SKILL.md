@@ -1,18 +1,25 @@
 ---
-name: ai-agents-architect
-description: Implements intelligent ai agents architect with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent ai agents architect with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: ai-agents-architect, ai agents architect, how do i ai-agents-architect, orchestrate ai-agents-architect, automate ai-agents-architect, agent ai-agents-architect
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: ai-agents-architect, ai agents architect, how do i ai-agents-architect, orchestrate ai-agents-architect, automate
+    ai-agents-architect, agent ai-agents-architect
+  version: 1.0.0
+name: ai-agents-architect
 ---
-
 # Ai Agents Architect
 
 Orchestrates intelligent skill selection and execution for ai agents architect workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,126 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def architect_agent_routing(
+    task_spec: Dict[str, Any],
+    agent_registry: List[Dict[str, Any]],
+    capability_threshold: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Architect routing for a task by matching against agent capabilities and tool constraints.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements capability-based selection rather than generic text matching:
+    - Evaluates tool compatibility matrix between task requirements and agent definitions
+    - Scores agents based on historical success with similar task patterns
+    - Validates dependency chains before routing to prevent dead-end workflows
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_spec: Parsed task dictionary containing intent, required_tools, constraints
+        agent_registry: List of available agent definitions with capabilities and tool mappings
+        capability_threshold: Minimum capability match score required for routing
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected agent configuration with routing metadata, or None if no match
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_spec.get("required_tools"):
+        raise ValueError("Task specification must declare required tools for routing")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if not agent_registry:
+        raise ValueError("Agent registry is empty - cannot architect routing")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Parse task requirements into normalized capability vectors
+    required_capabilities = _normalize_tool_requirements(task_spec["required_tools"])
     
-    if best_skill is None:
+    best_agent = None
+    best_capability_score = 0.0
+    
+    for agent in agent_registry:
+        # Calculate tool compatibility and capability overlap
+        capability_score = _calculate_capability_overlap(required_capabilities, agent["capabilities"])
+        dependency_health = _validate_agent_dependencies(agent)
+        
+        if capability_score > best_capability_score and capability_score >= capability_threshold:
+            if dependency_health:
+                best_capability_score = capability_score
+                best_agent = agent
+                
+    if best_agent is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable routing configuration
+    return {
+        "target_agent": best_agent["id"],
+        "routing_confidence": best_capability_score,
+        "required_toolchain": task_spec["required_tools"],
+        "fallback_agents": best_agent.get("fallback_chain", []),
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def orchestrate_agent_workflow(
+    target_agent: Dict[str, Any],
+    task_context: Dict[str, Any],
+    fallback_agents: List[Dict[str, Any]],
+    max_execution_attempts: int = 2
+) -> Dict[str, Any]:
+    """Orchestrate agent execution with capability-aware fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements specialized fallback logic for agent architectures:
+    - Routes to fallback agents based on capability degradation, not just errors
+    - Preserves task context across agent transitions for state continuity
+    - Validates tool availability before each execution attempt
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target_agent: Primary agent configuration selected by architect_agent_routing
+        task_context: Immutable task state and input parameters
+        fallback_agents: Ordered list of capability-degraded alternative agents
+        max_execution_attempts: Maximum retry attempts before escalating fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with agent transition history and capability metrics
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not target_agent.get("id"):
+        raise ValueError("Target agent must have a valid identifier")
+        
+    validated_context = _enforce_task_context_schema(task_context)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    execution_chain = [target_agent] + fallback_agents
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for attempt_idx, agent in enumerate(execution_chain):
+        if attempt_idx > max_execution_attempts:
+            break
             
-            # Success - Atomic Predictability (Law 3)
+        try:
+            # Validate tool availability for current agent
+            if not _verify_tool_availability(agent["capabilities"]):
+                continue
+                
+            # Execute agent with context preservation
+            result = _run_agent_pipeline(agent, validated_context)
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
+                "agent_executed": agent["id"],
+                "execution_path": [a["id"] for a in execution_chain[:attempt_idx+1]],
                 "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "capability_score": _calculate_current_capability(agent)
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except ToolUnavailableError as e:
+            # Capability mismatch - route to next agent in chain
+            continue
+            
+        except CriticalStateError as e:
+            # Invalid state - halt immediately, do not retry same agent
+            raise WorkflowExecutionError(
+                f"Critical state failure in {agent['id']}: {str(e)}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise WorkflowExecutionError(
+        f"Agent workflow exhausted all {len(execution_chain)} capability tiers"
     )
 ```
 
@@ -320,3 +328,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

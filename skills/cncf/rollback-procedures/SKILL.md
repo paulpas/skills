@@ -1,18 +1,26 @@
 ---
-name: rollback-procedures
-description: Implements comprehensive rollback procedures including deployment rollback, version rollback, database rollback, and rollback testing for Kubernetes and cloud-native applications
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements comprehensive rollback procedures including deployment rollback, version rollback, database rollback,
+  and rollback testing for Kubernetes and cloud-native applications
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: rollback strategies, deployment rollback, version rollback, rollback procedures, rollback testing, rollback automation, rollback validation, rollback procedures
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: cncf-argocd, cncf-deployment-patterns, cncf-kubernetes-debugging
+  role: implementation
+  scope: implementation
+  triggers: rollback strategies, deployment rollback, version rollback, rollback procedures, rollback testing, rollback automation,
+    rollback validation, rollback procedures
+  version: 1.0.0
+name: rollback-procedures
 ---
-
 # Rollback Procedures
 
 Implements comprehensive rollback procedures for Kubernetes deployments, Helm releases, ArgoCD applications, database migrations, and application versions. Provides step-by-step workflows, validated commands, and automation patterns to restore services to known good states.
@@ -841,3 +849,17 @@ When performing a rollback, document the following information:
 ---
 
 *This skill provides comprehensive rollback procedures for cloud-native applications. Always verify rollback success and update documentation after each rollback event.*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

@@ -1,21 +1,24 @@
 ---
-name: order-book
-description: '"Order book data handling, spread calculation, liquidity measurement"
-  and cross-exchange normalization'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
+description: '"Order book data handling, spread calculation, liquidity measurement" and cross-exchange normalization'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: ai-order-flow-analysis, exchange-order-execution-api, fundamentals-market-structure, technical-market-microstructure
   role: implementation
   scope: implementation
-  output-format: code
   triggers: calculation, data order book, data-order-book, handling, spread
-  related-skills: ai-order-flow-analysis, exchange-order-execution-api, fundamentals-market-structure, technical-market-microstructure
+  version: 1.0.0
+name: order-book
 ---
-
-
-
 # Order Book Data Pipeline: The 5 Laws of Liquidity Analysis
 
 **Role:** Market Microstructure Engineer — applies to order book data processing, spread analysis, liquidity measurement, and exchange normalization for algorithmic trading.
@@ -1498,3 +1501,37 @@ class ExchangeNormalizer:
 3. **Spread Calculation** - https://www.investopedia.com/terms/s/spread.asp - Bid-ask spread metrics
 4. **Order Book Depth** - https://www.investopedia.com/terms/o/order-book-depth.asp - Liquidity measurement
 5. **Volume Weighted Average Price** - https://en.wikipedia.org/wiki/Volume_weighted_average_price - VWAP calculation
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

@@ -1,27 +1,28 @@
 ---
-name: review
-description: '"Security-focused code review identifying vulnerabilities like injection"
-  XSS, insecure deserialization, and misconfigurations, with remediation guidance'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Security-focused code review identifying vulnerabilities like injection" XSS, insecure deserialization, and
+  misconfigurations, with remediation guidance'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
+  author: https://github.com/Jeffallan
   domain: coding
+  output-format: code
+  related-skills: cve-dependency-management
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: identifying, security review, security-focused, security-review, vulnerabilities,
-    vulnerability scanning, security, security auditing
-  author: https://github.com/Jeffallan
   source: https://github.com/farmage/opencode-skills
-  related-skills: cve-dependency-management
+  triggers: identifying, security review, security-focused, security-review, vulnerabilities, vulnerability scanning, security,
+    security auditing
+  version: 1.0.0
+name: review
 ---
-
-
-
-
-
-
 # Security Reviewer
 
 Security engineer conducting specialized code reviews focused on identifying and remediating security vulnerabilities.

@@ -1,18 +1,25 @@
 ---
-name: freshdesk-automation
-description: Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: freshdesk-automation, freshdesk automation, how do i freshdesk-automation, orchestrate freshdesk-automation, automate freshdesk-automation, agent freshdesk-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: freshdesk-automation, freshdesk automation, how do i freshdesk-automation, orchestrate freshdesk-automation, automate
+    freshdesk-automation, agent freshdesk-automation
+  version: 1.0.0
+name: freshdesk-automation
 ---
-
 # Freshdesk Automation
 
 Orchestrates intelligent skill selection and execution for freshdesk automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,105 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def route_freshdesk_intent(
+    user_request: str,
+    available_automations: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route a user request to the appropriate Freshdesk automation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates Freshdesk-specific intents like ticket creation, status updates,
+    SLA checks, and customer lookup against available automation endpoints.
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_request or not user_request.strip():
+        raise ValueError("Freshdesk request cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_automations:
+        raise ValueError("No Freshdesk automations configured")
     
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    intent_features = _extract_freshdesk_features(user_request)
     
-    best_skill = None
+    best_automation = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for auto in available_automations:
+        # Calculate match based on Freshdesk API triggers and historical success
+        score = _calculate_freshdesk_match_score(intent_features, auto)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
+            best_automation = auto
     
-    if best_skill is None:
+    if best_automation is None:
         return None
     
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "automation_id": best_automation["id"],
+        "endpoint": best_automation["endpoint"],
+        "confidence": best_score,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_freshdesk_automation(
+    automation: Dict,
+    ticket_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a Freshdesk automation with API resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles Freshdesk API rate limits (429), authentication failures (401/403),
+    and transient network errors with exponential backoff and fallback routing.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate automation (Early Exit)
+    if not _is_freshdesk_automation_valid(automation):
+        raise FreshdeskAutomationError(f"Invalid Freshdesk automation: {automation.get('id')}")
     
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_payload = _prepare_freshdesk_payload(ticket_context, automation)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = _call_freshdesk_api(
+                endpoint=automation["endpoint"],
+                payload=validated_payload,
+                method=automation.get("method", "POST")
+            )
             
             # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
+            if response.status_code in (200, 201):
+                return {
+                    "success": True,
+                    "freshdesk_ticket_id": response.json().get("id"),
+                    "attempts": attempt + 1,
+                    "latency_ms": _get_request_duration()
+                }
+            elif response.status_code == 429:
+                # Rate limited - apply Freshdesk recommended backoff
+                wait_time = min(2 ** attempt * 0.5, 5.0)
+                time.sleep(wait_time)
+                continue
+            else:
+                raise FreshdeskAPIError(f"API returned {response.status_code}")
+                
+        except FreshdeskAPIError as e:
             # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
+            raise e
+        except TransientNetworkError:
             # Transient error - try fallback
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+                return _escalate_to_manual_freshdesk_ticket(ticket_context)
     
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise FreshdeskAutomationError(
+        f"Failed Freshdesk automation after {max_retries + 1} attempts"
     )
 ```
 
@@ -320,3 +307,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

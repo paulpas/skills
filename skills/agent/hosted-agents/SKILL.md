@@ -1,18 +1,25 @@
 ---
-name: hosted-agents
-description: Implements intelligent hosted agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent hosted agents with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: hosted-agents, hosted agents, how do i hosted-agents, orchestrate hosted-agents, automate hosted-agents, agent hosted-agents
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: hosted-agents, hosted agents, how do i hosted-agents, orchestrate hosted-agents, automate hosted-agents, agent
+    hosted-agents
+  version: 1.0.0
+name: hosted-agents
 ---
-
 # Hosted Agents
 
 Orchestrates intelligent skill selection and execution for hosted agents workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,130 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def select_hosted_agent(
+    task_payload: Dict,
+    available_agents: List[Dict],
+    routing_config: Dict
+) -> Dict:
+    """Route a task to the optimal hosted agent endpoint.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates hosted agents based on:
+    - Task type compatibility (code, analysis, generation, etc.)
+    - Current queue depth and estimated wait time
+    - Model capability tags matching task requirements
+    - Cost constraints and rate limit status
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_payload: Parsed task with type, complexity, and constraints
+        available_agents: List of hosted agent metadata with capabilities
+        routing_config: Thresholds for latency, cost, and fallback triggers
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected agent configuration with routing metadata
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_payload.get("task_type"):
+        raise ValueError("Task type is required for agent routing")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    task_type = task_payload["task_type"]
+    max_wait = routing_config.get("max_wait_seconds", 30)
+    cost_cap = routing_config.get("cost_cap_per_request", 0.05)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    candidates = []
+    for agent in available_agents:
+        # Check capability match
+        if task_type not in agent.get("supported_types", []):
+            continue
+            
+        # Check operational status
+        if agent.get("status") != "healthy":
+            continue
+            
+        # Calculate routing score
+        wait_penalty = max(0, agent.get("queue_depth", 0) - max_wait)
+        cost_factor = agent.get("cost_per_call", 0) / cost_cap if cost_cap > 0 else 0
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        score = (1.0 / (1.0 + wait_penalty)) * (1.0 / (1.0 + cost_factor))
+        candidates.append({
+            "agent_id": agent["id"],
+            "endpoint": agent["endpoint"],
+            "score": score,
+            "estimated_wait": agent.get("queue_depth", 0) * agent.get("avg_process_time", 1.0)
+        })
+        
+    if not candidates:
+        return {"fallback": "human_review", "reason": "no_compatible_agents"}
+        
+    # Sort by score descending and return best match
+    candidates.sort(key=lambda x: x["score"], reverse=True)
+    return candidates[0]
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_hosted_agent_workflow(
+    agent_config: Dict,
+    task_data: Dict,
+    execution_policy: Dict
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a task against a hosted agent with async polling and fallback.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Manages the full lifecycle:
+    - Submit task to agent endpoint
+    - Poll for completion with exponential backoff
+    - Handle transient failures and model-specific errors
+    - Trigger fallback chain on timeout or critical failure
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        agent_config: Selected agent routing metadata
+        task_data: Validated task payload ready for submission
+        execution_policy: Retry limits, timeout thresholds, fallback rules
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, output, and timing metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    submission_url = f"{agent_config['endpoint']}/submit"
+    max_polls = execution_policy.get("max_poll_attempts", 10)
+    base_delay = execution_policy.get("poll_base_delay", 2.0)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Submit task and get tracking ID
+    response = requests.post(submission_url, json=task_data, timeout=10)
+    response.raise_for_status()
+    tracking_id = response.json()["tracking_id"]
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+    # Poll for completion
+    for attempt in range(max_polls):
+        status_url = f"{agent_config['endpoint']}/status/{tracking_id}"
+        status_resp = requests.get(status_url, timeout=5)
+        status_resp.raise_for_status()
+        status_data = status_resp.json()
+        
+        if status_data["state"] == "completed":
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "agent_id": agent_config["agent_id"],
+                "output": status_data["result"],
+                "latency_ms": attempt * base_delay * 1000,
+                "poll_attempts": attempt + 1
             }
+        elif status_data["state"] == "failed":
+            raise AgentExecutionError(f"Agent {agent_config['agent_id']} failed: {status_data.get('error')}")
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        time.sleep(base_delay * (2 ** attempt))
+        
+    # Timeout reached - trigger fallback chain
+    fallback_agents = execution_policy.get("fallback_agents", [])
+    if fallback_agents:
+        return execute_hosted_agent_workflow(fallback_agents[0], task_data, execution_policy)
+        
+    return {
+        "status": "deferred",
+        "agent_id": agent_config["agent_id"],
+        "reason": "timeout_exceeded",
+        "tracking_id": tracking_id,
+        "requires_human_review": True
+    }
 ```
 
 ### MUST DO
@@ -320,3 +331,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

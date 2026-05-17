@@ -1,18 +1,25 @@
 ---
-name: cc-skill-clickhouse-io
-description: Implements intelligent cc skill clickhouse io with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cc skill clickhouse io with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: cc-skill-clickhouse-io, cc skill clickhouse io, how do i cc-skill-clickhouse-io, orchestrate cc-skill-clickhouse-io, automate cc-skill-clickhouse-io, agent cc-skill-clickhouse-io
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cc-skill-clickhouse-io, cc skill clickhouse io, how do i cc-skill-clickhouse-io, orchestrate cc-skill-clickhouse-io,
+    automate cc-skill-clickhouse-io, agent cc-skill-clickhouse-io
+  version: 1.0.0
+name: cc-skill-clickhouse-io
 ---
-
 # Cc Skill Clickhouse Io
 
 Orchestrates intelligent skill selection and execution for cc skill clickhouse io workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,115 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_clickhouse_query(
+    query: str,
+    schema_registry: Dict[str, TableSchema],
+    cluster_topology: List[Dict],
+    min_query_score: float = 0.8
+) -> Dict:
+    """Route and validate ClickHouse queries against schema and cluster topology.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies Law 2 (Make Illegal States Unrepresentable) by validating
+    table existence, column types, and cluster health before execution.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        query: Raw SQL query string
+        schema_registry: Mapping of table_name -> TableSchema
+        cluster_topology: List of available ClickHouse nodes with health/status
+        min_query_score: Minimum routing confidence threshold
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision dict with target_node, execution_mode, and validation_status
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on invalid input
+    if not query or not query.strip().upper().startswith(("SELECT", "INSERT", "SYSTEM")):
+        raise ValueError("Unsupported query type for ClickHouse IO pipeline")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Law 2: Parse and validate schema constraints
+    parsed_tables = _extract_target_tables(query)
+    for table in parsed_tables:
+        if table not in schema_registry:
+            raise ValueError(f"Table '{table}' not found in schema registry")
+        _validate_query_against_schema(query, schema_registry[table])
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Law 3: Atomic routing decision (no mutation of topology)
+    healthy_nodes = [
+        node for node in cluster_topology 
+        if node["status"] == "online" and node["load_factor"] < 0.85
+    ]
     
-    if best_skill is None:
-        return None
+    if not healthy_nodes:
+        return {"status": "degraded", "fallback": "read_replica_pool"}
+        
+    # Score nodes based on query type and load
+    target_node = max(healthy_nodes, key=lambda n: _calculate_node_score(n, query))
     
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "target_node": target_node["address"],
+        "execution_mode": "async_insert" if "INSERT" in query.upper() else "sync",
+        "validation_passed": True,
+        "routing_confidence": 0.95
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_clickhouse_pipeline(
+    routing_decision: Dict,
+    query: str,
+    clickhouse_client: ClickHouseClient,
+    fallback_replicas: List[str] = None
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute ClickHouse query with domain-specific fallback and error handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast, Fail Loud) by catching ClickHouse-specific
+    exception codes and routing to fallback replicas or retry queues.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        routing_decision: Output from route_clickhouse_query
+        query: Validated SQL query
+        clickhouse_client: Initialized ClickHouse client instance
+        fallback_replicas: List of replica addresses for failover
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with row counts, latency, and status metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    target = routing_decision["target_node"]
+    mode = routing_decision["execution_mode"]
+    attempts = 0
+    max_attempts = 3
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while attempts < max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            # Law 3: Return new result structure, never mutate client state
+            if mode == "async_insert":
+                result = clickhouse_client.execute_async(query, target)
+            else:
+                result = clickhouse_client.execute_sync(query, target)
+                
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "rows_affected": result.row_count,
+                "latency_ms": result.elapsed_ms,
+                "node_used": target,
+                "mode": mode
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except ClickHouseError as e:
+            attempts += 1
+            # Law 4: Fail fast on schema/data errors, retry on transient
+            if e.code in (117, 241, 279):  # TOO_SLOW, NETWORK_ERROR, TIMEOUT
+                if attempts >= max_attempts:
+                    return _failover_to_replicas(query, fallback_replicas, clickhouse_client)
+                continue
+            elif e.code in (47, 62):  # BAD_ARGUMENTS, UNKNOWN_TABLE
+                raise ValueError(f"Query validation failed: {e.message}") from e
+            else:
+                raise ClickHousePipelineError(f"Unexpected CH error {e.code}: {e.message}") from e
+                
+    return {"success": False, "error": "Max retries exhausted", "attempts": attempts}
 ```
 
 ### MUST DO
@@ -320,3 +316,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

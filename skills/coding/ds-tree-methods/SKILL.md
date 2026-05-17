@@ -1,23 +1,25 @@
 ---
-name: tree-methods
-description: '"Implements decision trees, random forests, gradient boosting (XGBoost"
-  LightGBM), and tree ensemble methods for classification and regression'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements decision trees, random forests, gradient boosting (XGBoost" LightGBM), and tree ensemble methods
+  for classification and regression'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-ensemble-methods, ds-hyperparameter-tuning, ds-neural-networks, ds-support-vector-machines ds-support-vector-machines
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: decision trees, random forest, gradient boosting, xgboost, lightgbm, how
-    do i use trees
-  related-skills: ds-ensemble-methods, ds-hyperparameter-tuning, ds-neural-networks, ds-support-vector-machines
-    ds-support-vector-machines
+  triggers: decision trees, random forest, gradient boosting, xgboost, lightgbm, how do i use trees
+  version: 1.0.0
+name: tree-methods
 ---
-
-
-
 # Tree-Based Methods
 
 Comprehensive guide to tree-based methods in machine learning and data science workflows.
@@ -59,34 +61,103 @@ Tree-Based Methods is a critical component of the machine learning workflow. Thi
 ### Pattern 1: Basic Tree-Based Methods
 
 ```python
-# Example pattern for Tree-Based Methods
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, classification_report
 
-# Implementation pattern
-pass
+# Generate synthetic classification dataset
+X, y = make_classification(n_samples=1000, n_features=10, n_classes=2, random_state=42)
+df = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+df['target'] = y
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    df.drop('target', axis=1), df['target'], test_size=0.2, random_state=42
+)
+
+# Initialize and train Decision Tree Classifier
+dt_model = DecisionTreeClassifier(max_depth=5, min_samples_split=10, random_state=42)
+dt_model.fit(X_train, y_train)
+
+# Predict and evaluate model performance
+y_pred = dt_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.4f}")
+print(classification_report(y_test, y_pred))
+
+# Extract and display feature importances
+importances = dt_model.feature_importances_
+feature_importance_df = pd.DataFrame({
+    'feature': X_train.columns,
+    'importance': importances
+}).sort_values(by='importance', ascending=False)
+print("\nFeature Importances:\n", feature_importance_df)
 ```
 
 ### Pattern 2: Production-Ready Tree-Based Methods
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
+import pandas as pd
+import numpy as np
 from typing import Any, Dict
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import roc_auc_score, f1_score, precision_recall_curve
 
 logger = logging.getLogger(__name__)
 
-class Tree-BasedMethods:
+class TreeBasedMethods:
     """Production implementation of Tree-Based Methods"""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
+    def __init__(self, max_depth: int = 5, n_estimators: int = 100, learning_rate: float = 0.1):
+        self.max_depth = max_depth
+        self.n_estimators = n_estimators
+        self.learning_rate = learning_rate
+        self.model = None
+        self.feature_names = None
+        
+    def execute(self, data: pd.DataFrame, target_col: str = 'target') -> Dict[str, Any]:
         """Execute Tree-Based Methods on data"""
-        return {}
+        if data is None or data.empty:
+            raise ValueError("Input data cannot be None or empty")
+        if target_col not in data.columns:
+            raise ValueError(f"Target column '{target_col}' not found in data")
+            
+        self.feature_names = [c for c in data.columns if c != target_col]
+        X = data[self.feature_names]
+        y = data[target_col]
+        
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        
+        self.model = GradientBoostingClassifier(
+            n_estimators=self.n_estimators,
+            max_depth=self.max_depth,
+            learning_rate=self.learning_rate,
+            random_state=42
+        )
+        self.model.fit(X_train, y_train)
+        
+        y_pred = self.model.predict(X_test)
+        y_prob = self.model.predict_proba(X_test)[:, 1]
+        
+        metrics = {
+            'accuracy': float((y_pred == y_test).mean()),
+            'f1_score': float(f1_score(y_test, y_pred)),
+            'roc_auc': float(roc_auc_score(y_test, y_prob))
+        }
+        
+        logger.info(f"Model trained successfully. Metrics: {metrics}")
+        return {
+            'status': 'success',
+            'metrics': metrics,
+            'feature_importances': dict(zip(self.feature_names, self.model.feature_importances_)),
+            'predictions': y_pred.tolist(),
+            'probabilities': y_prob.tolist()
+        }
 ```
 
 ## Best Practices
@@ -112,14 +183,18 @@ class Tree-BasedMethods:
 ## Complete Working Example
 
 ```python
-# Full working example for Tree-Based Methods
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from typing import Dict, Any
 
-def implement_methods(data: pd.DataFrame) -> Dict[str, Any]:
+def implement_tree_methods(data: pd.DataFrame, target_col: str = 'target') -> Dict[str, Any]:
     """
-    Complete implementation of Tree-Based Methods.
+    Complete implementation of Tree-Based Regression.
     
     This example demonstrates:
     - Proper input validation
@@ -129,43 +204,71 @@ def implement_methods(data: pd.DataFrame) -> Dict[str, Any]:
     
     Args:
         data: Input DataFrame with required columns
+        target_col: Name of the target variable
         
     Returns:
         Dictionary with results and metadata
         
     Raises:
         ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_methods(df)
-        >>> print(results)
     """
-    # Validate inputs
     if data is None or data.empty:
         raise ValueError("Input data cannot be None or empty")
+    if target_col not in data.columns:
+        raise ValueError(f"Target column '{target_col}' not found in data")
+        
+    X = data.drop(columns=[target_col])
+    y = data[target_col]
     
-    # Implementation
-    results = {
+    # Validate numeric types
+    if not np.issubdtype(X.select_dtypes(include='number').dtypes, np.number).all():
+        raise ValueError("All features must be numeric for tree-based methods")
+        
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    model = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
+    model.fit(X_train, y_train)
+    
+    y_pred = model.predict(X_test)
+    
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    
+    # Cross-validation
+    cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+    
+    # Visualization
+    plt.figure(figsize=(8, 6))
+    plt.scatter(y_test, y_pred, alpha=0.7, color='steelblue', edgecolor='k')
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+    plt.xlabel('Actual Values')
+    plt.ylabel('Predicted Values')
+    plt.title('Random Forest Regression: Predicted vs Actual')
+    plt.tight_layout()
+    plt.savefig('regression_plot.png', dpi=150)
+    plt.close()
+    
+    return {
         'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+        'metrics': {'mse': mse, 'rmse': rmse, 'mae': mae, 'r2': r2},
+        'cv_r2_mean': cv_scores.mean(),
+        'cv_r2_std': cv_scores.std(),
+        'feature_importances': dict(zip(X.columns, model.feature_importances_)),
+        'predictions': y_pred.tolist()
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    X, y = make_regression(n_samples=500, n_features=8, noise=0.1, random_state=42)
+    sample_data = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+    sample_data['target'] = y
     
-    # Run implementation
-    results = implement_methods(sample_data)
+    results = implement_tree_methods(sample_data)
     print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    print(f"R2 Score: {results['metrics']['r2']:.4f}")
+    print(f"RMSE: {results['metrics']['rmse']:.4f}")
+    print(f"Top Feature: {max(results['feature_importances'], key=results['feature_importances'].get)}")
 ```
 
 ## Related Skills
@@ -185,3 +288,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

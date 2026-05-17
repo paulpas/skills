@@ -1,18 +1,24 @@
 ---
-name: mcp-builder
-description: Implements intelligent mcp builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent mcp builder with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: mcp-builder, mcp builder, how do i mcp-builder, orchestrate mcp-builder, automate mcp-builder, agent mcp-builder
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: mcp-builder, mcp builder, how do i mcp-builder, orchestrate mcp-builder, automate mcp-builder, agent mcp-builder
+  version: 1.0.0
+name: mcp-builder
 ---
-
 # Mcp Builder
 
 Orchestrates intelligent skill selection and execution for mcp builder workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,118 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def build_mcp_tool_definition(
+    tool_name: str,
+    description: str,
+    parameters: Dict[str, Any],
+    schema_version: str = "2024-11-05"
+) -> Dict[str, Any]:
+    """Construct a valid MCP tool definition with strict schema validation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies Law 2 (Make Illegal States Unrepresentable) by enforcing
+    JSON-RPC 2.0 compliant parameter schemas and preventing malformed tool specs.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        tool_name: Unique identifier for the MCP tool
+        description: Human-readable explanation of tool capabilities
+        parameters: JSON Schema compliant parameter definitions
+        schema_version: MCP protocol version to target
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Fully formed MCP tool definition dictionary ready for server registration
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not tool_name or not re.match(r"^[a-zA-Z0-9_-]+$", tool_name):
+        raise ValueError("Tool name must be alphanumeric with underscores/hyphens")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not parameters or not isinstance(parameters, dict):
+        raise ValueError("Parameters must be a non-empty JSON Schema dictionary")
     
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    validated_schema = _normalize_json_schema(parameters)
     
-    best_skill = None
-    best_score = 0.0
+    # Atomic Predictability (Law 3) - Return new dict, never mutate inputs
+    tool_def = {
+        "name": tool_name,
+        "description": description.strip(),
+        "inputSchema": validated_schema,
+        "meta": {
+            "protocol_version": schema_version,
+            "created_at": datetime.utcnow().isoformat(),
+            "validation_status": "passed"
+        }
+    }
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Fail immediately with descriptive errors on invalid states (Law 4)
+    if not _validate_schema_against_draft(validated_schema):
+        raise SchemaValidationError(f"Tool '{tool_name}' failed JSON Schema validation")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return tool_def
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def deploy_mcp_server_with_fallback(
+    server_config: Dict[str, Any],
+    transport_type: str = "stdio",
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Deploy an MCP server instance with transport-layer fallback resilience.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4) for connection initialization:
+    - Invalid transport configs halt immediately
+    - Network timeouts trigger automatic fallback to alternative transports
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retry stdio transport with adjusted buffer sizes
+    2. Fall back to SSE transport if stdio fails
+    3. Defer to manual server restart if both fail
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        server_config: MCP server configuration including tool registry
+        transport_type: Preferred transport protocol (stdio, sse, http)
+        max_retries: Maximum connection attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Deployment status with active transport and connection metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate transport config (Early Exit)
+    if transport_type not in ("stdio", "sse", "http"):
+        raise TransportError(f"Unsupported transport: {transport_type}")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_config = _sanitize_server_config(server_config)
     
+    active_transport = None
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            if transport_type == "stdio":
+                active_transport = StdioTransport(validated_config)
+            elif transport_type == "sse":
+                active_transport = SseTransport(validated_config)
+            else:
+                active_transport = HttpTransport(validated_config)
+                
+            active_transport.initialize()
             
             # Success - Atomic Predictability (Law 3)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "deployed",
+                "transport": transport_type,
+                "connection_id": active_transport.session_id,
+                "tools_registered": len(validated_config.get("tools", [])),
+                "latency_ms": active_transport.get_startup_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
+        except ConnectionRefusedError:
             # Transient error - try fallback
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _switch_to_fallback_transport(validated_config)
+                
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise DeploymentError(f"MCP server failed to initialize after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +318,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

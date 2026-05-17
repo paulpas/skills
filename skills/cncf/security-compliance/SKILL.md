@@ -1,18 +1,26 @@
 ---
-name: security-compliance
-description: Implements security compliance frameworks (SOC2, HIPAA, PCI-DSS) with implementation patterns, audit procedures, and compliance automation for Kubernetes and cloud environments
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements security compliance frameworks (SOC2, HIPAA, PCI-DSS) with implementation patterns, audit procedures,
+  and compliance automation for Kubernetes and cloud environments
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: soc2 compliance, hipaa security, pci dss requirements, security auditing, compliance framework, regulatory requirements, audit trails, security controls
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-database-admin, agent-network-troubleshooting, cncf-kubernetes-debugging
+  role: implementation
+  scope: implementation
+  triggers: soc2 compliance, hipaa security, pci dss requirements, security auditing, compliance framework, regulatory requirements,
+    audit trails, security controls
+  version: 1.0.0
+name: security-compliance
 ---
-
 # Security Compliance and Auditing
 
 Implements comprehensive security compliance frameworks including SOC2, HIPAA, and PCI-DSS controls with automated audit procedures, evidence collection, and regulatory documentation for Kubernetes environments and cloud infrastructure.

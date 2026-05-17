@@ -1,23 +1,24 @@
 ---
-name: autoscaling
-description: '"Provides Automatically scales compute resources based on metrics like
-  CPU and custom signals"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: '"Provides Automatically scales compute resources based on metrics like CPU and custom signals"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
+  output-format: manifests
+  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-compute-engine, gcp-gke gcp-gke
   role: reference
   scope: infrastructure
-  output-format: manifests
   triggers: autoscaling, auto-scaling, scaling, horizontal scaling, vertical scaling
-  related-skills: gcp-cloud-load-balancing, gcp-cloud-monitoring, gcp-compute-engine, gcp-gke
-    gcp-gke
+  version: 1.0.0
+name: autoscaling
 ---
-
-
-
-
 # Google Cloud Autoscaling
 
 Deploy and manage google cloud autoscaling infrastructure as part of your cloud-native environment.
@@ -188,3 +189,28 @@ Connect with platform services:
 | `cncf-gcp-gke` | Related infrastructure service |
 | `cncf-gcp-cloud-monitoring` | Related infrastructure service |
 | `cncf-gcp-cloud-load-balancing` | Related infrastructure service |
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

@@ -1,18 +1,25 @@
 ---
-name: documentation
-description: Implements intelligent documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent documentation with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: documentation, documentation, how do i documentation, orchestrate documentation, automate documentation, agent documentation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: documentation, documentation, how do i documentation, orchestrate documentation, automate documentation, agent
+    documentation
+  version: 1.0.0
+name: documentation
 ---
-
 # Documentation
 
 Orchestrates intelligent skill selection and execution for documentation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,23 +146,10 @@ def select_skill(
     available_skills: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route a documentation request to the optimal generator.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates generators based on content type match, historical accuracy,
+    and current system load. Returns structured routing metadata.
     """
     # Guard clause - Early Exit (Law 1)
     if not task_description or not task_description.strip():
@@ -165,23 +159,26 @@ def select_skill(
         raise ValueError("No skills available for selection")
     
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    target_type = "documentation"
+    best_match = None
     best_score = 0.0
     
     for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        type_match = 1.0 if skill.get("doc_format") == target_type else 0.5
+        history_score = skill.get("success_rate", 0.0)
+        load_penalty = 1.0 - (skill.get("current_load", 0.0) / 100.0)
+        
+        score = (type_match * 0.5) + (history_score * 0.3) + (load_penalty * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
+            best_match = skill
     
-    if best_skill is None:
+    if best_match is None:
         return None
     
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
+    result = dict(best_match)
     result["selected_confidence"] = best_score
     result["selection_timestamp"] = time.time()
     return result
@@ -196,64 +193,50 @@ def execute_with_fallback(
     task_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute documentation generation with structured fallback chain.
     
     Implements the Fail Fast, Fail Loud principle (Law 4):
     - Invalid states halt immediately with descriptive errors
     - No silent failures or partial results
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    1. Retry with adjusted template parameters
+    2. Fallback to static markdown generator
+    3. Queue for human documentation specialist
     """
     # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not _validate_doc_schema(task_context):
+        raise DocGenerationError("Invalid documentation schema provided")
     
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_context = _parse_and_validate_context(task_context, skill)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            raw_output = _invoke_generator(skill, validated_context)
+            validated_doc = _parse_and_validate_output(raw_output)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
                 "skill_executed": skill["name"],
-                "result": result,
+                "format": skill.get("output_format", "markdown"),
+                "content": validated_doc,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
             
-        except InvalidStateError as e:
+        except SchemaValidationError as e:
             # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            raise DocGenerationError(f"Schema validation failed: {e}") from e
             
-        except TransientError as e:
+        except GeneratorTimeoutError:
             # Transient error - try fallback
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+                return _fallback_to_static_generator(validated_context)
     
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return _fallback_to_human_review(validated_context, skill["name"])
 ```
 
 ### MUST DO
@@ -320,3 +303,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

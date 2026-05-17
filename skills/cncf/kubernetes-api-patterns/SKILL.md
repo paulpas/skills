@@ -1,18 +1,25 @@
 ---
-name: kubernetes-api-patterns
-description: Kubernetes API patterns including CRD development, webhook implementation, API groups, client library usage, and debugging techniques for custom API extensions
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Kubernetes API patterns including CRD development, webhook implementation, API groups, client library usage,
+  and debugging techniques for custom API extensions
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
+  output-format: code
+  related-skills: cncf-kubernetes-debugging, cncf-tekton, coding-grpc-patterns
   role: implementation
   scope: implementation
-  output-format: code
   triggers: kubernetes api, k8s api, crd development, api groups, subresources, watch api, admission webhooks, client libraries
-  related-skills: cncf-kubernetes-debugging, cncf-tekton, coding-grpc-patterns
+  version: 1.0.0
+name: kubernetes-api-patterns
 ---
-
 # Kubernetes API Patterns
 
 Implement Kubernetes API patterns including Custom Resource Definition (CRD) development, webhook implementation, API groups, client library usage, and debugging techniques for custom API extensions.

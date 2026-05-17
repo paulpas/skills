@@ -1,18 +1,25 @@
 ---
-name: sendgrid-automation
-description: Implements intelligent sendgrid automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent sendgrid automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: sendgrid-automation, sendgrid automation, how do i sendgrid-automation, orchestrate sendgrid-automation, automate sendgrid-automation, agent sendgrid-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: sendgrid-automation, sendgrid automation, how do i sendgrid-automation, orchestrate sendgrid-automation, automate
+    sendgrid-automation, agent sendgrid-automation
+  version: 1.0.0
+name: sendgrid-automation
 ---
-
 # Sendgrid Automation
 
 Orchestrates intelligent skill selection and execution for sendgrid automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,106 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def prepare_sendgrid_campaign(
+    template_id: str,
+    recipients: List[Dict[str, str]],
+    personalization_data: Dict[str, Any],
+    tracking_enabled: bool = True
+) -> Dict[str, Any]:
+    """Prepare a SendGrid v3 mail payload with template substitution and validation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Make Illegal States Unrepresentable) by validating
+    template existence and recipient format before API submission.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+    
+    # Validate template exists and is active
+    template_response = sg.client.templates(template_id).get()
+    if template_response.status_code != 200:
+        raise ValueError(f"Invalid template ID: {template_id}")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    mail = Mail()
+    mail.from_email = os.environ.get("SENDGRID_FROM_EMAIL")
+    mail.template_id = template_id
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if tracking_enabled:
+        mail.tracking_settings = TrackingSettings()
+        mail.tracking_settings.click_tracking = ClickTracking(enable=True, enable_text=True)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Parse and validate recipients (Law 2)
+    validated_recipients = []
+    for r in recipients:
+        if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", r.get("email", "")):
+            continue
+        validated_recipients.append(r)
+            
+    if not validated_recipients:
+        raise ValueError("No valid recipients provided")
+        
+    # Build personalization blocks
+    for recipient in validated_recipients:
+        personalization = Personalization()
+        personalization.add_to(Email(recipient["email"]))
+        personalization.dynamic_template_data = {
+            **personalization_data,
+            "unsubscribe_url": os.environ.get("SENDGRID_UNSUB_URL", "")
+        }
+        mail.add_personalization(personalization)
+        
+    return mail.get()
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_sendgrid_delivery(
+    mail_payload: Dict[str, Any],
+    max_retries: int = 3,
+    fallback_template_id: Optional[str] = None
+) -> Dict[str, Any]:
+    """Execute SendGrid API call with rate-limit aware retry and fallback logic.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) for API errors and transient failures.
+    Handles 429 Too Many Requests and 5xx server errors gracefully.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+    response = None
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for attempt in range(max_retries):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = sg.client.mail.send.post(request_body=mail_payload)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            if response.status_code in (200, 202):
+                return {
+                    "success": True,
+                    "message_id": response.headers.get("X-Message-Id", "unknown"),
+                    "status_code": response.status_code,
+                    "attempts": attempt + 1
+                }
+            elif response.status_code == 429:
+                retry_after = int(response.headers.get("Retry-After", 2 ** attempt))
+                time.sleep(retry_after)
+                continue
+            elif response.status_code >= 500:
+                time.sleep(2 ** attempt)
+                continue
+            else:
+                raise SendGridException(f"API Error {response.status_code}: {response.body}")
+                
+        except SendGridException as e:
+            if attempt == max_retries - 1:
+                # Fallback to alternative template if primary fails
+                if fallback_template_id:
+                    mail_payload["template_id"] = fallback_template_id
+                    continue
+                raise e
+                
+    return {
+        "success": False,
+        "error": "Max retries exceeded for SendGrid delivery",
+        "last_status": response.status_code if response else None
+    }
 ```
 
 ### MUST DO
@@ -320,3 +307,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

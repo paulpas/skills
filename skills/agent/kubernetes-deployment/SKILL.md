@@ -1,22 +1,25 @@
 ---
-name: kubernetes-deployment
-description: Implements intelligent kubernetes deployment with multi-factor skill
-  selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent kubernetes deployment with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: kubernetes-deployment, kubernetes deployment, how do i kubernetes-deployment,
-    orchestrate kubernetes-deployment, automate kubernetes-deployment, agent kubernetes-deployment,
-    container orchestration, deployment
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: kubernetes-deployment, kubernetes deployment, how do i kubernetes-deployment, orchestrate kubernetes-deployment,
+    automate kubernetes-deployment, agent kubernetes-deployment, container orchestration, deployment
+  version: 1.0.0
+name: kubernetes-deployment
 ---
-
-
 # Kubernetes Deployment
 
 Orchestrates intelligent skill selection and execution for kubernetes deployment workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -138,126 +141,125 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def generate_k8s_deployment(
+    app_name: str,
+    namespace: str,
+    image: str,
+    replicas: int,
+    port: int,
+    resources: Dict[str, str]
+) -> Dict:
+    """Generate and validate a Kubernetes Deployment manifest.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Ensures illegal states are unrepresentable by validating image format,
+    resource constraints, and namespace existence before manifest creation.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not app_name or not namespace:
+        raise ValueError("Application name and namespace are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate image format and tag
+    if ":" not in image:
+        image = f"{image}:latest"
+    if not re.match(r"^[a-zA-Z0-9._/-]+:[a-zA-Z0-9._-]+$", image):
+        raise ValueError(f"Invalid container image format: {image}")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Parse resource limits/requests to ensure valid Kubernetes format
+    parsed_resources = {}
+    for key, value in resources.items():
+        if not re.match(r"^\d+(\.\d+)?(Ki|Mi|Gi|Ti|K|M|G|T)?$", value):
+            raise ValueError(f"Invalid resource specification for {key}: {value}")
+        parsed_resources[key] = value
+        
+    # Construct immutable deployment manifest
+    deployment = {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+            "name": app_name,
+            "namespace": namespace,
+            "labels": {"app": app_name, "managed-by": "opencode-skill"}
+        },
+        "spec": {
+            "replicas": replicas,
+            "selector": {"matchLabels": {"app": app_name}},
+            "template": {
+                "metadata": {"labels": {"app": app_name}},
+                "spec": {
+                    "containers": [{
+                        "name": app_name,
+                        "image": image,
+                        "ports": [{"containerPort": port}],
+                        "resources": {
+                            "requests": {"cpu": parsed_resources.get("cpu_req", "100m"), "memory": parsed_resources.get("mem_req", "128Mi")},
+                            "limits": {"cpu": parsed_resources.get("cpu_lim", "500m"), "memory": parsed_resources.get("mem_lim", "256Mi")}
+                        }
+                    }]
+                }
+            }
+        }
+    }
+    return deployment
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def apply_and_monitor_deployment(
+    k8s_client: Client,
+    deployment_manifest: Dict,
+    timeout_seconds: int = 300,
+    health_check_path: str = "/healthz"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Apply Kubernetes deployment and monitor rollout status with fallback rollback.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements fail-fast and fail-loud principles:
+    - Validates cluster connectivity before apply
+    - Polls rollout status with exponential backoff
+    - Automatically rolls back on health check failure
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    namespace = deployment_manifest["metadata"]["namespace"]
+    name = deployment_manifest["metadata"]["name"]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    # Apply manifest (Fail Fast on invalid cluster state)
+    try:
+        k8s_client.apps_v1.create_namespaced_deployment(
+            namespace=namespace, body=deployment_manifest
+        )
+    except ApiException as e:
+        raise RuntimeError(f"Failed to create deployment {name}: {e.reason}") from e
+        
+    # Monitor rollout status
+    start_time = time.time()
+    while time.time() - start_time < timeout_seconds:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            status = k8s_client.apps_v1.read_namespaced_deployment_status(
+                name=name, namespace=namespace
+            )
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            if status.status.ready_replicas == status.spec.replicas:
+                # Verify health endpoint
+                health_ok = _check_pod_health(k8s_client, namespace, name, health_check_path)
+                if health_ok:
+                    return {
+                        "status": "deployed",
+                        "replicas_ready": status.status.ready_replicas,
+                        "image": deployment_manifest["spec"]["template"]["spec"]["containers"][0]["image"]
+                    }
+                else:
+                    # Health check failed - trigger rollback (Fallback)
+                    _rollback_deployment(k8s_client, namespace, name)
+                    raise RuntimeError(f"Health check failed for {name}, rolled back")
+                    
+        except ApiException as e:
+            if e.status == 404:
+                time.sleep(5)
+                continue
+            raise
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Timeout - Fail Loud
+    _rollback_deployment(k8s_client, namespace, name)
+    raise TimeoutError(f"Deployment {name} did not complete within {timeout_seconds}s")
 ```
 
 ### MUST DO
@@ -324,3 +326,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

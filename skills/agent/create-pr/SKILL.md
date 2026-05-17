@@ -1,18 +1,24 @@
 ---
-name: create-pr
-description: Implements intelligent create pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent create pr with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: create-pr, create pr, how do i create-pr, orchestrate create-pr, automate create-pr, agent create-pr
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: create-pr, create pr, how do i create-pr, orchestrate create-pr, automate create-pr, agent create-pr
+  version: 1.0.0
+name: create-pr
 ---
-
 # Create Pr
 
 Orchestrates intelligent skill selection and execution for create pr workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +140,125 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def prepare_pr_payload(
+    source_branch: str,
+    target_branch: str,
+    pr_title: str,
+    pr_body: str,
+    repo_config: Dict
+) -> Dict:
+    """Prepare and validate a Pull Request payload before submission.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Validates branch existence, checks for existing open PRs,
+    and formats the payload according to repository conventions.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        source_branch: Feature or fix branch name
+        target_branch: Base branch (e.g., main, develop)
+        pr_title: Concise PR title
+        pr_body: Detailed PR description with checklist
+        repo_config: Repository settings including labels and templates
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
+        Validated PR payload dictionary ready for API submission
         
     Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        ValidationError: If branches are invalid or PR already exists
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not source_branch or not target_branch:
+        raise ValidationError("Source and target branches are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    sanitized_title = pr_title.strip()[:100]
+    formatted_body = _apply_pr_template(pr_body, repo_config.get("template", "default"))
     
-    best_skill = None
-    best_score = 0.0
+    # Check for existing open PRs to prevent duplicates
+    existing_prs = _fetch_open_prs(repo_config["repo_url"], target_branch)
+    for pr in existing_prs:
+        if pr["head"] == source_branch and pr["state"] == "open":
+            raise ValidationError(f"Open PR already exists for {source_branch}")
+            
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate inputs
+    payload = {
+        "title": sanitized_title,
+        "body": formatted_body,
+        "head": source_branch,
+        "base": target_branch,
+        "labels": repo_config.get("default_labels", []),
+        "maintainer_can_modify": repo_config.get("allow_fork_maintainer_edit", True)
+    }
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate required labels and reviewers
+    if repo_config.get("required_reviewers"):
+        payload["reviewers"] = repo_config["required_reviewers"]
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return payload
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_pr_creation(
+    payload: Dict,
+    github_client,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Pull Request creation with domain-specific fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles API rate limits, merge conflicts, and permission issues
+    by implementing a targeted fallback chain for PR workflows.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        payload: Validated PR payload dictionary
+        github_client: Authenticated GitHub API client
+        max_retries: Maximum retry attempts for transient API failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
+        PR creation result with URL, status, and metadata
         
     Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        PRCreationError: If all retries and fallbacks are exhausted
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    # Guard clause - validate payload structure (Early Exit)
+    required_keys = {"title", "body", "head", "base"}
+    if not required_keys.issubset(payload.keys()):
+        raise PRCreationError("Missing required fields in PR payload")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute PR creation via GitHub API
+            response = github_client.create_pull_request(payload)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "pr_url": response["html_url"],
+                "pr_number": response["number"],
+                "status": response["state"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "created_at": response["created_at"]
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except RateLimitExceededError as e:
+            # Transient API limit - wait and retry with backoff
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _fallback_to_manual_pr_creation(payload)
+            time.sleep(2 ** attempt)
+            
+        except MergeConflictError as e:
+            # Domain-specific conflict - adjust base branch or notify
+            if attempt == max_retries:
+                return _fallback_to_conflict_resolution(payload, e)
+                
+        except PermissionError as e:
+            # Fail Fast - Don't retry permission issues (Law 4)
+            raise PRCreationError(f"Permission denied for PR creation: {str(e)}") from e
+            
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise PRCreationError(
+        f"Failed to create PR after {max_retries + 1} attempts"
     )
 ```
 
@@ -320,3 +326,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

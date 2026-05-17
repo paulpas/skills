@@ -1,18 +1,25 @@
 ---
-name: helpdesk-automation
-description: Implements intelligent helpdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent helpdesk automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: helpdesk-automation, helpdesk automation, how do i helpdesk-automation, orchestrate helpdesk-automation, automate helpdesk-automation, agent helpdesk-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: helpdesk-automation, helpdesk automation, how do i helpdesk-automation, orchestrate helpdesk-automation, automate
+    helpdesk-automation, agent helpdesk-automation
+  version: 1.0.0
+name: helpdesk-automation
 ---
-
 # Helpdesk Automation
 
 Orchestrates intelligent skill selection and execution for helpdesk automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,123 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_helpdesk_request(
+    ticket: Dict[str, Any],
+    support_channels: List[Dict[str, Any]],
+    sla_threshold_hours: float = 4.0
+) -> Dict[str, Any]:
+    """Route a helpdesk ticket to the optimal support channel.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates channels based on:
+    - Intent match (billing, technical, account, general)
+    - Current queue depth and agent availability
+    - SLA urgency and historical resolution time
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        ticket: Parsed ticket data with intent, priority, and customer tier
+        support_channels: List of available channel configs with capacity limits
+        sla_threshold_hours: Max hours before escalation is triggered
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected channel config with routing metadata
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not ticket.get("intent") or not support_channels:
+        raise ValueError("Ticket intent and at least one support channel are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    intent = ticket["intent"].lower()
+    priority = ticket.get("priority", "medium")
+    customer_tier = ticket.get("customer_tier", "standard")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    best_channel = None
+    best_score = -1.0
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for channel in support_channels:
+        # Calculate match score based on intent alignment and capacity
+        intent_match = 1.0 if intent in channel["supported_intents"] else 0.3
+        capacity_factor = 1.0 - (channel["current_queue"] / max(channel["max_capacity"], 1))
+        priority_boost = {"critical": 1.5, "high": 1.2, "medium": 1.0, "low": 0.8}.get(priority, 1.0)
         
-        if score > best_score and score >= min_confidence:
+        score = intent_match * capacity_factor * priority_boost
+        
+        # Apply customer tier weighting
+        if customer_tier == "enterprise":
+            score *= 1.2
+            
+        if score > best_score:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+            best_channel = channel
+            
+    if best_channel is None or best_score < 0.5:
+        return {"fallback": "general_triage", "reason": "low_match_score", "score": best_score}
+        
+    return {
+        "channel_id": best_channel["id"],
+        "channel_name": best_channel["name"],
+        "estimated_wait_minutes": int(best_channel["avg_wait_time"]),
+        "routing_score": round(best_score, 3),
+        "sla_compliant": best_channel["avg_wait_time"] <= sla_threshold_hours * 60
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_ticket_routing(
+    channel_config: Dict[str, Any],
+    ticket_data: Dict[str, Any],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute ticket routing with resilience patterns for helpdesk systems.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements fallback chain for ticketing API failures:
+    1. Retry with exponential backoff
+    2. Route to backup channel (e.g., email queue)
+    3. Escalate to human supervisor if SLA breach imminent
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        channel_config: Target support channel configuration
+        ticket_data: Validated ticket payload ready for submission
+        max_retries: Maximum API retry attempts
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Routing result with ticket ID, status, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    ticketing_api = get_ticketing_service(channel_config["provider"])
+    fallback_queue = get_email_queue(channel_config.get("backup_email"))
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Submit to primary helpdesk system
+            response = ticketing_api.create_ticket(
+                subject=ticket_data["subject"],
+                body=ticket_data["body"],
+                priority=ticket_data["priority"],
+                tags=ticket_data.get("tags", [])
+            )
             
-            # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "ticket_id": response["id"],
+                "channel": channel_config["name"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "sla_status": "on_track"
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except RateLimitError:
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)
+                continue
+            # Fallback to email queue when API is throttled
+            return _route_to_email_queue(fallback_queue, ticket_data)
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except ConnectionError as e:
+            # System down - escalate to human if SLA critical
+            if ticket_data.get("priority") == "critical":
+                return _escalate_to_human_supervisor(ticket_data)
+            raise TicketRoutingError(f"Helpdesk system unreachable: {e}")
+            
+    return _route_to_email_queue(fallback_queue, ticket_data)
 ```
 
 ### MUST DO
@@ -320,3 +324,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

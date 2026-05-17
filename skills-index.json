@@ -1,19 +1,21 @@
 {
-  "generatedAt": "2026-05-15T15:41:44.896146Z",
-  "totalSkills": 560,
+  "generatedAt": "2026-05-16T04:01:13.055488Z",
+  "totalSkills": 586,
   "domains": {
     "agent": 229,
-    "cncf": 162,
+    "cncf": 168,
     "coding": 82,
+    "go": 12,
+    "linux": 8,
     "programming": 3,
     "trading": 83,
     "writing": 1
   },
   "roles": {
     "orchestration": 220,
-    "implementation": 184,
+    "implementation": 209,
     "information": 1,
-    "reference": 154,
+    "reference": 155,
     "review": 1
   },
   "skills": [
@@ -111,6 +113,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/coding/git-advanced/SKILL.md"
+    },
+    {
+      "name": "advanced-patterns",
+      "domain": "go",
+      "description": "Applies advanced Go patterns including generics, reflection, functional options, and metaprogramming for performance-critical and framework-level code.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go generics",
+        "go reflection",
+        "go unsafe",
+        "go functional options",
+        "go option pattern",
+        "go compile time",
+        "go metaprogramming"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "modular-design",
+        "concurrency-patterns",
+        "database-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/advanced-patterns/SKILL.md"
     },
     {
       "name": "agent-evaluation",
@@ -1302,6 +1329,30 @@
       "source": "skills/coding/markdown-best-practices/SKILL.md"
     },
     {
+      "name": "best-practices",
+      "domain": "go",
+      "description": "Enforces Go idioms and best practices including error handling, interface design, testing conventions, and code organization for maintainable applications.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go best practices",
+        "go idioms",
+        "golang conventions",
+        "go error handling",
+        "interface design",
+        "go naming",
+        "idiomatic go"
+      ],
+      "relatedSkills": [
+        "modular-design",
+        "cloud-development",
+        "testing-strategies"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/best-practices/SKILL.md"
+    },
+    {
       "name": "bias-variance-tradeoff",
       "domain": "coding",
       "description": "\"Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model generalization\"",
@@ -1371,6 +1422,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/azure-blob-storage/SKILL.md"
+    },
+    {
+      "name": "blue-green-deployment",
+      "domain": "cncf",
+      "description": "Implements blue-green deployment strategies with traffic switching, state management, and rollback capabilities to achieve zero-downtime releases.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "blue green deployment",
+        "zero downtime",
+        "traffic switching",
+        "parallel environments",
+        "deployment switch",
+        "green environment",
+        "parallel deployment"
+      ],
+      "relatedSkills": [
+        "deployment-philosophy",
+        "canary-deployment",
+        "state-management",
+        "rollback-strategy"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/blue-green-deployment/SKILL.md"
     },
     {
       "name": "blueprint",
@@ -1501,6 +1577,30 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/calico/SKILL.md"
+    },
+    {
+      "name": "canary-deployment",
+      "domain": "cncf",
+      "description": "Orchestrates canary deployment strategies with gradual traffic promotion, automated health monitoring, and rollback triggers for progressive risk management.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "canary deployment",
+        "gradual rollout",
+        "progressive delivery",
+        "traffic splitting",
+        "automated rollback",
+        "metrics-driven deployment",
+        "progressive rollout"
+      ],
+      "relatedSkills": [
+        "deployment-philosophy",
+        "blue-green-deployment",
+        "deployment-orchestration"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/canary-deployment/SKILL.md"
     },
     {
       "name": "candle-data",
@@ -2074,6 +2174,32 @@
       "source": "skills/cncf/gcp-cloud-cdn/SKILL.md"
     },
     {
+      "name": "cloud-development",
+      "domain": "go",
+      "description": "Develops cloud-native Go applications with context propagation, graceful shutdown, health checks, and configuration management for production.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go cloud",
+        "cloud native go",
+        "go http server",
+        "graceful shutdown",
+        "go context",
+        "health check",
+        "cloud deployment",
+        "go configuration"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "web-applications",
+        "modular-design",
+        "deployment-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/cloud-development/SKILL.md"
+    },
+    {
       "name": "cloud-devops",
       "domain": "agent",
       "description": "Implements intelligent cloud devops with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -2615,6 +2741,30 @@
       "source": "skills/agent/concise-planning/SKILL.md"
     },
     {
+      "name": "concurrency-patterns",
+      "domain": "go",
+      "description": "Implements Go concurrency patterns including goroutines, channels, worker pools, context cancellation, and synchronization for high-performance applications.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go concurrency",
+        "go goroutines",
+        "go channels",
+        "worker pool",
+        "go sync",
+        "context cancellation",
+        "fan out fan in"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "cloud-development",
+        "advanced-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/concurrency-patterns/SKILL.md"
+    },
+    {
       "name": "conductor-implement",
       "domain": "agent",
       "description": "Implements intelligent conductor implement with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -2829,6 +2979,29 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/coding/pydantic-config/SKILL.md"
+    },
+    {
+      "name": "configuration-management",
+      "domain": "go",
+      "description": "Manages application configuration in Go with environment variables, YAML/JSON parsing, validation, defaults, and hierarchy for multi-environment deployments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go configuration",
+        "go config",
+        "go env vars",
+        "go yaml config",
+        "go config validation",
+        "go secret management"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "cloud-development",
+        "deployment-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/configuration-management/SKILL.md"
     },
     {
       "name": "container-inspector",
@@ -3589,6 +3762,31 @@
       "source": "skills/agent/database-admin/SKILL.md"
     },
     {
+      "name": "database-patterns",
+      "domain": "go",
+      "description": "Implements database access patterns in Go with connection pooling, transaction management, repository patterns, and migration strategies.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go database",
+        "go sql",
+        "go transactions",
+        "go repository pattern",
+        "go migrations",
+        "go caching",
+        "go nosql"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "cloud-development",
+        "modular-design",
+        "testing-strategies"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/database-patterns/SKILL.md"
+    },
+    {
       "name": "dependency-graph-builder",
       "domain": "agent",
       "description": "Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -3657,6 +3855,81 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/gcp-deployment-manager/SKILL.md"
+    },
+    {
+      "name": "deployment-orchestration",
+      "domain": "cncf",
+      "description": "Orchestrates complex multi-stage deployments with dependency management, sequencing rules, and failure handling across interconnected services.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "deployment orchestration",
+        "multi-stage deployment",
+        "deployment pipeline",
+        "service dependency",
+        "deployment sequencing",
+        "coordinated deployment"
+      ],
+      "relatedSkills": [
+        "deployment-philosophy",
+        "canary-deployment",
+        "blue-green-deployment",
+        "state-management"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/deployment-orchestration/SKILL.md"
+    },
+    {
+      "name": "deployment-patterns",
+      "domain": "go",
+      "description": "Deploys Go applications with build optimization, multi-stage Docker builds, binary sizing, and deployment strategies for cloud and on-prem.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go deployment",
+        "go docker build",
+        "multi stage build",
+        "go binary optimization",
+        "go cross compilation",
+        "go build tags"
+      ],
+      "relatedSkills": [
+        "cloud-development",
+        "best-practices",
+        "modular-design"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/deployment-patterns/SKILL.md"
+    },
+    {
+      "name": "deployment-philosophy",
+      "domain": "cncf",
+      "description": "Architects multi-stage deployment strategies that balance speed, safety, and reliability through systematic risk assessment and controlled change delivery.",
+      "role": "reference",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "deployment philosophy",
+        "release strategy",
+        "change management",
+        "deployment planning",
+        "cloud deployment",
+        "production release",
+        "blast radius",
+        "progressive delivery"
+      ],
+      "relatedSkills": [
+        "blue-green-deployment",
+        "canary-deployment",
+        "deployment-orchestration",
+        "state-management",
+        "rollback-strategy",
+        "environment-parity"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/deployment-philosophy/SKILL.md"
     },
     {
       "name": "development",
@@ -4252,6 +4525,29 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/cncf/envoy/SKILL.md"
+    },
+    {
+      "name": "error-handling",
+      "domain": "go",
+      "description": "Designs robust error handling in Go with custom error types, error wrapping, retry patterns, and failure recovery strategies for resilient applications.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go error handling",
+        "go custom errors",
+        "go error wrapping",
+        "go retry",
+        "go sentinel errors",
+        "go error categories"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "concurrency-patterns",
+        "cloud-development"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/error-handling/SKILL.md"
     },
     {
       "name": "error-trace-explainer",
@@ -5403,6 +5699,32 @@
       "source": "skills/cncf/harbor/SKILL.md"
     },
     {
+      "name": "hardware-provisioning",
+      "domain": "linux",
+      "description": "Plans and provisions Linux systems for cloud instances and on-prem hardware with workload-appropriate sizing, RAID, and hardware abstraction.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "hardware provisioning",
+        "instance sizing",
+        "RAID configuration",
+        "SSD",
+        "cloud instance",
+        "on-prem hardware",
+        "disk sizing",
+        "CPU architecture"
+      ],
+      "relatedSkills": [
+        "resource-management",
+        "kernel-tuning",
+        "storage-architecture",
+        "linux-security"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/hardware-provisioning/SKILL.md"
+    },
+    {
       "name": "health",
       "domain": "trading",
       "description": "\"Provides Exchange system health monitoring and connectivity status tracking\"",
@@ -6231,6 +6553,32 @@
       "source": "skills/coding/ds-kernel-density/SKILL.md"
     },
     {
+      "name": "kernel-tuning",
+      "domain": "linux",
+      "description": "Tunes Linux kernel parameters for workload optimization across cloud VMs and bare metal with hardware-aware adjustments for CPU, memory, and network performance.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "kernel tuning",
+        "sysctl",
+        "NUMA",
+        "interrupt affinity",
+        "page cache",
+        "TCP tuning",
+        "kernel parameters",
+        "performance tuning"
+      ],
+      "relatedSkills": [
+        "resource-management",
+        "hardware-provisioning",
+        "storage-architecture",
+        "linux-security"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/kernel-tuning/SKILL.md"
+    },
+    {
       "name": "key-vault",
       "domain": "cncf",
       "description": "\"Manages encryption keys, secrets, and certificates with access control\" and auditing.",
@@ -6871,6 +7219,57 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/lint-and-validate/SKILL.md"
+    },
+    {
+      "name": "linux-security",
+      "domain": "linux",
+      "description": "Hardens Linux systems against common attack vectors with security baselines, access controls, and audit frameworks for cloud and on-prem environments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "linux security",
+        "hardening",
+        "CIS benchmark",
+        "SELinux",
+        "AppArmor",
+        "SSH hardening",
+        "file integrity",
+        "audit framework"
+      ],
+      "relatedSkills": [
+        "kernel-tuning",
+        "resource-management",
+        "networking",
+        "hardware-provisioning"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/linux-security/SKILL.md"
+    },
+    {
+      "name": "linux-services",
+      "domain": "linux",
+      "description": "Manages Linux services with systemd for reliable operation, dependency ordering, resource isolation, and automated recovery in cloud and on-prem environments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "systemd",
+        "service management",
+        "unit file",
+        "service restart",
+        "socket activation",
+        "systemd timer",
+        "journal",
+        "service dependency"
+      ],
+      "relatedSkills": [
+        "resource-management",
+        "linux-security",
+        "hardware-provisioning"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/linux-services/SKILL.md"
     },
     {
       "name": "linux-troubleshooting",
@@ -7526,6 +7925,30 @@
       "source": "skills/agent/ml-pipeline-workflow/SKILL.md"
     },
     {
+      "name": "mobile-applications",
+      "domain": "go",
+      "description": "Develops cross-platform mobile applications with Go using Fyne and Go mobile for iOS and Android with platform-optimized UI patterns.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go mobile",
+        "go ios",
+        "go android",
+        "fyne",
+        "gomobile",
+        "cross-platform mobile",
+        "go mobile app"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "web-applications",
+        "modular-design"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/mobile-applications/SKILL.md"
+    },
+    {
       "name": "model-ensemble",
       "domain": "trading",
       "description": "\"Provides Combine multiple models for improved prediction accuracy and robustness\"",
@@ -7660,6 +8083,30 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/coding/pydantic-models/SKILL.md"
+    },
+    {
+      "name": "modular-design",
+      "domain": "go",
+      "description": "Designs modular Go applications with clean architecture, dependency injection, package boundaries, and interface-based design for maintainable codebases.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go modular",
+        "go dependency injection",
+        "go clean architecture",
+        "go interface",
+        "go package boundaries",
+        "go hexagonal"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "cloud-development",
+        "database-patterns",
+        "advanced-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/modular-design/SKILL.md"
     },
     {
       "name": "momentum-indicators",
@@ -8094,6 +8541,33 @@
       "source": "skills/agent/network-troubleshooting/SKILL.md"
     },
     {
+      "name": "networking",
+      "domain": "linux",
+      "description": "Configures and optimizes Linux networking for cloud virtual networks and on-prem data center infrastructure with performance and security focus.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "linux networking",
+        "bond interface",
+        "VLAN",
+        "bridge",
+        "network namespace",
+        "nftables",
+        "routing",
+        "cloud networking",
+        "VPC"
+      ],
+      "relatedSkills": [
+        "kernel-tuning",
+        "resource-management",
+        "hardware-provisioning",
+        "linux-security"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/networking/SKILL.md"
+    },
+    {
       "name": "networking-troubleshooting",
       "domain": "cncf",
       "description": "Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis",
@@ -8266,6 +8740,33 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/oathkeeper/SKILL.md"
+    },
+    {
+      "name": "observability",
+      "domain": "linux",
+      "description": "Implements Linux system observability with metrics, logs, and performance profiling for proactive infrastructure management across cloud and on-prem environments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "linux observability",
+        "system metrics",
+        "log collection",
+        "performance profiling",
+        "eBPF",
+        "perf",
+        "capacity planning",
+        "monitoring"
+      ],
+      "relatedSkills": [
+        "resource-management",
+        "kernel-tuning",
+        "networking",
+        "linux-security",
+        "hardware-provisioning"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/observability/SKILL.md"
     },
     {
       "name": "observational-studies",
@@ -9657,6 +10158,32 @@
       "source": "skills/agent/requesting-code-review/SKILL.md"
     },
     {
+      "name": "resource-management",
+      "domain": "linux",
+      "description": "Manages Linux system resources using cgroups v2, namespaces, and systemd for workload isolation and resource guarantees in cloud and on-prem environments.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "cgroups",
+        "resource management",
+        "cpu limit",
+        "memory limit",
+        "systemd resource",
+        "OOM",
+        "workload isolation",
+        "resource quota"
+      ],
+      "relatedSkills": [
+        "kernel-tuning",
+        "hardware-provisioning",
+        "linux-services",
+        "storage-architecture"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/resource-management/SKILL.md"
+    },
+    {
       "name": "resource-manager",
       "domain": "cncf",
       "description": "\"Provides Infrastructure as code using ARM templates for repeatable Azure resource deployments\"",
@@ -9797,6 +10324,32 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/rollback-procedures/SKILL.md"
+    },
+    {
+      "name": "rollback-strategy",
+      "domain": "cncf",
+      "description": "Designs and implements rollback strategies with data-aware rollback procedures, partial rollback capabilities, and automated rollback triggers for safe deployment recovery.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "rollback strategy",
+        "deployment rollback",
+        "release rollback",
+        "rollback automation",
+        "data rollback",
+        "partial rollback",
+        "rollback trigger",
+        "rollback procedure"
+      ],
+      "relatedSkills": [
+        "deployment-philosophy",
+        "blue-green-deployment",
+        "canary-deployment",
+        "state-management"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/rollback-strategy/SKILL.md"
     },
     {
       "name": "rook",
@@ -10754,6 +11307,32 @@
       "source": "skills/agent/stacktrace-root-cause/SKILL.md"
     },
     {
+      "name": "state-management",
+      "domain": "cncf",
+      "description": "Manages application state across deployment stages including database migrations, cache invalidation, and data consistency during rolling updates.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "state management",
+        "database migration",
+        "deployment state",
+        "data migration",
+        "cache invalidation",
+        "schema migration",
+        "data consistency",
+        "backward compatible migration"
+      ],
+      "relatedSkills": [
+        "deployment-philosophy",
+        "blue-green-deployment",
+        "rollback-strategy",
+        "deployment-orchestration"
+      ],
+      "version": "1.0.0",
+      "source": "skills/cncf/state-management/SKILL.md"
+    },
+    {
       "name": "statistical-arbitrage",
       "domain": "trading",
       "description": "\"Implements pair trading and cointegration-based arbitrage strategies for risk management and algorithmic trading execution.\"",
@@ -10816,6 +11395,34 @@
       ],
       "version": "1.0.0",
       "source": "skills/trading/risk-stop-loss/SKILL.md"
+    },
+    {
+      "name": "storage-architecture",
+      "domain": "linux",
+      "description": "Designs and implements Linux storage architectures for cloud block storage and on-prem SAN/NAS with performance and durability guarantees.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "storage architecture",
+        "LVM",
+        "filesystem",
+        "XFS",
+        "ext4",
+        "btrfs",
+        "cloud storage",
+        "NVMe",
+        "mount options",
+        "storage monitoring"
+      ],
+      "relatedSkills": [
+        "hardware-provisioning",
+        "resource-management",
+        "kernel-tuning",
+        "linux-security"
+      ],
+      "version": "1.0.0",
+      "source": "skills/linux/storage-architecture/SKILL.md"
     },
     {
       "name": "stream-processing",
@@ -11261,6 +11868,30 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/testing-qa/SKILL.md"
+    },
+    {
+      "name": "testing-strategies",
+      "domain": "go",
+      "description": "Implements comprehensive testing strategies for Go including unit tests, integration tests, benchmarks, table-driven tests, and mock patterns.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go testing",
+        "go unit test",
+        "go benchmark",
+        "go mock",
+        "table driven test",
+        "go integration test",
+        "go fuzzing"
+      ],
+      "relatedSkills": [
+        "best-practices",
+        "modular-design",
+        "database-patterns"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/testing-strategies/SKILL.md"
     },
     {
       "name": "thanos",
@@ -12164,6 +12795,31 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/cncf/wasmcloud/SKILL.md"
+    },
+    {
+      "name": "web-applications",
+      "domain": "go",
+      "description": "Builds production Go web applications with HTTP handlers, routing, middleware, template rendering, and REST API design following idiomatic Go patterns.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "go web",
+        "go http",
+        "go router",
+        "go middleware",
+        "go rest api",
+        "go templates",
+        "go websocket"
+      ],
+      "relatedSkills": [
+        "cloud-development",
+        "best-practices",
+        "database-patterns",
+        "modular-design"
+      ],
+      "version": "1.0.0",
+      "source": "skills/go/web-applications/SKILL.md"
     },
     {
       "name": "web-security-testing",

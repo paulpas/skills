@@ -1,22 +1,25 @@
 ---
-name: missing-data
-description: '"Handles missing data using imputation strategies, deletion methods,
-  and techniques for dealing with incomplete datasets while preserving information"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Handles missing data using imputation strategies, deletion methods, and techniques for dealing with incomplete
+  datasets while preserving information"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-data-quality, ds-eda, ds-feature-engineering
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: missing data, imputation, NaN handling, missing values, how do i handle
-    missing data, data gaps
-  related-skills: ds-data-quality, ds-eda, ds-feature-engineering
+  triggers: missing data, imputation, NaN handling, missing values, how do i handle missing data, data gaps
+  version: 1.0.0
+name: missing-data
 ---
-
-
-
 # Missing Data Handling
 
 Comprehensive guide to missing data handling in machine learning and data science workflows.
@@ -58,34 +61,103 @@ Missing Data Handling is a critical component of the machine learning workflow. 
 ### Pattern 1: Basic Missing Data Handling
 
 ```python
-# Example pattern for Missing Data Handling
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+from typing import Dict, Any, Literal
 
-# Implementation pattern
-pass
+def apply_basic_imputation(df: pd.DataFrame, strategy: Literal["drop", "mean", "median", "mode"] = "mean") -> pd.DataFrame:
+    """Apply basic missing data handling strategies to a DataFrame."""
+    if df.empty:
+        raise ValueError("Input DataFrame cannot be empty")
+        
+    df_clean = df.copy()
+    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    categorical_cols = df.select_dtypes(include=["object", "category"]).columns
+    
+    if strategy == "drop":
+        df_clean = df_clean.dropna()
+    elif strategy == "mean":
+        df_clean[numeric_cols] = df_clean[numeric_cols].fillna(df_clean[numeric_cols].mean())
+    elif strategy == "median":
+        df_clean[numeric_cols] = df_clean[numeric_cols].fillna(df_clean[numeric_cols].median())
+    elif strategy == "mode":
+        for col in categorical_cols:
+            mode_val = df_clean[col].mode()
+            fill_val = mode_val.iloc[0] if not mode_val.empty else "Unknown"
+            df_clean[col] = df_clean[col].fillna(fill_val)
+    else:
+        raise ValueError(f"Unsupported strategy: {strategy}")
+        
+    return df_clean
 ```
 
 ### Pattern 2: Production-Ready Missing Data Handling
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, List, Optional
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
 
 logger = logging.getLogger(__name__)
 
-class MissingDataHandling:
-    """Production implementation of Missing Data Handling"""
+class MissingDataHandler:
+    """Production-grade missing data handler with configurable strategies."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Missing Data Handling on data"""
-        return {}
+    def __init__(self, numeric_strategy: str = "median", categorical_strategy: str = "most_frequent", 
+                 drop_threshold: float = 0.5, verbose: bool = False):
+        self.numeric_strategy = numeric_strategy
+        self.categorical_strategy = categorical_strategy
+        self.drop_threshold = drop_threshold
+        self.verbose = verbose
+        self.numeric_imputer: Optional[SimpleImputer] = None
+        self.categorical_imputer: Optional[SimpleImputer] = None
+        self.preprocessor: Optional[ColumnTransformer] = None
+        
+    def _validate_input(self, data: pd.DataFrame) -> None:
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError("Input must be a pandas DataFrame")
+        if data.empty:
+            raise ValueError("Input DataFrame cannot be empty")
+            
+    def fit_transform(self, data: pd.DataFrame) -> Dict[str, Any]:
+        self._validate_input(data)
+        logger.info("Starting missing data handling pipeline")
+        
+        numeric_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+        categorical_cols = data.select_dtypes(include=["object", "category"]).columns.tolist()
+        
+        missing_ratio = data.isnull().mean()
+        cols_to_drop = missing_ratio[missing_ratio > self.drop_threshold].index.tolist()
+        if cols_to_drop:
+            logger.warning(f"Dropping columns with >{self.drop_threshold*100}% missing: {cols_to_drop}")
+            data = data.drop(columns=cols_to_drop)
+            
+        numeric_transformer = SimpleImputer(strategy=self.numeric_strategy)
+        categorical_transformer = SimpleImputer(strategy=self.categorical_strategy)
+        
+        self.preprocessor = ColumnTransformer(
+            transformers=[
+                ("num", numeric_transformer, numeric_cols),
+                ("cat", categorical_transformer, categorical_cols)
+            ], remainder="passthrough"
+        )
+        
+        transformed_data = self.preprocessor.fit_transform(data)
+        result_df = pd.DataFrame(transformed_data, columns=data.columns.drop(cols_to_drop), index=data.index)
+        
+        return {
+            "status": "success",
+            "data": result_df,
+            "metadata": {
+                "original_shape": data.shape,
+                "final_shape": result_df.shape,
+                "dropped_columns": cols_to_drop,
+                "strategies_used": {"numeric": self.numeric_strategy, "categorical": self.categorical_strategy}
+            }
+        }
 ```
 
 ## Best Practices
@@ -97,6 +169,23 @@ class MissingDataHandling:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+
+```python
+# BAD: Blindly dropping rows without assessing missingness pattern or data type
+df_clean = df.dropna()  # May discard 80% of data if missingness is non-random or structured
+
+# GOOD: Assess missingness mechanism and data types before choosing strategy
+MISSING_THRESHOLD = 0.5
+numeric_cols = df.select_dtypes(include=[np.number]).columns
+missing_pct = df.isnull().mean()
+
+if missing_pct.max() > MISSING_THRESHOLD:
+    df_clean = df.drop(columns=missing_pct[missing_pct > MISSING_THRESHOLD].index)
+else:
+    df_clean = df.copy()
+    df_clean[numeric_cols] = df_clean[numeric_cols].fillna(df_clean[numeric_cols].median())
+    df_clean = df_clean.dropna()  # Safe to drop remaining rows after targeted imputation
+```
 
 ## Common Pitfalls
 
@@ -111,60 +200,63 @@ class MissingDataHandling:
 ## Complete Working Example
 
 ```python
-# Full working example for Missing Data Handling
 import pandas as pd
 import numpy as np
 from typing import Dict, Any
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
 
-def implement_data(data: pd.DataFrame) -> Dict[str, Any]:
+def handle_missing_data_pipeline(data: pd.DataFrame, target_col: str) -> Dict[str, Any]:
     """
-    Complete implementation of Missing Data Handling.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_data(df)
-        >>> print(results)
+    Complete pipeline for handling missing data and evaluating impact.
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    if data.empty or target_col not in data.columns:
+        raise ValueError("Invalid input data or target column")
+        
+    X = data.drop(columns=[target_col])
+    y = data[target_col]
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    np.random.seed(42)
+    missing_mask = np.random.random(X.shape) < 0.2
+    X_missing = X.copy()
+    X_missing.values[missing_mask] = np.nan
+    
+    X_dropped = X_missing.dropna()
+    y_dropped = y.loc[X_dropped.index]
+    
+    imputer = SimpleImputer(strategy="median")
+    X_imputed = pd.DataFrame(imputer.fit_transform(X_missing), columns=X_missing.columns, index=X_missing.index)
+    
+    X_train_d, X_test_d, y_train_d, y_test_d = train_test_split(X_dropped, y_dropped, test_size=0.2, random_state=42)
+    X_train_i, X_test_i, y_train_i, y_test_i = train_test_split(X_imputed, y, test_size=0.2, random_state=42)
+    
+    clf_d = RandomForestClassifier(n_estimators=10, random_state=42)
+    clf_d.fit(X_train_d, y_train_d)
+    pred_d = clf_d.predict(X_test_d)
+    
+    clf_i = RandomForestClassifier(n_estimators=10, random_state=42)
+    clf_i.fit(X_train_i, y_train_i)
+    pred_i = clf_i.predict(X_test_i)
+    
+    return {
+        "dropped_data_shape": X_dropped.shape,
+        "imputed_data_shape": X_imputed.shape,
+        "dropped_model_report": classification_report(y_test_d, pred_d, output_dict=True),
+        "imputed_model_report": classification_report(y_test_i, pred_i, output_dict=True),
+        "status": "success"
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_data(sample_data)
+    X, y = make_classification(n_samples=500, n_features=10, n_informative=5, random_state=42)
+    df = pd.DataFrame(X, columns=[f"feat_{i}" for i in range(10)])
+    df["target"] = y
+    results = handle_missing_data_pipeline(df, "target")
     print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    print(f"Dropped shape: {results['dropped_data_shape']}")
+    print(f"Imputed shape: {results['imputed_data_shape']}")
 ```
 
 ## Related Skills
@@ -180,7 +272,23 @@ if __name__ == "__main__":
 - Official documentation and papers on Missing Data Handling
 - Industry best practices and standards
 - Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
+- ISO 8000 (Data Quality) standard for handling incomplete datasets
+- DRY and KISS principles for maintainable data pipelines
 
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

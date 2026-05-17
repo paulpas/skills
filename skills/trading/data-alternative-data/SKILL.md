@@ -1,21 +1,24 @@
 ---
-name: alternative-data
-description: '"Alternative data ingestion pipelines for trading signals including
-  news" social media, and on-chain data sources'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
+description: '"Alternative data ingestion pipelines for trading signals including news" social media, and on-chain data sources'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: ai-order-flow-analysis, data-backfill-strategy, data-candle-data, exchange-failover-handling
   role: implementation
   scope: implementation
-  output-format: code
   triggers: data alternative data, data-alternative-data, ingestion, pipelines, trading
-  related-skills: ai-order-flow-analysis, data-backfill-strategy, data-candle-data, exchange-failover-handling
+  version: 1.0.0
+name: alternative-data
 ---
-
-
-
 # Alternative Data Ingestion Pipeline: The 5 Laws of Data Normalization
 
 **Role:** Data Engineer for Alternative Data — applies to news, social media, on-chain, and alternative data ingestion for trading signal generation.
@@ -1282,3 +1285,37 @@ def parse_timestamp(ts):
 5. **Twitter API v2** - https://developer.twitter.com/en/docs/twitter-api - Social media data source
 6. **Reddit API Documentation** - https://github.com/reddit-archive/reddit/wiki/API - Community data source
 7. **Data Integrity Patterns** - https://martinfowler.com/bliki/DataValidation.html - Parse, don't validate approach
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

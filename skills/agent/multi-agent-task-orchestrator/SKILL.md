@@ -1,18 +1,25 @@
 ---
-name: multi-agent-task-orchestrator
-description: Implements intelligent multi agent task orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent multi agent task orchestrator with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: multi-agent-task-orchestrator, multi agent task orchestrator, how do i multi-agent-task-orchestrator, orchestrate multi-agent-task-orchestrator, automate multi-agent-task-orchestrator, agent multi-agent-task-orchestrator
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: multi-agent-task-orchestrator, multi agent task orchestrator, how do i multi-agent-task-orchestrator, orchestrate
+    multi-agent-task-orchestrator, automate multi-agent-task-orchestrator, agent multi-agent-task-orchestrator
+  version: 1.0.0
+name: multi-agent-task-orchestrator
 ---
-
 # Multi Agent Task Orchestrator
 
 Orchestrates intelligent skill selection and execution for multi agent task orchestrator workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,82 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_task_to_agents(
+    task: TaskSpec,
+    agent_registry: List[AgentCapability],
+    load_balancer: LoadBalancer
+) -> RoutingPlan:
+    """Route a multi-agent task by matching requirements to agent capabilities.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates agents based on capability overlap, current queue depth, and 
+    historical success rates for similar task types. Returns a structured 
+    routing plan with execution order and dependency mapping.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task.requirements or not agent_registry:
+        raise ValueError("Task requirements and agent registry must be populated")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    scored_agents = []
+    for agent in agent_registry:
+        capability_match = _calculate_capability_overlap(task.requirements, agent.capabilities)
+        load_penalty = load_balancer.get_queue_depth(agent.id) / 100.0
+        history_bonus = agent.metrics.success_rate * 0.2
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        composite_score = (capability_match * 0.5) + ((1.0 - load_penalty) * 0.3) + history_bonus
+        scored_agents.append({
+            "agent_id": agent.id,
+            "score": composite_score,
+            "estimated_latency_ms": agent.metrics.avg_latency_ms * (1 + load_penalty)
+        })
+        
+    scored_agents.sort(key=lambda x: x["score"], reverse=True)
+    return RoutingPlan(
+        primary_agent=scored_agents[0]["agent_id"],
+        fallback_agents=[a["agent_id"] for a in scored_agents[1:3]],
+        execution_order=_resolve_dependencies(task.subtasks),
+        confidence=scored_agents[0]["score"]
+    )
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def orchestrate_agent_execution(
+    plan: RoutingPlan,
+    task_context: Dict[str, Any],
+    agent_client: AgentGateway
+) -> ExecutionResult:
+    """Execute task across agents with domain-specific fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Dispatches work to the primary agent, monitors state transitions, and 
+    applies fallback routing if the primary agent times out or returns invalid state.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    primary_agent = agent_client.get_agent(plan.primary_agent)
+    try:
+        response = primary_agent.dispatch(task_context, timeout=30)
+        if not response.valid or response.status == "FAILED":
+            raise AgentStateError(f"Primary agent {plan.primary_agent} returned invalid state")
+        return ExecutionResult(
+            status="SUCCESS",
+            agent_id=plan.primary_agent,
+            output=response.payload,
+            latency_ms=response.latency
+        )
+    except AgentTimeoutError:
+        # Fallback 1: Retry with adjusted context (e.g., reduced scope)
+        adjusted_context = _reduce_task_scope(task_context)
+        retry_response = primary_agent.dispatch(adjusted_context, timeout=15)
+        if retry_response.valid:
+            return ExecutionResult(status="SUCCESS", agent_id=plan.primary_agent, output=retry_response.payload, latency_ms=retry_response.latency)
+        
+        # Fallback 2: Route to secondary agent from plan
+        fallback_agent = agent_client.get_agent(plan.fallback_agents[0])
+        fallback_response = fallback_agent.dispatch(task_context, timeout=30)
+        if fallback_response.valid:
+            return ExecutionResult(status="SUCCESS", agent_id=plan.fallback_agents[0], output=fallback_response.payload, latency_ms=fallback_response.latency)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        # Fallback 3: Escalate to human supervisor
+        return ExecutionResult(status="ESCALATED", agent_id="HUMAN_SUPERVISOR", output=fallback_response.error, latency_ms=0)
 ```
 
 ### MUST DO
@@ -320,3 +283,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

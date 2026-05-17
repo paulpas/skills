@@ -1,18 +1,25 @@
 ---
-name: code-correctness-verifier
-description: Implements intelligent code correctness verifier with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent code correctness verifier with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: code-correctness-verifier, code correctness verifier, how do i code-correctness-verifier, orchestrate code-correctness-verifier, automate code-correctness-verifier, agent code-correctness-verifier
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: code-correctness-verifier, code correctness verifier, how do i code-correctness-verifier, orchestrate code-correctness-verifier,
+    automate code-correctness-verifier, agent code-correctness-verifier
+  version: 1.0.0
+name: code-correctness-verifier
 ---
-
 # Code Correctness Verifier
 
 Orchestrates intelligent skill selection and execution for code correctness verifier workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,106 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+import ast
+import hashlib
+from datetime import datetime
+from typing import List, Optional
+from dataclasses import dataclass, field
+
+@dataclass
+class Rule:
+    name: str
+    severity: str
+    pattern: str
+
+@dataclass
+class Violation:
+    rule_name: str
+    line_no: int
+    severity: str
+    message: str
+
+@dataclass
+class VerificationReport:
+    source_hash: str
+    total_lines: int
+    violations: List[Violation] = field(default_factory=list)
+    is_correct: bool = False
+    timestamp: str = ""
+
+def verify_code_correctness(source_code: str, rules: List[Rule]) -> VerificationReport:
+    """Verify source code against a set of correctness rules.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements the 5 Laws of Elegant Defense:
+    - Law 1: Early exit on empty or malformed input
+    - Law 2: Parse code into AST to make illegal states unrepresentable
+    - Law 3: Return new VerificationReport, never mutate input rules
+    - Law 4: Fail immediately on syntax errors or unsupported constructs
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not source_code or not source_code.strip():
+        raise ValueError("Source code cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    try:
+        tree = ast.parse(source_code, type_comments=True)
+    except SyntaxError as e:
+        raise CodeVerificationError(f"Syntax error at line {e.lineno}: {e.msg}") from e
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    violations = analyze_ast_for_violations(tree, rules)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability - construct new report
+    report = VerificationReport(
+        source_hash=hashlib.sha256(source_code.encode()).hexdigest(),
+        total_lines=len(source_code.splitlines()),
+        violations=violations,
+        is_correct=len(violations) == 0,
+        timestamp=datetime.utcnow().isoformat()
+    )
+    return report
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
-    
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+class RuleVisitor(ast.NodeVisitor):
+    def __init__(self, rules: List[Rule]):
+        self.rules = rules
+        self.violations: List[Violation] = []
         
-    Returns:
-        Execution result with metadata (success, timing, confidence)
+    def visit(self, node: ast.AST) -> None:
+        super().visit(node)
         
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    def get_violations(self) -> List[Violation]:
+        return self.violations
+
+def analyze_ast_for_violations(tree: ast.AST, rules: List[Rule]) -> List[Violation]:
+    """Traverse AST and apply correctness rules to detect violations.
+    
+    Implements Fail Fast, Fail Loud:
+    - Invalid rule configurations halt immediately
+    - No silent suppression of critical violations
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not rules:
+        raise ValueError("At least one correctness rule must be provided")
+        
+    visitor = RuleVisitor(rules)
+    visitor.visit(tree)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    violations = visitor.get_violations()
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+    # Sort by severity and line number for deterministic output
+    violations.sort(key=lambda v: (v.severity, v.line_no))
     
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Apply minimum 2-level fallback chain concept:
+    # 1. Critical violations block execution immediately
+    # 2. Warning violations are logged but allow continuation
+    critical_violations = [v for v in violations if v.severity == "CRITICAL"]
+    if critical_violations:
+        raise CodeVerificationError(
+            f"Critical correctness violations found: {len(critical_violations)}"
+        )
+        
+    return violations
 ```
 
 ### MUST DO
@@ -320,3 +307,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

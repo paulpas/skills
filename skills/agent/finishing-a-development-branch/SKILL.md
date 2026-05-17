@@ -1,18 +1,25 @@
 ---
-name: finishing-a-development-branch
-description: Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: finishing-a-development-branch, finishing a development branch, how do i finishing-a-development-branch, orchestrate finishing-a-development-branch, automate finishing-a-development-branch, agent finishing-a-development-branch
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: finishing-a-development-branch, finishing a development branch, how do i finishing-a-development-branch, orchestrate
+    finishing-a-development-branch, automate finishing-a-development-branch, agent finishing-a-development-branch
+  version: 1.0.0
+name: finishing-a-development-branch
 ---
-
 # Finishing A Development Branch
 
 Orchestrates intelligent skill selection and execution for finishing a development branch workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,108 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def select_branch_finishing_strategy(
+    branch_metadata: Dict,
+    project_config: Dict,
+    available_tools: List[Dict]
+) -> Dict:
+    """Select the optimal finishing strategy based on branch type and project rules.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates branch characteristics (feature, hotfix, release) against
+    project-specific merge policies, required checks, and team conventions.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not branch_metadata.get("name"):
+        raise ValueError("Branch name is required for strategy selection")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    branch_type = branch_metadata.get("type", "feature")
+    target_ref = project_config.get("default_target", "main")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    strategy = {
+        "type": branch_type,
+        "target": target_ref,
+        "required_checks": [],
+        "merge_method": "squash",
+        "fallback_actions": []
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Apply project-specific merge policies
+    policies = project_config.get("merge_policies", {})
+    if branch_type in policies:
+        policy = policies[branch_type]
+        strategy["required_checks"] = policy.get("checks", [])
+        strategy["merge_method"] = policy.get("method", "merge")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Select appropriate toolchain from available tools
+    for tool in available_tools:
+        if tool.get("supports_type") == branch_type:
+            strategy["toolchain"] = tool["name"]
+            break
+            
+    # Validate strategy against branch constraints
+    if branch_metadata.get("is_hotfix") and strategy["merge_method"] == "squash":
+        strategy["merge_method"] = "fast-forward"
+        strategy["fallback_actions"].append("notify_team_lead")
+        
+    return strategy
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_branch_finishing_pipeline(
+    strategy: Dict,
+    branch_state: Dict,
+    ci_client: object,
+    notifier: object
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute the complete branch finishing workflow with domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Pipeline: Validate -> Run Checks -> Merge -> Cleanup -> Notify
+    Implements graceful degradation when non-critical checks fail.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    branch_name = branch_state["name"]
+    target = strategy["target"]
+    required_checks = strategy.get("required_checks", [])
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    # Phase 1: Pre-flight Validation
+    if not _validate_branch_up_to_date(branch_state, target):
+        raise BranchStaleError(f"{branch_name} is behind {target}. Rebase required.")
+        
+    # Phase 2: Execute Required Checks
+    check_results = []
+    for check in required_checks:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = ci_client.run_check(check, branch_name)
+            check_results.append(result)
+            if not result["passed"]:
+                strategy["fallback_actions"].append(f"skip_{check}")
+        except CheckTimeoutError:
+            strategy["fallback_actions"].append(f"retry_{check}")
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+    # Phase 3: Merge Execution with Fallback
+    merge_result = None
+    for attempt in range(2):
+        try:
+            merge_result = _perform_merge(branch_name, target, strategy["merge_method"])
+            break
+        except MergeConflictError as e:
+            if attempt == 0:
+                strategy["fallback_actions"].append("auto_resolve_conflicts")
+                continue
+            raise MergeFailedError(f"Merge failed after conflict resolution: {e}")
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Phase 4: Cleanup & Notification
+    if merge_result and merge_result["success"]:
+        _cleanup_remote_branch(branch_name)
+        notifier.send_update(target, merge_result["commit_hash"])
+        return {"status": "finished", "merge": merge_result}
+        
+    # Fallback execution
+    for action in strategy["fallback_actions"]:
+        _execute_fallback_action(action, branch_name, target)
+        
+    return {"status": "completed_with_fallbacks", "actions_taken": strategy["fallback_actions"]}
 ```
 
 ### MUST DO
@@ -320,3 +309,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

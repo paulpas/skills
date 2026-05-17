@@ -1,18 +1,25 @@
 ---
-name: error-trace-explainer
-description: Implements intelligent error trace explainer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent error trace explainer with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: error-trace-explainer, error trace explainer, how do i error-trace-explainer, orchestrate error-trace-explainer, automate error-trace-explainer, agent error-trace-explainer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: error-trace-explainer, error trace explainer, how do i error-trace-explainer, orchestrate error-trace-explainer,
+    automate error-trace-explainer, agent error-trace-explainer
+  version: 1.0.0
+name: error-trace-explainer
 ---
-
 # Error Trace Explainer
 
 Orchestrates intelligent skill selection and execution for error trace explainer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,113 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_trace_patterns(
+    raw_trace: str,
+    known_error_db: List[Dict],
+    severity_threshold: float = 0.6
+) -> Dict:
+    """Analyze raw error trace against known patterns and severity metrics.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements multi-factor scoring for trace explanation:
+    - Stack frame depth and module relevance
+    - Exception type matching against known failure modes
+    - Historical resolution success rate for similar traces
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        raw_trace: Raw exception traceback string
+        known_error_db: Database of known error patterns with metadata
+        severity_threshold: Minimum confidence to auto-explain
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Structured analysis with matched patterns, severity, and explanation draft
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not raw_trace or not raw_trace.strip():
+        raise ValueError("Trace cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    parsed_frames = _parse_stack_frames(raw_trace)
+    if not parsed_frames:
+        return {"status": "unparseable", "frames": []}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    matched_patterns = []
+    for pattern in known_error_db:
+        score = _calculate_trace_similarity(parsed_frames, pattern)
+        if score >= severity_threshold:
+            matched_patterns.append({
+                "pattern_id": pattern["id"],
+                "confidence": score,
+                "root_cause": pattern["root_cause"],
+                "suggested_fix": pattern["resolution_steps"]
+            })
+            
+    # Atomic Predictability (Law 3) - Return new dict
+    return {
+        "trace_id": hashlib.md5(raw_trace.encode()).hexdigest()[:8],
+        "frame_count": len(parsed_frames),
+        "matched_patterns": sorted(matched_patterns, key=lambda x: x["confidence"], reverse=True),
+        "auto_explainable": len(matched_patterns) > 0,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def generate_trace_explanation(
+    analysis_result: Dict,
+    context: Dict,
+    fallback_strategy: str = "human_review"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Generate human-readable trace explanation with resilience fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4):
+    - Unknown traces route to fallback immediately
+    - No partial explanations returned
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Use matched pattern explanation
+    2. Fallback to generic debugging guide
+    3. Route to human expert with full trace context
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        analysis_result: Output from analyze_trace_patterns
+        context: User environment details (OS, framework, version)
+        fallback_strategy: Routing strategy for unhandled traces
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Structured explanation with confidence, steps, and metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate analysis (Early Exit)
+    if not analysis_result.get("auto_explainable"):
+        return _route_to_fallback(analysis_result, context, fallback_strategy)
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    env_context = _normalize_environment(context)
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+    primary_pattern = analysis_result["matched_patterns"][0]
     
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    try:
+        explanation = _construct_explanation(
+            pattern=primary_pattern,
+            frames=analysis_result.get("frames", []),
+            env=env_context
+        )
+        
+        # Success - Atomic Predictability (Law 3)
+        return {
+            "success": True,
+            "trace_id": analysis_result["trace_id"],
+            "explanation": explanation["text"],
+            "confidence": primary_pattern["confidence"],
+            "suggested_fixes": primary_pattern["suggested_fix"],
+            "generated_at": time.time()
+        }
+        
+    except TemplateError as e:
+        # Fail Fast - Don't patch malformed explanations (Law 4)
+        return _route_to_fallback(analysis_result, context, fallback_strategy)
 ```
 
 ### MUST DO
@@ -320,3 +314,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

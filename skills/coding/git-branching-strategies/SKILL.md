@@ -1,25 +1,27 @@
 ---
-name: branching-strategies
-description: '"Git branching models including Git Flow, GitHub Flow, Trunk-Based Development"
-  and feature flag strategies for CI/CD pipelines'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Git branching models including Git Flow, GitHub Flow, Trunk-Based Development" and feature flag strategies
+  for CI/CD pipelines'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
+  author: https://github.com/Jeffallan
   domain: coding
+  output-format: code
+  related-skills: git-advanced, semver-automation
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: git branching strategies, git repository, git-branching-strategies, github,
-    including, models, version control
-  author: https://github.com/Jeffallan
   source: https://github.com/farmage/opencode-skills
-  related-skills: git-advanced, semver-automation
+  triggers: git branching strategies, git repository, git-branching-strategies, github, including, models, version control
+  version: 1.0.0
+name: branching-strategies
 ---
-
-
-
-
 # Git Branching Strategies
 
 Patterns for managing code changes through branches, merges, and feature flags in collaborative development environments.
@@ -469,3 +471,17 @@ When implementing a branching strategy, provide:
 3. **CI/CD integration** configuration
 4. **Feature flag** implementation guide
 5. **Team training** materials
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

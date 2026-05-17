@@ -1,18 +1,25 @@
 ---
-name: voice-ai-development
-description: Implements intelligent voice ai development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent voice ai development with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: voice-ai-development, voice ai development, how do i voice-ai-development, orchestrate voice-ai-development, automate voice-ai-development, agent voice-ai-development
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: voice-ai-development, voice ai development, how do i voice-ai-development, orchestrate voice-ai-development, automate
+    voice-ai-development, agent voice-ai-development
+  version: 1.0.0
+name: voice-ai-development
 ---
-
 # Voice Ai Development
 
 Orchestrates intelligent skill selection and execution for voice ai development workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,121 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def configure_voice_pipeline(
+    requirements: Dict[str, Any],
+    available_models: List[Dict]
+) -> Dict[str, Any]:
+    """Configure optimal STT/LLM/TTS pipeline for voice AI development.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates models based on latency constraints, accuracy requirements,
+    and cost boundaries specific to voice interaction design.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        requirements: Target latency (ms), accuracy threshold, cost limit
+        available_models: STT, LLM, and TTS model configurations
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Optimized pipeline configuration with model routing and buffer settings
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate requirements (Law 1)
+    if not requirements.get("max_latency_ms") or requirements["max_latency_ms"] < 200:
+        raise ValueError("Voice interaction requires minimum 200ms latency budget")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse constraints - Make illegal states unrepresentable (Law 2)
+    budget = requirements["max_latency_ms"]
+    accuracy_floor = requirements.get("accuracy_threshold", 0.85)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Score and select voice models
+    selected_pipeline = {
+        "stt_model": None,
+        "llm_model": None,
+        "tts_model": None,
+        "buffer_size_ms": 0,
+        "fallback_chain": []
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    for model in available_models:
+        if model["type"] == "stt" and model["accuracy"] >= accuracy_floor:
+            if model["latency_ms"] <= budget * 0.3:
+                selected_pipeline["stt_model"] = model
+                budget -= model["latency_ms"]
+        elif model["type"] == "llm" and model["context_window"] >= 4096:
+            if model["latency_ms"] <= budget * 0.4:
+                selected_pipeline["llm_model"] = model
+                budget -= model["latency_ms"]
+        elif model["type"] == "tts" and model["voice_quality"] in ["premium", "standard"]:
+            if model["latency_ms"] <= budget * 0.3:
+                selected_pipeline["tts_model"] = model
+                budget -= model["latency_ms"]
+                
+    # Atomic Predictability (Law 3) - Return immutable config
+    return dict(selected_pipeline)
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_voice_interaction(
+    pipeline_config: Dict[str, Any],
+    audio_stream: AudioStream,
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute voice AI interaction with streaming audio and domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles real-time audio capture, STT transcription, LLM generation, and TTS synthesis.
+    Implements voice-specific resilience: buffer management, codec fallbacks, and latency recovery.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        pipeline_config: Pre-configured STT/LLM/TTS routing
+        audio_stream: Real-time audio input stream
+        max_retries: Retry attempts for transient audio/network errors
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Interaction result with audio output, latency metrics, and confidence scores
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate stream (Early Exit)
+    if not audio_stream.is_active():
+        raise VoicePipelineError("Audio stream must be active before execution")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    session_id = audio_stream.session_id
+    buffer_size = pipeline_config.get("buffer_size_ms", 100)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # STT Phase
+            transcript = audio_stream.transcribe(pipeline_config["stt_model"], buffer_size)
+            if not transcript:
+                raise TransientError("Empty transcript received")
+                
+            # LLM Phase
+            response = pipeline_config["llm_model"].generate(transcript, session_id)
             
-            # Success - Atomic Predictability (Law 3)
+            # TTS Phase
+            audio_output = pipeline_config["tts_model"].synthesize(response)
+            
+            # Atomic Predictability (Law 3) - Return new result structure
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "session_id": session_id,
+                "transcript": transcript,
+                "response": response,
+                "audio_bytes": audio_output,
+                "latency_ms": audio_stream.get_total_latency(),
+                "confidence": pipeline_config["stt_model"]["accuracy"]
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except CodecMismatchError as e:
+            # Fail Fast - Don't patch incompatible audio formats (Law 4)
+            raise VoicePipelineError(f"Codec incompatibility in attempt {attempt + 1}: {e}") from e
             
         except TransientError as e:
-            # Transient error - try fallback
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                # Voice-specific fallback: switch to text-only or lower latency TTS
+                return _apply_voice_fallback(pipeline_config, transcript, response)
+                
+    raise VoicePipelineError(f"Voice interaction failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +322,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

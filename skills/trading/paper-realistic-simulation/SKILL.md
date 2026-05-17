@@ -1,22 +1,24 @@
 ---
-name: realistic-simulation
-description: '"Provides Realistic Paper Trading Simulation with Market Impact and
-  Execution Fees"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
+description: '"Provides Realistic Paper Trading Simulation with Market Impact and Execution Fees"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: fundamentals-market-regimes, fundamentals-trading-plan
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: impact, market, paper realistic simulation, paper-realistic-simulation,
-    trading
-  related-skills: fundamentals-market-regimes, fundamentals-trading-plan
+  triggers: impact, market, paper realistic simulation, paper-realistic-simulation, trading
+  version: 1.0.0
+name: realistic-simulation
 ---
-
-
-
 **Role:** Trading System Simulator — implements comprehensive paper trading simulations that replicate live trading conditions including slippage, fees, partial fills, and market impact for accurate performance estimation.
 
 **Philosophy:** Live Trading Replication — paper trading must simulate real-world execution friction to provide accurate expectations of live trading performance; unrealistic simulations lead to overoptimistic performance projections.
@@ -960,3 +962,37 @@ Before completing your task, verify:
 ---
 
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

@@ -1,18 +1,25 @@
 ---
-name: requesting-code-review
-description: Implements intelligent requesting code review with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent requesting code review with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: requesting-code-review, requesting code review, how do i requesting-code-review, orchestrate requesting-code-review, automate requesting-code-review, agent requesting-code-review
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: requesting-code-review, requesting code review, how do i requesting-code-review, orchestrate requesting-code-review,
+    automate requesting-code-review, agent requesting-code-review
+  version: 1.0.0
+name: requesting-code-review
 ---
-
 # Requesting Code Review
 
 Orchestrates intelligent skill selection and execution for requesting code review workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,113 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def select_review_target(
+    repo_config: Dict,
+    request_context: Dict,
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select the optimal code review target and platform based on repo config.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates repository metadata, branch protection rules, and historical
+    reviewer availability to determine the best PR/MR target.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        repo_config: Repository metadata including platform, default branch, and reviewers
+        request_context: User request containing target branch, reviewers, and scope
+        min_confidence: Minimum confidence threshold for target selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Target configuration dict with platform, branch, and reviewer list
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not repo_config or not request_context.get("target_branch"):
+        raise ValueError("Repository config and target branch are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    platform = repo_config.get("platform", "github")
+    default_branch = repo_config.get("default_branch", "main")
+    target_branch = request_context["target_branch"]
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate branch exists and is not protected incorrectly
+    if not _validate_branch_exists(repo_config, target_branch):
+        raise ValueError(f"Branch '{target_branch}' not found in repository")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Calculate match score based on branch naming conventions and reviewer load
+    match_score = _calculate_branch_match_score(target_branch, default_branch)
+    reviewer_load = _get_reviewer_availability(repo_config.get("reviewers", []))
     
-    if best_skill is None:
+    if match_score < min_confidence:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable target config
+    return {
+        "platform": platform,
+        "source_branch": target_branch,
+        "target_branch": default_branch,
+        "reviewers": reviewer_load["available"],
+        "confidence": match_score,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_code_review_request(
+    target_config: Dict,
+    review_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a code review request with platform-specific API calls and fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Creates a Pull Request or Merge Request, assigns reviewers, and attaches
+    review context. Implements fallbacks for API rate limits or permission issues.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target_config: Selected target configuration from select_review_target
+        review_context: PR/MR title, description, labels, and reviewer assignments
+        max_retries: Maximum retry attempts for transient API failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with PR/MR URL, status, and reviewer confirmation
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    platform = target_config["platform"]
+    api_client = _get_platform_client(platform)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Create PR/MR with review context
+            pr_response = api_client.create_pull_request(
+                source_branch=target_config["source_branch"],
+                target_branch=target_config["target_branch"],
+                title=review_context["title"],
+                body=review_context["description"],
+                reviewers=target_config["reviewers"]
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Attach review metadata and labels
+            api_client.add_labels(pr_response["id"], review_context.get("labels", []))
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "platform": platform,
+                "pr_url": pr_response["url"],
+                "reviewers_notified": target_config["reviewers"],
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except RateLimitError as e:
+            if attempt == max_retries:
+                return _fallback_to_draft_pr(target_config, review_context)
+            time.sleep(2 ** attempt)
+            
+        except PermissionError as e:
+            raise ReviewRequestError(
+                f"Insufficient permissions for {platform}: {str(e)}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise ReviewRequestError(
+        f"Failed to create review request after {max_retries + 1} attempts"
     )
 ```
 
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

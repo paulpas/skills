@@ -1,18 +1,25 @@
 ---
-name: task-decomposition-engine
-description: Implements intelligent task decomposition engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent task decomposition engine with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: task-decomposition-engine, task decomposition engine, how do i task-decomposition-engine, orchestrate task-decomposition-engine, automate task-decomposition-engine, agent task-decomposition-engine
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: task-decomposition-engine, task decomposition engine, how do i task-decomposition-engine, orchestrate task-decomposition-engine,
+    automate task-decomposition-engine, agent task-decomposition-engine
+  version: 1.0.0
+name: task-decomposition-engine
 ---
-
 # Task Decomposition Engine
 
 Orchestrates intelligent skill selection and execution for task decomposition engine workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,101 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def decompose_task(
+    raw_task: str,
+    available_ops: List[Dict],
+    max_depth: int = 3
+) -> Dict:
+    """Decompose a complex task into an executable DAG of subtasks.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 2 (Parse at boundary) by strictly validating input structure.
+    Uses Law 3 (Atomic Predictability) to return a fresh DAG structure.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not raw_task or not isinstance(raw_task, str):
+        raise ValueError("Raw task must be a non-empty string")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse and extract atomic operations from the task description
+    parsed_ops = _extract_atomic_operations(raw_task, available_ops)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if not parsed_ops:
+        raise ValueError("No valid atomic operations found for task decomposition")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Build dependency graph using topological sort logic
+    dag = _construct_dependency_graph(parsed_ops, max_depth)
     
-    if best_skill is None:
-        return None
+    # Validate DAG for cycles and missing dependencies (Law 4: Fail Fast)
+    cycle_check = _detect_cycles(dag)
+    if cycle_check:
+        raise ValueError(f"Decomposition contains circular dependencies: {cycle_check}")
+        
+    # Score decomposition strategies based on parallelism potential and risk
+    strategies = _score_decomposition_strategies(dag, available_ops)
     
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Return immutable snapshot of the best decomposition plan
+    return {
+        "task_id": generate_task_id(),
+        "decomposition_graph": dag,
+        "optimal_strategy": strategies[0],
+        "estimated_parallelism": _calculate_parallelism(dag),
+        "metadata": {"depth": len(dag.get("levels", [])), "nodes": len(dag.get("nodes", []))}
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_decomposition_chain(
+    decomposition_plan: Dict,
+    execution_context: Dict,
+    fallback_policy: str = "retry_then_merge"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a decomposed task DAG with domain-specific fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 1 (Early Exit) for invalid plan states.
+    Implements Law 4 (Fail Loud) by halting on critical dependency failures.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    plan = decomposition_plan.get("decomposition_graph", {})
+    if not plan.get("nodes") or not plan.get("edges"):
+        raise ValueError("Invalid decomposition plan: missing nodes or edges")
+        
+    results = {}
+    execution_order = _topological_sort(plan["edges"])
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for node_id in execution_order:
+        node = plan["nodes"][node_id]
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute subtask with context isolation (Law 3)
+            subtask_result = _run_subtask(node, execution_context)
+            results[node_id] = {"status": "success", "data": subtask_result}
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            # Update context for dependent nodes
+            execution_context = _merge_context(execution_context, subtask_result)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except DependencyError as e:
+            # Law 4: Critical dependency failure halts the branch
+            if fallback_policy == "halt_on_critical":
+                raise SkillExecutionError(f"Critical dependency failed for {node_id}: {e}") from e
+            results[node_id] = {"status": "failed", "error": str(e)}
             
         except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            # Domain-specific fallback: retry with backoff or use cached fallback
+            if fallback_policy == "retry_then_merge":
+                retry_result = _execute_with_exponential_backoff(node, execution_context, max_retries=2)
+                results[node_id] = {"status": "recovered", "data": retry_result}
+            else:
+                results[node_id] = {"status": "failed", "error": str(e)}
+                
+    # Validate final state before returning (Law 2)
+    if not _validate_execution_state(results, plan["edges"]):
+        raise SkillExecutionError("Execution state validation failed: inconsistent results")
+        
+    return {
+        "task_id": decomposition_plan.get("task_id"),
+        "final_state": results,
+        "execution_trace": _build_trace(results),
+        "confidence_score": _calculate_final_confidence(results)
+    }
 ```
 
 ### MUST DO
@@ -320,3 +302,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

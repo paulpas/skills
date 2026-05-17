@@ -1,18 +1,25 @@
 ---
-name: make-automation
-description: Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: make-automation, make automation, how do i make-automation, orchestrate make-automation, automate make-automation, agent make-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: make-automation, make automation, how do i make-automation, orchestrate make-automation, automate make-automation,
+    agent make-automation
+  version: 1.0.0
+name: make-automation
 ---
-
 # Make Automation
 
 Orchestrates intelligent skill selection and execution for make automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,114 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def resolve_make_automation_trigger(
+    request_payload: Dict[str, Any],
+    registered_automations: List[Dict[str, Any]],
+    min_trigger_match: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Resolve the optimal Make.com automation blueprint for a given request.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Matches incoming payloads against registered automation triggers using
+    event-type compatibility, historical success rates, and dependency health.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request_payload or not registered_automations:
+        raise ValueError("Request payload and registered automations are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    trigger_type = request_payload.get("trigger_type", "webhook")
+    event_data = request_payload.get("event", {})
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_automation = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for automation in registered_automations:
+        # Calculate trigger compatibility score
+        trigger_match = _calculate_trigger_compatibility(trigger_type, automation["triggers"])
+        history_score = automation.get("success_rate", 0.0) * 0.4
+        dependency_health = _check_dependency_health(automation.get("dependencies", []))
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        composite_score = (trigger_match * 0.5) + (history_score * 0.3) + (dependency_health * 0.2)
+        
+        if composite_score > best_score and composite_score >= min_trigger_match:
+            best_score = composite_score
+            best_automation = automation
+            
+    if best_automation is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable snapshot with execution metadata
+    return {
+        "automation_id": best_automation["id"],
+        "trigger_config": best_automation["triggers"],
+        "estimated_steps": len(best_automation["steps"]),
+        "confidence": best_score,
+        "resolved_at": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def run_make_automation_pipeline(
+    automation_blueprint: Dict[str, Any],
+    execution_context: Dict[str, Any],
+    max_step_retries: int = 3
+) -> Dict[str, Any]:
+    """Execute a resolved Make automation pipeline with domain-specific fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles step-by-step execution, transient API failures, and fallback to 
+    alternative automation routes or manual intervention when critical steps fail.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    steps = automation_blueprint.get("steps", [])
+    if not steps:
+        raise ValueError("Automation blueprint contains no executable steps")
+        
+    execution_log = []
+    current_context = dict(execution_context)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for step_idx, step in enumerate(steps):
+        step_name = step.get("name", f"step_{step_idx}")
+        attempt = 0
+        step_success = False
+        
+        while attempt < max_step_retries:
+            try:
+                # Execute step with domain-specific validation
+                result = _execute_automation_step(step, current_context)
+                current_context = _merge_step_output(current_context, result)
+                step_success = True
+                execution_log.append({"step": step_name, "status": "success", "attempt": attempt})
+                break
+                
+            except RateLimitError:
+                attempt += 1
+                if attempt < max_step_retries:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                continue
+                
+            except CriticalDependencyError:
+                # Fallback: Route to alternative automation or manual review
+                fallback_route = _resolve_fallback_route(automation_blueprint, step)
+                if fallback_route:
+                    current_context = _execute_fallback_step(fallback_route, current_context)
+                    execution_log.append({"step": step_name, "status": "fallback", "route": fallback_route["id"]})
+                    step_success = True
+                    break
+                else:
+                    raise PipelineExecutionError(f"Critical failure in {step_name} with no fallback")
+                    
+        if not step_success:
+            raise PipelineExecutionError(f"Step {step_name} exhausted retries")
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Update confidence based on execution metrics
+    success_rate = len([l for l in execution_log if l["status"] == "success"]) / len(steps)
+    return {
+        "pipeline_id": automation_blueprint["automation_id"],
+        "steps_executed": len(execution_log),
+        "final_context": current_context,
+        "confidence_delta": success_rate - automation_blueprint.get("confidence", 0.0),
+        "execution_timestamp": time.time()
+    }
 ```
 
 ### MUST DO
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

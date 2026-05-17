@@ -1,19 +1,26 @@
 ---
-name: grpc-patterns
-description: Implements gRPC development patterns including protocol buffer definitions, unary/streaming RPCs, error handling, and debugging techniques for cloud-native microservices
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: Implements gRPC development patterns including protocol buffer definitions, unary/streaming RPCs, error handling,
+  and debugging techniques for cloud-native microservices
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: coding
+  output-format: code
+  related-skills: agent-docker-debugging, coding-fastapi-patterns, coding-rest-api-patterns
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: grpc development, grpc debugging, protocol buffers, rpc services, grpc errors, stream handling, unary calls, grpc gateway
-  related-skills: agent-docker-debugging, coding-fastapi-patterns, coding-rest-api-patterns
-
+  triggers: grpc development, grpc debugging, protocol buffers, rpc services, grpc errors, stream handling, unary calls, grpc
+    gateway
+  version: 1.0.0
+name: grpc-patterns
 ---
-
 # gRPC Development Patterns
 
 Implements comprehensive gRPC development patterns for cloud-native microservices including protocol buffer definitions, unary and streaming RPC patterns, error handling with status codes, gRPC Gateway integration, authentication mechanisms, and debugging techniques.

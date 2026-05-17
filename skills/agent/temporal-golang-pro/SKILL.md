@@ -1,18 +1,25 @@
 ---
-name: temporal-golang-pro
-description: Implements intelligent temporal golang pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent temporal golang pro with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: temporal-golang-pro, temporal golang pro, how do i temporal-golang-pro, orchestrate temporal-golang-pro, automate temporal-golang-pro, agent temporal-golang-pro
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: temporal-golang-pro, temporal golang pro, how do i temporal-golang-pro, orchestrate temporal-golang-pro, automate
+    temporal-golang-pro, agent temporal-golang-pro
+  version: 1.0.0
+name: temporal-golang-pro
 ---
-
 # Temporal Golang Pro
 
 Orchestrates intelligent skill selection and execution for temporal golang pro workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -133,127 +140,112 @@ Avoid this skill for:
 
 ### Pattern 1: Skill Selection Logic
 
-```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
-    
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
-    """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+```go
+// EvaluateActivityCandidates selects the optimal Temporal activity based on
+// multi-factor scoring: trigger match, historical success rate, and dependency health.
+func EvaluateActivityCandidates(ctx context.Context, request string, candidates []ActivityMetadata) (*ActivityMetadata, error) {
+	if request == "" {
+		return nil, fmt.Errorf("request cannot be empty")
+	}
+	if len(candidates) == 0 {
+		return nil, fmt.Errorf("no candidate activities available")
+	}
+
+	// Parse request features (Law 2: Make illegal states unrepresentable)
+	features := ExtractRequestFeatures(request)
+	var bestMatch *ActivityMetadata
+	var highestScore float64
+
+	for i := range candidates {
+		c := &candidates[i]
+		if !c.IsAvailable(ctx) {
+			continue
+		}
+
+		score := CalculateMatchScore(features, c.Triggers) * c.HistoricalSuccessRate
+		if score > highestScore && score >= 0.7 {
+			highestScore = score
+			bestMatch = c
+		}
+	}
+
+	if bestMatch == nil {
+		return nil, fmt.Errorf("no activity met minimum confidence threshold")
+	}
+
+	// Return new struct, never mutate input (Law 3: Atomic Predictability)
+	return &ActivityMetadata{
+		Name:              bestMatch.Name,
+		Version:           bestMatch.Version,
+		SelectedConfidence: highestScore,
+		SelectionTime:     time.Now(),
+	}, nil
+}
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
-```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
-    
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
-    """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+```go
+// ExecuteWithFallback runs a Temporal activity with a structured retry and fallback chain.
+// Implements Fail Fast, Fail Loud (Law 4) and Early Exit (Law 1).
+func ExecuteWithFallback(ctx workflow.Context, activity ActivityMetadata, input ActivityInput) (*ActivityResult, error) {
+	if !IsValidActivity(activity) {
+		return nil, fmt.Errorf("invalid activity metadata: %s", activity.Name)
+	}
+
+	// Validate input at boundary (Law 2)
+	validatedInput, err := ParseActivityInput(input)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse input for %s: %w", activity.Name, err)
+	}
+
+	retryPolicy := &temporal.RetryPolicy{
+		InitialInterval:    time.Second,
+		BackoffCoefficient: 2.0,
+		MaximumInterval:    time.Minute,
+		MaximumAttempts:    3,
+	}
+
+	var lastErr error
+	for attempt := 0; attempt <= retryPolicy.MaximumAttempts; attempt++ {
+		var result interface{}
+		err := workflow.ExecuteActivity(ctx, temporal.ActivityOptions{
+			RetryPolicy: retryPolicy,
+			TaskQueue:   activity.TaskQueue,
+		}, activity.Name, validatedInput).Get(ctx, &result)
+
+		if err == nil {
+			return &ActivityResult{
+				Success:  true,
+				Data:     result,
+				Attempts: attempt + 1,
+				Latency:  time.Since(ctx.Value(startTimeKey).(time.Time)),
+			}, nil
+		}
+
+		lastErr = err
+		if IsTransientError(err) {
+			continue
+		}
+		// Permanent error - fail fast, do not retry
+		break
+	}
+
+	// Fallback chain: try alternative activity or return structured error
+	if activity.FallbackActivity != "" {
+		var fallbackResult interface{}
+		err := workflow.ExecuteActivity(ctx, temporal.ActivityOptions{
+			RetryPolicy: retryPolicy,
+			TaskQueue:   activity.TaskQueue,
+		}, activity.FallbackActivity, validatedInput).Get(ctx, &fallbackResult)
+		if err == nil {
+			return &ActivityResult{Success: true, Data: fallbackResult, Fallback: true}, nil
+		}
+	}
+
+	return nil, fmt.Errorf("activity %s failed after retries and fallback: %w", activity.Name, lastErr)
+}
 ```
 
 ### MUST DO
@@ -320,3 +312,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

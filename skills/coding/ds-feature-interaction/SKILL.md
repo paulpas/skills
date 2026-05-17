@@ -1,22 +1,25 @@
 ---
-name: feature-interaction
-description: '"Provides Discovers and engineers feature interactions including polynomial
-  interactions, cross-features, and interaction detection methods"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Discovers and engineers feature interactions including polynomial interactions, cross-features, and
+  interaction detection methods"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-correlation-analysis, ds-feature-engineering, ds-feature-selection
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: feature interaction, interaction terms, polynomial features, cross-features,
-    feature interactions
-  related-skills: ds-correlation-analysis, ds-feature-engineering, ds-feature-selection
+  triggers: feature interaction, interaction terms, polynomial features, cross-features, feature interactions
+  version: 1.0.0
+name: feature-interaction
 ---
-
-
-
 # Feature Interaction
 
 Comprehensive guide to feature interaction in machine learning and data science workflows.
@@ -58,34 +61,136 @@ Feature Interaction is a critical component of the machine learning workflow. Th
 ### Pattern 1: Basic Feature Interaction
 
 ```python
-# Example pattern for Feature Interaction
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from typing import List, Tuple
 
-# Implementation pattern
-pass
+def generate_basic_interactions(df: pd.DataFrame, feature_pairs: List[Tuple[str, str]] = None, degree: int = 2) -> pd.DataFrame:
+    """
+    Generate basic feature interactions including polynomial terms and cross-features.
+    
+    Args:
+        df: Input DataFrame containing numerical features
+        feature_pairs: Optional list of specific column pairs to interact
+        degree: Degree for polynomial features (default 2)
+        
+    Returns:
+        DataFrame with original features plus interaction terms
+    """
+    if df.empty:
+        raise ValueError("Input DataFrame cannot be empty")
+        
+    numerical_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+    if len(numerical_cols) < 2:
+        raise ValueError("At least two numerical columns are required for interactions")
+        
+    # Create polynomial features for all numerical columns
+    poly = PolynomialFeatures(degree=degree, include_bias=False, interaction_only=False)
+    poly_features = poly.fit_transform(df[numerical_cols])
+    poly_col_names = poly.get_feature_names_out(numerical_cols)
+    
+    # Create specific cross-features if provided
+    cross_features = {}
+    if feature_pairs:
+        for col1, col2 in feature_pairs:
+            if col1 in df.columns and col2 in df.columns:
+                cross_features[f'{col1}_x_{col2}'] = df[col1] * df[col2]
+                cross_features[f'{col1}_plus_{col2}'] = df[col1] + df[col2]
+                
+    # Combine original data with polynomial features
+    result_df = pd.DataFrame(poly_features, columns=poly_col_names, index=df.index)
+    
+    # Add cross-features if any
+    if cross_features:
+        cross_df = pd.DataFrame(cross_features, index=df.index)
+        result_df = pd.concat([result_df, cross_df], axis=1)
+        
+    return result_df
+
+# Self-contained test
+if __name__ == "__main__":
+    test_df = pd.DataFrame({
+        'A': np.random.randn(50),
+        'B': np.random.randn(50),
+        'C': np.random.randn(50)
+    })
+    result = generate_basic_interactions(test_df, feature_pairs=[('A', 'B')])
+    print(f"Generated {result.shape[1]} features from {test_df.shape[1]} original columns")
 ```
 
 ### Pattern 2: Production-Ready Feature Interaction
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, List
+from sklearn.preprocessing import PolynomialFeatures
 
 logger = logging.getLogger(__name__)
 
-class FeatureInteraction:
-    """Production implementation of Feature Interaction"""
+class FeatureInteractionEngine:
+    """Production-grade feature interaction engine with validation and logging."""
     
-    def __init__(self):
-        pass
+    def __init__(self, degree: int = 2, interaction_pairs: List[List[str]] = None):
+        self.degree = degree
+        self.interaction_pairs = interaction_pairs or []
+        self.poly_transformer = PolynomialFeatures(degree=degree, include_bias=False)
+        logger.info(f"Initialized FeatureInteractionEngine with degree={degree}")
     
     def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Feature Interaction on data"""
-        return {}
+        """Execute feature interaction pipeline on input data."""
+        try:
+            if data is None or data.empty:
+                raise ValueError("Input data cannot be None or empty")
+                
+            numerical_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+            if len(numerical_cols) < 2:
+                raise ValueError("Requires at least two numerical columns")
+                
+            logger.info(f"Processing {len(numerical_cols)} numerical columns")
+            
+            # Generate polynomial interactions
+            poly_features = self.poly_transformer.fit_transform(data[numerical_cols])
+            poly_names = self.poly_transformer.get_feature_names_out(numerical_cols)
+            transformed_df = pd.DataFrame(poly_features, columns=poly_names, index=data.index)
+            
+            # Add custom cross-features
+            for pair in self.interaction_pairs:
+                if len(pair) == 2 and pair[0] in data.columns and pair[1] in data.columns:
+                    col_name = f"{pair[0]}_x_{pair[1]}"
+                    transformed_df[col_name] = data[pair[0]] * data[pair[1]]
+                    logger.info(f"Added cross-feature: {col_name}")
+                    
+            result = {
+                'status': 'success',
+                'transformed_data': transformed_df,
+                'metadata': {
+                    'original_columns': len(data.columns),
+                    'new_columns': len(transformed_df.columns),
+                    'interaction_degree': self.degree,
+                    'rows_processed': len(data)
+                }
+            }
+            logger.info("Feature interaction completed successfully")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Feature interaction failed: {str(e)}")
+            return {'status': 'error', 'message': str(e)}
+
+# Self-contained test
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    test_df = pd.DataFrame({
+        'x1': np.random.randn(100),
+        'x2': np.random.randn(100),
+        'x3': np.random.randn(100)
+    })
+    engine = FeatureInteractionEngine(degree=2, interaction_pairs=[['x1', 'x2']])
+    output = engine.execute(test_df)
+    print(f"Status: {output['status']}, New columns: {output['metadata']['new_columns']}")
 ```
 
 ## Best Practices
@@ -111,60 +216,93 @@ class FeatureInteraction:
 ## Complete Working Example
 
 ```python
-# Full working example for Feature Interaction
 import pandas as pd
 import numpy as np
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
 from typing import Dict, Any
 
-def implement_interaction(data: pd.DataFrame) -> Dict[str, Any]:
+def implement_interaction(data: pd.DataFrame, target_col: str = 'target') -> Dict[str, Any]:
     """
-    Complete implementation of Feature Interaction.
+    Complete implementation of Feature Interaction with model training and evaluation.
     
     This example demonstrates:
     - Proper input validation
-    - Core algorithm implementation
+    - Core algorithm implementation (polynomial & cross features)
     - Error handling
-    - Result formatting
+    - Result formatting and metrics
     
     Args:
-        data: Input DataFrame with required columns
+        data: Input DataFrame with numerical features and target column
+        target_col: Name of the target variable
         
     Returns:
-        Dictionary with results and metadata
+        Dictionary with results, metrics, and metadata
         
     Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_interaction(df)
-        >>> print(results)
+        ValueError: If input data is invalid or missing target
     """
-    # Validate inputs
     if data is None or data.empty:
         raise ValueError("Input data cannot be None or empty")
+    if target_col not in data.columns:
+        raise ValueError(f"Target column '{target_col}' not found in data")
+        
+    # Separate features and target
+    X = data.drop(columns=[target_col])
+    y = data[target_col]
     
-    # Implementation
+    # Validate numerical features
+    numerical_cols = X.select_dtypes(include=[np.number]).columns.tolist()
+    if len(numerical_cols) < 2:
+        raise ValueError("At least two numerical features required for interactions")
+        
+    # Generate polynomial interactions
+    poly = PolynomialFeatures(degree=2, include_bias=False)
+    X_poly = poly.fit_transform(X[numerical_cols])
+    poly_names = poly.get_feature_names_out(numerical_cols)
+    X_interacted = pd.DataFrame(X_poly, columns=poly_names, index=X.index)
+    
+    # Add specific cross-feature
+    if len(numerical_cols) >= 2:
+        X_interacted[f'{numerical_cols[0]}_x_{numerical_cols[1]}'] = X[numerical_cols[0]] * X[numerical_cols[1]]
+        
+    # Train/test split
+    X_train, X_test, y_train, y_test = train_test_split(X_interacted, y, test_size=0.2, random_state=42)
+    
+    # Train model
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    
+    # Predict and evaluate
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    
     results = {
         'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+        'model_type': 'LinearRegression',
+        'metrics': {'mse': float(mse), 'r2': float(r2)},
+        'feature_count': X_interacted.shape[1],
+        'train_size': len(X_train),
+        'test_size': len(X_test)
     }
-    
     return results
 
 # Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    # Create realistic sample data with underlying interaction
+    X_sample, y_sample = make_regression(n_samples=500, n_features=3, noise=10, random_state=42)
+    sample_data = pd.DataFrame(X_sample, columns=['feat_a', 'feat_b', 'feat_c'])
+    sample_data['target'] = y_sample + (X_sample[:, 0] * X_sample[:, 1]) * 5  # Add true interaction
     
     # Run implementation
-    results = implement_interaction(sample_data)
+    results = implement_interaction(sample_data, target_col='target')
     print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    print(f"Metrics: MSE={results['metrics']['mse']:.4f}, R2={results['metrics']['r2']:.4f}")
+    print(f"Processed {results['train_size']} train, {results['test_size']} test samples")
 ```
 
 ## Related Skills
@@ -184,3 +322,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

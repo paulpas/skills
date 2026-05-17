@@ -1,18 +1,25 @@
 ---
-name: git-pr-workflows-git-workflow
-description: Implements intelligent git pr workflows git workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent git pr workflows git workflow with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: git-pr-workflows-git-workflow, git pr workflows git workflow, how do i git-pr-workflows-git-workflow, orchestrate git-pr-workflows-git-workflow, automate git-pr-workflows-git-workflow, agent git-pr-workflows-git-workflow
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: git-pr-workflows-git-workflow, git pr workflows git workflow, how do i git-pr-workflows-git-workflow, orchestrate
+    git-pr-workflows-git-workflow, automate git-pr-workflows-git-workflow, agent git-pr-workflows-git-workflow
+  version: 1.0.0
+name: git-pr-workflows-git-workflow
 ---
-
 # Git Pr Workflows Git Workflow
 
 Orchestrates intelligent skill selection and execution for git pr workflows git workflow workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,127 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_pr_workflow_strategy(
+    branch_name: str,
+    target_branch: str,
+    ci_status: str,
+    review_requirements: List[str]
+) -> Dict:
+    """Evaluate the optimal Git PR workflow strategy based on current state.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies Law 2 (Make Illegal States Unrepresentable) by validating
+    branch states and CI results before selecting a workflow path.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        branch_name: Source branch for the PR
+        target_branch: Destination branch
+        ci_status: Current CI pipeline status (passing, failing, pending)
+        review_requirements: List of required reviewers or approval rules
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Strategy dict with workflow type, required actions, and confidence
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not branch_name or not target_branch:
+        raise ValueError("Both source and target branches must be specified")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    workflow_state = _analyze_git_state(branch_name, target_branch)
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if ci_status == "failing":
+        strategy = {
+            "workflow_type": "fix_and_retest",
+            "priority": "high",
+            "confidence": 0.95,
+            "next_action": "run_local_checks_and_push_fix"
+        }
+    elif "required_reviewer" in review_requirements and not workflow_state.get("approved"):
+        strategy = {
+            "workflow_type": "await_review",
+            "priority": "medium",
+            "confidence": 0.85,
+            "next_action": "request_reviews_and_wait"
+        }
+    else:
+        strategy = {
+            "workflow_type": "auto_merge",
+            "priority": "low",
+            "confidence": 0.90,
+            "next_action": "execute_merge_with_checks"
+        }
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate inputs
+    strategy["evaluated_at"] = time.time()
+    strategy["branch_context"] = dict(workflow_state)
+    return strategy
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_pr_workflow_step(
+    strategy: Dict,
+    repo_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a Git PR workflow step with resilience and fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud (Law 4) for git operations:
+    - Invalid branch states halt immediately
+    - CI failures trigger local validation fallback
+    - Merge blocks trigger manual review escalation
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        strategy: Evaluated workflow strategy from evaluate_pr_workflow_strategy
+        repo_context: Repository configuration and authentication context
+        max_retries: Maximum retry attempts for transient git/CI errors
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with PR URL, status, and audit metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Guard clause - validate repo context (Early Exit)
+    if not _is_repo_accessible(repo_context):
+        raise GitWorkflowError("Repository is inaccessible or credentials invalid")
+        
+    workflow_type = strategy.get("workflow_type")
+    result = {"success": False, "workflow_type": workflow_type}
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
+            if workflow_type == "fix_and_retest":
+                pr_data = _push_fix_and_update_pr(repo_context, strategy)
+            elif workflow_type == "await_review":
+                pr_data = _request_reviews_and_monitor(repo_context, strategy)
+            else:
+                pr_data = _execute_safe_merge(repo_context, strategy)
+                
             # Success - Atomic Predictability (Law 3)
-            return {
+            result.update({
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "pr_url": pr_data.get("url"),
+                "status": pr_data.get("state"),
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
-            }
+            })
+            break
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except CIExecutionError as e:
+            # Fail Fast - Don't proceed with failing CI (Law 4)
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _apply_ci_fallback(repo_context, strategy, e)
+            continue
+            
+        except MergeConflictError as e:
+            # Transient conflict - try rebase fallback
+            if attempt == max_retries:
+                return _apply_merge_fallback(repo_context, strategy, e)
+            continue
+            
+    if not result["success"]:
+        raise GitWorkflowError(f"Workflow '{workflow_type}' exhausted retries")
+        
+    return result
 ```
 
 ### MUST DO
@@ -320,3 +328,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,22 +1,25 @@
 ---
-name: k8s-debugger
-description: Implements intelligent k8s debugger with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent k8s debugger with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: k8s-debugger, k8s debugger, how do i k8s-debugger, orchestrate k8s-debugger,
-    automate k8s-debugger, agent k8s-debugger, kubernetes, container orchestration
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: k8s-debugger, k8s debugger, how do i k8s-debugger, orchestrate k8s-debugger, automate k8s-debugger, agent k8s-debugger,
+    kubernetes, container orchestration
+  version: 1.0.0
+name: k8s-debugger
 ---
-
-
-
 # K8S Debugger
 
 Orchestrates intelligent skill selection and execution for k8s debugger workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -138,126 +141,110 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def parse_k8s_debug_request(
+    user_query: str,
+    cluster_context: Dict[str, Any],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Parse Kubernetes debugging request and map to debugging strategy.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Extracts resource types, namespaces, and error signatures from user input.
+    Maps to appropriate debugging workflows based on k8s error patterns.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        user_query: Natural language description of the k8s issue
+        cluster_context: Active cluster config, available namespaces, auth tokens
+        min_confidence: Minimum confidence threshold for strategy selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Debugging strategy dict with target resources, error type, and steps
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_query or not user_query.strip():
+        raise ValueError("Kubernetes debug query cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Extract k8s entities and error signatures
+    entities = _extract_k8s_entities(user_query)
+    error_type = _classify_k8s_error(user_query)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Map to debugging strategy
+    strategy_map = {
+        "CrashLoopBackOff": "pod_restart_analysis",
+        "ImagePullBackOff": "registry_auth_check",
+        "OOMKilled": "resource_limit_analysis",
+        "Pending": "scheduler_affinity_check",
+        "default": "general_cluster_health"
+    }
     
-    best_skill = None
-    best_score = 0.0
+    strategy_name = strategy_map.get(error_type, "general_cluster_health")
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate against available cluster context
+    if not _verify_cluster_access(cluster_context, entities.get("namespace")):
+        raise PermissionError("Insufficient RBAC permissions for target namespace")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "strategy": strategy_name,
+        "target_resources": entities.get("resources", []),
+        "namespace": entities.get("namespace", "default"),
+        "error_signature": error_type,
+        "confidence": 0.85,
+        "steps": _generate_debug_steps(strategy_name)
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_k8s_debug_workflow(
+    strategy: Dict,
+    cluster_client: Any,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Kubernetes debugging workflow with resilient error handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Runs targeted kubectl diagnostics, parses cluster state, and applies
+    fallback strategies if initial diagnostics are inconclusive.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        strategy: Debugging strategy from parse_k8s_debug_request
+        cluster_client: Initialized kubernetes client or kubectl wrapper
+        max_retries: Maximum retry attempts for transient API errors
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Debug findings dict with root cause, evidence, and remediation steps
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    namespace = strategy.get("namespace", "default")
+    resources = strategy.get("target_resources", [])
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Gather diagnostic data in parallel
+            pod_status = cluster_client.get_resource_status("pods", namespace)
+            recent_events = cluster_client.get_events(namespace, since="1h")
+            resource_logs = cluster_client.get_logs(resources, tail=100)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            # Analyze findings against known k8s failure patterns
+            findings = _analyze_k8s_findings(pod_status, recent_events, resource_logs)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            if findings.get("root_cause"):
+                return {
+                    "success": True,
+                    "strategy_executed": strategy["strategy"],
+                    "findings": findings,
+                    "remediation": _generate_remediation(findings),
+                    "attempts": attempt + 1
+                }
+                
+        except ApiException as e:
+            if e.status == 429:  # API server throttling
+                time.sleep(2 ** attempt)
+                continue
+            elif e.status == 403:
+                raise PermissionError("RBAC denied during diagnostic collection") from e
+            raise
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Fallback: Escalate to cluster-level diagnostics
+    return _execute_cluster_fallback_diagnostics(strategy, cluster_client)
 ```
 
 ### MUST DO
@@ -324,3 +311,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

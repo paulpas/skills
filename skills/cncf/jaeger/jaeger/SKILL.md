@@ -1,160 +1,11 @@
 ---
-name: jaeger
-description: jaeger in Cloud-Native Engineering - distributed-tracing project architecture, integration patterns, and operational patterns.
-license: MIT
-compatibility: opencode
-metadata:
-  version: "1.0.0"
-  domain: cncf
-  role: reference
-  scope: infrastructure
-  output-format: manifests
-  triggers: jaeger, distributed-tracing project, jaeger architecture, jaeger integration, how do i deploy jaeger, jaeger in kubernetes
-  related-skills: ---
-
-## Purpose and Use Cases
-
-jaeger is a distributed-tracing project in the cloud-native ecosystem designed to solve specific infrastructure challenges in dynamic cloud environments.
-
-### What Problem Does It Solve?
-
-jaeger addresses distributed-tracing requirements in dynamic cloud environments with frequent scale changes, microservices, and ephemeral containers. It provides reliable distributed-tracing capabilities for modern infrastructure.
-
-### When to Use This Project
-
-Use jaeger when you need to distributed-tracing in cloud-native environments, require distributed-tracing-based distributed-tracing, want to integrate with Kubernetes and other CNCF projects, or need a scalable, distributed-tracing system. Consider alternatives if you need native distributed-tracing or complex distributed-tracing.
-
-### Key Use Cases
-
-- Kubernetes cluster monitoring and management
-- Application distributed-tracing and performance tracking
-- Infrastructure distributed-tracing collection and analysis
-- Alerting for service distributed-tracing and degradation
-- Integration with Grafana for visualization and dashboards
-- Microservices distributed-tracing and service mesh integration
-
-## Architecture Design Patterns
-
-### Core Components
-
-- **jaeger Core**: Main server or service handling distributed-tracing operations
-- **jaeger API**: REST/gRPC API for management and querying
-- **Storage Engine**: Optimized storage for distributed-tracing data
-- **Client Libraries**: SDKs for instrumentation and integration
-- **Exporters/Collectors**: Components that expose distributed-tracing from third-party systems
-- **Service Discovery**: Automatic discovery of targets for distributed-tracing
-
-### Component Interactions
-
-1. **jaeger → Targets**: Collects distributed-tracing via HTTP/gRPC
-2. **Service Discovery → jaeger**: Provides target list dynamically
-3. **jaeger → Alertmanager**: Sends distributed-tracing alerts
-4. **Client → jaeger API**: Queries and retrieves distributed-tracing data
-5. **Storage Engine**: Persists distributed-tracing time-series data
-6. **Rules Engine → Alerting**: Evaluates alerting rules
-
-### Data Flow Patterns
-
-1. **Collection Cycle**: Service discovery → Target list → distributed-tracing scrape → Storage → Queryable
-2. **Alerting Flow**: Rule evaluation → Triggered alerts → Alertmanager → Notifications
-3. **Storage Flow**: Timestamped samples → Chunk creation → Compaction → Block creation
-4. **Query Path**: API parsing → AST evaluation → Result generation → Response
-
-### Design Principles
-
-- **Pull-based Collection**: Servers expose distributed-tracing, jaeger polls
-- **Push-based Support**: Pushgateway for short-lived jobs
-- **Time-Series Database**: Optimized for distributed-tracing storage
-- **Query Language**: jaeger-specific query language for distributed-tracing
-- **Multi-dimensional**: Labels for distributed-tracing identification
-- **Federation**: Hierarchical distributed-tracing collection
-
-## Integration Approaches
-
-### Integration with Other CNCF Projects
-
-- **Kubernetes**: Integration via kube-state-metrics, node-exporter, cAdvisor
-- **Grafana**: Visualization and dashboard integration
-- **Alertmanager**: Alert management and routing
-- **OpenTelemetry**: distributed-tracing collection instrumentation
-- **etcd**: distributed-tracing for cluster monitoring
-- **CoreDNS**: DNS distributed-tracing collection
-- **Helm**: Operator for deployment management
-- **Envoy**: Service mesh distributed-tracing integration
-
-### API Patterns
-
-- **HTTP/gRPC API**: Query and management endpoints
-- **Pull Model**: Server collects from targets
-- **Push Model**: Short-lived jobs via Pushgateway
-- **Metrics Endpoint**: Standard format for distributed-tracing exposure
-- **Query API**: jaeger-specific query language endpoint
-- **Alertmanager API**: Alert management endpoints
-- **Service Discovery API**: Dynamic target discovery
-
-### Configuration Patterns
-
-- **YAML Configuration**: Server and distributed-tracing configuration
-- **Service Discovery**: Dynamic target configuration
-- **Rule Files**: Alerting and recording rules
-- **ConfigMap**: Kubernetes configuration
-- **Environment Variables**: Override configuration values
-- **Helm Values**: Chart parameterization
-
-### Extension Mechanisms
-
-- **Exporters/Collectors**: Expose third-party distributed-tracing
-- **Client Libraries**: Instrument applications
-- **Remote Write**: Send data to long-term storage
-- **Webhook Receivers**: Custom distributed-tracing processing
-- **Service Discovery**: Custom discovery mechanisms
-
-## Common Pitfalls and How to Avoid Them
-
-### Misconfigurations
-
-- **Scrape/Collection Intervals**: Too frequent or infrequent intervals
-- **Retention Settings**: Not setting appropriate retention time
-- **Resource Limits**: Insufficient memory or CPU for distributed-tracing data
-- **Service Discovery**: Not discovering all targets properly
-- **Alert Rules**: Missing or incorrect alert thresholds
-- **Federation**: Incorrect federation configuration
-- **Time Series Cardinality**: Too many unique labels causing high memory usage
-
-### Performance Issues
-
-- **Memory Usage**: High memory consumption for time series data
-- **Scrape Latency**: Slow target responses affecting collection
-- **Query Performance**: Complex queries causing slow response times
-- **Storage I/O**: High disk usage during compaction
-- **Series Cardinality**: Too many time series affecting query performance
-- **Retention Size**: Excessive storage requirements
-- **Rule Evaluation**: Slow rule processing affecting alerting
-
-### Operational Challenges
-
-- **Retention Policy**: Balancing storage costs and data duration needs
-- **High Availability**: Proper redundancy configuration
-- **Scaling**: Vertical and horizontal scaling considerations
-- **Data Migration**: Moving between installations safely
-- **Backup Strategy**: distributed-tracing data backup procedures
-- **Alert Fatigue**: Managing alert noise and false positives
-- **Label Management**: Consistent labeling strategy across the board
-
-### Security Pitfalls
-
-- **API Access**: Unrestricted query API access
-- **Target Authentication**: Missing authentication for scraping targets
-- **Secrets in Metrics**: Accidentally exposing sensitive data in distributed-tracing
-- **External Labels**: Information disclosure through external labels
-- **Federation Endpoints**: Unrestricted federation endpoint access
-- **Network Policies**: Missing network isolation for jaeger components
-
-## Working Kubernetes Manifest Example
-
-Below is a complete, working Kubernetes manifest for deploying jaeger in a production-like configuration.
-
-```yaml
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+maturity: stable
 ---
 # jaeger Namespace
 apiVersion: v1
@@ -339,251 +190,140 @@ spec:
 
 ### Pattern 1: Creating a jaeger Custom Resource (GOOD)
 
-```python
-# GOOD: Creating a jaeger CR with proper validation
-from kubernetes import client, config
-from kubernetes.client.rest import ApiException
+```bash
+# ✅ GOOD — Create jaeger resource using kubectl
+# Create namespace
+kubectl create namespace jaeger --dry-run=client -o yaml | kubectl apply -f -
 
+# Create ConfigMap for jaeger configuration
+cat << 'EOF' | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jaeger-config
+  namespace: jaeger
+data:
+  replicas: "1"
+  cpu_request: "100m"
+  memory_request: "64Mi"
+EOF
 
-def create_jaeger_resource(
-    name: str,
-    namespace: str,
-    replicas: int = 1,
-    image: str = "jaeger/controller:v1.0.0",
-    cpu_request: str = "100m",
-    memory_request: str = "64Mi",
-) -> dict:
-    '''Create a jaeger Custom Resource with proper validation.
-    
-    Args:
-        name: Name of the jaeger resource
-        namespace: Kubernetes namespace for the resource
-        replicas: Number of replicas (minimum: 1)
-        image: Container image for the controller
-        cpu_request: CPU request for the controller
-        memory_request: Memory request for the controller
-    
-    Returns:
-        dict: The created jaeger resource object
-    
-    Raises:
-        ValueError: If validation fails
-        ApiException: If Kubernetes API call fails
-    '''
-    # Validate inputs (early exit pattern)
-    if replicas < 1:
-        raise ValueError("Replicas must be at least 1")
-    
-    if not image:
-        raise ValueError("Image must be specified")
-    
-    # Create jaeger resource
-    cr = {
-        "apiVersion": "jaeger.io/v1",
-        "kind": "jaeger",
-        "metadata": {
-            "name": name,
-            "namespace": namespace,
-            "labels": {
-                "app.kubernetes.io/name": "jaeger",
-                "app.kubernetes.io/managed-by": "kubectl",
-            },
-        },
-        "spec": {
-            "replicas": replicas,
-            "image": image,
-            "resources": {
-                "requests": {
-                    "cpu": cpu_request,
-                    "memory": memory_request,
-                },
-                "limits": {
-                    "cpu": "500m",
-                    "memory": "256Mi",
-                },
-            },
-            "service": {
-                "type": "ClusterIP",
-                "port": 443,
-            },
-        },
-    }
-    
-    # Create CustomObjectsApi instance
-    crd_api = client.CustomObjectsApi()
-    
-    try:
-        # Create the jaeger resource
-        response = crd_api.create_namespaced_custom_object(
-            group="jaeger.io",
-            version="v1",
-            namespace=namespace,
-            plural="jaegers",
-            body=cr,
-        )
-        return response
-    except ApiException as e:
-        raise Exception(f"Failed to create jaeger resource: {e}")
+# Create jaeger deployment using kubectl
+kubectl apply -f - << EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-controller
+  namespace: jaeger
+  labels:
+    app.kubernetes.io/name: jaeger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger-controller
+  template:
+    metadata:
+      labels:
+        app: jaeger-controller
+    spec:
+      containers:
+      - name: jaeger
+        image: jaeger/controller:v1.0.0
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+EOF
+
+# Verify deployment
+kubectl get pods -n jaeger -l app=jaeger-controller
+kubectl describe deployment jaeger-controller -n jaeger
 ```
 
 ### Pattern 2: Querying jaeger Metrics (BAD vs GOOD)
 
-```python
-# BAD: Hardcoded values and no error handling
-def bad_query_metrics(host: str) -> dict:
-    response = requests.get(f"http://{host}/metrics")
-    return response.json()  # No error handling
+```bash
+# ✅ GOOD — Query jaeger metrics using curl
+# Query jaeger metrics with error handling
+METRICS_URL="http://localhost:8080/metrics"
+TIMEOUT=10
 
-# GOOD: Parameterized, validated, and handles errors
-from typing import Optional
-import requests
-from requests.exceptions import RequestException, Timeout
+# Test connectivity and fetch metrics
+HTTP_CODE=$(curl -s -o /tmp/jaeger-metrics.txt -w "%{http_code}" --max-time $TIMEOUT "$METRICS_URL")
+if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 400 ]]; then
+    echo "✅ jaeger metrics retrieved (HTTP $HTTP_CODE)"
+    head -20 /tmp/jaeger-metrics.txt
+else
+    echo "❌ Failed to get jaeger metrics (HTTP $HTTP_CODE)"
+    exit 1
+fi
 
+# Query specific metrics with curl and grep
+curl -s --max-time $TIMEOUT "$METRICS_URL" | grep "jaeger_active" | head -10
 
-def query_jaeger_metrics(
-    host: str,
-    port: int = 8080,
-    timeout: float = 10.0,
-    metrics_path: str = "/metrics",
-) -> Optional[dict]:
-    '''Query jaeger metrics with proper error handling.
-    
-    Args:
-        host: Hostname or IP address of jaeger server
-        port: Port number (default: 8080)
-        timeout: Request timeout in seconds (default: 10.0)
-        metrics_path: Metrics endpoint path (default: "/metrics")
-    
-    Returns:
-        dict: Metrics data if successful, None otherwise
-    '''
-    url = f"http://{host}:{port}{metrics_path}"
-    
-    try:
-        response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
-        return response.json()
-    except Timeout:
-        raise ConnectionError(f"Connection to jaeger timed out after {timeout}s")
-    except RequestException as e:
-        raise ConnectionError(f"Failed to connect to jaeger: {e}")
-    except ValueError as e:
-        raise Exception(f"Failed to parse jaeger metrics: {e}")
+# Query jaeger API via port-forward
+kubectl port-forward -n jaeger svc/jaeger 8080:8080 &
+curl -s http://localhost:8080/api/v1/services | jq .
 ```
 
 ### Pattern 3: Health Check Implementation
 
-```python
-# GOOD: Comprehensive health check with specific checks
-from enum import Enum
-from typing import List, Optional
-import requests
+```bash
+# ✅ GOOD — Comprehensive jaeger health check using curl
+#!/bin/bash
+# check_jaeger_health.sh — Health checks for jaeger service
 
+HOST="${1:-localhost}"
+PORT="${2:-8081}"
+TIMEOUT=5
 
-class HealthStatus(Enum):
-    HEALTHY = "healthy"
-    DEGRADED = "degraded"
-    UNHEALTHY = "unhealthy"
+echo "=== jaeger Health Check ==="
 
+# Check 1: Basic connectivity
+echo -n "Connectivity: "
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time $TIMEOUT "http://$HOST:$PORT/healthz" 2>/dev/null || echo "000")
+if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 400 ]]; then
+    echo "✅ OK (HTTP $HTTP_CODE)"
+    STATUS="HEALTHY"
+else
+    echo "❌ FAILED (HTTP $HTTP_CODE)"
+    STATUS="UNHEALTHY"
+fi
 
-class HealthCheckResult:
-    def __init__(self, status: HealthStatus, details: List[dict]):
-        self.status = status
-        self.details = details
+# Check 2: Readiness
+echo -n "Readiness: "
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time $TIMEOUT "http://$HOST:$PORT/ready" 2>/dev/null || echo "000")
+if [[ "$HTTP_CODE" -eq 200 ]]; then
+    echo "✅ OK (HTTP $HTTP_CODE)"
+else
+    echo "❌ FAILED (HTTP $HTTP_CODE)"
+    STATUS="UNHEALTHY"
+fi
 
+# Check 3: Metrics endpoint
+echo -n "Metrics: "
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time $TIMEOUT "http://$HOST:$PORT/metrics" 2>/dev/null || echo "000")
+if [[ "$HTTP_CODE" -eq 200 ]]; then
+    echo "✅ OK (HTTP $HTTP_CODE)"
+else
+    echo "⚠️ DEGRADED (HTTP $HTTP_CODE)"
+    [[ "$STATUS" == "HEALTHY" ]] && STATUS="DEGRADED"
+fi
 
-def check_jaeger_health(
-    host: str,
-    port: int = 8081,
-    timeout: float = 5.0,
-) -> HealthCheckResult:
-    '''Check jaeger health status with comprehensive checks.
-    
-    Args:
-        host: Hostname or IP address
-        port: Health check port (default: 8081)
-        timeout: Request timeout in seconds
-    
-    Returns:
-        HealthCheckResult with status and detailed health information
-    '''
-    checks = []
-    overall_status = HealthStatus.HEALTHY
-    
-    # Check 1: Basic connectivity
-    try:
-        response = requests.get(
-            f"http://{host}:{port}/healthz",
-            timeout=timeout
-        )
-        checks.append({
-            "component": "connectivity",
-            "status": "ok",
-            "response_time_ms": response.elapsed.total_seconds() * 1000,
-        })
-    except Exception as e:
-        checks.append({
-            "component": "connectivity",
-            "status": "error",
-            "error": str(e),
-        })
-        overall_status = HealthStatus.UNHEALTHY
-    
-    # Check 2: Readiness
-    try:
-        response = requests.get(
-            f"http://{host}:{port}/ready",
-            timeout=timeout
-        )
-        if response.status_code == 200:
-            checks.append({
-                "component": "readiness",
-                "status": "ok",
-            })
-        else:
-            checks.append({
-                "component": "readiness",
-                "status": "error",
-                "error": f"Ready endpoint returned {response.status_code}",
-            })
-            overall_status = HealthStatus.UNHEALTHY
-    except Exception as e:
-        checks.append({
-            "component": "readiness",
-            "status": "error",
-            "error": str(e),
-        })
-        overall_status = HealthStatus.UNHEALTHY
-    
-    # Check 3: Metrics endpoint
-    try:
-        response = requests.get(
-            f"http://{host}:{port}/metrics",
-            timeout=timeout
-        )
-        if response.status_code == 200:
-            checks.append({
-                "component": "metrics",
-                "status": "ok",
-            })
-        else:
-            checks.append({
-                "component": "metrics",
-                "status": "degraded",
-                "error": f"Metrics endpoint returned {response.status_code}",
-            })
-            if overall_status == HealthStatus.HEALTHY:
-                overall_status = HealthStatus.DEGRADED
-    except Exception as e:
-        checks.append({
-            "component": "metrics",
-            "status": "degraded",
-            "error": str(e),
-        })
-        if overall_status == HealthStatus.HEALTHY:
-            overall_status = HealthStatus.DEGRADED
-    
-    return HealthCheckResult(status=overall_status, details=checks)
+echo ""
+echo "=== Overall Status: $STATUS ==="
+exit $([[ "$STATUS" == "HEALTHY" ]] && echo 0 || echo 1)
+```
+
+```bash
+# ✅ GOOD — Kubernetes-native health check
+# Use kubectl to check jaeger service health
+kubectl get pods -n jaeger -o jsonpath=''.items[].status.conditions[?(@.type=="Ready")].status'
+kubectl exec -n jaeger deployment/jaeger-controller -- curl -sf http://localhost:8080/healthz
 ```
 
 ## Constraints
@@ -705,3 +445,23 @@ curl http://localhost:9090/api/v1/targets
 # Check configuration
 kubectl get configmap jaeger-config -n jaeger -o yaml
 ```
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Integrating a CNCF project into Kubernetes infrastructure** — You need to configure, deploy, or troubleshoot a cloud-native tool within a cluster
+- **Designing cloud-native architecture** — You are selecting and integrating CNCF tools to solve specific infrastructure challenges
+- **Resolving operational issues** — A CNCF component is misbehaving, underperforming, or needs configuration changes
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.

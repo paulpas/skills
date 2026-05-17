@@ -1,23 +1,25 @@
 ---
-name: cc-skill-security-review
-description: Implements intelligent cc skill security review with multi-factor skill
-  selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cc skill security review with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: cc-skill-security-review, cc skill security review, how do i cc-skill-security-review,
-    orchestrate cc-skill-security-review, automate cc-skill-security-review, agent
-    cc-skill-security-review, vulnerability scanning, security
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cc-skill-security-review, cc skill security review, how do i cc-skill-security-review, orchestrate cc-skill-security-review,
+    automate cc-skill-security-review, agent cc-skill-security-review, vulnerability scanning, security
+  version: 1.0.0
+name: cc-skill-security-review
 ---
-
-
-
 # Cc Skill Security Review
 
 Orchestrates intelligent skill selection and execution for cc skill security review workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,126 +141,112 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def select_security_rules(
+    target_language: str,
+    code_context: Dict[str, Any],
+    available_rules: List[SecurityRule]
+) -> List[SecurityRule]:
+    """Select relevant security rules based on target language and code context.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements multi-factor scoring for rule selection:
+    - Language/framework compatibility
+    - Historical vulnerability density for similar codebases
+    - Rule coverage vs. performance overhead
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        target_language: Programming language or framework identifier
+        code_context: Parsed code structure and configuration metadata
+        available_rules: List of available security rule definitions
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Filtered and sorted list of applicable security rules
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1 & 2: Guard clauses and input validation
+    if not target_language or not isinstance(target_language, str):
+        raise ValueError("Target language must be a non-empty string")
+    if not available_rules:
+        raise ValueError("At least one security rule must be provided")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    selected = []
+    for rule in available_rules:
+        score = 0.0
+        # Factor 1: Language match
+        if target_language in rule.supported_languages:
+            score += 0.5
+        # Factor 2: Context relevance (e.g., detects auth bypass in web frameworks)
+        if _matches_context(rule, code_context):
+            score += 0.3
+        # Factor 3: Historical effectiveness
+        score += rule.historical_detection_rate * 0.2
+            
+        if score >= rule.min_confidence_threshold:
+            selected.append(rule)
+            
+    # Sort by relevance score descending
+    selected.sort(key=lambda r: r.historical_detection_rate, reverse=True)
+    return selected
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_security_scan(
+    target_code: str,
+    selected_rules: List[SecurityRule],
+    fallback_strategy: str = "dynamic_analysis"
+) -> SecurityReport:
+    """Execute security scan with fallback chain for resilience.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud (Law 4):
+    - Invalid code structures halt immediately
+    - Fallback to alternative analysis methods if static analysis fails
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target_code: Source code or configuration to analyze
+        selected_rules: Pre-filtered security rules to apply
+        fallback_strategy: Method to use if primary analysis fails
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Immutable SecurityReport with findings and risk assessment
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not target_code or not selected_rules:
+        raise ValueError("Code and rules are required for scanning")
+        
+    findings = []
+    scan_attempts = 0
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    try:
+        # Primary: Static Analysis
+        static_results = _run_static_analysis(target_code, selected_rules)
+        findings.extend(static_results)
+        scan_attempts += 1
+        
+    except ParseError as e:
+        # Fallback 1: Dynamic Analysis / Runtime Inspection
+        if fallback_strategy == "dynamic_analysis":
+            findings.extend(_run_dynamic_analysis(target_code, selected_rules))
+            scan_attempts += 1
+        else:
+            raise ScanExecutionError(f"Static analysis failed: {e}") from e
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    except TimeoutError:
+        # Fallback 2: Rule subset reduction & retry
+        findings.extend(_run_reduced_rule_scan(target_code, selected_rules[:5]))
+        scan_attempts += 1
+        
+    # Law 3: Return new data structure, never mutate inputs
+    report = SecurityReport(
+        findings=findings,
+        scan_attempts=scan_attempts,
+        status="CRITICAL" if any(f.severity == "HIGH" for f in findings) else "PASS"
     )
+    
+    # Law 4: Fail loud on critical vulnerabilities
+    if report.status == "CRITICAL":
+        raise CriticalSecurityViolation(report)
+        
+    return report
 ```
 
 ### MUST DO
@@ -325,3 +313,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

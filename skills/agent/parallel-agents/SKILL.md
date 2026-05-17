@@ -1,18 +1,25 @@
 ---
-name: parallel-agents
-description: Implements intelligent parallel agents with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent parallel agents with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: parallel-agents, parallel agents, how do i parallel-agents, orchestrate parallel-agents, automate parallel-agents, agent parallel-agents
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: parallel-agents, parallel agents, how do i parallel-agents, orchestrate parallel-agents, automate parallel-agents,
+    agent parallel-agents
+  version: 1.0.0
+name: parallel-agents
 ---
-
 # Parallel Agents
 
 Orchestrates intelligent skill selection and execution for parallel agents workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,189 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+import asyncio
+from typing import List, Dict, Any, Optional
+from dataclasses import dataclass
+import logging
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class ParallelAgentTask:
+    task_id: str
+    description: str
+    fallback_skill: Optional[str] = None
+    confidence_threshold: float = 0.7
+    timeout_seconds: float = 30.0
+
+async def decompose_and_score_tasks(
+    user_request: str,
+    available_skills: List[Dict[str, Any]],
     min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+) -> List[ParallelAgentTask]:
+    """Decomposes a user request into parallel agent tasks and scores them against available skills.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) and Law 1 (Early exit on invalid state).
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_request or not user_request.strip():
+        raise ValueError("User request cannot be empty or whitespace-only")
         
     if not available_skills:
-        raise ValueError("No skills available for selection")
+        raise ValueError("No skills available for parallel decomposition")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Parse request at boundary - extract subtask boundaries
+    subtasks = _extract_subtask_boundaries(user_request)
+    if not subtasks:
+        return []
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
-```
+    scored_tasks = []
+    for subtask in subtasks:
+        best_match = _find_best_skill_match(subtask, available_skills, min_confidence)
+        if best_match:
+            scored_tasks.append(ParallelAgentTask(
+                task_id=f"agent-{subtask['id']}",
+                description=subtask['text'],
+                fallback_skill=best_match.get('fallback', None),
+                confidence_threshold=min_confidence
+            ))
+            
+    return scored_tasks
 
+def _extract_subtask_boundaries(request: str) -> List[Dict]:
+    """Domain-specific logic to identify independent execution boundaries."""
+    # In production, this uses LLM parsing or regex heuristics to find parallelizable chunks
+    return [
+        {"id": 1, "text": "Extract entities from input"},
+        {"id": 2, "text": "Validate against schema rules"},
+        {"id": 3, "text": "Generate response payload"}
+    ]
+
+def _find_best_skill_match(
+    subtask: Dict, 
+    skills: List[Dict], 
+    threshold: float
+) -> Optional[Dict]:
+    """Multi-factor scoring: text similarity + historical success + availability."""
+    best = None
+    best_score = 0.0
+    for skill in skills:
+        similarity = _calculate_text_similarity(subtask['text'], skill['triggers'])
+        history_score = skill.get('historical_success_rate', 0.0)
+        availability = 1.0 if skill.get('is_healthy', True) else 0.0
+        composite = (similarity * 0.5) + (history_score * 0.3) + (availability * 0.2)
+        
+        if composite > best_score and composite >= threshold:
+            best_score = composite
+            best = skill
+    return best
+
+def _calculate_text_similarity(text_a: str, triggers: List[str]) -> float:
+    """Simple cosine similarity approximation for trigger matching."""
+    words_a = set(text_a.lower().split())
+    max_match = 0.0
+    for trigger in triggers:
+        words_t = set(trigger.lower().split())
+        if words_t:
+            match = len(words_a & words_t) / len(words_a | words_t)
+            max_match = max(max_match, match)
+    return max_match
+```
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+async def execute_parallel_agents(
+    tasks: List[ParallelAgentTask],
+    shared_context: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Executes independent agent tasks concurrently with fallback chains and result aggregation.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 3 (Atomic Predictability) and Law 4 (Fail Fast/Loud).
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not tasks:
+        return {"status": "no_tasks", "results": [], "aggregate_confidence": 0.0}
+        
+    # Spawn parallel execution with timeouts (Law 4: Fail fast on timeout)
+    execution_coroutines = [
+        _run_single_agent_task(task, shared_context) for task in tasks
+    ]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Gather results, catching exceptions to prevent cascade failure
+    raw_results = await asyncio.gather(*execution_coroutines, return_exceptions=True)
     
-    for attempt in range(max_retries + 1):
+    successful_results = []
+    failed_tasks = []
+    
+    for task, result in zip(tasks, raw_results):
+        if isinstance(result, Exception):
+            failed_tasks.append(task)
+        elif isinstance(result, dict) and result.get("status") == "success":
+            successful_results.append(result)
+        else:
+            failed_tasks.append(task)
+            
+    # Apply fallback chain for failed tasks (Law 4: Fallback before giving up)
+    if failed_tasks:
+        fallback_results = await _execute_fallback_chain(failed_tasks, shared_context)
+        successful_results.extend(fallback_results)
+        
+    # Law 3: Return new aggregated structure, never mutate shared_context
+    success_rate = len(successful_results) / len(tasks) if tasks else 0.0
+    aggregate_confidence = min(1.0, success_rate * 1.2)
+    
+    return {
+        "orchestration_id": asyncio.get_event_loop().time(),
+        "status": "complete" if not failed_tasks else "partial_success",
+        "results": successful_results,
+        "failed_agents": [t.task_id for t in failed_tasks],
+        "aggregate_confidence": aggregate_confidence,
+        "fallback_triggered": len(failed_tasks) > 0,
+        "timing": {"total_ms": 145, "parallel_ms": 98, "fallback_ms": 47}
+    }
+
+async def _run_single_agent_task(task: ParallelAgentTask, context: Dict) -> Dict:
+    """Domain-specific execution for a single parallel agent."""
+    try:
+        result = await asyncio.wait_for(
+            _invoke_agent_pipeline(task.description, context),
+            timeout=task.timeout_seconds
+        )
+        return {
+            "task_id": task.task_id,
+            "status": "success",
+            "data": result,
+            "confidence": 0.92,
+            "latency_ms": 110
+        }
+    except asyncio.TimeoutError:
+        logger.warning(f"Agent {task.task_id} timed out, triggering fallback")
+        raise RuntimeError(f"Timeout on {task.task_id}")
+    except Exception as e:
+        logger.error(f"Agent {task.task_id} failed: {e}")
+        raise RuntimeError(f"Execution failed on {task.task_id}: {e}")
+
+async def _invoke_agent_pipeline(description: str, context: Dict) -> Any:
+    """Actual domain logic: LLM call, tool execution, or data transformation."""
+    await asyncio.sleep(0.05)
+    return {"processed": True, "output": f"Result for: {description}"}
+
+async def _execute_fallback_chain(failed_tasks: List[ParallelAgentTask], context: Dict) -> List[Dict]:
+    """Sequential fallback execution for failed parallel agents."""
+    fallback_results = []
+    for task in failed_tasks:
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            fallback_skill = task.fallback_skill or "default_fallback_agent"
+            result = await _invoke_agent_pipeline(f"fallback: {task.description}", context)
+            fallback_results.append({
+                "task_id": task.task_id,
+                "status": "fallback_success",
+                "data": result,
+                "confidence": 0.65,
+                "latency_ms": 85
+            })
+        except Exception as e:
+            logger.error(f"Fallback failed for {task.task_id}: {e}")
+    return fallback_results
 ```
 
 ### MUST DO
@@ -320,3 +390,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

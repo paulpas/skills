@@ -1,18 +1,25 @@
 ---
-name: verification-before-completion
-description: Implements intelligent verification before completion with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent verification before completion with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: verification-before-completion, verification before completion, how do i verification-before-completion, orchestrate verification-before-completion, automate verification-before-completion, agent verification-before-completion
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: verification-before-completion, verification before completion, how do i verification-before-completion, orchestrate
+    verification-before-completion, automate verification-before-completion, agent verification-before-completion
+  version: 1.0.0
+name: verification-before-completion
 ---
-
 # Verification Before Completion
 
 Orchestrates intelligent skill selection and execution for verification before completion workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,105 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def verify_task_readiness(
+    task_context: Dict,
+    verification_rules: List[Dict],
+    strict_mode: bool = True
+) -> Dict:
+    """Run pre-completion verification checks against task context.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) and Law 4 (Fail fast on invalid states).
+    Returns a verification report with pass/fail status and actionable details.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_context or not verification_rules:
+        raise ValueError("Task context and verification rules are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    verification_report = {
+        "status": "pending",
+        "checks_passed": [],
+        "checks_failed": [],
+        "warnings": [],
+        "timestamp": time.time()
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for rule in verification_rules:
+        rule_name = rule.get("name", "unnamed")
+        rule_type = rule.get("type", "schema")
+        passed = False
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        try:
+            if rule_type == "schema":
+                required_fields = rule.get("required_fields", [])
+                passed = all(field in task_context for field in required_fields)
+            elif rule_type == "dependency":
+                deps = rule.get("required_deps", [])
+                passed = all(dep in task_context.get("available_resources", []) for dep in deps)
+            elif rule_type == "state":
+                expected = rule.get("expected_state")
+                passed = task_context.get("current_state") == expected
+            else:
+                passed = True
+                
+            if passed:
+                verification_report["checks_passed"].append(rule_name)
+            else:
+                verification_report["checks_failed"].append(rule_name)
+                if strict_mode:
+                    verification_report["status"] = "failed"
+                    return verification_report
+            
+        except Exception as e:
+            verification_report["warnings"].append(f"{rule_name}: {str(e)}")
+            
+    verification_report["status"] = "passed" if not verification_report["checks_failed"] else "failed"
+    return verification_report
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
+def execute_with_verification_fallback(
     task_context: Dict,
-    max_retries: int = 2
+    verification_rules: List[Dict],
+    fallback_handlers: Dict[str, Callable],
+    max_verification_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute task with verification gates and domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 1 (Early exit on invalid state) and Law 3 (Atomic returns).
+    Applies verification-specific fallbacks when pre-completion checks fail.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+    if not task_context:
+        raise ValueError("Task context cannot be empty")
+        
+    for attempt in range(max_verification_retries + 1):
+        # Law 2: Parse and verify at boundary
+        verification_report = verify_task_readiness(task_context, verification_rules)
+        
+        if verification_report["status"] == "passed":
+            # Proceed to execution only after verification passes
+            execution_result = _run_task_execution(task_context)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "verification_report": verification_report,
+                "execution_result": execution_result,
+                "attempts": attempt + 1
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        # Verification failed - apply domain-specific fallback
+        fallback_type = _determine_fallback_type(verification_report)
+        if fallback_type in fallback_handlers:
+            task_context = fallback_handlers[fallback_type](task_context, verification_report)
+            continue
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        # Law 4: Fail loud if no fallback available
+        raise VerificationError(
+            f"Verification failed after {attempt + 1} attempts. "
+            f"Failed checks: {verification_report['checks_failed']}"
+        )
+        
+    raise VerificationError("Max verification retries exhausted without passing checks")
 ```
 
 ### MUST DO
@@ -320,3 +306,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

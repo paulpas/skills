@@ -1,18 +1,24 @@
 ---
-name: pydantic-ai
-description: Implements intelligent pydantic ai with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent pydantic ai with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: pydantic-ai, pydantic ai, how do i pydantic-ai, orchestrate pydantic-ai, automate pydantic-ai, agent pydantic-ai
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: pydantic-ai, pydantic ai, how do i pydantic-ai, orchestrate pydantic-ai, automate pydantic-ai, agent pydantic-ai
+  version: 1.0.0
+name: pydantic-ai
 ---
-
 # Pydantic Ai
 
 Orchestrates intelligent skill selection and execution for pydantic ai workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,112 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
-    
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
-    """
+from pydantic_ai import Agent, RunContext
+from pydantic import BaseModel, Field
+from typing import Dict, List, Optional
+import asyncio
+
+class TaskIntent(BaseModel):
+    category: str = Field(description="Task category: data_analysis, code_generation, or system_admin")
+    confidence: float = Field(ge=0.0, le=1.0)
+    required_tools: List[str] = Field(default_factory=list)
+
+# Domain-specific agent registry for pydantic-ai orchestration
+AGENT_REGISTRY: Dict[str, Agent] = {
+    "data_analysis": Agent("data-analyst", system_prompt="Analyze datasets and return structured insights."),
+    "code_generation": Agent("code-writer", system_prompt="Generate production-ready code with tests."),
+    "system_admin": Agent("sys-admin", system_prompt="Manage infrastructure and run diagnostics."),
+}
+
+async def route_and_invoke_agent(
+    user_request: str,
+    intent_classifier: Agent[TaskIntent],
+    fallback_agent: Optional[Agent] = None
+) -> str:
+    """Route user request to the optimal pydantic-ai agent based on parsed intent."""
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
+    if not user_request or not user_request.strip():
         raise ValueError("Task description cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Parse intent using pydantic-ai's structured output (Law 2)
+    intent_result = await intent_classifier.run(user_request)
+    intent: TaskIntent = intent_result.data
+
+    # Select agent based on multi-factor scoring (category match + tool availability)
+    target_agent = AGENT_REGISTRY.get(intent.category)
+    if target_agent is None:
+        if fallback_agent:
+            target_agent = fallback_agent
+        else:
+            raise ValueError(f"No agent available for category: {intent.category}")
+
+    # Execute with context passing and tool binding
+    class OrchestrationContext(BaseModel):
+        request_id: str = Field(default="")
+        history: List[Dict] = Field(default_factory=list)
+
+    ctx = OrchestrationContext(request_id="req-123", history=[])
+    result = await target_agent.run(user_request, message_history=ctx.history)
+    return result.data
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+from pydantic_ai import Agent, RunContext
+from pydantic import BaseModel, Field
+import asyncio
+from typing import Dict, Any, Optional
+
+class ExecutionState(BaseModel):
+    status: str = Field(default="pending")
+    attempts: int = Field(default=0)
+    last_error: Optional[str] = None
+    result_payload: Optional[Dict[str, Any]] = None
+
+async def execute_with_pydantic_fallback(
+    primary_agent: Agent,
+    fallback_agent: Agent,
+    task_input: str,
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
-    
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
-    """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+) -> Dict[str, Any]:
+    """Execute pydantic-ai agent with structured state tracking and graceful degradation."""
+    state = ExecutionState()
     
     for attempt in range(max_retries + 1):
+        state.attempts = attempt + 1
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Run primary agent with timeout and structured output validation
+            result = await asyncio.wait_for(
+                primary_agent.run(task_input),
+                timeout=30.0
+            )
+            state.status = "success"
+            state.result_payload = {"raw": result.data, "model": primary_agent.model}
+            return state.model_dump()
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+        except asyncio.TimeoutError:
+            state.last_error = "Execution timed out"
+            continue
+        except Exception as e:
+            state.last_error = str(e)
+            # Pydantic-ai specific: check if it's a validation/tool error
+            if "tool_execution_failed" in str(e).lower():
+                continue
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Fallback chain: switch to secondary agent with adjusted context
+    try:
+        fallback_result = await fallback_agent.run(
+            f"Previous attempt failed: {state.last_error}. Retrying with simplified constraints: {task_input}"
+        )
+        state.status = "fallback_success"
+        state.result_payload = {"raw": fallback_result.data, "model": fallback_agent.model}
+    except Exception as fallback_err:
+        state.status = "failed"
+        state.last_error = f"All attempts exhausted: {fallback_err}"
+        
+    return state.model_dump()
 ```
 
 ### MUST DO
@@ -320,3 +312,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

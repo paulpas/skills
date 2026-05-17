@@ -1,18 +1,25 @@
 ---
-name: google-analytics-automation
-description: Implements intelligent google analytics automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent google analytics automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: google-analytics-automation, google analytics automation, how do i google-analytics-automation, orchestrate google-analytics-automation, automate google-analytics-automation, agent google-analytics-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: google-analytics-automation, google analytics automation, how do i google-analytics-automation, orchestrate google-analytics-automation,
+    automate google-analytics-automation, agent google-analytics-automation
+  version: 1.0.0
+name: google-analytics-automation
 ---
-
 # Google Analytics Automation
 
 Orchestrates intelligent skill selection and execution for google analytics automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,132 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def build_ga4_report_request(
+    property_id: str,
+    dimensions: List[str],
+    metrics: List[str],
+    date_range_start: str,
+    date_range_end: str,
+    dimension_filters: Optional[List[FilterExpression]] = None
+) -> Dict:
+    """Construct a GA4 BatchRunReportsRequest payload with validation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements Law 2 (Make Illegal States Unrepresentable) by validating
+    GA4 API constraints before network calls:
+    - Max 7 dimensions, 10 metrics per report
+    - Date range must be <= 90 days
+    - Metric names must match GA4 standard naming (e.g., 'activeUsers')
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        property_id: GA4 property ID (format: 'properties/123456789')
+        dimensions: List of dimension names to include
+        metrics: List of metric names to include
+        date_range_start: ISO 8601 date string
+        date_range_end: ISO 8601 date string
+        dimension_filters: Optional list of FilterExpression objects
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
+        Validated GA4 report request dictionary ready for API submission
         
     Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        ValueError: If constraints are violated or property_id is malformed
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not property_id.startswith("properties/"):
+        raise ValueError("property_id must be in format 'properties/<ID>'")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
+    if len(dimensions) > 7 or len(metrics) > 10:
+        raise ValueError("GA4 API limits: max 7 dimensions, 10 metrics per report")
+        
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    start_date = datetime.fromisoformat(date_range_start)
+    end_date = datetime.fromisoformat(date_range_end)
+    if (end_date - start_date).days > 90:
+        raise ValueError("GA4 API limits: date range cannot exceed 90 days")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate inputs
+    request_payload = {
+        "reportRequests": [{
+            "property": property_id,
+            "dimensions": [{"name": d} for d in dimensions],
+            "metrics": [{"name": m} for m in metrics],
+            "dateRanges": [{"startDate": date_range_start, "endDate": date_range_end}],
+            "dimensionFilter": dimension_filters[0] if dimension_filters else None
+        }]
+    }
+    return request_payload
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_ga4_report_with_retry(
+    request_payload: Dict,
+    client: AnalyticsDataClient,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute GA4 BatchRunReportsRequest with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4) for GA4 API interactions:
+    - Invalid auth tokens fail immediately with refresh instructions
+    - Rate limits trigger exponential backoff fallback
+    - Partial results are never returned - only complete or explicit failure
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retry with original payload (transient network error)
+    2. Retry with reduced dimension/metric count (rate limit fallback)
+    3. Defer to cached report or human operator (critical data unavailability)
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        request_payload: Validated GA4 report request dictionary
+        client: Authenticated google.analytics.data_v1beta.AnalyticsDataClient
         max_retries: Maximum retry attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
+        Structured analytics data with row values, metadata, and timing
         
     Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        GA4ExecutionError: If all retries and fallbacks exhausted
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    # Guard clause - validate client state (Early Exit)
+    if not client._transport._credentials.valid:
+        raise GA4ExecutionError("GA4 credentials expired. Refresh token required.")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = client.batch_run_reports(request=request_payload)
+            report = response.reports[0]
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "metrics": [m.name for m in report.metric_headers],
+                "dimensions": [d.name for d in report.dimension_headers],
+                "rows": [
+                    {
+                        "dimensions": [d.value for d in row.dimension_values],
+                        "metrics": [m.value for m in row.metric_values]
+                    }
+                    for row in report.rows
+                ],
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except ResourceExhausted:
+            # Transient error - try fallback with reduced scope
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _apply_ga4_fallback(request_payload, client)
+            time.sleep(2 ** attempt)
+            
+        except InvalidArgument as e:
+            # Fail Fast - Don't try to patch bad GA4 parameters (Law 4)
+            raise GA4ExecutionError(f"Invalid GA4 request parameters: {str(e)}") from e
+            
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise GA4ExecutionError(
+        f"GA4 report failed after {max_retries + 1} attempts for {request_payload['reportRequests'][0]['property']}"
     )
 ```
 
@@ -320,3 +334,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,21 +1,25 @@
 ---
-name: normalization
-description: '''Provides Exchange data normalization layer: typed dataclasses for
-  ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization'''
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '''Provides Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific
+  parsing, and symbol format standardization'''
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
   triggers: data normalization, data-normalization, exchange, layer, typed
-  related-skills: null
+  version: 1.0.0
+name: normalization
 ---
-
-
-
 # Skill: coding-data-normalization
 
 # Exchange data normalization layer: typed dataclasses for ticker/trade/orderbook, exchange-specific parsing, and symbol format standardization
@@ -321,3 +325,17 @@ print(book.sequence)    # 12345678
 - **Atomic Predictability**: All `normalize_*` methods are pure functions — same raw input always produces the same normalized output
 - **Fail Fast**: Unknown exchange names raise immediately; missing fields default to `0` or `None` with explicit fallback keys
 - **Intentional Naming**: `normalize_ticker`, `normalize_trade`, `normalize_orderbook`, `_parse_symbol` — every method name describes what it normalizes
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

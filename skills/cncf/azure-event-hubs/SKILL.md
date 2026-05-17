@@ -1,24 +1,24 @@
 ---
-name: event-hubs
-description: '"Provides Event streaming platform for high-throughput data ingestion
-  and processing"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: '"Provides Event streaming platform for high-throughput data ingestion and processing"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
+  output-format: manifests
+  related-skills: azure-functions, azure-monitor, azure-service-bus
   role: reference
   scope: infrastructure
-  output-format: manifests
-  triggers: event hubs, event streaming, data ingestion, streaming, message streaming,
-    kafka
-  related-skills: azure-functions, azure-monitor, azure-service-bus
+  triggers: event hubs, event streaming, data ingestion, streaming, message streaming, kafka
+  version: 1.0.0
+name: event-hubs
 ---
-
-
-
-
-
 # Azure Event Hubs
 
 Deploy and manage azure event hubs infrastructure as part of your cloud-native environment.
@@ -189,3 +189,28 @@ Connect with platform services:
 | `cncf-azure-stream-analytics` | Related infrastructure service |
 | `cncf-azure-monitor` | Related infrastructure service |
 | `cncf-azure-functions` | Related infrastructure service |
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

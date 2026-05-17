@@ -1,18 +1,25 @@
 ---
-name: zendesk-automation
-description: Implements intelligent zendesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent zendesk automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: zendesk-automation, zendesk automation, how do i zendesk-automation, orchestrate zendesk-automation, automate zendesk-automation, agent zendesk-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: zendesk-automation, zendesk automation, how do i zendesk-automation, orchestrate zendesk-automation, automate
+    zendesk-automation, agent zendesk-automation
+  version: 1.0.0
+name: zendesk-automation
 ---
-
 # Zendesk Automation
 
 Orchestrates intelligent skill selection and execution for zendesk automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,122 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def route_zendesk_request(
+    event_payload: Dict,
+    automation_rules: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route incoming Zendesk webhook/event to the optimal automation rule.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Analyzes ticket context, tags, and request type to match against
+    configured automation workflows. Uses text similarity and historical
+    execution success rates to score rules.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        event_payload: Raw Zendesk webhook payload (ticket, comment, or trigger event)
+        automation_rules: List of configured automation rule metadata
+        min_confidence: Minimum confidence threshold for rule selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected automation rule with confidence score and execution context
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not event_payload or "ticket" not in event_payload:
+        raise ValueError("Invalid Zendesk event payload: missing ticket data")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    ticket = event_payload["ticket"]
+    ticket_features = {
+        "subject": ticket.get("subject", ""),
+        "tags": ticket.get("tags", []),
+        "requester_type": ticket.get("requester", {}).get("role", ""),
+        "priority": ticket.get("priority", ""),
+        "status": ticket.get("status", "")
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_rule = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for rule in automation_rules:
+        match_score = _calculate_rule_match(ticket_features, rule)
+        historical_success = rule.get("historical_success_rate", 0.0)
+        combined_score = (match_score * 0.6) + (historical_success * 0.4)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        if combined_score > best_score and combined_score >= min_confidence:
+            best_score = combined_score
+            best_rule = rule
+            
+    if best_rule is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    return {
+        "rule_id": best_rule["id"],
+        "rule_name": best_rule["name"],
+        "confidence": best_score,
+        "context": ticket_features,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_zendesk_automation(
+    selected_rule: Dict,
+    zendesk_client: ZendeskAPI,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a Zendesk automation rule with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles API rate limits, transient network errors, and invalid ticket states.
+    Implements fallback chain: retry -> alternative action -> manual review queue.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_rule: Output from route_zendesk_request
+        zendesk_client: Authenticated Zendesk API client instance
+        max_retries: Maximum retry attempts for transient failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, updated ticket ID, and audit metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    ticket_id = selected_rule["context"].get("ticket_id")
+    if not ticket_id:
+        raise ValueError("Missing ticket_id in automation context")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Map rule actions to specific Zendesk API endpoints
+            updates = {}
+            if selected_rule.get("actions", {}).get("update_status"):
+                updates["status"] = selected_rule["actions"]["update_status"]
+            if selected_rule.get("actions", {}).get("add_tags"):
+                current_tags = zendesk_client.get_ticket_tags(ticket_id)
+                updates["tags"] = list(set(current_tags + selected_rule["actions"]["add_tags"]))
+                
+            zendesk_client.update_ticket(ticket_id, updates)
             
-            # Success - Atomic Predictability (Law 3)
+            # Post automation execution comment for audit trail
+            zendesk_client.post_comment(ticket_id, {
+                "body": f"[Automation] Executed rule: {selected_rule['rule_name']}",
+                "public": False
+            })
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "rule_executed": selected_rule["rule_name"],
+                "ticket_id": ticket_id,
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except ZendeskRateLimitError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_manual_review(ticket_id, selected_rule)
+            time.sleep(2 ** attempt)
+            
+        except ZendeskInvalidStateError as e:
+            raise ZendeskAutomationError(f"Invalid ticket state: {str(e)}") from e
+            
+    return _fallback_to_alternative_rule(selected_rule)
 ```
 
 ### MUST DO
@@ -320,3 +323,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

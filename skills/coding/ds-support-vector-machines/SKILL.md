@@ -1,21 +1,25 @@
 ---
-name: support-vector-machines
-description: '"Implements support vector machines (SVM) with kernel methods, support
-  vectors, and margin maximization for classification and regression"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for
+  classification and regression"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-hyperparameter-tuning, ds-neural-networks, ds-tree-methods
   role: implementation
   scope: implementation
-  output-format: code
   triggers: support vector machines, SVM, kernel methods, support vectors, SVM classification
-  related-skills: ds-hyperparameter-tuning, ds-neural-networks, ds-tree-methods
+  version: 1.0.0
+name: support-vector-machines
 ---
-
-
-
 # Support Vector Machines
 
 Comprehensive guide to support vector machines in machine learning and data science workflows.
@@ -57,34 +61,87 @@ Support Vector Machines is a critical component of the machine learning workflow
 ### Pattern 1: Basic Support Vector Machines
 
 ```python
-# Example pattern for Support Vector Machines
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
 
-# Implementation pattern
-pass
+# Generate synthetic classification dataset
+X, y = make_classification(n_samples=500, n_features=10, n_classes=2, random_state=42)
+df = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+df['target'] = y
+
+# Split and scale data
+X_train, X_test, y_train, y_test = train_test_split(
+    df.drop('target', axis=1), df['target'], test_size=0.2, random_state=42
+)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Train SVM classifier
+svm_model = SVC(kernel='rbf', C=1.0, gamma='scale', random_state=42)
+svm_model.fit(X_train_scaled, y_train)
+
+# Predict and evaluate
+y_pred = svm_model.predict(X_test_scaled)
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
+print(classification_report(y_test, y_pred))
 ```
 
 ### Pattern 2: Production-Ready Support Vector Machines
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, Optional
+from sklearn.svm import SVC
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, f1_score
 
 logger = logging.getLogger(__name__)
 
 class SupportVectorMachines:
-    """Production implementation of Support Vector Machines"""
+    """Production-ready SVM wrapper with pipeline and metrics."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Support Vector Machines on data"""
-        return {}
+    def __init__(self, kernel: str = 'rbf', C: float = 1.0, gamma: str = 'scale') -> None:
+        self.kernel = kernel
+        self.C = C
+        self.gamma = gamma
+        self.pipeline: Optional[Pipeline] = None
+        
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> 'SupportVectorMachines':
+        """Train the SVM model with automatic scaling."""
+        try:
+            self.pipeline = Pipeline([
+                ('scaler', StandardScaler()),
+                ('svm', SVC(kernel=self.kernel, C=self.C, gamma=self.gamma, random_state=42))
+            ])
+            self.pipeline.fit(X, y)
+            logger.info("SVM model trained successfully.")
+        except Exception as e:
+            logger.error(f"Training failed: {e}")
+            raise RuntimeError("SVM training failed") from e
+        return self
+        
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        """Generate predictions on new data."""
+        if self.pipeline is None:
+            raise ValueError("Model must be fitted before prediction.")
+        return self.pipeline.predict(X)
+        
+    def evaluate(self, X: pd.DataFrame, y: pd.Series) -> Dict[str, float]:
+        """Compute evaluation metrics."""
+        y_pred = self.predict(X)
+        return {
+            'accuracy': float(accuracy_score(y, y_pred)),
+            'f1_score': float(f1_score(y, y_pred, average='weighted'))
+        }
 ```
 
 ## Best Practices
@@ -96,6 +153,27 @@ class SupportVectorMachines:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+- ✅ Follow the DRY (Don't Repeat Yourself) principle for reusable preprocessing and evaluation logic
+
+### BAD vs GOOD Code Examples
+
+```python
+# BAD: Hardcoded values, no scaling, missing error handling, poor structure
+def train_svm(data):
+    model = SVC()
+    model.fit(data[:, :-1], data[:, -1])
+    return model.predict(data[:, :-1])
+
+# GOOD: Type hints, scaling, validation, clear separation of concerns
+def train_svm_proper(X: pd.DataFrame, y: pd.Series) -> Dict[str, Any]:
+    if X.empty or y.empty:
+        raise ValueError("Input data cannot be empty")
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    model = SVC(kernel='rbf', C=1.0, random_state=42)
+    model.fit(X_scaled, y)
+    return {'model': model, 'scaler': scaler}
+```
 
 ## Common Pitfalls
 
@@ -110,60 +188,70 @@ class SupportVectorMachines:
 ## Complete Working Example
 
 ```python
-# Full working example for Support Vector Machines
-import pandas as pd
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, confusion_matrix
 from typing import Dict, Any
 
-def implement_machines(data: pd.DataFrame) -> Dict[str, Any]:
+def implement_svm_workflow(data: pd.DataFrame, target_col: str = 'target') -> Dict[str, Any]:
     """
-    Complete implementation of Support Vector Machines.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    Complete SVM workflow with training, evaluation, and visualization.
     
     Args:
-        data: Input DataFrame with required columns
+        data: Input DataFrame containing features and target column
+        target_col: Name of the target column
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_machines(df)
-        >>> print(results)
+        Dictionary with metrics, model, scaler, and plot figure
     """
-    # Validate inputs
     if data is None or data.empty:
         raise ValueError("Input data cannot be None or empty")
+    if target_col not in data.columns:
+        raise ValueError(f"Target column '{target_col}' not found in data")
+        
+    X = data.drop(columns=[target_col])
+    y = data[target_col]
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    model = SVC(kernel='rbf', C=1.0, gamma='scale', random_state=42)
+    model.fit(X_train_scaled, y_train)
+    
+    y_pred = model.predict(X_test_scaled)
+    acc = accuracy_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
+    
+    fig, ax = plt.subplots()
+    ax.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    ax.set_title('Confusion Matrix')
+    ax.set_xlabel('Predicted')
+    ax.set_ylabel('True')
+    plt.tight_layout()
+    
+    return {
+        'accuracy': float(acc),
+        'confusion_matrix': cm.tolist(),
+        'model': model,
+        'scaler': scaler,
+        'figure': fig
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_machines(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    X, y = make_classification(n_samples=300, n_features=2, n_informative=2, n_redundant=0, random_state=42)
+    sample_data = pd.DataFrame(X, columns=['feat_1', 'feat_2'])
+    sample_data['target'] = y
+    results = implement_svm_workflow(sample_data)
+    print(f"Accuracy: {results['accuracy']:.4f}")
+    results['figure'].show()
 ```
 
 ## Related Skills
@@ -183,3 +271,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

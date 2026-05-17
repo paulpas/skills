@@ -1,18 +1,24 @@
 ---
-name: wordpress
-description: Implements intelligent wordpress with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent wordpress with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: wordpress, wordpress, how do i wordpress, orchestrate wordpress, automate wordpress, agent wordpress
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: wordpress, wordpress, how do i wordpress, orchestrate wordpress, automate wordpress, agent wordpress
+  version: 1.0.0
+name: wordpress
 ---
-
 # Wordpress
 
 Orchestrates intelligent skill selection and execution for wordpress workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,115 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def route_wordpress_task(
+    request: str,
+    site_config: Dict,
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route WordPress requests to specific domain handlers.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies multi-factor scoring to WordPress operations:
+    - Endpoint matching (REST API vs WP-CLI vs DB)
+    - Site health status and maintenance windows
+    - Historical execution success for similar WP tasks
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
+        request: Natural language or structured WP task request
+        site_config: WordPress site configuration and credentials
         min_confidence: Minimum confidence threshold (0.0-1.0)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Task handler dict with endpoint, method, and payload schema
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request or not site_config.get("site_url"):
+        raise ValueError("Request and valid site_url are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    parsed_intent = _parse_wp_intent(request)
+    site_health = _check_wp_site_health(site_config)
     
-    best_skill = None
-    best_score = 0.0
+    candidates = [
+        {"handler": "wp_rest_content", "score": _match_rest_score(parsed_intent, site_health)},
+        {"handler": "wp_cli_maintenance", "score": _match_cli_score(parsed_intent, site_health)},
+        {"handler": "wp_db_query", "score": _match_db_score(parsed_intent, site_health)}
+    ]
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+    best = max(candidates, key=lambda x: x["score"])
+    if best["score"] < min_confidence:
         return None
-    
+        
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "handler": best["handler"],
+        "endpoint": site_config["site_url"] + "/wp-json/wp/v2/" + best["handler"].split("_")[-1],
+        "method": "POST" if "content" in best["handler"] else "GET",
+        "confidence": best["score"],
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_wordpress_operation(
+    task_handler: Dict,
+    wp_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute WordPress operations with resilient fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud (Law 4) for WP API/CLI interactions:
+    - Invalid auth or site down halts immediately
+    - Rate limits trigger exponential backoff
+    - API failures fall back to WP-CLI or local cache
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        task_handler: Selected WordPress operation handler
+        wp_context: Execution context (auth tokens, post IDs, etc.)
         max_retries: Maximum retry attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with WP response metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate WP auth (Early Exit)
+    if not wp_context.get("auth_token") or not wp_context.get("site_url"):
+        raise WPExecutionError("Missing WordPress authentication or site URL")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_payload = _validate_wp_payload(wp_context, task_handler)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = _call_wp_rest_api(task_handler, validated_payload)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "handler": task_handler["handler"],
+                "result": response.json(),
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _calculate_latency(),
+                "wp_status": response.status_code
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except WPAuthError as e:
+            # Fail Fast - Don't retry invalid auth (Law 4)
+            raise WPExecutionError(f"WordPress auth failed: {str(e)}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except WPRateLimitError as e:
+            # Transient - wait and retry
+            time.sleep(2 ** attempt)
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _fallback_to_wp_cli(task_handler, validated_payload)
+                
+        except WPConnectionError as e:
+            if attempt == max_retries:
+                return _fallback_to_local_cache(task_handler)
+                
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise WPExecutionError(f"WordPress operation failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

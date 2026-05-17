@@ -1,22 +1,26 @@
 ---
-name: pulumi
-description: Implements Pulumi infrastructure as code using Python, TypeScript, and
-  Go for cloud provisioning with state management, stacks, backends, and cross-cloud
-  provisioning
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements Pulumi infrastructure as code using Python, TypeScript, and Go for cloud provisioning with state management,
+  stacks, backends, and cross-cloud provisioning
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
-  triggers: pulumi, iac, infrastructure as code, pulumi python, pulumi typescript,
-    how do i deploy infrastructure, crossplane, cloudformation
-  role: implementation
-  scope: infrastructure
   output-format: code
   related-skills: cncf-aws-cloudformation, cncf-helm, cncf-terraform
+  role: implementation
+  scope: infrastructure
+  triggers: pulumi, iac, infrastructure as code, pulumi python, pulumi typescript, how do i deploy infrastructure, crossplane,
+    cloudformation
+  version: 1.0.0
+name: pulumi
 ---
-
-
 # Pulumi Infrastructure as Code
 
 Implements Pulumi infrastructure as code using Python, TypeScript, and Go programming languages for cloud provisioning with state management, stacks, backends, and multi-cloud infrastructure support.

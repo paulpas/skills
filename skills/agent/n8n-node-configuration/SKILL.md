@@ -1,18 +1,25 @@
 ---
-name: n8n-node-configuration
-description: Implements intelligent n8n node configuration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent n8n node configuration with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: n8n-node-configuration, n8n node configuration, how do i n8n-node-configuration, orchestrate n8n-node-configuration, automate n8n-node-configuration, agent n8n-node-configuration
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: n8n-node-configuration, n8n node configuration, how do i n8n-node-configuration, orchestrate n8n-node-configuration,
+    automate n8n-node-configuration, agent n8n-node-configuration
+  version: 1.0.0
+name: n8n-node-configuration
 ---
-
 # N8N Node Configuration
 
 Orchestrates intelligent skill selection and execution for n8n node configuration workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,89 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def resolve_n8n_node_config(
+    node_type: str,
+    user_config: Dict[str, Any],
+    available_node_versions: List[Dict]
+) -> Dict[str, Any]:
+    """Resolve optimal n8n node configuration based on trigger context and version compatibility.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 1 (Early Exit) and Law 2 (Immutable State) to n8n node setup.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not node_type or not isinstance(user_config, dict):
+        raise ValueError("Invalid node type or configuration format")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse and validate against n8n schema (Law 2)
+    validated_params = _parse_n8n_node_schema(node_type, user_config)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+    # Find compatible version
+    compatible_version = None
+    for version in available_node_versions:
+        if version["type"] == node_type and version["min_n8n_version"] <= "1.0.0":
+            compatible_version = version
+            break
+            
+    if not compatible_version:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return new config structure (Law 3)
+    return {
+        "node_type": node_type,
+        "version": compatible_version["id"],
+        "parameters": validated_params,
+        "fallback_chain": ["default_config", "manual_review"]
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def apply_n8n_node_config(
+    resolved_config: Dict[str, Any],
+    workflow_context: Dict[str, Any],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Apply n8n node configuration with fallback chain for resilience.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast/Loud) and fallback routing specific to n8n workflows.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    if not resolved_config or "parameters" not in resolved_config:
+        raise ValueError("Missing resolved configuration for node application")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Validate against active n8n instance schema
+            validation_result = _validate_against_n8n_schema(
+                resolved_config["node_type"],
+                resolved_config["parameters"]
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            if not validation_result["valid"]:
+                # Fail fast on schema mismatch (Law 4)
+                raise SchemaValidationError(validation_result["errors"])
+                
+            # Apply configuration immutably (Law 3)
+            applied_config = _apply_to_workflow(resolved_config, workflow_context)
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "node_id": applied_config["id"],
+                "applied_parameters": applied_config["parameters"],
+                "attempts": attempt + 1
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except SchemaValidationError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_default_node_config(resolved_config["node_type"])
+            continue
+            
+        except ConnectionError:
+            if attempt == max_retries:
+                return _fallback_to_local_validation(resolved_config)
+            continue
+            
+    raise RuntimeError(f"Failed to apply n8n config for {resolved_config['node_type']}")
 ```
 
 ### MUST DO
@@ -320,3 +290,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

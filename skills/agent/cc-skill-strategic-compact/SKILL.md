@@ -1,18 +1,25 @@
 ---
-name: cc-skill-strategic-compact
-description: Implements intelligent cc skill strategic compact with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cc skill strategic compact with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: cc-skill-strategic-compact, cc skill strategic compact, how do i cc-skill-strategic-compact, orchestrate cc-skill-strategic-compact, automate cc-skill-strategic-compact, agent cc-skill-strategic-compact
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cc-skill-strategic-compact, cc skill strategic compact, how do i cc-skill-strategic-compact, orchestrate cc-skill-strategic-compact,
+    automate cc-skill-strategic-compact, agent cc-skill-strategic-compact
+  version: 1.0.0
+name: cc-skill-strategic-compact
 ---
-
 # Cc Skill Strategic Compact
 
 Orchestrates intelligent skill selection and execution for cc skill strategic compact workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,96 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_strategic_compact(
+    task_context: Dict[str, Any],
+    available_compacts: List[Dict[str, Any]],
+    min_confidence: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Evaluate available skill compacts against the current task context.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Make Illegal States Unrepresentable) by validating
+    compact schemas before scoring. Uses multi-factor scoring to determine
+    the optimal strategic compact for the request.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_context.get("intent") or not available_compacts:
+        raise ValueError("Task intent and available compacts are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    task_features = _extract_intent_features(task_context["intent"])
+    best_compact = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for compact in available_compacts:
+        # Law 1: Early exit for disabled/deprecated compacts
+        if compact.get("status") in ("disabled", "deprecated"):
+            continue
+            
+        match_score = _calculate_text_similarity(task_features, compact.get("triggers", []))
+        history_score = compact.get("historical_success_rate", 0.0)
+        availability_score = 1.0 if compact.get("health") == "healthy" else 0.5
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        composite_score = (match_score * 0.5) + (history_score * 0.3) + (availability_score * 0.2)
+        
+        if composite_score > best_score and composite_score >= min_confidence:
+            best_score = composite_score
+            best_compact = compact
+            
+    if best_compact is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Atomic Predictability - return fresh dict
+    return {
+        "compact_id": best_compact["id"],
+        "confidence": best_score,
+        "selected_at": time.time(),
+        "fallback_chain": best_compact.get("fallbacks", [])
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_compact_with_fallback(
+    compact_config: Dict[str, Any],
+    execution_context: Dict[str, Any],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute a strategic compact with built-in resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Follows Law 4 (Fail Fast, Fail Loud) by immediately halting on
+    invalid state errors and routing transient failures through the
+    configured fallback chain.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not compact_config.get("steps"):
+        raise CompactExecutionError("Compact must define at least one execution step")
+        
+    validated_context = _validate_compact_inputs(execution_context, compact_config)
+    attempt = 0
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while attempt <= max_retries:
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            result = _run_compact_steps(compact_config["steps"], validated_context)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "success",
+                "compact_id": compact_config["id"],
+                "output": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
-            
         except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
+            # Law 4: Fail immediately on invalid state
+            raise CompactExecutionError(f"Invalid state in compact {compact_config['id']}: {e}") from e
         except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            attempt += 1
+            if attempt > max_retries:
+                return _apply_compact_fallback(compact_config, validated_context)
+                
+    # Fallback exhausted
+    return {
+        "status": "fallback_triggered",
+        "compact_id": compact_config["id"],
+        "fallback_result": _route_to_human_operator(compact_config, validated_context)
+    }
 ```
 
 ### MUST DO
@@ -320,3 +297,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

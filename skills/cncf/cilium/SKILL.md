@@ -1,24 +1,24 @@
 ---
-name: cilium
-description: '"Cilium in Cloud Native Network - cloud native architecture, patterns"
-  pitfalls, and best practices'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: '"Cilium in Cloud Native Network - cloud native architecture, patterns" pitfalls, and best practices'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
+  output-format: manifests
+  related-skills: calico, container-network-interface-cni, contour, kong
   role: reference
   scope: infrastructure
-  output-format: manifests
-  triggers: cdn, cilium, infrastructure as code, monitoring, native, network, cloudformation,
-    cloudfront
-  related-skills: calico, container-network-interface-cni, contour, kong
+  triggers: cdn, cilium, infrastructure as code, monitoring, native, network, cloudformation, cloudfront
+  version: 1.0.0
+name: cilium
 ---
-
-
-
-
-
  # Cilium in Cloud-Native Engineering
 
 **Category:** network  
@@ -540,3 +540,37 @@ helm install cilium cilium/cilium   --set kubeProxyReplacement=partial   --set k
 
 **Solution:** Verify BGP peer configuration with `cilium bpg peer status`, check tunnel status with `cilium status`, verify firewall allows overlay traffic, and test direct pod-to-pod connectivity.
 
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Integrating a CNCF project into Kubernetes infrastructure** — You need to configure, deploy, or troubleshoot a cloud-native tool within a cluster
+- **Designing cloud-native architecture** — You are selecting and integrating CNCF tools to solve specific infrastructure challenges
+- **Resolving operational issues** — A CNCF component is misbehaving, underperforming, or needs configuration changes
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

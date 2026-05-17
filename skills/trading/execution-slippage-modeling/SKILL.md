@@ -1,22 +1,24 @@
 ---
-name: slippage-modeling
-description: '"Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution"
-  Analysis'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
+description: '"Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution" Analysis'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: exchange-order-book-sync, technical-false-signal-filtering
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: estimation, execution slippage modeling, execution-slippage-modeling,
-    realistic, simulation
-  related-skills: exchange-order-book-sync, technical-false-signal-filtering
+  triggers: estimation, execution slippage modeling, execution-slippage-modeling, realistic, simulation
+  version: 1.0.0
+name: slippage-modeling
 ---
-
-
-
 **Role:** Algorithmic Trading Risk Analyst — builds models to estimate, simulate, and account for slippage and transaction costs in execution analysis and strategy optimization.
 
 **Philosophy:** Realistic Execution Modeling — slippage models should capture the stochastic nature of market impact and transaction costs to ensure strategies are evaluated under realistic conditions that reflect actual trading performance.
@@ -1039,3 +1041,37 @@ Before completing your task, verify:
 
 
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

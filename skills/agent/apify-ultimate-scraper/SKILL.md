@@ -1,18 +1,25 @@
 ---
-name: apify-ultimate-scraper
-description: Implements intelligent apify ultimate scraper with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent apify ultimate scraper with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: apify-ultimate-scraper, apify ultimate scraper, how do i apify-ultimate-scraper, orchestrate apify-ultimate-scraper, automate apify-ultimate-scraper, agent apify-ultimate-scraper
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: apify-ultimate-scraper, apify ultimate scraper, how do i apify-ultimate-scraper, orchestrate apify-ultimate-scraper,
+    automate apify-ultimate-scraper, agent apify-ultimate-scraper
+  version: 1.0.0
+name: apify-ultimate-scraper
 ---
-
 # Apify Ultimate Scraper
 
 Orchestrates intelligent skill selection and execution for apify ultimate scraper workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,127 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def configure_apify_actor(
+    task_requirements: Dict,
+    available_actors: List[Dict],
+    api_key: str
+) -> Dict:
+    """Select and configure the optimal Apify actor for web scraping tasks.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates actors based on:
+    - Target platform compatibility (e.g., e-commerce, social media, search)
+    - Rate limiting and proxy requirements
+    - Historical success rates for similar domains
+    - Current actor version stability
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_requirements: Dict containing target_url, data_type, pagination, etc.
+        available_actors: List of Apify actor metadata from marketplace
+        api_key: Apify API token for authentication
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Configured actor dict with input parameters and execution settings
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not api_key or not task_requirements.get("target_url"):
+        raise ValueError("Apify API key and target URL are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
+    for actor in available_actors:
+        score = _evaluate_actor_fit(task_requirements, actor)
+        if score > best_score and score >= 0.75:
             best_score = score
-            best_skill = skill
+            best_match = actor
+            
+    if not best_match:
+        raise ValueError("No compatible Apify actor found for target requirements")
+        
+    # Construct Apify input payload
+    input_config = {
+        "startUrls": [{"url": task_requirements["target_url"]}],
+        "maxItems": task_requirements.get("max_items", 1000),
+        "proxyConfiguration": {"useApifyProxy": True},
+        "customData": {"task_id": task_requirements.get("task_id")}
+    }
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "actor_id": best_match["defaultActorId"],
+        "actor_name": best_match["name"],
+        "input": input_config,
+        "memory_mbytes": task_requirements.get("memory_mb", 4096),
+        "timeout_secs": task_requirements.get("timeout", 3600)
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_apify_run(
+    actor_config: Dict,
+    api_key: str,
+    fallback_actors: List[str] = None
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute an Apify actor run with dataset polling and fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements resilient scraping workflow:
+    - Starts actor run with configured input parameters
+    - Polls run status until completion or timeout
+    - Fetches results from Apify dataset storage
+    - Falls back to alternative actors or cached data on failure
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        actor_config: Output from configure_apify_actor
+        api_key: Apify API token
+        fallback_actors: List of alternative actor IDs to try on failure
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Dict containing scraped data, run metadata, and success status
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import requests
+    from time import sleep
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    run_url = f"https://api.apify.com/v2/actor-runs"
+    headers = {"Authorization": f"Bearer {api_key}"}
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    # Start the actor run
+    start_response = requests.post(
+        run_url, 
+        headers=headers, 
+        json={"actorId": actor_config["actor_id"], "buildType": "latest", "memoryMbytes": actor_config["memory_mbytes"]}
     )
+    start_response.raise_for_status()
+    run_id = start_response.json()["id"]
+    
+    # Poll until completion
+    status_url = f"https://api.apify.com/v2/actor-runs/{run_id}/pollForExit"
+    sleep(5)
+    status_resp = requests.get(status_url, headers=headers)
+    status_resp.raise_for_status()
+    run_status = status_resp.json()
+    
+    if run_status.get("status") != "SUCCEEDED":
+        # Fallback chain: try alternative actors
+        if fallback_actors:
+            for alt_actor in fallback_actors:
+                alt_config = dict(actor_config)
+                alt_config["actor_id"] = alt_actor
+                return execute_apify_run(alt_config, api_key, fallback_actors=[])
+        raise RuntimeError(f"Apify run {run_id} failed with status: {run_status.get('status')}")
+        
+    # Fetch dataset results
+    dataset_url = f"https://api.apify.com/v2/datasets/{run_status['defaultDatasetId']}/items"
+    data_resp = requests.get(dataset_url, headers=headers)
+    data_resp.raise_for_status()
+    
+    return {
+        "success": True,
+        "run_id": run_id,
+        "actor_used": actor_config["actor_name"],
+        "items_scraped": len(data_resp.json()),
+        "data": data_resp.json()
+    }
 ```
 
 ### MUST DO
@@ -320,3 +328,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

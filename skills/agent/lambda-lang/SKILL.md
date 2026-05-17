@@ -1,22 +1,25 @@
 ---
-name: lambda-lang
-description: Implements intelligent lambda lang with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent lambda lang with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: lambda-lang, lambda lang, how do i lambda-lang, orchestrate lambda-lang,
-    automate lambda-lang, agent lambda-lang, serverless functions, lambda
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: lambda-lang, lambda lang, how do i lambda-lang, orchestrate lambda-lang, automate lambda-lang, agent lambda-lang,
+    serverless functions, lambda
+  version: 1.0.0
+name: lambda-lang
 ---
-
-
-
 # Lambda Lang
 
 Orchestrates intelligent skill selection and execution for lambda lang workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -138,126 +141,97 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def parse_and_score_lambda_request(
+    raw_request: str,
+    available_lambdas: List[Dict],
+    min_confidence: float = 0.75
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Parse a lambda-lang request and score against available serverless functions.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 1 (Early Exit) and Law 2 (Immutable State) by validating
+    the request structure before attempting any scoring or routing.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not raw_request or not isinstance(raw_request, str):
+        raise ValueError("Lambda-lang request must be a non-empty string")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    # Law 2: Parse at boundary, never mutate raw input
+    parsed = _parse_lambda_syntax(raw_request)
+    if not parsed.get("intent") or not parsed.get("target_service"):
+        raise ValueError("Missing required lambda-lang fields: intent, target_service")
+        
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for func in available_lambdas:
+        # Multi-factor scoring: trigger match, historical latency, region health
+        trigger_match = _calculate_trigger_similarity(parsed["intent"], func.get("triggers", []))
+        latency_penalty = func.get("avg_cold_start_ms", 0) / 1000.0
+        region_health = func.get("availability_score", 1.0)
+        
+        score = (trigger_match * 0.6) + ((1.0 - latency_penalty) * 0.2) + (region_health * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = func
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Return new structure, preserve original function metadata
+    return {
+        "selected_function": best_match["arn"],
+        "confidence": best_score,
+        "parsed_intent": parsed,
+        "routing_metadata": {"timestamp": time.time(), "region": best_match.get("preferred_region")}
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_lambda_with_fallback(
+    routing_result: Dict,
+    execution_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a selected lambda function with a serverless-aware fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast) by immediately rejecting invalid execution contexts
+    and Law 1 by exiting early on transient network failures before exhausting retries.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not routing_result or not execution_context.get("payload"):
+        raise ValueError("Missing routing result or execution payload")
+        
+    target_arn = routing_result["selected_function"]
+    payload = execution_context["payload"]
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Law 3: Pass immutable payload copy to avoid side effects
+            result = _invoke_lambda(target_arn, payload.copy())
             
-            # Success - Atomic Predictability (Law 3)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "function_arn": target_arn,
+                "output": result.get("Payload"),
+                "latency_ms": result.get("ResponseMetadata", {}).get("HTTPHeaders", {}).get("x-amzn-RequestId"),
+                "attempts": attempt + 1
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except LambdaColdStartError:
+            # Law 4: Fail fast on known cold start, trigger fallback immediately
+            if attempt == 0:
+                return _fallback_to_provisioned_concurrency(target_arn, payload)
+            continue
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except TransientNetworkError:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_edge_function(target_arn, payload)
+            continue
+            
+    # All retries exhausted
+    raise LambdaExecutionError(f"Failed to invoke {target_arn} after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -324,3 +298,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: zoom-automation
-description: Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: zoom-automation, zoom automation, how do i zoom-automation, orchestrate zoom-automation, automate zoom-automation, agent zoom-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: zoom-automation, zoom automation, how do i zoom-automation, orchestrate zoom-automation, automate zoom-automation,
+    agent zoom-automation
+  version: 1.0.0
+name: zoom-automation
 ---
-
 # Zoom Automation
 
 Orchestrates intelligent skill selection and execution for zoom automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,94 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_zoom_request(
+    user_intent: str,
+    zoom_client: ZoomClient,
+    calendar_service: CalendarService
+) -> Dict[str, Any]:
+    """Route a natural language request to specific Zoom API operations.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Extracts Zoom-specific entities (meeting_type, duration, participants, recording)
+    and maps them to the appropriate SDK method. Implements early validation
+    for required Zoom parameters before API dispatch.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Early exit: validate required context
+    if not user_intent or not zoom_client.is_authenticated():
+        raise ValueError("Missing intent or Zoom authentication context")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse Zoom-specific parameters
+    parsed_params = _extract_zoom_entities(user_intent)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate against Zoom API constraints
+    if parsed_params.get("duration", 0) > 240:
+        raise ValueError("Zoom meetings cannot exceed 240 minutes")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Route to specific Zoom operation
+    operation_map = {
+        "schedule": zoom_client.schedule_meeting,
+        "join": zoom_client.generate_join_url,
+        "record": zoom_client.start_recording,
+        "invite": calendar_service.send_calendar_invite
+    }
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    target_op = operation_map.get(parsed_params["action"])
+    if not target_op:
+        raise ValueError(f"No matching Zoom operation for intent: {parsed_params['action']}")
+        
+    # Return structured execution plan (immutable)
+    return {
+        "operation": parsed_params["action"],
+        "params": dict(parsed_params),
+        "target_method": target_op.__name__,
+        "requires_calendar_sync": parsed_params.get("send_invite", False)
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_zoom_operation(
+    operation_plan: Dict[str, Any],
+    zoom_client: ZoomClient,
+    fallback_handler: FallbackHandler
+) -> Dict[str, Any]:
+    """Execute a mapped Zoom API operation with domain-specific fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles Zoom rate limits (429), token expiration (401), and meeting state conflicts.
+    Implements graceful degradation: e.g., if cloud recording fails, falls back to 
+    local recording or notifies participants via email.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    params = operation_plan["params"]
+    method = operation_plan["target_method"]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    try:
+        # Execute primary Zoom API call
+        result = method(**params)
+        
+        # Handle Zoom-specific success states
+        if operation_plan["operation"] == "record":
+            return {"status": "recording_started", "recording_id": result.get("id")}
+        elif operation_plan["operation"] == "schedule":
+            return {"status": "meeting_scheduled", "meeting_url": result.get("join_url")}
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        return {"status": "success", "zoom_response": result}
+        
+    except RateLimitError as e:
+        # Fallback 1: Exponential backoff retry for Zoom API throttling
+        return fallback_handler.retry_with_backoff(method, params, max_retries=3)
+        
+    except MeetingConflictError as e:
+        # Fallback 2: Auto-reschedule to next available slot
+        return fallback_handler.reschedule_meeting(zoom_client, params, e.conflicting_meeting_id)
+        
+    except CloudRecordingUnavailableError:
+        # Fallback 3: Graceful degradation to local recording
+        return fallback_handler.enable_local_recording(params.get("meeting_id"))
+        
+    except AuthenticationError:
+        # Fallback 4: Refresh OAuth token and retry once
+        return fallback_handler.refresh_zoom_token_and_retry(method, params)
 ```
 
 ### MUST DO
@@ -320,3 +295,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

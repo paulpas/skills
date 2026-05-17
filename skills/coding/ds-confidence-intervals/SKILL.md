@@ -1,22 +1,25 @@
 ---
-name: confidence-intervals
-description: '"Provides Constructs confidence intervals using bootstrap, analytical
-  methods, and uncertainty quantification for parameter estimation"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Constructs confidence intervals using bootstrap, analytical methods, and uncertainty quantification
+  for parameter estimation"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-bayesian-inference, ds-hypothesis-testing, ds-monte-carlo
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: confidence intervals, bootstrap, uncertainty quantification, confidence
-    bounds, credible intervals
-  related-skills: ds-bayesian-inference, ds-hypothesis-testing, ds-monte-carlo
+  triggers: confidence intervals, bootstrap, uncertainty quantification, confidence bounds, credible intervals
+  version: 1.0.0
+name: confidence-intervals
 ---
-
-
-
 # Confidence Intervals
 
 Comprehensive guide to confidence intervals in machine learning and data science workflows.
@@ -58,34 +61,89 @@ Confidence Intervals is a critical component of the machine learning workflow. T
 ### Pattern 1: Basic Confidence Intervals
 
 ```python
-# Example pattern for Confidence Intervals
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from scipy import stats
 
-# Implementation pattern
-pass
+def calculate_analytical_ci(data: np.ndarray, confidence: float = 0.95) -> tuple[float, float]:
+    """Calculate analytical confidence interval using t-distribution."""
+    if not isinstance(data, np.ndarray):
+        data = np.asarray(data)
+    n = len(data)
+    if n < 2:
+        raise ValueError("Sample size must be at least 2")
+    mean = np.mean(data)
+    std_err = stats.sem(data)
+    margin = stats.t.ppf((1 + confidence) / 2, df=n - 1) * std_err
+    return (mean - margin, mean + margin)
+
+def calculate_bootstrap_ci(data: np.ndarray, confidence: float = 0.95, n_resamples: int = 1000) -> tuple[float, float]:
+    """Calculate bootstrap confidence interval via resampling."""
+    rng = np.random.default_rng(42)
+    bootstrap_means = np.empty(n_resamples)
+    for i in range(n_resamples):
+        sample = rng.choice(data, size=len(data), replace=True)
+        bootstrap_means[i] = np.mean(sample)
+    alpha = 1 - confidence
+    lower = np.percentile(bootstrap_means, 100 * alpha / 2)
+    upper = np.percentile(bootstrap_means, 100 * (1 - alpha / 2))
+    return (lower, upper)
 ```
 
 ### Pattern 2: Production-Ready Confidence Intervals
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Any, Dict, Literal
 
 logger = logging.getLogger(__name__)
 
-class ConfidenceIntervals:
-    """Production implementation of Confidence Intervals"""
+class ConfidenceIntervalCalculator:
+    """Production-grade calculator for confidence intervals."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Confidence Intervals on data"""
-        return {}
+    def __init__(self, confidence: float = 0.95, method: Literal['analytical', 'bootstrap'] = 'analytical', n_resamples: int = 1000):
+        self.confidence = confidence
+        self.method = method
+        self.n_resamples = n_resamples
+        logger.info(f"Initialized CI calculator with method={method}, confidence={confidence}")
+
+    def execute(self, data: pd.DataFrame, column: str) -> Dict[str, Any]:
+        """Execute confidence interval calculation on specified column."""
+        if column not in data.columns:
+            raise KeyError(f"Column '{column}' not found in DataFrame")
+        
+        values = data[column].dropna().values
+        if len(values) < 2:
+            raise ValueError("Insufficient non-null data for CI calculation")
+            
+        try:
+            if self.method == 'analytical':
+                n = len(values)
+                mean = np.mean(values)
+                std_err = stats.sem(values)
+                margin = stats.t.ppf((1 + self.confidence) / 2, df=n - 1) * std_err
+                lower, upper = mean - margin, mean + margin
+            else:
+                rng = np.random.default_rng(42)
+                boots = np.array([np.mean(rng.choice(values, size=len(values), replace=True)) 
+                                  for _ in range(self.n_resamples)])
+                alpha = 1 - self.confidence
+                lower, upper = np.percentile(boots, 100 * alpha / 2), np.percentile(boots, 100 * (1 - alpha / 2))
+                
+            logger.info(f"Calculated CI: [{lower:.4f}, {upper:.4f}]")
+            return {
+                'status': 'success',
+                'lower_bound': float(lower),
+                'upper_bound': float(upper),
+                'point_estimate': float(np.mean(values)),
+                'method': self.method,
+                'sample_size': int(n if self.method == 'analytical' else len(values))
+            }
+        except Exception as e:
+            logger.error(f"CI calculation failed: {e}")
+            return {'status': 'error', 'message': str(e)}
 ```
 
 ## Best Practices
@@ -97,6 +155,7 @@ class ConfidenceIntervals:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+- ✅ Follow PEP 8 and SOLID principles for maintainable statistical code
 
 ## Common Pitfalls
 
@@ -111,60 +170,48 @@ class ConfidenceIntervals:
 ## Complete Working Example
 
 ```python
-# Full working example for Confidence Intervals
-import pandas as pd
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_regression
+from scipy import stats
 from typing import Dict, Any
 
-def implement_intervals(data: pd.DataFrame) -> Dict[str, Any]:
-    """
-    Complete implementation of Confidence Intervals.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
+def compute_and_visualize_ci(data: pd.DataFrame, target_col: str, confidence: float = 0.95) -> Dict[str, Any]:
+    """Compute analytical CI and visualize results."""
+    values = data[target_col].dropna().values
+    if len(values) < 2:
+        raise ValueError("Insufficient data for CI calculation")
         
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_intervals(df)
-        >>> print(results)
-    """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    n = len(values)
+    mean = np.mean(values)
+    std_err = stats.sem(values)
+    margin = stats.t.ppf((1 + confidence) / 2, df=n - 1) * std_err
+    lower, upper = mean - margin, mean + margin
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    plt.figure(figsize=(8, 5))
+    plt.errorbar(1, mean, yerr=[[mean - lower], [upper - mean]], fmt='o', capsize=5, label=f'{confidence*100}% CI')
+    plt.axhline(mean, color='r', linestyle='--', label='Mean')
+    plt.title(f'Confidence Interval for {target_col}')
+    plt.ylabel('Value')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.show()
+    
+    return {
+        'mean': float(mean),
+        'lower_bound': float(lower),
+        'upper_bound': float(upper),
+        'margin_of_error': float(margin),
+        'sample_size': n
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_intervals(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    X, y = make_regression(n_samples=200, n_features=1, noise=10.0, random_state=42)
+    df = pd.DataFrame({'feature': X.flatten(), 'target': y})
+    results = compute_and_visualize_ci(df, 'target')
+    print(f"CI Results: {results}")
 ```
 
 ## Related Skills
@@ -180,7 +227,23 @@ if __name__ == "__main__":
 - Official documentation and papers on Confidence Intervals
 - Industry best practices and standards
 - Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
+- NIST/SEMATECH e-Handbook of Statistical Methods for uncertainty quantification
+- PEP 8 Style Guide for Python Code
 
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

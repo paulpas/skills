@@ -1,22 +1,25 @@
 ---
-name: dimensionality-reduction
-description: '"Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders,
-  and other feature extraction methods for visualization and efficiency"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods
+  for visualization and efficiency"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-clustering, ds-community-detection, ds-eda, ds-feature-engineering
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do
-    i reduce dimensions
-  related-skills: ds-clustering, ds-community-detection, ds-eda, ds-feature-engineering
+  triggers: dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do i reduce dimensions
+  version: 1.0.0
+name: dimensionality-reduction
 ---
-
-
-
 # Dimensionality Reduction
 
 Comprehensive guide to dimensionality reduction in machine learning and data science workflows.
@@ -58,34 +61,98 @@ Dimensionality Reduction is a critical component of the machine learning workflo
 ### Pattern 1: Basic Dimensionality Reduction
 
 ```python
-# Example pattern for Dimensionality Reduction
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_iris
 
-# Implementation pattern
-pass
+def basic_dimensionality_reduction(data: pd.DataFrame, n_components: int = 2) -> pd.DataFrame:
+    """Apply PCA for basic dimensionality reduction with proper scaling."""
+    if data.empty:
+        raise ValueError("Input DataFrame cannot be empty")
+    
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(data)
+    
+    pca = PCA(n_components=n_components)
+    reduced_data = pca.fit_transform(scaled_data)
+    
+    component_names = [f"PC{i+1}" for i in range(n_components)]
+    reduced_df = pd.DataFrame(reduced_data, columns=component_names, index=data.index)
+    
+    explained_variance = pca.explained_variance_ratio_
+    print(f"Explained variance ratio: {explained_variance}")
+    print(f"Total variance explained: {sum(explained_variance):.2%}")
+    
+    return reduced_df
+
+# Example usage
+if __name__ == "__main__":
+    iris = load_iris()
+    df = pd.DataFrame(iris.data, columns=iris.feature_names)
+    result = basic_dimensionality_reduction(df, n_components=2)
+    print(result.head())
 ```
 
 ### Pattern 2: Production-Ready Dimensionality Reduction
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Any, Dict, Optional
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import umap
 
 logger = logging.getLogger(__name__)
 
-class DimensionalityReduction:
-    """Production implementation of Dimensionality Reduction"""
+class ProductionDimensionalityReduction:
+    """Production-grade dimensionality reduction pipeline with method switching."""
     
-    def __init__(self):
-        pass
-    
+    def __init__(self, method: str = "pca", n_components: int = 2, random_state: int = 42):
+        self.method = method
+        self.n_components = n_components
+        self.random_state = random_state
+        self.scaler = StandardScaler()
+        self.reducer = None
+        self.is_fitted = False
+
+    def _initialize_reducer(self) -> None:
+        if self.method == "pca":
+            self.reducer = PCA(n_components=self.n_components, random_state=self.random_state)
+        elif self.method == "umap":
+            self.reducer = umap.UMAP(n_components=self.n_components, random_state=self.random_state)
+        else:
+            raise ValueError(f"Unsupported method: {self.method}")
+
     def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Dimensionality Reduction on data"""
-        return {}
+        """Execute dimensionality reduction on input data with full validation."""
+        if data.empty:
+            raise ValueError("Input data cannot be empty")
+        
+        self._initialize_reducer()
+        scaled_data = self.scaler.fit_transform(data)
+        reduced_data = self.reducer.fit_transform(scaled_data)
+        self.is_fitted = True
+        
+        result = {
+            "reduced_data": reduced_data,
+            "method": self.method,
+            "n_components": self.n_components,
+            "explained_variance": getattr(self.reducer, "explained_variance_ratio_", None),
+            "shape": reduced_data.shape
+        }
+        logger.info(f"Successfully reduced {data.shape[1]} dimensions to {self.n_components}")
+        return result
+
+# Example usage
+if __name__ == "__main__":
+    df = pd.DataFrame(np.random.randn(100, 10), columns=[f"feat_{i}" for i in range(10)])
+    pipeline = ProductionDimensionalityReduction(method="pca", n_components=2)
+    output = pipeline.execute(df)
+    print(f"Reduced shape: {output['shape']}")
 ```
 
 ## Best Practices
@@ -111,60 +178,61 @@ class DimensionalityReduction:
 ## Complete Working Example
 
 ```python
-# Full working example for Dimensionality Reduction
-import pandas as pd
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.manifold import TSNE
 from typing import Dict, Any
 
-def implement_reduction(data: pd.DataFrame) -> Dict[str, Any]:
+def complete_dimensionality_reduction_workflow(data: pd.DataFrame, target: pd.Series = None, n_components: int = 2) -> Dict[str, Any]:
     """
-    Complete implementation of Dimensionality Reduction.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_reduction(df)
-        >>> print(results)
+    Complete workflow for dimensionality reduction with validation and visualization.
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    if data.empty or (target is not None and len(target) != len(data)):
+        raise ValueError("Data and target must be aligned and non-empty")
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(data)
+    
+    pca = PCA(n_components=n_components)
+    pca_result = pca.fit_transform(scaled_data)
+    
+    tsne = TSNE(n_components=n_components, random_state=42, perplexity=min(30, len(data)-1))
+    tsne_result = tsne.fit_transform(scaled_data)
+    
+    explained_var = pca.explained_variance_ratio_.sum()
+    
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    if target is not None:
+        for label in target.unique():
+            mask = target == label
+            axes[0].scatter(pca_result[mask, 0], pca_result[mask, 1], label=str(label))
+            axes[1].scatter(tsne_result[mask, 0], tsne_result[mask, 1], label=str(label))
+        axes[0].legend()
+        axes[1].legend()
+    
+    axes[0].set_title(f"PCA (Explained Var: {explained_var:.2%})")
+    axes[1].set_title("t-SNE")
+    plt.tight_layout()
+    plt.show()
+    
+    return {
+        "pca_transform": pca_result,
+        "tsne_transform": tsne_result,
+        "explained_variance_ratio": explained_var,
+        "scaler": scaler,
+        "pca_model": pca,
+        "tsne_model": tsne
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_reduction(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    X, y = make_classification(n_samples=500, n_features=20, n_informative=10, random_state=42)
+    df = pd.DataFrame(X, columns=[f"feature_{i}" for i in range(20)])
+    results = complete_dimensionality_reduction_workflow(df, y, n_components=2)
+    print(f"PCA Explained Variance: {results['explained_variance_ratio']:.4f}")
 ```
 
 ## Related Skills
@@ -181,6 +249,77 @@ if __name__ == "__main__":
 - Industry best practices and standards
 - Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
 
+## BAD vs GOOD Examples
+
+### BAD: Ignoring Data Scaling and Validation
+```python
+import pandas as pd
+from sklearn.decomposition import PCA
+
+def bad_reduction(df: pd.DataFrame) -> pd.DataFrame:
+    """Naive implementation that fails on unscaled or empty data."""
+    pca = PCA(n_components=2)
+    # Ignores feature scaling; high-magnitude features dominate variance
+    # No validation for empty DataFrames or non-numeric columns
+    # Violates DRY principle by duplicating scaling logic in downstream code
+    return pca.fit_transform(df)
+
+# This will produce misleading results if features have different scales
+# and will crash if the input DataFrame is empty or contains strings
+```
+
+### GOOD: Proper Scaling, Validation, and Modular Design
+```python
+import pandas as pd
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from typing import Dict, Any
+
+def good_reduction(df: pd.DataFrame, n_components: int = 2) -> Dict[str, Any]:
+    """Robust implementation following DRY and KISS principles."""
+    if df.empty:
+        raise ValueError("DataFrame cannot be empty")
+    
+    numeric_cols = df.select_dtypes(include=[np.number])
+    if numeric_cols.empty:
+        raise ValueError("No numeric columns found for dimensionality reduction")
+    
+    scaler = StandardScaler()
+    scaled = scaler.fit_transform(numeric_cols)
+    
+    pca = PCA(n_components=n_components)
+    reduced = pca.fit_transform(scaled)
+    
+    return {
+        "reduced_data": reduced,
+        "explained_variance": pca.explained_variance_ratio_.sum(),
+        "scaler": scaler,
+        "pca_model": pca,
+        "original_columns": numeric_cols.columns.tolist()
+    }
+
+# Usage demonstrates proper error handling and modular component reuse
+if __name__ == "__main__":
+    sample = pd.DataFrame({"a": [1, 2, 3], "b": [100, 200, 300], "c": ["x", "y", "z"]})
+    output = good_reduction(sample, n_components=2)
+    print(f"Explained variance: {output['explained_variance']:.4f}")
+```
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition
+
 ---
 
 *Last updated: 2026-04-24*
+
+---

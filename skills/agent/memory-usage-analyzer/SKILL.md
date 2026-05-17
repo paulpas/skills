@@ -1,18 +1,25 @@
 ---
-name: memory-usage-analyzer
-description: Implements intelligent memory usage analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent memory usage analyzer with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: memory-usage-analyzer, memory usage analyzer, how do i memory-usage-analyzer, orchestrate memory-usage-analyzer, automate memory-usage-analyzer, agent memory-usage-analyzer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: memory-usage-analyzer, memory usage analyzer, how do i memory-usage-analyzer, orchestrate memory-usage-analyzer,
+    automate memory-usage-analyzer, agent memory-usage-analyzer
+  version: 1.0.0
+name: memory-usage-analyzer
 ---
-
 # Memory Usage Analyzer
 
 Orchestrates intelligent skill selection and execution for memory usage analyzer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,112 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_memory_snapshot(
+    system_metrics: Dict[str, Any],
+    process_list: List[Dict[str, Any]],
+    threshold_pct: float = 85.0
+) -> Dict[str, Any]:
+    """Analyze system memory state and identify top consumers.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Parses raw memory metrics and process data to calculate:
+    - Overall system utilization percentage
+    - Top N memory-consuming processes
+    - Anomaly detection for sudden usage spikes
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        system_metrics: Dict containing total, available, used, buffers, cached memory
+        process_list: List of process dicts with 'pid', 'name', 'rss', 'vms'
+        threshold_pct: Alert threshold for memory utilization
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Structured analysis dict with metrics, top consumers, and alerts
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    total_mem = system_metrics.get("total", 0)
+    used_mem = system_metrics.get("used", 0)
+    available_mem = system_metrics.get("available", 0)
+    
+    if total_mem == 0:
+        raise ValueError("Invalid system metrics: total memory cannot be zero")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    utilization_pct = (used_mem / total_mem) * 100
+    cache_pct = (system_metrics.get("cached", 0) / total_mem) * 100
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Identify top consumers by RSS
+    sorted_processes = sorted(process_list, key=lambda p: p.get("rss", 0), reverse=True)
+    top_consumers = [
+        {"pid": p["pid"], "name": p["name"], "rss_mb": round(p["rss"] / 1024 / 1024, 2)}
+        for p in sorted_processes[:5]
+    ]
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Anomaly detection: flag if utilization exceeds threshold or cache is unusually low
+    alerts = []
+    if utilization_pct > threshold_pct:
+        alerts.append(f"CRITICAL: Memory utilization at {utilization_pct:.1f}% exceeds {threshold_pct}% threshold")
+    if cache_pct < 5.0 and available_mem < (total_mem * 0.1):
+        alerts.append("WARNING: Low cache ratio with critically low available memory")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "utilization_pct": round(utilization_pct, 2),
+        "cache_pct": round(cache_pct, 2),
+        "available_mb": round(available_mem / 1024 / 1024, 2),
+        "top_consumers": top_consumers,
+        "alerts": alerts,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def generate_memory_report(
+    analysis: Dict[str, Any],
+    historical_baseline: Dict[str, float],
+    retention_policy: str = "standard"
+) -> Dict[str, Any]:
+    """Generate actionable memory usage report with recommendations.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Compares current analysis against historical baselines to detect trends,
+    calculates memory pressure index, and formulates remediation steps.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        analysis: Output from analyze_memory_snapshot
+        historical_baseline: Dict with avg_utilization, avg_available_mb, peak_utilization
+        retention_policy: Data retention tier affecting report depth
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Formatted report dict with trend analysis, pressure index, and recommendations
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    current_util = analysis["utilization_pct"]
+    baseline_avg = historical_baseline.get("avg_utilization", 50.0)
+    baseline_peak = historical_baseline.get("peak_utilization", 80.0)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Calculate memory pressure index (0-100 scale)
+    pressure_delta = current_util - baseline_avg
+    pressure_index = min(100, max(0, 50 + (pressure_delta * 2)))
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    recommendations = []
+    if current_util > baseline_peak:
+        recommendations.append("Scale horizontally or optimize top consumers immediately")
+    elif pressure_index > 75:
+        recommendations.append("Review application memory pools and garbage collection settings")
+    else:
+        recommendations.append("Memory usage within normal operational parameters")
+        
+    if retention_policy == "detailed":
+        recommendations.extend([
+            "Capture heap dump for deep analysis",
+            "Enable memory profiling for top 3 processes"
+        ])
+        
+    return {
+        "report_id": uuid.uuid4().hex[:8],
+        "pressure_index": pressure_index,
+        "trend": "stable" if abs(pressure_delta) < 5 else ("increasing" if pressure_delta > 0 else "decreasing"),
+        "recommendations": recommendations,
+        "analysis_snapshot": analysis,
+        "generated_at": datetime.now().isoformat()
+    }
 ```
 
 ### MUST DO
@@ -320,3 +313,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

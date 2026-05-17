@@ -1,18 +1,25 @@
 ---
-name: outlook-calendar-automation
-description: Implements intelligent outlook calendar automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent outlook calendar automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: outlook-calendar-automation, outlook calendar automation, how do i outlook-calendar-automation, orchestrate outlook-calendar-automation, automate outlook-calendar-automation, agent outlook-calendar-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: outlook-calendar-automation, outlook calendar automation, how do i outlook-calendar-automation, orchestrate outlook-calendar-automation,
+    automate outlook-calendar-automation, agent outlook-calendar-automation
+  version: 1.0.0
+name: outlook-calendar-automation
 ---
-
 # Outlook Calendar Automation
 
 Orchestrates intelligent skill selection and execution for outlook calendar automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,138 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def prepare_calendar_event(
+    user_email: str,
+    request_params: Dict[str, Any],
+    available_slots: List[Dict]
+) -> Dict[str, Any]:
+    """Prepare and validate an Outlook calendar event before execution.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Handles timezone normalization, conflict detection, and attendee validation
+    using Microsoft Graph API patterns. Implements early validation and
+    immutable data structures per Elegant Defense principles.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        user_email: Primary organizer email
+        request_params: Parsed request with subject, start, end, attendees
+        available_slots: Pre-fetched free/busy slots from Graph API
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Validated event payload ready for Graph API submission
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_email or not request_params.get("subject"):
+        raise ValueError("Missing required organizer email or event subject")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Parse & normalize inputs - Make Illegal States Unrepresentable (Law 2)
+    start_dt = _parse_iso_datetime(request_params["start"])
+    end_dt = _parse_iso_datetime(request_params["end"])
+    if end_dt <= start_dt:
+        raise ValueError("Event end time must be after start time")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Validate against free/busy data (Domain Logic)
+    conflicts = _check_graph_free_busy(user_email, start_dt, end_dt, available_slots)
+    if conflicts:
+        return {
+            "status": "conflict_detected",
+            "conflicting_events": conflicts,
+            "suggested_alternatives": _find_alternative_slots(available_slots, start_dt, end_dt)
+        }
+        
+    # Validate attendees via Graph API directory lookup
+    validated_attendees = []
+    for attendee in request_params.get("attendees", []):
+        if not _validate_graph_user(attendee):
+            raise ValueError(f"Invalid attendee email: {attendee}")
+        validated_attendees.append({"email": attendee, "type": "required"})
+        
+    # Atomic Predictability (Law 3) - Return new dict, never mutate inputs
+    event_payload = {
+        "subject": request_params["subject"],
+        "body": {"contentType": "HTML", "content": request_params.get("body", "")},
+        "start": {"dateTime": start_dt.isoformat(), "timeZone": request_params.get("timezone", "UTC")},
+        "end": {"dateTime": end_dt.isoformat(), "timeZone": request_params.get("timezone", "UTC")},
+        "attendees": validated_attendees,
+        "allowNewTimeProposals": True,
+        "responseRequested": True
+    }
+    return event_payload
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_calendar_operation(
+    event_payload: Dict[str, Any],
+    graph_client: Any,
+    fallback_strategy: str = "suggest_alternatives"
+) -> Dict[str, Any]:
+    """Execute Outlook calendar event creation/update with domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements resilient Graph API calls with automatic conflict resolution,
+    retry logic for transient network errors, and graceful degradation.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        event_payload: Validated event dictionary from prepare_calendar_event
+        graph_client: Authenticated Microsoft Graph SDK client
+        fallback_strategy: How to handle conflicts (suggest_alternatives, defer_human, etc.)
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with event ID, status, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate client state (Early Exit)
+    if not graph_client or not graph_client.api_version:
+        raise RuntimeError("Graph client not initialized or invalid")
+        
+    max_retries = 3
+    last_error = None
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for attempt in range(max_retries):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Domain-specific Graph API call
+            response = graph_client.me.events.post(event_payload)
             
-            # Success - Atomic Predictability (Law 3)
+            # Atomic Predictability (Law 3) - Return immutable result structure
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "event_id": response.id,
+                "status": "created",
+                "attendee_responses": [],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_execution_time()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except GraphAPIError as e:
+            last_error = e
+            # Fail Fast - Don't retry on invalid state (Law 4)
+            if e.status_code in (400, 403, 404):
+                raise CalendarOperationError(f"Permanent Graph API error: {e.message}") from e
+                
+            # Transient error - exponential backoff retry
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+                
+    # All retries exhausted - Apply domain fallback (Law 4)
+    if fallback_strategy == "suggest_alternatives":
+        return {
+            "success": False,
+            "fallback_applied": True,
+            "reason": "graph_api_unavailable",
+            "next_steps": "trigger_alternative_time_slot_search",
+            "original_payload": event_payload
+        }
+    elif fallback_strategy == "defer_human":
+        return {
+            "success": False,
+            "fallback_applied": True,
+            "reason": "requires_manual_review",
+            "next_steps": "escalate_to_human_organizer",
+            "original_payload": event_payload
+        }
+        
+    raise CalendarOperationError(f"Calendar operation failed after {max_retries} attempts: {last_error}")
 ```
 
 ### MUST DO
@@ -320,3 +339,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

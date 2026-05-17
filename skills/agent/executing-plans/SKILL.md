@@ -1,18 +1,25 @@
 ---
-name: executing-plans
-description: Implements intelligent executing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent executing plans with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: executing-plans, executing plans, how do i executing-plans, orchestrate executing-plans, automate executing-plans, agent executing-plans
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: executing-plans, executing plans, how do i executing-plans, orchestrate executing-plans, automate executing-plans,
+    agent executing-plans
+  version: 1.0.0
+name: executing-plans
 ---
-
 # Executing Plans
 
 Orchestrates intelligent skill selection and execution for executing plans workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,108 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def execute_plan_workflow(plan: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+    """Execute a structured plan with dependency resolution and step-level fallbacks.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements the 5 Laws of Elegant Defense:
+    - Law 1: Early exit on missing plan steps or invalid context
+    - Law 2: Immutable state transitions - each step returns a new state dict
+    - Law 3: Atomic step execution - partial failures don't corrupt global state
+    - Law 4: Fail fast on invalid step configurations
+    - Law 5: Graceful degradation via configured fallback steps
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not plan.get("steps") or not context.get("user_id"):
+        raise PlanValidationError("Plan requires 'steps' and context requires 'user_id'")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    execution_state = {
+        "plan_id": plan["id"],
+        "status": "running",
+        "steps_completed": [],
+        "step_results": {},
+        "confidence_score": 0.0,
+        "timestamp": time.time()
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    for step in plan["steps"]:
+        step_id = step["id"]
+        if step_id in execution_state["steps_completed"]:
+            continue
+            
+        try:
+            # Resolve step dependencies
+            if not _dependencies_met(step, execution_state["step_results"]):
+                raise DependencyError(f"Unmet dependencies for step {step_id}")
+                
+            # Execute step with domain-specific handler
+            result = _dispatch_step_handler(step, context, execution_state)
+            
+            # Atomic state update (Law 3)
+            execution_state["step_results"][step_id] = result
+            execution_state["steps_completed"].append(step_id)
+            execution_state["confidence_score"] = _update_confidence(
+                execution_state["confidence_score"], result.get("success", False)
+            )
+            
+        except DependencyError as e:
+            # Fallback: skip non-critical steps or route to manual review
+            if step.get("critical", False):
+                raise PlanExecutionError(f"Critical step {step_id} failed dependency check") from e
+            execution_state["step_results"][step_id] = {"status": "skipped", "reason": str(e)}
+            
+    execution_state["status"] = "completed"
+    return execution_state
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def resolve_step_fallback_chain(step: Dict[str, Any], failure_context: Dict[str, Any], history: List[Dict]) -> Dict[str, Any]:
+    """Determine and execute fallback strategy for a failed plan step.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Uses historical performance and step metadata to select the most resilient
+    fallback path, adhering to the Fail Fast, Fail Loud principle.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    step_id = step["id"]
+    error_type = failure_context.get("error_type", "unknown")
+    historical_success = _get_step_history_rate(step_id, history)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Law 1: Early exit if no fallbacks configured
+    fallbacks = step.get("fallbacks", [])
+    if not fallbacks:
+        return {"status": "failed", "step_id": step_id, "error": "No fallback configured"}
     
-    for attempt in range(max_retries + 1):
+    # Law 2: Immutable fallback selection
+    selected_fallback = None
+    for fb in fallbacks:
+        if fb.get("error_pattern") and re.match(fb["error_pattern"], error_type):
+            selected_fallback = fb
+            break
+    
+    if not selected_fallback:
+        selected_fallback = fallbacks[0] # Default fallback
+        
+    # Law 4: Fail loud if fallback also fails after retries
+    max_retries = selected_fallback.get("max_retries", 2)
+    for attempt in range(max_retries):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            result = _execute_fallback_step(selected_fallback, failure_context)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "fallback_success",
+                "step_id": step_id,
+                "fallback_used": selected_fallback["id"],
+                "attempt": attempt + 1,
+                "result": result
             }
+        except TransientError:
+            continue
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # All fallbacks exhausted
+    return {
+        "status": "fallback_exhausted",
+        "step_id": step_id,
+        "error": f"All {len(fallbacks)} fallback strategies failed for step {step_id}"
+    }
 ```
 
 ### MUST DO
@@ -320,3 +309,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

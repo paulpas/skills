@@ -1,18 +1,25 @@
 ---
-name: conductor-new-track
-description: Implements intelligent conductor new track with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent conductor new track with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: conductor-new-track, conductor new track, how do i conductor-new-track, orchestrate conductor-new-track, automate conductor-new-track, agent conductor-new-track
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: conductor-new-track, conductor new track, how do i conductor-new-track, orchestrate conductor-new-track, automate
+    conductor-new-track, agent conductor-new-track
+  version: 1.0.0
+name: conductor-new-track
 ---
-
 # Conductor New Track
 
 Orchestrates intelligent skill selection and execution for conductor new track workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,118 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def conductor_select_skill(
+    request: str,
+    skill_registry: List[Dict],
+    confidence_history: Dict[str, float],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Orchestrates multi-factor skill selection for conductor-new-track workflows.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by validating request format and extracting
+    intent features before scoring. Uses Law 3 (Atomic Predictability) by returning
+    a fresh selection context without mutating the registry.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request or not request.strip():
+        raise ValueError("Request cannot be empty")
+    if not skill_registry:
+        raise ValueError("Skill registry is empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse request features at boundary
+    intent = _extract_intent(request)
+    constraints = _parse_constraints(request)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in skill_registry:
+        # Multi-factor scoring: trigger match + historical confidence + availability
+        trigger_match = _calculate_trigger_similarity(intent, skill.get("triggers", []))
+        historical_conf = confidence_history.get(skill["name"], 0.5)
+        availability = 1.0 if skill.get("status") == "active" else 0.0
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        # Weighted composite score
+        composite = (trigger_match * 0.5) + (historical_conf * 0.3) + (availability * 0.2)
+        
+        if composite > best_score and composite >= min_confidence:
+            best_score = composite
+            best_match = skill
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return new structure (Law 3)
+    return {
+        "selected_skill": best_match["name"],
+        "confidence": best_score,
+        "intent_matched": intent,
+        "constraints_applied": constraints,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def conductor_execute_with_fallback(
+    selected_skill: Dict,
+    execution_context: Dict,
+    fallback_registry: List[Dict],
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Executes the selected skill with a structured fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) by immediately halting on invalid states.
+    Implements Law 1 (Early Exit) by validating context before attempting execution.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not _validate_context(execution_context, selected_skill):
+        raise ConductorError(f"Invalid execution context for {selected_skill['selected_skill']}")
+        
+    attempts = 0
+    last_error = None
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while attempts <= max_retries:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute actual domain logic
+            result = _invoke_skill(selected_skill["selected_skill"], execution_context)
             
-            # Success - Atomic Predictability (Law 3)
+            # Update confidence history on success
+            _update_confidence(selected_skill["selected_skill"], success=True)
+            
             return {
-                "success": True,
-                "skill_executed": skill["name"],
+                "status": "success",
+                "skill": selected_skill["selected_skill"],
                 "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "attempts": attempts + 1,
+                "latency_ms": time.time() - execution_context.get("start_time", time.time())
             }
-            
         except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
+            # Fail fast - do not retry invalid states
+            raise ConductorError(f"Invalid state in {selected_skill['selected_skill']}: {e}") from e
         except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            last_error = e
+            attempts += 1
+            if attempts > max_retries:
+                break
+                
+    # Fallback chain execution
+    for fallback_skill in fallback_registry:
+        try:
+            result = _invoke_skill(fallback_skill["name"], execution_context)
+            _update_confidence(fallback_skill["name"], success=True)
+            return {
+                "status": "fallback_success",
+                "original_skill": selected_skill["selected_skill"],
+                "fallback_skill": fallback_skill["name"],
+                "result": result
+            }
+        except Exception:
+            continue
+            
+    # Fail loud - all paths exhausted
+    _update_confidence(selected_skill["selected_skill"], success=False)
+    raise ConductorError(f"All execution and fallback paths failed for {selected_skill['selected_skill']}")
 ```
 
 ### MUST DO
@@ -320,3 +319,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

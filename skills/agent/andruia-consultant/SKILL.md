@@ -1,18 +1,25 @@
 ---
-name: andruia-consultant
-description: Implements intelligent andruia consultant with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent andruia consultant with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: andruia-consultant, andruia consultant, how do i andruia-consultant, orchestrate andruia-consultant, automate andruia-consultant, agent andruia-consultant
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: andruia-consultant, andruia consultant, how do i andruia-consultant, orchestrate andruia-consultant, automate
+    andruia-consultant, agent andruia-consultant
+  version: 1.0.0
+name: andruia-consultant
 ---
-
 # Andruia Consultant
 
 Orchestrates intelligent skill selection and execution for andruia consultant workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,95 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_andruia_consultant_request(
+    request: Dict[str, Any],
+    consultant_pool: List[Dict[str, Any]],
+    compliance_threshold: float = 0.85
+) -> Optional[Dict[str, Any]]:
+    """Evaluate and route an Andruia consultant request to the optimal specialist.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies the 5 Laws of Elegant Defense:
+    - Law 1: Early exit on malformed requests
+    - Law 2: Parse request into structured domains before scoring
+    - Law 3: Return immutable routing decision
+    - Law 4: Fail immediately if compliance checks fail
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request.get("domain") or not request.get("priority"):
+        raise ValueError("Request must include 'domain' and 'priority' fields")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    parsed_request = {
+        "domain": request["domain"].lower(),
+        "priority": request["priority"],
+        "risk_level": _assess_risk(request.get("context", "")),
+        "compliance_flags": _extract_compliance_flags(request)
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for consultant in consultant_pool:
+        if not _is_compliant(consultant, parsed_request["compliance_flags"]):
+            continue
+            
+        domain_match = _calculate_domain_alignment(parsed_request["domain"], consultant["expertise"])
+        priority_weight = 1.2 if parsed_request["priority"] == "critical" else 1.0
+        score = domain_match * priority_weight * consultant["resolution_rate"]
         
-        if score > best_score and score >= min_confidence:
+        if score > best_score and score >= compliance_threshold:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = consultant
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    return {
+        "assigned_consultant": best_match["id"],
+        "routing_score": best_score,
+        "estimated_resolution": _estimate_timeline(best_match, parsed_request["priority"]),
+        "immutable_decision": True
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_consultant_workflow(
+    consultant: Dict[str, Any],
+    workflow_context: Dict[str, Any],
+    escalation_path: List[str] = None
+) -> Dict[str, Any]:
+    """Execute an Andruia consultant workflow with domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Fail Fast, Fail Loud (Law 4) and Atomic Predictability (Law 3).
+    Fallback chain: 1. Retry with adjusted scope -> 2. Escalate to senior specialist -> 3. Defer to compliance board
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not _validate_consultant_credentials(consultant):
+        raise ConsultantError(f"Invalid credentials for consultant {consultant['id']}")
+        
+    validated_context = _normalize_workflow_inputs(workflow_context)
+    attempts = 0
+    max_attempts = 2
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while attempts <= max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            result = _run_consultant_analysis(consultant, validated_context)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "resolved",
+                "consultant_id": consultant["id"],
+                "output": result,
+                "attempts": attempts + 1,
+                "audit_trail": _log_execution(consultant, result)
             }
+        except ComplianceViolationError as e:
+            raise ConsultantError(f"Compliance violation in {consultant['id']}: {e}") from e
+        except ScopeLimitError as e:
+            attempts += 1
+            if attempts > max_attempts:
+                return _escalate_to_senior(consultant, validated_context, escalation_path)
+            validated_context = _adjust_scope_for_retry(validated_context, e)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return _defer_to_compliance_board(workflow_context)
 ```
 
 ### MUST DO
@@ -320,3 +296,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

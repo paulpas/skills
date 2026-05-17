@@ -1,18 +1,25 @@
 ---
-name: changelog-automation
-description: Implements intelligent changelog automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent changelog automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: changelog-automation, changelog automation, how do i changelog-automation, orchestrate changelog-automation, automate changelog-automation, agent changelog-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: changelog-automation, changelog automation, how do i changelog-automation, orchestrate changelog-automation, automate
+    changelog-automation, agent changelog-automation
+  version: 1.0.0
+name: changelog-automation
 ---
-
 # Changelog Automation
 
 Orchestrates intelligent skill selection and execution for changelog automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,92 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def parse_and_categorize_commits(
+    commit_range: str,
+    conventional_prefixes: List[str] = None
+) -> Dict[str, List[Dict]]:
+    """Parse git commits and categorize them for changelog generation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements Law 2 (Parse at boundary) by validating commit range upfront.
+    Maps conventional commit prefixes to changelog categories.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        commit_range: Git range (e.g., 'v1.0.0..HEAD')
+        conventional_prefixes: List of prefixes to recognize (feat, fix, etc.)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Dict mapping categories to lists of commit metadata dicts
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not commit_range or '..' not in commit_range:
+        raise ValueError("Invalid commit range format. Expected 'start..end'")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    raw_commits = _run_git_log(commit_range)
+    categorized = {
+        "features": [], "fixes": [], "docs": [], "chore": [], "other": []
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for commit in raw_commits:
+        prefix = commit.subject.split(":")[0].lower()
+        category = "other"
+        for p in conventional_prefixes or ["feat", "fix", "docs", "chore"]:
+            if prefix.startswith(p):
+                category = p
+                break
+                
+        categorized[category].append({
+            "hash": commit.hash,
+            "subject": commit.subject,
+            "author": commit.author,
+            "scope": commit.scope if hasattr(commit, 'scope') else None
+        })
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return categorized
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def generate_changelog_with_fallback(
+    categorized_commits: Dict[str, List[Dict]],
+    version: str,
+    template_path: str = None
+) -> str:
+    """Generate markdown changelog with fallback formatting strategies.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast) by validating version format.
+    Falls back to default template if custom template fails to load.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        categorized_commits: Output from parse_and_categorize_commits
+        version: Target version string (e.g., '1.1.0')
+        template_path: Optional path to custom markdown template
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Formatted changelog markdown string
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not re.match(r'^\d+\.\d+\.\d+$', version):
+        raise ValueError(f"Invalid version format: {version}. Expected semver.")
+        
+    try:
+        template = _load_template(template_path)
+    except FileNotFoundError:
+        template = _get_default_template()
+        
+    sections = []
+    sections.append(f"# Changelog for {version}\n")
+    sections.append(f"## Release Date: {datetime.now().strftime('%Y-%m-%d')}\n")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    for category, commits in categorized_commits.items():
+        if not commits:
+            continue
+        sections.append(f"### {category.capitalize()}\n")
+        for c in commits:
+            scope_str = f" (`{c['scope']}`)" if c.get('scope') else ""
+            sections.append(f"- {c['subject']}{scope_str}")
+        sections.append("")
+        
+    return "\n".join(sections)
 ```
 
 ### MUST DO
@@ -320,3 +293,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,23 +1,25 @@
 ---
-name: route53
-description: '"Configures DNS routing with Route 53 for domain registration, health"
-  checks, failover, and traffic management with private hosted zones.'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: '"Configures DNS routing with Route 53 for domain registration, health" checks, failover, and traffic management
+  with private hosted zones.'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
+  output-format: manifests
+  related-skills: aws-cloudfront, aws-cloudwatch, aws-elb, cni
   role: reference
   scope: infrastructure
-  output-format: manifests
-  triggers: cname, dns, domain, failover, health check, hosted zone, route 53, traffic
-    policy
-  related-skills: aws-cloudfront, aws-cloudwatch, aws-elb, cni
+  triggers: cname, dns, domain, failover, health check, hosted zone, route 53, traffic policy
+  version: 1.0.0
+name: route53
 ---
-
-
-
-
 # Route 53 (Amazon Route 53)
 
 Configure DNS routing, domain management, and health checks with support for failover, weighted routing, and geolocation-based policies.
@@ -351,3 +353,28 @@ CloudWatch + Route 53:
 | `cncf-aws-elb` | Failover targets (ALB/NLB) |
 | `cncf-aws-cloudfront` | CDN endpoints for routing |
 | `cncf-aws-cloudwatch` | Health check monitoring |
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

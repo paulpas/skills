@@ -1,23 +1,25 @@
 ---
-name: circleci-automation
-description: Implements intelligent circleci automation with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent circleci automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: circleci-automation, circleci automation, how do i circleci-automation,
-    orchestrate circleci-automation, automate circleci-automation, agent circleci-automation,
-    continuous integration, jenkins
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: circleci-automation, circleci automation, how do i circleci-automation, orchestrate circleci-automation, automate
+    circleci-automation, agent circleci-automation, continuous integration, jenkins
+  version: 1.0.0
+name: circleci-automation
 ---
-
-
-
 # Circleci Automation
 
 Orchestrates intelligent skill selection and execution for circleci automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,56 +141,57 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def select_circleci_workflow(
+    project_slug: str,
+    branch: str,
+    workflow_config: Dict,
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal CircleCI workflow configuration for a given project and branch.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Uses multi-factor scoring based on:
+    - Branch protection rules and workflow compatibility
+    - Historical pipeline success rates for similar configurations
+    - CircleCI API availability and rate limit status
+    - Required orbs and executor compatibility
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
+        project_slug: CircleCI project slug (e.g., github/owner/repo)
+        branch: Target branch for pipeline execution
+        workflow_config: Proposed workflow configuration dict
         min_confidence: Minimum confidence threshold (0.0-1.0)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Validated workflow configuration with execution metadata or None
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not project_slug or not branch:
+        raise ValueError("Project slug and branch are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    validated_config = _validate_circleci_config(workflow_config)
+    api_status = _check_circleci_api_health()
     
-    best_skill = None
+    if not api_status.get("available"):
+        return None
+        
+    best_workflow = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
+    for workflow in _get_available_workflows(project_slug, branch):
+        score = _calculate_workflow_match(validated_config, workflow)
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_workflow = workflow
+            
+    if best_workflow is None:
         return None
-    
+        
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
+    result = dict(best_workflow)
     result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+    result["trigger_timestamp"] = time.time()
+    result["project_slug"] = project_slug
     return result
 ```
 
@@ -196,68 +199,75 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_circleci_pipeline(
+    workflow: Dict,
+    project_slug: str,
+    branch: str,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a CircleCI pipeline with CI/CD-specific fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud principle (Law 4):
+    - Invalid workflow configs halt immediately
+    - API rate limits trigger exponential backoff
+    - Workflow failures trigger artifact inspection and manual review fallback
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        workflow: Selected workflow configuration
+        project_slug: Target CircleCI project
+        branch: Target branch
+        max_retries: Maximum retry attempts for transient API errors
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Pipeline execution result with status, logs URL, and confidence
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate workflow (Early Exit)
+    if not _is_workflow_valid(workflow):
+        raise SkillExecutionError(f"Invalid workflow config: {workflow.get('name', 'unknown')}")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_params = _validate_pipeline_params(project_slug, branch, workflow)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Trigger pipeline via CircleCI API
+            response = circleci_api.trigger_pipeline(
+                project_slug=project_slug,
+                branch=branch,
+                config=workflow
+            )
+            pipeline_id = response.get("id")
+            
+            # Monitor pipeline status with timeout
+            status = _wait_for_pipeline_completion(pipeline_id, timeout=1800)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "pipeline_id": pipeline_id,
+                "status": status,
+                "logs_url": f"https://app.circleci.com/pipelines/{pipeline_id}",
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except RateLimitError as e:
+            # Transient API error - retry with backoff
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _apply_circleci_fallback(workflow, project_slug, branch)
+            time.sleep(2 ** attempt)
+            
+        except WorkflowFailureError as e:
+            # Workflow failed - inspect artifacts and logs
+            artifacts = _fetch_pipeline_artifacts(pipeline_id)
+            if artifacts.get("critical_failure"):
+                raise SkillExecutionError(
+                    f"Pipeline {pipeline_id} failed critical checks: {e}"
+                ) from e
+                
     # All retries exhausted - Fail Loud (Law 4)
     raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+        f"Failed to execute CircleCI pipeline after {max_retries + 1} attempts"
     )
 ```
 
@@ -325,3 +335,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

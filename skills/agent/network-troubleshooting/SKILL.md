@@ -1,18 +1,25 @@
 ---
-name: network-troubleshooting
-description: Diagnoses and resolves network connectivity issues including firewall rules, DNS resolution, load balancer configuration, container networking, VPN connectivity, and network policy debugging for Docker, Kubernetes, and cloud-native environments
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Diagnoses and resolves network connectivity issues including firewall rules, DNS resolution, load balancer configuration,
+  container networking, VPN connectivity, and network policy debugging for Docker, Kubernetes, and cloud-native environments
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: network troubleshooting, iptables, dns resolution, firewall rules, load balancer, calico, cni, how do i debug network
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-docker-debugging
+  role: implementation
+  scope: implementation
+  triggers: network troubleshooting, iptables, dns resolution, firewall rules, load balancer, calico, cni, how do i debug
+    network
+  version: 1.0.0
+name: network-troubleshooting
 ---
-
 # Network Troubleshooting
 
 Implements comprehensive network troubleshooting workflows for diagnosing connectivity issues including firewall rules (iptables, nftables), DNS resolution failures, load balancer configuration problems, container networking (Docker, CNI, Calico, Cilium), VPN connectivity issues, and network policy enforcement using real command-line tools and diagnostic scripts.

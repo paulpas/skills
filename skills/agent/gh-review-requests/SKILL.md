@@ -1,18 +1,25 @@
 ---
-name: gh-review-requests
-description: Implements intelligent gh review requests with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent gh review requests with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: gh-review-requests, gh review requests, how do i gh-review-requests, orchestrate gh-review-requests, automate gh-review-requests, agent gh-review-requests
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: gh-review-requests, gh review requests, how do i gh-review-requests, orchestrate gh-review-requests, automate
+    gh-review-requests, agent gh-review-requests
+  version: 1.0.0
+name: gh-review-requests
 ---
-
 # Gh Review Requests
 
 Orchestrates intelligent skill selection and execution for gh review requests workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,82 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_review_request(pr_url: str, config: Dict) -> Dict:
+    """Route a GitHub review request by validating PR state and determining reviewers.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Extracts repository, owner, and PR number from the URL. Validates against
+    GitHub's API to ensure the PR is open and ready for reviews. Applies
+    CODEOWNERS rules and team membership checks to build a reviewer list.
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not pr_url or not pr_url.startswith("https://github.com/"):
+        raise ValueError("Invalid GitHub PR URL format")
     
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    parts = pr_url.strip("/").split("/")
+    if len(parts) < 5:
+        raise ValueError("PR URL missing owner/repo/number components")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    owner, repo, pr_number = parts[3], parts[4], parts[5]
     
-    if best_skill is None:
-        return None
+    # Validate PR state via GitHub API
+    pr_data = _fetch_pr_metadata(owner, repo, pr_number)
+    if pr_data.get("state") != "open":
+        raise ValueError(f"PR #{pr_number} is not open (state: {pr_data.get('state')})")
+        
+    # Determine reviewers based on CODEOWNERS and config
+    reviewers = _resolve_reviewers(owner, repo, pr_data.get("files", []), config)
     
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new dict
+    return {
+        "owner": owner,
+        "repo": repo,
+        "pr_number": int(pr_number),
+        "reviewers": reviewers,
+        "status": "ready_for_review",
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_review_request(route_data: Dict, auth_token: str) -> Dict:
+    """Execute the GitHub review request with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Sends review requests via GitHub REST API. Implements exponential backoff
+    for rate limits and falls back to CLI-based requests if API fails.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    headers = {"Authorization": f"token {auth_token}", "Accept": "application/vnd.github.v3+json"}
+    url = f"https://api.github.com/repos/{route_data['owner']}/{route_data['repo']}/pulls/{route_data['pr_number']}/requested_reviewers"
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    payload = {"reviewers": route_data["reviewers"]}
     
-    for attempt in range(max_retries + 1):
+    for attempt in range(3):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = requests.post(url, headers=headers, json=payload, timeout=10)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            if response.status_code == 201:
+                return {
+                    "success": True,
+                    "requested_reviewers": route_data["reviewers"],
+                    "api_response": response.json(),
+                    "attempts": attempt + 1
+                }
+            elif response.status_code == 403 and "rate limit" in response.text.lower():
+                wait_time = 2 ** attempt
+                time.sleep(wait_time)
+                continue
+            else:
+                raise GitHubAPIError(f"Request failed: {response.status_code} - {response.text}")
+                
+        except requests.exceptions.RequestException as e:
+            if attempt == 2:
+                return _fallback_to_cli_request(route_data, auth_token)
+            time.sleep(1)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise GitHubAPIError("Exhausted all retry attempts for review request")
 ```
 
 ### MUST DO
@@ -320,3 +283,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

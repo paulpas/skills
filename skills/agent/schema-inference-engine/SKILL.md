@@ -1,18 +1,25 @@
 ---
-name: schema-inference-engine
-description: Implements intelligent schema inference engine with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent schema inference engine with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: schema-inference-engine, schema inference engine, how do i schema-inference-engine, orchestrate schema-inference-engine, automate schema-inference-engine, agent schema-inference-engine
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: schema-inference-engine, schema inference engine, how do i schema-inference-engine, orchestrate schema-inference-engine,
+    automate schema-inference-engine, agent schema-inference-engine
+  version: 1.0.0
+name: schema-inference-engine
 ---
-
 # Schema Inference Engine
 
 Orchestrates intelligent skill selection and execution for schema inference engine workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,97 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def infer_schema_from_sample(
+    raw_data: List[Dict],
+    source_metadata: Dict,
+    min_confidence: float = 0.75
+) -> Dict:
+    """Infer schema fields from raw data samples with multi-factor scoring.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 1 (Early Exit) and Law 2 (Immutable State) to ensure
+    only valid, well-typed fields are extracted. Returns a new schema dict.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not raw_data or not isinstance(raw_data, list):
+        raise ValueError("raw_data must be a non-empty list of records")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    inferred_fields = {}
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for record in raw_data:
+        for key, value in record.items():
+            if key not in inferred_fields:
+                inferred_fields[key] = {
+                    "name": key,
+                    "type": _detect_type(value),
+                    "nullable": False,
+                    "sample_values": [],
+                    "confidence": 0.0
+                }
+            
+            inferred_fields[key]["sample_values"].append(value)
+            inferred_fields[key]["nullable"] |= value is None
+            
+    # Calculate multi-factor confidence scores
+    for field_name, field in inferred_fields.items():
+        type_confidence = _calculate_type_confidence(field["sample_values"])
+        consistency_score = _calculate_consistency(field["sample_values"])
+        field["confidence"] = (type_confidence * 0.6) + (consistency_score * 0.4)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        if field["confidence"] < min_confidence:
+            field["fallback_strategy"] = "human_review"
+            
+    # Law 3: Return new structure, never mutate input
+    return {
+        "schema_version": "1.0",
+        "fields": list(inferred_fields.values()),
+        "source": source_metadata.get("source_id"),
+        "inference_timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def resolve_schema_conflicts(
+    primary_schema: Dict,
+    secondary_schema: Dict,
+    conflict_resolution_policy: str = "highest_confidence"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Merge two inferred schemas, resolving field conflicts via fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast) and fallback logic for ambiguous merges.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not primary_schema or not secondary_schema:
+        raise ValueError("Both schemas must be provided for merging")
+        
+    merged_fields = {f["name"]: dict(f) for f in primary_schema["fields"]}
+    conflicts = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for field in secondary_schema["fields"]:
+        if field["name"] in merged_fields:
+            existing = merged_fields[field["name"]]
+            if existing["type"] != field["type"]:
+                # Fallback Chain: 1. Type coercion, 2. Union type, 3. Human review
+                if _can_coerce(existing["type"], field["type"]):
+                    existing["type"] = _coerce_type(existing["type"], field["type"])
+                elif existing["confidence"] >= field["confidence"]:
+                    conflicts.append({
+                        "field": field["name"],
+                        "action": "defer_to_human",
+                        "reason": "type_mismatch_low_confidence"
+                    })
+                else:
+                    merged_fields[field["name"]] = dict(field)
+        else:
+            merged_fields[field["name"]] = dict(field)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Law 3: Return new merged structure
+    return {
+        "merged_schema": list(merged_fields.values()),
+        "conflicts": conflicts,
+        "resolution_policy": conflict_resolution_policy,
+        "audit_log": f"Merged {len(primary_schema['fields'])} + {len(secondary_schema['fields'])} fields"
+    }
 ```
 
 ### MUST DO
@@ -320,3 +298,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

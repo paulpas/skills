@@ -1,18 +1,25 @@
 ---
-name: github-actions-templates
-description: Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent github actions templates with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: github-actions-templates, github actions templates, how do i github-actions-templates, orchestrate github-actions-templates, automate github-actions-templates, agent github-actions-templates
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: github-actions-templates, github actions templates, how do i github-actions-templates, orchestrate github-actions-templates,
+    automate github-actions-templates, agent github-actions-templates
+  version: 1.0.0
+name: github-actions-templates
 ---
-
 # Github Actions Templates
 
 Orchestrates intelligent skill selection and execution for github actions templates workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,124 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
+def generate_github_action_template(
     task_description: str,
-    available_skills: List[Dict],
+    available_templates: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Generate a GitHub Actions workflow template based on task description.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Selects the most appropriate base template (CI, CD, Lint, etc.) using
+    multi-factor scoring: trigger type, language/framework, and historical usage.
+    Applies Law 1 (Early Exit) and Law 2 (Immutable State).
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_description: Natural language description of the automation task
+        available_templates: List of template metadata with triggers and languages
+        min_confidence: Minimum match threshold for template selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Rendered workflow dict with metadata, or None if no suitable template
     """
-    # Guard clause - Early Exit (Law 1)
     if not task_description or not task_description.strip():
         raise ValueError("Task description cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_templates:
+        raise ValueError("No GitHub Actions templates available")
+        
+    # Extract intent features (Law 2: Parse at boundary)
+    intent = _extract_workflow_intent(task_description)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_template = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
+    for tmpl in available_templates:
+        score = _calculate_template_match(intent, tmpl)
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_template = tmpl
+            
+    if best_template is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Return new structure, never mutate input template
+    workflow = {
+        "name": best_template["name"],
+        "on": best_template["triggers"],
+        "jobs": {},
+        "metadata": {
+            "source_template": best_template["id"],
+            "confidence": best_score,
+            "generated_at": time.time()
+        }
+    }
+    return workflow
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def render_and_validate_template(
+    workflow_template: Dict,
+    context_vars: Dict,
+    fallback_templates: List[Dict] = None
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Render a GitHub Actions workflow with variable substitution and validation.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements fallback chain (Law 4: Fail Fast, Fail Loud):
+    1. Attempt full rendering with provided context
+    2. Fallback to simplified template if complex variables fail
+    3. Defer to manual review if YAML validation fails
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        workflow_template: Base workflow structure from Pattern 1
+        context_vars: User-provided variables (e.g., python-version, os)
+        fallback_templates: Alternative templates to try on failure
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Validated workflow YAML string with execution metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not workflow_template or "jobs" not in workflow_template:
+        raise ValueError("Invalid workflow template structure")
+        
+    # Law 2: Validate context before rendering
+    validated_vars = _sanitize_context_vars(context_vars)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    try:
+        # Attempt primary render
+        rendered_yaml = _apply_jinja2_template(workflow_template, validated_vars)
+        _validate_github_actions_schema(rendered_yaml)
+        return {
+            "success": True,
+            "yaml": rendered_yaml,
+            "strategy": "primary",
+            "validation": "passed"
+        }
+    except SchemaValidationError as e:
+        # Law 4: Fail fast on invalid state
+        if fallback_templates:
+            # Fallback 1: Try simplified template variant
+            for alt in fallback_templates:
+                try:
+                    alt_yaml = _apply_jinja2_template(alt, validated_vars)
+                    _validate_github_actions_schema(alt_yaml)
+                    return {
+                        "success": True,
+                        "yaml": alt_yaml,
+                        "strategy": "fallback_simplified",
+                        "validation": "passed"
+                    }
+                except SchemaValidationError:
+                    continue
+                    
+        # Fallback 2: Return structured error for human review
+        return {
+            "success": False,
+            "error": f"Template validation failed: {str(e)}",
+            "strategy": "defer_human",
+            "raw_context": validated_vars
+        }
 ```
 
 ### MUST DO
@@ -320,3 +325,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

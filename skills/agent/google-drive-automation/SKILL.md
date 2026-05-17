@@ -1,18 +1,25 @@
 ---
-name: google-drive-automation
-description: Implements intelligent google drive automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent google drive automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: google-drive-automation, google drive automation, how do i google-drive-automation, orchestrate google-drive-automation, automate google-drive-automation, agent google-drive-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: google-drive-automation, google drive automation, how do i google-drive-automation, orchestrate google-drive-automation,
+    automate google-drive-automation, agent google-drive-automation
+  version: 1.0.0
+name: google-drive-automation
 ---
-
 # Google Drive Automation
 
 Orchestrates intelligent skill selection and execution for google drive automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,123 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def manage_drive_file(
+    drive_service: googleapiclient.discovery.Resource,
+    file_id: str,
+    permissions: List[Dict],
+    fields: str = "id,name,mimeType,webViewLink"
+) -> Dict:
+    """Manage Google Drive file metadata and permissions with strict validation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 1 (Early Exit) and Law 2 (Make illegal states unrepresentable)
+    by validating Drive API inputs before making network calls.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on invalid inputs
+    if not file_id or not isinstance(file_id, str):
+        raise ValueError("Invalid file_id: must be a non-empty string")
+    if not permissions or not isinstance(permissions, list):
+        raise ValueError("Permissions must be a non-empty list")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Law 2: Validate permission structure before API call
+    validated_permissions = []
+    for perm in permissions:
+        if "type" not in perm or "role" not in perm:
+            raise ValueError(f"Invalid permission structure: {perm}")
+        if perm["type"] not in ("user", "group", "domain", "anyone"):
+            raise ValueError(f"Unsupported permission type: {perm['type']}")
+        validated_permissions.append(perm)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Law 3: Atomic Predictability - Fetch current state first
+    try:
+        file_metadata = drive_service.files().get(
+            fileId=file_id, fields=fields
+        ).execute()
+    except HttpError as e:
+        if e.resp.status == 404:
+            raise FileNotFoundError(f"Drive file not found: {file_id}") from e
+        raise DriveAPIError(f"Failed to fetch file metadata: {e}") from e
+        
+    # Apply permissions atomically
+    results = []
+    for perm in validated_permissions:
+        try:
+            drive_service.permissions().create(
+                fileId=file_id,
+                body=perm,
+                sendNotificationEmails=False
+            ).execute()
+            results.append({"status": "granted", "permission": perm})
+        except HttpError as e:
+            results.append({"status": "failed", "permission": perm, "error": str(e)})
+            
+    return {
+        "file_id": file_id,
+        "current_metadata": file_metadata,
+        "permission_updates": results,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_drive_operation(
+    drive_service: googleapiclient.discovery.Resource,
+    operation: Callable,
+    fallback_service: googleapiclient.discovery.Resource = None,
+    max_retries: int = 3
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Google Drive API operations with rate-limit handling and fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) and handles Drive-specific transient errors.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    last_error = None
+    for attempt in range(max_retries):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            # Execute primary Drive API call
+            result = operation(drive_service)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
+                "operation": operation.__name__,
                 "result": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "service": "primary"
             }
+        except HttpError as e:
+            last_error = e
+            status = e.resp.status
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            # Law 4: Fail fast on non-recoverable errors
+            if status in (400, 403, 404, 410):
+                raise DriveOperationError(
+                    f"Non-recoverable Drive API error ({status}): {e.reason}"
+                ) from e
+                
+            # Handle rate limits (429) and server errors (5xx)
+            if status in (429, 500, 502, 503, 504):
+                wait_time = min(2 ** attempt, 30)
+                time.sleep(wait_time)
+                continue
+                
+    # All retries exhausted - Apply fallback chain
+    if fallback_service:
+        try:
+            fallback_result = operation(fallback_service)
+            return {
+                "success": True,
+                "operation": operation.__name__,
+                "result": fallback_result,
+                "attempts": max_retries + 1,
+                "service": "fallback"
+            }
+        except Exception as fb_err:
+            raise DriveOperationError(
+                f"Primary and fallback Drive services failed. Last error: {last_error}"
+            ) from fb_err
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise DriveOperationError(
+        f"Drive operation failed after {max_retries} retries with no fallback available."
     )
 ```
 
@@ -320,3 +325,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

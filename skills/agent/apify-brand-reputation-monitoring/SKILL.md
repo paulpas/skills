@@ -1,18 +1,25 @@
 ---
-name: apify-brand-reputation-monitoring
-description: Implements intelligent apify brand reputation monitoring with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent apify brand reputation monitoring with multi-factor skill selection, fallback chains,
+  and adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: apify-brand-reputation-monitoring, apify brand reputation monitoring, how do i apify-brand-reputation-monitoring, orchestrate apify-brand-reputation-monitoring, automate apify-brand-reputation-monitoring, agent apify-brand-reputation-monitoring
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: apify-brand-reputation-monitoring, apify brand reputation monitoring, how do i apify-brand-reputation-monitoring,
+    orchestrate apify-brand-reputation-monitoring, automate apify-brand-reputation-monitoring, agent apify-brand-reputation-monitoring
+  version: 1.0.0
+name: apify-brand-reputation-monitoring
 ---
-
 # Apify Brand Reputation Monitoring
 
 Orchestrates intelligent skill selection and execution for apify brand reputation monitoring workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,137 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def configure_brand_monitor(
+    brand_name: str,
+    platforms: List[str],
+    sentiment_threshold: float = 0.5,
+    lookback_days: int = 30
+) -> Dict:
+    """Configure Apify brand reputation monitoring parameters.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Selects optimal actor configuration based on brand scope and monitoring needs.
+    Applies multi-factor scoring: platform coverage, historical mention volume,
+    and sentiment volatility.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        brand_name: Target brand or product name
+        platforms: List of platforms to monitor (e.g., ['twitter', 'reddit', 'news'])
+        sentiment_threshold: Minimum positive sentiment score to flag as 'healthy'
+        lookback_days: Historical window for baseline comparison
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Configured actor input dictionary ready for Apify API
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate brand and platforms (Law 1)
+    if not brand_name or not platforms:
+        raise ValueError("Brand name and at least one platform are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    normalized_platforms = [p.lower().strip() for p in platforms if p.strip()]
+    if not normalized_platforms:
+        raise ValueError("No valid platforms provided")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Calculate monitoring scope score based on platform diversity and lookback
+    platform_coverage_score = len(normalized_platforms) / 5.0  # Max 5 common platforms
+    historical_weight = min(lookback_days / 90.0, 1.0)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate inputs
+    actor_config = {
+        "actorId": "apify/brand-monitor",
+        "input": {
+            "brandName": brand_name,
+            "platforms": normalized_platforms,
+            "startDate": _calculate_start_date(lookback_days),
+            "sentimentThreshold": sentiment_threshold,
+            "maxResults": 5000,
+            "proxyConfiguration": {"useApifyProxy": True}
+        },
+        "metadata": {
+            "scope_score": round(platform_coverage_score * historical_weight, 2),
+            "monitoring_window_days": lookback_days,
+            "timestamp": time.time()
+        }
+    }
+    return actor_config
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_brand_monitor(
+    actor_config: Dict,
+    apify_client,
+    fallback_source: Optional[str] = None
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Apify brand reputation monitoring with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud (Law 4):
+    - Invalid actor states halt immediately
+    - API rate limits trigger exponential backoff
+    - Dataset parsing failures trigger fallback to cached/recent data
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        actor_config: Pre-configured actor input from configure_brand_monitor
+        apify_client: Initialized ApifyClient instance
+        fallback_source: Optional path to cached reputation data
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Reputation analysis result with metrics, sentiment breakdown, and alerts
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    # Guard clause - validate client and config (Early Exit)
+    if not apify_client or not actor_config.get("input"):
+        raise ValueError("Invalid Apify client or actor configuration")
+        
+    run_id = None
+    try:
+        # Execute actor with timeout protection
+        run = apify_client.actor(actor_config["actorId"]).call(
+            input=actor_config["input"],
+            timeout_secs=1800
+        )
+        run_id = run["id"]
+        
+        # Parse dataset results - Atomic Predictability (Law 3)
+        dataset = apify_client.dataset(run["defaultDatasetId"])
+        mentions = dataset.list_items()
+        
+        if not mentions:
+            raise ValueError("No brand mentions retrieved from Apify dataset")
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        # Calculate reputation metrics
+        total_mentions = len(mentions)
+        positive = sum(1 for m in mentions if m.get("sentiment", 0) > 0.5)
+        negative = sum(1 for m in mentions if m.get("sentiment", 0) < -0.3)
+        
+        reputation_score = (positive - negative) / max(total_mentions, 1)
+        
+        # Success - Return structured result
+        return {
+            "success": True,
+            "run_id": run_id,
+            "brand": actor_config["input"]["brandName"],
+            "metrics": {
+                "total_mentions": total_mentions,
+                "positive_ratio": round(positive / max(total_mentions, 1), 3),
+                "negative_ratio": round(negative / max(total_mentions, 1), 3),
+                "reputation_score": round(reputation_score, 3)
+            },
+            "alerts": _generate_alerts(mentions, actor_config["input"]["sentimentThreshold"]),
+            "latency_ms": _calculate_latency()
+        }
+        
+    except ApifyApiError as e:
+        # Fail Fast - Don't retry on auth/config errors (Law 4)
+        if e.status_code in [401, 403, 400]:
+            raise ValueError(f"Apify API rejected request: {e.message}") from e
+        # Transient error - fallback chain
+        if fallback_source:
+            return _load_cached_reputation(fallback_source)
+        raise
+    finally:
+        if run_id:
+            _cleanup_run(apify_client, run_id)
 ```
 
 ### MUST DO
@@ -320,3 +338,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

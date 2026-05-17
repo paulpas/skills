@@ -1,22 +1,25 @@
 ---
-name: web-security-testing
-description: Implements intelligent web security testing with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent web security testing with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: web-security-testing, web security testing, how do i web-security-testing,
-    orchestrate web-security-testing, automate web-security-testing, agent web-security-testing,
-    unit tests, vulnerability scanning
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: web-security-testing, web security testing, how do i web-security-testing, orchestrate web-security-testing, automate
+    web-security-testing, agent web-security-testing, unit tests, vulnerability scanning
+  version: 1.0.0
+name: web-security-testing
 ---
-
-
 # Web Security Testing
 
 Orchestrates intelligent skill selection and execution for web security testing workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -138,56 +141,64 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_target_and_select_scanner(
+    target_url: str,
+    available_scanners: List[Dict],
+    scan_depth: int = 2
+) -> Dict:
+    """Analyze target characteristics and route to optimal security scanner.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates target tech stack, authentication requirements, and 
+    historical vulnerability patterns to select the best scanning tool.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        target_url: The web application endpoint to test
+        available_scanners: List of configured scanner metadata
+        scan_depth: How deep to crawl before scanning (1-3)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Scanner configuration dict with routing metadata
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not target_url or not urlparse(target_url).netloc:
+        raise ValueError("Invalid target URL format")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    target_features = _extract_target_telemetry(target_url)
+    auth_type = target_features.get("auth_type", "none")
+    tech_stack = target_features.get("tech_stack", [])
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_scanner = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
+    for scanner in available_scanners:
+        score = 0.0
+        if scanner["type"] == "sast" and "static" in tech_stack:
+            score += 0.4
+        elif scanner["type"] == "dast" and auth_type == "none":
+            score += 0.5
+        elif scanner["type"] == "iaast" and auth_type in ["oauth", "saml"]:
+            score += 0.6
+            
+        if scanner.get("rate_limit") and target_features.get("concurrent_requests", 0) > scanner["rate_limit"]:
+            score -= 0.2
+            
+        if score > best_score:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
+            best_scanner = scanner
+            
+    if best_score < 0.3:
+        return {"fallback": True, "reason": "low_match", "target": target_url}
+        
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+    result = dict(best_scanner)
+    result["config"] = {
+        "target": target_url,
+        "depth": scan_depth,
+        "auth": auth_type,
+        "timeout": 300
+    }
+    result["confidence"] = best_score
+    result["timestamp"] = time.time()
     return result
 ```
 
@@ -195,69 +206,68 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_security_scan_with_fallback(
+    scan_config: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute web security scan with resilience patterns for network/tool failures.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements fail-fast validation and adaptive fallback for:
+    - Rate limiting / WAF blocks
+    - Scanner crashes or timeouts
+    - False positive validation loops
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        scan_config: Output from analyze_target_and_select_scanner
+        max_retries: Retry attempts before escalating
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Scan results with vulnerability findings and metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Guard clause - validate config (Early Exit)
+    if not scan_config or "scanner" not in scan_config:
+        raise ValueError("Invalid scan configuration provided")
+        
+    scanner_name = scan_config["scanner"]
+    target = scan_config["config"]["target"]
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute domain-specific scan
+            raw_results = _run_scanner_tool(scanner_name, scan_config["config"])
+            
+            # Validate and deduplicate findings
+            validated_findings = _deduplicate_vulnerabilities(raw_results)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "scanner": scanner_name,
+                "findings_count": len(validated_findings),
+                "findings": validated_findings,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_execution_time()
             }
             
-        except InvalidStateError as e:
+        except RateLimitError:
             # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            if attempt < max_retries:
+                time.sleep(2 ** attempt * 10)  # Exponential backoff
+                continue
+            return _escalate_to_manual_review(target, "rate_limited")
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+        except ScannerCrashError:
+            if attempt < max_retries:
+                continue
+            return _fallback_to_alternative_scanner(target, scan_config)
+            
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return {
+        "success": False,
+        "error": "scan_exhausted_retries",
+        "target": target,
+        "timestamp": time.time()
+    }
 ```
 
 ### MUST DO
@@ -324,3 +334,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

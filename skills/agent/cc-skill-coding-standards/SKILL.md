@@ -1,18 +1,25 @@
 ---
-name: cc-skill-coding-standards
-description: Implements intelligent cc skill coding standards with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cc skill coding standards with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: cc-skill-coding-standards, cc skill coding standards, how do i cc-skill-coding-standards, orchestrate cc-skill-coding-standards, automate cc-skill-coding-standards, agent cc-skill-coding-standards
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cc-skill-coding-standards, cc skill coding standards, how do i cc-skill-coding-standards, orchestrate cc-skill-coding-standards,
+    automate cc-skill-coding-standards, agent cc-skill-coding-standards
+  version: 1.0.0
+name: cc-skill-coding-standards
 ---
-
 # Cc Skill Coding Standards
 
 Orchestrates intelligent skill selection and execution for cc skill coding standards workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,81 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def validate_skill_standards(skill_path: str, standards_config: Dict) -> Dict:
+    """Validate a skill file against CC coding standards.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by strictly parsing YAML frontmatter
+    and required ## sections before any logic runs.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on missing/invalid file
+    if not os.path.exists(skill_path):
+        raise FileNotFoundError(f"Skill file not found: {skill_path}")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    raw_content = Path(skill_path).read_text()
+    frontmatter = _parse_frontmatter(raw_content)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Law 2: Make illegal states unrepresentable
+    required_fields = standards_config.get("required_fields", ["name", "version", "description"])
+    missing = [f for f in required_fields if f not in frontmatter]
+    if missing:
+        raise ValueError(f"Missing required frontmatter fields: {missing}")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Extract and validate ## sections
+    sections = _extract_headings(raw_content)
+    required_sections = standards_config.get("required_sections", ["TL;DR Checklist", "Core Workflow"])
+    missing_sections = [s for s in required_sections if s not in sections]
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Law 3: Return new structure, never mutate input
+    compliance_report = {
+        "path": skill_path,
+        "valid": len(missing_sections) == 0,
+        "missing_sections": missing_sections,
+        "frontmatter_fields": frontmatter,
+        "timestamp": time.time()
+    }
+    return compliance_report
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def enforce_standards_with_fallback(
+    skill_path: str, 
+    standards_config: Dict,
+    auto_fix: bool = True
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Run standards enforcement pipeline with fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) by halting on critical violations
+    and routing to appropriate fallbacks based on severity.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Law 1: Early exit on invalid config
+    if not standards_config.get("severity_threshold"):
+        raise ValueError("Severity threshold must be defined in standards_config")
+        
+    report = validate_skill_standards(skill_path, standards_config)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    if report["valid"]:
+        return {"status": "compliant", "report": report}
+        
+    # Fallback chain based on violation severity
+    violations = report["missing_sections"]
+    if auto_fix and len(violations) <= 2:
+        # Fallback 1: Auto-generate missing sections
+        return _auto_generate_sections(skill_path, violations)
+        
+    if len(violations) > 2:
+        # Fallback 2: Route to human review for critical gaps
+        return _route_to_human_review(skill_path, violations)
+        
+    # Fallback 3: Log and return with warning (Law 4)
+    return {
+        "status": "non_compliant",
+        "report": report,
+        "action": "logged_for_review",
+        "warning": "Critical standards missing. Manual intervention required."
+    }
 ```
 
 ### MUST DO
@@ -320,3 +282,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

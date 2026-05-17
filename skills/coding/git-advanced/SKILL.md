@@ -1,23 +1,25 @@
 ---
-name: advanced
-description: '"Provides Advanced Git operations including rebasing, cherry-picking,
-  bisecting, reflog, worktrees, filtering branches, and multi-repository workflows
-  for exper"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering
+  branches, and multi-repository workflows for exper"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: code-quality-policies, git-branching-strategies, semver-automation
   role: reference
   scope: implementation
-  output-format: code
-  triggers: git rebase, git cherry-pick, git bisect, git reflog, worktrees, filter-branch,
-    multi-repo, advanced git
-  related-skills: code-quality-policies, git-branching-strategies, semver-automation
+  triggers: git rebase, git cherry-pick, git bisect, git reflog, worktrees, filter-branch, multi-repo, advanced git
+  version: 1.0.0
+name: advanced
 ---
-
-
-
 # Advanced Git Operations
 
 Reference guide for advanced Git techniques including rebasing, cherry-picking, bisecting, reflog recovery, worktrees, branch filtering, and multi-repository workflows for experienced developers managing complex version control scenarios.

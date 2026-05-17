@@ -1,27 +1,28 @@
 ---
-name: shop
-description: '"''OWASP Juice Shop guide: Web application security testing with intentionally"
-  vulnerable Node.js/Express application for learning and practice'''
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"''OWASP Juice Shop guide: Web application security testing with intentionally" vulnerable Node.js/Express application
+  for learning and practice'''
 how_to_guide: https://pwning.owasp-juice.shop/
 id: juice-shop
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: application, guide, juice shop, juice-shop, owasp, security best practices,
-    security guidelines, vulnerability scanning
-  related-skills: null
+  triggers: application, guide, juice shop, juice-shop, owasp, security best practices, security guidelines, vulnerability
+    scanning
+  version: 1.0.0
+name: shop
 ---
-
-
-
-
-
-
 # OWASP Juice Shop
 
 The OWASP Juice Shop is an intentionally vulnerable Node.js/Express web application for learning and practicing web application security testing.
@@ -234,3 +235,17 @@ docker run -p 3000:3000 owaspjuice-shop/juice-shop
 - OWASP Top 10: https://owasp.org/www-project-top-ten/
 - Web Security Academy: https://portswigger.net/web-security
 - Snyk Vulnerability Database: https://snyk.io/vuln/
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

@@ -1,18 +1,24 @@
 ---
-name: humanizer
+compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
 description: Detects and removes AI writing patterns to produce natural human writing through two-pass editing process
 license: MIT
-compatibility: opencode
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: coding
-  triggers: humanize text, remove AI writing, edit for natural, avoid AI patterns, write like human, writing edit, text review, code documentation, comments, technical writing, readability, code clarity
-  role: review
-  scope: review
   output-format: analysis
   related-skills: code-review, markdown-best-practices
+  role: review
+  scope: review
+  triggers: humanize text, remove AI writing, edit for natural, avoid AI patterns, write like human, writing edit, text review,
+    code documentation, comments, technical writing, readability, code clarity
+  version: 1.0.0
+name: humanizer
 ---
-
 # Humanizer: Remove AI Writing Patterns
 
 Detects AI-generated writing patterns and transforms them into natural, human-style writing through a systematic two-pass editing process.

@@ -1,21 +1,24 @@
 ---
-name: trading-edge
+compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
 description: '"Provides Finding and maintaining competitive advantage in trading systems"'
 license: MIT
-compatibility: opencode
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: fundamentals-market-regimes, fundamentals-trading-plan, fundamentals-trading-psychology, risk-correlation-risk
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: competitive, finding, fundamentals trading edge, fundamentals-trading-edge,
-    maintaining
-  related-skills: fundamentals-market-regimes, fundamentals-trading-plan, fundamentals-trading-psychology, risk-correlation-risk
+  triggers: competitive, finding, fundamentals trading edge, fundamentals-trading-edge, maintaining
+  version: 1.0.0
+name: trading-edge
 ---
-
-
-
 **Role:** Identify, quantify, test, and optimize sources of edge in trading strategies to ensure long-term profitability.
 
 **Philosophy:** Edge is the foundation of profitable trading. Without it, trading is gambling. Edge represents a statistical advantage that produces positive expected value over time. The philosophy emphasizes scientific rigor in edge discovery, rigorous statistical validation, continuous monitoring for edge decay, and systematic adaptation when edge deteriorates. Trading systems must be built on proven edge, not hope or superstition.
@@ -689,3 +692,37 @@ if __name__ == "__main__":
 ---
 
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

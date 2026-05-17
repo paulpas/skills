@@ -1,18 +1,25 @@
 ---
-name: gitlab-automation
-description: Implements intelligent gitlab automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent gitlab automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: gitlab-automation, gitlab automation, how do i gitlab-automation, orchestrate gitlab-automation, automate gitlab-automation, agent gitlab-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: gitlab-automation, gitlab automation, how do i gitlab-automation, orchestrate gitlab-automation, automate gitlab-automation,
+    agent gitlab-automation
+  version: 1.0.0
+name: gitlab-automation
 ---
-
 # Gitlab Automation
 
 Orchestrates intelligent skill selection and execution for gitlab automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,103 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def parse_gitlab_automation_context(user_input: str, project_config: Dict) -> Dict:
+    """Parse user request into GitLab-specific automation context.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Extracts project identifiers, branch targets, and CI/CD parameters
+    while validating against GitLab API constraints and access controls.
     """
+    import re
+    from urllib.parse import urlparse
+
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
+    if not user_input or not project_config.get("api_token"):
+        raise ValueError("Missing GitLab project configuration or authentication token")
+
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    url_match = re.search(r'gitlab\.com/([^/]+/[^/]+)', user_input)
+    if not url_match:
+        raise ValueError("Invalid GitLab project URL format")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    project_path = url_match.group(1)
+    branch_match = re.search(r'--branch\s+(\S+)', user_input)
+    target_branch = branch_match.group(1) if branch_match else project_config.get("default_branch", "main")
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Validate against GitLab API constraints
+    if not re.match(r'^[a-zA-Z0-9_.-]+$', target_branch):
+        raise ValueError("Invalid GitLab branch name format")
+        
+    # Atomic Predictability (Law 3) - Return new structured context
+    return {
+        "project_path": project_path,
+        "source_branch": target_branch,
+        "api_base_url": f"https://gitlab.com/api/v4/projects/{project_path}",
+        "auth_headers": {"PRIVATE-TOKEN": project_config["api_token"]},
+        "automation_type": "ci_cd_orchestration",
+        "validation_timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_gitlab_pipeline_with_fallback(context: Dict, pipeline_vars: Dict, max_retries: int = 2) -> Dict:
+    """Execute GitLab CI/CD pipeline trigger with domain-specific fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements resilient GitLab API interactions:
+    - Handles 403/401 auth failures immediately (Fail Fast)
+    - Retries on 429 rate limits with exponential backoff
+    - Falls back to manual MR approval if pipeline trigger fails
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    import time
+    import requests
+
+    # Guard clause - validate context (Early Exit)
+    if not context.get("api_base_url") or not context.get("auth_headers"):
+        raise ValueError("Incomplete GitLab automation context")
+
+    payload = {
+        "ref": context["source_branch"],
+        "variables": pipeline_vars,
+        "commit": True
+    }
+
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = requests.post(
+                f"{context['api_base_url']}/pipeline",
+                headers=context["auth_headers"],
+                json=payload,
+                timeout=30
+            )
             
             # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+            if response.status_code == 201:
+                return {
+                    "success": True,
+                    "pipeline_id": response.json()["id"],
+                    "status_url": response.json()["web_url"],
+                    "attempts": attempt + 1
+                }
+                
+            # Fail Fast - Invalid state or auth (Law 4)
+            if response.status_code in (401, 403):
+                raise PermissionError(f"GitLab API rejected access: {response.json().get('message')}")
+                
+            # Transient error - Retry with backoff
+            if response.status_code == 429:
+                wait_time = 2 ** attempt
+                time.sleep(wait_time)
+                continue
+                
+        except requests.exceptions.RequestException as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _fallback_to_manual_approval(context, pipeline_vars)
+            time.sleep(1)
+            
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise RuntimeError(f"GitLab pipeline trigger failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +304,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

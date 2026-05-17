@@ -1,18 +1,25 @@
 ---
-name: conductor-revert
-description: Implements intelligent conductor revert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent conductor revert with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: conductor-revert, conductor revert, how do i conductor-revert, orchestrate conductor-revert, automate conductor-revert, agent conductor-revert
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: conductor-revert, conductor revert, how do i conductor-revert, orchestrate conductor-revert, automate conductor-revert,
+    agent conductor-revert
+  version: 1.0.0
+name: conductor-revert
 ---
-
 # Conductor Revert
 
 Orchestrates intelligent skill selection and execution for conductor revert workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,127 +141,95 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
-    
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
-    """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+class ConductorRevertOrchestrator:
+    def __init__(self, revert_strategies: List[Dict], audit_logger: Logger):
+        self.strategies = revert_strategies
+        self.logger = audit_logger
+        self.confidence_cache = {}
+
+    def route_revert_request(self, request: Dict) -> Dict:
+        # Law 1: Early exit on invalid revert request
+        if not request.get("target_component") or not request.get("revert_version"):
+            raise ValueError("Revert request missing target_component or revert_version")
+
+        # Law 2: Parse & validate revert scope
+        scope = self._parse_revert_scope(request)
+        scored_strategies = self._score_revert_strategies(scope)
+
+        # Law 3: Atomic selection - return new dict, never mutate inputs
+        selected = max(scored_strategies, key=lambda s: s["match_score"])
+        if selected["match_score"] < 0.7:
+            return self._trigger_fallback_chain(scope, selected)
+
+        selected["execution_plan"] = self._build_revert_plan(selected)
+        self.logger.info(f"Selected revert strategy: {selected['name']} (score: {selected['match_score']})")
+        return selected
+
+    def _score_revert_strategies(self, scope: Dict) -> List[Dict]:
+        scores = []
+        for strategy in self.strategies:
+            # Multi-factor scoring: compatibility, historical success, system load
+            compat = self._calculate_component_compatibility(scope["target_component"], strategy)
+            history = self.confidence_cache.get(strategy["name"], 0.8)
+            load_penalty = 0.1 if strategy.get("system_load", 0) > 0.8 else 0.0
+            match_score = (compat * 0.5) + (history * 0.3) + ((1.0 - load_penalty) * 0.2)
+            scores.append({**strategy, "match_score": round(match_score, 3)})
+        return scores
+
+    def _trigger_fallback_chain(self, scope: Dict, failed_strategy: Dict) -> Dict:
+        # Fallback 1: Retry with degraded mode
+        degraded = {**failed_strategy, "mode": "degraded", "fallback_level": 1}
+        self.logger.warning(f"Primary revert failed, applying fallback 1: {degraded['name']}")
+        return degraded
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
-    
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
-    """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    def execute_revert_with_resilience(self, selected_strategy: Dict, revert_context: Dict) -> Dict:
+        # Law 4: Fail fast on invalid revert state
+        if not self._validate_revert_state(revert_context):
+            raise RevertStateError("Cannot revert: target component is in inconsistent state")
+
+        max_attempts = selected_strategy.get("max_retries", 2)
+        for attempt in range(max_attempts + 1):
+            try:
+                # Execute domain-specific revert logic
+                revert_result = self._apply_revert_strategy(selected_strategy, revert_context)
+                
+                # Verify revert integrity (Law 3: Atomic Predictability)
+                if self._verify_revert_integrity(revert_context, revert_result):
+                    self._update_confidence(selected_strategy["name"], success=True)
+                    return {
+                        "status": "reverted",
+                        "strategy": selected_strategy["name"],
+                        "attempts": attempt + 1,
+                        "timestamp": time.time()
+                    }
+                    
+            except TransientDependencyError as e:
+                if attempt == max_attempts:
+                    return self._escalate_to_manual_intervention(selected_strategy, revert_context)
+                continue
+                
+            except IrreversibleStateError as e:
+                # Law 4: Fail loud, no silent patches
+                self.logger.error(f"Irreversible state during revert: {e}")
+                return self._trigger_fallback_chain(revert_context, selected_strategy)
+
+        # All retries exhausted
+        return self._trigger_fallback_chain(revert_context, selected_strategy)
+
+    def _verify_revert_integrity(self, context: Dict, result: Dict) -> bool:
+        # Domain-specific verification: check component version, config hash, and dependency health
+        expected_version = context["revert_version"]
+        actual_version = result.get("component_version")
+        config_hash_valid = result.get("config_hash") == context["target_config_hash"]
+        deps_healthy = all(dep["status"] == "healthy" for dep in result.get("dependencies", []))
+        return actual_version == expected_version and config_hash_valid and deps_healthy
 ```
+
 
 ### MUST DO
 - Always validate skill metadata before selection (Early Exit)
@@ -320,3 +295,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,24 @@
 ---
-name: os-scripting
-description: Implements intelligent os scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent os scripting with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: os-scripting, os scripting, how do i os-scripting, orchestrate os-scripting, automate os-scripting, agent os-scripting
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: os-scripting, os scripting, how do i os-scripting, orchestrate os-scripting, automate os-scripting, agent os-scripting
+  version: 1.0.0
+name: os-scripting
 ---
-
 # Os Scripting
 
 Orchestrates intelligent skill selection and execution for os scripting workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,169 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_os_scripting_approach(
+    task: Dict,
+    system_state: Dict,
+    available_runtime: List[str] = ["bash", "python", "powershell"]
+) -> Dict:
+    """Evaluate and select the optimal OS scripting runtime for a system task.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Considers:
+    - Command complexity and dependency requirements
+    - Target OS environment and available interpreters
+    - Security constraints (sandboxing, privilege escalation needs)
+    - Historical success rates for similar system operations
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task: Task dict with 'command', 'args', 'requires_root', 'timeout'
+        system_state: Dict with 'os_type', 'available_runtimes', 'disk_space', 'memory'
+        available_runtime: List of supported scripting languages
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected runtime config with execution parameters
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard: Validate task structure (Law 1 - Early Exit)
+    required_keys = {"command", "args"}
+    if not all(k in task for k in required_keys):
+        raise ValueError("Task must contain 'command' and 'args'")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse environment constraints (Law 2 - Make illegal states unrepresentable)
+    target_os = system_state.get("os_type", "linux")
+    needs_privilege = task.get("requires_root", False)
+    cmd_complexity = len(task.get("args", [])) + len(task["command"])
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Score available runtimes based on domain logic
+    runtime_scores = {}
+    for runtime in available_runtime:
+        score = 0.0
+        # OS compatibility check
+        if target_os == "windows" and runtime == "bash":
+            score -= 50.0
+        elif target_os == "linux" and runtime == "powershell":
+            score -= 30.0
+        else:
+            score += 20.0
+            
+        # Privilege handling capability
+        if needs_privilege and runtime in ["bash", "python"]:
+            score += 15.0
+        elif needs_privilege and runtime == "powershell":
+            score += 25.0
+            
+        # Complexity scaling
+        if cmd_complexity > 50:
+            score += 10.0 if runtime == "python" else 0.0
+            
+        runtime_scores[runtime] = score
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Select best runtime
+    best_runtime = max(runtime_scores, key=runtime_scores.get)
+    if runtime_scores[best_runtime] < 0:
+        return {"status": "fallback_required", "reason": "no_suitable_runtime"}
+        
+    # Return new dict, don't mutate inputs (Law 3 - Atomic Predictability)
+    return {
+        "selected_runtime": best_runtime,
+        "execution_mode": "privileged" if needs_privilege else "standard",
+        "estimated_complexity": cmd_complexity,
+        "confidence": runtime_scores[best_runtime] / 100.0
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_os_script_with_safety_guards(
+    script_config: Dict,
+    env_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute OS scripting task with domain-specific safety and fallback logic.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements safe command execution for system administration:
+    - Validates environment variables and paths before execution
+    - Enforces timeouts and resource limits
+    - Parses exit codes and handles OS-specific error states
+    - Applies fallback chain: retry -> safe mode -> sysadmin escalation
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        script_config: Dict with 'runtime', 'command', 'args', 'timeout_sec'
+        env_context: Dict of environment variables and working directory
+        max_retries: Maximum retry attempts for transient OS errors
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with stdout, stderr, exit_code, and timing
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import subprocess
+    import os
+    import time
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Guard: Validate execution environment (Law 1 - Early Exit)
+    if not env_context.get("working_dir") or not os.path.isdir(env_context["working_dir"]):
+        raise RuntimeError("Invalid working directory for script execution")
+        
+    runtime = script_config["runtime"]
+    command = [runtime] + [script_config["command"]] + script_config.get("args", [])
+    timeout = script_config.get("timeout_sec", 30)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute with strict environment isolation (Law 2 - Trusted state)
+            result = subprocess.run(
+                command,
+                cwd=env_context["working_dir"],
+                env={**os.environ, **env_context.get("extra_env", {})},
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                check=False
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Parse OS-specific exit codes (Law 4 - Fail Fast, Fail Loud)
+            if result.returncode == 0:
+                return {
+                    "success": True,
+                    "exit_code": 0,
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                    "attempts": attempt + 1,
+                    "latency_ms": result.elapsed.total_seconds() * 1000
+                }
+            elif result.returncode == 124:  # Timeout
+                raise subprocess.TimeoutExpired(command, timeout)
+            elif result.returncode == 126:  # Permission denied
+                if attempt < max_retries:
+                    continue  # Retry with adjusted permissions
+                return _escalate_to_sysadmin(script_config, result.stderr)
+            else:
+                # Transient OS error (e.g., resource temporarily unavailable)
+                if attempt < max_retries:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+                return {
+                    "success": False,
+                    "exit_code": result.returncode,
+                    "stderr": result.stderr,
+                    "fallback": "manual_review"
+                }
+                
+        except subprocess.TimeoutExpired:
+            if attempt < max_retries:
+                continue
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "success": False,
+                "error": "timeout_exceeded",
+                "command": command,
+                "fallback": "safe_mode_degradation"
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return {
+        "success": False,
+        "error": "max_retries_exhausted",
+        "command": command,
+        "fallback": "human_escalation"
+    }
 ```
 
 ### MUST DO
@@ -320,3 +369,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

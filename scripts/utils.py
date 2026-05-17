@@ -109,6 +109,16 @@ DOMAIN_DEFAULTS: Dict[str, Dict[str, str]] = {
         "scope": "implementation",
         "output-format": "code",
     },
+    "go": {
+        "role": "implementation",
+        "scope": "implementation",
+        "output-format": "code",
+    },
+    "linux": {
+        "role": "implementation",
+        "scope": "implementation",
+        "output-format": "code",
+    },
     "programming": {
         "role": "reference",
         "scope": "implementation",
@@ -118,6 +128,11 @@ DOMAIN_DEFAULTS: Dict[str, Dict[str, str]] = {
         "role": "implementation",
         "scope": "implementation",
         "output-format": "code",
+    },
+    "writing": {
+        "role": "reference",
+        "scope": "implementation",
+        "output-format": "guidance",
     },
 }
 

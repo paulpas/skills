@@ -1,18 +1,25 @@
 ---
-name: antigravity-skill-orchestrator
-description: Implements intelligent antigravity skill orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent antigravity skill orchestrator with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: antigravity-skill-orchestrator, antigravity skill orchestrator, how do i antigravity-skill-orchestrator, orchestrate antigravity-skill-orchestrator, automate antigravity-skill-orchestrator, agent antigravity-skill-orchestrator
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: antigravity-skill-orchestrator, antigravity skill orchestrator, how do i antigravity-skill-orchestrator, orchestrate
+    antigravity-skill-orchestrator, automate antigravity-skill-orchestrator, agent antigravity-skill-orchestrator
+  version: 1.0.0
+name: antigravity-skill-orchestrator
 ---
-
 # Antigravity Skill Orchestrator
 
 Orchestrates intelligent skill selection and execution for antigravity skill orchestrator workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,86 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_antigravity_module(
+    payload_mass: float,
+    target_altitude: float,
+    available_modules: List[Dict],
+    stability_threshold: float = 0.85
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal anti-gravity field generator based on mass/altitude constraints.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates modules by:
+    - Thrust-to-weight ratio compatibility
+    - Field harmonic stability under current atmospheric pressure
+    - Historical uptime for similar payload profiles
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if payload_mass <= 0 or target_altitude < 0:
+        raise ValueError("Payload mass and altitude must be positive")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    scored_modules = []
+    for mod in available_modules:
+        if mod.get("status") != "online":
+            continue
+            
+        mass_factor = payload_mass / mod["max_load_kg"]
+        altitude_factor = abs(target_altitude - mod["optimal_ceiling_km"]) / mod["ceiling_range_km"]
+        stability = mod["harmonic_stability"] * (1.0 - altitude_factor)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        if stability >= stability_threshold:
+            scored_modules.append({
+                "module_id": mod["id"],
+                "score": stability * (1.0 - mass_factor),
+                "estimated_field_lifetime_hrs": mod["coolant_capacity_l"] / (payload_mass * 0.05)
+            })
+            
+    if not scored_modules:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    scored_modules.sort(key=lambda x: x["score"], reverse=True)
+    return scored_modules[0]
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_field_adjustment(
+    selected_module: Dict,
+    payload_config: Dict,
+    max_resonance_cycles: int = 3
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute anti-gravity field adjustment with harmonic fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements field collapse prevention:
+    - Monitors gravimetric sensors for resonance spikes
+    - Falls back to magnetic suspension if field coherence drops
+    - Deploys emergency ballast if altitude deviation exceeds limits
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not selected_module or not payload_config:
+        raise ValueError("Module and payload config required for field generation")
+        
+    field_params = _initialize_field_params(selected_module, payload_config)
+    coherence_history = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+    for cycle in range(max_resonance_cycles):
+        field_output = _apply_gravitic_field(field_params)
+        coherence = _measure_field_coherence(field_output)
+        coherence_history.append(coherence)
+        
+        if coherence >= 0.90:
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "stable",
+                "module_id": selected_module["id"],
+                "coherence_peak": max(coherence_history),
+                "cycles_used": cycle + 1
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        if coherence < 0.60:
+            return _trigger_magnetic_fallback(payload_config)
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        field_params["dampening_coeff"] *= 1.1
+        
+    return _deploy_emergency_ballast(payload_config, coherence_history)
 ```
 
 ### MUST DO
@@ -320,3 +287,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

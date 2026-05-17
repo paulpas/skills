@@ -1,18 +1,25 @@
 ---
-name: skill-creator
-description: Implements intelligent skill creator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent skill creator with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: skill-creator, skill creator, how do i skill-creator, orchestrate skill-creator, automate skill-creator, agent skill-creator
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: skill-creator, skill creator, how do i skill-creator, orchestrate skill-creator, automate skill-creator, agent
+    skill-creator
+  version: 1.0.0
+name: skill-creator
 ---
-
 # Skill Creator
 
 Orchestrates intelligent skill selection and execution for skill creator workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,84 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def parse_orchestration_request(user_input: str, system_constraints: Dict) -> Dict:
+    """Parse raw user input into structured orchestration features.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Extracts intent, required tools, constraints, and priority signals.
+    Validates against system constraints before routing.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_input or not isinstance(user_input, str):
+        raise ValueError("Input must be a non-empty string")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Extract core intent and entities using NLP pipeline
+    intent = _nlp_extract_intent(user_input)
+    entities = _nlp_extract_entities(user_input)
+    priority = _detect_priority_signals(user_input)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate against system constraints (Law 2: Make illegal states unrepresentable)
+    if priority == "critical" and not system_constraints.get("allow_critical"):
+        raise PermissionError("Critical priority tasks are disabled in current environment")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Build structured feature vector for scoring
+    features = {
+        "raw_input": user_input,
+        "intent": intent,
+        "entities": entities,
+        "priority": priority,
+        "token_count": len(user_input.split()),
+        "requires_parallel": _detect_parallel_signals(user_input),
+        "timestamp": time.time()
+    }
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return features
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def score_and_route(features: Dict, skill_registry: List[Dict], history_db: Dict) -> Dict:
+    """Calculate multi-factor scores and determine optimal routing path.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Combines trigger matching, historical success rates, and dependency checks.
+    Returns routing decision with confidence metrics and fallback chain.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    if not features or not skill_registry:
+        raise ValueError("Features and skill registry are required for routing")
+        
+    scored_skills = []
+    for skill in skill_registry:
+        # Calculate trigger overlap score
+        trigger_match = _calculate_trigger_overlap(features["intent"], skill["triggers"])
+        
+        # Fetch historical performance
+        hist_key = f"{features['intent']}:{skill['name']}"
+        success_rate = history_db.get(hist_key, {}).get("success_rate", 0.5)
+        
+        # Check dependency availability
+        deps_met = all(_check_dependency_availability(dep) for dep in skill.get("dependencies", []))
+        
+        # Weighted scoring formula
+        raw_score = (trigger_match * 0.5) + (success_rate * 0.3) + (0.2 if deps_met else 0.0)
+        
+        if raw_score >= 0.6:
+            scored_skills.append({
+                "skill": skill,
+                "score": round(raw_score, 3),
+                "fallback_chain": skill.get("fallback_skills", []),
+                "estimated_latency_ms": _estimate_execution_time(skill)
+            })
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+    # Sort by score descending and select top candidate
+    scored_skills.sort(key=lambda x: x["score"], reverse=True)
+    selected = scored_skills[0] if scored_skills else None
     
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return {
+        "selected_skill": selected["skill"] if selected else None,
+        "confidence": selected["score"] if selected else 0.0,
+        "fallback_chain": selected["fallback_chain"] if selected else [],
+        "routing_timestamp": time.time()
+    }
 ```
 
 ### MUST DO
@@ -320,3 +285,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

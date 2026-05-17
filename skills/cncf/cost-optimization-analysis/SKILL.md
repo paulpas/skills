@@ -1,18 +1,26 @@
 ---
-name: cost-optimization-analysis
-description: Cloud cost optimization analysis including AWS Cost Explorer, Azure Cost Management, and GCP Billing with right-sizing recommendations and optimization strategies for multi-cloud environments
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Cloud cost optimization analysis including AWS Cost Explorer, Azure Cost Management, and GCP Billing with right-sizing
+  recommendations and optimization strategies for multi-cloud environments
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: aws cost explorer, azure cost analysis, gcp billing, cloud cost optimization, right-sizing recommendations, spot instance strategy, reserved instance optimization, cost allocation
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-database-admin, cncf-cost-optimization, cncf-kubernetes-debugging
+  role: implementation
+  scope: implementation
+  triggers: aws cost explorer, azure cost analysis, gcp billing, cloud cost optimization, right-sizing recommendations, spot
+    instance strategy, reserved instance optimization, cost allocation
+  version: 1.0.0
+name: cost-optimization-analysis
 ---
-
 # Cloud Cost Optimization Analysis
 
 Implements comprehensive multi-cloud cost optimization strategies including AWS Cost Explorer analysis, Azure Cost Management analysis, GCP Billing analysis, right-sizing recommendations, spot instance optimization, reserved instance planning, and cost allocation frameworks. This skill enables data-driven decisions to reduce cloud infrastructure costs while maintaining performance and reliability.

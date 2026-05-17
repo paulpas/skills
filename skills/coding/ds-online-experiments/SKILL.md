@@ -1,22 +1,25 @@
 ---
-name: online-experiments
-description: '"Implements multi-armed bandits, contextual bandits, exploration-exploitation
-  tradeoff, and online learning algorithms"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements multi-armed bandits, contextual bandits, exploration-exploitation tradeoff, and online learning
+  algorithms"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-ab-testing, ds-experimental-design, ds-metrics-and-kpis
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: multi-armed bandits, bandits, contextual bandits, exploration exploitation,
-    online learning
-  related-skills: ds-ab-testing, ds-experimental-design, ds-metrics-and-kpis
+  triggers: multi-armed bandits, bandits, contextual bandits, exploration exploitation, online learning
+  version: 1.0.0
+name: online-experiments
 ---
-
-
-
 # Online Experiments
 
 Comprehensive guide to online experiments in machine learning and data science workflows.
@@ -58,34 +61,142 @@ Online Experiments is a critical component of the machine learning workflow. Thi
 ### Pattern 1: Basic Online Experiments
 
 ```python
-# Example pattern for Online Experiments
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+from typing import Dict, List, Tuple
 
-# Implementation pattern
-pass
+class EpsilonGreedyBandit:
+    """Basic epsilon-greedy multi-armed bandit implementation."""
+    
+    def __init__(self, n_arms: int, epsilon: float = 0.1) -> None:
+        if n_arms <= 0:
+            raise ValueError("n_arms must be a positive integer")
+        self.n_arms = n_arms
+        self.epsilon = max(0.0, min(1.0, epsilon))
+        self.q_values = np.zeros(n_arms)
+        self.arm_counts = np.zeros(n_arms)
+        
+    def select_arm(self) -> int:
+        if np.random.random() < self.epsilon:
+            return int(np.random.randint(self.n_arms))
+        return int(np.argmax(self.q_values))
+        
+    def update(self, arm: int, reward: float) -> None:
+        if not 0 <= arm < self.n_arms:
+            raise ValueError(f"Arm index {arm} out of range [0, {self.n_arms})")
+        self.arm_counts[arm] += 1
+        n = self.arm_counts[arm]
+        old_q = self.q_values[arm]
+        self.q_values[arm] = old_q + (1.0 / n) * (reward - old_q)
+        
+    def get_statistics(self) -> Dict[str, List[float]]:
+        return {
+            'avg_reward': [float(np.mean(self.q_values))],
+            'arm_counts': self.arm_counts.tolist(),
+            'q_values': self.q_values.tolist()
+        }
 ```
 
 ### Pattern 2: Production-Ready Online Experiments
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-class OnlineExperiments:
-    """Production implementation of Online Experiments"""
+class UCBBandit:
+    """Upper Confidence Bound bandit for production online experiments."""
     
-    def __init__(self):
-        pass
-    
+    def __init__(self, n_arms: int, confidence: float = 2.0) -> None:
+        if n_arms <= 0:
+            raise ValueError("n_arms must be positive")
+        self.n_arms = n_arms
+        self.confidence = confidence
+        self.q_values = np.zeros(n_arms)
+        self.arm_counts = np.zeros(n_arms)
+        self.total_pulls = 0
+        
+    def select_arm(self) -> int:
+        if self.total_pulls < self.n_arms:
+            return int(np.argmin(self.arm_counts))
+        ucb_values = self.q_values + self.confidence * np.sqrt(
+            np.log(self.total_pulls) / self.arm_counts
+        )
+        return int(np.argmax(ucb_values))
+        
+    def update(self, arm: int, reward: float) -> None:
+        self.arm_counts[arm] += 1
+        self.total_pulls += 1
+        n = self.arm_counts[arm]
+        old_q = self.q_values[arm]
+        self.q_values[arm] = old_q + (1.0 / n) * (reward - old_q)
+        
     def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Online Experiments on data"""
-        return {}
+        required_cols = {'reward', 'arm'}
+        if not required_cols.issubset(data.columns):
+            raise ValueError(f"DataFrame must contain columns: {required_cols}")
+            
+        results: List[Dict[str, Any]] = []
+        for _, row in data.iterrows():
+            arm = int(row['arm'])
+            reward = float(row['reward'])
+            self.update(arm, reward)
+            results.append({
+                'arm': arm, 
+                'reward': reward, 
+                'q_estimate': float(self.q_values[arm])
+            })
+            
+        logger.info(f"Processed {len(results)} observations across {self.n_arms} arms")
+        return {
+            'final_q_values': self.q_values.tolist(),
+            'arm_counts': self.arm_counts.tolist(),
+            'total_pulls': self.total_pulls,
+            'history': results
+        }
+```
+
+### Pattern 3: BAD vs GOOD Implementation
+
+```python
+# BAD: Hardcoded values, no type hints, bypasses validation, monolithic function
+def bad_bandit(data):
+    q = [0.0, 0.0, 0.0]
+    for i in range(len(data)):
+        if i < 3:
+            arm = i
+        else:
+            arm = q.index(max(q))
+        q[arm] = q[arm] + 0.1 * (data[i] - q[arm])
+    return q
+
+# GOOD: Parameterized, typed, validated, decomposed, follows SOLID principles
+import numpy as np
+from typing import List, Dict
+
+def good_bandit(rewards: List[float], n_arms: int = 3, alpha: float = 0.1) -> Dict[str, List[float]]:
+    if n_arms <= 0 or not rewards:
+        raise ValueError("Invalid parameters")
+        
+    q_estimates = np.zeros(n_arms)
+    arm_counts = np.zeros(n_arms)
+    
+    for t, reward in enumerate(rewards):
+        if t < n_arms:
+            arm = t
+        else:
+            arm = int(np.argmax(q_estimates))
+            
+        arm_counts[arm] += 1
+        n = arm_counts[arm]
+        q_estimates[arm] += alpha * (reward - q_estimates[arm])
+        
+    return {
+        'estimated_means': q_estimates.tolist(),
+        'pull_counts': arm_counts.tolist()
+    }
 ```
 
 ## Best Practices
@@ -97,6 +208,7 @@ class OnlineExperiments:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+- ✅ Follow SOLID principles for class design and DRY for utility functions
 
 ## Common Pitfalls
 
@@ -111,76 +223,55 @@ class OnlineExperiments:
 ## Complete Working Example
 
 ```python
-# Full working example for Online Experiments
-import pandas as pd
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from typing import Dict, Any
+from sklearn.datasets import make_classification
 
-def implement_experiments(data: pd.DataFrame) -> Dict[str, Any]:
+def contextual_bandit_simulation(n_samples: int = 1000, n_features: int = 5, n_arms: int = 3) -> Dict[str, Any]:
     """
-    Complete implementation of Online Experiments.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    Simulates a contextual bandit experiment using synthetic classification data.
     
     Args:
-        data: Input DataFrame with required columns
+        n_samples: Number of contextual observations
+        n_features: Number of contextual features
+        n_arms: Number of available actions
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_experiments(df)
-        >>> print(results)
+        Dictionary with simulation metrics, regret trajectory, and plot data
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    X, _ = make_classification(n_samples=n_samples, n_features=n_features, 
+                               n_informative=3, n_redundant=1, random_state=42)
+    true_rewards = np.random.uniform(0.5, 1.5, size=(n_samples, n_arms))
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    q_estimates = np.zeros(n_arms)
+    arm_counts = np.zeros(n_arms)
+    cumulative_regret = []
+    best_arm_idx = np.argmax(np.mean(true_rewards, axis=0))
+    
+    for t in range(n_samples):
+        context = X[t]
+        scores = q_estimates + 0.1 * np.random.randn(n_arms)
+        arm = int(np.argmax(scores))
+        
+        reward = true_rewards[t, arm]
+        arm_counts[arm] += 1
+        n = arm_counts[arm]
+        q_estimates[arm] += (1.0 / n) * (reward - q_estimates[arm])
+        
+        regret = np.mean(true_rewards[t, best_arm_idx]) - np.mean(true_rewards[t, arm])
+        cumulative_regret.append(np.sum(cumulative_regret) + regret)
+        
+    return {
+        'context_shape': X.shape,
+        'arm_counts': arm_counts.tolist(),
+        'estimated_q': q_estimates.tolist(),
+        'cumulative_regret': cumulative_regret
     }
-    
-    return results
 
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_experiments(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
-```
-
-## Related Skills
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `coding-ds-ab-testing` | Ab Testing techniques | Complementary to this skill |
-| `coding-ds-experimental-design` | Experimental Design techniques | Complementary to this skill |
-| `coding-ds-metrics-and-kpis` | Metrics And Kpis techniques | Complementary to this skill |
-
-## References
-
-- Official documentation and papers on Online Experiments
-- Industry best practices and standards
-- Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
-
----
-
-*Last updated: 2026-04-24*
+def plot_bandit_results(results: Dict[str, Any]) -> None:
+    """Generates convergence and regret visualization."""
+    regret = np.array(results['cumulative_regret'])
+    plt.figure(figsize=(10, 6))
+    plt.plot(regret, label='Cumulative Reg

@@ -43,6 +43,18 @@ DEFAULT_DOMAIN_CONFIG = {
         "content_types": ["code", "guidance", "do-dont", "examples"],
         "description": "Software coding and implementation skills",
     },
+    "go": {
+        "role": "implementation",
+        "scope": "implementation",
+        "content_types": ["code", "guidance", "do-dont", "examples"],
+        "description": "Go programming language skills and patterns",
+    },
+    "linux": {
+        "role": "implementation",
+        "scope": "implementation",
+        "content_types": ["code", "guidance", "config", "do-dont"],
+        "description": "Linux system engineering for cloud and on-prem environments",
+    },
     "programming": {
         "role": "reference",
         "scope": "implementation",
@@ -54,6 +66,12 @@ DEFAULT_DOMAIN_CONFIG = {
         "scope": "implementation",
         "content_types": ["code", "guidance", "config", "do-dont"],
         "description": "Algorithmic trading skills",
+    },
+    "writing": {
+        "role": "reference",
+        "scope": "implementation",
+        "content_types": ["guidance", "examples", "do-dont"],
+        "description": "Writing and style guidance",
     },
 }
 
