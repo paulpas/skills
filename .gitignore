@@ -48,3 +48,10 @@ FAQ.md
 
 # Local installer config (contains API keys)
 install-skill-router.conf
+
+# Backup files from skill-fixer
+*.bak
+skills_backup_*/
+
+# Large auto-generated files (exceed GitHub 100MB limit)
+skills/cncf/disaster-recovery/SKILL.md
