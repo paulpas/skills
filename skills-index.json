@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-17T15:45:25.725548Z",
-  "totalSkills": 589,
+  "generatedAt": "2026-05-17T18:21:02.077356Z",
+  "totalSkills": 590,
   "domains": {
     "agent": 229,
     "cncf": 169,
     "coding": 82,
     "go": 12,
     "linux": 10,
-    "programming": 3,
+    "programming": 4,
     "trading": 83,
     "writing": 1
   },
@@ -15,7 +15,7 @@
     "orchestration": 220,
     "implementation": 211,
     "information": 1,
-    "reference": 156,
+    "reference": 157,
     "review": 1
   },
   "skills": [
@@ -972,6 +972,30 @@
       ],
       "version": "1.0.0",
       "source": "skills/coding/ds-association-rules/SKILL.md"
+    },
+    {
+      "name": "async-runtime",
+      "domain": "programming",
+      "description": "Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems.",
+      "role": "reference",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "rust async",
+        "tokio",
+        "async-std",
+        "futures",
+        "executor",
+        "concurrency",
+        "non-blocking io",
+        "async runtime"
+      ],
+      "relatedSkills": [
+        "programming/concurrency-patterns",
+        "programming/error-handling"
+      ],
+      "version": "1.0.0",
+      "source": "skills/programming/async-runtime/SKILL.md"
     },
     {
       "name": "audio-transcriber",

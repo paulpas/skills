@@ -99,8 +99,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-17 15:45:26 UTC  
-> **Total skills:** 589
+> **Last updated:** 2026-05-17 18:21:02 UTC  
+> **Total skills:** 590
 
 ## Skills by Domain
 
@@ -638,11 +638,12 @@ MIT — All skills are freely available and redistributable.
 | [storage-architecture](skills/linux/storage-architecture/SKILL.md) | Designs and implements Linux storage architectures for cloud block storage and on-prem SAN/NAS with performance and durability guarantees. | storage architecture, LVM, filesystem, XFS, ext4, btrfs, cloud storage, NVMe, mount options, storage monitoring |
 
 
-### Programming (3 skills)
+### Programming (4 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
 | [algorithms](skills/programming/algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints'' | algorithms, comprehensive, algorithm, selection |
+| [async-runtime](skills/programming/async-runtime/SKILL.md) | Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems. | rust async, tokio, async-std, futures, executor, concurrency, non-blocking io, async runtime |
 | [v10-learning](skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow | abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress abl |
 | [v12-learning](skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins | abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch throw, jsonobject, read-json |
 
@@ -955,7 +956,7 @@ MIT — All skills are freely available and redistributable.
 | [websocket-streaming](skills/trading/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing for risk management and algorithmic trading execution." |
 
 
-### Reference (Learn & Understand) (156 skills)
+### Reference (Learn & Understand) (157 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -964,6 +965,7 @@ MIT — All skills are freely available and redistributable.
 | [algorithms](skills/programming/algorithms/SKILL.md) | Programming | ''Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints'' |
 | [architecture](skills/cncf/architecture/SKILL.md) | Cncf | "Creates or updates ARCHITECTURE.md documenting the project's design" components, and technical decisions for CNCF projects |
 | [argo](skills/cncf/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD" and Governance |
+| [async-runtime](skills/programming/async-runtime/SKILL.md) | Programming | Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems. |
 | [auto-scaling](skills/cncf/auto-scaling/SKILL.md) | Cncf | "Configures automatic scaling of compute resources (EC2, RDS, DynamoDB" Lambda) based on demand metrics with scaling policies and lifecycle hooks. |
 | [automation](skills/cncf/automation/SKILL.md) | Cncf | Provides Automation and orchestration of Azure resources with runbooks and update management |
 | [autoscaling](skills/cncf/autoscaling/SKILL.md) | Cncf | "Provides Automatically scales compute resources based on metrics like CPU and custom signals" |
@@ -1396,6 +1398,7 @@ MIT — All skills are freely available and redistributable.
 | [argo](skills/cncf/argo/SKILL.md) | Cncf | "Argo in Cloud-Native Engineering - Kubernetes-Native Workflow, CI/CD" and Governance | Reference |
 | [ask-questions-if-underspecified](skills/agent/ask-questions-if-underspecified/SKILL.md) | Agent | Implements intelligent ask questions if underspecified with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [association-rules](skills/coding/association-rules/SKILL.md) | Coding | "Provides Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis for pattern mining" | Implementation |
+| [async-runtime](skills/programming/async-runtime/SKILL.md) | Programming | Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems. | Reference |
 | [audio-transcriber](skills/agent/audio-transcriber/SKILL.md) | Agent | Implements intelligent audio transcriber with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [audit-context-building](skills/agent/audit-context-building/SKILL.md) | Agent | Implements intelligent audit context building with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [auri-core](skills/agent/auri-core/SKILL.md) | Agent | Implements intelligent auri core with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
