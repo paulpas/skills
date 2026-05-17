@@ -1,6 +1,6 @@
 # Agent Skill Router — Intelligent Skill Routing for AI Agents
 
-**An AI skill routing system that automatically selects and injects the right expertise into your AI's context.** With 561 skills across 5 domains and built-in compression, the router delivers expert knowledge without manual commands.
+**An AI skill routing system that automatically selects and injects the right expertise into your AI's context.** With 592 skills across 8 domains and built-in compression, the router delivers expert knowledge without manual commands.
 
 ```
 You → "review this Python code for security issues"
@@ -11,11 +11,13 @@ Full expert skills injected into context — AI answers as expert reviewer
 ```
 
 **Key Features:**
-- 🎯 **561 Skills** across Agent, CNCF, Coding, Programming, and Trading domains
-- 🔄 **Auto-Routing** — tasks automatically match the most relevant skills
+- 🎯 **592 Skills** across Agent, CNCF, Coding, Go, Linux, Programming, Trading, and Writing domains
+- 🔄 **Auto-Routing** — tasks automatically match the most relevant skills via semantic search + LLM ranking
 - 🗜️ **SkillCompressor** — reduce token overhead by 28-65%
 - ⚡ **Fast** — ~10ms warm, ~3.5s cold responses
 - 🔌 **MCP Integration** — works with OpenCode's `route_to_skill` tool
+- 🤖 **LLM-Powered Generation** — generate new skills programmatically using local LLMs
+- 🛠️ **Quality Fixer** — detect and fix placeholder code in existing skills
 
 ---
 
@@ -85,11 +87,174 @@ The skill router is an **MCP (Model Context Protocol) server** that routes tasks
 
 | Domain | Count | Focus |
 |--------|-------|-------|
-| Agent | 228 | AI orchestration, routing, task decomposition |
-| CNCF | 164 | Kubernetes, cloud-native, DevOps |
-| Coding | 82 | Software patterns, security, testing |
-| Programming | 3 | Algorithms, frameworks, languages |
+| Agent | 229 | AI orchestration, routing, task decomposition |
+| CNCF | 171 | Kubernetes, cloud-native, DevOps, service mesh |
+| Coding | 82 | Software patterns, security, testing, data science |
+| Go | 12 | Go idioms, concurrency patterns, error handling |
+| Linux | 10 | System administration, kernel tuning, security, networking |
+| Programming | 4 | Algorithms, frameworks, language references |
 | Trading | 83 | Execution, risk management, ML models |
+| Writing | 1 | Technical writing, style guidance |
+
+---
+
+## Scripts
+
+The repository includes several scripts for skill management, quality improvement, and container operations.
+
+### Skill Generation
+
+**`scripts/skill-generate.sh`** — Generate new skills programmatically using the Skill Router API + local LLM.
+
+```bash
+# Generate a skill (auto-infer domain and name)
+./scripts/skill-generate.sh "Generate a skill about Kubernetes networking"
+
+# Specify domain and name
+./scripts/skill-generate.sh "Add a Go concurrency pattern for rate limiting" \
+    -d go -n rate-limiting
+
+# Generate and save locally without pushing
+./scripts/skill-generate.sh "Create a trading skill about VWAP strategies" \
+    --no-push
+
+# List all domains and their skill counts
+./scripts/skill-generate.sh --domain-list
+```
+
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `-d, --domain DOMAIN` | Domain: agent, cncf, coding, go, linux, trading, programming, writing, or a new domain |
+| `-n, --name NAME` | Skill name in kebab-case (auto-inferred from task if omitted) |
+| `-t, --tags TAG1,TAG2,...` | Comma-separated tags |
+| `--no-push` | Save locally only, do not commit/push to git |
+| `--domain-list` | List all domains and their skill counts |
+| `--help` | Show help message |
+
+**How it works:**
+1. Queries the Skill Router API (`http://localhost:3000/route`) for relevant existing skills
+2. Fetches the SKILL_FORMAT_SPEC.md for format compliance
+3. Sends a combined prompt to the local LLM (llama.cpp at `http://localhost:8080`) with format spec + relevant skill context
+4. Validates the generated skill (YAML frontmatter, name, description, no placeholder code, minimum 150 lines)
+5. Saves the skill to `skills/<domain>/<name>/SKILL.md`
+6. Creates a git branch, commits, and pushes (if `AUTO_SKILL_CONTRIBUTE=true` in `install-skill-router.conf`)
+
+### Skill Quality Fixer
+
+**`scripts/skill-fixer.sh`** — LLM-powered skill quality fixer that detects and repairs placeholder code in SKILL.md files.
+
+```bash
+# Fix placeholder code in data science skills (default)
+./scripts/skill-fixer.sh
+
+# Fix all agent skills
+./scripts/skill-fixer.sh "skills/agent/*/SKILL.md"
+
+# Preview fixes without modifying files
+./scripts/skill-fixer.sh --dry-run
+
+# Only check for issues, do not fix
+./scripts/skill-fixer.sh --validate-only
+
+# Increase retry attempts
+./scripts/skill-fixer.sh --max-retries 3
+```
+
+**Detects and fixes:**
+- `pass` as sole body in Python code blocks
+- `return {}` placeholders
+- `# Example pattern for X` comment placeholders
+- Empty method bodies
+- Generic `select_skill` / `execute_with_fallback` boilerplate in agent skills
+- Missing YAML frontmatter or H1 titles
+
+**Domain-specific prompts:**
+- `coding/ds-*` → Replaces placeholders with real ML/science implementations (pandas, numpy, scikit-learn)
+- `agent/*` → Removes generic orchestration boilerplate, replaces with domain-specific code
+
+### Domain-Specific Fixer Wrappers
+
+**`scripts/fix-coding-ds-skills.sh`** — Runs `skill-fixer.sh` against all `skills/coding/ds-*/SKILL.md` files with a data science-optimized prompt.
+
+**`scripts/fix-agent-skills.sh`** — Runs `skill-fixer.sh` against all `skills/agent/*/SKILL.md` files with a prompt optimized for removing generic orchestration boilerplate.
+
+### Container Management
+
+**`scripts/start-skill-router.sh`** — Starts the Skill Router Docker container with proper networking and environment variables.
+
+```bash
+# Start the container
+export OPENAI_API_KEY=sk-your-key-here
+./scripts/start-skill-router.sh
+```
+
+**What it does:**
+- Checks if container is already running (exits gracefully)
+- Starts existing stopped container or creates a fresh one
+- Configures `--add-host host.docker.internal:host-gateway` for LLM reachability from inside the container
+- Sets all required environment variables (LLM provider, embedding provider, model names, etc.)
+- Mounts `skills/` directory as read-only
+- Sets `--restart unless-stopped` for automatic recovery
+
+---
+
+## Container Troubleshooting
+
+### LLM Reachability
+
+The Skill Router container needs to reach the local LLM server (llama.cpp) running on your host machine. The container uses `--add-host host.docker.internal:host-gateway` to resolve the host machine from within the container.
+
+**Common error:** `Connection refused` when connecting to `http://host.docker.internal:8080`
+
+**Fix:**
+```bash
+# Ensure llama.cpp server is running on port 8080
+/home/paulpas/llama.cpp/build/bin/llama-server --model <model-path> --port 8080
+
+# Restart the container
+docker restart skill-router
+```
+
+### API Key Configuration
+
+**Required:** `OPENAI_API_KEY` must be set in your environment for embeddings.
+
+```bash
+# Check if it's set
+echo $OPENAI_API_KEY
+
+# If not, set it (add to ~/.bashrc or ~/.zshrc for persistence)
+export OPENAI_API_KEY=sk-your-openai-api-key-here
+```
+
+### Auto-Skill Contribution
+
+The `install-skill-router.conf` file controls whether auto-generated skills are pushed to git:
+
+```bash
+# In install-skill-router.conf
+AUTO_SKILL_CONTRIBUTE=true   # Skills are committed and pushed
+AUTO_SKILL_CONTRIBUTE=false  # Skills are generated locally only
+```
+
+When `AUTO_SKILL_CONTRIBUTE=false`, generated skills are saved to `skills/<domain>/<name>/SKILL.md` but not pushed to the remote repository.
+
+### Container Status
+
+```bash
+# Check container status
+docker ps --filter name=skill-router
+
+# View logs
+docker logs skill-router --tail 50 -f
+
+# Restart
+docker restart skill-router
+
+# Stop
+docker stop skill-router
+```
 
 ---
 
@@ -100,7 +265,7 @@ MIT — All skills are freely available and redistributable.
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
 > **Last updated:** 2026-05-17 18:21:02 UTC  
-> **Total skills:** 590
+> **Total skills:** 592
 
 ## Skills by Domain
 
@@ -340,7 +505,7 @@ MIT — All skills are freely available and redistributable.
 | [zoom-automation](skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zoom-automation, zoom automation, how do i zoom-automation, orchestrate zoom-automation, automate zoom-automation, agent zoom-automation |
 
 
-### Cncf (169 skills)
+### Cncf (171 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -515,7 +680,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (83 skills)
+### Coding (82 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -646,6 +811,12 @@ MIT — All skills are freely available and redistributable.
 | [async-runtime](skills/programming/async-runtime/SKILL.md) | Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems. | rust async, tokio, async-std, futures, executor, concurrency, non-blocking io, async runtime |
 | [v10-learning](skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow | abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress abl |
 | [v12-learning](skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins | abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch throw, jsonobject, read-json |
+
+
+### Writing (1 skills)
+
+| Skill Name | Description | Triggers |
+|---|---|---|
 
 
 ### Trading (83 skills)
