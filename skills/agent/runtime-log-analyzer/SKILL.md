@@ -1,18 +1,25 @@
 ---
-name: runtime-log-analyzer
-description: Implements intelligent runtime log analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent runtime log analyzer with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: runtime-log-analyzer, runtime log analyzer, how do i runtime-log-analyzer, orchestrate runtime-log-analyzer, automate runtime-log-analyzer, agent runtime-log-analyzer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: runtime-log-analyzer, runtime log analyzer, how do i runtime-log-analyzer, orchestrate runtime-log-analyzer, automate
+    runtime-log-analyzer, agent runtime-log-analyzer
+  version: 1.0.0
+name: runtime-log-analyzer
 ---
-
 # Runtime Log Analyzer
 
 Orchestrates intelligent skill selection and execution for runtime log analyzer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,105 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def parse_and_classify_logs(
+    raw_log_lines: List[str],
+    schema: Dict[str, Any]
+) -> List[Dict]:
+    """Parse raw runtime logs into structured events and classify severity.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements Law 2 (Parse at boundary) by validating each line against
+    the expected log schema before processing.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        raw_log_lines: List of raw log strings from runtime
+        schema: Expected format dict with regex patterns for timestamp, level, message
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        List of parsed log event dictionaries with normalized fields
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    parsed_events = []
+    timestamp_pattern = re.compile(schema.get("timestamp", r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"))
+    level_pattern = re.compile(r"\b(DEBUG|INFO|WARN|ERROR|FATAL)\b")
+    
+    for line in raw_log_lines:
+        if not line or not line.strip():
+            continue
+            
+        ts_match = timestamp_pattern.search(line)
+        level_match = level_pattern.search(line)
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        if not ts_match or not level_match:
+            continue
+            
+        event = {
+            "timestamp": ts_match.group(),
+            "level": level_match.group().upper(),
+            "message": line.strip(),
+            "is_anomaly": False
+        }
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        # Classify severity and flag anomalies
+        if event["level"] in ("ERROR", "FATAL"):
+            event["is_anomaly"] = True
+            event["severity_score"] = 9.0 if event["level"] == "FATAL" else 7.5
+        elif event["level"] == "WARN":
+            event["severity_score"] = 5.0
+        else:
+            event["severity_score"] = 1.0
+            
+        parsed_events.append(event)
+        
+    return parsed_events
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def detect_patterns_and_generate_report(
+    parsed_events: List[Dict],
+    window_minutes: int = 15
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Analyze parsed log events to detect recurring patterns and generate insights.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 3 (Atomic Predictability) by returning a new report dict
+    without mutating the input events. Implements Law 4 (Fail Fast) by
+    validating event structure before analysis.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        parsed_events: Output from parse_and_classify_logs
+        window_minutes: Time window for pattern correlation
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Analysis report with error clusters, frequency metrics, and recommendations
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not parsed_events:
+        return {"status": "empty", "report": "No log events to analyze"}
+        
+    error_clusters = {}
+    total_events = len(parsed_events)
+    error_count = sum(1 for e in parsed_events if e["level"] in ("ERROR", "FATAL"))
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for event in parsed_events:
+        if event["is_anomaly"]:
+            # Extract error signature for clustering
+            signature = event["message"].split(":")[0].strip() if ":" in event["message"] else event["message"]
+            error_clusters[signature] = error_clusters.get(signature, 0) + 1
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+    # Generate actionable insights
+    recommendations = []
+    for sig, count in sorted(error_clusters.items(), key=lambda x: x[1], reverse=True):
+        if count >= 3:
+            recommendations.append(f"High-frequency error detected: '{sig}' ({count} occurrences)")
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return {
+        "total_events": total_events,
+        "error_count": error_count,
+        "error_rate": round(error_count / total_events, 3) if total_events > 0 else 0,
+        "top_error_signatures": dict(sorted(error_clusters.items(), key=lambda x: x[1], reverse=True)[:5]),
+        "recommendations": recommendations,
+        "analysis_timestamp": datetime.utcnow().isoformat()
+    }
 ```
 
 ### MUST DO
@@ -320,3 +306,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

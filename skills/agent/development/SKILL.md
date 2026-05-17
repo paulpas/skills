@@ -1,18 +1,24 @@
 ---
-name: development
-description: Implements intelligent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent development with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: development, development, how do i development, orchestrate development, automate development, agent development
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: development, development, how do i development, orchestrate development, automate development, agent development
+  version: 1.0.0
+name: development
 ---
-
 # Development
 
 Orchestrates intelligent skill selection and execution for development workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,121 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def select_development_skill(
+    dev_task: Dict[str, Any],
+    codebase_context: Dict[str, Any],
+    registry: List[Dict[str, Any]],
+    min_confidence: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Orchestrate skill selection for development workflows.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates available dev tools (linters, test runners, refactors, API generators)
+    against the task spec and codebase state using multi-factor scoring.
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not dev_task.get("type") or not codebase_context.get("repo_root"):
+        raise ValueError("Incomplete development context provided")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    task_features = _extract_dev_features(dev_task, codebase_context)
+    scored_candidates = []
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in registry:
+        if skill.get("status") != "active":
+            continue
+            
+        match_score = _calculate_dev_match(task_features, skill)
+        history_score = _get_historical_dev_success_rate(skill["id"])
+        availability_score = _check_dev_tool_health(skill["id"])
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        composite = (match_score * 0.5) + (history_score * 0.3) + (availability_score * 0.2)
+        
+        if composite >= min_confidence:
+            scored_candidates.append({
+                "skill": skill,
+                "score": composite,
+                "factors": {"match": match_score, "history": history_score, "health": availability_score}
+            })
+            
+    if not scored_candidates:
         return None
+        
+    scored_candidates.sort(key=lambda x: x["score"], reverse=True)
+    selected = scored_candidates[0]
     
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return fresh context, never mutate inputs
+    return {
+        "selected_skill": selected["skill"],
+        "confidence": selected["score"],
+        "execution_context": {**codebase_context, "task_id": dev_task.get("id")},
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_dev_workflow(
+    selection: Dict[str, Any],
+    task_spec: Dict[str, Any],
+    fallback_registry: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """Execute development task with domain-specific fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements resilient execution for code generation, testing, and refactoring.
+    Falls back to alternative tools or manual review gates on failure.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    skill_meta = selection["selected_skill"]
+    context = selection["execution_context"]
     
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not _validate_dev_prerequisites(skill_meta, context):
+        raise DevOrchestrationError(f"Missing prerequisites for {skill_meta['name']}")
+        
+    attempts = 0
+    max_attempts = 2
     
-    for attempt in range(max_retries + 1):
+    while attempts <= max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = _run_dev_tool(skill_meta, context, task_spec)
             
-            # Success - Atomic Predictability (Law 3)
+            # Validate output before returning
+            if not _validate_dev_output(result, skill_meta["output_schema"]):
+                raise DevOrchestrationError("Tool produced invalid output schema")
+                
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "skill": skill_meta["name"],
+                "artifacts": result.get("artifacts", []),
+                "metrics": {"attempts": attempts + 1, "latency_ms": time.time() - selection["timestamp"]}
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except DevToolTimeoutError:
+            attempts += 1
+            if attempts > max_attempts:
+                break
+            continue
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except DevValidationError as e:
+            # Fail Fast - Don't try to patch corrupted code state (Law 4)
+            raise DevOrchestrationError(f"Validation failed at attempt {attempts}: {e}") from e
+            
+    # Fallback Chain: Try alternative dev tool, then manual review gate
+    fallback_skill = _find_alternative_dev_tool(skill_meta, fallback_registry)
+    if fallback_skill:
+        return execute_dev_workflow({
+            "selected_skill": fallback_skill,
+            "execution_context": context,
+            "timestamp": time.time()
+        }, task_spec, fallback_registry)
+        
+    # Critical path fallback: Defer to human developer
+    return {
+        "status": "deferred",
+        "reason": "All automated dev tools exhausted",
+        "ticket": _create_dev_ticket(task_spec, context),
+        "assigned_to": "human_review"
+    }
 ```
 
 ### MUST DO
@@ -320,3 +321,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

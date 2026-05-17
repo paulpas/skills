@@ -1,18 +1,25 @@
 ---
-name: skill-rails-upgrade
-description: Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: skill-rails-upgrade, skill rails upgrade, how do i skill-rails-upgrade, orchestrate skill-rails-upgrade, automate skill-rails-upgrade, agent skill-rails-upgrade
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: skill-rails-upgrade, skill rails upgrade, how do i skill-rails-upgrade, orchestrate skill-rails-upgrade, automate
+    skill-rails-upgrade, agent skill-rails-upgrade
+  version: 1.0.0
+name: skill-rails-upgrade
 ---
-
 # Skill Rails Upgrade
 
 Orchestrates intelligent skill selection and execution for skill rails upgrade workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,115 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_skill_rail_candidates(
+    target_rail: str,
+    candidate_skills: List[Dict],
+    historical_metrics: Dict[str, float]
+) -> List[Dict]:
+    """Evaluate and rank skill candidates for a specific rail upgrade.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements multi-factor scoring: text similarity, historical success rate,
+    and system availability. Returns sorted list of viable candidates.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    scored_candidates = []
+    for skill in candidate_skills:
+        # Calculate text similarity using token overlap (domain-specific)
+        skill_triggers = set(skill.get("triggers", []))
+        target_features = set(target_rail.lower().split())
+        similarity = len(skill_triggers & target_features) / max(len(skill_triggers | target_features), 1)
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        # Fetch historical performance from metrics store
+        hist_success = historical_metrics.get(skill["id"], 0.0)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+        # Check system availability and dependency health
+        is_available = skill.get("status") == "active" and skill.get("dependencies_met", True)
+        
+        # Weighted scoring formula per orchestration policy
+        weighted_score = (similarity * 0.4) + (hist_success * 0.4) + (float(is_available) * 0.2)
+        
+        if weighted_score >= 0.6: # Minimum threshold
+            scored_candidates.append({
+                "skill_id": skill["id"],
+                "name": skill["name"],
+                "score": round(weighted_score, 3),
+                "similarity": round(similarity, 3),
+                "history": round(hist_success, 3),
+                "available": is_available
+            })
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Sort by score descending (Atomic Predictability - Law 3)
+    scored_candidates.sort(key=lambda x: x["score"], reverse=True)
+    return scored_candidates
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_rail_upgrade_with_resilience(
+    selected_skill: Dict,
+    upgrade_context: Dict,
+    fallback_rails: List[str]
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a skill rail upgrade with built-in fallback mechanisms.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Fail Fast, Fail Loud (Law 4) and structured fallback chains.
+    Handles validation, execution, and automatic rollback/switching.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - Early Exit (Law 1)
+    if not selected_skill or not upgrade_context.get("target_version"):
+        raise ValueError("Missing required skill metadata or target version")
+        
+    # Parse input - Make Illegal States Unrepresentable (Law 2)
+    validated_config = _validate_upgrade_config(upgrade_context, selected_skill)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    attempts = 0
+    max_attempts = 2
     
-    for attempt in range(max_retries + 1):
+    while attempts <= max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute the actual rail upgrade logic
+            result = _apply_skill_rail(selected_skill, validated_config)
             
-            # Success - Atomic Predictability (Law 3)
+            # Verify upgrade integrity before returning
+            if _verify_rail_integrity(selected_skill["id"]):
+                return {
+                    "status": "success",
+                    "rail_id": selected_skill["id"],
+                    "version": validated_config["target_version"],
+                    "attempts": attempts + 1,
+                    "timestamp": time.time()
+                }
+            else:
+                raise IntegrityError("Post-upgrade integrity check failed")
+                
+        except IntegrityError as e:
+            # Fail Fast - Don't patch bad state (Law 4)
+            _rollback_rail(selected_skill["id"])
+            raise e
+            
+        except TransientDependencyError as e:
+            attempts += 1
+            if attempts > max_attempts:
+                break
+            time.sleep(2 ** attempts) # Exponential backoff
+            
+    # Fallback chain execution
+    for fallback_rail in fallback_rails:
+        try:
+            fallback_result = _switch_to_fallback_rail(fallback_rail, validated_config)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "fallback_success",
+                "original_rail": selected_skill["id"],
+                "fallback_rail": fallback_rail,
+                "timestamp": time.time()
             }
+        except Exception:
+            continue
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    # Fail Loud - All fallbacks exhausted
+    raise SkillRailUpgradeError(
+        f"Failed to upgrade rail {selected_skill['id']} after {max_attempts + 1} attempts and fallbacks"
     )
 ```
 
@@ -320,3 +317,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

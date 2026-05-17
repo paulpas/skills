@@ -1,18 +1,25 @@
 ---
-name: container-inspector
-description: Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: container-inspector, container inspector, how do i container-inspector, orchestrate container-inspector, automate container-inspector, agent container-inspector
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: container-inspector, container inspector, how do i container-inspector, orchestrate container-inspector, automate
+    container-inspector, agent container-inspector
+  version: 1.0.0
+name: container-inspector
 ---
-
 # Container Inspector
 
 Orchestrates intelligent skill selection and execution for container inspector workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,130 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_container_manifest(
+    container_id: str,
+    inspection_targets: List[str],
+    min_security_score: float = 0.8
+) -> Dict:
+    """Analyze container manifest and runtime state for inspection readiness.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Extracts critical inspection vectors:
+    - Image layer composition and base OS vulnerabilities
+    - Runtime resource limits (CPU, memory, PID)
+    - Network exposure and privileged flags
+    - Health check configuration and restart policies
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        container_id: Target container ID or image reference
+        inspection_targets: List of inspection vectors to prioritize
+        min_security_score: Minimum acceptable security posture score
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Inspection readiness dict with extracted features and risk flags
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate container reference (Law 1)
+    if not container_id or not re.match(r'^[a-zA-Z0-9._-]+$', container_id):
+        raise ValueError(f"Invalid container reference: {container_id}")
+    
+    # Parse runtime state - Make Illegal States Unrepresentable (Law 2)
+    runtime_state = _fetch_container_state(container_id)
+    if runtime_state.get("Status") == "exited":
+        return {"ready": False, "reason": "Container is stopped", "state": runtime_state}
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    inspection_features = {
+        "has_healthcheck": bool(runtime_state.get("Config", {}).get("Healthcheck")),
+        "privileged": runtime_state.get("HostConfig", {}).get("Privileged", False),
+        "network_mode": runtime_state.get("HostConfig", {}).get("NetworkMode"),
+        "resource_limits": runtime_state.get("HostConfig", {}).get("Memory"),
+        "base_image": runtime_state.get("Config", {}).get("Image")
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Calculate inspection readiness score
+    risk_penalty = 0.0
+    if inspection_features["privileged"]:
+        risk_penalty += 0.4
+    if inspection_features["network_mode"] == "host":
+        risk_penalty += 0.3
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    readiness_score = max(0.0, 1.0 - risk_penalty)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    if readiness_score < min_security_score:
+        return {"ready": False, "score": readiness_score, "flags": ["high_risk_config"]}
+        
+    # Atomic Predictability (Law 3) - Return new dict
+    return {
+        "ready": True,
+        "score": readiness_score,
+        "features": dict(inspection_features),
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def run_inspection_pipeline(
+    target: str,
+    scan_depth: str = "full",
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute container inspection pipeline with resilience fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4) for inspection operations:
+    - Invalid container states halt immediately
+    - Network timeouts for CVE databases trigger offline fallback
+    - No silent partial scans or corrupted manifests
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retry live inspection with adjusted timeout
+    2. Fall back to cached manifest/layer analysis
+    3. Defer to manual audit for critical security gaps
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target: Container ID, image name, or archive path
+        scan_depth: 'quick', 'full', or 'deep' inspection level
+        max_retries: Maximum retry attempts for transient failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Inspection report with findings, confidence, and execution metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate target (Early Exit)
+    if not target or not _is_valid_container_reference(target):
+        raise InspectionError(f"Invalid inspection target: {target}")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_target = _resolve_target_path(target)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
+            if scan_depth == "quick":
+                report = _run_quick_inspect(validated_target)
+            else:
+                report = _run_full_security_scan(validated_target)
+                
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "target": validated_target,
+                "depth": scan_depth,
+                "findings": report,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_execution_time()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except NetworkTimeoutError as e:
+            # CVE DB unreachable - try offline fallback
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _execute_offline_manifest_scan(validated_target)
+            continue
+            
+        except CorruptedLayerError as e:
+            # Fail Fast - Don't patch corrupted data (Law 4)
+            raise InspectionError(f"Corrupted layer in {validated_target}: {str(e)}") from e
+            
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise InspectionError(f"Inspection failed for {validated_target} after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +331,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

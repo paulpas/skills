@@ -1,18 +1,25 @@
 ---
-name: cicd-automation-workflow-automate
-description: Implements intelligent cicd automation workflow automate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cicd automation workflow automate with multi-factor skill selection, fallback chains,
+  and adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: cicd-automation-workflow-automate, cicd automation workflow automate, how do i cicd-automation-workflow-automate, orchestrate cicd-automation-workflow-automate, automate cicd-automation-workflow-automate, agent cicd-automation-workflow-automate
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cicd-automation-workflow-automate, cicd automation workflow automate, how do i cicd-automation-workflow-automate,
+    orchestrate cicd-automation-workflow-automate, automate cicd-automation-workflow-automate, agent cicd-automation-workflow-automate
+  version: 1.0.0
+name: cicd-automation-workflow-automate
 ---
-
 # Cicd Automation Workflow Automate
 
 Orchestrates intelligent skill selection and execution for cicd automation workflow automate workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,118 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def orchestrate_cicd_pipeline(
+    pipeline_config: Dict[str, Any],
+    target_env: str,
+    branch_rules: List[Dict[str, str]]
+) -> Dict[str, Any]:
+    """Orchestrate CI/CD workflow by validating stages and selecting execution strategy.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies 5 Laws of Elegant Defense:
+    - Law 1: Early exit on missing pipeline config or invalid target environment
+    - Law 2: Parse and validate pipeline structure before execution
+    - Law 3: Return new execution plan without mutating original config
+    - Law 4: Fail immediately on invalid stage dependencies or missing secrets
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not pipeline_config or "stages" not in pipeline_config:
+        raise ValueError("Pipeline config must contain 'stages' definition")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if target_env not in ("dev", "staging", "production"):
+        raise ValueError(f"Invalid target environment: {target_env}")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Parse pipeline structure (Law 2)
+    stages = pipeline_config["stages"]
+    execution_plan = []
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    for stage in stages:
+        # Validate stage dependencies (Law 4)
+        if "depends_on" in stage:
+            for dep in stage["depends_on"]:
+                if dep not in [s["name"] for s in stages]:
+                    raise ValueError(f"Stage '{stage['name']}' depends on unknown stage '{dep}'")
+                    
+        # Select execution strategy based on environment rules (Law 1)
+        strategy = _match_branch_rule(stage, branch_rules, target_env)
+        if not strategy:
+            strategy = "default_runner"
+            
+        execution_plan.append({
+            "stage": stage["name"],
+            "strategy": strategy,
+            "timeout_minutes": stage.get("timeout", 30),
+            "retry_policy": stage.get("retry", {"max_attempts": 2})
+        })
+        
+    # Return new structure (Law 3)
+    return {
+        "pipeline_id": pipeline_config.get("id", "unknown"),
+        "target_env": target_env,
+        "execution_order": execution_plan,
+        "validation_status": "passed"
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_cicd_stage(
+    stage_config: Dict[str, Any],
+    runner_pool: List[Dict[str, str]],
+    artifact_store: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Execute a CI/CD stage with environment-specific fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4) for pipeline execution:
+    - Invalid runner states halt immediately
+    - No silent stage skips or partial artifact commits
     
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Fallback chain for CI/CD:
+    1. Retry stage on same runner with exponential backoff
+    2. Failover to secondary runner pool
+    3. Trigger manual approval gate if production deployment
+    4. Rollback previous stage artifacts if critical failure
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not stage_config or "name" not in stage_config:
+        raise ValueError("Stage config must contain 'name'")
+        
+    active_runners = [r for r in runner_pool if r.get("status") == "available"]
+    if not active_runners:
+        raise RuntimeError("No available CI/CD runners in pool")
+        
+    current_runner = active_runners[0]
+    max_retries = stage_config.get("retry_policy", {}).get("max_attempts", 2)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute stage on selected runner
+            result = _run_stage_on_runner(current_runner, stage_config)
             
-            # Success - Atomic Predictability (Law 3)
+            # Validate artifacts were produced (Law 4)
+            if not result.get("artifacts") and stage_config.get("requires_artifacts"):
+                raise RuntimeError(f"Stage '{stage_config['name']}' failed to produce required artifacts")
+                
+            # Store artifacts atomically (Law 3)
+            artifact_store[f"{stage_config['name']}_v{attempt}"] = result["artifacts"]
+            
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "stage": stage_config["name"],
+                "status": "completed",
+                "runner_used": current_runner["id"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "artifacts_stored": True
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except RunnerOfflineError:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _failover_to_backup_runner(stage_config, runner_pool)
+            continue
+            
+        except ArtifactValidationError as e:
+            raise RuntimeError(f"Artifact validation failed for {stage_config['name']}: {e}") from e
+            
+    # All retries exhausted - Fail Loud
+    raise RuntimeError(f"Stage '{stage_config['name']}' exhausted all runner retries")
 ```
 
 ### MUST DO
@@ -320,3 +319,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

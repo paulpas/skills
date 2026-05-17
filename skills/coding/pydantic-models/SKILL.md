@@ -1,22 +1,25 @@
 ---
-name: models
-description: '"''Pydantic frozen data models for trading: enums, annotated constraints"
-  field/model validators, and computed properties'''
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"''Pydantic frozen data models for trading: enums, annotated constraints" field/model validators, and computed
+  properties'''
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
   triggers: enums, frozen, pydantic models, pydantic-models, trading
-  related-skills: null
+  version: 1.0.0
+name: models
 ---
-
-
-
-
 # Skill: coding-pydantic-models
 
 # Pydantic frozen data models for trading: enums, annotated constraints, field/model validators, and computed properties
@@ -370,3 +373,17 @@ candle = Candle(
 - **Atomic Predictability**: Frozen models + pure `@property` methods; same inputs always give same outputs
 - **Fail Fast**: Edge values, cross-field inconsistencies, and format violations all raise `ValueError` immediately
 - **Intentional Naming**: `confidence_not_edge`, `candle_data_valid`, `pnl_calculated_correctly` — validators read like English assertions
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

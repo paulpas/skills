@@ -1,18 +1,25 @@
 ---
-name: workflow-orchestration-patterns
-description: Implements intelligent workflow orchestration patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent workflow orchestration patterns with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: workflow-orchestration-patterns, workflow orchestration patterns, how do i workflow-orchestration-patterns, orchestrate workflow-orchestration-patterns, automate workflow-orchestration-patterns, agent workflow-orchestration-patterns
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: workflow-orchestration-patterns, workflow orchestration patterns, how do i workflow-orchestration-patterns, orchestrate
+    workflow-orchestration-patterns, automate workflow-orchestration-patterns, agent workflow-orchestration-patterns
+  version: 1.0.0
+name: workflow-orchestration-patterns
 ---
-
 # Workflow Orchestration Patterns
 
 Orchestrates intelligent skill selection and execution for workflow orchestration patterns workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,99 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def resolve_orchestration_pattern(
+    workflow_request: Dict[str, Any],
+    available_patterns: List[Dict[str, Any]],
+    min_confidence: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Map a raw workflow request to the optimal orchestration pattern.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates request structure against known patterns (fan-out, fan-in, 
+    sequential, parallel) using trigger matching, historical success rates,
+    and current executor availability.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not workflow_request.get("steps"):
+        raise ValueError("Workflow request must contain at least one step")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    request_features = _extract_workflow_features(workflow_request)
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for pattern in available_patterns:
+        # Calculate composite score based on trigger overlap, historical success, and load
+        trigger_match = _calculate_trigger_overlap(request_features, pattern["triggers"])
+        historical_success = pattern.get("success_rate", 0.0)
+        current_load = 1.0 - (pattern.get("active_executions", 0) / pattern.get("max_capacity", 10))
+        
+        score = (trigger_match * 0.5) + (historical_success * 0.3) + (current_load * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = pattern
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable snapshot with selection metadata
+    return {
+        "pattern_id": best_match["id"],
+        "pattern_name": best_match["name"],
+        "confidence": best_score,
+        "selected_at": time.time(),
+        "required_resources": best_match.get("resources", [])
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_workflow_step_with_resilience(
+    step_config: Dict[str, Any],
+    workflow_context: Dict[str, Any],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute a specific workflow step with domain-aware fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles transient failures by adjusting concurrency, switching to 
+    fallback executors, or escalating to manual review based on step criticality.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    step_id = step_config.get("id", "unknown")
+    criticality = step_config.get("criticality", "standard")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    if not _validate_step_prerequisites(step_config, workflow_context):
+        raise WorkflowValidationError(f"Prerequisites not met for step {step_id}")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute step with domain-specific timeout and resource allocation
+            result = _run_step_executor(step_config, workflow_context)
             
-            # Success - Atomic Predictability (Law 3)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "step_id": step_id,
+                "status": "completed",
+                "output": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
             
+        except TransientExecutorError as e:
+            if attempt < max_retries:
+                # Adjust concurrency and retry
+                workflow_context["concurrency"] = max(1, workflow_context.get("concurrency", 1) - 1)
+                continue
+            else:
+                # Apply fallback chain based on criticality
+                if criticality == "high":
+                    return _route_to_manual_review(step_config, workflow_context)
+                else:
+                    return _execute_fallback_step(step_config, workflow_context)
+                    
         except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            # Fail fast on corrupt state
+            raise WorkflowValidationError(f"Invalid state in {step_id}: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise WorkflowExecutionError(f"All retries exhausted for step {step_id}")
 ```
 
 ### MUST DO
@@ -320,3 +300,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

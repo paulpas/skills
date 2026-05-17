@@ -1,18 +1,25 @@
 ---
-name: ask-questions-if-underspecified
-description: Implements intelligent ask questions if underspecified with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent ask questions if underspecified with multi-factor skill selection, fallback chains, and
+  adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: ask-questions-if-underspecified, ask questions if underspecified, how do i ask-questions-if-underspecified, orchestrate ask-questions-if-underspecified, automate ask-questions-if-underspecified, agent ask-questions-if-underspecified
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: ask-questions-if-underspecified, ask questions if underspecified, how do i ask-questions-if-underspecified, orchestrate
+    ask-questions-if-underspecified, automate ask-questions-if-underspecified, agent ask-questions-if-underspecified
+  version: 1.0.0
+name: ask-questions-if-underspecified
 ---
-
 # Ask Questions If Underspecified
 
 Orchestrates intelligent skill selection and execution for ask questions if underspecified workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -131,129 +138,112 @@ Avoid this skill for:
 
 ## Implementation Patterns
 
-### Pattern 1: Skill Selection Logic
+### Pattern 1: Request Completeness & Question Generation
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def assess_request_completeness(
+    user_input: str,
+    required_fields: List[str],
+    ambiguity_threshold: float = 0.6
+) -> Dict:
+    """Assess if a user request is underspecified and generate clarifying questions.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements Law 2 (Parse at boundary) by validating input against schema.
+    Implements Law 1 (Early Exit) by returning immediately if fully specified.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        user_input: Raw text from the user
+        required_fields: List of expected parameters/entities
+        ambiguity_threshold: Confidence score below which a field is considered ambiguous
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Dict with 'is_complete', 'missing_fields', 'ambiguous_fields', 'clarifying_questions'
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Early exit if input is empty (Law 1)
+    if not user_input or not user_input.strip():
+        return {
+            "is_complete": False,
+            "missing_fields": required_fields,
+            "ambiguous_fields": [],
+            "clarifying_questions": ["Please provide a complete request."]
+        }
+    
+    # Parse and extract entities (Law 2)
+    extracted = _extract_entities(user_input)
+    missing = [f for f in required_fields if f not in extracted]
+    ambiguous = [f for f in extracted if extracted[f].get("confidence", 1.0) < ambiguity_threshold]
+    
+    # Early exit if fully specified
+    if not missing and not ambiguous:
+        return {"is_complete": True, "missing_fields": [], "ambiguous_fields": [], "clarifying_questions": []}
+    
+    # Generate domain-specific clarifying questions
+    questions = []
+    for field in missing:
+        questions.append(f"What is the value for '{field}'?")
+    for field in ambiguous:
+        questions.append(f"Could you clarify the expected format/value for '{field}'?")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Return new structure (Law 3)
+    return {
+        "is_complete": False,
+        "missing_fields": missing,
+        "ambiguous_fields": ambiguous,
+        "clarifying_questions": questions
+    }
 ```
 
 
-### Pattern 2: Execution with Fallback
+### Pattern 2: Clarification Routing & Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def route_underspecified_request(
+    assessment: Dict,
+    conversation_history: List[Dict],
+    max_clarification_rounds: int = 3
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Route underspecified requests through clarification or fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast/Loud) by escalating after max rounds.
+    Implements adaptive fallback based on conversation context.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        assessment: Output from assess_request_completeness
+        conversation_history: Previous turns to avoid repetitive questions
+        max_clarification_rounds: Threshold before deferring to human/simpler path
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Routing decision with action, payload, and metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+    # Guard clause - validate assessment structure
+    if not assessment.get("is_complete"):
+        # Check if we've exceeded clarification rounds
+        clarification_count = sum(1 for turn in conversation_history if turn.get("type") == "clarification")
+        if clarification_count >= max_clarification_rounds:
+            # Fallback: Defer to human or simplified execution path
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "action": "defer_to_human",
+                "reason": "Max clarification rounds exceeded",
+                "payload": {"original_request": assessment.get("clarifying_questions")},
+                "metadata": {"fallback_level": 2, "confidence": 0.3}
             }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+        
+        # Fallback Level 1: Retry with simplified/rephrased questions
+        simplified_questions = _simplify_questions(assessment.get("clarifying_questions", []))
+        return {
+            "action": "ask_clarification",
+            "reason": "Request underspecified",
+            "payload": {"questions": simplified_questions},
+            "metadata": {"fallback_level": 1, "confidence": 0.8}
+        }
     
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Fully specified - proceed to execution pipeline
+    return {
+        "action": "proceed_to_execution",
+        "reason": "Request complete",
+        "payload": {"validated_context": _build_execution_context(assessment)},
+        "metadata": {"fallback_level": 0, "confidence": 0.95}
+    }
 ```
 
 ### MUST DO
@@ -320,3 +310,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

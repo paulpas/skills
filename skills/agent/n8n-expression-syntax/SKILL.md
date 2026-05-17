@@ -1,18 +1,25 @@
 ---
-name: n8n-expression-syntax
-description: Implements intelligent n8n expression syntax with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent n8n expression syntax with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: n8n-expression-syntax, n8n expression syntax, how do i n8n-expression-syntax, orchestrate n8n-expression-syntax, automate n8n-expression-syntax, agent n8n-expression-syntax
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: n8n-expression-syntax, n8n expression syntax, how do i n8n-expression-syntax, orchestrate n8n-expression-syntax,
+    automate n8n-expression-syntax, agent n8n-expression-syntax
+  version: 1.0.0
+name: n8n-expression-syntax
 ---
-
 # N8N Expression Syntax
 
 Orchestrates intelligent skill selection and execution for n8n expression syntax workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,56 +141,51 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def parse_n8n_expression(
+    expression: str,
+    available_context: Dict[str, Any],
+    strict_mode: bool = True
+) -> Dict[str, Any]:
+    """Parse and validate an n8n expression string.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Handles n8n-specific syntax: {{ $json.field }}, {{ $node['NodeName'].json.field }},
+    {{ $now }}, {{ $item('data', 0).id }}, and arithmetic/logic operations.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        expression: Raw n8n expression string (e.g., "{{ $json.status == 'active' }}")
+        available_context: Current workflow context (nodes, items, parameters)
+        strict_mode: If True, raises on undefined paths; if False, returns None for missing
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
+        Parsed AST-like dict with tokens, resolved values, and validation status
         
     Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        ValueError: If expression is empty or malformed
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not expression or not expression.strip():
+        raise ValueError("Expression cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Extract expression body from {{ }} delimiters
+    match = re.match(r'^\{\{\s*(.+?)\s*\}\}$', expression.strip())
+    if not match:
+        raise ValueError("Invalid n8n expression format: missing {{ }} delimiters")
+        
+    inner_expr = match.group(1)
     
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    tokens = _tokenize_n8n_expression(inner_expr)
+    resolved = _resolve_n8n_tokens(tokens, available_context, strict_mode)
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate context
+    result = {
+        "original": expression,
+        "parsed_tokens": tokens,
+        "resolved_value": resolved,
+        "is_valid": True,
+        "strict_mode": strict_mode,
+        "timestamp": time.time()
+    }
     return result
 ```
 
@@ -191,69 +193,70 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_n8n_expression(
+    parsed_expr: Dict[str, Any],
+    workflow_context: Dict[str, Any],
+    fallback_strategy: str = "default"
+) -> Dict[str, Any]:
+    """Execute a validated n8n expression with fallback handling.
     
     Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    - Invalid node references halt immediately with descriptive errors
+    - Missing fields return None or configured default instead of crashing
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retry with expanded context (if node data is still loading)
+    2. Try alternative expression path (if primary path fails)
+    3. Defer to static value or error string (for critical workflows)
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        parsed_expr: Output from parse_n8n_expression
+        workflow_context: Full workflow state including all node outputs
+        fallback_strategy: 'default', 'retry', 'static', or 'error'
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
+        Execution result with metadata (success, timing, resolved_value)
         
     Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        ValueError: If all retries and fallbacks exhausted
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate parsed expression (Early Exit)
+    if not parsed_expr.get("is_valid"):
+        raise ValueError(f"Cannot execute invalid expression: {parsed_expr.get('original')}")
     
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_context = _normalize_workflow_context(workflow_context)
     
-    for attempt in range(max_retries + 1):
+    attempts = 0
+    max_attempts = 2 if fallback_strategy == "retry" else 1
+    
+    for attempt in range(max_attempts):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = _evaluate_n8n_ast(parsed_expr["parsed_tokens"], validated_context)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "expression": parsed_expr["original"],
+                "resolved_value": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _calculate_latency(),
+                "fallback_used": False
             }
             
-        except InvalidStateError as e:
+        except UndefinedPathError as e:
             # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            if fallback_strategy == "static":
+                return {"success": True, "resolved_value": None, "fallback_used": True}
+            raise ValueError(f"Undefined path in expression: {str(e)}") from e
             
-        except TransientError as e:
+        except ContextLoadingError as e:
             # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+            if attempt == max_attempts - 1:
+                return {"success": False, "error": str(e), "fallback_used": True}
     
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise ValueError(f"Failed to resolve expression after {max_attempts} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +323,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

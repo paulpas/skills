@@ -1,22 +1,25 @@
 ---
-name: randomized-experiments
-description: '"Provides Designs and analyzes randomized controlled trials (RCTs),
-  A/B tests, experimental blocking, and sample size calculations"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Designs and analyzes randomized controlled trials (RCTs), A/B tests, experimental blocking, and sample
+  size calculations"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-ab-testing, ds-causal-inference, ds-intervention-analysis, ds-observational-studies
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: randomized experiments, RCT, experimental design, randomization, blocking,
-    sample size
-  related-skills: ds-ab-testing, ds-causal-inference, ds-intervention-analysis, ds-observational-studies
+  triggers: randomized experiments, RCT, experimental design, randomization, blocking, sample size
+  version: 1.0.0
+name: randomized-experiments
 ---
-
-
-
 # Randomized Experiments
 
 Comprehensive guide to randomized experiments in machine learning and data science workflows.
@@ -58,34 +61,158 @@ Randomized Experiments is a critical component of the machine learning workflow.
 ### Pattern 1: Basic Randomized Experiments
 
 ```python
-# Example pattern for Randomized Experiments
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+from scipy import stats
+from typing import Dict, Optional
 
-# Implementation pattern
-pass
+def basic_rct_analysis(
+    data: pd.DataFrame, 
+    treatment_col: str, 
+    outcome_col: str, 
+    block_col: Optional[str] = None
+) -> Dict[str, float]:
+    """
+    Perform basic two-sample analysis on randomized experiment data.
+    Handles optional blocking and returns statistical results.
+    """
+    if outcome_col not in data.columns or treatment_col not in data.columns:
+        raise ValueError("Missing required columns in data")
+        
+    treatment_data = data[data[treatment_col] == 1][outcome_col]
+    control_data = data[data[treatment_col] == 0][outcome_col]
+    
+    if len(treatment_data) < 2 or len(control_data) < 2:
+        raise ValueError("Insufficient samples in treatment or control groups")
+        
+    t_stat, p_value = stats.ttest_ind(treatment_data, control_data, equal_var=False)
+    effect_size = float(np.mean(treatment_data) - np.mean(control_data))
+    
+    results: Dict[str, float] = {
+        "t_statistic": float(t_stat),
+        "p_value": float(p_value),
+        "effect_size": effect_size,
+        "significant": float(1.0 if p_value < 0.05 else 0.0)
+    }
+    
+    if block_col and block_col in data.columns:
+        blocked_means: Dict[str, float] = {}
+        for block in data[block_col].unique():
+            block_data = data[data[block_col] == block]
+            t_b, p_b = stats.ttest_ind(
+                block_data[block_data[treatment_col] == 1][outcome_col],
+                block_data[block_data[treatment_col] == 0][outcome_col],
+                equal_var=False
+            )
+            blocked_means[f"block_{block}_p"] = float(p_b)
+        results["blocked_analysis"] = blocked_means
+        
+    return results
 ```
 
 ### Pattern 2: Production-Ready Randomized Experiments
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, List
+from scipy import stats
+from statsmodels.stats.power import TTestIndPower
 
 logger = logging.getLogger(__name__)
 
-class RandomizedExperiments:
-    """Production implementation of Randomized Experiments"""
+class RandomizedExperiment:
+    """Production-grade implementation for designing and analyzing randomized experiments."""
     
-    def __init__(self):
-        pass
+    def __init__(self, alpha: float = 0.05, power: float = 0.8, effect_size: float = 0.5) -> None:
+        self.alpha = alpha
+        self.power = power
+        self.effect_size = effect_size
+        self._analysis_results: Dict[str, Any] = {}
+        
+    def calculate_sample_size(self, n_control: int = 100) -> int:
+        """Calculate required treatment group size for desired power."""
+        analysis = TTestIndPower()
+        n_treatment = analysis.solve_power(
+            effect_size=self.effect_size, 
+            power=self.power, 
+            alpha=self.alpha, 
+            nobs1=n_control, 
+            ratio=1.0
+        )
+        logger.info(f"Calculated required treatment size: {int(np.ceil(n_treatment))}")
+        return int(np.ceil(n_treatment))
+        
+    def assign_treatment(self, data: pd.DataFrame, block_col: str = None) -> pd.DataFrame:
+        """Randomly assign treatment/control with optional blocking."""
+        if block_col is None:
+            data = data.copy()
+            data['treatment'] = np.random.binomial(1, 0.5, size=len(data))
+        else:
+            data = data.copy()
+            data['treatment'] = 0
+            for block in data[block_col].unique():
+                mask = data[block_col] == block
+                block_size = mask.sum()
+                data.loc[mask, 'treatment'] = np.random.binomial(1, 0.5, size=block_size)
+        return data
+        
+    def analyze(self, data: pd.DataFrame, outcome_col: str) -> Dict[str, Any]:
+        """Run statistical analysis on assigned experiment data."""
+        if 'treatment' not in data.columns:
+            raise ValueError("Treatment assignment missing. Run assign_treatment first.")
+            
+        treatment = data[data['treatment'] == 1][outcome_col]
+        control = data[data['treatment'] == 0][outcome_col]
+        
+        t_stat, p_value = stats.ttest_ind(treatment, control, equal_var=False)
+        ci = stats.t.interval(0.95, len(treatment) + len(control) - 2, 
+                              loc=np.mean(treatment) - np.mean(control),
+                              scale=np.sqrt(np.var(treatment)/len(treatment) + np.var(control)/len(control)))
+        
+        self._analysis_results = {
+            "t_statistic": float(t_stat),
+            "p_value": float(p_value),
+            "confidence_interval": [float(ci[0]), float(ci[1])],
+            "significant": bool(p_value < self.alpha),
+            "n_treatment": len(treatment),
+            "n_control": len(control)
+        }
+        return self._analysis_results
+```
+
+### Pattern 3: Anti-Patterns and Best Practices
+
+```python
+# BAD: Magic numbers, no error handling, violates DRY principle
+def bad_experiment(data):
+    t = data[data['group'] == 1]['value']
+    c = data[data['group'] == 0]['value']
+    return np.mean(t) - np.mean(c)  # No significance testing, hardcoded assumptions
+
+# GOOD: Validated inputs, statistical rigor, follows DRY and SOLID principles
+def good_experiment(data: pd.DataFrame, group_col: str, value_col: str) -> Dict[str, float]:
+    """Analyze experiment with proper validation and statistical testing."""
+    if group_col not in data.columns or value_col not in data.columns:
+        raise ValueError("Invalid column names provided")
+        
+    groups = data[group_col].unique()
+    if len(groups) != 2:
+        raise ValueError("Exactly two groups required for comparison")
+        
+    t_stat, p_val = stats.ttest_ind(
+        data[data[group_col] == groups[0]][value_col],
+        data[data[group_col] == groups[1]][value_col],
+        equal_var=False
+    )
     
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Randomized Experiments on data"""
-        return {}
+    return {
+        "effect_size": float(np.mean(data[data[group_col] == groups[1]][value_col]) - 
+                             np.mean(data[data[group_col] == groups[0]][value_col])),
+        "p_value": float(p_val),
+        "significant": bool(p_val < 0.05)
+    }
 ```
 
 ## Best Practices
@@ -111,60 +238,58 @@ class RandomizedExperiments:
 ## Complete Working Example
 
 ```python
-# Full working example for Randomized Experiments
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from typing import Dict, Any
+from sklearn.datasets import make_classification
 
-def implement_experiments(data: pd.DataFrame) -> Dict[str, Any]:
+def run_ab_test_workflow(n_samples: int = 1000, effect: float = 0.3) -> Dict[str, Any]:
     """
-    Complete implementation of Randomized Experiments.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_experiments(df)
-        >>> print(results)
+    Complete working example demonstrating an A/B test workflow.
+    Includes data generation, randomization, analysis, and visualization.
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
-    
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
-    }
-    
-    return results
-
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
+    np.random.seed(42)
+    df = pd.DataFrame({
+        'user_id': range(n_samples),
+        'baseline_metric': np.random.normal(50, 10, n_samples),
+        'segment': np.random.choice(['A', 'B', 'C'], n_samples)
     })
     
-    # Run implementation
-    results = implement_experiments(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    df['treatment'] = 0
+    for seg in df['segment'].unique():
+        mask = df['segment'] == seg
+        df.loc[mask, 'treatment'] = np.random.binomial(1, 0.5, mask.sum())
+        
+    df['outcome'] = df['baseline_metric'] + df['treatment'] * effect + np.random.normal(0, 5, n_samples)
+    
+    treatment_out = df[df['treatment'] == 1]['outcome']
+    control_out = df[df['treatment'] == 0]['outcome']
+    
+    t_stat, p_val = stats.ttest_ind(treatment_out, control_out, equal_var=False)
+    effect_size = float(np.mean(treatment_out) - np.mean(control_out))
+    
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+    axes[0].hist(control_out, bins=20, alpha=0.5, label='Control', color='blue')
+    axes[0].hist(treatment_out, bins=20, alpha=0.5, label='Treatment', color='orange')
+    axes[0].set_title('Outcome Distribution')
+    axes[0].legend()
+    
+    axes[1].bar(['Control', 'Treatment'], [np.mean(control_out), np.mean(treatment_out)], color=['blue', 'orange'])
+    axes[1].set_title('Mean Outcome Comparison')
+    plt.tight_layout()
+    
+    return {
+        "t_statistic": float(t_stat),
+        "p_value": float(p_val),
+        "observed_effect": effect_size,
+        "significant": bool(p_val < 0.05),
+        "plot_saved": False
+    }
+
+if __name__ == "__main__":
+    results = run_ab_test_workflow()
+    print(f"Experiment Results: {results}")
 ```
 
 ## Related Skills
@@ -180,7 +305,22 @@ if __name__ == "__main__":
 - Official documentation and papers on Randomized Experiments
 - Industry best practices and standards
 - Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
+- DRY (Don't Repeat Yourself) and SOLID principles for maintainable experimental code
 
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50

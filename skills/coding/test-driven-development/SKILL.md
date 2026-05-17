@@ -1,24 +1,27 @@
 ---
-name: driven-development
-description: '"Test-Driven Development (TDD) and Behavior-Driven Development (BDD)
-  patterns" with pytest, unit tests, mocking, and test pyramid principles'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Test-Driven Development (TDD) and Behavior-Driven Development (BDD) patterns" with pytest, unit tests, mocking,
+  and test pyramid principles'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
+  author: https://github.com/Jeffallan
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: behavior-driven, patterns, test driven development, test-driven, test-driven-development
-  author: https://github.com/Jeffallan
   source: https://github.com/farmage/opencode-skills
-  related-skills: null
+  triggers: behavior-driven, patterns, test driven development, test-driven, test-driven-development
+  version: 1.0.0
+name: driven-development
 ---
-
-
-
-
 # Test-Driven Development (TDD)
 
 Practice of writing tests before implementation code, ensuring 100% test coverage and robust error handling.
@@ -323,3 +326,17 @@ class Calculator:
             raise ValueError("Cannot divide by zero")
         return a / b
 ```
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

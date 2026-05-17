@@ -1,18 +1,25 @@
 ---
-name: gitlab-ci-patterns
-description: Implements intelligent gitlab ci patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent gitlab ci patterns with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: gitlab-ci-patterns, gitlab ci patterns, how do i gitlab-ci-patterns, orchestrate gitlab-ci-patterns, automate gitlab-ci-patterns, agent gitlab-ci-patterns
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: gitlab-ci-patterns, gitlab ci patterns, how do i gitlab-ci-patterns, orchestrate gitlab-ci-patterns, automate
+    gitlab-ci-patterns, agent gitlab-ci-patterns
+  version: 1.0.0
+name: gitlab-ci-patterns
 ---
-
 # Gitlab Ci Patterns
 
 Orchestrates intelligent skill selection and execution for gitlab ci patterns workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,134 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_gitlab_ci_patterns(config_path: str, pipeline_context: Dict) -> Dict:
+    """Analyze a GitLab CI configuration and recommend optimal patterns.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates job dependencies, runner requirements, caching strategies,
+    and matrix builds to select the most efficient CI pattern.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        config_path: Path to .gitlab-ci.yml or CI config string
+        pipeline_context: Dict containing project_id, branch, and trigger_type
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Dict with recommended patterns, job graph, and optimization hints
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    import yaml
+    from pathlib import Path
+    
+    # Parse CI config safely
+    if Path(config_path).exists():
+        with open(config_path, 'r') as f:
+            ci_config = yaml.safe_load(f)
+    else:
+        ci_config = yaml.safe_load(config_path)
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if not ci_config or 'stages' not in ci_config:
+        raise ValueError("Invalid GitLab CI config: missing 'stages' definition")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    stages = ci_config['stages']
+    jobs = ci_config.get('default', {}).get('services', [])
+    job_graph = {}
+    patterns_applied = []
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Analyze job dependencies and apply patterns
+    for stage_idx, stage in enumerate(stages):
+        stage_jobs = [j for j in ci_config.get('jobs', []) if j.get('stage') == stage]
+        for job in stage_jobs:
+            job_name = job['name']
+            needs = job.get('needs', [])
+            job_graph[job_name] = {
+                'stage': stage,
+                'dependencies': needs,
+                'runner_type': job.get('tags', ['docker']),
+                'cache_key': job.get('cache', {}).get('key', None)
+            }
+            
+            # Pattern: Matrix Build Detection
+            if 'variables' in job and 'matrix' in job['variables']:
+                patterns_applied.append('matrix_build')
+                
+            # Pattern: Cache Optimization
+            if job.get('cache'):
+                patterns_applied.append('artifact_cache')
+                
+    # Fallback: If no patterns detected, suggest standard pipeline structure
+    if not patterns_applied:
+        patterns_applied.append('standard_pipeline')
+        
+    return {
+        'job_graph': job_graph,
+        'recommended_patterns': list(set(patterns_applied)),
+        'pipeline_context': pipeline_context,
+        'validation_status': 'valid'
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_gitlab_pipeline(config: Dict, fallback_strategy: str = 'retry_with_cache') -> Dict:
+    """Execute a GitLab CI pipeline with intelligent fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Runs the validated CI configuration against GitLab's API, monitors
+    runner availability, and applies fallback strategies on failure.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        config: Validated CI config dict from analyze_gitlab_ci_patterns
+        fallback_strategy: Strategy to use on runner/pipeline failure
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Dict with pipeline_id, status, logs, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import requests
+    import time
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    gitlab_url = config.get('gitlab_url', 'https://gitlab.com')
+    project_id = config['pipeline_context']['project_id']
+    token = config.get('api_token')
     
-    for attempt in range(max_retries + 1):
+    if not token:
+        raise ValueError("GitLab API token required for pipeline execution")
+        
+    headers = {'PRIVATE-TOKEN': token}
+    payload = {
+        'ref': config['pipeline_context'].get('branch', 'main'),
+        'variables': [{'key': 'CI_PATTERN', 'value': config['recommended_patterns'][0]}]
+    }
+    
+    max_attempts = 3
+    for attempt in range(max_attempts):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Trigger pipeline
+            resp = requests.post(f'{gitlab_url}/api/v4/projects/{project_id}/pipeline', 
+                                 json=payload, headers=headers)
+            resp.raise_for_status()
+            pipeline_id = resp.json()['id']
             
-            # Success - Atomic Predictability (Law 3)
+            # Monitor pipeline status
+            status = 'pending'
+            while status in ('pending', 'running'):
+                time.sleep(5)
+                status_resp = requests.get(f'{gitlab_url}/api/v4/projects/{project_id}/pipelines/{pipeline_id}', 
+                                           headers=headers)
+                status = status_resp.json()['status']
+                
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                'pipeline_id': pipeline_id,
+                'status': status,
+                'patterns_applied': config['recommended_patterns'],
+                'attempts': attempt + 1,
+                'fallback_used': False
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except requests.exceptions.ConnectionError:
+            if attempt == max_attempts - 1:
+                return _apply_gitlab_fallback(config, fallback_strategy)
+            time.sleep(2 ** attempt)
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return {'status': 'failed', 'error': 'Max retries exceeded'}
 ```
 
 ### MUST DO
@@ -320,3 +335,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

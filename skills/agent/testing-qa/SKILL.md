@@ -1,22 +1,25 @@
 ---
-name: testing-qa
-description: Implements intelligent testing qa with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent testing qa with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: testing-qa, testing qa, how do i testing-qa, orchestrate testing-qa, automate
-    testing-qa, agent testing-qa, unit tests, testing
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: testing-qa, testing qa, how do i testing-qa, orchestrate testing-qa, automate testing-qa, agent testing-qa, unit
+    tests, testing
+  version: 1.0.0
+name: testing-qa
 ---
-
-
-
 # Testing Qa
 
 Orchestrates intelligent skill selection and execution for testing qa workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -138,126 +141,94 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_test_suite(
+    code_changes: List[Dict],
+    test_registry: Dict[str, List[str]],
+    flaky_history: Dict[str, float]
+) -> Dict[str, List[str]]:
+    """Route appropriate test suites based on code changes and historical reliability.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Analyzes diff paths to trigger relevant test categories (unit, integration, e2e).
+    Applies confidence scoring based on flakiness history and recent failure rates.
+    Returns a prioritized mapping of test suites to execute.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not code_changes:
+        return {"full_regression": test_registry.get("full_regression", [])}
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    triggered_suites = set()
+    confidence_scores = {}
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    for change in code_changes:
+        path = change.get("path", "")
+        if "/tests/" in path or "test_" in path:
+            triggered_suites.update(test_registry.get("unit", []))
+            confidence_scores["unit"] = 0.95
+        elif "api/" in path or "server/" in path:
+            triggered_suites.update(test_registry.get("integration", []))
+            confidence_scores["integration"] = 0.85
+        elif "ui/" in path or "frontend/" in path:
+            triggered_suites.update(test_registry.get("e2e", []))
+            confidence_scores["e2e"] = 0.75
+            
+    # Filter out high-flakiness suites unless explicitly requested
+    prioritized = {}
+    for suite in triggered_suites:
+        flake_rate = flaky_history.get(suite, 0.0)
+        if flake_rate < 0.2:
+            prioritized[suite] = test_registry.get(suite, [])
+        else:
+            prioritized[suite] = test_registry.get(suite, []) + ["--flaky-retry"]
+            
+    return {"suites": list(prioritized.keys()), "confidence": confidence_scores}
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_qa_pipeline(
+    test_suites: List[str],
+    env_config: Dict,
+    fallback_strategy: str = "parallel_retry"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute QA test pipeline with intelligent fallback for failures.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Runs selected test suites against the target environment.
+    Implements fallback chains: retry flaky tests, switch to parallel execution,
+    or escalate to manual review if critical paths fail.
+    Returns structured results with pass/fail metrics and latency.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    results = {"suites_executed": [], "failures": [], "fallbacks_applied": []}
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for suite in test_suites:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            output = run_test_runner(suite, env_config)
+            parsed = parse_test_output(output)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            if parsed["status"] == "passed":
+                results["suites_executed"].append({"suite": suite, "status": "passed"})
+            else:
+                # Fallback: Retry flaky tests with increased timeout
+                if parsed.get("flaky", False) and fallback_strategy == "parallel_retry":
+                    retry_output = run_test_runner(suite, env_config, timeout_multiplier=2.0)
+                    retry_parsed = parse_test_output(retry_output)
+                    if retry_parsed["status"] == "passed":
+                        results["fallbacks_applied"].append(f"{suite}: flaky retry succeeded")
+                        results["suites_executed"].append({"suite": suite, "status": "passed"})
+                        continue
+                
+                results["failures"].append({"suite": suite, "errors": parsed["errors"]})
+                
+        except EnvironmentError as e:
+            # Fallback: Switch to isolated container environment
+            results["fallbacks_applied"].append(f"{suite}: env fallback to isolated container")
+            try:
+                isolated_output = run_test_runner(suite, env_config.copy(), isolated=True)
+                results["suites_executed"].append({"suite": suite, "status": "passed", "fallback": "isolated"})
+            except Exception as fallback_err:
+                results["failures"].append({"suite": suite, "errors": [str(fallback_err)], "escalated": True})
+                
+    return results
 ```
 
 ### MUST DO
@@ -324,3 +295,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

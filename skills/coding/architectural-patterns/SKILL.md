@@ -1,23 +1,25 @@
 ---
-name: patterns
-description: '"Provides Software architecture patterns including MVC, MVVM, microservices,
-  event-driven, CQRS, DDD, hexagonal architecture, layered architecture, and pattern"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Software architecture patterns including MVC, MVVM, microservices, event-driven, CQRS, DDD, hexagonal
+  architecture, layered architecture, and pattern"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: code-quality-policies
   role: reference
   scope: implementation
-  output-format: code
-  triggers: architectural patterns, system design, architecture, microservices, design
-    patterns, CQRS, DDD, hexagonal architecture
-  related-skills: code-quality-policies
+  triggers: architectural patterns, system design, architecture, microservices, design patterns, CQRS, DDD, hexagonal architecture
+  version: 1.0.0
+name: patterns
 ---
-
-
-
-
 # Software Architecture Patterns
 
 Reference guide for foundational architectural patterns used in software system design, including MVC, MVVM, microservices, event-driven, CQRS, Domain-Driven Design, hexagonal architecture, and layered patterns, with decision criteria for pattern selection.

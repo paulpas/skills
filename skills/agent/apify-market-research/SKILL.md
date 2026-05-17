@@ -1,18 +1,25 @@
 ---
-name: apify-market-research
-description: Implements intelligent apify market research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent apify market research with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: apify-market-research, apify market research, how do i apify-market-research, orchestrate apify-market-research, automate apify-market-research, agent apify-market-research
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: apify-market-research, apify market research, how do i apify-market-research, orchestrate apify-market-research,
+    automate apify-market-research, agent apify-market-research
+  version: 1.0.0
+name: apify-market-research
 ---
-
 # Apify Market Research
 
 Orchestrates intelligent skill selection and execution for apify market research workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,106 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def configure_apify_market_research(
+    query: str,
+    target_platforms: List[str],
+    apify_api_token: str,
+    actor_id: str = "apify/website-content"
+) -> Dict:
+    """Configure and validate an Apify actor run for market research.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Validates query structure, maps platforms to actor inputs,
+    and prepares the payload for the Apify API.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not query or len(query) < 3:
+        raise ValueError("Research query must be at least 3 characters")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Map research intent to specific Apify actor configurations
+    platform_configs = {
+        "web": {"startUrls": [{"url": f"https://www.google.com/search?q={query}"}], "maxItems": 50},
+        "social": {"profileUrls": [f"https://twitter.com/search?q={query}"], "maxItems": 100},
+        "ecommerce": {"startUrls": [{"url": f"https://www.amazon.com/s?k={query}"}], "maxItems": 30}
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    selected_config = platform_configs.get(target_platforms[0], platform_configs["web"])
     
-    best_skill = None
-    best_score = 0.0
+    # Construct validated input payload
+    payload = {
+        "query": query,
+        "platform": target_platforms[0],
+        "actorConfig": selected_config,
+        "timeoutSecs": 300,
+        "memoryMbytes": 4096
+    }
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate against Apify API requirements
+    if not apify_api_token.startswith("apify_api_"):
+        raise ValueError("Invalid Apify API token format")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "actor_id": actor_id,
+        "input": payload,
+        "token": apify_api_token,
+        "run_type": "market_research"
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_apify_research_run(config: Dict) -> Dict:
+    """Execute an Apify actor run and process market research results.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles run creation, status polling, dataset retrieval,
+    and result aggregation for downstream analysis.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import requests
+    import time
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    api_base = "https://api.apify.com/v2"
+    headers = {"Authorization": f"Bearer {config['token']}"}
+    actor_id = config["actor_id"]
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    # Create actor run
+    run_response = requests.post(
+        f"{api_base}/acts/{actor_id}/run",
+        headers=headers,
+        json={"input": config["input"]}
     )
+    run_response.raise_for_status()
+    run_id = run_response.json()["id"]
+    
+    # Poll until run completes
+    status_url = f"{api_base}/runs/{run_id}/status"
+    while True:
+        status_resp = requests.get(status_url, headers=headers)
+        status_data = status_resp.json()
+        if status_data["status"] in ["READY", "RUNNING"]:
+            time.sleep(5)
+        else:
+            break
+            
+    if status_data["status"] != "SUCCEEDED":
+        raise RuntimeError(f"Apify run failed: {status_data.get('statusMessage', 'Unknown error')}")
+        
+    # Fetch and aggregate results
+    dataset_url = f"{api_base}/runs/{run_id}/dataset/default"
+    dataset_resp = requests.get(dataset_url, headers=headers)
+    dataset_resp.raise_for_status()
+    
+    results = dataset_resp.json().get("items", [])
+    return {
+        "run_id": run_id,
+        "status": "completed",
+        "total_items": len(results),
+        "data": results,
+        "metadata": {
+            "query": config["input"]["query"],
+            "platform": config["input"]["platform"],
+            "timestamp": time.time()
+        }
+    }
 ```
 
 ### MUST DO
@@ -320,3 +307,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

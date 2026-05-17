@@ -1,18 +1,26 @@
 ---
-name: incident-response-runbooks
-description: Implements incident response runbooks with detection, triage, communication, resolution, and post-incident procedures for Kubernetes and cloud-native environments.
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements incident response runbooks with detection, triage, communication, resolution, and post-incident procedures
+  for Kubernetes and cloud-native environments.
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: incident response, runbook creation, incident procedures, escalation procedures, incident command, postmortem, blameless postmortem, incident documentation
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-database-admin, cncf-kubernetes-debugging, cncf-security-compliance
+  role: implementation
+  scope: implementation
+  triggers: incident response, runbook creation, incident procedures, escalation procedures, incident command, postmortem,
+    blameless postmortem, incident documentation
+  version: 1.0.0
+name: incident-response-runbooks
 ---
-
 # Incident Response Runbooks
 
 Implements comprehensive incident response procedures for cloud-native environments including Kubernetes clusters, microservices architectures, and infrastructure-as-code deployments. Provides structured workflows for detection, triage, communication, resolution, and post-incident review following SRE and ITIL best practices.

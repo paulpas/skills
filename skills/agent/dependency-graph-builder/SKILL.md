@@ -1,18 +1,25 @@
 ---
-name: dependency-graph-builder
-description: Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent dependency graph builder with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: dependency-graph-builder, dependency graph builder, how do i dependency-graph-builder, orchestrate dependency-graph-builder, automate dependency-graph-builder, agent dependency-graph-builder
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: dependency-graph-builder, dependency graph builder, how do i dependency-graph-builder, orchestrate dependency-graph-builder,
+    automate dependency-graph-builder, agent dependency-graph-builder
+  version: 1.0.0
+name: dependency-graph-builder
 ---
-
 # Dependency Graph Builder
 
 Orchestrates intelligent skill selection and execution for dependency graph builder workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,113 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def build_dependency_graph(
+    tasks: List[Dict[str, Any]],
+    skill_registry: Dict[str, Dict]
+) -> Tuple[Dict[str, List[str]], List[str]]:
+    """Construct a directed acyclic graph (DAG) from task definitions and resolve execution order.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Maps task dependencies to available skills, validates the graph structure,
+    and performs topological sorting to determine the optimal execution pipeline.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        tasks: List of task dicts with 'id', 'name', 'depends_on', and 'required_skill'
+        skill_registry: Mapping of skill names to their metadata and availability status
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
+        Tuple of (adjacency_list, topological_order)
         
     Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        CycleDetectedError: If circular dependencies exist in the task graph
+        MissingDependencyError: If a referenced dependency does not exist in tasks
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    adjacency: Dict[str, List[str]] = {t["id"]: [] for t in tasks}
+    in_degree: Dict[str, int] = {t["id"]: 0 for t in tasks}
+    task_map = {t["id"]: t for t in tasks}
+    
+    for task in tasks:
+        for dep_id in task.get("depends_on", []):
+            if dep_id not in task_map:
+                raise MissingDependencyError(f"Task {task['id']} depends on non-existent {dep_id}")
+            adjacency[dep_id].append(task["id"])
+            in_degree[task["id"]] += 1
+            
+    # Kahn's algorithm for topological sort
+    queue = [tid for tid, deg in in_degree.items() if deg == 0]
+    execution_order = []
+    
+    while queue:
+        current = queue.pop(0)
+        execution_order.append(current)
+        for neighbor in adjacency[current]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+                
+    if len(execution_order) != len(tasks):
+        raise CycleDetectedError("Circular dependency detected in task graph")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return adjacency, execution_order
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def resolve_skill_dependencies(
+    execution_order: List[str],
+    task_map: Dict[str, Dict],
+    skill_registry: Dict[str, Dict],
+    fallback_strategy: str = "sequential"
+) -> List[Dict[str, Any]]:
+    """Map topologically sorted tasks to executable skill invocations with dependency resolution.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Validates skill availability for each task, constructs execution nodes with
+    dependency payloads, and applies the specified fallback strategy for unavailable skills.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        execution_order: Topologically sorted list of task IDs
+        task_map: Dictionary mapping task IDs to their full definitions
+        skill_registry: Available skills with health/status metadata
+        fallback_strategy: How to handle missing skills ('sequential', 'parallel', 'defer')
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        List of execution nodes ready for the orchestrator pipeline
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    execution_pipeline = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for task_id in execution_order:
+        task = task_map[task_id]
+        required_skill = task.get("required_skill")
+        
+        if required_skill not in skill_registry:
+            if fallback_strategy == "defer":
+                execution_pipeline.append({
+                    "task_id": task_id,
+                    "status": "deferred",
+                    "reason": f"Skill {required_skill} unavailable",
+                    "fallback": "human_operator"
+                })
+                continue
+            raise SkillUnavailableError(f"Required skill {required_skill} not in registry")
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        skill_meta = skill_registry[required_skill]
+        dep_payloads = [
+            task_map[dep_id].get("output_key") 
+            for dep_id in task.get("depends_on", [])
+            if dep_id in task_map
+        ]
+        
+        execution_pipeline.append({
+            "task_id": task_id,
+            "skill": required_skill,
+            "params": task.get("parameters", {}),
+            "dependencies": dep_payloads,
+            "confidence": skill_meta.get("base_confidence", 0.8),
+            "retry_policy": skill_meta.get("retry_config", {"max": 2, "backoff": "exponential"})
+        })
+        
+    return execution_pipeline
 ```
 
 ### MUST DO
@@ -320,3 +314,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

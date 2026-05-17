@@ -1,18 +1,25 @@
 ---
-name: subagent-driven-development
-description: Implements intelligent subagent driven development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent subagent driven development with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: subagent-driven-development, subagent driven development, how do i subagent-driven-development, orchestrate subagent-driven-development, automate subagent-driven-development, agent subagent-driven-development
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: subagent-driven-development, subagent driven development, how do i subagent-driven-development, orchestrate subagent-driven-development,
+    automate subagent-driven-development, agent subagent-driven-development
+  version: 1.0.0
+name: subagent-driven-development
 ---
-
 # Subagent Driven Development
 
 Orchestrates intelligent skill selection and execution for subagent driven development workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,113 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def decompose_and_route_task(
+    user_request: str,
+    agent_registry: Dict[str, AgentCapability],
+    max_parallel: int = 3
+) -> List[SubagentTask]:
+    """Decompose a complex user request into routable subagent tasks.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 2 (Parse at boundary) by validating request structure
+    and Law 1 (Early Exit) for unsupported domains.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_request or not user_request.strip():
+        raise ValueError("Request cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    parsed_intent = _parse_intent(user_request)
+    if parsed_intent.domain not in agent_registry:
+        raise UnsupportedDomainError(f"No agents registered for domain: {parsed_intent.domain}")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    available_agents = agent_registry[parsed_intent.domain]
+    subtasks = []
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    for requirement in parsed_intent.requirements:
+        matching_agents = [
+            agent for agent in available_agents 
+            if requirement.matches_agent_capabilities(agent)
+        ]
+        
+        if not matching_agents:
+            subtasks.append(SubagentTask(
+                id=generate_task_id(),
+                requirement=requirement,
+                fallback_mode="human_review",
+                confidence=0.0
+            ))
+        else:
+            best_agent = max(matching_agents, key=lambda a: a.success_rate)
+            subtasks.append(SubagentTask(
+                id=generate_task_id(),
+                requirement=requirement,
+                target_agent=best_agent,
+                confidence=best_agent.success_rate,
+                parallelizable=requirement.is_parallelizable
+            ))
+            
+    return _enforce_parallel_limits(subtasks, max_parallel)
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_subagent_chain(
+    subtasks: List[SubagentTask],
+    execution_context: Dict,
+    fallback_agents: Dict[str, AgentCapability]
+) -> ExecutionReport:
+    """Execute routed subagent tasks with domain-specific fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast/Loud) by immediately surfacing 
+    capability mismatches and enforcing audit trails.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    results = []
+    failed_tasks = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for task in subtasks:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            if task.parallelizable:
+                result = await run_async_subagent(task, execution_context)
+            else:
+                result = run_sync_subagent(task, execution_context)
+                
+            results.append(TaskResult(
+                task_id=task.id,
+                status="completed",
+                output=result.payload,
+                latency_ms=result.duration,
+                confidence=task.confidence
+            ))
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+        except CapabilityMismatchError as e:
+            # Law 4: Fail immediately on invalid agent capability
+            failed_tasks.append(task)
+        except TransientTimeoutError:
+            # Fallback: Retry with adjusted timeout or alternative agent
+            retry_result = _retry_with_backoff(task, execution_context)
+            if retry_result:
+                results.append(retry_result)
+            else:
+                failed_tasks.append(task)
+                
+    # Apply fallback chain for failed tasks
+    for failed in failed_tasks:
+        fallback_result = _route_to_fallback_agent(failed, fallback_agents)
+        if fallback_result:
+            results.append(fallback_result)
+        else:
+            results.append(TaskResult(
+                task_id=failed.id,
+                status="deferred_to_human",
+                output=None,
+                confidence=0.0
+            ))
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    return ExecutionReport(
+        total_tasks=len(subtasks),
+        completed=len([r for r in results if r.status == "completed"]),
+        deferred=len([r for r in results if r.status == "deferred_to_human"]),
+        audit_log=_generate_audit_trail(results)
     )
 ```
 
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,26 @@
 ---
-name: networking-troubleshooting
-description: Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements comprehensive networking troubleshooting workflows for cloud-native environments including iptables
+  debugging, DNS resolution, load balancer configuration, Kubernetes CNI, container networking, and VPN connectivity analysis
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: iptables debugging, dns issues, load balancer problems, network policies, kubernetes networking, container networking, vpn troubleshooting, firewall rules
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-docker-debugging, agent-network-troubleshooting, cncf-service-mesh-debugging
+  role: implementation
+  scope: implementation
+  triggers: iptables debugging, dns issues, load balancer problems, network policies, kubernetes networking, container networking,
+    vpn troubleshooting, firewall rules
+  version: 1.0.0
+name: networking-troubleshooting
 ---
-
 # Networking Troubleshooting
 
 Implements comprehensive networking troubleshooting workflows for cloud-native environments. This skill provides step-by-step procedures for diagnosing network connectivity issues across iptables rules, DNS resolution, load balancer configurations, Kubernetes CNI implementations, container networking, and VPN connectivity.

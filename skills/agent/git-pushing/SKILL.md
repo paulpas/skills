@@ -1,18 +1,24 @@
 ---
-name: git-pushing
-description: Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent git pushing with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: git-pushing, git pushing, how do i git-pushing, orchestrate git-pushing, automate git-pushing, agent git-pushing
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: git-pushing, git pushing, how do i git-pushing, orchestrate git-pushing, automate git-pushing, agent git-pushing
+  version: 1.0.0
+name: git-pushing
 ---
-
 # Git Pushing
 
 Orchestrates intelligent skill selection and execution for git pushing workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,117 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_git_state_and_select_strategy(
+    repo_path: str,
+    branch: str,
+    remote: str,
+    force_allowed: bool = False
+) -> Dict[str, Any]:
+    """Analyze local/remote git state and select optimal push strategy.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by validating repo state before execution.
+    Returns a strategy dict with confidence scores for each push method.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    import subprocess
+    from pathlib import Path
+    
+    if not Path(repo_path).joinpath(".git").exists():
+        raise ValueError(f"Not a git repository: {repo_path}")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse current state
+    local_head = subprocess.check_output(["git", "-C", repo_path, "rev-parse", "HEAD"]).decode().strip()
+    remote_head = subprocess.check_output(
+        ["git", "-C", repo_path, "rev-parse", f"{remote}/{branch}"],
+        stderr=subprocess.DEVNULL
+    ).decode().strip()
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    uncommitted = subprocess.check_output(
+        ["git", "-C", repo_path, "diff", "--stat"], stderr=subprocess.DEVNULL
+    ).decode().strip()
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Calculate strategy scores
+    strategies = []
+    if local_head == remote_head:
+        strategies.append({"method": "skip", "confidence": 1.0, "reason": "Already up to date"})
+    elif local_head in subprocess.check_output(["git", "-C", repo_path, "merge-base", "--all", local_head, remote_head]).decode():
+        strategies.append({"method": "normal", "confidence": 0.95, "reason": "Fast-forward possible"})
+    else:
+        strategies.append({"method": "rebase", "confidence": 0.85, "reason": "Diverged history"})
+        if force_allowed:
+            strategies.append({"method": "force", "confidence": 0.6, "reason": "Force push available"})
+            
+    # Return highest confidence strategy that meets threshold
+    best = max(strategies, key=lambda s: s["confidence"])
+    if best["confidence"] < 0.5:
+        return {"strategy": "queue", "confidence": 0.0, "reason": "State ambiguous, defer to manual review"}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return best
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_git_push_with_fallback(
+    strategy: Dict[str, Any],
+    repo_path: str,
+    branch: str,
+    remote: str,
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute git push with domain-specific fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast/Loud) by catching specific git exit codes
+    and routing to appropriate fallback strategies.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import subprocess
+    import time
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    def run_git(args: list) -> str:
+        result = subprocess.run(args, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(result.returncode, args, result.stdout, result.stderr)
+        return result.stdout
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            if strategy["method"] == "skip":
+                return {"success": True, "action": "skipped", "message": "Remote already current"}
+                
+            cmd = ["git", "-C", repo_path, "push", remote, branch]
+            if strategy["method"] == "force":
+                cmd.extend(["--force-with-lease"])
+                
+            output = run_git(cmd)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "action": strategy["method"],
+                "output": output.strip(),
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "timestamp": time.time()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except subprocess.CalledProcessError as e:
+            stderr = e.stderr.lower()
+            if "non-fast-forward" in stderr and strategy["method"] == "normal":
+                strategy["method"] = "rebase"
+                strategy["confidence"] = 0.7
+                continue
+            elif "refusing to merge unrelated histories" in stderr:
+                strategy["method"] = "normal"
+                cmd = ["git", "-C", repo_path, "push", remote, branch, "--allow-unrelated-histories"]
+                output = run_git(cmd)
+                return {"success": True, "action": "normal", "output": output.strip(), "attempts": attempt + 1}
+            elif attempt == max_retries:
+                return {
+                    "success": False,
+                    "error": "Push rejected after retries",
+                    "stderr": e.stderr,
+                    "fallback": "queue_for_manual_review"
+                }
+            time.sleep(0.5 * (attempt + 1))
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    return {"success": False, "error": "Max retries exceeded", "fallback": "queue_for_manual_review"}
 ```
 
 ### MUST DO
@@ -320,3 +317,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

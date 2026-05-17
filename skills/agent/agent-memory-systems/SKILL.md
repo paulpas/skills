@@ -1,18 +1,25 @@
 ---
-name: agent-memory-systems
-description: Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: agent-memory-systems, agent memory systems, how do i agent-memory-systems, orchestrate agent-memory-systems, automate agent-memory-systems, agent agent-memory-systems
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: agent-memory-systems, agent memory systems, how do i agent-memory-systems, orchestrate agent-memory-systems, automate
+    agent-memory-systems, agent agent-memory-systems
+  version: 1.0.0
+name: agent-memory-systems
 ---
-
 # Agent Memory Systems
 
 Orchestrates intelligent skill selection and execution for agent memory systems workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -131,129 +138,102 @@ Avoid this skill for:
 
 ## Implementation Patterns
 
-### Pattern 1: Skill Selection Logic
+### Pattern 1: Memory Retrieval & Relevance Scoring
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def retrieve_relevant_memories(
+    query_context: str,
+    memory_store: List[Dict],
+    max_results: int = 5,
+    relevance_threshold: float = 0.65
+) -> List[Dict]:
+    """Retrieve and rank memories based on semantic relevance and recency.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by validating query and memory structure.
+    Implements Law 3 (Atomic Predictability) by returning fresh scored objects.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not query_context or not memory_store:
+        raise ValueError("Query context and memory store must be non-empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    query_embedding = _compute_embedding(query_context)
+    scored_memories = []
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for memory in memory_store:
+        # Calculate semantic similarity
+        semantic_score = _cosine_similarity(query_embedding, memory["embedding"])
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        # Apply temporal decay (Law 1: Early exit for stale memories)
+        age_days = (time.time() - memory["created_at"]) / 86400
+        decay_factor = max(0.1, 1.0 - (age_days * 0.05))
+        
+        # Combined relevance score
+        relevance = semantic_score * decay_factor
+        
+        if relevance >= relevance_threshold:
+            scored_memories.append({
+                "id": memory["id"],
+                "content": memory["content"],
+                "relevance_score": round(relevance, 4),
+                "age_days": round(age_days, 2),
+                "source": memory.get("source", "unknown")
+            })
+            
+    # Sort by relevance descending and return top results
+    scored_memories.sort(key=lambda m: m["relevance_score"], reverse=True)
+    return scored_memories[:max_results]
 ```
 
 
-### Pattern 2: Execution with Fallback
+### Pattern 2: Context Window Management & Consolidation
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def manage_context_window(
+    current_context: List[Dict],
+    new_interaction: Dict,
+    max_tokens: int = 4000,
+    consolidation_strategy: str = "summarize"
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Manage context window by integrating new interactions and consolidating old memories.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast) by validating token counts and structure.
+    Implements fallback chain for context overflow scenarios.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Validate inputs at boundary
+    if not current_context or not new_interaction.get("content"):
+        raise ValueError("Context and new interaction must be valid")
+        
+    # Calculate current token usage
+    current_tokens = _estimate_tokens(current_context)
+    new_tokens = _estimate_tokens([new_interaction])
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    if current_tokens + new_tokens <= max_tokens:
+        # Direct append if within limits
+        return {
+            "status": "appended",
+            "context": current_context + [new_interaction],
+            "total_tokens": current_tokens + new_tokens,
+            "action": "none"
+        }
+        
+    # Fallback chain for overflow
+    try:
+        # Level 1: Summarize oldest memories
+        consolidated = _summarize_oldest_memories(current_context, max_tokens - new_tokens)
+        return {
+            "status": "consolidated",
+            "context": consolidated + [new_interaction],
+            "total_tokens": _estimate_tokens(consolidated) + new_tokens,
+            "action": "summarize"
+        }
+    except ContextOverflowError:
+        # Level 2: Truncate to most recent critical memories
+        critical_memories = _extract_critical_memories(current_context, max_tokens - new_tokens)
+        return {
+            "status": "truncated",
+            "context": critical_memories + [new_interaction],
+            "total_tokens": _estimate_tokens(critical_memories) + new_tokens,
+            "action": "truncate"
+        }
 ```
 
 ### MUST DO
@@ -320,3 +300,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

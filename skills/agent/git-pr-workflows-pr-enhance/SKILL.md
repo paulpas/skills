@@ -1,18 +1,25 @@
 ---
-name: git-pr-workflows-pr-enhance
-description: Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent git pr workflows pr enhance with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: git-pr-workflows-pr-enhance, git pr workflows pr enhance, how do i git-pr-workflows-pr-enhance, orchestrate git-pr-workflows-pr-enhance, automate git-pr-workflows-pr-enhance, agent git-pr-workflows-pr-enhance
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: git-pr-workflows-pr-enhance, git pr workflows pr enhance, how do i git-pr-workflows-pr-enhance, orchestrate git-pr-workflows-pr-enhance,
+    automate git-pr-workflows-pr-enhance, agent git-pr-workflows-pr-enhance
+  version: 1.0.0
+name: git-pr-workflows-pr-enhance
 ---
-
 # Git Pr Workflows Pr Enhance
 
 Orchestrates intelligent skill selection and execution for git pr workflows pr enhance workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,108 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def evaluate_pr_enhancement_candidates(
+    pr_metadata: Dict,
+    available_enhancers: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Evaluate PR state and select optimal enhancement strategy.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 2 by parsing PR metadata at the boundary before scoring.
+    Scores based on diff complexity, CI pipeline status, label presence, and historical fix rates.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not pr_metadata or not pr_metadata.get("diff_stats"):
+        raise ValueError("PR metadata and diff stats are required for enhancement routing")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    diff_lines = pr_metadata["diff_stats"]["lines_changed"]
+    ci_status = pr_metadata.get("ci_status", "unknown")
+    labels = set(pr_metadata.get("labels", []))
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_enhancer = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for enhancer in available_enhancers:
+        score = 0.0
+        tags = set(enhancer.get("tags", []))
         
+        if "ci-diagnose" in tags and ci_status == "failed":
+            score += 0.4
+        if "refactor" in tags and diff_lines > 50:
+            score += 0.3
+        if "description" in tags and not pr_metadata.get("body", "").strip():
+            score += 0.3
+        if enhancer["name"] in labels:
+            score += 0.1
+            
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_enhancer = enhancer
+            
+    if best_enhancer is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Return new data structure, never mutate inputs
+    return {
+        "selected_strategy": best_enhancer["name"],
+        "confidence": best_score,
+        "pr_context": {
+            "lines_changed": diff_lines,
+            "ci_status": ci_status,
+            "labels": list(labels)
+        },
+        "selection_timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_pr_enhancement_with_fallback(
+    strategy: Dict,
+    pr_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute PR enhancement strategy with domain-specific fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) for invalid PR states.
+    Fallback chain: 1. Retry with adjusted linter rules, 2. Suggest manual review, 3. Log & skip.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not strategy or not pr_context:
+        raise ValueError("Strategy and PR context must be provided")
+        
+    strategy_name = strategy["selected_strategy"]
+    pr_url = pr_context.get("pr_url")
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            if strategy_name == "ci-diagnose":
+                result = _diagnose_ci_failure(pr_url, pr_context["ci_status"])
+            elif strategy_name == "refactor":
+                result = _suggest_refactors(pr_url, pr_context["lines_changed"])
+            elif strategy_name == "description":
+                result = _generate_pr_description(pr_url)
+            else:
+                raise ValueError(f"Unknown enhancement strategy: {strategy_name}")
+                
+            # Law 3: Atomic return, no mutation of original context
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "strategy_applied": strategy_name,
+                "enhancements": result["suggestions"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_execution_time()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except InvalidPRStateError as e:
+            # Law 4: Halt immediately on corrupt/invalid PR data
+            raise SkillExecutionError(f"Invalid PR state for {strategy_name}: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except TransientAPILimitError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _apply_pr_fallback_chain(strategy, pr_context)
+                
+    raise SkillExecutionError(f"Enhancement {strategy_name} failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +309,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: zapier-make-patterns
-description: Implements intelligent zapier make patterns with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent zapier make patterns with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: zapier-make-patterns, zapier make patterns, how do i zapier-make-patterns, orchestrate zapier-make-patterns, automate zapier-make-patterns, agent zapier-make-patterns
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: zapier-make-patterns, zapier make patterns, how do i zapier-make-patterns, orchestrate zapier-make-patterns, automate
+    zapier-make-patterns, agent zapier-make-patterns
+  version: 1.0.0
+name: zapier-make-patterns
 ---
-
 # Zapier Make Patterns
 
 Orchestrates intelligent skill selection and execution for zapier make patterns workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,112 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_automation_step(
+    trigger_payload: Dict,
+    workflow_config: Dict,
+    fallback_endpoints: List[str]
+) -> Dict:
+    """Route a trigger payload through a Zapier/Make compatible workflow.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies Law 2 (Parse at boundary) by validating webhook payloads before routing.
+    Applies Law 1 (Early Exit) by rejecting malformed triggers immediately.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        trigger_payload: Raw webhook data from external service
+        workflow_config: Step definitions with conditions and targets
+        fallback_endpoints: List of alternative API endpoints for resilience
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision with target step, transformed payload, and metadata
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on malformed trigger
+    if not trigger_payload.get("event_type") or not trigger_payload.get("timestamp"):
+        raise ValueError("Invalid webhook payload: missing event_type or timestamp")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Law 2: Parse and validate at boundary
+    validated_trigger = {
+        "event_type": str(trigger_payload["event_type"]).lower(),
+        "source": trigger_payload.get("source", "unknown"),
+        "payload": trigger_payload.get("data", {}),
+        "received_at": trigger_payload["timestamp"]
+    }
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Match against workflow conditions
+    for step in workflow_config.get("steps", []):
+        if step.get("condition") == validated_trigger["event_type"]:
+            # Law 3: Return new structure, never mutate original
+            return {
+                "target_step": step["name"],
+                "transformed_payload": _apply_step_transform(validated_trigger, step),
+                "confidence": step.get("match_score", 0.85),
+                "fallback_chain": fallback_endpoints[:2] if fallback_endpoints else []
+            }
+            
+    # No match found - fail fast with clear error
+    raise ValueError(f"No workflow step matched event_type: {validated_trigger['event_type']}")
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_automation_chain(
+    step_config: Dict,
+    payload: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a specific automation step with Zapier/Make compatible fallback logic.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast/Loud) by immediately raising on invalid step configs.
+    Implements fallback chain: retry -> alternative endpoint -> log to fallback channel.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        step_config: Step definition including HTTP method, URL, headers, body template
+        payload: Validated trigger data ready for transformation
+        max_retries: Maximum retry attempts for transient failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, response data, and timing metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Law 1: Validate step configuration early
+    required_keys = {"method", "url", "headers"}
+    if not required_keys.issubset(step_config.keys()):
+        raise ValueError(f"Invalid step config: missing {required_keys - set(step_config.keys())}")
+        
+    # Law 2: Parse payload into step-specific format
+    step_payload = _render_template(step_config.get("body_template", "{}"), payload)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = _send_automation_request(
+                method=step_config["method"],
+                url=step_config["url"],
+                headers=step_config["headers"],
+                body=step_payload
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Law 3: Return immutable result structure
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "success",
+                "step_executed": step_config["name"],
+                "response_data": response.json() if response.status_code == 200 else response.text,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": response.elapsed.total_seconds() * 1000
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except requests.exceptions.ConnectionError as e:
+            # Transient failure - apply fallback chain
+            if attempt == max_retries:
+                return _route_to_fallback(step_config, payload)
+            continue
+            
+        except requests.exceptions.HTTPError as e:
+            # Law 4: Fail loud on client/server errors
+            raise AutomationExecutionError(
+                f"Step {step_config['name']} failed with HTTP {e.response.status_code}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise AutomationExecutionError(f"Step {step_config['name']} exhausted all retries")
 ```
 
 ### MUST DO
@@ -320,3 +313,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

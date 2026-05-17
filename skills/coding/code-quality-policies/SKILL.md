@@ -1,23 +1,26 @@
 ---
-name: quality-policies
-description: '"Provides Establishing policies for maintaining a clean codebase including
-  code standards, linting, formatting, testing requirements, cyclomatic complexity
-  limi"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Establishing policies for maintaining a clean codebase including code standards, linting, formatting,
+  testing requirements, cyclomatic complexity limi"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: architectural-patterns, git-advanced
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: code quality, clean code, linting, code formatting, testing policies,
-    cyclomatic complexity, code standards, automated enforcement
-  related-skills: architectural-patterns, git-advanced
+  triggers: code quality, clean code, linting, code formatting, testing policies, cyclomatic complexity, code standards, automated
+    enforcement
+  version: 1.0.0
+name: quality-policies
 ---
-
-
-
 # Code Quality Policies
 
 Implementation guide for establishing and enforcing code quality standards in repositories, including linting configuration, code formatting rules, testing requirements, complexity limits, and automated policy enforcement through CI/CD pipelines.

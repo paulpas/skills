@@ -1,25 +1,25 @@
 ---
-name: manager
-description: '"WebSocket connection manager with state machine (connecting/connected/reconnecting/error)"
-  exponential backoff, and message routing'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff,
+  and message routing'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: connection, machine, ml, state, websocket manager, websocket-manager,
-    machine learning, ai
-  related-skills: null
+  triggers: connection, machine, ml, state, websocket manager, websocket-manager, machine learning, ai
+  version: 1.0.0
+name: manager
 ---
-
-
-
-
-
-
 # Skill: coding-websocket-manager
 
 # WebSocket connection manager with state machine (connecting/connected/reconnecting/error), exponential backoff, and message routing
@@ -304,3 +304,17 @@ start
 - **Atomic Predictability**: `on_message` and `on_subscribe` are pure registrations; the message loop is the only place that dispatches
 - **Fail Fast**: `connect()` raises on failure; `reconnect()` transitions to `ERROR` rather than retrying forever
 - **Intentional Naming**: `ConnectionStatus.RECONNECTING`, `on_subscribe`, `start`, `stop` — the entire lifecycle reads as a sequence of English verbs
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

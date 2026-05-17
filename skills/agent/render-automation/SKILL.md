@@ -1,18 +1,25 @@
 ---
-name: render-automation
-description: Implements intelligent render automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent render automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: render-automation, render automation, how do i render-automation, orchestrate render-automation, automate render-automation, agent render-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: render-automation, render automation, how do i render-automation, orchestrate render-automation, automate render-automation,
+    agent render-automation
+  version: 1.0.0
+name: render-automation
 ---
-
 # Render Automation
 
 Orchestrates intelligent skill selection and execution for render automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,103 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def select_render_skill(
+    render_request: Dict,
+    available_nodes: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal render node/skill based on request constraints and node state.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 1 (Early Exit) and Law 2 (Make illegal states unrepresentable).
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not render_request.get("format") or not render_request.get("resolution"):
+        raise ValueError("Render request must specify format and resolution")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_nodes:
+        raise ValueError("No render nodes available for selection")
+        
+    target_format = render_request["format"]
+    target_res = render_request["resolution"]
+    priority = render_request.get("priority", "normal")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_node = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for node in available_nodes:
+        # Law 2: Validate node compatibility before scoring
+        if node["status"] not in ("idle", "available"):
+            continue
+        if target_format not in node["supported_formats"]:
+            continue
+            
+        # Multi-factor scoring: load, historical success, priority match
+        load_penalty = node["current_load"] / 100.0
+        success_bonus = node.get("historical_success_rate", 0.8)
+        priority_weight = 1.2 if priority == "high" else 1.0
+        
+        score = (success_bonus * priority_weight) - load_penalty
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_node = node
+            
+    if best_node is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Return new dict, never mutate input node state
+    return {
+        "node_id": best_node["id"],
+        "selected_confidence": best_score,
+        "estimated_duration_sec": _estimate_render_time(target_res, target_format),
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_render_with_fallback(
+    selected_node: Dict,
+    render_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute render job with domain-specific fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) and adaptive fallback routing.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    node_id = selected_node["node_id"]
+    job_id = render_context.get("job_id", f"render_{uuid4().hex[:8]}")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    if not _validate_render_context(render_context):
+        raise RenderExecutionError(f"Invalid render context for job {job_id}")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Law 1: Early exit on invalid node state
+            if not _is_node_healthy(node_id):
+                raise NodeUnhealthyError(f"Node {node_id} is unhealthy")
+                
+            result = _submit_render_job(node_id, render_context)
             
-            # Success - Atomic Predictability (Law 3)
+            # Law 3: Atomic result structure
             return {
+                "job_id": job_id,
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "node_executed": node_id,
+                "output_path": result["output_path"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except TransientNetworkError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _apply_render_fallback_chain(selected_node, render_context)
+        except InvalidStateError as e:
+            # Law 4: Fail immediately on corrupt render data
+            raise RenderExecutionError(f"Corrupt render state in {node_id}: {e}") from e
+            
+    raise RenderExecutionError(f"Render job {job_id} failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +304,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

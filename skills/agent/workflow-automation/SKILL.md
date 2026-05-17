@@ -1,23 +1,25 @@
 ---
-name: workflow-automation
-description: Implements intelligent workflow automation with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent workflow automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: workflow-automation, workflow automation, how do i workflow-automation,
-    orchestrate workflow-automation, automate workflow-automation, agent workflow-automation,
-    github actions, ci/cd
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: workflow-automation, workflow automation, how do i workflow-automation, orchestrate workflow-automation, automate
+    workflow-automation, agent workflow-automation, github actions, ci/cd
+  version: 1.0.0
+name: workflow-automation
 ---
-
-
-
 # Workflow Automation
 
 Orchestrates intelligent skill selection and execution for workflow automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,126 +141,134 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_workflow_step(
+    step_definition: Dict[str, Any],
+    environment_context: Dict[str, str],
+    historical_metrics: Dict[str, List[float]]
+) -> Dict[str, Any]:
+    """Route a workflow step to the optimal execution target.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates step requirements against available runners/environments,
+    factoring in historical success rates, environment constraints,
+    and trigger matching for CI/CD or automation pipelines.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        step_definition: Parsed step from workflow YAML/JSON
+        environment_context: Current runtime environment variables & constraints
+        historical_metrics: Past execution success rates per target
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision with target, confidence, and execution strategy
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate step structure (Law 1)
+    required_keys = {"id", "type", "triggers", "targets"}
+    if not required_keys.issubset(step_definition.keys()):
+        raise ValueError(f"Step missing required keys: {required_keys - step_definition.keys()}")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    # Parse constraints - Make illegal states unrepresentable (Law 2)
+    target_pool = [t for t in step_definition["targets"] if t in environment_context]
+    if not target_pool:
+        return {"status": "unroutable", "reason": "no_valid_targets"}
+        
+    best_target = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for target in target_pool:
+        # Calculate composite routing score
+        trigger_match = _match_triggers(step_definition["triggers"], environment_context)
+        historical_success = historical_metrics.get(target, [0.0])
+        avg_success = sum(historical_success) / len(historical_success) if historical_success else 0.0
+        env_compatibility = _calculate_env_compatibility(step_definition, target)
         
-        if score > best_score and score >= min_confidence:
+        score = (trigger_match * 0.4) + (avg_success * 0.4) + (env_compatibility * 0.2)
+        
+        if score > best_score:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+            best_target = target
+            
+    # Return immutable routing decision (Law 3)
+    return {
+        "status": "routed",
+        "target": best_target,
+        "confidence": best_score,
+        "strategy": "parallel" if step_definition.get("parallel") else "sequential",
+        "metadata": {"evaluated_targets": len(target_pool), "timestamp": time.time()}
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_automation_step(
+    step_config: Dict[str, Any],
+    execution_context: Dict[str, Any],
+    fallback_targets: List[str] = None
+) -> Dict[str, Any]:
+    """Execute a workflow automation step with resilient fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements domain-specific execution for CI/CD pipelines, API integrations,
+    and infrastructure automation. Handles transient failures, rate limits,
+    and environment-specific constraints with structured fallback chains.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        step_config: Step configuration including command, timeout, and retry policy
+        execution_context: Runtime context with secrets, environment vars, and state
+        fallback_targets: Alternative execution targets if primary fails
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, output, timing, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Guard clause - validate execution prerequisites (Law 1)
+    if not step_config.get("command") or not execution_context.get("secrets"):
+        raise ValueError("Missing required command or secrets for execution")
+        
+    # Parse context securely - Ensure trusted state (Law 2)
+    sanitized_context = _sanitize_execution_context(execution_context)
+    max_retries = step_config.get("retry_policy", {}).get("max_attempts", 2)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute step with timeout and resource limits
+            result = _run_automation_command(
+                command=step_config["command"],
+                context=sanitized_context,
+                timeout=step_config.get("timeout", 300)
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Validate output schema - Fail fast on invalid state (Law 4)
+            _validate_step_output(result, step_config.get("output_schema"))
+            
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "success",
+                "step_id": step_config["id"],
+                "output": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000,
+                "fallback_used": False
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except RateLimitError as e:
+            # Transient - apply exponential backoff
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)
+                continue
+            return _trigger_fallback(step_config, fallback_targets, "rate_limited")
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except CommandTimeoutError as e:
+            # Resource constraint - switch to alternative target
+            if fallback_targets:
+                return _trigger_fallback(step_config, fallback_targets, "timeout")
+            raise
+            
+    # All retries exhausted - Fail loud with audit trail (Law 4)
+    return {
+        "status": "failed",
+        "step_id": step_config["id"],
+        "error": "max_retries_exceeded",
+        "attempts": max_retries + 1,
+        "fallback_triggered": True
+    }
 ```
 
 ### MUST DO
@@ -325,3 +335,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

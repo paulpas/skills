@@ -1,18 +1,25 @@
 ---
-name: create-branch
-description: Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: create-branch, create branch, how do i create-branch, orchestrate create-branch, automate create-branch, agent create-branch
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: create-branch, create branch, how do i create-branch, orchestrate create-branch, automate create-branch, agent
+    create-branch
+  version: 1.0.0
+name: create-branch
 ---
-
 # Create Branch
 
 Orchestrates intelligent skill selection and execution for create branch workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,137 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def determine_branch_strategy(
+    user_request: str,
+    existing_branches: List[str],
+    default_base: str = "main"
+) -> Dict:
+    """Determine optimal branch name, base, and strategy for create-branch workflow.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies Law 2 (Parse at boundary) to validate naming conventions and
+    Law 1 (Early Exit) to reject malformed requests before git operations.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        user_request: Natural language or structured task description
+        existing_branches: List of currently checked out or remote branches
+        default_base: Fallback base branch if not specified
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Branch configuration dict with name, base, type, and metadata
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Early exit - validate input boundaries (Law 1)
+    if not user_request or len(user_request.strip()) < 3:
+        raise ValueError("Request must contain actionable branch intent")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse naming convention and extract issue ID (Law 2)
+    import re
+    match = re.search(r'(?:PROJ|ISSUE|TASK)-\d+', user_request, re.IGNORECASE)
+    issue_id = match.group(0) if match else "custom"
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Determine branch type from keywords
+    type_keywords = {"fix": "bugfix", "feat": "feature", "docs": "docs", "chore": "chore"}
+    branch_type = "feature"
+    for kw, btype in type_keywords.items():
+        if kw in user_request.lower():
+            branch_type = btype
+            break
+            
+    # Check for naming conflicts (Law 4 - Fail Fast)
+    proposed_name = f"{branch_type}/{issue_id}"
+    if proposed_name in existing_branches:
+        raise ValueError(f"Branch '{proposed_name}' already exists. Use --force or specify alternative.")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Return immutable config (Law 3)
+    return {
+        "name": proposed_name,
+        "base": default_base,
+        "type": branch_type,
+        "issue_id": issue_id,
+        "created_at": time.time(),
+        "requires_push": True
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_branch_creation(
+    branch_config: Dict,
+    git_repo_path: str,
+    remote_url: str,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute the actual branch creation workflow with git operations and fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Law 4 (Fail Fast/Loud) for git failures and Law 3 (Atomic) for state updates.
+    Fallback chain handles remote connectivity issues and permission errors.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        branch_config: Output from determine_branch_strategy
+        git_repo_path: Absolute path to the local repository
+        remote_url: Target remote URL for push operations
+        max_retries: Retry attempts for transient git/network errors
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with branch URL, status, and audit metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import subprocess
+    import os
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    branch_name = branch_config["name"]
+    base = branch_config["base"]
     
+    # Validate repo state before execution (Law 2)
+    if not os.path.isdir(git_repo_path):
+        raise FileNotFoundError(f"Git repository not found at {git_repo_path}")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Create and checkout branch
+            subprocess.run(
+                ["git", "checkout", "-b", branch_name, base],
+                cwd=git_repo_path,
+                check=True,
+                capture_output=True,
+                text=True
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Push to remote if configured
+            if branch_config.get("requires_push"):
+                subprocess.run(
+                    ["git", "push", "-u", remote_url, branch_name],
+                    cwd=git_repo_path,
+                    check=True,
+                    capture_output=True,
+                    text=True
+                )
+                
+            # Return immutable result (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "branch_url": f"{remote_url}/tree/{branch_name}",
+                "local_path": os.path.join(git_repo_path, branch_name),
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "timestamp": time.time()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except subprocess.CalledProcessError as e:
+            # Fail Loud - log exact git error, don't mask it (Law 4)
+            stderr = e.stderr.strip() if e.stderr else "Unknown git error"
+            if "already exists" in stderr or "refusing to merge" in stderr:
+                raise RuntimeError(f"Branch creation blocked: {stderr}") from e
+                
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                # Fallback: Defer to manual branch creation with context
+                return {
+                    "success": False,
+                    "fallback": "manual_creation_required",
+                    "error_context": stderr,
+                    "suggested_command": f"git checkout -b {branch_name} {base}"
+                }
+                
+    raise RuntimeError(f"Branch creation failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +338,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

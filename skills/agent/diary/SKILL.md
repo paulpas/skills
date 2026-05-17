@@ -1,18 +1,24 @@
 ---
-name: diary
-description: Implements intelligent diary with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent diary with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: diary, diary, how do i diary, orchestrate diary, automate diary, agent diary
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: diary, diary, how do i diary, orchestrate diary, automate diary, agent diary
+  version: 1.0.0
+name: diary
 ---
-
 # Diary
 
 Orchestrates intelligent skill selection and execution for diary workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,103 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def route_diary_request(
+    user_input: str,
+    current_time: datetime,
+    available_diary_skills: List[Dict],
+    min_confidence: float = 0.75
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route a diary request to the optimal skill based on intent and context.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Parses natural language diary inputs, extracts temporal entities,
+    and matches against registered diary capabilities (create, query, modify, sync).
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_input or not user_input.strip():
+        raise ValueError("Diary input cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Extract temporal and action features specific to diary workflows
+    parsed_intent = _parse_diary_intent(user_input)
+    temporal_context = _extract_temporal_markers(parsed_intent, current_time)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in available_diary_skills:
+        # Domain-specific scoring: prioritize temporal alignment and action match
+        action_match = _calculate_action_similarity(parsed_intent["action"], skill["triggers"])
+        temporal_match = _calculate_temporal_relevance(temporal_context, skill.get("temporal_scope", "any"))
+        history_weight = skill.get("success_rate", 0.5) * 0.2
+        
+        score = (action_match * 0.5) + (temporal_match * 0.3) + (history_weight * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = skill
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable result with routing metadata
+    return {
+        "skill": best_match["name"],
+        "parameters": _prepare_diary_params(parsed_intent, temporal_context),
+        "confidence": best_score,
+        "routing_timestamp": current_time.isoformat()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_diary_workflow(
+    routing_result: Dict,
+    user_context: Dict,
+    diary_storage: DiaryBackend,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute diary operations with domain-specific fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles diary entry creation, modification, or retrieval with
+    resilience against storage timeouts, sync conflicts, and API limits.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    skill_name = routing_result["skill"]
+    params = routing_result["parameters"]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    # Validate diary entry constraints before execution
+    if not _validate_diary_entry(params):
+        raise DiaryValidationError("Entry violates temporal or content constraints")
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            if skill_name == "create_entry":
+                result = diary_storage.create_entry(params, user_context["user_id"])
+            elif skill_name == "query_history":
+                result = diary_storage.query_entries(params["date_range"], user_context["user_id"])
+            elif skill_name == "sync_calendar":
+                result = diary_storage.sync_with_external_calendar(params, user_context["oauth_token"])
+            else:
+                raise ValueError(f"Unsupported diary skill: {skill_name}")
+                
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "success",
+                "skill": skill_name,
+                "data": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "timestamp": datetime.now().isoformat()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except StorageTimeoutError:
+            if attempt < max_retries:
+                continue # Retry with exponential backoff
+            # Fallback: Queue for async processing or notify user
+            return _handle_diary_fallback(skill_name, params, user_context)
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except SyncConflictError as e:
+            # Domain-specific conflict resolution
+            return _resolve_diary_conflict(e, params, user_context)
+            
+    raise DiaryExecutionError(f"Failed to process diary request after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +303,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: ai-dev-jobs-mcp
-description: Implements intelligent ai dev jobs mcp with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent ai dev jobs mcp with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: ai-dev-jobs-mcp, ai dev jobs mcp, how do i ai-dev-jobs-mcp, orchestrate ai-dev-jobs-mcp, automate ai-dev-jobs-mcp, agent ai-dev-jobs-mcp
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: ai-dev-jobs-mcp, ai dev jobs mcp, how do i ai-dev-jobs-mcp, orchestrate ai-dev-jobs-mcp, automate ai-dev-jobs-mcp,
+    agent ai-dev-jobs-mcp
+  version: 1.0.0
+name: ai-dev-jobs-mcp
 ---
-
 # Ai Dev Jobs Mcp
 
 Orchestrates intelligent skill selection and execution for ai dev jobs mcp workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,118 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def resolve_ai_dev_job_skill(
+    mcp_job_request: Dict[str, Any],
+    available_mcp_tools: List[Dict[str, Any]],
+    min_confidence: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Resolve the optimal MCP tool for an AI development job request.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Analyzes job requirements (code_gen, test_runner, deployer, etc.) against
+    available MCP tool capabilities, historical success rates, and current
+    system load to select the best fit.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        mcp_job_request: Parsed MCP job payload with 'task_type', 'repo_context', 'constraints'
+        available_mcp_tools: List of registered MCP tool definitions
+        min_confidence: Minimum capability match threshold
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected MCP tool dict with resolved parameters, or None
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not mcp_job_request.get("task_type"):
+        raise ValueError("MCP job request missing required 'task_type' field")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    job_spec = _parse_mcp_job_spec(mcp_job_request)
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for tool in available_mcp_tools:
+        capability_match = _calculate_capability_overlap(job_spec.required_capabilities, tool.capabilities)
+        historical_success = tool.get("success_rate_30d", 0.0)
+        load_penalty = 1.0 - (tool.get("current_queue_depth", 0) / tool.get("max_concurrent", 10))
+        
+        score = (capability_match * 0.5) + (historical_success * 0.3) + (load_penalty * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = {
+                "tool_id": tool["id"],
+                "tool_name": tool["name"],
+                "resolved_params": _bind_job_to_tool_params(job_spec, tool),
+                "confidence": score,
+                "estimated_latency_ms": tool.get("avg_execution_ms", 5000)
+            }
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    return best_match
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def run_ai_dev_job_with_mcp_fallback(
+    selected_tool: Dict[str, Any],
+    job_context: Dict[str, Any],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute an AI dev job via MCP with domain-specific fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles MCP-specific failure modes: context window limits, rate limits,
+    tool unavailability, and model degradation. Implements a 3-tier fallback:
+    1. Retry with reduced context window
+    2. Switch to fallback tool (e.g., from related-skills)
+    3. Queue for async processing if sync timeout exceeded
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_tool: Output from resolve_ai_dev_job_skill
+        job_context: Full job execution context including repo state
+        max_retries: Maximum synchronous retry attempts
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Job execution result with MCP trace ID, timing, and confidence
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not selected_tool.get("tool_id"):
+        raise MCPJobError("Cannot execute job: no valid tool resolved")
+        
+    execution_params = selected_tool["resolved_params"]
+    trace_id = f"mcp-job-{uuid4().hex[:8]}"
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = await _invoke_mcp_tool(
+                tool_id=selected_tool["tool_id"],
+                params=execution_params,
+                context_window=job_context.get("context_window", 8192)
+            )
             
-            # Success - Atomic Predictability (Law 3)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "completed",
+                "trace_id": trace_id,
+                "tool_executed": selected_tool["tool_name"],
+                "output": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "confidence": selected_tool["confidence"],
+                "latency_ms": time.time_ns() // 1_000_000 - job_context.get("start_time_ms", 0)
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except ContextWindowExceededError:
+            execution_params["context_window"] = int(execution_params.get("context_window", 8192) * 0.75)
+            continue
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except RateLimitExceededError:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return await _queue_job_for_async_processing(selected_tool, job_context)
+            await asyncio.sleep(2 ** attempt)
+            continue
+            
+        except ToolNotFoundError:
+            return await _switch_to_related_skill(selected_tool, job_context)
+            
+    raise MCPJobError(f"Job {trace_id} failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +319,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

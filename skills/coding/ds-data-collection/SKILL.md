@@ -1,22 +1,25 @@
 ---
-name: data-collection
-description: '"Implements data gathering strategies including APIs, web scraping,
-  sensor data collection, and database queries for building machine learning datasets"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements data gathering strategies including APIs, web scraping, sensor data collection, and database queries
+  for building machine learning datasets"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-data-ingestion, ds-data-quality, ds-data-versioning
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: data collection, web scraping, API integration, data gathering, data acquisition,
-    ETL, how do i collect data
-  related-skills: ds-data-ingestion, ds-data-quality, ds-data-versioning
+  triggers: data collection, web scraping, API integration, data gathering, data acquisition, ETL, how do i collect data
+  version: 1.0.0
+name: data-collection
 ---
-
-
-
 # Data Collection
 
 Comprehensive guide to data collection in machine learning and data science workflows.
@@ -58,34 +61,93 @@ Data Collection is a critical component of the machine learning workflow. This s
 ### Pattern 1: Basic Data Collection
 
 ```python
-# Example pattern for Data Collection
-# This demonstrates the core concepts
 import pandas as pd
-import numpy as np
+import requests
+import logging
+from typing import Dict, Any
 
-# Implementation pattern
-pass
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def fetch_api_data(url: str, params: Dict[str, Any] = None) -> pd.DataFrame:
+    """Fetch data from a REST API and convert to DataFrame."""
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        # Handle different JSON structures
+        if isinstance(data, list):
+            df = pd.DataFrame(data)
+        elif isinstance(data, dict) and 'results' in data:
+            df = pd.DataFrame(data['results'])
+        else:
+            df = pd.DataFrame([data])
+            
+        logger.info(f"Successfully fetched {len(df)} records from {url}")
+        return df
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"API request failed: {e}")
+        raise
 ```
 
 ### Pattern 2: Production-Ready Data Collection
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import time
+import requests
+import pandas as pd
+from typing import Any, Dict, Optional
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = logging.getLogger(__name__)
 
-class DataCollection:
-    """Production implementation of Data Collection"""
+class ProductionDataCollector:
+    """Production-grade data collection with retries, rate limiting, and validation."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Data Collection on data"""
-        return {}
+    def __init__(self, base_url: str, api_key: Optional[str] = None, 
+                 max_retries: int = 3, timeout: int = 15):
+        self.base_url = base_url
+        self.api_key = api_key
+        self.max_retries = max_retries
+        self.timeout = timeout
+        self.session = requests.Session()
+        if api_key:
+            self.session.headers.update({"Authorization": f"Bearer {api_key}"})
+        
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
+    def _fetch_with_retry(self, endpoint: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+        url = f"{self.base_url}/{endpoint}"
+        response = self.session.get(url, params=params, timeout=self.timeout)
+        response.raise_for_status()
+        return response.json()
+        
+    def execute(self, endpoint: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Execute data collection with full error handling and logging."""
+        try:
+            raw_data = self._fetch_with_retry(endpoint, params)
+            df = pd.DataFrame(raw_data if isinstance(raw_data, list) else [raw_data])
+            
+            # Basic schema validation
+            required_cols = ['id', 'timestamp', 'value']
+            missing_cols = [c for c in required_cols if c not in df.columns]
+            if missing_cols:
+                raise ValueError(f"Missing required columns: {missing_cols}")
+                
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
+            df = df.dropna(subset=['value'])
+            
+            return {
+                'status': 'success',
+                'records_collected': len(df),
+                'data': df,
+                'metadata': {'source': endpoint, 'columns': list(df.columns)}
+            }
+        except Exception as e:
+            logger.error(f"Collection failed for {endpoint}: {e}")
+            return {'status': 'failed', 'error': str(e), 'data': pd.DataFrame()}
 ```
 
 ## Best Practices
@@ -111,60 +173,84 @@ class DataCollection:
 ## Complete Working Example
 
 ```python
-# Full working example for Data Collection
 import pandas as pd
+import requests
+import logging
+import os
 import numpy as np
-from typing import Dict, Any
+from typing import Dict, Any, List
+from datetime import datetime
 
-def implement_collection(data: pd.DataFrame) -> Dict[str, Any]:
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
+
+def collect_and_validate_data(source_url: str, output_path: str = "collected_data.csv") -> Dict[str, Any]:
     """
-    Complete implementation of Data Collection.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    Comprehensive data collection pipeline with validation and persistence.
     
     Args:
-        data: Input DataFrame with required columns
+        source_url: REST API endpoint to fetch data from
+        output_path: Local file path to save collected data
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_collection(df)
-        >>> print(results)
+        Dictionary containing collection metrics and validation results
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    logger.info(f"Initiating data collection from {source_url}")
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
-    }
-    
-    return results
+    try:
+        response = requests.get(source_url, timeout=10)
+        response.raise_for_status()
+        raw_records = response.json()
+        
+        if not isinstance(raw_records, list):
+            raw_records = [raw_records]
+            
+        df = pd.DataFrame(raw_records)
+        
+        # Data validation and cleaning
+        initial_count = len(df)
+        df = df.dropna(subset=['id', 'title'])
+        df = df[df['id'].apply(lambda x: isinstance(x, (int, float)))]
+        df = df.reset_index(drop=True)
+        
+        validation_results = {
+            'initial_records': initial_count,
+            'valid_records': len(df),
+            'dropped_records': initial_count - len(df),
+            'columns': list(df.columns),
+            'data_types': df.dtypes.to_dict(),
+            'collection_timestamp': datetime.now().isoformat()
+        }
+        
+        # Persist to disk
+        if output_path:
+            df.to_csv(output_path, index=False)
+            logger.info(f"Saved {len(df)} records to {output_path}")
+            
+        return {
+            'status': 'success',
+            'metrics': validation_results,
+            'dataframe': df
+        }
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Network error during collection: {e}")
+        return {'status': 'failed', 'error': str(e), 'dataframe': pd.DataFrame()}
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return {'status': 'failed', 'error': str(e), 'dataframe': pd.DataFrame()}
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    # Using a reliable public API for demonstration
+    API_URL = "https://jsonplaceholder.typicode.com/posts"
+    results = collect_and_validate_data(API_URL, "sample_posts.csv")
     
-    # Run implementation
-    results = implement_collection(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    if results['status'] == 'success':
+        print(f"✅ Collection successful: {results['metrics']['valid_records']} records")
+        print(f"📊 Columns: {results['metrics']['columns']}")
+        print(results['dataframe'].head())
+    else:
+        print(f"❌ Collection failed: {results['error']}")
 ```
 
 ## Related Skills
@@ -184,3 +270,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

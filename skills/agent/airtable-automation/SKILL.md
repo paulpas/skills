@@ -1,18 +1,25 @@
 ---
-name: airtable-automation
-description: Implements intelligent airtable automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent airtable automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: airtable-automation, airtable automation, how do i airtable-automation, orchestrate airtable-automation, automate airtable-automation, agent airtable-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: airtable-automation, airtable automation, how do i airtable-automation, orchestrate airtable-automation, automate
+    airtable-automation, agent airtable-automation
+  version: 1.0.0
+name: airtable-automation
 ---
-
 # Airtable Automation
 
 Orchestrates intelligent skill selection and execution for airtable automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,118 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
+def select_airtable_operation(
     task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    base_id: str,
+    table_name: str,
+    available_operations: List[str]
+) -> Dict:
+    """Select the optimal Airtable API operation for the given task.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Analyzes the request to determine whether to use:
+    - POST /v0/{base_id}/{table} (Create records)
+    - PATCH /v0/{base_id}/{table} (Update records)
+    - GET /v0/{base_id}/{table} (Query/Filter records)
+    - POST /v0/{base_id}/{table}/automationTrigger (Run automation)
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_description: Natural language description of the automation task
+        base_id: Airtable base identifier
+        table_name: Target table name
+        available_operations: List of supported operation types
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Operation configuration dict with endpoint, method, and payload template
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_description or not base_id or not table_name:
+        raise ValueError("Task description, base_id, and table_name are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    task_lower = task_description.lower()
+    operation = "GET"
+    payload_template = {"filterByFormula": "", "maxRecords": 100}
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if any(kw in task_lower for kw in ["create", "add", "insert", "new record"]):
+        operation = "POST"
+        payload_template = {"records": [{"fields": {}}]}
+    elif any(kw in task_lower for kw in ["update", "modify", "edit", "patch"]):
+        operation = "PATCH"
+        payload_template = {"records": [{"id": "", "fields": {}}]}
+    elif any(kw in task_lower for kw in ["trigger", "run automation", "execute workflow"]):
+        operation = "POST"
+        payload_template = {"automationId": "", "input": {}}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "operation": operation,
+        "endpoint": f"/v0/{base_id}/{table_name}",
+        "payload_template": payload_template,
+        "confidence": 0.95 if operation in available_operations else 0.0
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_airtable_operation(
+    config: Dict,
+    api_key: str,
+    payload: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute an Airtable API operation with rate-limit and transient error handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements resilient execution for Airtable's REST API:
+    - Handles 429 Too Many Requests with exponential backoff
+    - Validates record IDs and field types before submission
+    - Falls back to single-record operations if batch fails
+    - Returns structured results with Airtable record IDs and timestamps
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        config: Operation configuration from select_airtable_operation
+        api_key: Airtable API key or personal access token
+        payload: Prepared request payload
+        max_retries: Maximum retry attempts for transient failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result containing success status, record IDs, and latency
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import time
+    import requests
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    url = f"https://api.airtable.com{config['endpoint']}"
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = requests.request(
+                config["operation"], url, json=payload, headers=headers, timeout=30
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            if response.status_code == 429:
+                retry_after = int(response.headers.get("Retry-After", 2 ** attempt))
+                time.sleep(retry_after)
+                continue
+                
+            response.raise_for_status()
+            data = response.json()
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "records_affected": len(data.get("records", [])),
+                "record_ids": [r["id"] for r in data.get("records", [])],
+                "latency_ms": response.elapsed.total_seconds() * 1000
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except requests.exceptions.HTTPError as e:
+            if response.status_code in (400, 404, 422):
+                raise ValueError(f"Airtable API validation error: {e.response.text}") from e
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_single_record(config, api_key, payload)
+                
+    raise RuntimeError(f"Airtable operation failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +319,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: message-queue-troubleshooting
-description: Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic commands, dead letter handling, and backlog resolution
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent message queue troubleshooting for Kafka, RabbitMQ, SQS, and NATS clusters with diagnostic
+  commands, dead letter handling, and backlog resolution
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: message queue troubleshooting, kafka cluster, rabbitmq queues, dead letter, sqs visibility, message backlog, nats streaming, how do i debug queues
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-nats
+  role: implementation
+  scope: implementation
+  triggers: message queue troubleshooting, kafka cluster, rabbitmq queues, dead letter, sqs visibility, message backlog, nats
+    streaming, how do i debug queues
+  version: 1.0.0
+name: message-queue-troubleshooting
 ---
-
 # Message Queue Troubleshooting
 
 Diagnoses and resolves issues across Kafka, RabbitMQ, SQS, and NATS message queues with real diagnostic commands, dead letter queue analysis, visibility timeout fixes, and backlog handling strategies.

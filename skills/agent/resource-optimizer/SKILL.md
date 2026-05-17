@@ -1,18 +1,25 @@
 ---
-name: resource-optimizer
-description: Implements intelligent resource optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent resource optimizer with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: resource-optimizer, resource optimizer, how do i resource-optimizer, orchestrate resource-optimizer, automate resource-optimizer, agent resource-optimizer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: resource-optimizer, resource optimizer, how do i resource-optimizer, orchestrate resource-optimizer, automate
+    resource-optimizer, agent resource-optimizer
+  version: 1.0.0
+name: resource-optimizer
 ---
-
 # Resource Optimizer
 
 Orchestrates intelligent skill selection and execution for resource optimizer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,98 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
+def optimize_resource_allocation(
+    task_requirements: Dict[str, float],
     available_skills: List[Dict],
-    min_confidence: float = 0.7
+    system_constraints: Dict[str, float]
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select skill based on resource optimization rather than just text match.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates each skill against system constraints (CPU, memory, network, cost)
+    and returns the configuration that maximizes throughput while staying within limits.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_requirements or not available_skills:
+        raise ValueError("Task requirements and skill list must be provided")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
+    scored_candidates = []
     for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        # Calculate resource footprint and efficiency score
+        cpu_cost = skill.get("cpu_units", 0) * task_requirements.get("compute_intensity", 1.0)
+        mem_cost = skill.get("memory_mb", 0) * task_requirements.get("data_volume", 1.0)
+        cost_per_unit = skill.get("cost_per_call", 0.0) / max(skill.get("success_rate", 0.5), 0.1)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        # Check against hard constraints
+        if cpu_cost > system_constraints.get("max_cpu", float('inf')):
+            continue
+        if mem_cost > system_constraints.get("max_memory_mb", float('inf')):
+            continue
+            
+        # Composite optimization score (lower is better for cost/latency, higher for reliability)
+        efficiency_score = (skill.get("success_rate", 0.5) * 10) - (cost_per_unit * 2) - (cpu_cost * 0.1)
+        scored_candidates.append({
+            "skill": skill,
+            "cpu_allocated": cpu_cost,
+            "memory_allocated": mem_cost,
+            "efficiency_score": efficiency_score,
+            "estimated_latency_ms": skill.get("base_latency_ms", 100) * (1 + cpu_cost / 100)
+        })
+        
+    if not scored_candidates:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Sort by efficiency score descending, then by latency ascending
+    scored_candidates.sort(key=lambda x: (-x["efficiency_score"], x["estimated_latency_ms"]))
+    return scored_candidates[0]
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_with_resource_fallback(
+    selected_config: Dict,
+    execution_context: Dict,
+    resource_monitor: ResourceMonitor
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute skill with real-time resource monitoring and adaptive fallback.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Monitors actual resource consumption during execution. If thresholds are breached,
+    automatically scales down parameters or switches to a pre-calculated fallback skill.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    skill = selected_config["skill"]
+    fallback_skill = selected_config.get("fallback_skill")
+    max_retries = 2
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute with current resource allocation
+            result = _run_skill_with_allocation(skill, execution_context, selected_config)
             
-            # Success - Atomic Predictability (Law 3)
+            # Validate resource usage against SLA
+            usage = resource_monitor.get_current_usage()
+            if usage["cpu_percent"] > 85 or usage["memory_percent"] > 90:
+                raise ResourceExhaustionError(f"Resource limits breached: CPU {usage['cpu_percent']}%, MEM {usage['memory_percent']}%")
+                
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "skill": skill["name"],
+                "resources_used": usage,
+                "attempts": attempt + 1
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except ResourceExhaustionError as e:
+            # Adaptive fallback: try scaled-down execution or alternative skill
+            if attempt < max_retries and fallback_skill:
+                selected_config = _recalculate_allocation(fallback_skill, execution_context, scale_factor=0.7)
+                continue
+            raise
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except TransientNetworkError:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _trigger_human_review(execution_context, skill["name"])
+            continue
+            
+    return {"status": "failed", "reason": "max_retries_exceeded", "skill": skill["name"]}
 ```
 
 ### MUST DO
@@ -320,3 +299,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

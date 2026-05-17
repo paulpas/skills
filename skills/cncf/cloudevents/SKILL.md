@@ -1,23 +1,24 @@
 ---
-name: cloudevents
-description: '"CloudEvents in Streaming & Messaging - cloud native architecture, patterns"
-  pitfalls, and best practices'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: '"CloudEvents in Streaming & Messaging - cloud native architecture, patterns" pitfalls, and best practices'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
+  output-format: manifests
+  related-skills: nats
   role: reference
   scope: infrastructure
-  output-format: manifests
-  triggers: cdn, cloudevents, infrastructure as code, messaging, monitoring, streaming,
-    cloudformation, cloudfront
-  related-skills: nats
+  triggers: cdn, cloudevents, infrastructure as code, messaging, monitoring, streaming, cloudformation, cloudfront
+  version: 1.0.0
+name: cloudevents
 ---
-
-
-
-
 # CloudEvents in Cloud-Native Engineering
 
 **Category:** eventing  
@@ -1162,13 +1163,24 @@ CLOUD_EVENTS_TIMEOUT=5000
 ```
 
 **Python:**
-```python
-# .env
-CLOUD_EVENTS_SOURCE=https://myapp.example.com
-CLOUD_EVENTS_TYPE=com.example.order.created
-CLOUD_EVENTS_TARGET=http://event-broker.default.svc.cluster.local
-CLOUD_EVENTS_RETRY_COUNT=3
-CLOUD_EVENTS_TIMEOUT=5000
+```bash
+# ✅ GOOD — Environment variables for CloudEvents in bash
+# .env file equivalent for bash
+export CLOUD_EVENTS_SOURCE="https://myapp.example.com"
+export CLOUD_EVENTS_TYPE="com.example.order.created"
+export CLOUD_EVENTS_TARGET="http://event-broker.default.svc.cluster.local"
+export CLOUD_EVENTS_RETRY_COUNT=3
+export CLOUD_EVENTS_TIMEOUT=5000
+
+# Source the .env file
+set -a
+source .env
+set +a
+
+# Verify environment
+echo "Source: $CLOUD_EVENTS_SOURCE"
+echo "Target: $CLOUD_EVENTS_TARGET"
+echo "Type: $CLOUD_EVENTS_TYPE"
 ```
 
 #### Kubernetes Secret for Sensitive Configuration
@@ -1342,66 +1354,44 @@ server.listen(8080, () => {
 
 #### Creating CloudEvents in Python
 
-```python
-# cloudevents_client.py
-import uuid
-from datetime import datetime
-import requests
-import json
+```bash
+# ✅ GOOD — Creating CloudEvents with jq and curl
+# Generate CloudEvent using jq
+EVENT_ID=$(python3 -c "import uuid; print(uuid.uuid4())")
+TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-class CloudEventFactory:
-    def __init__(self, source, default_type_prefix=""):
-        self.source = source
-        self.default_type_prefix = default_type_prefix
+EVENT=$(jq -n   --arg id "$EVENT_ID"   --arg type "com.example.order.created"   --arg source "https://orders.example.com"   --arg time "$TIMESTAMP"   '{
+    "specversion": "1.0",
+    "id": $id,
+    "type": $type,
+    "source": $source,
+    "time": $time,
+    "datacontenttype": "application/json",
+    "data": {"orderId": "123", "total": 99.99}
+  }')
 
-    def create(self, type_, data, attributes=None):
-        attributes = attributes or {}
-        return {
-            "specversion": "1.0",
-            "type": self.default_type_prefix + type_,
-            "source": self.source,
-            "id": str(uuid.uuid4()),
-            "time": datetime.utcnow().isoformat() + "Z",
-            **attributes,
-            "data": data
-        }
+echo "$EVENT" | jq .
 
-# Usage
-factory = CloudEventFactory("https://orders.example.com", "com.example.")
-event = factory.create(
-    "order.created",
-    {"orderId": "123", "total": 99.99}
-)
-
-print(json.dumps(event, indent=2))
+# Send to broker
+curl -s -X POST "http://event-broker.default.svc.cluster.local"   -H "Content-Type: application/cloudevents+json"   -d "$EVENT" | jq .
 ```
 
 #### Sending CloudEvents via HTTP in Python
 
-```python
-def send_cloud_event(event, target_url):
-    """Send a CloudEvent to a target URL."""
-    response = requests.post(
-        target_url,
-        headers={
-            "Content-Type": "application/cloudevents+json"
-        },
-        json=event
-    )
-    response.raise_for_status()
-    return response.json()
+```bash
+# ✅ GOOD — Sending CloudEvents with curl and retry
+curl -s -X POST "http://event-broker.default.svc.cluster.local"   -H "Content-Type: application/cloudevents+json"   -d '{"specversion":"1.0","id":"'$EVENT_ID'","type":"com.example.order.shipped","source":"https://orders.example.com","time":"'$TIMESTAMP'","datacontenttype":"application/json","data":{"orderId":"123","trackingNumber":"TRK-456"}}' | jq .
 
-# Usage
-event = factory.create(
-    "order.shipped",
-    {"orderId": "123", "trackingNumber": "TRK-456"}
-)
-
-result = send_cloud_event(
-    event,
-    "http://event-broker.default.svc.cluster.local"
-)
-print(f"Event sent with response: {result}")
+# With retry logic
+for i in $(seq 1 5); do
+    RESPONSE=$(curl -sf -X POST "http://event-broker.default.svc.cluster.local"       -H "Content-Type: application/cloudevents+json"       -d "$EVENT" 2>/dev/null)
+    if [[ $? -eq 0 ]]; then
+        echo "✅ Event sent: $RESPONSE"
+        break
+    fi
+    echo "⚠️ Retry $i..."
+    sleep $((2 ** i))
+done
 ```
 
 ### Common Operations
@@ -1722,3 +1712,37 @@ spec:
   type: ClusterIP
 ```
 
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Integrating a CNCF project into Kubernetes infrastructure** — You need to configure, deploy, or troubleshoot a cloud-native tool within a cluster
+- **Designing cloud-native architecture** — You are selecting and integrating CNCF tools to solve specific infrastructure challenges
+- **Resolving operational issues** — A CNCF component is misbehaving, underperforming, or needs configuration changes
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

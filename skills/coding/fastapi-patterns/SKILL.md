@@ -1,23 +1,25 @@
 ---
-name: patterns
-description: '"FastAPI application structure with typed error hierarchy, global exception"
-  handlers, CORS middleware, request timing, and lifecycle events'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"FastAPI application structure with typed error hierarchy, global exception" handlers, CORS middleware, request
+  timing, and lifecycle events'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: application, cloud infrastructure, fastapi patterns, fastapi-patterns,
-    structure, typed
-  related-skills: null
+  triggers: application, cloud infrastructure, fastapi patterns, fastapi-patterns, structure, typed
+  version: 1.0.0
+name: patterns
 ---
-
-
-
-
 # Skill: coding-fastapi-patterns
 
 # FastAPI application structure with typed error hierarchy, global exception handlers, CORS middleware, request timing, and lifecycle events
@@ -345,3 +347,17 @@ async def root() -> dict[str, Any]:
 - **Atomic Predictability**: Each exception handler is a pure function from `(request, exc)` to `JSONResponse`; no shared mutable state
 - **Fail Fast**: `Exception` handler catches all unhandled errors with a 500 response; no silent swallowing of errors
 - **Intentional Naming**: `NotFoundError`, `BadRequestError`, `ExchangeError` — error class names describe what went wrong exactly
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

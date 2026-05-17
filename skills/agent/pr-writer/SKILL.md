@@ -1,18 +1,24 @@
 ---
-name: pr-writer
-description: Implements intelligent pr writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent pr writer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: pr-writer, pr writer, how do i pr-writer, orchestrate pr-writer, automate pr-writer, agent pr-writer
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: pr-writer, pr writer, how do i pr-writer, orchestrate pr-writer, automate pr-writer, agent pr-writer
+  version: 1.0.0
+name: pr-writer
 ---
-
 # Pr Writer
 
 Orchestrates intelligent skill selection and execution for pr writer workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,112 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_changes_and_generate_pr_content(
+    diff_content: str,
+    commit_history: List[str],
+    pr_template: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Analyze git diff and commit history to generate structured PR content.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Extracts changed files, categorizes changes by type (feat/fix/refactor),
+    and maps them to the PR template sections. Implements Law 2 by 
+    validating diff format before parsing.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        diff_content: Raw git diff output
+        commit_history: List of commit messages
+        pr_template: Template dict with sections like '## Changes', '## Testing'
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Dict containing categorized changes, generated markdown, and metadata
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on invalid input
+    if not diff_content or not commit_history:
+        raise ValueError("Diff content and commit history are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Law 2: Parse and validate diff structure
+    changed_files = _extract_changed_files(diff_content)
+    if not changed_files:
+        return {"status": "empty_diff", "content": pr_template.get("empty_template", "")}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Categorize changes based on commit messages and file paths
+    categorized = _categorize_changes(changed_files, commit_history)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Law 3: Return new structure, never mutate template
+    generated_pr = dict(pr_template)
+    generated_pr["## Changes"] = _format_changes(categorized)
+    generated_pr["## Files Changed"] = "\n".join(changed_files)
+    generated_pr["metadata"] = {
+        "files_count": len(changed_files),
+        "categories": list(categorized.keys()),
+        "generated_at": time.time()
+    }
+    return generated_pr
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_pr_generation_with_fallback(
+    repo_context: Dict,
+    pr_template: Dict,
+    max_attempts: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Generate PR description with fallback chain for resilience.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
+    Implements Law 4 (Fail Fast) by validating repo state upfront.
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Generate from full diff
+    2. Generate from summary of changed directories
+    3. Fall back to default template with manual review flag
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        repo_context: Dict with 'diff', 'commits', 'branch', 'base_branch'
+        pr_template: PR markdown template
+        max_attempts: Retry limit for diff parsing
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Final PR content dict with generation strategy and confidence
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Law 1: Validate repo context immediately
+    required_keys = {"diff", "commits", "branch"}
+    if not required_keys.issubset(repo_context.keys()):
+        raise ValueError(f"Missing required repo context keys: {required_keys - set(repo_context.keys())}")
+        
+    strategy = "full_diff"
+    pr_content = None
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for attempt in range(max_attempts + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            if strategy == "full_diff":
+                pr_content = analyze_changes_and_generate_pr_content(
+                    repo_context["diff"], repo_context["commits"], pr_template
+                )
+            elif strategy == "directory_summary":
+                pr_content = _generate_directory_summary(repo_context, pr_template)
+            else:
+                pr_content = _apply_default_template(repo_context, pr_template)
+                
+            if pr_content.get("status") != "empty_diff":
+                pr_content["generation_strategy"] = strategy
+                pr_content["confidence"] = 0.9 if strategy == "full_diff" else 0.6
+                return pr_content
+                
+        except DiffParseError as e:
+            # Law 4: Fail fast on corrupt diff, move to fallback
+            if attempt == max_attempts:
+                strategy = "default_template"
+                continue
+            strategy = "directory_summary"
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # All strategies exhausted - return with manual review flag
+    return {
+        "status": "fallback_applied",
+        "content": pr_content,
+        "requires_manual_review": True,
+        "fallback_reason": "Diff parsing failed after all strategies"
+    }
 ```
 
 ### MUST DO
@@ -320,3 +312,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

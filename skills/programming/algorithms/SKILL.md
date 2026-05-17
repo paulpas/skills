@@ -1,26 +1,30 @@
 ---
-name: algorithms
-description: '''''Provides Comprehensive algorithm selection guide u2014 choose, implement,
-  and'' optimize algorithms based on time/space trade-offs, input characteristics,
-  and problem constraints'''''
-license: MIT
 compatibility: opencode
-version: 1.0.0
+completeness: 95
+content-types:
+- code
+- guidance
+- examples
+- diagrams
+description: '''''Provides Comprehensive algorithm selection guide u2014 choose, implement, and'' optimize algorithms based
+  on time/space trade-offs, input characteristics, and problem constraints'''''
 domain: programming
-role: reference
-scope: implementation
-output-format: code
-triggers: algorithm, algorithms, big-o, complexity, data structure, searching, sorting
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: programming
+  output-format: code
   role: reference
   scope: implementation
-  output-format: code
   triggers: algorithms, comprehensive, algorithm, selection
+  version: 1.0.0
+name: algorithms
+output-format: code
+role: reference
+scope: implementation
+triggers: algorithm, algorithms, big-o, complexity, data structure, searching, sorting
+version: 1.0.0
 ---
-
-
   related-skills: abl-v10-learning, abl-v12-learning
 
 
@@ -3198,3 +3202,37 @@ Algorithm selection is a critical skill in computer science. This guide provides
 --- 
 
 *This skill document is designed for OpenCode algorithm selection. For specific implementation questions, refer to the code-philosophy skill for implementation guidelines.*
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing or analyzing algorithms** — You need to understand, implement, or optimize algorithms for a specific problem domain
+- **Comparing algorithmic approaches** — You are evaluating different algorithms for correctness, performance, or trade-offs
+- **Studying computational patterns** — You need reference implementations and complexity analysis for standard algorithmic patterns
+---
+
+## Core Workflow
+
+1. **Understand the Problem** — Identify inputs, outputs, constraints, and edge cases. **Checkpoint:** Clearly define the problem statement and expected behavior.
+
+2. **Select Algorithm** — Choose the most appropriate algorithm based on constraints (time/space complexity, data size, ordering requirements). **Checkpoint:** Justify the algorithm choice with complexity analysis.
+
+3. **Implement & Test** — Write clean, readable code with type hints, docstrings, and edge case handling. **Checkpoint:** Verify correctness with multiple test cases including edge cases.
+
+4. **Analyze & Optimize** — Review time/space complexity, identify optimization opportunities, and validate against benchmarks. **Checkpoint:** Confirm complexity bounds match analysis and all test cases pass.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include time and space complexity analysis for all algorithms
+- Show at least one working example with input/output
+- Include diagrams for non-trivial algorithm flows
+
+### MUST NOT DO
+- Present an algorithm without its complexity bounds
+- Use recursive solutions without discussing tail-call or memoization alternatives
+- Omit edge case handling in examples

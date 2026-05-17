@@ -1,24 +1,25 @@
 ---
-name: neural-networks
-description: '"Implements deep neural networks, backpropagation, activation functions,
-  architectures (CNN, RNN, Transformers), and training strategies"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements deep neural networks, backpropagation, activation functions, architectures (CNN, RNN, Transformers),
+  and training strategies"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-categorical-encoding, ds-ensemble-methods, ds-hyperparameter-tuning, ds-support-vector-machines ds-tree-methods
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: neural networks, deep learning, backpropagation, CNN, RNN, transformers,
-    how do i use deep learning, hugging face
-  related-skills: ds-categorical-encoding, ds-ensemble-methods, ds-hyperparameter-tuning, ds-support-vector-machines
-    ds-tree-methods
+  triggers: neural networks, deep learning, backpropagation, CNN, RNN, transformers, how do i use deep learning, hugging face
+  version: 1.0.0
+name: neural-networks
 ---
-
-
-
-
 # Neural Networks
 
 Comprehensive guide to neural networks in machine learning and data science workflows.
@@ -60,34 +61,139 @@ Neural Networks is a critical component of the machine learning workflow. This s
 ### Pattern 1: Basic Neural Networks
 
 ```python
-# Example pattern for Neural Networks
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.datasets import make_classification
 
-# Implementation pattern
-pass
+def train_basic_neural_network(X: np.ndarray, y: np.ndarray) -> dict:
+    """Train a basic Multi-Layer Perceptron classifier on tabular data."""
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+    
+    model = MLPClassifier(
+        hidden_layer_sizes=(64, 32),
+        activation='relu',
+        solver='adam',
+        max_iter=500,
+        random_state=42,
+        early_stopping=True,
+        validation_fraction=0.1
+    )
+    
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    
+    metrics = {
+        'accuracy': accuracy_score(y_test, y_pred),
+        'report': classification_report(y_test, y_pred, output_dict=True),
+        'n_iterations': model.n_iter_
+    }
+    return metrics
+
+# Example usage
+if __name__ == "__main__":
+    X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
+    results = train_basic_neural_network(X, y)
+    print(f"Accuracy: {results['accuracy']:.4f}")
+    print(f"Iterations: {results['n_iterations']}")
 ```
 
 ### Pattern 2: Production-Ready Neural Networks
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Any, Dict, Optional
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, f1_score
+from sklearn.datasets import make_classification
 
 logger = logging.getLogger(__name__)
 
-class NeuralNetworks:
-    """Production implementation of Neural Networks"""
+class NeuralNetworkPipeline:
+    """Production-ready neural network pipeline with preprocessing and validation."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Neural Networks on data"""
-        return {}
+    def __init__(self, hidden_layers: tuple = (128, 64), learning_rate: float = 0.001):
+        self.hidden_layers = hidden_layers
+        self.learning_rate = learning_rate
+        self.scaler = StandardScaler()
+        self.model = MLPClassifier(
+            hidden_layer_sizes=hidden_layers,
+            learning_rate_init=learning_rate,
+            solver='adam',
+            random_state=42,
+            early_stopping=True,
+            validation_fraction=0.15,
+            max_iter=1000
+        )
+        self.is_trained = False
+
+    def _validate_input(self, X: pd.DataFrame, y: pd.Series) -> None:
+        if X.empty or y.empty:
+            raise ValueError("Input data cannot be empty")
+        if not np.issubdtype(X.select_dtypes(include='number').dtypes, np.number):
+            raise ValueError("Features must be numeric")
+
+    def execute(self, data: pd.DataFrame, target_col: str) -> Dict[str, Any]:
+        """Execute neural network training and evaluation on provided data."""
+        try:
+            self._validate_input(data, data[target_col])
+            X = data.drop(columns=[target_col])
+            y = data[target_col]
+            
+            X_train, X_test, y_train, y_test = train_test_split(
+                X, y, test_size=0.2, random_state=42, stratify=y
+            )
+            
+            X_train_scaled = self.scaler.fit_transform(X_train)
+            X_test_scaled = self.scaler.transform(X_test)
+            
+            self.model.fit(X_train_scaled, y_train)
+            self.is_trained = True
+            
+            y_pred = self.model.predict(X_test_scaled)
+            metrics = {
+                'accuracy': accuracy_score(y_test, y_pred),
+                'f1_score': f1_score(y_test, y_pred, average='weighted'),
+                'model_type': 'MLPClassifier',
+                'layers': self.hidden_layers
+            }
+            logger.info(f"Pipeline completed. Accuracy: {metrics['accuracy']:.4f}")
+            return metrics
+        except Exception as e:
+            logger.error(f"Pipeline execution failed: {str(e)}")
+            raise RuntimeError(f"Neural network pipeline failed: {e}") from e
+```
+
+### Pattern 3: BAD vs GOOD Implementation
+
+```python
+# BAD: Hardcoded values, no scaling, no early stopping, poor error handling
+def bad_nn_implementation(X, y):
+    model = MLPClassifier(hidden_layer_sizes=(10, 10), max_iter=10)
+    model.fit(X, y)
+    return model.predict(X)
+
+# GOOD: Follows SOLID/DRY principles, proper scaling, early stopping, type hints
+def good_nn_implementation(X: pd.DataFrame, y: pd.Series) -> Dict[str, Any]:
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    model = MLPClassifier(
+        hidden_layer_sizes=(128, 64),
+        early_stopping=True,
+        validation_fraction=0.2,
+        max_iter=1000,
+        random_state=42
+    )
+    model.fit(X_scaled, y)
+    return {'model': model, 'scaler': scaler}
 ```
 
 ## Best Practices
@@ -113,60 +219,77 @@ class NeuralNetworks:
 ## Complete Working Example
 
 ```python
-# Full working example for Neural Networks
-import pandas as pd
 import numpy as np
-from typing import Dict, Any
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.datasets import load_breast_cancer
+from typing import Dict, Any, Tuple
 
-def implement_networks(data: pd.DataFrame) -> Dict[str, Any]:
+def train_and_evaluate_nn(X: pd.DataFrame, y: pd.Series) -> Dict[str, Any]:
     """
-    Complete implementation of Neural Networks.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_networks(df)
-        >>> print(results)
+    Complete working example: Train, evaluate, and visualize a neural network.
+    Demonstrates proper scaling, early stopping, metric tracking, and visualization.
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    # 1. Data Preparation
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    # 2. Model Initialization & Training
+    model = MLPClassifier(
+        hidden_layer_sizes=(100, 50),
+        activation='relu',
+        solver='adam',
+        alpha=0.0001,
+        learning_rate='adaptive',
+        max_iter=1000,
+        early_stopping=True,
+        validation_fraction=0.2,
+        random_state=42,
+        verbose=True
+    )
+    
+    model.fit(X_train_scaled, y_train)
+    
+    # 3. Evaluation
+    y_pred = model.predict(X_test_scaled)
+    metrics = {
+        'accuracy': accuracy_score(y_test, y_pred),
+        'confusion_matrix': confusion_matrix(y_test, y_pred).tolist(),
+        'report': classification_report(y_test, y_pred, output_dict=True)
     }
     
-    return results
-
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    # 4. Visualization
+    plt.figure(figsize=(10, 4))
+    plt.subplot(1, 2, 1)
+    plt.plot(model.loss_curve_, label='Training Loss', color='blue')
+    plt.title('Training Loss Over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
     
-    # Run implementation
-    results = implement_networks(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    plt.subplot(1, 2, 2)
+    cm = confusion_matrix(y_test, y_pred)
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title('Confusion Matrix')
+    plt.colorbar()
+    plt.tight_layout()
+    plt.show()
+    
+    return metrics
+
+if __name__ == "__main__":
+    data = load_breast_cancer(as_frame=True)
+    results = train_and_evaluate_nn(data.frame, data.target)
+    print(f"Final Accuracy: {results['accuracy']:.4f}")
 ```
 
 ## Related Skills
@@ -186,3 +309,7 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints

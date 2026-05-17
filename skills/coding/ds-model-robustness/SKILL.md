@@ -1,25 +1,25 @@
 ---
-name: model-robustness
-description: Improves model robustness including adversarial robustness, out-of-distribution
-  detection, and uncertainty quantification
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: Improves model robustness including adversarial robustness, out-of-distribution detection, and uncertainty quantification
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-anomaly-detection, ds-explainability, ds-model-fairness, ds-reproducible-research
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: model robustness, adversarial robustness, out-of-distribution, OOD detection,
-    robustness testing, unit tests, testing, test automation
-  related-skills: ds-anomaly-detection, ds-explainability, ds-model-fairness, ds-reproducible-research
+  triggers: model robustness, adversarial robustness, out-of-distribution, OOD detection, robustness testing, unit tests,
+    testing, test automation
+  version: 1.0.0
+name: model-robustness
 ---
-
-
-
-
-
-
 # Model Robustness
 
 Comprehensive guide to model robustness in machine learning and data science workflows.
@@ -61,34 +61,153 @@ Model Robustness is a critical component of the machine learning workflow. This 
 ### Pattern 1: Basic Model Robustness
 
 ```python
-# Example pattern for Model Robustness
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
 
-# Implementation pattern
-pass
+# Generate synthetic dataset with in-distribution and out-of-distribution samples
+X_in, y_in = make_classification(n_samples=800, n_features=10, n_classes=2, random_state=42)
+X_ood = np.random.uniform(low=-3, high=3, size=(200, 10))
+y_ood = np.full(200, -1)  # Label for OOD samples
+
+X = np.vstack([X_in, X_ood])
+y = np.concatenate([y_in, y_ood])
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train a robust ensemble classifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Predictions and probability estimates
+y_pred = model.predict(X_test)
+y_proba = model.predict_proba(X_test)
+
+# Calculate predictive entropy for uncertainty quantification
+entropy = -np.sum(y_proba * np.log(y_proba + 1e-10), axis=1)
+
+# OOD detection using Mahalanobis distance approximation via feature variance
+train_mean = np.mean(X_train, axis=0)
+train_cov = np.cov(X_train.T)
+cov_inv = np.linalg.inv(train_cov + 1e-6 * np.eye(train_cov.shape[0]))
+
+mahal_dist = np.array([
+    (x - train_mean) @ cov_inv @ (x - train_mean).T for x in X_test
+])
+
+# Threshold for OOD detection (95th percentile of training distances)
+train_mahal = np.array([
+    (x - train_mean) @ cov_inv @ (x - train_mean).T for x in X_train
+])
+ood_threshold = np.percentile(train_mahal, 95)
+
+results = {
+    'accuracy': accuracy_score(y_test, y_pred),
+    'mean_uncertainty': float(np.mean(entropy)),
+    'ood_samples_detected': int(np.sum(mahal_dist > ood_threshold)),
+    'classification_report': classification_report(y_test, y_pred, zero_division=0)
+}
 ```
 
 ### Pattern 2: Production-Ready Model Robustness
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Optional
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import f1_score
 
 logger = logging.getLogger(__name__)
 
 class ModelRobustness:
-    """Production implementation of Model Robustness"""
+    """Production implementation of Model Robustness with OOD detection and uncertainty."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
+    def __init__(self, ood_percentile: float = 0.95, random_state: int = 42):
+        self.ood_percentile = ood_percentile
+        self.random_state = random_state
+        self.model: Optional[GradientBoostingClassifier] = None
+        self.scaler: Optional[StandardScaler] = None
+        self.train_stats: Optional[Dict[str, np.ndarray]] = None
+
+    def execute(self, data: pd.DataFrame, labels: Optional[np.ndarray] = None) -> Dict[str, Any]:
         """Execute Model Robustness on data"""
-        return {}
+        if data is None or data.empty:
+            raise ValueError("Input data cannot be None or empty")
+        
+        X = data.values
+        y = labels if labels is not None else None
+
+        # Initialize scaler and model if not already fitted
+        if self.scaler is None:
+            self.scaler = StandardScaler()
+            X_scaled = self.scaler.fit_transform(X)
+        else:
+            X_scaled = self.scaler.transform(X)
+
+        if self.model is None:
+            self.model = GradientBoostingClassifier(n_estimators=50, random_state=self.random_state)
+            if y is not None:
+                self.model.fit(X_scaled, y)
+                self.train_stats = {
+                    'mean': np.mean(X_scaled, axis=0),
+                    'cov_inv': np.linalg.inv(np.cov(X_scaled.T) + 1e-6 * np.eye(X_scaled.shape[1]))
+                }
+            else:
+                logger.warning("No labels provided for training. Model remains uninitialized.")
+                return {'status': 'skipped_training', 'data_shape': X.shape}
+
+        # Predictions and uncertainty
+        y_pred = self.model.predict(X_scaled)
+        y_proba = self.model.predict_proba(X_scaled)
+        uncertainty = -np.sum(y_proba * np.log(y_proba + 1e-10), axis=1)
+
+        # OOD scoring
+        mahal_dist = np.array([
+            (x - self.train_stats['mean']) @ self.train_stats['cov_inv'] @ (x - self.train_stats['mean']).T 
+            for x in X_scaled
+        ])
+        is_ood = mahal_dist > np.percentile(mahal_dist, self.ood_percentile * 100)
+
+        metrics = {
+            'f1_score': float(f1_score(y, y_pred, average='weighted', zero_division=0)),
+            'mean_uncertainty': float(np.mean(uncertainty)),
+            'ood_ratio': float(np.mean(is_ood)),
+            'predictions': y_pred.tolist()
+        }
+        return metrics
+```
+
+### Pattern 3: BAD vs GOOD Uncertainty Handling
+
+```python
+# BAD: Ignoring uncertainty thresholds and blindly trusting low-confidence predictions
+def bad_predict(model, X_test):
+    predictions = model.predict(X_test)
+    return predictions  # Fails silently on OOD or high-entropy samples
+
+# GOOD: Explicit uncertainty gating and OOD rejection per OWASP ML Security Top 10
+def good_predict_with_robustness(model, X_test, scaler, threshold: float = 0.85):
+    if X_test is None or X_test.size == 0:
+        raise ValueError("Input tensor cannot be empty")
+        
+    X_scaled = scaler.transform(X_test)
+    y_proba = model.predict_proba(X_scaled)
+    confidence = np.max(y_proba, axis=1)
+    entropy = -np.sum(y_proba * np.log(y_proba + 1e-10), axis=1)
+    
+    # Reject samples below confidence threshold or above entropy threshold
+    mask = (confidence >= threshold) & (entropy <= np.percentile(entropy, 90))
+    safe_predictions = model.predict(X_scaled[mask])
+    rejected_count = int(np.sum(~mask))
+    
+    return safe_predictions, rejected_count
 ```
 
 ## Best Practices
@@ -114,76 +233,88 @@ class ModelRobustness:
 ## Complete Working Example
 
 ```python
-# Full working example for Model Robustness
-import pandas as pd
 import numpy as np
-from typing import Dict, Any
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+from typing import Dict, Any, Tuple
 
-def implement_robustness(data: pd.DataFrame) -> Dict[str, Any]:
+def train_and_evaluate_robustness(
+    X: np.ndarray, 
+    y: np.ndarray, 
+    noise_level: float = 0.1
+) -> Dict[str, Any]:
     """
-    Complete implementation of Model Robustness.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    Train a classifier and evaluate robustness against noise and OOD samples.
     
     Args:
-        data: Input DataFrame with required columns
+        X: Feature matrix
+        y: Target labels
+        noise_level: Standard deviation for adversarial noise injection
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_robustness(df)
-        >>> print(results)
+        Dictionary containing metrics, predictions, and visualization data
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    if X.shape[0] != y.shape[0]:
+        raise ValueError("X and y must have the same number of samples")
+        
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
     
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    
+    # Clean predictions
+    y_clean_pred = model.predict(X_test)
+    clean_acc = accuracy_score(y_test, y_clean_pred)
+    
+    # Adversarial noise injection
+    X_noisy = X_test + np.random.normal(0, noise_level, X_test.shape)
+    y_noisy_pred = model.predict(X_noisy)
+    noisy_acc = accuracy_score(y_test, y_noisy_pred)
+    
+    # Uncertainty quantification via ensemble variance
+    y_proba = model.predict_proba(X_noisy)
+    entropy = -np.sum(y_proba * np.log(y_proba + 1e-10), axis=1)
+    high_uncertainty_mask = entropy > np.percentile(entropy, 90)
+    
+    # OOD detection via distance to training mean
+    train_mean = np.mean(X_train, axis=0)
+    dists = np.linalg.norm(X_noisy - train_mean, axis=1)
+    ood_threshold = np.percentile(np.linalg.norm(X_train - train_mean, axis=1), 95)
+    ood_mask = dists > ood_threshold
+    
+    return {
+        'clean_accuracy': clean_acc,
+        'noisy_accuracy': noisy_acc,
+        'accuracy_drop': clean_acc - noisy_acc,
+        'high_uncertainty_count': int(np.sum(high_uncertainty_mask)),
+        'ood_samples_count': int(np.sum(ood_mask)),
+        'confusion_matrix': confusion_matrix(y_test, y_noisy_pred).tolist(),
+        'entropy_values': entropy.tolist(),
+        'distances': dists.tolist()
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    # Generate dataset
+    X, y = make_classification(n_samples=1000, n_features=5, n_informative=3, random_state=42)
     
-    # Run implementation
-    results = implement_robustness(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
-```
-
-## Related Skills
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `coding-ds-anomaly-detection` | Anomaly Detection techniques | Complementary to this skill |
-| `coding-ds-explainability` | Explainability techniques | Complementary to this skill |
-| `coding-ds-model-fairness` | Model Fairness techniques | Complementary to this skill |
-
-## References
-
-- Official documentation and papers on Model Robustness
-- Industry best practices and standards
-- Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
-
----
-
-*Last updated: 2026-04-24*
+    # Run robustness evaluation
+    results = train_and_evaluate_robustness(X, y, noise_level=0.2)
+    
+    print(f"Clean Accuracy: {results['clean_accuracy']:.4f}")
+    print(f"Noisy Accuracy: {results['noisy_accuracy']:.4f}")
+    print(f"Accuracy Drop: {results['accuracy_drop']:.4f}")
+    print(f"OOD Samples Detected: {results['ood_samples_count']}")
+    
+    # Visualization
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    axes[0].hist(results['entropy_values'], bins=30, color='steelblue', edgecolor='black')
+    axes[0].set_title('Predictive Entropy Distribution')
+    axes[0].set_xlabel('Entropy')
+    axes[0].set_ylabel('Frequency')
+    
+    axes[1].hist(results['distances'], bins=30, color='coral', edgecolor='black')
+    axes[1].axvline(x=np.percentile(np.linalg.norm(X[:300] - np.mean(X[:300], axis=0), axis=1

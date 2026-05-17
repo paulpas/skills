@@ -1,18 +1,25 @@
 ---
-name: docker-debugging
-description: Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts,
+  resource contention, and caching optimization
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: docker debugging, container crash, oom error, network troubleshooting, docker compose, container logs, how do i debug docker, volume mount
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-network-troubleshooting
+  role: implementation
+  scope: implementation
+  triggers: docker debugging, container crash, oom error, network troubleshooting, docker compose, container logs, how do
+    i debug docker, volume mount
+  version: 1.0.0
+name: docker-debugging
 ---
-
 # Docker Container Debugging
 
 Implements comprehensive Docker container debugging workflows for diagnosing crashes, OOM errors, network issues, volume mount problems, resource contention, and optimization issues using Docker CLI commands, inspection tools, and log analysis.

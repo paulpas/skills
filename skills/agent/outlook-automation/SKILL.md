@@ -1,18 +1,25 @@
 ---
-name: outlook-automation
-description: Implements intelligent outlook automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent outlook automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: outlook-automation, outlook automation, how do i outlook-automation, orchestrate outlook-automation, automate outlook-automation, agent outlook-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: outlook-automation, outlook automation, how do i outlook-automation, orchestrate outlook-automation, automate
+    outlook-automation, agent outlook-automation
+  version: 1.0.0
+name: outlook-automation
 ---
-
 # Outlook Automation
 
 Orchestrates intelligent skill selection and execution for outlook automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,148 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_outlook_intent(
+    user_request: str,
+    available_outlook_modules: List[Dict],
+    graph_token: str
+) -> Dict:
+    """Route Outlook automation requests to specific Microsoft Graph API endpoints.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Analyzes natural language requests to determine if the user wants to:
+    - Search/Read emails (/me/messages)
+    - Create/Update calendar events (/me/events)
+    - Manage inbox rules (/me/mailFolders/inbox/messageRules)
+    - Send emails (/me/sendMail)
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        user_request: Natural language instruction for Outlook
+        available_outlook_modules: List of configured Outlook skill modules
+        graph_token: Valid Microsoft Graph OAuth2 access token
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision with target endpoint, required scopes, and confidence
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    import re
+    from datetime import datetime
+
+    # Normalize request for intent matching
+    normalized = user_request.lower().strip()
+    
+    # Intent detection patterns for Outlook automation
+    intent_map = {
+        "email_search": r"(search|find|look up|query).*email|message|inbox",
+        "calendar_create": r"(create|schedule|book|add).*event|meeting|calendar",
+        "rule_management": r"(create|delete|modify|manage).*rule|filter|auto|forward",
+        "send_email": r"(send|reply|forward|draft).*email|message"
+    }
+    
+    matched_intent = None
+    for intent, pattern in intent_map.items():
+        if re.search(pattern, normalized):
+            matched_intent = intent
+            break
+            
+    if not matched_intent:
+        return {"status": "unrecognized", "confidence": 0.0, "fallback": "human_review"}
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Match to available module
+    target_module = None
+    for module in available_outlook_modules:
+        if module["intent"] == matched_intent:
+            target_module = module
+            break
+            
+    if not target_module:
+        return {"status": "module_missing", "confidence": 0.0, "fallback": "module_install"}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Validate Graph API permissions
+    required_scopes = target_module.get("required_scopes", [])
+    valid_scopes = _validate_graph_scopes(graph_token, required_scopes)
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "status": "routed",
+        "intent": matched_intent,
+        "target_module": target_module["name"],
+        "graph_endpoint": target_module["endpoint"],
+        "confidence": 0.92,
+        "timestamp": datetime.utcnow().isoformat()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_outlook_task(
+    target_module: Dict,
+    task_params: Dict,
+    graph_token: str,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Outlook automation via Microsoft Graph API with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles rate limiting (429), token expiration (401), and transient network errors.
+    Implements fallback chain: retry -> switch endpoint region -> queue for manual review.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target_module: Routed module configuration with endpoint and scopes
+        task_params: Parsed parameters for the Graph API call
+        graph_token: Active Microsoft Graph OAuth2 token
+        max_retries: Maximum retry attempts for transient failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with Graph API response, timing, and status
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    import time
+    import requests
+    from datetime import datetime
+
+    headers = {
+        "Authorization": f"Bearer {graph_token}",
+        "Content-Type": "application/json",
+        "Prefer": "outlook.timezone=\"UTC\""
+    }
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    endpoint = target_module["endpoint"]
+    payload = task_params.get("payload", {})
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            response = requests.post(
+                f"https://graph.microsoft.com/v1.0/{endpoint}",
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Handle Graph API rate limiting
+            if response.status_code == 429:
+                retry_after = int(response.headers.get("Retry-After", 5))
+                time.sleep(retry_after)
+                continue
+                
+            # Handle token expiration
+            if response.status_code == 401:
+                return {"status": "token_expired", "fallback": "refresh_token"}
+                
+            response.raise_for_status()
+            
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "success",
+                "graph_response": response.json(),
+                "endpoint_used": endpoint,
+                "latency_ms": response.elapsed.total_seconds() * 1000,
+                "timestamp": datetime.utcnow().isoformat()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except requests.exceptions.Timeout:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return {"status": "timeout", "fallback": "queue_manual_review"}
+            time.sleep(2 ** attempt)
+        except requests.exceptions.RequestException as e:
+            return {"status": "network_error", "error": str(e), "fallback": "retry"}
+            
+    return {"status": "exhausted", "fallback": "human_operator"}
 ```
 
 ### MUST DO
@@ -320,3 +349,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

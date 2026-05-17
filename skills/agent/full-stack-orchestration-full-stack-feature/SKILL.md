@@ -1,18 +1,25 @@
 ---
-name: full-stack-orchestration-full-stack-feature
-description: Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback
+  chains, and adherence to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: full-stack-orchestration-full-stack-feature, full stack orchestration full stack feature, how do i full-stack-orchestration-full-stack-feature, orchestrate full-stack-orchestration-full-stack-feature, automate full-stack-orchestration-full-stack-feature, agent full-stack-orchestration-full-stack-feature
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: full-stack-orchestration-full-stack-feature, full stack orchestration full stack feature, how do i full-stack-orchestration-full-stack-feature,
+    orchestrate full-stack-orchestration-full-stack-feature, automate full-stack-orchestration-full-stack-feature, agent full-stack-orchestration-full-stack-feature
+  version: 1.0.0
+name: full-stack-orchestration-full-stack-feature
 ---
-
 # Full Stack Orchestration Full Stack Feature
 
 Orchestrates intelligent skill selection and execution for full stack orchestration full stack feature workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,110 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
+def select_full_stack_skills(
+    feature_spec: Dict[str, Any],
     available_skills: List[Dict],
-    min_confidence: float = 0.7
+    min_confidence: float = 0.75
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal full-stack skills for a feature implementation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates frontend, backend, and infrastructure skills against 
+    feature requirements (CRUD, auth, real-time, etc.) using multi-factor scoring.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        feature_spec: Feature requirements including type, dependencies, constraints
+        available_skills: List of skill metadata with capability tags
+        min_confidence: Minimum confidence threshold for selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected skill plan with execution order and confidence scores
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not feature_spec.get("type"):
+        raise ValueError("Feature type is required for full-stack orchestration")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
+    required_capabilities = _map_feature_to_capabilities(feature_spec["type"])
+    scored_skills = []
     
     for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        capability_match = len(set(skill.get("tags", [])) & set(required_capabilities))
+        historical_success = skill.get("success_rate", 0.0)
+        infra_readiness = skill.get("dependencies_met", False)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+        composite_score = (capability_match * 0.5) + (historical_success * 0.3) + (1.0 if infra_readiness else 0.0)
+        
+        if composite_score >= min_confidence:
+            scored_skills.append({
+                "skill": skill,
+                "score": composite_score,
+                "execution_layer": skill.get("layer", "backend")
+            })
     
-    if best_skill is None:
+    if not scored_skills:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    scored_skills.sort(key=lambda x: x["score"], reverse=True)
+    return {
+        "plan": scored_skills[:3],
+        "feature_type": feature_spec["type"],
+        "selection_confidence": scored_skills[0]["score"],
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_full_stack_deployment(
+    skill_plan: Dict[str, Any],
+    deployment_context: Dict[str, Any],
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute full-stack feature deployment with layered fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Orchestrates DB migrations, backend services, and frontend builds in dependency order.
+    Implements rollback and partial deployment strategies on failure.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        skill_plan: Output from select_full_stack_skills
+        deployment_context: Environment config, feature flags, rollback targets
+        max_retries: Maximum retry attempts per layer
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Deployment status with layer-by-layer results and rollback info
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    layers = ["database", "backend", "frontend"]
+    layer_results = {}
+    rollback_stack = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for layer in layers:
+        layer_skill = next((s for s in skill_plan.get("plan", []) if s["execution_layer"] == layer), None)
+        if not layer_skill:
+            layer_results[layer] = {"status": "skipped", "reason": "no skill assigned"}
+            continue
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        for attempt in range(max_retries + 1):
+            try:
+                result = _run_layer_deployment(layer_skill, deployment_context)
+                layer_results[layer] = {"status": "success", "result": result, "attempts": attempt + 1}
+                rollback_stack.append({"layer": layer, "target": result.get("version")})
+                break
+                
+            except DatabaseLockError:
+                if attempt == max_retries:
+                    layer_results[layer] = {"status": "failed", "error": "db_lock", "fallback": "manual_review"}
+                    return _trigger_rollback(rollback_stack, deployment_context)
+            except ServiceUnavailableError:
+                if attempt == max_retries:
+                    layer_results[layer] = {"status": "failed", "error": "service_down", "fallback": "circuit_breaker"}
+                    return _trigger_rollback(rollback_stack, deployment_context)
+                    
+    return {
+        "deployment_id": deployment_context.get("id"),
+        "layers": layer_results,
+        "overall_status": "complete" if all(r["status"] == "success" for r in layer_results.values()) else "partial",
+        "rollback_available": len(rollback_stack) > 0
+    }
 ```
 
 ### MUST DO
@@ -320,3 +311,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

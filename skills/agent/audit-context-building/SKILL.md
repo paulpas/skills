@@ -1,18 +1,25 @@
 ---
-name: audit-context-building
-description: Implements intelligent audit context building with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent audit context building with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: audit-context-building, audit context building, how do i audit-context-building, orchestrate audit-context-building, automate audit-context-building, agent audit-context-building
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: audit-context-building, audit context building, how do i audit-context-building, orchestrate audit-context-building,
+    automate audit-context-building, agent audit-context-building
+  version: 1.0.0
+name: audit-context-building
 ---
-
 # Audit Context Building
 
 Orchestrates intelligent skill selection and execution for audit context building workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,115 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def build_audit_context(
+    request: Dict,
+    available_audit_skills: List[Dict],
+    compliance_frameworks: List[str] = ["SOC2", "ISO27001", "GDPR"]
+) -> Dict:
+    """Build structured audit context by scoring and routing to relevant compliance skills.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 1 (Early Exit) and Law 2 (Make Illegal States Unrepresentable)
+    by validating request structure and framework availability before scoring.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request.get("target_system") or not request.get("audit_scope"):
+        raise ValueError("Audit context requires target_system and audit_scope")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if not available_audit_skills:
+        raise ValueError("No audit skills registered in registry")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Extract audit features (Law 2)
+    scope_features = _extract_scope_features(request["audit_scope"])
+    system_metadata = _fetch_system_metadata(request["target_system"])
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    scored_candidates = []
+    for skill in available_audit_skills:
+        # Multi-factor scoring: framework match, historical accuracy, system compatibility
+        framework_match = 1.0 if any(f in skill.get("frameworks", []) for f in compliance_frameworks) else 0.0
+        historical_accuracy = skill.get("success_rate", 0.5)
+        system_compat = 1.0 if system_metadata.get("type") in skill.get("supported_systems", []) else 0.0
+        
+        weighted_score = (framework_match * 0.4) + (historical_accuracy * 0.4) + (system_compat * 0.2)
+        
+        if weighted_score >= 0.6:
+            scored_candidates.append({
+                "skill_id": skill["id"],
+                "score": weighted_score,
+                "frameworks": skill["frameworks"],
+                "estimated_latency_ms": skill.get("latency_ms", 500)
+            })
+            
+    # Law 3: Return new structure, never mutate input
+    audit_context = {
+        "request_id": request.get("id", str(uuid.uuid4())),
+        "target_system": request["target_system"],
+        "scope": request["audit_scope"],
+        "candidates": sorted(scored_candidates, key=lambda x: x["score"], reverse=True),
+        "timestamp": time.time(),
+        "frameworks_applied": compliance_frameworks
+    }
+    return audit_context
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_audit_workflow_with_fallback(
+    audit_context: Dict,
+    skill_registry: Dict,
+    fallback_handlers: Dict[str, Callable]
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute audit skill chain with resilience patterns and full audit trail.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) and Law 5 (Audit Trail) by
+    logging every state transition, handling transient compliance check failures,
+    and routing to fallback handlers when primary audit steps fail.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    execution_log = []
+    results = {}
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for candidate in audit_context["candidates"]:
+        skill_id = candidate["skill_id"]
+        skill = skill_registry.get(skill_id)
+        
+        if not skill:
+            execution_log.append({"step": skill_id, "status": "MISSING", "error": "Skill not in registry"})
+            continue
+            
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute primary audit step
+            raw_result = skill["handler"](audit_context["target_system"], audit_context["scope"])
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+            # Validate result structure (Law 4)
+            if not _validate_audit_result(raw_result):
+                raise AuditValidationError(f"Invalid compliance data from {skill_id}")
+                
+            results[skill_id] = {
+                "status": "SUCCESS",
+                "data": raw_result,
+                "confidence": candidate["score"],
+                "latency_ms": raw_result.get("execution_time_ms", 0)
             }
+            execution_log.append({"step": skill_id, "status": "SUCCESS", "timestamp": time.time()})
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except TransientNetworkError:
+            # Fallback chain: retry -> alternative skill -> manual review
+            execution_log.append({"step": skill_id, "status": "RETRYING", "timestamp": time.time()})
+            try:
+                alt_result = fallback_handlers.get("retry", lambda *a, **k: None)(skill_id, audit_context)
+                results[skill_id] = {"status": "FALLBACK_RETRY", "data": alt_result}
+            except Exception as e:
+                results[skill_id] = {"status": "MANUAL_REVIEW", "error": str(e)}
+                execution_log.append({"step": skill_id, "status": "MANUAL_REVIEW", "error": str(e)})
+                
+    # Law 5: Compile final audit context with full trail
+    return {
+        "audit_context_id": audit_context["request_id"],
+        "executed_skills": results,
+        "execution_log": execution_log,
+        "overall_confidence": sum(r.get("confidence", 0) for r in results.values()) / max(len(results), 1),
+        "generated_at": time.time()
+    }
 ```
 
 ### MUST DO
@@ -320,3 +316,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

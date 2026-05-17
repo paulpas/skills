@@ -1,18 +1,25 @@
 ---
-name: cc-skill-continuous-learning
-description: Implements intelligent cc skill continuous learning with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent cc skill continuous learning with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: cc-skill-continuous-learning, cc skill continuous learning, how do i cc-skill-continuous-learning, orchestrate cc-skill-continuous-learning, automate cc-skill-continuous-learning, agent cc-skill-continuous-learning
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: cc-skill-continuous-learning, cc skill continuous learning, how do i cc-skill-continuous-learning, orchestrate
+    cc-skill-continuous-learning, automate cc-skill-continuous-learning, agent cc-skill-continuous-learning
+  version: 1.0.0
+name: cc-skill-continuous-learning
 ---
-
 # Cc Skill Continuous Learning
 
 Orchestrates intelligent skill selection and execution for cc skill continuous learning workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,101 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def update_skill_learning_metrics(
+    skill_id: str,
+    execution_outcome: Dict,
+    learning_buffer: List[Dict],
+    decay_factor: float = 0.95
+) -> Dict:
+    """Track execution outcomes and update continuous learning state.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 3 (Atomic Predictability) by returning new state dicts.
+    Implements Law 4 (Fail Fast) by validating outcome structure immediately.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate outcome structure (Law 4)
+    required_keys = {"success", "latency_ms", "confidence", "error_type"}
+    if not required_keys.issubset(execution_outcome.keys()):
+        raise ValueError(f"Invalid execution outcome: missing {required_keys - set(execution_outcome.keys())}")
+    
+    # Parse input at boundary (Law 2)
+    new_record = {
+        "skill_id": skill_id,
+        "timestamp": time.time(),
+        "success": execution_outcome["success"],
+        "latency_ms": execution_outcome["latency_ms"],
+        "confidence": execution_outcome["confidence"],
+        "error_type": execution_outcome.get("error_type", "none")
+    }
+    
+    # Append to learning buffer immutably
+    updated_buffer = learning_buffer + [new_record]
+    
+    # Calculate rolling confidence using exponential decay
+    recent_records = [r for r in updated_buffer if time.time() - r["timestamp"] < 3600]
+    if not recent_records:
+        return {"buffer": updated_buffer, "rolling_confidence": 0.0, "trigger_retrain": False}
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    success_rate = sum(1 for r in recent_records if r["success"]) / len(recent_records)
+    avg_latency = sum(r["latency_ms"] for r in recent_records) / len(recent_records)
+    rolling_confidence = success_rate * (1.0 - min(avg_latency / 5000.0, 0.5))
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Determine if continuous learning trigger is met
+    trigger_retrain = rolling_confidence < 0.6 or len(recent_records) >= 50
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "buffer": updated_buffer,
+        "rolling_confidence": round(rolling_confidence, 3),
+        "trigger_retrain": trigger_retrain,
+        "recent_sample_size": len(recent_records)
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def orchestrate_learning_fallback(
+    skill_state: Dict,
+    learning_buffer: List[Dict],
+    fallback_skills: List[str],
+    human_review_threshold: float = 0.4
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Orchestrate fallback chain based on continuous learning metrics.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Applies Law 1 (Early Exit) and Law 4 (Fail Loud) for degraded skills.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Early exit if skill is already in stable state
+    if skill_state.get("status") == "stable" and skill_state.get("rolling_confidence", 1.0) > 0.85:
+        return {"action": "continue", "next_skill": skill_state["id"], "reason": "stable_performance"}
+        
+    # Parse buffer immutably (Law 2)
+    recent_failures = [r for r in learning_buffer if not r["success"] and time.time() - r["timestamp"] < 1800]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Fail fast if critical degradation detected
+    if len(recent_failures) >= 3:
+        return {
+            "action": "escalate_to_human",
+            "reason": "critical_degradation",
+            "failure_count": len(recent_failures),
+            "fallback_chain": fallback_skills
+        }
+        
+    # Apply adaptive fallback chain
+    if fallback_skills:
+        next_candidate = fallback_skills[0]
+        return {
+            "action": "switch_fallback",
+            "target_skill": next_candidate,
+            "reason": "confidence_drop",
+            "current_confidence": skill_state.get("rolling_confidence", 0.0)
+        }
+        
+    # Default: log and defer with adjusted parameters
+    return {
+        "action": "retry_with_adjusted_params",
+        "reason": "transient_error",
+        "adjustments": {"timeout_multiplier": 1.5, "retry_backoff": "exponential"}
+    }
 ```
 
 ### MUST DO
@@ -320,3 +302,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

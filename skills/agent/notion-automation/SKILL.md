@@ -1,18 +1,25 @@
 ---
-name: notion-automation
-description: Implements intelligent notion automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent notion automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: notion-automation, notion automation, how do i notion-automation, orchestrate notion-automation, automate notion-automation, agent notion-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: notion-automation, notion automation, how do i notion-automation, orchestrate notion-automation, automate notion-automation,
+    agent notion-automation
+  version: 1.0.0
+name: notion-automation
 ---
-
 # Notion Automation
 
 Orchestrates intelligent skill selection and execution for notion automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,101 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def resolve_notion_action(
+    user_intent: str,
+    available_notion_ops: List[Dict],
+    min_confidence: float = 0.75
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Map user intent to a specific Notion API operation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Evaluates triggers against Notion's resource types (pages, databases, blocks)
+    and applies multi-factor scoring based on historical success and API health.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_intent or not user_intent.strip():
+        raise ValueError("User intent cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_notion_ops:
+        raise ValueError("No Notion operations registered")
+        
+    # Parse intent into Notion-specific features (resource type, action verb, target ID)
+    intent_features = _parse_notion_intent(user_intent)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_op = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for op in available_notion_ops:
+        # Score based on resource match, verb alignment, and API availability
+        score = _calculate_notion_match_score(intent_features, op)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_op = op
+            
+    if best_op is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable operation config (Law 3: Atomic Predictability)
+    return {
+        "operation": best_op["name"],
+        "resource_type": best_op["resource"],
+        "confidence": best_score,
+        "params": best_op.get("default_params", {}),
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_notion_operation_with_retry(
+    operation: Dict,
+    notion_client: Any,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a Notion API operation with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Fail Fast, Fail Loud for invalid Notion states:
+    - Missing page/database IDs halt immediately
+    - Rate limits trigger exponential backoff
+    - Fallback chain handles transient API failures
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not operation or "operation" not in operation:
+        raise ValueError("Invalid operation configuration")
+        
+    resource_type = operation.get("resource_type")
+    params = operation.get("params", {})
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            # Route to specific Notion API endpoint based on operation type
+            if resource_type == "page":
+                result = notion_client.pages.create(**params)
+            elif resource_type == "database":
+                result = notion_client.databases.query(**params)
+            elif resource_type == "block":
+                result = notion_client.blocks.children.append(**params)
+            else:
+                raise ValueError(f"Unsupported Notion resource: {resource_type}")
+                
             return {
                 "success": True,
-                "skill_executed": skill["name"],
+                "operation": operation["operation"],
                 "result": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _measure_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except RateLimitError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _apply_notion_fallback(operation, e)
+            time.sleep(2 ** attempt) # Exponential backoff for 429s
+            
+        except InvalidStateError as e:
+            # Fail Fast - Notion IDs or schemas are invalid (Law 4)
+            raise ValueError(f"Notion state invalid: {str(e)}") from e
+            
+    raise ValueError(f"Notion operation failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +302,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

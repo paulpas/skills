@@ -1,18 +1,25 @@
 ---
-name: n8n-validation-expert
-description: Implements intelligent n8n validation expert with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent n8n validation expert with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: n8n-validation-expert, n8n validation expert, how do i n8n-validation-expert, orchestrate n8n-validation-expert, automate n8n-validation-expert, agent n8n-validation-expert
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: n8n-validation-expert, n8n validation expert, how do i n8n-validation-expert, orchestrate n8n-validation-expert,
+    automate n8n-validation-expert, agent n8n-validation-expert
+  version: 1.0.0
+name: n8n-validation-expert
 ---
-
 # N8N Validation Expert
 
 Orchestrates intelligent skill selection and execution for n8n validation expert workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,125 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def validate_n8n_workflow_structure(
+    workflow_json: Dict,
+    strict_mode: bool = True
+) -> Dict:
+    """Validate n8n workflow JSON structure and node configurations.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies the 5 Laws of Elegant Defense to n8n validation:
+    - Early exit on malformed JSON or missing required fields
+    - Parse inputs at boundary (workflow JSON) before processing
+    - Return new validation report, never mutate original workflow
+    - Fail fast on invalid node types or missing credential references
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        workflow_json: Parsed n8n workflow dictionary
+        strict_mode: If True, fail on missing optional credentials; if False, warn only
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Validation report with status, errors, warnings, and node analysis
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not isinstance(workflow_json, dict):
+        raise ValueError("Workflow must be a valid JSON object")
+    if "nodes" not in workflow_json or not isinstance(workflow_json["nodes"], list):
+        raise ValueError("Workflow must contain a 'nodes' array")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    valid_node_types = {"n8n-nodes-base.httpRequest", "n8n-nodes-base.webhook", 
+                        "n8n-nodes-base.if", "n8n-nodes-base.code", "n8n-nodes-base.set"}
+    validation_report = {
+        "status": "valid",
+        "errors": [],
+        "warnings": [],
+        "nodes_analyzed": 0,
+        "credential_references": []
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for node in workflow_json["nodes"]:
+        node_type = node.get("type", "")
+        validation_report["nodes_analyzed"] += 1
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        if node_type not in valid_node_types:
+            if strict_mode:
+                validation_report["errors"].append(f"Invalid node type: {node_type}")
+                validation_report["status"] = "invalid"
+            else:
+                validation_report["warnings"].append(f"Unknown node type: {node_type}")
+                
+        # Check credential references
+        if "credentials" in node:
+            for cred_name, cred_type in node["credentials"].items():
+                validation_report["credential_references"].append({
+                    "node": node.get("name"),
+                    "type": cred_type,
+                    "required": True
+                })
+                
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate workflow
+    return validation_report
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_n8n_validation_with_fallback(
+    workflow_json: Dict,
+    credential_store: Dict,
+    max_validation_attempts: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute n8n workflow validation with fallback chain for resilience.
     
     Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    - Invalid node configurations halt immediately with descriptive errors
+    - No silent failures or partial validation results
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retry validation with relaxed schema checks
+    2. Skip problematic nodes and validate remaining workflow
+    3. Defer to human operator if critical execution paths are broken
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        workflow_json: Parsed n8n workflow dictionary
+        credential_store: Dictionary of available credential configurations
+        max_validation_attempts: Maximum retry attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Validation execution result with metadata (success, timing, confidence)
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate credential store (Early Exit)
+    if not isinstance(credential_store, dict):
+        raise ValueError("Credential store must be a dictionary")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_workflow = _normalize_n8n_schema(workflow_json)
     
-    for attempt in range(max_retries + 1):
+    for attempt in range(max_validation_attempts + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            report = validate_n8n_workflow_structure(validated_workflow, strict_mode=(attempt == 0))
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "validation_report": report,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _calculate_latency(),
+                "confidence": 0.95 if report["status"] == "valid" else 0.6
             }
             
-        except InvalidStateError as e:
+        except InvalidNodeConfigError as e:
             # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            raise ValueError(f"Invalid node configuration: {str(e)}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+        except MissingCredentialError as e:
+            # Transient error - try fallback (skip node or use default)
+            if attempt == max_validation_attempts:
+                return _apply_n8n_validation_fallback(validated_workflow, credential_store)
+                
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise ValueError("Workflow validation failed after all fallback attempts")
 ```
 
 ### MUST DO
@@ -320,3 +326,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

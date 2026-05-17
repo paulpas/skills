@@ -1,18 +1,24 @@
 ---
-name: issues
-description: Implements intelligent issues with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent issues with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: issues, issues, how do i issues, orchestrate issues, automate issues, agent issues
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: issues, issues, how do i issues, orchestrate issues, automate issues, agent issues
+  version: 1.0.0
+name: issues
 ---
-
 # Issues
 
 Orchestrates intelligent skill selection and execution for issues workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,122 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def triage_issue_request(
+    issue_context: Dict[str, Any],
+    routing_rules: List[Dict[str, Any]],
+    min_confidence: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Route an incoming issue to the appropriate handling skill.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Analyzes issue metadata, title, and body to determine intent.
+    Matches against routing rules using keyword extraction and priority scoring.
+    Implements Law 2: Parse at boundary, make illegal states unrepresentable.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not issue_context.get("title") or not issue_context.get("body"):
+        raise ValueError("Issue must contain title and body for triage")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    title = issue_context["title"].lower()
+    body = issue_context["body"].lower()
+    combined_text = f"{title} {body}"
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Extract intent signals
+    intent_signals = {
+        "bug": bool(re.search(r"error|crash|fail|broken|issue", combined_text)),
+        "feature": bool(re.search(r"request|add|implement|enhancement|suggestion", combined_text)),
+        "docs": bool(re.search(r"doc|guide|how to|explain|clarify", combined_text)),
+        "config": bool(re.search(r"config|setup|env|variable|permission", combined_text))
+    }
     
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for rule in routing_rules:
+        score = 0.0
+        for keyword in rule.get("keywords", []):
+            if keyword.lower() in combined_text:
+                score += rule.get("weight", 1.0)
         
+        # Boost score if intent signals match rule type
+        rule_type = rule.get("type")
+        if rule_type in intent_signals and intent_signals[rule_type]:
+            score += 2.0
+            
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = rule
+            
+    if best_match is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable routing decision
+    return {
+        "routed_skill": best_match["skill_id"],
+        "confidence": best_score,
+        "extracted_labels": [k for k, v in intent_signals.items() if v],
+        "priority": best_match.get("priority", "normal")
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_issue_workflow(
+    issue_id: str,
+    routing_decision: Dict[str, Any],
+    issue_handler: Callable,
+    fallback_queue: List[str]
+) -> Dict[str, Any]:
+    """Execute the assigned skill against the issue with domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Handles issue state transitions, API interactions, and untriaged fallbacks.
+    Implements Law 4: Fail fast on invalid issue states, fail loud on API errors.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not issue_id or not routing_decision:
+        raise ValueError("Issue ID and routing decision are required")
+        
+    skill_id = routing_decision["routed_skill"]
+    labels = routing_decision.get("extracted_labels", [])
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    try:
+        # Apply skill to issue (e.g., update labels, assign, comment)
+        result = issue_handler(
+            issue_id=issue_id,
+            skill_id=skill_id,
+            labels=labels,
+            priority=routing_decision.get("priority", "normal")
+        )
+        
+        return {
+            "status": "resolved",
+            "issue_id": issue_id,
+            "skill_applied": skill_id,
+            "action_taken": result.get("action"),
+            "timestamp": time.time()
+        }
+        
+    except RateLimitError:
+        # Fallback 1: Queue for retry with exponential backoff
+        fallback_queue.append(issue_id)
+        return {
+            "status": "queued",
+            "issue_id": issue_id,
+            "reason": "rate_limited",
+            "retry_after": 60
+        }
+        
+    except MissingInfoError as e:
+        # Fallback 2: Request clarification instead of failing silently
+        return {
+            "status": "awaiting_response",
+            "issue_id": issue_id,
+            "reason": "missing_info",
+            "requested_fields": e.missing_fields
+        }
+        
+    except InvalidStateError:
+        # Fail loud: Issue already closed or locked
+        raise SkillExecutionError(f"Issue {issue_id} is in invalid state for routing")
 ```
 
 ### MUST DO
@@ -320,3 +322,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

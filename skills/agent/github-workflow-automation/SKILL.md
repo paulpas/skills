@@ -1,18 +1,25 @@
 ---
-name: github-workflow-automation
-description: Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent github workflow automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: github-workflow-automation, github workflow automation, how do i github-workflow-automation, orchestrate github-workflow-automation, automate github-workflow-automation, agent github-workflow-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: github-workflow-automation, github workflow automation, how do i github-workflow-automation, orchestrate github-workflow-automation,
+    automate github-workflow-automation, agent github-workflow-automation
+  version: 1.0.0
+name: github-workflow-automation
 ---
-
 # Github Workflow Automation
 
 Orchestrates intelligent skill selection and execution for github workflow automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,127 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def select_and_prepare_workflow_run(
+    repo_owner: str,
+    repo_name: str,
+    workflow_id: str,
+    branch: str,
+    inputs: Dict[str, Any],
+    github_client: GitHubClient
+) -> Dict[str, Any]:
+    """Select optimal workflow dispatch parameters and validate against repository constraints.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by validating branch existence and workflow configuration.
+    Implements Law 1 (Early Exit) by checking repo permissions and workflow status immediately.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Early exit: validate repository access and workflow existence
+    try:
+        workflow = github_client.get_workflow(repo_owner, repo_name, workflow_id)
+        if workflow.get("state") != "active":
+            raise ValueError(f"Workflow {workflow_id} is not active in {repo_owner}/{repo_name}")
+    except RepositoryNotFoundError:
+        raise ValueError(f"Repository {repo_owner}/{repo_name} not found or inaccessible")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Parse and validate branch inputs (Law 2)
+    if not branch or not branch.strip():
+        raise ValueError("Target branch must be specified for workflow dispatch")
     
-    best_skill = None
-    best_score = 0.0
+    # Check branch protection rules and required status checks
+    branch_protection = github_client.get_branch_protection(repo_owner, repo_name, branch)
+    if branch_protection.get("required_status_checks"):
+        required_checks = branch_protection["required_status_checks"]["strict"]
+        if not required_checks:
+            raise ValueError(f"Branch {branch} requires strict status checks before workflow dispatch")
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Construct dispatch payload with validated inputs
+    dispatch_payload = {
+        "ref": branch,
+        "inputs": {k: str(v) for k, v in inputs.items()}
+    }
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Return new structure (Law 3)
+    return {
+        "workflow_id": workflow_id,
+        "dispatch_payload": dispatch_payload,
+        "validation_timestamp": time.time(),
+        "branch_protected": branch_protection.get("protected", False)
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_workflow_with_fallback(
+    repo_owner: str,
+    repo_name: str,
+    workflow_id: str,
+    dispatch_payload: Dict[str, Any],
+    fallback_workflow_id: Optional[str] = None,
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute GitHub Actions workflow dispatch with resilient fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast/Loud) by immediately raising on invalid payloads.
+    Implements fallback chain: retry dispatch -> fallback workflow -> manual alert.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause: validate payload structure
+    if "ref" not in dispatch_payload or "inputs" not in dispatch_payload:
+        raise ValueError("Dispatch payload must contain 'ref' and 'inputs' keys")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    last_exception = None
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute primary workflow dispatch
+            response = github_client.create_workflow_dispatch(
+                repo_owner, repo_name, workflow_id, dispatch_payload
+            )
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+            # Verify run was created successfully
+            if response.status_code == 201:
+                run_id = response.json().get("id")
+                return {
+                    "success": True,
+                    "run_id": run_id,
+                    "workflow_id": workflow_id,
+                    "attempts": attempt + 1,
+                    "status_url": f"https://github.com/{repo_owner}/{repo_name}/actions/runs/{run_id}"
+                }
+            else:
+                raise RuntimeError(f"Unexpected status code: {response.status_code}")
+                
+        except RateLimitExceededError:
+            last_exception = sys.exc_info()
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)
+                continue
+        except TransientAPIError as e:
+            last_exception = sys.exc_info()
+            if attempt < max_retries:
+                continue
+            break
+        
+    # Fallback chain: try alternative workflow if primary exhausted
+    if fallback_workflow_id and attempt == max_retries:
+        try:
+            fallback_payload = {**dispatch_payload, "inputs": {**dispatch_payload["inputs"], "fallback": "true"}}
+            fallback_response = github_client.create_workflow_dispatch(
+                repo_owner, repo_name, fallback_workflow_id, fallback_payload
+            )
+            if fallback_response.status_code == 201:
+                return {
+                    "success": True,
+                    "run_id": fallback_response.json().get("id"),
+                    "workflow_id": fallback_workflow_id,
+                    "fallback_triggered": True
+                }
+        except Exception as fallback_err:
+            last_exception = fallback_err
     
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    # Fail Loud: raise comprehensive error after all attempts
+    raise WorkflowExecutionError(
+        f"Failed to dispatch workflow {workflow_id} after {max_retries + 1} attempts. "
+        f"Last error: {last_exception}"
     )
 ```
 
@@ -320,3 +329,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

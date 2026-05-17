@@ -1,18 +1,25 @@
 ---
-name: wordpress-plugin-development
-description: Implements intelligent wordpress plugin development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent wordpress plugin development with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: wordpress-plugin-development, wordpress plugin development, how do i wordpress-plugin-development, orchestrate wordpress-plugin-development, automate wordpress-plugin-development, agent wordpress-plugin-development
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: wordpress-plugin-development, wordpress plugin development, how do i wordpress-plugin-development, orchestrate
+    wordpress-plugin-development, automate wordpress-plugin-development, agent wordpress-plugin-development
+  version: 1.0.0
+name: wordpress-plugin-development
 ---
-
 # Wordpress Plugin Development
 
 Orchestrates intelligent skill selection and execution for wordpress plugin development workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,56 +141,53 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_plugin_architecture(
+    plugin_requirements: Dict,
+    available_templates: List[Dict],
+    min_compliance_score: float = 0.8
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal WordPress plugin architecture based on requirements.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Uses multi-factor scoring considering:
+    - Hook type compatibility (actions/filters vs REST API vs Gutenberg blocks)
+    - WordPress Coding Standards compliance history
+    - Dependency availability (WP-CLI, Composer, Node)
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        plugin_requirements: Dict with keys like 'type', 'scope', 'dependencies'
+        available_templates: List of pre-vetted WP plugin skeletons
+        min_compliance_score: Minimum WPCS compliance threshold
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected template metadata or None if no match meets threshold
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not plugin_requirements.get('type'):
+        raise ValueError("Plugin type (e.g., 'admin-tool', 'frontend-hook', 'rest-api') is required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_templates:
+        raise ValueError("No WordPress plugin templates available")
     
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    req_features = _normalize_wp_requirements(plugin_requirements)
     
-    best_skill = None
+    best_template = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for template in available_templates:
+        score = _calculate_wp_template_match(req_features, template)
         
-        if score > best_score and score >= min_confidence:
+        if score > best_score and score >= min_compliance_score:
             best_score = score
-            best_skill = skill
+            best_template = template
     
-    if best_skill is None:
+    if best_template is None:
         return None
     
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
+    result = dict(best_template)
     result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+    result["wp_version_compat"] = "6.4+"
     return result
 ```
 
@@ -191,68 +195,64 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_plugin_workflow(
+    selected_template: Dict,
+    project_context: Dict,
+    max_validation_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute WordPress plugin generation with validation fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    Implements Fail Fast, Fail Loud (Law 4):
+    - Invalid plugin structure halts immediately
+    - No silent generation of non-compliant code
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Retry generation with stricter WPCS rules
+    2. Fall back to legacy template if modern hooks fail
+    3. Defer to human review for security-critical plugins
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_template: Output from select_plugin_architecture
+        project_context: Dict with 'plugin_name', 'namespace', 'features'
+        max_validation_retries: Max attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with file paths, compliance status, and metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate template (Early Exit)
+    if not _is_wp_template_valid(selected_template):
+        raise PluginGenerationError(f"Invalid WP template: {selected_template.get('id', 'unknown')}")
     
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_project = _validate_plugin_context(project_context, selected_template)
     
-    for attempt in range(max_retries + 1):
+    for attempt in range(max_validation_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = _generate_plugin_files(selected_template, validated_project)
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "plugin_slug": validated_project["slug"],
+                "files_generated": result["file_paths"],
+                "wpcs_compliance": result["compliance_score"],
+                "attempts": attempt + 1
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except SecurityViolationError as e:
+            # Fail Fast - Don't patch security issues (Law 4)
+            raise PluginGenerationError(
+                f"Security violation in {validated_project['slug']}: {str(e)}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
+        except ComplianceError as e:
+            # Compliance error - try fallback
+            if attempt == max_validation_retries:
+                return _apply_wp_fallback_chain(selected_template, validated_project)
     
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+    raise PluginGenerationError(
+        f"Failed to generate {validated_project['slug']} after {max_validation_retries + 1} attempts"
     )
 ```
 
@@ -320,3 +320,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

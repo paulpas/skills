@@ -1,18 +1,25 @@
 ---
-name: writing-skills
-description: Implements intelligent writing skills with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent writing skills with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: writing-skills, writing skills, how do i writing-skills, orchestrate writing-skills, automate writing-skills, agent writing-skills
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: writing-skills, writing skills, how do i writing-skills, orchestrate writing-skills, automate writing-skills,
+    agent writing-skills
+  version: 1.0.0
+name: writing-skills
 ---
-
 # Writing Skills
 
 Orchestrates intelligent skill selection and execution for writing skills workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,56 +141,57 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_writing_skill(
+    request: Dict[str, Any],
+    available_writing_skills: List[Dict],
+    style_guide: Dict[str, Any]
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal writing skill based on tone, format, and audience requirements.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates writing-specific factors:
+    - Tone alignment (formal, conversational, technical, persuasive)
+    - Format requirements (markdown, HTML, plain text, structured JSON)
+    - Audience complexity and domain expertise level
+    - Historical readability scores and engagement metrics
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        request: User writing request with tone, format, and audience fields
+        available_writing_skills: List of writing skill metadata
+        style_guide: Active style guide configuration
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected writing skill with confidence score and applied style rules
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request.get("content") or not request.get("tone"):
+        raise ValueError("Writing request requires 'content' and 'tone' fields")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    target_tone = request["tone"].lower()
+    target_format = request.get("format", "markdown")
+    audience_level = request.get("audience_level", "general")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_match = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in available_writing_skills:
+        tone_match = _calculate_tone_similarity(target_tone, skill.get("supported_tones", []))
+        format_compatible = target_format in skill.get("supported_formats", [])
+        audience_fit = _assess_audience_compatibility(audience_level, skill.get("target_audience"))
         
-        if score > best_score and score >= min_confidence:
+        # Weighted scoring for writing-specific criteria
+        score = (tone_match * 0.4) + (format_compatible * 0.3) + (audience_fit * 0.3)
+        score *= skill.get("historical_readability_score", 0.8)
+        
+        if score > best_score:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_match = skill
+            
+    if best_score < 0.65:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+        
+    # Apply style guide rules to selected skill
+    result = dict(best_match)
+    result["applied_style_rules"] = style_guide.get("rules", [])
+    result["confidence"] = round(best_score, 3)
     return result
 ```
 
@@ -191,69 +199,71 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_writing_task(
+    selected_skill: Dict,
+    writing_context: Dict,
+    fallback_styles: List[str] = ["neutral", "simple"]
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute writing pipeline with style-aware fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements writing-specific resilience:
+    - Validates tone/format constraints before generation
+    - Falls back to simpler style guides on readability failure
+    - Routes sensitive/complex content to human review
+    - Tracks engagement and clarity metrics for adaptive learning
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_skill: Output from select_writing_skill
+        writing_context: Raw content, audience, and formatting requirements
+        fallback_styles: Ordered list of alternative tone/style guides
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Generated text with metadata (readability, tone_match, fallback_used)
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    content = writing_context.get("content", "").strip()
+    if not content:
+        raise ValueError("Writing context requires non-empty content")
+        
+    current_style = selected_skill.get("applied_style_rules", [])
+    fallback_index = 0
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    while True:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Assemble prompt with style constraints
+            prompt = _build_writing_prompt(content, current_style, writing_context)
             
-            # Success - Atomic Predictability (Law 3)
+            # Execute generation
+            generated_text = _run_generation_model(prompt, selected_skill["model_endpoint"])
+            
+            # Post-process: readability & tone validation
+            readability_score = _calculate_flesch_kincaid(generated_text)
+            tone_match = _measure_tone_alignment(generated_text, writing_context["tone"])
+            
+            if readability_score < 40 or tone_match < 0.6:
+                raise ReadabilityFailure(f"Score: {readability_score}, Tone: {tone_match}")
+                
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "output": generated_text,
+                "readability_score": readability_score,
+                "tone_match": tone_match,
+                "fallback_used": fallback_index > 0,
+                "skill_used": selected_skill["name"]
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except ReadabilityFailure as e:
+            if fallback_index >= len(fallback_styles):
+                raise WritingExecutionError("All style fallbacks exhausted") from e
+            current_style = _apply_style_override(fallback_styles[fallback_index])
+            fallback_index += 1
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except SensitiveContentError:
+            return {
+                "success": False,
+                "requires_human_review": True,
+                "reason": "Content flagged for compliance review",
+                "original_context": writing_context
+            }
 ```
 
 ### MUST DO
@@ -320,3 +330,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

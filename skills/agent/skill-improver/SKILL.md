@@ -1,18 +1,25 @@
 ---
-name: skill-improver
-description: Implements intelligent skill improver with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent skill improver with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: skill-improver, skill improver, how do i skill-improver, orchestrate skill-improver, automate skill-improver, agent skill-improver
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: skill-improver, skill improver, how do i skill-improver, orchestrate skill-improver, automate skill-improver,
+    agent skill-improver
+  version: 1.0.0
+name: skill-improver
 ---
-
 # Skill Improver
 
 Orchestrates intelligent skill selection and execution for skill improver workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,125 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def analyze_skill_improvement(
+    skill_metadata: Dict,
+    usage_metrics: Dict,
+    context_gaps: List[str]
+) -> Dict:
+    """Analyze a skill's current state and calculate improvement potential.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies multi-factor scoring to determine if a skill needs optimization,
+    and generates a prioritized improvement plan based on the 5 Laws of Elegant Defense.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        skill_metadata: Current skill definition including triggers, prompts, and constraints
+        usage_metrics: Historical performance data (success_rate, avg_latency, error_types)
+        context_gaps: Identified missing context or edge cases from recent failures
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Improvement plan with priority score, suggested changes, and fallback recommendation
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not skill_metadata or not usage_metrics:
+        raise ValueError("Skill metadata and usage metrics are required for analysis")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    success_rate = usage_metrics.get("success_rate", 0.0)
+    error_frequency = usage_metrics.get("error_frequency", 0)
+    gap_severity = len(context_gaps) * 0.15
     
-    best_skill = None
-    best_score = 0.0
+    # Calculate improvement score (0.0-1.0)
+    improvement_score = (1.0 - success_rate) * 0.6 + min(error_frequency / 10, 0.4) + gap_severity
+    improvement_score = min(max(improvement_score, 0.0), 1.0)
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Determine optimization strategy
+    if improvement_score < 0.3:
+        strategy = "MAINTAIN"
+        suggested_changes = []
+    elif improvement_score < 0.7:
+        strategy = "OPTIMIZE"
+        suggested_changes = _generate_optimization_suggestions(skill_metadata, context_gaps)
+    else:
+        strategy = "REWRITE"
+        suggested_changes = _generate_rewrite_blueprint(skill_metadata, context_gaps)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate inputs
+    return {
+        "skill_id": skill_metadata.get("id"),
+        "improvement_score": round(improvement_score, 3),
+        "strategy": strategy,
+        "suggested_changes": suggested_changes,
+        "fallback_to_static": improvement_score > 0.9,
+        "analysis_timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def apply_skill_improvement(
+    improvement_plan: Dict,
+    skill_template: Dict,
+    max_iterations: int = 3
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute skill improvement workflow with fallback chain for resilience.
     
     Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
+    - Invalid improvement plans halt immediately with descriptive errors
+    - No silent failures or partial optimizations
     
     Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    1. Apply incremental prompt/config adjustments
+    2. Revert to validated static template if optimization degrades performance
+    3. Flag for human expert review if improvement score remains critical
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        improvement_plan: Output from analyze_skill_improvement
+        skill_template: Base skill definition to apply changes against
+        max_iterations: Maximum optimization cycles before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Optimized skill definition with validation results and confidence metrics
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate plan (Early Exit)
+    if improvement_plan.get("strategy") not in ("OPTIMIZE", "REWRITE"):
+        raise ValueError(f"Invalid improvement strategy: {improvement_plan.get('strategy')}")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_template = _validate_skill_template(skill_template)
     
-    for attempt in range(max_retries + 1):
+    for iteration in range(max_iterations):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Apply domain-specific improvement logic
+            optimized_skill = _apply_optimization_rules(validated_template, improvement_plan)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            # Validate against 5 Laws of Elegant Defense
+            validation_result = _validate_against_defense_laws(optimized_skill)
             
+            if validation_result["passes"]:
+                return {
+                    "success": True,
+                    "skill_id": optimized_skill["id"],
+                    "optimized_config": optimized_skill,
+                    "iterations_used": iteration + 1,
+                    "confidence_delta": validation_result["confidence_score"]
+                }
+                
         except InvalidStateError as e:
             # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+            raise SkillImprovementError(
+                f"Invalid state during optimization: {str(e)}"
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+        except DegradationError as e:
+            # Optimization degraded performance - trigger fallback
+            if iteration == max_iterations - 1:
+                return _apply_fallback_to_static_template(validated_template)
+                
+    # All iterations exhausted - Fail Loud (Law 4)
+    raise SkillImprovementError(
+        f"Failed to improve skill after {max_iterations} optimization cycles"
     )
 ```
 
@@ -320,3 +327,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

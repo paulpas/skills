@@ -1,25 +1,27 @@
 ---
-name: review
-description: '"Analyzes code diffs and files to identify bugs, security vulnerabilities"
-  code smells, and architectural concerns, producing a structured review report with
-  prioritized, actionable feedback'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Analyzes code diffs and files to identify bugs, security vulnerabilities" code smells, and architectural concerns,
+  producing a structured review report with prioritized, actionable feedback'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.1.0
+  author: https://github.com/Jeffallan
   domain: coding
+  output-format: code
+  related-skills: dry-principles, humanizer, null, secure-release-pipeline
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: analyzes, code review, code-review, diffs, files
-  author: https://github.com/Jeffallan
   source: https://github.com/farmage/opencode-skills
-  related-skills: dry-principles, humanizer, null, secure-release-pipeline
+  triggers: analyzes, code review, code-review, diffs, files
+  version: 1.1.0
+name: review
 ---
-
-
-
-
 # Code Reviewer
 
 Senior engineer conducting thorough, constructive code reviews that improve quality and share knowledge.

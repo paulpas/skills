@@ -1,18 +1,25 @@
 ---
-name: closed-loop-delivery
-description: Implements intelligent closed loop delivery with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent closed loop delivery with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: closed-loop-delivery, closed loop delivery, how do i closed-loop-delivery, orchestrate closed-loop-delivery, automate closed-loop-delivery, agent closed-loop-delivery
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: closed-loop-delivery, closed loop delivery, how do i closed-loop-delivery, orchestrate closed-loop-delivery, automate
+    closed-loop-delivery, agent closed-loop-delivery
+  version: 1.0.0
+name: closed-loop-delivery
 ---
-
 # Closed Loop Delivery
 
 Orchestrates intelligent skill selection and execution for closed loop delivery workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,88 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def score_and_select_skill(task: str, skill_registry: list[dict], history_db: dict) -> dict | None:
+    """Closed-loop skill selection using multi-factor scoring and historical feedback.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 1 (Early Exit) and Law 2 (Make Illegal States Unrepresentable).
+    Returns immutable selection metadata without mutating the registry.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
+    if not task or not task.strip():
         raise ValueError("Task description cannot be empty")
+    if not skill_registry:
+        raise ValueError("No skills available in registry")
+
+    task_vector = _embed_task(task)
+    candidates = []
+    
+    for skill in skill_registry:
+        if skill.get("status") != "active":
+            continue
+        text_sim = cosine_similarity(task_vector, _embed_skill(skill["triggers"]))
+        hist_success = history_db.get(skill["id"], {}).get("success_rate", 0.5)
+        availability = 1.0 if skill.get("health") == "healthy" else 0.3
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        weighted_score = (text_sim * 0.5) + (hist_success * 0.3) + (availability * 0.2)
+        candidates.append({"skill": skill, "score": weighted_score})
+
+    candidates.sort(key=lambda x: x["score"], reverse=True)
+    if not candidates or candidates[0]["score"] < 0.65:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+
+    selected = candidates[0]
+    # Law 3: Atomic Predictability - Return new dict, never mutate registry
+    return {
+        "skill_id": selected["skill"]["id"],
+        "confidence": round(selected["score"], 3),
+        "factors": {"text_sim": round(text_sim, 3), "history": hist_success, "avail": availability},
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_closed_loop(skill_meta: dict, context: dict, fallback_graph: dict) -> dict:
+    """Execute skill with adaptive fallback and confidence feedback loop.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) and Law 3 (Immutable Returns).
+    Routes through fallback chain only on transient errors, never patches invalid state.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    if not _validate_context(context, skill_meta):
+        raise ValueError("Context validation failed - illegal state detected")
+
+    attempts = 0
+    max_attempts = 2
+    while attempts <= max_attempts:
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
+            result = _invoke_skill(skill_meta["id"], context)
+            # Success path: update confidence and log
+            _update_confidence_score(skill_meta["id"], success=True)
+            return {"status": "success", "data": result, "attempts": attempts + 1}
         except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+            attempts += 1
+            if attempts > max_attempts:
+                break
+            context = _adjust_context_for_retry(context, e)
+        except CriticalError as e:
+            # Law 4: Fail fast on invalid state - do not retry
+            _update_confidence_score(skill_meta["id"], success=False)
+            raise
+
+    # Fallback chain execution
+    fallback_candidates = fallback_graph.get(skill_meta["id"], [])
+    for fallback_skill in fallback_candidates:
+        try:
+            result = _invoke_skill(fallback_skill["id"], context)
+            _update_confidence_score(fallback_skill["id"], success=True)
+            return {"status": "fallback_success", "original": skill_meta["id"], "data": result}
+        except Exception:
+            continue
+
+    # Exhausted all options - defer to human or return structured error
+    _update_confidence_score(skill_meta["id"], success=False)
+    return {"status": "failed", "error": "All execution paths exhausted", "requires_human": True}
 ```
 
 ### MUST DO
@@ -320,3 +289,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

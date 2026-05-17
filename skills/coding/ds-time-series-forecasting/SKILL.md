@@ -1,22 +1,25 @@
 ---
-name: time-series-forecasting
-description: '"Implements ARIMA, exponential smoothing, state-space models, LSTM networks,
-  and deep learning methods for temporal prediction"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal
+  prediction"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-feature-engineering, ds-neural-networks, ds-regression-evaluation
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: time series forecasting, ARIMA, exponential smoothing, LSTM, forecasting,
-    time series prediction
-  related-skills: ds-feature-engineering, ds-neural-networks, ds-regression-evaluation
+  triggers: time series forecasting, ARIMA, exponential smoothing, LSTM, forecasting, time series prediction
+  version: 1.0.0
+name: time-series-forecasting
 ---
-
-
-
 # Time Series Forecasting
 
 Comprehensive guide to time series forecasting in machine learning and data science workflows.
@@ -58,34 +61,103 @@ Time Series Forecasting is a critical component of the machine learning workflow
 ### Pattern 1: Basic Time Series Forecasting
 
 ```python
-# Example pattern for Time Series Forecasting
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-# Implementation pattern
-pass
+def basic_forecasting_pipeline(data: pd.Series, forecast_horizon: int = 10) -> dict:
+    """
+    Demonstrates a basic time series forecasting pipeline using Exponential Smoothing.
+    """
+    if data is None or data.empty:
+        raise ValueError("Input data cannot be None or empty")
+    
+    if not isinstance(data.index, pd.DatetimeIndex):
+        data.index = pd.date_range(start="2020-01-01", periods=len(data), freq="D")
+    
+    split_idx = int(len(data) * 0.8)
+    train_data = data.iloc[:split_idx]
+    test_data = data.iloc[split_idx:]
+    
+    model = ExponentialSmoothing(
+        train_data, 
+        trend='add', 
+        seasonal='add', 
+        seasonal_periods=7
+    )
+    fitted_model = model.fit(optimized=True)
+    
+    forecasts = fitted_model.forecast(forecast_horizon)
+    test_forecasts = fitted_model.predict(start=test_data.index[0], end=test_data.index[-1])
+    mae = mean_absolute_error(test_data, test_forecasts)
+    rmse = np.sqrt(mean_squared_error(test_data, test_forecasts))
+    
+    return {
+        'forecasts': forecasts,
+        'metrics': {'mae': mae, 'rmse': rmse},
+        'fitted_model': fitted_model
+    }
 ```
 
 ### Pattern 2: Production-Ready Time Series Forecasting
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, Optional
+from statsmodels.tsa.arima.model import ARIMA
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 logger = logging.getLogger(__name__)
 
 class TimeSeriesForecasting:
-    """Production implementation of Time Series Forecasting"""
+    """Production-grade time series forecasting class with ARIMA."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Time Series Forecasting on data"""
-        return {}
+    def __init__(self, order: tuple = (1, 1, 1), forecast_steps: int = 10):
+        self.order = order
+        self.forecast_steps = forecast_steps
+        self.model = None
+        self.history = None
+        
+    def _validate_data(self, data: pd.DataFrame) -> pd.Series:
+        if data is None or data.empty:
+            raise ValueError("Input data cannot be None or empty")
+        if not isinstance(data.index, pd.DatetimeIndex):
+            raise ValueError("Data index must be a DatetimeIndex")
+        return data.squeeze()
+        
+    def fit(self, data: pd.DataFrame) -> 'TimeSeriesForecasting':
+        """Fit the ARIMA model on historical data."""
+        self.history = self._validate_data(data)
+        try:
+            self.model = ARIMA(self.history, order=self.order)
+            self.fitted_model = self.model.fit()
+            logger.info(f"Model fitted successfully with order {self.order}")
+        except Exception as e:
+            logger.error(f"Failed to fit model: {e}")
+            raise RuntimeError("Model fitting failed") from e
+        return self
+        
+    def predict(self, steps: Optional[int] = None) -> pd.Series:
+        """Generate future forecasts."""
+        if self.model is None:
+            raise RuntimeError("Model must be fitted before prediction")
+        horizon = steps or self.forecast_steps
+        return self.fitted_model.forecast(steps=horizon)
+        
+    def evaluate(self, test_data: pd.DataFrame) -> Dict[str, float]:
+        """Evaluate model performance on held-out test data."""
+        test_series = self._validate_data(test_data)
+        test_forecasts = self.fitted_model.predict(
+            start=test_series.index[0], 
+            end=test_series.index[-1]
+        )
+        mae = mean_absolute_error(test_series, test_forecasts)
+        rmse = np.sqrt(mean_squared_error(test_series, test_forecasts))
+        return {'mae': mae, 'rmse': rmse}
 ```
 
 ## Best Practices
@@ -111,76 +183,8 @@ class TimeSeriesForecasting:
 ## Complete Working Example
 
 ```python
-# Full working example for Time Series Forecasting
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from typing import Dict, Any
-
-def implement_forecasting(data: pd.DataFrame) -> Dict[str, Any]:
-    """
-    Complete implementation of Time Series Forecasting.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_forecasting(df)
-        >>> print(results)
-    """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
-    
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
-    }
-    
-    return results
-
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_forecasting(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
-```
-
-## Related Skills
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `coding-ds-neural-networks` | Neural Networks techniques | Complementary to this skill |
-| `coding-ds-regression-evaluation` | Regression Evaluation techniques | Complementary to this skill |
-| `coding-ds-feature-engineering` | Feature Engineering techniques | Complementary to this skill |
-
-## References
-
-- Official documentation and papers on Time Series Forecasting
-- Industry best practices and standards
-- Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
-
----
-
-*Last updated: 2026-04-24*
+from statsmodels.tsa.holtwinters

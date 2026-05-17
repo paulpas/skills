@@ -1,18 +1,25 @@
 ---
-name: antigravity-workflows
-description: Implements intelligent antigravity workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent antigravity workflows with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: antigravity-workflows, antigravity workflows, how do i antigravity-workflows, orchestrate antigravity-workflows, automate antigravity-workflows, agent antigravity-workflows
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: antigravity-workflows, antigravity workflows, how do i antigravity-workflows, orchestrate antigravity-workflows,
+    automate antigravity-workflows, agent antigravity-workflows
+  version: 1.0.0
+name: antigravity-workflows
 ---
-
 # Antigravity Workflows
 
 Orchestrates intelligent skill selection and execution for antigravity workflows workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,128 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def calculate_antigravity_trajectory(
+    payload_mass: float,
+    target_altitude: float,
+    available_field_generators: List[Dict],
+    min_stability: float = 0.85
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal antigravity field configuration for payload levitation.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates field generators based on:
+    - Mass-to-frequency resonance match
+    - Current power grid load and thermal capacity
+    - Historical field stability metrics
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        payload_mass: Mass in kg to levitate
+        target_altitude: Desired altitude in meters
+        available_field_generators: List of generator metadata
+        min_stability: Minimum field stability threshold (0.0-1.0)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Optimal generator config dict or None if no stable configuration exists
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if payload_mass <= 0 or target_altitude <= 0:
+        raise ValueError("Mass and altitude must be positive values")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    if not available_field_generators:
+        raise ValueError("No antigravity field generators available")
+        
+    best_config = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for gen in available_field_generators:
+        resonance_match = _calculate_resonance_score(payload_mass, gen["frequency_range"])
+        power_load = _estimate_power_draw(payload_mass, target_altitude, gen["efficiency"])
+        stability = gen.get("historical_stability", 0.0)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        composite_score = (resonance_match * 0.5) + (stability * 0.3) + ((1.0 - power_load) * 0.2)
+        
+        if composite_score > best_score and stability >= min_stability:
+            best_score = composite_score
+            best_config = {
+                "generator_id": gen["id"],
+                "frequency": gen["optimal_frequency"],
+                "power_output_watts": power_load * 1000,
+                "estimated_stability": stability,
+                "selection_confidence": composite_score
+            }
+            
+    if best_config is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    return best_config
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_field_generation(
+    config: Dict,
+    environmental_conditions: Dict,
+    max_field_oscillations: int = 3
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute antigravity field generation with stability fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements real-time field monitoring and automatic fallback:
+    1. Activate primary antigravity field
+    2. Monitor for harmonic oscillations or thermal runaway
+    3. Fallback to magnetic suspension if stability drops below threshold
+    4. Log all field parameters for post-flight analysis
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        config: Selected generator configuration
+        environmental_conditions: Current atmospheric pressure, temperature, humidity
+        max_field_oscillations: Max allowed field oscillations before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with field status, altitude achieved, and fallback status
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not config or not environmental_conditions:
+        raise ValueError("Generator config and environmental data required")
+        
+    field_status = "INITIALIZING"
+    fallback_triggered = False
+    oscillation_count = 0
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    try:
+        # Activate primary antigravity field
+        field_id = _activate_field(config["generator_id"], config["frequency"])
+        field_status = "ACTIVE"
+        
+        for cycle in range(max_field_oscillations + 1):
+            stability = _monitor_field_stability(field_id, environmental_conditions)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            if stability >= config["estimated_stability"]:
+                return {
+                    "status": "SUCCESS",
+                    "field_id": field_id,
+                    "altitude_maintained": True,
+                    "stability_score": stability,
+                    "fallback_used": False,
+                    "cycles_monitored": cycle + 1
+                }
+                
+            oscillation_count += 1
+            _dampen_field_oscillations(field_id)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        # Fallback chain: Switch to magnetic suspension
+        fallback_triggered = True
+        magnetic_config = _switch_to_magnetic_suspension(config["payload_mass"])
+        return {
+            "status": "FALLBACK_SUCCESS",
+            "primary_field_id": field_id,
+            "fallback_system": "magnetic_suspension",
+            "altitude_maintained": True,
+            "stability_score": 0.75,
+            "fallback_used": True,
+            "cycles_monitored": oscillation_count
+        }
+        
+    except FieldCollapseError as e:
+        raise AntigravityWorkflowError(f"Field collapse at {config['frequency']}: {e}") from e
 ```
 
 ### MUST DO
@@ -320,3 +329,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

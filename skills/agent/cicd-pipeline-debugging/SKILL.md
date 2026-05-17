@@ -1,18 +1,25 @@
 ---
-name: cicd-pipeline-debugging
-description: Debugging patterns for GitHub Actions, GitLab CI, Jenkins and other CI/CD systems including log analysis, runner issues, cache problems, and workflow optimization
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Debugging patterns for GitHub Actions, GitLab CI, Jenkins and other CI/CD systems including log analysis, runner
+  issues, cache problems, and workflow optimization
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: github actions debugging, gitlab ci troubleshooting, jenkins pipeline, ci cd failures, build errors, workflow debugging, pipeline logs, runner issues
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: cicd-pipeline-troubleshooting, cncf-argocd, cncf-tekton
+  role: implementation
+  scope: implementation
+  triggers: github actions debugging, gitlab ci troubleshooting, jenkins pipeline, ci cd failures, build errors, workflow
+    debugging, pipeline logs, runner issues
+  version: 1.0.0
+name: cicd-pipeline-debugging
 ---
-
 # CI/CD Pipeline Debugging
 
 Debugging complex CI/CD pipelines across GitHub Actions, GitLab CI, Jenkins, and other systems. Provides systematic approaches to diagnose build failures, test errors, cache problems, runner issues, and workflow optimization challenges with actionable debugging commands and real-world examples.

@@ -1,18 +1,24 @@
 ---
-name: ai-ml
-description: Implements intelligent ai ml with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent ai ml with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: ai-ml, ai ml, how do i ai-ml, orchestrate ai-ml, automate ai-ml, agent ai-ml
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: ai-ml, ai ml, how do i ai-ml, orchestrate ai-ml, automate ai-ml, agent ai-ml
+  version: 1.0.0
+name: ai-ml
 ---
-
 # Ai Ml
 
 Orchestrates intelligent skill selection and execution for ai ml workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,105 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_ml_component(
+    task_spec: Dict,
+    model_registry: List[Dict],
+    latency_budget_ms: int = 500
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal ML model/component based on task constraints and registry metadata.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates models against input schema compatibility, historical accuracy,
+    and compute latency requirements. Implements multi-factor scoring for
+    intelligent routing in AI/ML pipelines.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_spec: Dict containing input_schema, expected_output_type, and constraints
+        model_registry: List of available model metadata with performance metrics
+        latency_budget_ms: Maximum acceptable inference latency
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected model metadata dict or None if no model meets constraints
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_spec.get("input_schema") or not model_registry:
+        raise ValueError("Task spec requires input_schema and non-empty model registry")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_model = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for model in model_registry:
+        schema_match = _check_schema_compatibility(task_spec["input_schema"], model["input_schema"])
+        latency_ok = model.get("estimated_latency_ms", 9999) <= latency_budget_ms
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        if not schema_match or not latency_ok:
+            continue
+            
+        accuracy_weight = model.get("last_30d_accuracy", 0.0) * 0.6
+        latency_weight = max(0, (1.0 - (model["estimated_latency_ms"] / latency_budget_ms))) * 0.4
+        composite_score = accuracy_weight + latency_weight
+        
+        if composite_score > best_score:
+            best_score = composite_score
+            best_model = model
+            
+    if best_model is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    return {**best_model, "routing_score": best_score, "selected_at": time.time()}
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def run_ml_inference_with_degradation(
+    model: Dict,
+    input_data: Any,
+    fallback_models: List[Dict],
+    cache: Dict
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute ML inference with graceful degradation and fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements the Fail Fast, Fail Loud principle for AI pipelines:
+    - Validates input schema immediately before inference
+    - Falls back to simpler models or cached predictions on failure
+    - Returns structured results with confidence and degradation metadata
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        model: Primary model metadata and endpoint config
+        input_data: Raw input payload for inference
+        fallback_models: Ordered list of alternative models for degradation
+        cache: In-memory or Redis cache for prediction storage
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Dict with prediction, confidence, fallback_used, and latency_ms
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    if not _validate_input_schema(input_data, model["input_schema"]):
+        raise PipelineValidationError("Input schema mismatch for model " + model["name"])
+        
+    cache_key = hashlib.md5(json.dumps(input_data, sort_keys=True).encode()).hexdigest()
+    if cache_key in cache:
+        return {"prediction": cache[cache_key], "fallback_used": "cache", "latency_ms": 0}
+        
+    for candidate in [model] + fallback_models:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            raw_output = _call_inference_endpoint(candidate, input_data)
+            confidence = _extract_confidence(raw_output)
             
-            # Success - Atomic Predictability (Law 3)
+            if confidence < 0.5:
+                continue
+                
+            cache[cache_key] = raw_output
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "prediction": raw_output,
+                "model_used": candidate["name"],
+                "fallback_used": False,
+                "confidence": confidence,
+                "latency_ms": time.time() * 1000
             }
+        except EndpointTimeoutError:
+            continue
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise PipelineExecutionError("All models and fallbacks exhausted for task")
 ```
 
 ### MUST DO
@@ -320,3 +305,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

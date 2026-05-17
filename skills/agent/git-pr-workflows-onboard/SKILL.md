@@ -1,18 +1,25 @@
 ---
-name: git-pr-workflows-onboard
-description: Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent git pr workflows onboard with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: git-pr-workflows-onboard, git pr workflows onboard, how do i git-pr-workflows-onboard, orchestrate git-pr-workflows-onboard, automate git-pr-workflows-onboard, agent git-pr-workflows-onboard
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: git-pr-workflows-onboard, git pr workflows onboard, how do i git-pr-workflows-onboard, orchestrate git-pr-workflows-onboard,
+    automate git-pr-workflows-onboard, agent git-pr-workflows-onboard
+  version: 1.0.0
+name: git-pr-workflows-onboard
 ---
-
 # Git Pr Workflows Onboard
 
 Orchestrates intelligent skill selection and execution for git pr workflows onboard workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,124 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def analyze_pr_context_and_route(
+    pr_metadata: Dict[str, Any],
+    repo_config: Dict[str, Any],
+    available_onboarding_skills: List[Dict],
+    min_confidence: float = 0.75
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route PR onboarding tasks to optimal sub-skill based on workflow context.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies Law 1 (Early Exit) and Law 2 (Parse at Boundary) to validate PR state
+    before scoring against available onboarding capabilities.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not pr_metadata.get("branch_name") or not pr_metadata.get("base_branch"):
+        raise ValueError("PR must have branch_name and base_branch defined")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not repo_config.get("branch_protection_rules"):
+        raise ValueError("Repository must have branch protection rules configured")
+        
+    # Parse PR type and extract workflow features at boundary
+    title_lower = pr_metadata.get("title", "").lower()
+    labels = pr_metadata.get("labels", [])
+    is_hotfix = any("hotfix" in lbl for lbl in labels) or "hotfix" in title_lower
+    requires_review = repo_config.get("required_reviewers", 0) > 0
+    ci_required = repo_config.get("required_status_checks", False)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    workflow_features = {
+        "is_hotfix": is_hotfix,
+        "requires_review": requires_review,
+        "ci_required": ci_required,
+        "auto_merge_eligible": not is_hotfix and not requires_review and ci_required
+    }
     
     best_skill = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in available_onboarding_skills:
+        # Multi-factor scoring: workflow match + repo compliance + historical success
+        workflow_match = 1.0 if skill["trigger_patterns"].get("pr_type") == (is_hotfix and "hotfix" or "standard") else 0.5
+        compliance_score = 1.0 if all(skill["requirements"].get(k) <= v for k, v in workflow_features.items()) else 0.0
+        historical_weight = skill.get("success_rate", 0.5)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
+        composite_score = (workflow_match * 0.4) + (compliance_score * 0.3) + (historical_weight * 0.3)
+        
+        if composite_score > best_score and composite_score >= min_confidence:
+            best_score = composite_score
             best_skill = skill
-    
+            
     if best_skill is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Return new structure, never mutate inputs
+    return {
+        "routed_skill": best_skill["name"],
+        "confidence": best_score,
+        "workflow_context": workflow_features,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_pr_onboarding_with_fallback(
+    routed_skill: Dict,
+    pr_context: Dict,
+    repo_state: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute PR onboarding workflow with domain-specific fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast, Fail Loud) by validating repo state before
+    attempting configuration changes. Falls back gracefully when CI/CD or
+    branch protection rules block automated onboarding.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    required_perms = routed_skill.get("required_permissions", [])
+    if not all(perm in repo_state.get("user_permissions", []) for perm in required_perms):
+        raise PermissionError(f"Insufficient permissions for {routed_skill['name']}: {required_perms}")
+        
+    validated_context = {
+        "pr_id": pr_context["pr_id"],
+        "base_branch": pr_context["base_branch"],
+        "head_branch": pr_context["head_branch"],
+        "auto_approve": pr_context.get("auto_approve", False)
+    }
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            # Attempt primary onboarding action: configure CODEOWNERS, CI, and branch rules
+            changes_made = []
+            if validated_context["auto_approve"]:
+                changes_made.append("auto_approve_enabled")
+            if repo_state.get("ci_configured") is False:
+                changes_made.append("ci_pipeline_initialized")
+                
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "skill_executed": routed_skill["name"],
+                "configuration_applied": changes_made,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except BranchProtectionError as e:
+            # Law 4: Fail immediately on immutable repo constraints
+            raise OnboardingError(f"Branch protection blocks auto-onboarding: {e}") from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except CIConfigError as e:
+            # Transient CI failure - apply fallback chain
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return {
+                    "success": False,
+                    "fallback_triggered": True,
+                    "fallback_action": "manual_review_template_generated",
+                    "reason": str(e),
+                    "attempts": attempt + 1
+                }
+                
+    raise OnboardingError(f"Failed to onboard PR after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +325,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

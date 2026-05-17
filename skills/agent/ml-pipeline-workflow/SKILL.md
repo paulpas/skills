@@ -1,18 +1,25 @@
 ---
-name: ml-pipeline-workflow
-description: Implements intelligent ml pipeline workflow with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent ml pipeline workflow with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: ml-pipeline-workflow, ml pipeline workflow, how do i ml-pipeline-workflow, orchestrate ml-pipeline-workflow, automate ml-pipeline-workflow, agent ml-pipeline-workflow
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: ml-pipeline-workflow, ml pipeline workflow, how do i ml-pipeline-workflow, orchestrate ml-pipeline-workflow, automate
+    ml-pipeline-workflow, agent ml-pipeline-workflow
+  version: 1.0.0
+name: ml-pipeline-workflow
 ---
-
 # Ml Pipeline Workflow
 
 Orchestrates intelligent skill selection and execution for ml pipeline workflow workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,128 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_ml_pipeline_step(
+    task_spec: Dict,
+    available_steps: List[Dict],
+    hardware_constraints: Dict
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal ML pipeline step based on task type, data schema, and hardware.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates steps using multi-factor scoring:
+    - Task compatibility (classification vs regression vs clustering)
+    - Data schema alignment (feature types, dimensionality)
+    - Hardware fit (GPU memory, CPU cores, storage I/O)
+    - Historical performance on similar datasets
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_spec: ML task configuration (type, data_path, target_column)
+        available_steps: List of ML step metadata (framework, algorithm, resource_req)
+        hardware_constraints: Current system resources (gpu_mem_gb, cpu_cores)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected step metadata or None if no compatible step exists
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_spec.get("task_type") or not available_steps:
+        raise ValueError("Task type and available steps are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_step = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for step in available_steps:
+        # Check hardware compatibility first (Make Illegal States Unrepresentable - Law 2)
+        if step["resource_req"]["gpu_mem_gb"] > hardware_constraints.get("gpu_mem_gb", 0):
+            continue
+            
+        # Calculate compatibility score
+        task_match = _match_task_type(task_spec["task_type"], step["supported_tasks"])
+        schema_match = _validate_schema(task_spec.get("features", []), step["required_schema"])
+        perf_history = step.get("historical_rmse", 1.0) if task_spec["task_type"] == "regression" else 1.0 - step.get("historical_accuracy", 0.0)
         
-        if score > best_score and score >= min_confidence:
+        score = (task_match * 0.4) + (schema_match * 0.3) + (perf_history * 0.3)
+        
+        if score > best_score:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_step = step
+            
+    if best_step is None:
         return None
-    
+        
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        **best_step,
+        "selection_score": best_score,
+        "selected_at": datetime.utcnow().isoformat(),
+        "hardware_profile": hardware_constraints
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_ml_step_with_fallback(
+    step_config: Dict,
+    run_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute ML pipeline step with resilience patterns for training/evaluation.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements ML-specific fallback chain:
+    1. Retry with original hyperparameters
+    2. Fallback to simplified model architecture (e.g., linear vs neural net)
+    3. Use cached/precomputed features if training fails
+    4. Defer to human review for critical model validation failures
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        step_config: ML step configuration (algorithm, hyperparams, data_path)
+        run_context: Execution context (session_id, output_dir, metrics_tracker)
         max_retries: Maximum retry attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with model artifacts, metrics, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Guard clause - validate config (Early Exit)
+    if not step_config.get("algorithm"):
+        raise ValueError("Algorithm specification is required for execution")
+        
+    validated_config = _normalize_ml_config(step_config)
+    output_dir = run_context.get("output_dir", "/tmp/ml_run")
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute training/evaluation pipeline
+            artifacts, metrics = _run_ml_pipeline(validated_config, output_dir)
             
-            # Success - Atomic Predictability (Law 3)
+            # Validate model quality (Fail Fast on poor performance - Law 4)
+            if metrics.get("validation_loss", float('inf')) > run_context.get("max_acceptable_loss", 1.0):
+                raise ModelQualityError(f"Validation loss {metrics['validation_loss']} exceeds threshold")
+                
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "step_executed": validated_config["algorithm"],
+                "artifacts_path": artifacts,
+                "metrics": metrics,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_sec": time.time() - run_context.get("start_time", time.time())
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except OutOfMemoryError as e:
+            # Fallback: Reduce batch size or switch to CPU
+            if attempt < max_retries:
+                validated_config["batch_size"] = max(1, validated_config.get("batch_size", 32) // 2)
+                continue
+            return _apply_ml_fallback(validated_config, run_context, "memory_overflow")
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+        except ConvergenceError as e:
+            # Fallback: Adjust learning rate or switch algorithm
+            if attempt < max_retries:
+                validated_config["learning_rate"] *= 0.5
+                continue
+            return _apply_ml_fallback(validated_config, run_context, "convergence_failure")
+            
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise PipelineExecutionError(f"ML step {validated_config['algorithm']} failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +329,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

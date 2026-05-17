@@ -1,18 +1,25 @@
 ---
-name: shopify-automation
-description: Implements intelligent shopify automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent shopify automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: shopify-automation, shopify automation, how do i shopify-automation, orchestrate shopify-automation, automate shopify-automation, agent shopify-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: shopify-automation, shopify automation, how do i shopify-automation, orchestrate shopify-automation, automate
+    shopify-automation, agent shopify-automation
+  version: 1.0.0
+name: shopify-automation
 ---
-
 # Shopify Automation
 
 Orchestrates intelligent skill selection and execution for shopify automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,56 +141,56 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def select_shopify_automation_skill(
+    shopify_request: Dict,
+    available_shopify_skills: List[Dict],
+    store_config: Dict
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal Shopify automation skill based on request intent and store state.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates Shopify-specific triggers (product, order, inventory, customer) against
+    available skill metadata, factoring in store API version, rate limit headroom,
+    and historical success rates for similar Shopify operations.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        shopify_request: Parsed Shopify webhook or user intent dict
+        available_shopify_skills: List of Shopify skill metadata
+        store_config: Current store configuration and API limits
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected skill dict with confidence score, or None
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not shopify_request.get("event") or not available_shopify_skills:
+        raise ValueError("Missing Shopify event or no skills available")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    intent = _normalize_shopify_intent(shopify_request)
+    api_headroom = store_config.get("rate_limit_remaining", 0)
     
     best_skill = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for skill in available_shopify_skills:
+        # Calculate match score using Shopify-specific features
+        score = _calculate_shopify_match_score(
+            intent=intent,
+            skill_triggers=skill.get("triggers", []),
+            api_headroom=api_headroom,
+            historical_success=skill.get("success_rate", 0.0)
+        )
         
-        if score > best_score and score >= min_confidence:
+        if score > best_score and score >= store_config.get("min_confidence", 0.7):
             best_score = score
             best_skill = skill
-    
+            
     if best_skill is None:
         return None
-    
+        
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
     result = dict(best_skill)
     result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
+    result["store_api_version"] = store_config.get("api_version")
     return result
 ```
 
@@ -191,68 +198,70 @@ def select_skill(
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
+def execute_shopify_api_with_fallback(
     skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+    shopify_context: Dict,
+    max_retries: int = 2,
+    store_config: Dict
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Shopify Admin API call with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud (Law 4) for Shopify API interactions:
+    - Invalid auth or missing required fields halt immediately
+    - Rate limits (429) trigger exponential backoff
+    - Quota exhaustion falls back to webhook queue or manual review
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        skill: Selected Shopify automation skill metadata
+        shopify_context: Execution context (store domain, auth, payload)
         max_retries: Maximum retry attempts before fallback
+        store_config: Store configuration and fallback routing rules
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with Shopify response, timing, and confidence
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate Shopify credentials (Early Exit)
+    if not _is_shopify_auth_valid(shopify_context.get("auth_token")):
+        raise SkillExecutionError("Invalid Shopify API credentials")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_payload = _validate_shopify_payload(shopify_context.get("payload"), skill)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute Shopify Admin API call
+            response = _call_shopify_api(
+                endpoint=skill["api_endpoint"],
+                method=skill["http_method"],
+                payload=validated_payload,
+                auth=shopify_context["auth_token"],
+                store_domain=shopify_context["store_domain"]
+            )
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "shopify_resource": skill["resource_type"],
+                "shopify_id": response.get("id"),
+                "result": response,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": _calculate_latency(),
+                "rate_limit_remaining": response.headers.get("X-Shopify-Shop-Api-Call-Count")
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except ShopifyRateLimitError as e:
+            # Transient rate limit - exponential backoff (Law 4)
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+                return _apply_shopify_fallback_chain(skill, shopify_context, store_config)
+            time.sleep(2 ** attempt)
+            
+        except ShopifyAPIError as e:
+            # Invalid state or bad request - fail immediately
+            raise SkillExecutionError(f"Shopify API error: {e.message}") from e
+            
     # All retries exhausted - Fail Loud (Law 4)
     raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+        f"Shopify {skill['resource_type']} operation failed after {max_retries + 1} attempts"
     )
 ```
 
@@ -320,3 +329,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

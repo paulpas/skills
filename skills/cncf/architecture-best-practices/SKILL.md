@@ -1,25 +1,26 @@
 ---
-name: best-practices
-description: '"Cloud Native Computing Foundation (CNCF) architecture best practices"
-  for production-grade Kubernetes deployments. Covers service mesh, CNI, GitOps, CI/CD,
-  observability, security, networking, and scaling patterns across the CNCF landscape.'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: '"Cloud Native Computing Foundation (CNCF) architecture best practices" for production-grade Kubernetes deployments.
+  Covers service mesh, CNI, GitOps, CI/CD, observability, security, networking, and scaling patterns across the CNCF landscape.'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: cncf
+  output-format: manifests
+  related-skills: null
   role: reference
   scope: infrastructure
-  output-format: manifests
-  triggers: architecture best practices, architecture-best-practices, cdn, computing,
-    infrastructure as code, monitoring, native, cloudformation
-  related-skills: null
+  triggers: architecture best practices, architecture-best-practices, cdn, computing, infrastructure as code, monitoring,
+    native, cloudformation
+  version: 1.0.0
+name: best-practices
 ---
-
-
-
-
-
 # CNCF Architecture Best Practices
 
 > **Load this skill** when designing, implementing, or reviewing cloud-native architectures using CNCF projects (Kubernetes, Istio, CNI, Argo, Tekton, Prometheus, etc.). This skill provides production-ready patterns for scalable, secure, and maintainable cloud-native systems.
@@ -2718,3 +2719,37 @@ Before deploying to production:
 ---
 
 *End of CNCF Architecture Best Practices Skill File*
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Integrating a CNCF project into Kubernetes infrastructure** — You need to configure, deploy, or troubleshoot a cloud-native tool within a cluster
+- **Designing cloud-native architecture** — You are selecting and integrating CNCF tools to solve specific infrastructure challenges
+- **Resolving operational issues** — A CNCF component is misbehaving, underperforming, or needs configuration changes
+---
+
+## Core Workflow
+
+1. **Assess Requirements** — Understand the use case, scale, integration needs, and existing infrastructure. **Checkpoint:** Document requirements, constraints, and success criteria.
+
+2. **Design Architecture** — Plan component interactions, data flow, and deployment strategy using cloud-native best practices. **Checkpoint:** Verify the architecture addresses all requirements and follows CNCF conventions.
+
+3. **Implement & Configure** — Create manifests, configurations, and deployment scripts. Include resource limits, health checks, and observability hooks. **Checkpoint:** Validate all YAML against schema and test in a staging environment.
+
+4. **Deploy & Monitor** — Apply manifests to the cluster, verify component health, and confirm observability is working. **Checkpoint:** Confirm all pods/services are running, probes passing, and metrics/alerts configured.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one complete working YAML manifest example
+- Note when content is auto-generated vs. manually verified
+- Reference relevant CNCF project documentation
+
+### MUST NOT DO
+- Deploy manifests without testing in a staging environment first
+- Use deprecated API versions (e.g., apps/v1beta1)
+- Omit resource limits and requests in Kubernetes manifests

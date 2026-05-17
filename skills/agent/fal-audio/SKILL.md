@@ -1,18 +1,24 @@
 ---
-name: fal-audio
-description: Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: fal-audio, fal audio, how do i fal-audio, orchestrate fal-audio, automate fal-audio, agent fal-audio
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: fal-audio, fal audio, how do i fal-audio, orchestrate fal-audio, automate fal-audio, agent fal-audio
+  version: 1.0.0
+name: fal-audio
 ---
-
 # Fal Audio
 
 Orchestrates intelligent skill selection and execution for fal audio workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,133 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def configure_audio_generation_task(
+    user_prompt: str,
+    available_models: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Configure optimal audio generation parameters based on prompt analysis.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Analyzes prompt semantics to select the best audio model and parameters:
+    - Detects intent (music, voiceover, sfx, ambient)
+    - Matches model capabilities to prompt requirements
+    - Validates duration and format constraints
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        user_prompt: Natural language audio generation request
+        available_models: List of supported audio generation models
+        min_confidence: Minimum confidence threshold for model selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Configured task dictionary with model, parameters, and confidence
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_prompt or not user_prompt.strip():
+        raise ValueError("Audio generation prompt cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    if not available_models:
+        raise ValueError("No audio models available for generation")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Parse intent and extract constraints (Law 2)
+    intent = _detect_audio_intent(user_prompt)
+    duration_req = _extract_duration_constraint(user_prompt)
     
-    best_skill = None
+    best_config = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for model in available_models:
+        # Score based on intent match, duration support, and historical success
+        intent_match = _calculate_intent_similarity(intent, model["supported_intents"])
+        duration_support = 1.0 if model["max_duration"] >= duration_req else 0.5
+        history_score = model.get("success_rate", 0.0)
+        
+        score = (intent_match * 0.5) + (duration_support * 0.3) + (history_score * 0.2)
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
+            best_config = {
+                "model_id": model["id"],
+                "model_name": model["name"],
+                "parameters": {
+                    "prompt": user_prompt,
+                    "duration": duration_req,
+                    "format": model["default_format"],
+                    "guidance_scale": model.get("default_guidance", 7.5)
+                },
+                "selected_confidence": best_score,
+                "intent_detected": intent
+            }
     
-    if best_skill is None:
+    if best_config is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    return best_config
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_audio_generation(
+    task_config: Dict,
+    api_client: Any,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute audio generation with resilient fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements Fail Fast, Fail Loud (Law 4) for audio pipeline:
+    - Validates prompt length and content policy immediately
+    - Retries on transient API errors with exponential backoff
+    - Falls back to alternative models if primary fails
+    - Returns structured result with generation metadata
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        task_config: Configured audio generation task from Pattern 1
+        api_client: Initialized Fal.ai or compatible audio API client
         max_retries: Maximum retry attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with audio URL, duration, and confidence
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not task_config or "model_id" not in task_config:
+        raise ValueError("Invalid task configuration provided")
+        
+    params = task_config["parameters"]
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute generation call
+            generation_job = api_client.generate_audio(
+                model_id=task_config["model_id"],
+                prompt=params["prompt"],
+                duration=params["duration"],
+                guidance_scale=params["guidance_scale"]
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            # Wait for completion with timeout
+            result = api_client.wait_for_completion(
+                job_id=generation_job["id"],
+                timeout=120
+            )
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "model_used": task_config["model_id"],
+                "audio_url": result["audio_url"],
+                "duration_sec": result["duration"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "confidence": task_config["selected_confidence"],
+                "intent": task_config["intent_detected"]
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except ContentPolicyError as e:
+            # Fail Fast - reject invalid prompts immediately (Law 4)
+            raise ValueError(f"Prompt violates content policy: {str(e)}")
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except TransientAPIError as e:
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_alternative_model(task_config, api_client)
+                
+    raise RuntimeError(f"Audio generation failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +333,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

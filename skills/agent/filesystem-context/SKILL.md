@@ -1,18 +1,25 @@
 ---
-name: filesystem-context
-description: Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: filesystem-context, filesystem context, how do i filesystem-context, orchestrate filesystem-context, automate filesystem-context, agent filesystem-context
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: filesystem-context, filesystem context, how do i filesystem-context, orchestrate filesystem-context, automate
+    filesystem-context, agent filesystem-context
+  version: 1.0.0
+name: filesystem-context
 ---
-
 # Filesystem Context
 
 Orchestrates intelligent skill selection and execution for filesystem context workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,135 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def build_filesystem_context(
+    target_paths: List[str],
+    config: Dict[str, Any],
+    min_relevance: float = 0.6
+) -> Optional[ContextGraph]:
+    """Construct an intelligent filesystem context graph from target paths.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies multi-factor scoring to determine which files/directories 
+    contribute meaningfully to the current task context. Filters out 
+    noise (temp files, large binaries, inaccessible paths) and builds 
+    a directed graph of relevant file relationships.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        target_paths: List of absolute or relative paths to analyze
+        config: Scoring configuration (max_depth, file_types, size_limits)
+        min_relevance: Minimum relevance score to include in context
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        ContextGraph with scored nodes and edges, or None if empty
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not target_paths:
+        raise ValueError("Target paths list cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    context_nodes = []
+    visited = set()
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for path in target_paths:
+        if not os.path.exists(path):
+            continue
+            
+        stat = os.stat(path)
+        relevance = _calculate_path_relevance(path, stat, config)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        if relevance >= min_relevance and path not in visited:
+            visited.add(path)
+            node = {
+                "path": path,
+                "type": "dir" if os.path.isdir(path) else "file",
+                "size": stat.st_size,
+                "modified": stat.st_mtime,
+                "relevance_score": relevance,
+                "permissions": oct(stat.st_mode)[-3:]
+            }
+            context_nodes.append(node)
+            
+            # Recursively scan directories if configured
+            if os.path.isdir(path) and config.get("recursive", False):
+                context_nodes.extend(_scan_directory(path, config, visited))
+                
+    if not context_nodes:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Build relationship edges based on imports/includes
+    edges = _infer_file_relationships(context_nodes)
+    return ContextGraph(nodes=context_nodes, edges=edges)
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_context_workflow(
+    context_graph: ContextGraph,
+    operation: str,
+    fallback_handler: Optional[Callable] = None
+) -> Dict[str, Any]:
+    """Execute a filesystem context operation with I/O-aware fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles common filesystem failures (permission denied, disk full, 
+    stale symlinks) by applying domain-specific recovery strategies:
+    1. Retry with elevated permissions (if authorized)
+    2. Skip inaccessible nodes and continue processing
+    3. Fallback to cached context if available
+    4. Log detailed I/O errors for human review
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        context_graph: Pre-built context graph to process
+        operation: Target operation (index, scan, validate, sync)
+        fallback_handler: Optional callback for critical failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with success status, processed nodes, and error log
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not context_graph or not operation:
+        raise ValueError("Context graph and operation must be provided")
+        
+    results = {"processed": [], "skipped": [], "errors": [], "success": False}
+    max_retries = 2
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    for node in context_graph.nodes:
+        attempt = 0
+        while attempt <= max_retries:
+            try:
+                if operation == "index":
+                    metadata = _index_file_metadata(node["path"])
+                elif operation == "validate":
+                    metadata = _validate_file_integrity(node["path"])
+                else:
+                    raise ValueError(f"Unsupported operation: {operation}")
+                    
+                results["processed"].append({
+                    "path": node["path"],
+                    "status": "success",
+                    "metadata": metadata
+                })
+                break
+                
+            except PermissionError:
+                attempt += 1
+                if attempt > max_retries:
+                    results["skipped"].append(node["path"])
+                    results["errors"].append(f"Permission denied: {node['path']}")
+                time.sleep(0.1 * attempt)
+                
+            except FileNotFoundError:
+                results["skipped"].append(node["path"])
+                results["errors"].append(f"Stale path: {node['path']}")
+                break
+                
+            except OSError as e:
+                attempt += 1
+                if attempt > max_retries:
+                    results["errors"].append(f"OS error on {node['path']}: {e}")
+                    if fallback_handler:
+                        fallback_handler(node, e)
+                time.sleep(0.1 * attempt)
+                
+    results["success"] = len(results["processed"]) > 0
+    return results
 ```
 
 ### MUST DO
@@ -320,3 +336,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

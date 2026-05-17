@@ -1,23 +1,25 @@
 ---
-name: monte-carlo
-description: '"Implements Monte Carlo sampling, simulation methods, and stochastic
-  approximation for uncertainty estimation and numerical integration"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Implements Monte Carlo sampling, simulation methods, and stochastic approximation for uncertainty estimation
+  and numerical integration"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-bayesian-inference, ds-confidence-intervals, ds-distribution-fitting, ds-kernel-density ds-kernel-density
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: monte carlo, sampling, simulation, stochastic, markov chain, mcmc, how
-    do i simulate
-  related-skills: ds-bayesian-inference, ds-confidence-intervals, ds-distribution-fitting, ds-kernel-density
-    ds-kernel-density
+  triggers: monte carlo, sampling, simulation, stochastic, markov chain, mcmc, how do i simulate
+  version: 1.0.0
+name: monte-carlo
 ---
-
-
-
 # Monte Carlo Methods
 
 Comprehensive guide to monte carlo methods in machine learning and data science workflows.
@@ -59,34 +61,81 @@ Monte Carlo Methods is a critical component of the machine learning workflow. Th
 ### Pattern 1: Basic Monte Carlo Methods
 
 ```python
-# Example pattern for Monte Carlo Methods
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Implementation pattern
-pass
+def estimate_pi(num_samples: int = 100000) -> float:
+    """Estimate the value of pi using Monte Carlo sampling."""
+    if num_samples <= 0:
+        raise ValueError("Number of samples must be positive")
+    
+    # Generate random points in a unit square [0,1] x [0,1]
+    x = np.random.uniform(0, 1, num_samples)
+    y = np.random.uniform(0, 1, num_samples)
+    
+    # Check which points fall inside the quarter circle
+    inside_circle = (x**2 + y**2) <= 1.0
+    pi_estimate = 4.0 * np.sum(inside_circle) / num_samples
+    
+    return float(pi_estimate)
+
+if __name__ == "__main__":
+    pi_val = estimate_pi()
+    print(f"Estimated Pi: {pi_val:.5f}")
+    print(f"Actual Pi: {np.pi:.5f}")
+    print(f"Error: {abs(pi_val - np.pi):.5f}")
 ```
 
 ### Pattern 2: Production-Ready Monte Carlo Methods
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
-import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Dict, Any, Tuple
 
-logger = logging.getLogger(__name__)
+class MonteCarloSimulator:
+    """Production-grade Monte Carlo simulator for uncertainty estimation."""
+    
+    def __init__(self, n_simulations: int = 10000, seed: int = 42):
+        self.n_simulations = n_simulations
+        self.seed = seed
+        np.random.seed(seed)
+        
+    def simulate_returns(self, mean: float, std: float, 
+                         n_periods: int = 252) -> np.ndarray:
+        """Simulate asset returns over multiple periods."""
+        if std <= 0:
+            raise ValueError("Standard deviation must be positive")
+        if n_periods <= 0:
+            raise ValueError("Number of periods must be positive")
+            
+        # Vectorized simulation of daily returns
+        daily_returns = np.random.normal(mean / n_periods, std / np.sqrt(n_periods), 
+                                        (self.n_simulations, n_periods))
+        # Compound returns
+        cumulative_returns = np.prod(1 + daily_returns, axis=1) - 1
+        return cumulative_returns
+    
+    def get_statistics(self, returns: np.ndarray) -> Dict[str, Any]:
+        """Calculate summary statistics from simulation results."""
+        stats = {
+            'mean': float(np.mean(returns)),
+            'std': float(np.std(returns)),
+            'median': float(np.median(returns)),
+            'percentile_5': float(np.percentile(returns, 5)),
+            'percentile_95': float(np.percentile(returns, 95)),
+            'skewness': float(np.mean(((returns - np.mean(returns)) / np.std(returns))**3)),
+            'kurtosis': float(np.mean(((returns - np.mean(returns)) / np.std(returns))**4) - 3)
+        }
+        return stats
 
-class MonteCarloMethods:
-    """Production implementation of Monte Carlo Methods"""
-    
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Monte Carlo Methods on data"""
-        return {}
+if __name__ == "__main__":
+    sim = MonteCarloSimulator(n_simulations=50000)
+    returns = sim.simulate_returns(mean=0.05, std=0.15, n_periods=252)
+    stats = sim.get_statistics(returns)
+    print("Simulation Statistics:")
+    for k, v in stats.items():
+        print(f"  {k}: {v:.4f}")
 ```
 
 ## Best Practices
@@ -112,60 +161,66 @@ class MonteCarloMethods:
 ## Complete Working Example
 
 ```python
-# Full working example for Monte Carlo Methods
-import pandas as pd
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_regression
+from sklearn.linear_model import LinearRegression
 from typing import Dict, Any
 
-def implement_carlo(data: pd.DataFrame) -> Dict[str, Any]:
+def monte_carlo_prediction_uncertainty(n_samples: int = 10000, seed: int = 42) -> Dict[str, Any]:
     """
-    Complete implementation of Monte Carlo Methods.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
+    Estimate prediction uncertainty using Monte Carlo sampling on a regression model.
     
     Args:
-        data: Input DataFrame with required columns
+        n_samples: Number of Monte Carlo iterations
+        seed: Random seed for reproducibility
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_carlo(df)
-        >>> print(results)
+        Dictionary with model metrics, uncertainty bounds, and plot data
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
+    np.random.seed(seed)
     
-    # Implementation
+    # Generate real dataset
+    X, y = make_regression(n_samples=500, n_features=3, noise=10.0, random_state=seed)
+    
+    # Train base model
+    model = LinearRegression()
+    model.fit(X, y)
+    
+    # Monte Carlo simulation: add noise to predictions to estimate uncertainty
+    predictions = model.predict(X)
+    noise_std = np.std(y - predictions)
+    
+    mc_predictions = np.random.normal(predictions, noise_std, size=(n_samples, len(y)))
+    uncertainty_lower = np.percentile(mc_predictions, 2.5, axis=0)
+    uncertainty_upper = np.percentile(mc_predictions, 97.5, axis=0)
+    
     results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+        'r2_score': float(model.score(X, y)),
+        'mean_prediction': float(np.mean(predictions)),
+        'uncertainty_mean': float(np.mean(uncertainty_upper - uncertainty_lower)),
+        'hist_lower': uncertainty_lower[:100],
+        'hist_upper': uncertainty_upper[:100],
+        'hist_y': y[:100]
     }
-    
     return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    results = monte_carlo_prediction_uncertainty()
+    print(f"Model R²: {results['r2_score']:.4f}")
+    print(f"Mean Uncertainty Width: {results['uncertainty_mean']:.4f}")
     
-    # Run implementation
-    results = implement_carlo(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    plt.figure(figsize=(10, 6))
+    plt.scatter(results['hist_y'], results['hist_lower'], color='blue', alpha=0.5, label='Lower Bound')
+    plt.scatter(results['hist_y'], results['hist_upper'], color='red', alpha=0.5, label='Upper Bound')
+    plt.plot(results['hist_y'], results['hist_y'], color='green', linestyle='--', label='True Values')
+    plt.title('Monte Carlo Prediction Uncertainty Bands')
+    plt.xlabel('True Target Values')
+    plt.ylabel('Predicted Values')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
 ```
 
 ## Related Skills
@@ -185,3 +240,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

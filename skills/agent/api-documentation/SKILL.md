@@ -1,18 +1,25 @@
 ---
-name: api-documentation
-description: Implements intelligent api documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent api documentation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: api-documentation, api documentation, how do i api-documentation, orchestrate api-documentation, automate api-documentation, agent api-documentation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: api-documentation, api documentation, how do i api-documentation, orchestrate api-documentation, automate api-documentation,
+    agent api-documentation
+  version: 1.0.0
+name: api-documentation
 ---
-
 # Api Documentation
 
 Orchestrates intelligent skill selection and execution for api documentation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,116 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def parse_api_spec_and_extract_endpoints(
+    spec_path: str,
+    output_format: str = "markdown",
+    include_examples: bool = True
+) -> Dict[str, Any]:
+    """Parse OpenAPI/Swagger specification and extract structured endpoint data.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements the 5 Laws of Elegant Defense:
+    - Early exit on invalid spec paths or unsupported formats
+    - Immutable parsing: spec is never mutated, only read
+    - Fail fast on missing required fields (paths, info)
+    - Atomic output generation with fallback to default templates
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early Exit / Guard Clauses
+    if not spec_path or not os.path.exists(spec_path):
+        raise FileNotFoundError(f"API spec not found: {spec_path}")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if output_format not in ("markdown", "html", "json"):
+        raise ValueError(f"Unsupported format: {output_format}. Use markdown, html, or json.")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Law 2: Parse at boundary, make illegal states unrepresentable
+    try:
+        with open(spec_path, 'r') as f:
+            raw_spec = json.load(f)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in spec file: {e}") from e
+        
+    # Validate required OpenAPI structure
+    if "openapi" not in raw_spec or "paths" not in raw_spec:
+        raise ValueError("Spec missing required 'openapi' or 'paths' fields")
+        
+    # Law 3: Atomic Predictability - Build new structure, never mutate raw_spec
+    doc_structure = {
+        "title": raw_spec.get("info", {}).get("title", "Untitled API"),
+        "version": raw_spec.get("info", {}).get("version", "0.0.0"),
+        "endpoints": [],
+        "metadata": {
+            "format": output_format,
+            "generated_at": datetime.now().isoformat(),
+            "include_examples": include_examples
+        }
+    }
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Process endpoints
+    for path, methods in raw_spec["paths"].items():
+        for method, details in methods.items():
+            if method.upper() in ("GET", "POST", "PUT", "DELETE", "PATCH"):
+                doc_structure["endpoints"].append({
+                    "path": path,
+                    "method": method.upper(),
+                    "summary": details.get("summary", ""),
+                    "parameters": details.get("parameters", []),
+                    "responses": details.get("responses", {})
+                })
+                
+    return doc_structure
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def assemble_documentation_with_fallback(
+    doc_structure: Dict[str, Any],
+    fallback_strategy: str = "auto-generate",
+    cache_dir: str = "./doc_cache"
+) -> str:
+    """Assemble final documentation with resilience patterns for missing data.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements fallback chain for missing examples or rendering failures:
+    1. Use provided examples if available
+    2. Auto-generate stub examples from parameter schemas
+    3. Fall back to cached version if external tools fail
+    4. Fail loud with clear error if all strategies exhausted
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Law 1: Validate input structure
+    if not doc_structure or "endpoints" not in doc_structure:
+        raise ValueError("Invalid doc structure provided for assembly")
+        
+    rendered_docs = []
+    rendered_docs.append(f"# {doc_structure['title']} Documentation\n")
+    rendered_docs.append(f"**Version:** {doc_structure['version']}\n")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    for ep in doc_structure["endpoints"]:
+        # Law 2: Parse/validate endpoint data at boundary
+        method = ep["method"]
+        path = ep["path"]
+        summary = ep.get("summary", f"Auto-generated summary for {method} {path}")
+        
+        # Fallback Chain: Example Generation
+        examples = ep.get("examples", [])
+        if not examples and fallback_strategy == "auto-generate":
+            # Generate stub from parameters
+            examples = _generate_stub_examples(ep.get("parameters", []))
+        elif not examples:
+            examples = [{"note": "No examples available"}]
+            
+        # Law 3: Atomic output construction
+        section = f"## {method} `{path}`\n\n{summary}\n\n"
+        section += "### Parameters\n" + _format_parameters(ep.get("parameters", [])) + "\n"
+        section += "### Examples\n" + _format_examples(examples) + "\n"
+        rendered_docs.append(section)
+        
+    final_output = "\n".join(rendered_docs)
     
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Law 4: Fail loud if output is empty or corrupted
+    if not final_output.strip():
+        raise RuntimeError("Documentation assembly produced empty output")
+        
+    return final_output
 ```
 
 ### MUST DO
@@ -320,3 +317,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

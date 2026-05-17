@@ -1,18 +1,25 @@
 ---
-name: agent-evaluation
-description: Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: agent-evaluation, agent evaluation, how do i agent-evaluation, orchestrate agent-evaluation, automate agent-evaluation, agent agent-evaluation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: agent-evaluation, agent evaluation, how do i agent-evaluation, orchestrate agent-evaluation, automate agent-evaluation,
+    agent agent-evaluation
+  version: 1.0.0
+name: agent-evaluation
 ---
-
 # Agent Evaluation
 
 Orchestrates intelligent skill selection and execution for agent evaluation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,122 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def evaluate_agent_output(
+    agent_response: str,
+    evaluation_criteria: List[Dict],
+    benchmark_data: Dict
+) -> Dict:
+    """Score an agent's output against multi-factor evaluation criteria.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Implements the 5 Laws of Elegant Defense for evaluation:
+    - Early exit on malformed responses or missing criteria
+    - Immutable scoring state to prevent cross-contamination
+    - Fail fast on unresolvable safety/alignment checks
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        agent_response: Raw output from the evaluated agent
+        evaluation_criteria: List of metrics to evaluate (e.g., accuracy, safety, law_adherence)
+        benchmark_data: Reference data for comparison scoring
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Evaluation result with per-metric scores and overall confidence
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not agent_response or not evaluation_criteria:
+        raise ValueError("Agent response and criteria are required for evaluation")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Parse and normalize response for evaluation (Law 2)
+    normalized_response = _normalize_text(agent_response)
+    scores = {}
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    for criterion in evaluation_criteria:
+        metric_name = criterion["name"]
+        try:
+            # Domain-specific scoring logic
+            if metric_name == "law_adherence":
+                scores[metric_name] = _score_law_compliance(normalized_response, benchmark_data)
+            elif metric_name == "accuracy":
+                scores[metric_name] = _calculate_accuracy(normalized_response, benchmark_data.get("ground_truth"))
+            else:
+                scores[metric_name] = _default_metric_score(normalized_response, criterion)
+        except UnresolvableMetricError:
+            # Fail fast on unresolvable metrics (Law 4)
+            scores[metric_name] = {"score": 0.0, "status": "pending_review", "reason": "requires_human_judgment"}
+            
+    # Atomic Predictability (Law 3) - Return fresh evaluation object
+    return {
+        "evaluation_id": generate_uuid(),
+        "scores": scores,
+        "overall_confidence": _compute_weighted_average(scores),
+        "timestamp": time.time(),
+        "status": "complete"
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def run_evaluation_pipeline(
+    evaluation_task: Dict,
+    agent_outputs: List[Dict],
+    fallback_strategies: Dict
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute multi-agent evaluation with domain-specific fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Orchestrates the evaluation workflow while applying Elegant Defense principles:
+    - Validates evaluation scope and agent availability before scoring
+    - Applies fallback scoring when direct metrics fail
+    - Maintains immutable evaluation state across pipeline stages
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        evaluation_task: Task definition containing criteria, weights, and scope
+        agent_outputs: List of agent responses to evaluate
+        fallback_strategies: Mapping of metric names to fallback methods
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Comprehensive evaluation report with scores, fallback usage, and audit trail
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate evaluation scope (Early Exit)
+    if not evaluation_task.get("criteria") or not agent_outputs:
+        raise EvaluationPipelineError("Missing criteria or agent outputs for evaluation")
+        
+    report = {
+        "task_id": evaluation_task["id"],
+        "agent_evaluations": [],
+        "fallback_applied": [],
+        "audit_log": []
+    }
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for output in agent_outputs:
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute domain-specific evaluation
+            eval_result = evaluate_agent_output(
+                output["response"],
+                evaluation_task["criteria"],
+                output.get("benchmark_context", {})
+            )
+            report["agent_evaluations"].append(eval_result)
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+        except MetricResolutionError as e:
+            # Apply evaluation-specific fallback (Law 4)
+            fallback_method = fallback_strategies.get(e.metric_name, "heuristic_estimate")
+            fallback_result = _apply_evaluation_fallback(output, fallback_method)
+            report["fallback_applied"].append({
+                "agent": output["id"],
+                "metric": e.metric_name,
+                "strategy": fallback_method
+            })
+            report["agent_evaluations"].append(fallback_result)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        report["audit_log"].append({
+            "agent_id": output["id"],
+            "status": "completed",
+            "timestamp": time.time()
+        })
+        
+    # Finalize report with immutable state
+    report["summary"] = _generate_evaluation_summary(report["agent_evaluations"])
+    return report
 ```
 
 ### MUST DO
@@ -320,3 +323,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

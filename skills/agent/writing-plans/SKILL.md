@@ -1,18 +1,25 @@
 ---
-name: writing-plans
-description: Implements intelligent writing plans with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent writing plans with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: writing-plans, writing plans, how do i writing-plans, orchestrate writing-plans, automate writing-plans, agent writing-plans
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: writing-plans, writing plans, how do i writing-plans, orchestrate writing-plans, automate writing-plans, agent
+    writing-plans
+  version: 1.0.0
+name: writing-plans
 ---
-
 # Writing Plans
 
 Orchestrates intelligent skill selection and execution for writing plans workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,111 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def generate_writing_plan(
+    request: Dict[str, Any],
+    available_templates: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Generate an optimal writing plan based on request parameters.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates content type, audience, tone, and length constraints against
+    available writing templates to produce a structured execution plan.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        request: User writing prompt with metadata (audience, tone, length, format)
+        available_templates: Pre-defined writing plan templates
+        min_confidence: Minimum match score required for plan selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Structured writing plan dict or None if no suitable template matches
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request.get("prompt") or not request.get("audience"):
+        raise ValueError("Writing plan requires 'prompt' and 'audience' fields")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    parsed_request = _normalize_writing_request(request)
+    best_plan = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
+    for template in available_templates:
+        score = _calculate_plan_fit(parsed_request, template)
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+            best_plan = template
+            
+    if best_plan is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Construct immutable plan structure
+    return {
+        "plan_id": str(uuid.uuid4()),
+        "template": best_plan["name"],
+        "sections": _generate_section_outline(parsed_request, best_plan),
+        "constraints": parsed_request["constraints"],
+        "confidence": best_score,
+        "created_at": datetime.now().isoformat()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_writing_plan(
+    plan: Dict[str, Any],
+    context: Dict[str, Any],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute a structured writing plan with resilience mechanisms.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Generates content section-by-section according to the plan. Implements
+    fallback strategies when specific sections fail or exceed token limits.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        plan: Validated writing plan structure
+        context: Execution context (drafts, references, style guides)
+        max_retries: Maximum retries per section before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Completed writing document with execution metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not plan.get("sections"):
+        raise ValueError("Writing plan contains no sections to execute")
+        
+    draft = {"title": context.get("title", "Untitled"), "sections": []}
+    execution_log = []
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    for section in plan["sections"]:
+        for attempt in range(max_retries + 1):
+            try:
+                content = _generate_section_content(section, context)
+                draft["sections"].append({
+                    "heading": section["heading"],
+                    "content": content,
+                    "word_count": len(content.split())
+                })
+                execution_log.append({"section": section["heading"], "status": "success", "attempt": attempt + 1})
+                break
+                
+            except TokenLimitError:
+                if attempt == max_retries:
+                    # Fallback: Generate condensed version
+                    content = _generate_condensed_section(section, context)
+                    draft["sections"].append({"heading": section["heading"], "content": content, "word_count": len(content.split()), "fallback": True})
+                    execution_log.append({"section": section["heading"], "status": "fallback", "attempt": attempt + 1})
+                    break
+            except GenerationError as e:
+                execution_log.append({"section": section["heading"], "status": "failed", "error": str(e)})
+                if attempt == max_retries:
+                    raise PlanExecutionError(f"Failed to generate section: {section['heading']}") from e
+                    
+    return {
+        "document": draft,
+        "metadata": {
+            "total_sections": len(draft["sections"]),
+            "fallbacks_applied": sum(1 for s in draft["sections"] if s.get("fallback")),
+            "execution_log": execution_log
+        }
+    }
 ```
 
 ### MUST DO
@@ -320,3 +312,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

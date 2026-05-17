@@ -1,18 +1,25 @@
 ---
-name: temporal-python-pro
-description: Implements intelligent temporal python pro with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent temporal python pro with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: temporal-python-pro, temporal python pro, how do i temporal-python-pro, orchestrate temporal-python-pro, automate temporal-python-pro, agent temporal-python-pro
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: temporal-python-pro, temporal python pro, how do i temporal-python-pro, orchestrate temporal-python-pro, automate
+    temporal-python-pro, agent temporal-python-pro
+  version: 1.0.0
+name: temporal-python-pro
 ---
-
 # Temporal Python Pro
 
 Orchestrates intelligent skill selection and execution for temporal python pro workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,146 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_temporal_task(
+    task_payload: Dict[str, Any],
+    skill_registry: List[Dict[str, Any]],
+    confidence_threshold: float = 0.75
+) -> Dict[str, Any]:
+    """Route a temporal workflow task to the optimal agent skill.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements multi-factor scoring: lexical match, historical success rate,
+    current system load, and dependency health. Enforces Law 2 (Parse at boundary)
+    and Law 1 (Early exit on invalid state).
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_payload.get("intent") or not task_payload.get("temporal_constraints"):
+        raise ValueError("Missing required temporal intent or constraints")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    intent = task_payload["intent"].lower()
+    constraints = task_payload["temporal_constraints"]
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    scored_candidates = []
+    for skill in skill_registry:
+        if not skill.get("active"):
+            continue
+            
+        # Factor 1: Lexical/Intent Match
+        intent_match = _calculate_semantic_similarity(intent, skill["triggers"])
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+        # Factor 2: Historical Performance
+        history_score = skill.get("success_rate", 0.0)
+        
+        # Factor 3: System Availability & Load
+        availability = 1.0 - (skill.get("current_load", 0.0) / 100.0)
+        
+        # Factor 4: Dependency Health
+        deps_healthy = all(
+            _check_dependency_health(dep) for dep in skill.get("dependencies", [])
+        )
+        if not deps_healthy:
+            continue
+            
+        # Weighted Multi-Factor Score
+        raw_score = (
+            0.4 * intent_match +
+            0.3 * history_score +
+            0.2 * availability +
+            0.1 * (1.0 if deps_healthy else 0.0)
+        )
+        
+        if raw_score >= confidence_threshold:
+            scored_candidates.append({
+                "skill": skill,
+                "score": raw_score,
+                "factors": {
+                    "intent": intent_match,
+                    "history": history_score,
+                    "availability": availability
+                }
+            })
+            
+    if not scored_candidates:
+        return {"status": "no_match", "fallback_required": True}
+        
+    scored_candidates.sort(key=lambda x: x["score"], reverse=True)
+    best = scored_candidates[0]
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Law 3: Return new structure, never mutate registry
+    return {
+        "status": "selected",
+        "skill_id": best["skill"]["id"],
+        "confidence": best["score"],
+        "routing_metadata": best["factors"],
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_with_temporal_fallback(
+    selected_skill: Dict[str, Any],
+    task_context: Dict[str, Any],
+    fallback_chain: List[Dict[str, Any]],
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute an agent skill with a domain-specific fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Enforces Law 4 (Fail Fast/Loud) and Law 1 (Early Exit).
+    Implements retry -> alternative skill -> human escalation.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    if not selected_skill or not task_context.get("task_id"):
+        raise ValueError("Missing skill metadata or task context")
+        
+    skill_id = selected_skill["skill_id"]
+    context = copy.deepcopy(task_context) # Law 3: Immutable inputs
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute with temporal timeout enforcement
+            result = _run_skill_with_timeout(
+                skill_id, context, timeout_seconds=selected_skill.get("timeout", 30)
+            )
             
-            # Success - Atomic Predictability (Law 3)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
+                "status": "success",
+                "skill_id": skill_id,
                 "result": result,
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except TemporalTimeoutError:
+            if attempt < max_retries:
+                continue # Retry
+            raise # Fail Loud on timeout
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except AgentExecutionError as e:
+            if attempt < max_retries:
+                continue # Retry with backoff
+            
+            # Fallback Chain Execution
+            for fallback_skill in fallback_chain:
+                try:
+                    fallback_result = _run_skill_with_timeout(
+                        fallback_skill["skill_id"], context, timeout_seconds=30
+                    )
+                    return {
+                        "status": "fallback_success",
+                        "original_skill": skill_id,
+                        "fallback_skill": fallback_skill["skill_id"],
+                        "result": fallback_result
+                    }
+                except Exception:
+                    continue
+                    
+            # Final Fallback: Human Escalation
+            return {
+                "status": "escalated",
+                "reason": "All automated fallbacks exhausted",
+                "task_context": context,
+                "requires_human_review": True
+            }
 ```
 
 ### MUST DO
@@ -320,3 +347,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

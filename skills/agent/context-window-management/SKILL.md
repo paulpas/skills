@@ -1,18 +1,25 @@
 ---
-name: context-window-management
-description: Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: context-window-management, context window management, how do i context-window-management, orchestrate context-window-management, automate context-window-management, agent context-window-management
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: context-window-management, context window management, how do i context-window-management, orchestrate context-window-management,
+    automate context-window-management, agent context-window-management
+  version: 1.0.0
+name: context-window-management
 ---
-
 # Context Window Management
 
 Orchestrates intelligent skill selection and execution for context window management workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,107 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def manage_context_window(
+    messages: List[Dict],
+    max_tokens: int,
+    tokenizer: Any,
+    strategy: str = "sliding_window"
+) -> Dict:
+    """Manage context window by enforcing token limits and applying retention strategies.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Implements Law 2 (Parse at boundary) by validating token counts immediately.
+    Implements Law 3 (Atomic Predictability) by returning a new context state.
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not messages:
+        raise ValueError("Context window cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Calculate current token usage at boundary
+    current_tokens = sum(len(tokenizer.encode(msg.get("content", ""))) for msg in messages)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if current_tokens <= max_tokens:
+        return {"status": "within_limits", "tokens_used": current_tokens, "messages": messages}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Apply retention strategy based on configuration
+    if strategy == "sliding_window":
+        # Keep recent messages, drop oldest until within budget
+        retained = []
+        tokens_in_retained = 0
+        for msg in reversed(messages):
+            msg_tokens = len(tokenizer.encode(msg.get("content", "")))
+            if tokens_in_retained + msg_tokens <= max_tokens:
+                retained.append(msg)
+                tokens_in_retained += msg_tokens
+            else:
+                break
+        return {
+            "status": "truncated",
+            "strategy": strategy,
+            "tokens_used": tokens_in_retained,
+            "messages": list(reversed(retained))
+        }
+    elif strategy == "summarize_oldest":
+        # Trigger summarization for oldest messages
+        oldest_chunk = messages[:len(messages)//2]
+        # In production, this would call an LLM summarization skill
+        summary = _generate_context_summary(oldest_chunk)
+        return {
+            "status": "summarized",
+            "strategy": strategy,
+            "tokens_used": len(tokenizer.encode(summary)) + sum(len(tokenizer.encode(m.get("content", ""))) for m in messages[len(messages)//2:]),
+            "messages": [{"role": "system", "content": f"[Context Summary]\n{summary}"}] + messages[len(messages)//2:]
+        }
+    else:
+        raise ValueError(f"Unsupported strategy: {strategy}")
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def handle_context_overflow(
+    current_context: Dict,
+    fallback_strategies: List[str],
+    confidence_threshold: float = 0.8
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Route context management when overflow occurs, applying fallback chains.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Law 4 (Fail Fast) by immediately halting on invalid overflow states.
+    Implements adaptive routing based on historical success rates.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    if not current_context.get("messages"):
+        raise ValueError("Cannot route empty context")
+        
+    overflow_tokens = current_context.get("tokens_used", 0) - current_context.get("max_tokens", 4096)
+    if overflow_tokens <= 0:
+        return {"action": "none", "reason": "within_limits"}
+        
+    # Evaluate fallback strategies by historical success rate
+    best_strategy = None
+    best_confidence = 0.0
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    for strategy in fallback_strategies:
+        # Simulate confidence scoring based on past performance
+        confidence = _get_strategy_confidence(strategy, overflow_tokens)
+        if confidence > best_confidence and confidence >= confidence_threshold:
+            best_confidence = confidence
+            best_strategy = strategy
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    if not best_strategy:
+        # Fail loud - escalate to human or strict truncation
+        return {
+            "action": "escalate",
+            "reason": "no_confident_fallback",
+            "overflow_tokens": overflow_tokens,
+            "fallback_tried": fallback_strategies
+        }
+        
+    # Execute selected fallback strategy
+    if best_strategy == "compress_metadata":
+        return _apply_metadata_compression(current_context)
+    elif best_strategy == "split_task":
+        return _split_context_into_subtasks(current_context)
+    else:
+        return _apply_default_truncation(current_context)
 ```
 
 ### MUST DO
@@ -320,3 +308,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

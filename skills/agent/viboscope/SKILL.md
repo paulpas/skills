@@ -1,18 +1,24 @@
 ---
-name: viboscope
-description: Implements intelligent viboscope with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent viboscope with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: viboscope, viboscope, how do i viboscope, orchestrate viboscope, automate viboscope, agent viboscope
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: viboscope, viboscope, how do i viboscope, orchestrate viboscope, automate viboscope, agent viboscope
+  version: 1.0.0
+name: viboscope
 ---
-
 # Viboscope
 
 Orchestrates intelligent skill selection and execution for viboscope workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,119 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
+def viboscope_select_module(
+    signal_metadata: Dict[str, Any],
+    available_modules: List[Dict],
+    calibration_threshold: float = 0.85
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Select optimal viboscope processing module based on signal characteristics.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates modules against raw signal features: frequency range, amplitude variance,
+    and sensor calibration status. Applies multi-factor scoring to route signals
+    through the most accurate processing pipeline.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        signal_metadata: Parsed signal features (freq_range_hz, amplitude_std, sensor_id)
+        available_modules: List of viboscope module configs with capabilities
+        calibration_threshold: Minimum calibration match required for selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected module dict with routing metadata or None
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not signal_metadata or not available_modules:
+        raise ValueError("Signal metadata and module registry required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_module = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for module in available_modules:
+        freq_match = _calculate_frequency_alignment(signal_metadata["freq_range_hz"], module["supported_hz"])
+        amp_match = _calculate_amplitude_compatibility(signal_metadata["amplitude_std"], module["dynamic_range"])
+        cal_score = _verify_sensor_calibration(signal_metadata["sensor_id"], module["calibrated_sensors"])
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        composite_score = (freq_match * 0.5) + (amp_match * 0.3) + (cal_score * 0.2)
+        
+        if composite_score > best_score and cal_score >= calibration_threshold:
+            best_score = composite_score
+            best_module = module
+            
+    if best_module is None:
         return None
     
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "module_id": best_module["id"],
+        "routing_score": best_score,
+        "signal_hash": hashlib.md5(json.dumps(signal_metadata, sort_keys=True).encode()).hexdigest(),
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def viboscope_execute_pipeline(
+    selected_module: Dict,
+    raw_signal_data: bytes,
+    fallback_config: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Execute viboscope signal processing pipeline with domain-specific fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Runs the selected module against raw vibration data. Implements graceful degradation
+    when signal quality drops or hardware latency exceeds thresholds.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_module: Output from viboscope_select_module
+        raw_signal_data: Raw byte stream from vibroscope sensor
+        fallback_config: Fallback routing rules and degradation parameters
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Processed signal dict with quality metrics and routing history
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    pipeline_state = {"attempts": 0, "degradation_level": 0, "module_id": selected_module["module_id"]}
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    for attempt in range(fallback_config.get("max_retries", 3)):
+        pipeline_state["attempts"] += 1
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Apply module-specific signal transformation
+            processed = _apply_viboscope_transform(raw_signal_data, selected_module["module_id"])
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
+            # Validate output integrity
+            quality_score = _calculate_signal_to_noise_ratio(processed)
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+            if quality_score >= fallback_config.get("min_quality_threshold", 0.7):
+                return {
+                    "status": "success",
+                    "processed_signal": processed,
+                    "quality_score": quality_score,
+                    "routing_path": [selected_module["module_id"]],
+                    "pipeline_state": pipeline_state
+                }
+                
+            # Signal degraded - trigger adaptive fallback
+            raw_signal_data = _apply_noise_filtering(raw_signal_data)
+            selected_module = fallback_config["adaptive_modules"][pipeline_state["degradation_level"]]
+            pipeline_state["degradation_level"] += 1
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except SensorDriftError as e:
+            # Hardware drift detected - switch to reference calibration
+            raw_signal_data = _apply_reference_calibration(raw_signal_data, fallback_config["reference_sensor"])
+            continue
+            
+        except HardwareTimeoutError:
+            if attempt == fallback_config.get("max_retries", 3) - 1:
+                raise PipelineExecutionError("Viboscope pipeline exhausted all hardware retries")
+            time.sleep(fallback_config.get("backoff_seconds", 0.5))
+            
+    return {
+        "status": "degraded",
+        "processed_signal": processed,
+        "quality_score": quality_score,
+        "routing_path": pipeline_state.get("fallback_chain", []),
+        "pipeline_state": pipeline_state
+    }
 ```
 
 ### MUST DO
@@ -320,3 +319,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

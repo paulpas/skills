@@ -1,21 +1,25 @@
 ---
-name: e2e-testing
-description: Implements intelligent e2e testing with multi-factor skill selection,
-  fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent e2e testing with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: agent
-  triggers: e2e-testing, e2e testing, how do i e2e-testing, orchestrate e2e-testing,
-    automate e2e-testing, agent e2e-testing, selenium, unit tests
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: e2e-testing, e2e testing, how do i e2e-testing, orchestrate e2e-testing, automate e2e-testing, agent e2e-testing,
+    selenium, unit tests
+  version: 1.0.0
+name: e2e-testing
 ---
-
-
 # E2E Testing
 
 Orchestrates intelligent skill selection and execution for e2e testing workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -137,126 +141,120 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def orchestrate_e2e_suite(
+    test_manifest: List[Dict],
+    environment_state: Dict,
+    browser_pool: List[Dict]
+) -> List[Dict]:
+    """Orchestrate E2E test execution by routing tests to optimal browser/environment combos.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates test requirements against available browser contexts and environment health.
+    Applies flakiness history to schedule unstable tests during low-traffic windows.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        test_manifest: List of test specs with required browsers, auth types, and endpoints
+        environment_state: Current state of staging/prod-like environments
+        browser_pool: Available browser contexts with version and capability metadata
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Ordered execution plan mapping tests to specific browser contexts
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    execution_plan = []
+    for test in test_manifest:
+        required_browser = test.get("target_browser", "chromium")
+        requires_auth = test.get("auth_type") == "oauth2"
+        is_flaky = test.get("historical_flakiness", 0) > 0.3
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        # Filter available browsers by capability and version
+        compatible_browsers = [
+            b for b in browser_pool 
+            if b["engine"] == required_browser and b["version"] >= test.get("min_version", "110")
+        ]
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        if not compatible_browsers:
+            raise ValueError(f"No compatible {required_browser} context for test {test['id']}")
+            
+        # Select browser with lowest current load, prioritizing stable contexts for flaky tests
+        selected_context = min(
+            compatible_browsers,
+            key=lambda b: (b["current_load"], 0 if not is_flaky else 1)
+        )
+        
+        execution_plan.append({
+            "test_id": test["id"],
+            "browser_context": selected_context["id"],
+            "auth_setup": _configure_auth_session(requires_auth, environment_state["auth_endpoint"]),
+            "network_mock": _apply_api_mocks(test.get("mock_endpoints", [])),
+            "timeout_ms": test.get("timeout", 30000)
+        })
+        
+    return execution_plan
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_test_with_resilience(
+    test_plan: Dict,
+    test_runner: object,
+    diagnostic_store: object
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a single E2E test with built-in resilience and diagnostic fallback.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements retry logic for transient network/UI issues, captures screenshots/video on failure,
+    and falls back to lightweight smoke assertions if full DOM interaction fails.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        test_plan: Execution plan generated by orchestrate_e2e_suite
+        test_runner: Initialized Playwright/Cypress runner instance
+        diagnostic_store: Storage backend for screenshots, traces, and logs
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Test result dict with status, duration, and diagnostic artifacts
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    max_retries = 2
+    last_error = None
+    page = None
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            context = test_runner.new_context(
+                base_url=test_plan["base_url"],
+                storage_state=test_plan["auth_setup"],
+                extra_http_headers=test_plan.get("headers", {})
+            )
+            page = context.new_page()
+            for mock in test_plan["network_mock"]:
+                page.route(mock["pattern"], mock["handler"])
+                
+            result = test_runner.run_steps(page, test_plan["steps"])
+            diagnostic_store.save_trace(page, test_plan["test_id"], attempt)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "passed",
+                "test_id": test_plan["test_id"],
+                "duration_ms": result["elapsed"],
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "artifacts": diagnostic_store.get_latest(test_plan["test_id"])
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
+        except (TimeoutError, NetworkError, AssertionError) as e:
+            last_error = e
+            if page:
+                diagnostic_store.capture_screenshot(page, test_plan["test_id"], attempt)
+                diagnostic_store.capture_console_logs(page, test_plan["test_id"])
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)
+            continue
             
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    fallback_result = _run_lightweight_smoke_check(test_plan["base_url"], test_plan["critical_paths"])
+    return {
+        "status": "flaky" if fallback_result["passed"] else "failed",
+        "test_id": test_plan["test_id"],
+        "error": str(last_error),
+        "fallback_status": fallback_result["status"],
+        "artifacts": diagnostic_store.get_latest(test_plan["test_id"])
+    }
 ```
 
 ### MUST DO
@@ -323,3 +321,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

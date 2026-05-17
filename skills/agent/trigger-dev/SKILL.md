@@ -1,18 +1,24 @@
 ---
-name: trigger-dev
-description: Implements intelligent trigger dev with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent trigger dev with multi-factor skill selection, fallback chains, and adherence to the 5
+  Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: trigger-dev, trigger dev, how do i trigger-dev, orchestrate trigger-dev, automate trigger-dev, agent trigger-dev
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: trigger-dev, trigger dev, how do i trigger-dev, orchestrate trigger-dev, automate trigger-dev, agent trigger-dev
+  version: 1.0.0
+name: trigger-dev
 ---
-
 # Trigger Dev
 
 Orchestrates intelligent skill selection and execution for trigger dev workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +140,165 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def route_trigger_event(
+    event_payload: Dict[str, Any],
+    registered_workflows: List[Dict[str, Any]],
+    event_schema: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Route incoming trigger events to the appropriate workflow handler.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Validates event schema, extracts trigger metadata, and matches
+    against registered workflow definitions using payload signatures
+    and scheduling constraints. Implements early validation and
+    immutable routing decisions.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        event_payload: Raw event data from webhook, schedule, or queue
+        registered_workflows: List of available workflow configurations
+        event_schema: JSON schema for payload validation
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision with matched workflow, execution context, and priority
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Guard clause - validate payload structure (Law 1)
+    if not event_payload or not isinstance(event_payload, dict):
+        raise ValueError("Event payload must be a non-empty dictionary")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Parse and validate against schema (Law 2)
+    try:
+        validated_payload = json.loads(json.dumps(event_payload))
+        jsonschema.validate(instance=validated_payload, schema=event_schema)
+    except jsonschema.ValidationError as e:
+        raise ValueError(f"Invalid trigger payload: {e.message}") from e
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Extract trigger signature and metadata
+    trigger_type = validated_payload.get("type")
+    source = validated_payload.get("source")
+    timestamp = validated_payload.get("timestamp", time.time())
     
-    if best_skill is None:
-        return None
+    # Match against registered workflows
+    matched_workflows = []
+    for wf in registered_workflows:
+        if wf.get("trigger_type") == trigger_type and wf.get("source") == source:
+            score = _calculate_workflow_match_score(validated_payload, wf)
+            matched_workflows.append({
+                "workflow_id": wf["id"],
+                "match_score": score,
+                "config": wf
+            })
+            
+    if not matched_workflows:
+        return {"status": "unrouted", "reason": "no_matching_workflow"}
+        
+    # Sort by match score and select optimal workflow
+    matched_workflows.sort(key=lambda x: x["match_score"], reverse=True)
+    selected = matched_workflows[0]
     
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Return immutable routing decision (Law 3)
+    return {
+        "status": "routed",
+        "workflow_id": selected["workflow_id"],
+        "priority": selected["match_score"],
+        "execution_context": {
+            "payload": validated_payload,
+            "trigger_type": trigger_type,
+            "timestamp": timestamp,
+            "routing_metadata": {
+                "matched_count": len(matched_workflows),
+                "selected_score": selected["match_score"]
+            }
+        }
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_trigger_job(
+    workflow_config: Dict[str, Any],
+    execution_context: Dict[str, Any],
+    fallback_handlers: List[Callable],
+    max_retries: int = 3
+) -> Dict[str, Any]:
+    """Execute a trigger-based workflow with built-in retry and fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Orchestrates step execution, handles transient failures with exponential
+    backoff, and routes to fallback handlers when primary execution fails.
+    Implements fail-fast validation and immutable result reporting.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        workflow_config: Workflow definition with steps and trigger config
+        execution_context: Validated payload and routing metadata
+        fallback_handlers: List of alternative execution paths or error handlers
+        max_retries: Maximum retry attempts for transient failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, timing, step history, and fallback status
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Guard clause - validate workflow structure (Law 1)
+    required_keys = {"id", "steps", "trigger_type"}
+    if not all(key in workflow_config for key in required_keys):
+        raise ValueError("Workflow config missing required keys: id, steps, trigger_type")
+        
+    # Parse execution context immutably (Law 2)
+    job_id = f"job_{workflow_config['id']}_{uuid4().hex[:8]}"
+    step_history = []
+    current_payload = dict(execution_context["payload"])
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
+    # Execute workflow steps with retry logic
+    for step_idx, step in enumerate(workflow_config["steps"]):
+        attempt = 0
+        step_success = False
+        
+        while attempt <= max_retries and not step_success:
+            try:
+                # Execute step with timeout and validation
+                result = _run_step(step, current_payload, timeout=30)
+                
+                # Validate step output before proceeding
+                if not _validate_step_output(result, step.get("output_schema")):
+                    raise ValueError(f"Step {step_idx} produced invalid output")
+                    
+                step_history.append({
+                    "step": step["name"],
+                    "status": "success",
+                    "attempts": attempt + 1,
+                    "output": result
+                })
+                current_payload = result
+                step_success = True
+                
+            except TransientError as e:
+                attempt += 1
+                if attempt > max_retries:
+                    raise
+                # Exponential backoff for transient failures
+                backoff = min(2 ** attempt * 0.5, 10.0)
+                time.sleep(backoff)
+                
+        if not step_success:
+            # Step failed permanently - route to fallback
+            fallback_result = _apply_fallback_chain(step, current_payload, fallback_handlers)
+            step_history.append({
+                "step": step["name"],
+                "status": "fallback_applied",
+                "fallback_result": fallback_result
+            })
             
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    # Return immutable execution report (Law 3)
+    return {
+        "job_id": job_id,
+        "status": "completed",
+        "steps_executed": len(step_history),
+        "step_history": step_history,
+        "final_payload": current_payload,
+        "timing": {
+            "started_at": execution_context["timestamp"],
+            "completed_at": time.time(),
+            "total_duration_ms": (time.time() - execution_context["timestamp"]) * 1000
+        }
+    }
 ```
 
 ### MUST DO
@@ -320,3 +365,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

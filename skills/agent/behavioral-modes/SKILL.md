@@ -1,18 +1,25 @@
 ---
-name: behavioral-modes
-description: Implements intelligent behavioral modes with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent behavioral modes with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: behavioral-modes, behavioral modes, how do i behavioral-modes, orchestrate behavioral-modes, automate behavioral-modes, agent behavioral-modes
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: behavioral-modes, behavioral modes, how do i behavioral-modes, orchestrate behavioral-modes, automate behavioral-modes,
+    agent behavioral-modes
+  version: 1.0.0
+name: behavioral-modes
 ---
-
 # Behavioral Modes
 
 Orchestrates intelligent skill selection and execution for behavioral modes workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,132 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def resolve_behavioral_mode(
+    task_intent: str,
+    current_context: Dict[str, Any],
+    available_modes: List[Dict[str, Any]],
+    min_confidence: float = 0.75
+) -> Optional[Dict[str, Any]]:
+    """Resolve the optimal behavioral mode for a given task intent.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Applies domain-specific scoring based on:
+    - Intent-to-mode semantic alignment
+    - Contextual state constraints (e.g., cannot debug without code)
+    - Historical success rates for similar task patterns
+    - Mode dependency chains (e.g., planning -> coding -> review)
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        task_intent: Parsed natural language intent
+        current_context: Agent state including active files, recent actions, error logs
+        available_modes: List of mode definitions with triggers and constraints
+        min_confidence: Minimum threshold for mode activation
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected mode dict with confidence score and routing metadata
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_intent or not available_modes:
+        raise ValueError("Task intent and available modes are required")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Extract contextual constraints from current state
+    context_flags = _extract_context_flags(current_context)
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
+    best_mode = None
     best_score = 0.0
     
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    for mode in available_modes:
+        # Domain-specific scoring: intent alignment + state compatibility
+        intent_score = _calculate_intent_alignment(task_intent, mode["triggers"])
+        state_score = _validate_state_compatibility(mode["constraints"], context_flags)
+        history_score = mode.get("historical_success_rate", 0.5)
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+        # Weighted composite score with domain penalties
+        composite = (intent_score * 0.5) + (state_score * 0.3) + (history_score * 0.2)
+        
+        # Apply mode dependency penalty if prerequisite mode isn't active
+        if mode.get("requires_mode") and mode["requires_mode"] != current_context.get("active_mode"):
+            composite *= 0.7
+            
+        if composite > best_score and composite >= min_confidence:
+            best_score = composite
+            best_mode = mode
+            
+    if best_mode is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable snapshot with routing metadata
+    return {
+        "mode": best_mode["name"],
+        "confidence": round(best_score, 3),
+        "routing_context": {
+            "intent_match": intent_score,
+            "state_valid": state_score > 0.5,
+            "timestamp": time.time()
+        }
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_behavioral_mode(
+    target_mode: Dict[str, Any],
+    execution_context: Dict[str, Any],
+    fallback_hierarchy: List[str] = None
+) -> Dict[str, Any]:
+    """Execute a behavioral mode with domain-aware fallback routing.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements mode-specific execution with automatic degradation:
+    1. Attempt primary mode execution
+    2. If blocked by constraints, fallback to next compatible mode
+    3. If critical failure, escalate to planning/review mode
+    4. Log state transitions for audit and confidence updating
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        target_mode: Mode definition from resolve_behavioral_mode
+        execution_context: Task payload, file references, and agent state
+        fallback_hierarchy: Ordered list of mode names to try on failure
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with mode transition metadata and confidence update
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    fallback_hierarchy = fallback_hierarchy or target_mode.get("fallback_chain", [])
+    current_mode = execution_context.get("active_mode", "default")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    try:
+        # Validate mode transition constraints
+        _validate_mode_transition(current_mode, target_mode["name"])
+        
+        # Execute mode-specific logic
+        result = _run_mode_logic(target_mode["name"], execution_context)
+        
+        # Update confidence based on execution outcome
+        confidence_delta = _calculate_confidence_delta(result["success"], target_mode["name"])
+        
+        return {
+            "success": True,
+            "mode_executed": target_mode["name"],
+            "previous_mode": current_mode,
+            "result": result,
+            "confidence_adjustment": confidence_delta,
+            "execution_time_ms": time.time() * 1000
+        }
+        
+    except ModeConstraintError as e:
+        # Domain-specific fallback: try next mode in hierarchy
+        if fallback_hierarchy:
+            next_mode_name = fallback_hierarchy[0]
+            next_mode = _resolve_mode_by_name(next_mode_name, execution_context)
+            if next_mode:
+                return execute_behavioral_mode(next_mode, execution_context, fallback_hierarchy[1:])
+        raise ModeExecutionError(f"Mode {target_mode['name']} failed constraint check: {e}")
+        
+    except CriticalFailureError as e:
+        # Escalate to high-level oversight mode
+        escalation_mode = _find_escalation_mode(target_mode["name"])
+        if escalation_mode:
+            return execute_behavioral_mode(escalation_mode, execution_context, [])
+        raise ModeExecutionError(f"Critical failure in {target_mode['name']}: {e}")
 ```
 
 ### MUST DO
@@ -320,3 +333,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,24 +1,25 @@
 ---
-name: v12-learning
-description: '"Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration"
-  INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections,
-  safe navigation operator, server-side joins'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- examples
+- diagrams
+description: '"Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY,
+  JSON support, generic collections, safe navigation operator, server-side joins'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: programming
+  output-format: code
+  related-skills: abl-v10-learning, algorithms
   role: reference
   scope: implementation
-  output-format: code
-  triggers: abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch
-    throw, jsonobject, read-json
-  related-skills: abl-v10-learning, algorithms
+  triggers: abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch throw, jsonobject, read-json
+  version: 1.0.0
+name: v12-learning
 ---
-
-
-
-
 # Progress OpenEdge ABL 12 — v10 to v12 Migration Reference
 
 > **Version:** Progress OpenEdge 12.7 (May 2023)  
@@ -819,3 +820,37 @@ END.
 ---
 
 *Compiled from official Progress OpenEdge 12.7 documentation. Last updated: May 2023*
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing or analyzing algorithms** — You need to understand, implement, or optimize algorithms for a specific problem domain
+- **Comparing algorithmic approaches** — You are evaluating different algorithms for correctness, performance, or trade-offs
+- **Studying computational patterns** — You need reference implementations and complexity analysis for standard algorithmic patterns
+---
+
+## Core Workflow
+
+1. **Understand the Problem** — Identify inputs, outputs, constraints, and edge cases. **Checkpoint:** Clearly define the problem statement and expected behavior.
+
+2. **Select Algorithm** — Choose the most appropriate algorithm based on constraints (time/space complexity, data size, ordering requirements). **Checkpoint:** Justify the algorithm choice with complexity analysis.
+
+3. **Implement & Test** — Write clean, readable code with type hints, docstrings, and edge case handling. **Checkpoint:** Verify correctness with multiple test cases including edge cases.
+
+4. **Analyze & Optimize** — Review time/space complexity, identify optimization opportunities, and validate against benchmarks. **Checkpoint:** Confirm complexity bounds match analysis and all test cases pass.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include time and space complexity analysis for all algorithms
+- Show at least one working example with input/output
+- Include diagrams for non-trivial algorithm flows
+
+### MUST NOT DO
+- Present an algorithm without its complexity bounds
+- Use recursive solutions without discussing tail-call or memoization alternatives
+- Omit edge case handling in examples

@@ -1,18 +1,26 @@
 ---
-name: service-mesh-debugging
-description: Implements comprehensive debugging workflows for Istio and Linkerd service meshes including mTLS validation, sidecar injection issues, traffic routing problems, and mesh observability for microservices.
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements comprehensive debugging workflows for Istio and Linkerd service meshes including mTLS validation,
+  sidecar injection issues, traffic routing problems, and mesh observability for microservices.
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: istio debugging, linkerd troubleshooting, service mesh issues, envoy errors, mTLS problems, traffic routing, sidecar injection, mesh monitoring
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-network-troubleshooting, cncf-istio, cncf-kubernetes-debugging
+  role: implementation
+  scope: implementation
+  triggers: istio debugging, linkerd troubleshooting, service mesh issues, envoy errors, mTLS problems, traffic routing, sidecar
+    injection, mesh monitoring
+  version: 1.0.0
+name: service-mesh-debugging
 ---
-
 # Service Mesh Debugging
 
 Implements comprehensive debugging and troubleshooting workflows for Istio and Linkerd service meshes including mTLS validation, sidecar injection issues, traffic routing problems, and mesh observability for microservices.

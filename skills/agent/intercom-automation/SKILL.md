@@ -1,18 +1,25 @@
 ---
-name: intercom-automation
-description: Implements intelligent intercom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent intercom automation with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: intercom-automation, intercom automation, how do i intercom-automation, orchestrate intercom-automation, automate intercom-automation, agent intercom-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: intercom-automation, intercom automation, how do i intercom-automation, orchestrate intercom-automation, automate
+    intercom-automation, agent intercom-automation
+  version: 1.0.0
+name: intercom-automation
 ---
-
 # Intercom Automation
 
 Orchestrates intelligent skill selection and execution for intercom automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,143 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def route_intercom_request(
+    event_payload: Dict,
+    intercom_client: Intercom,
     min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+) -> Dict:
+    """Route an incoming Intercom event to the appropriate automation handler.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Parses Intercom webhook payloads (conversations, contacts, articles) and
+    maps them to specific API actions based on event type and metadata.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        event_payload: Raw Intercom webhook JSON payload
+        intercom_client: Authenticated Intercom Python client instance
+        min_confidence: Minimum confidence threshold for auto-routing
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing decision dict with action, target_id, and confidence score
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not event_payload or "type" not in event_payload:
+        raise ValueError("Invalid Intercom webhook payload: missing 'type' field")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    event_type = event_payload["type"]
+    target_id = event_payload.get("data", {}).get("id")
     
+    if not target_id:
+        raise ValueError("Intercom event missing target ID")
+        
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    action_map = {
+        "conversation.user.created": "send_welcome_message",
+        "conversation.reply.created": "route_to_support_agent",
+        "contact.updated": "sync_contact_profile",
+        "article.published": "update_knowledge_base_cache"
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    target_action = action_map.get(event_type)
+    if not target_action:
+        return {"action": "manual_review", "confidence": 0.0, "reason": "unmapped_event_type"}
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
+    # Validate against Intercom API constraints
+    try:
+        contact = intercom_client.contacts.find(target_id)
+        is_premium = contact.tags and any(tag.name == "premium" for tag in contact.tags)
+        confidence = 0.95 if is_premium else 0.75
+    except IntercomError:
+        confidence = 0.5
+        
+    if confidence < min_confidence:
+        return {"action": "defer_to_human", "confidence": confidence}
+        
     # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    return {
+        "action": target_action,
+        "target_id": target_id,
+        "event_type": event_type,
+        "confidence": confidence,
+        "timestamp": time.time()
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_intercom_action(
+    routing_decision: Dict,
+    intercom_client: Intercom,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute Intercom API automation with resilience patterns.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles Intercom-specific constraints: rate limits (429), 
+    idempotency requirements, and graceful degradation to draft/manual states.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        routing_decision: Output from route_intercom_request
+        intercom_client: Authenticated Intercom Python client instance
+        max_retries: Maximum retry attempts for transient API failures
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with status, API response metadata, and fallback status
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    action = routing_decision["action"]
+    target_id = routing_decision["target_id"]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
+    # Guard clause - validate routing decision (Early Exit)
+    if not action or action == "manual_review":
+        return {"status": "skipped", "reason": "requires_human_intervention"}
+        
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
+            if action == "send_welcome_message":
+                response = intercom_client.messages.create(
+                    message_type="inapp",
+                    to={"type": "contact", "id": target_id},
+                    body="Welcome! How can we help you today?"
+                )
+            elif action == "route_to_support_agent":
+                response = intercom_client.conversations.assign(
+                    conversation_id=target_id,
+                    assignee_type="team",
+                    assignee_id="support_team_id"
+                )
+            elif action == "sync_contact_profile":
+                response = intercom_client.contacts.update(
+                    contact_id=target_id,
+                    tags=["synced"]
+                )
+            else:
+                raise ValueError(f"Unsupported action: {action}")
+                
             # Success - Atomic Predictability (Law 3)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "status": "success",
+                "action": action,
+                "api_response_id": response.id,
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except RateLimitError:
+            # Intercom rate limit - exponential backoff (Law 4)
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_draft_mode(intercom_client, action, target_id)
+            time.sleep(2 ** attempt)
+            
+        except IntercomError as e:
+            # Fail Fast - Don't retry on invalid state (Law 4)
+            return {
+                "status": "failed",
+                "action": action,
+                "error": str(e),
+                "fallback_triggered": True
+            }
+            
+    return {"status": "exhausted", "action": action}
 ```
 
 ### MUST DO
@@ -320,3 +344,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

@@ -1,18 +1,25 @@
 ---
-name: stripe-automation
-description: Implements intelligent stripe automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent stripe automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: stripe-automation, stripe automation, how do i stripe-automation, orchestrate stripe-automation, automate stripe-automation, agent stripe-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: stripe-automation, stripe automation, how do i stripe-automation, orchestrate stripe-automation, automate stripe-automation,
+    agent stripe-automation
+  version: 1.0.0
+name: stripe-automation
 ---
-
 # Stripe Automation
 
 Orchestrates intelligent skill selection and execution for stripe automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,109 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
+def route_stripe_intent(
+    user_request: Dict,
+    stripe_config: Dict,
     min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+) -> Dict:
+    """Route a Stripe automation request to the appropriate SDK endpoint.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Validates parameters against Stripe API requirements and selects
+    the optimal operation (customer, payment, subscription, webhook).
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_request.get("intent") or not stripe_config.get("api_key"):
+        raise ValueError("Missing required Stripe intent or API configuration")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    intent = user_request["intent"].lower()
+    params = user_request.get("parameters", {})
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Map intents to Stripe SDK methods with parameter validation
+    stripe_routes = {
+        "create_customer": ("customers", "create", {"email": str, "name": str}),
+        "process_payment": ("charges", "create", {"amount": int, "currency": str, "source": str}),
+        "update_subscription": ("subscriptions", "update", {"subscription_id": str, "status": str}),
+        "handle_webhook": ("webhooks", "construct", {"payload": str, "sig_header": str})
+    }
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if intent not in stripe_routes:
+        raise ValueError(f"Unsupported Stripe intent: {intent}")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    endpoint, method, required_fields = stripe_routes[intent]
+    missing = [f for f in required_fields if f not in params]
+    if missing:
+        raise ValueError(f"Missing required Stripe parameters: {missing}")
+        
+    return {
+        "route": f"stripe.{endpoint}.{method}",
+        "validated_params": params,
+        "intent": intent,
+        "confidence": min_confidence,
+        "idempotency_key": f"stripe_{intent}_{uuid4()}"
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_stripe_operation(
+    route_config: Dict,
+    stripe_client: Any,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a validated Stripe operation with idempotency and fallback handling.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Stripe-specific resilience:
+    - Idempotency keys prevent duplicate charges/subscriptions
+    - Handles StripeCardError, StripeAPIError, and rate limits
+    - Falls back to manual review or alternative payment methods
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    endpoint = route_config["route"]
+    params = route_config["validated_params"]
+    idempotency_key = route_config["idempotency_key"]
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Parse endpoint string to dynamic method call
+            module_name, method_name = endpoint.split(".")
+            stripe_module = getattr(stripe, module_name)
+            method = getattr(stripe_module, method_name)
             
-            # Success - Atomic Predictability (Law 3)
+            # Execute with idempotency key for safe retries
+            result = method(
+                **params,
+                idempotency_key=idempotency_key if method_name != "construct" else None
+            )
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "stripe_operation": endpoint,
+                "stripe_id": result.get("id"),
+                "status": result.get("status"),
                 "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "latency_ms": time.time() * 1000
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
+        except stripe.error.CardError as e:
+            # Payment failed - immediate fail, no retry for card errors
+            raise StripeOperationError(
+                f"Card declined: {e.user_message}",
+                stripe_code=e.code
             ) from e
             
-        except TransientError as e:
-            # Transient error - try fallback
+        except stripe.error.RateLimitError as e:
+            # Transient - retry with exponential backoff
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)
+                continue
+            return _fallback_to_manual_review(route_config, e)
+            
+        except stripe.error.APIError as e:
+            # Other API errors - fallback chain
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _fallback_to_alternative_payment(route_config, e)
+                
+    raise StripeOperationError(f"Stripe {endpoint} failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +310,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

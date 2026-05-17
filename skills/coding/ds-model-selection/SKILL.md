@@ -1,22 +1,25 @@
 ---
-name: model-selection
-description: '"Provides Compares and selects models using AIC, BIC, validation curves,
-  learning curves, and model comparison techniques"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Compares and selects models using AIC, BIC, validation curves, learning curves, and model comparison
+  techniques"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-bias-variance-tradeoff, ds-cross-validation, ds-ensemble-methods, ds-hyperparameter-tuning ds-regression-evaluation
   role: implementation
   scope: implementation
-  output-format: code
   triggers: model selection, AIC, BIC, validation curves, learning curves, model comparison
-  related-skills: ds-bias-variance-tradeoff, ds-cross-validation, ds-ensemble-methods, ds-hyperparameter-tuning
-    ds-regression-evaluation
+  version: 1.0.0
+name: model-selection
 ---
-
-
-
 # Model Selection
 
 Comprehensive guide to model selection in machine learning and data science workflows.
@@ -58,34 +61,154 @@ Model Selection is a critical component of the machine learning workflow. This s
 ### Pattern 1: Basic Model Selection
 
 ```python
-# Example pattern for Model Selection
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from typing import Dict, Any
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.datasets import make_regression
 
-# Implementation pattern
-pass
+def basic_model_selection() -> Dict[str, Any]:
+    """
+    Demonstrates basic model selection by comparing Linear and Ridge regression.
+    Follows DRY principle by centralizing evaluation logic.
+    """
+    X, y = make_regression(n_samples=500, n_features=10, noise=0.1, random_state=42)
+    df = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+    df['target'] = y
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        df.drop('target', axis=1), df['target'], test_size=0.2, random_state=42
+    )
+
+    models: Dict[str, Any] = {
+        'Linear Regression': LinearRegression(),
+        'Ridge Regression': Ridge(alpha=1.0)
+    }
+
+    results: Dict[str, Any] = {}
+    for name, model in models.items():
+        cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        r2 = r2_score(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+
+        results[name] = {
+            'cv_r2_mean': float(np.mean(cv_scores)),
+            'cv_r2_std': float(np.std(cv_scores)),
+            'test_r2': float(r2),
+            'test_mse': float(mse)
+        }
+        print(f"{name} - CV R2: {np.mean(cv_scores):.4f} (+/- {np.std(cv_scores):.4f}), Test R2: {r2:.4f}")
+
+    return results
+
+if __name__ == "__main__":
+    basic_model_selection()
 ```
 
 ### Pattern 2: Production-Ready Model Selection
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Any, Dict, List
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.datasets import make_classification
 
 logger = logging.getLogger(__name__)
 
-class ModelSelection:
-    """Production implementation of Model Selection"""
+class ModelSelector:
+    """Production implementation of Model Selection following SOLID principles."""
     
-    def __init__(self):
-        pass
+    def __init__(self, cv_folds: int = 5, random_state: int = 42) -> None:
+        self.cv_folds = cv_folds
+        self.random_state = random_state
+        self.selected_model: Any = None
+        self.results: Dict[str, Any] = {}
     
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
+    def _prepare_data(self, data: pd.DataFrame, target_col: str) -> tuple:
+        if target_col not in data.columns:
+            raise ValueError(f"Target column '{target_col}' not found in data")
+        X = data.drop(columns=[target_col])
+        y = data[target_col]
+        if X.isnull().any().any() or y.isnull().any():
+            logger.warning("Data contains missing values. Dropping rows with NaN.")
+            X, y = X.dropna(), y.dropna()
+        return train_test_split(X, y, test_size=0.2, random_state=self.random_state, stratify=y)
+    
+    def execute(self, data: pd.DataFrame, target_col: str = 'target') -> Dict[str, Any]:
         """Execute Model Selection on data"""
-        return {}
+        try:
+            X_train, X_test, y_train, y_test = self._prepare_data(data, target_col)
+            models = {
+                'Logistic Regression': LogisticRegression(max_iter=1000, random_state=self.random_state),
+                'Random Forest': RandomForestClassifier(n_estimators=100, random_state=self.random_state),
+                'SVM': SVC(kernel='rbf', probability=True, random_state=self.random_state)
+            }
+
+            best_score = -np.inf
+            best_name = None
+
+            for name, model in models.items():
+                cv_scores = cross_val_score(model, X_train, y_train, cv=self.cv_folds, scoring='accuracy')
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                acc = accuracy_score(y_test, y_pred)
+                report = classification_report(y_test, y_pred, output_dict=True)
+
+                self.results[name] = {
+                    'cv_accuracy_mean': float(np.mean(cv_scores)),
+                    'cv_accuracy_std': float(np.std(cv_scores)),
+                    'test_accuracy': float(acc),
+                    'classification_report': report
+                }
+
+                if np.mean(cv_scores) > best_score:
+                    best_score = np.mean(cv_scores)
+                    best_name = name
+                    self.selected_model = model
+
+            logger.info(f"Selected model: {best_name} with CV accuracy: {best_score:.4f}")
+            return self.results
+        except Exception as e:
+            logger.error(f"Model selection failed: {str(e)}")
+            raise
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
+    df = pd.DataFrame(X, columns=[f'feat_{i}' for i in range(X.shape[1])])
+    df['target'] = y
+    selector = ModelSelector(cv_folds=5)
+    results = selector.execute(df, target_col='target')
+    print(f"Best model selected: {selector.selected_model}")
+```
+
+### BAD vs GOOD Example
+
+```python
+# BAD: Hardcoded values, no error handling, mixes data prep and evaluation
+def bad_selection(data):
+    model = LinearRegression()
+    model.fit(data[:, :-1], data[:, -1])
+    return model.score(data[:, :-1], data[:, -1])
+
+# GOOD: Type hints, validation, separation of concerns, proper metrics
+def good_selection(X: np.ndarray, y: np.ndarray) -> float:
+    if X.shape[0] != y.shape[0]:
+        raise ValueError("X and y must have the same number of samples")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    return float(r2_score(y_test, model.predict(X_test)))
 ```
 
 ## Best Practices
@@ -111,76 +234,63 @@ class ModelSelection:
 ## Complete Working Example
 
 ```python
-# Full working example for Model Selection
-import pandas as pd
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from typing import Dict, Any
+from sklearn.model_selection import train_test_split, learning_curve
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.datasets import make_regression
 
-def implement_selection(data: pd.DataFrame) -> Dict[str, Any]:
-    """
-    Complete implementation of Model Selection.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_selection(df)
-        >>> print(results)
-    """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
-    
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
+def calculate_aic_bic(n: int, rss: float, k: int) -> tuple:
+    """Calculate AIC and BIC for linear regression models."""
+    if rss <= 0:
+        raise ValueError("Residual sum of squares must be positive")
+    aic = n * np.log(rss / n) + 2 * k
+    bic = n * np.log(rss / n) + k * np.log(n)
+    return float(aic), float(bic)
+
+def run_model_selection_workflow() -> pd.DataFrame:
+    X, y = make_regression(n_samples=800, n_features=5, noise=0.2, random_state=42)
+    df = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+    df['target'] = y
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        df.drop('target', axis=1), df['target'], test_size=0.2, random_state=42
+    )
+
+    models: Dict[str, Any] = {
+        'OLS': LinearRegression(),
+        'Ridge (alpha=1.0)': Ridge(alpha=1.0),
+        'Ridge (alpha=10.0)': Ridge(alpha=10.0)
     }
-    
-    return results
 
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_selection(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
-```
+    comparison_results = []
+    for name, model in models.items():
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        rss = np.sum((y_test - y_pred) ** 2)
+        k = model.n_features_in_ + 1 if hasattr(model, 'n_features_in_') else X_train.shape[1] + 1
+        aic, bic = calculate_aic_bic(len(y_test), rss, k)
+        r2 = r2_score(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
 
-## Related Skills
+        comparison_results.append({
+            'model': name,
+            'r2_score': float(r2),
+            'mse': float(mse),
+            'aic': float(aic),
+            'bic': float(bic)
+        })
 
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `coding-ds-hyperparameter-tuning` | Hyperparameter Tuning techniques | Complementary to this skill |
-| `coding-ds-cross-validation` | Cross Validation techniques | Complementary to this skill |
-| `coding-ds-bias-variance-tradeoff` | Bias Variance Tradeoff techniques | Complementary to this skill |
+    results_df = pd.DataFrame(comparison_results)
+    print("Model Comparison Results:")
+    print(results_df.to_string(index=False))
 
-## References
-
-- Official documentation and papers on Model Selection
-- Industry best practices and standards
-- Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
-
----
-
-*Last updated: 2026-04-24*
+    best_model = models['OLS']
+    train_sizes, train_scores, val_scores = learning_curve(
+        best_model, X_train, y_train, cv=5, scoring='r2', train_sizes=np.linspace(0.1, 1.0, 10)
+    )
+    train_mean = np.mean(train_scores, axis=1)
+    val_mean = np.mean

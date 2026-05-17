@@ -18,6 +18,18 @@
       "contentTypes": ["code", "guidance", "do-dont", "examples"],
       "description": "Software coding and implementation skills"
     },
+    "go": {
+      "role": "implementation",
+      "scope": "implementation",
+      "contentTypes": ["code", "guidance", "do-dont", "examples"],
+      "description": "Go programming language skills and patterns"
+    },
+    "linux": {
+      "role": "implementation",
+      "scope": "implementation",
+      "contentTypes": ["code", "guidance", "config", "do-dont"],
+      "description": "Linux system engineering for cloud and on-prem environments"
+    },
     "programming": {
       "role": "reference",
       "scope": "implementation",
@@ -29,6 +41,12 @@
       "scope": "implementation",
       "contentTypes": ["code", "guidance", "config", "do-dont"],
       "description": "Algorithmic trading skills"
+    },
+    "writing": {
+      "role": "reference",
+      "scope": "implementation",
+      "contentTypes": ["guidance", "examples", "do-dont"],
+      "description": "Writing and style guidance"
     }
   }
 }

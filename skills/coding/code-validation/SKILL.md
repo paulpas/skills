@@ -1,22 +1,26 @@
 ---
-name: validation
-description: Validates pipeline stages and returns config status strings (valid_config/invalid_config)
-  using guard clauses and the 5 Laws of Elegant Defense, returning invalid_config
-  for invalid input types instead of raising exceptions
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: Validates pipeline stages and returns config status strings (valid_config/invalid_config) using guard clauses
+  and the 5 Laws of Elegant Defense, returning invalid_config for invalid input types instead of raising exceptions
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
-  triggers: validation, code validation, pipeline validation, config status, input
-    validation, validate pipeline, pipeline stages
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: error-handling, m0-foundation
+  role: implementation
+  scope: implementation
+  triggers: validation, code validation, pipeline validation, config status, input validation, validate pipeline, pipeline
+    stages
+  version: 1.0.0
+name: validation
 ---
-
-
 # Pipeline Stage Validator
 
 Validates pipeline stages against allowed configuration and returns 'valid_config' if all stages are in the allowed set, or 'invalid_config' otherwise.

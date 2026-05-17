@@ -1,18 +1,25 @@
 ---
-name: git-advanced-workflows
-description: Implements intelligent git advanced workflows with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent git advanced workflows with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: git-advanced-workflows, git advanced workflows, how do i git-advanced-workflows, orchestrate git-advanced-workflows, automate git-advanced-workflows, agent git-advanced-workflows
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: git-advanced-workflows, git advanced workflows, how do i git-advanced-workflows, orchestrate git-advanced-workflows,
+    automate git-advanced-workflows, agent git-advanced-workflows
+  version: 1.0.0
+name: git-advanced-workflows
 ---
-
 # Git Advanced Workflows
 
 Orchestrates intelligent skill selection and execution for git advanced workflows workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,126 +141,128 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def resolve_git_workflow(
+    request: str,
+    repo_state: Dict[str, Any],
+    strategy_map: Dict[str, Callable]
+) -> Dict[str, Any]:
+    """Map a natural language git request to a concrete advanced workflow.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Handles common advanced patterns: rebase, cherry-pick, bisect, interactive squash.
+    Validates repository state before committing to a strategy.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        request: Natural language description of the git operation
+        repo_state: Current repository metadata (branch, commits, remotes)
+        strategy_map: Mapping of intents to git execution functions
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
+        Workflow plan with strategy, prerequisites, and fallback actions
         
     Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        ValueError: If request is empty or repo state violates workflow constraints
     """
     # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not request.strip():
+        raise ValueError("Git workflow request cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
     # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    intent = _parse_git_intent(request)
+    current_branch = repo_state.get("current_branch", "HEAD")
+    has_unpushed = repo_state.get("has_unpushed_commits", False)
+    is_detached = repo_state.get("is_detached_head", False)
     
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    # Validate state constraints for advanced workflows
+    if intent == "rebase" and is_detached:
+        raise ValueError("Cannot rebase from detached HEAD state")
+    if intent == "rebase" and has_unpushed and not repo_state.get("allow_force_push", False):
+        raise ValueError("Rebase requires force push; set allow_force_push=True or use merge")
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Select strategy based on intent and repo state
+    strategy = strategy_map.get(intent)
+    if not strategy:
+        return {"status": "unrecognized_intent", "suggested": ["merge", "cherry-pick", "revert"]}
+        
+    # Atomic Predictability (Law 3) - Return new dict, don't mutate repo_state
+    return {
+        "workflow": intent,
+        "strategy": strategy.__name__,
+        "prerequisites": _check_prerequisites(intent, repo_state),
+        "fallback_actions": ["git reset --hard", "git checkout -"],
+        "confidence": 0.95 if intent in strategy_map else 0.4
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
+def execute_git_workflow(
+    workflow_plan: Dict[str, Any],
+    repo_path: str,
     max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+) -> Dict[str, Any]:
+    """Execute an advanced git workflow with built-in conflict resolution fallbacks.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
+    Implements Fail Fast, Fail Loud (Law 4):
     - Invalid states halt immediately with descriptive errors
     - No silent failures or partial results
     
     Fallback chain:
     1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    2. Abort and switch to alternative strategy (e.g., merge instead of rebase)
+    3. Defer to human operator for manual conflict resolution
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        workflow_plan: Resolved workflow plan from Pattern 1
+        repo_path: Absolute path to the git repository
         max_retries: Maximum retry attempts before fallback
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
+        Execution result with success status, output, and timing metadata
         
     Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        GitWorkflowError: If all retries and fallbacks exhausted
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
+    # Guard clause - validate plan (Early Exit)
+    if not workflow_plan.get("strategy"):
+        raise GitWorkflowError("No execution strategy provided in workflow plan")
+        
     # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_plan = _validate_git_plan(workflow_plan, repo_path)
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            result = subprocess.run(
+                validated_plan["command"],
+                cwd=repo_path,
+                capture_output=True,
+                text=True,
+                check=True
+            )
             
             # Success - Atomic Predictability (Law 3)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "workflow_executed": validated_plan["strategy"],
+                "output": result.stdout,
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
+        except subprocess.CalledProcessError as e:
+            stderr = e.stderr.lower()
+            if "conflict" in stderr or "not fast-forward" in stderr:
+                # Transient conflict - try fallback
+                if attempt == max_retries:
+                    return _apply_git_fallback(validated_plan, repo_path)
+                continue
+            else:
+                # Fail Fast - Don't try to patch bad data (Law 4)
+                raise GitWorkflowError(f"Git command failed: {stderr}") from e
+                
     # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+    raise GitWorkflowError(f"Failed to execute {validated_plan['strategy']} after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +329,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

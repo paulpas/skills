@@ -1,23 +1,27 @@
 ---
-name: github-actions-status
-description: "View and monitor GitHub Actions workflow runs, statuses, and logs using the
-  gh CLI. Lists workflows, inspects run details, follows logs, checks commit statuses,
-  and triggers new runs."
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: View and monitor GitHub Actions workflow runs, statuses, and logs using the gh CLI. Lists workflows, inspects
+  run details, follows logs, checks commit statuses, and triggers new runs.
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
+  author: https://github.com/paulpas
   domain: agent
+  output-format: markdown
+  related-skills: null
   role: information
   scope: implementation
-  output-format: markdown
-  triggers: github actions, ci/cd, workflow, gh run, gh workflow, pipeline, build status,
-    ci status, action status, check runs
-  author: https://github.com/paulpas
   source: local
-  related-skills:
+  triggers: github actions, ci/cd, workflow, gh run, gh workflow, pipeline, build status, ci status, action status, check
+    runs
+  version: 1.0.0
+name: github-actions-status
 ---
-
 # GitHub Actions Status
 
 View, monitor, and manage GitHub Actions workflows and their run statuses using the `gh` CLI.
@@ -259,3 +263,17 @@ gh run view <run-id> --repo <owner>/<repo> --log --job <failed-job-id> 2>&1 | gr
 ```
 
 Present the most relevant error lines (up to 5) as the failure reason.
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

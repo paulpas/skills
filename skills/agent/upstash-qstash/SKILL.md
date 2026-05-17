@@ -1,18 +1,25 @@
 ---
-name: upstash-qstash
-description: Implements intelligent upstash qstash with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent upstash qstash with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: upstash-qstash, upstash qstash, how do i upstash-qstash, orchestrate upstash-qstash, automate upstash-qstash, agent upstash-qstash
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: upstash-qstash, upstash qstash, how do i upstash-qstash, orchestrate upstash-qstash, automate upstash-qstash,
+    agent upstash-qstash
+  version: 1.0.0
+name: upstash-qstash
 ---
-
 # Upstash Qstash
 
 Orchestrates intelligent skill selection and execution for upstash qstash workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -136,55 +143,44 @@ Avoid this skill for:
 ```python
 def select_skill(
     task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    available_topics: List[str],
+    queue_config: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Select optimal Qstash routing configuration for a task.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Maps task intent to Qstash topics, queues, and delivery policies.
+    Considers message priority, topic availability, and queue capacity.
     
     Args:
         task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        available_topics: List of configured Qstash topics
+        queue_config: Dictionary of queue names to their capacity/priority
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Routing configuration dict with topic, queue, and delivery policy
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not task_description or not available_topics:
+        raise ValueError("Task description and topics are required for routing")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Extract intent keywords to match Qstash topics
+    intent_keywords = _extract_intent_keywords(task_description)
+    matched_topics = [t for t in available_topics if any(kw in t.lower() for kw in intent_keywords)]
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+    if not matched_topics:
+        matched_topics = ["default"]
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
+    # Select queue based on priority and current load
+    target_queue = max(queue_config.keys(), key=lambda q: queue_config[q].get("priority", 0))
     
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+    # Build Qstash-specific routing payload
+    return {
+        "topic": matched_topics[0],
+        "queue": target_queue,
+        "delivery_policy": "best-effort" if "urgent" in intent_keywords else "guaranteed",
+        "max_retries": queue_config[target_queue].get("max_retries", 3),
+        "backoff_strategy": "exponential",
+        "timeout_seconds": 30
+    }
 ```
 
 
@@ -192,68 +188,67 @@ def select_skill(
 
 ```python
 def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    routing_config: Dict[str, Any],
+    payload: Dict[str, Any],
+    webhook_url: str,
+    max_retries: int = 3
+) -> Dict[str, Any]:
+    """Execute message scheduling via Upstash Qstash with domain-specific fallback.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Handles message publishing, retry management, and webhook callback routing.
+    Implements Qstash's native retry with custom fallback to alternative queues.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        routing_config: Output from select_skill
+        payload: Message body to be scheduled
+        webhook_url: Target endpoint for delivery confirmation
+        max_retries: Maximum retry attempts before fallback queue switch
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Execution result with message ID, status, and fallback metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    required_keys = {"topic", "queue", "delivery_policy", "max_retries"}
+    if not required_keys.issubset(routing_config.keys()):
+        raise ValueError("Incomplete routing configuration for Qstash")
+        
+    # Prepare Qstash publish payload with delivery headers
+    qstash_payload = {
+        "topic": routing_config["topic"],
+        "body": payload,
+        "headers": {"X-Task-ID": payload.get("task_id", "unknown")},
+        "delivery_policy": routing_config["delivery_policy"],
+        "max_retries": routing_config["max_retries"],
+        "backoff": routing_config["backoff_strategy"],
+        "timeout": routing_config["timeout_seconds"]
+    }
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
+    # Attempt initial publish to primary queue
+    try:
+        response = qstash_client.publish(qstash_payload, webhook_url=webhook_url)
+        return {
+            "success": True,
+            "message_id": response.get("id"),
+            "queue": routing_config["queue"],
+            "status": "scheduled",
+            "fallback_triggered": False
+        }
+    except QstashRateLimitError:
+        # Fallback: Switch to secondary queue with adjusted delivery policy
+        secondary_queue = _get_secondary_queue(routing_config["queue"])
+        qstash_payload["queue"] = secondary_queue
+        qstash_payload["delivery_policy"] = "best-effort"
+        
         try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
+            fallback_response = qstash_client.publish(qstash_payload, webhook_url=webhook_url)
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "message_id": fallback_response.get("id"),
+                "queue": secondary_queue,
+                "status": "scheduled_fallback",
+                "fallback_triggered": True
             }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+        except Exception as e:
+            raise QstashExecutionError(f"Failed to schedule message after fallback: {e}")
 ```
 
 ### MUST DO
@@ -320,3 +315,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

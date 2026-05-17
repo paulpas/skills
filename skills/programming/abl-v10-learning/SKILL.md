@@ -1,24 +1,25 @@
 ---
-name: v10-learning
-description: '"Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types"
-  variable declaration, procedures, functions, OOP basics, error handling, database
-  access, transaction handling, control flow'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- examples
+- diagrams
+description: '"Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions,
+  OOP basics, error handling, database access, transaction handling, control flow'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: programming
+  output-format: code
+  related-skills: abl-v12-learning, algorithms
   role: reference
   scope: implementation
-  output-format: code
-  triggers: abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress
-    abl
-  related-skills: abl-v12-learning, algorithms
+  triggers: abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress abl
+  version: 1.0.0
+name: v10-learning
 ---
-
-
-
-
 # Progress OpenEdge ABL 10.1A — Reference Guide
 
 > **Version:** Progress OpenEdge 10.1A (December 2005)  
@@ -1240,3 +1241,28 @@ IF VALID-OBJECT(rOrder) THEN
 | v12.3 | 2021 | `VAR` shorthand, compound operators (`+=`, `-=`), `CHAR`/`INT` synonyms |
 | v12.5 | 2022 | Safe navigation `?:`, generic `List<T>`, override non-abstract properties |
 | v12.7 | 2023 | `HashMap<K,V>`, `HASH-CODE`, signed archive libraries |
+---
+
+## Core Workflow
+
+1. **Understand the Problem** — Identify inputs, outputs, constraints, and edge cases. **Checkpoint:** Clearly define the problem statement and expected behavior.
+
+2. **Select Algorithm** — Choose the most appropriate algorithm based on constraints (time/space complexity, data size, ordering requirements). **Checkpoint:** Justify the algorithm choice with complexity analysis.
+
+3. **Implement & Test** — Write clean, readable code with type hints, docstrings, and edge case handling. **Checkpoint:** Verify correctness with multiple test cases including edge cases.
+
+4. **Analyze & Optimize** — Review time/space complexity, identify optimization opportunities, and validate against benchmarks. **Checkpoint:** Confirm complexity bounds match analysis and all test cases pass.
+
+---
+
+## Constraints
+
+### MUST DO
+- Include time and space complexity analysis for all algorithms
+- Show at least one working example with input/output
+- Include diagrams for non-trivial algorithm flows
+
+### MUST NOT DO
+- Present an algorithm without its complexity bounds
+- Use recursive solutions without discussing tail-call or memoization alternatives
+- Omit edge case handling in examples

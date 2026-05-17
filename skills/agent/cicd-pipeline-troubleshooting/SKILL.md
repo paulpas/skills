@@ -1,18 +1,25 @@
 ---
-name: cicd-pipeline-troubleshooting
-description: Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab CI, and build optimization patterns.
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Diagnoses and resolves CI/CD pipeline failures with actionable debugging commands for GitHub Actions, GitLab
+  CI, and build optimization patterns.
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: ci cd troubleshooting, pipeline failure, build cache, parallel build, artifact resolution, github actions, gitlab ci, how do i debug pipelines
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: cicd-pipeline-debugging, cncf-argocd, cncf-flux, cncf-tekton
+  role: implementation
+  scope: implementation
+  triggers: ci cd troubleshooting, pipeline failure, build cache, parallel build, artifact resolution, github actions, gitlab
+    ci, how do i debug pipelines
+  version: 1.0.0
+name: cicd-pipeline-troubleshooting
 ---
-
 # CI/CD Pipeline Troubleshooting
 
 Debugs and resolves CI/CD pipeline failures with actionable diagnostics, cache optimization strategies, and build optimization techniques for GitHub Actions, GitLab CI, and other CI platforms.

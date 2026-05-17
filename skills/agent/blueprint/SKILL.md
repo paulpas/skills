@@ -1,18 +1,24 @@
 ---
-name: blueprint
-description: Implements intelligent blueprint with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent blueprint with multi-factor skill selection, fallback chains, and adherence to the 5 Laws
+  of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: blueprint, blueprint, how do i blueprint, orchestrate blueprint, automate blueprint, agent blueprint
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: blueprint, blueprint, how do i blueprint, orchestrate blueprint, automate blueprint, agent blueprint
+  version: 1.0.0
+name: blueprint
 ---
-
 # Blueprint
 
 Orchestrates intelligent skill selection and execution for blueprint workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -131,128 +137,145 @@ Avoid this skill for:
 
 ## Implementation Patterns
 
-### Pattern 1: Skill Selection Logic
+### Pattern 1: Blueprint Orchestration & Skill Routing
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def orchestrate_blueprint_request(
+    user_request: str,
+    skill_registry: List[Dict],
+    execution_history: List[Dict]
+) -> Dict:
+    """Orchestrate a blueprint workflow by routing to the optimal skill chain.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+    Applies the 5 Laws of Elegant Defense:
+    - Law 1: Early exit on malformed requests
+    - Law 2: Parse inputs at boundary, make illegal states unrepresentable
+    - Law 3: Return new routing plan, never mutate registry
+    - Law 4: Fail fast on missing dependencies
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    if not user_request or not user_request.strip():
+        raise ValueError("Blueprint request cannot be empty")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Law 2: Parse & validate at boundary
+    parsed_request = _parse_blueprint_intent(user_request)
+    if not parsed_request.get("intent") or not parsed_request.get("required_params"):
+        raise ValueError("Missing required blueprint intent or parameters")
+        
+    # Law 4: Validate dependencies before scoring
+    available_skills = [
+        s for s in skill_registry 
+        if _check_dependencies_met(s.get("dependencies", []), execution_history)
+    ]
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
+    # Multi-factor scoring: trigger match + historical success + availability
+    scored_candidates = []
     for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        trigger_match = _calculate_trigger_similarity(parsed_request["intent"], skill.get("triggers", []))
+        historical_success = _get_historical_success_rate(skill["name"], execution_history)
+        availability_score = 1.0 if skill.get("status") == "healthy" else 0.5
         
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        composite_score = (trigger_match * 0.5) + (historical_success * 0.3) + (availability_score * 0.2)
+        if composite_score >= 0.6:
+            scored_candidates.append({
+                "skill": skill,
+                "score": composite_score,
+                "confidence": composite_score * historical_success
+            })
+            
+    if not scored_candidates:
+        return {"status": "no_match", "fallback": "human_handoff", "reason": "No skills met threshold"}
+        
+    # Law 3: Return new structure, don't mutate
+    best_match = max(scored_candidates, key=lambda x: x["score"])
+    return {
+        "status": "routed",
+        "selected_skill": best_match["skill"]["name"],
+        "confidence": best_match["confidence"],
+        "routing_plan": {
+            "primary": best_match["skill"]["name"],
+            "fallback_chain": best_match["skill"].get("fallback_skills", []),
+            "retry_policy": best_match["skill"].get("retry_config", {"max": 2})
+        }
+    }
 ```
 
 
-### Pattern 2: Execution with Fallback
+### Pattern 2: Blueprint Execution & Adaptive Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
+def execute_blueprint_step(
+    step_config: Dict,
+    context: Dict,
+    skill_registry: Dict[str, Callable]
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute a blueprint workflow step with adaptive fallback and confidence tracking.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+    Implements Fail Fast, Fail Loud (Law 4) with structured fallback chains.
+    Updates confidence scores post-execution for adaptive routing.
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    skill_name = step_config.get("primary_skill")
+    fallback_chain = step_config.get("fallback_chain", [])
+    max_retries = step_config.get("retry_policy", {}).get("max", 2)
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    # Law 1: Early exit on missing skill
+    if skill_name not in skill_registry:
+        raise KeyError(f"Blueprint step references unknown skill: {skill_name}")
+        
+    execution_log = []
+    last_error = None
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Execute with strict input validation
+            result = skill_registry[skill_name](context)
             
-            # Success - Atomic Predictability (Law 3)
+            # Law 3: Return new result structure
+            execution_log.append({
+                "attempt": attempt + 1,
+                "status": "success",
+                "latency_ms": result.get("latency_ms", 0)
+            })
+            
+            # Update confidence for next routing decisions
+            _update_skill_confidence(skill_name, success=True)
             return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+                "status": "completed",
+                "skill": skill_name,
+                "result": result.get("data"),
+                "execution_log": execution_log
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
         except TransientError as e:
-            # Transient error - try fallback
+            last_error = e
+            execution_log.append({"attempt": attempt + 1, "status": "retry", "error": str(e)})
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+                break
+        except InvalidStateError as e:
+            # Law 4: Fail immediately on invalid state
+            _update_skill_confidence(skill_name, success=False)
+            raise BlueprintExecutionError(f"Invalid state in {skill_name}: {e}") from e
+            
+    # Fallback chain execution
+    for fallback_skill in fallback_chain:
+        if fallback_skill in skill_registry:
+            try:
+                fallback_result = skill_registry[fallback_skill](context)
+                _update_skill_confidence(fallback_skill, success=True)
+                return {
+                    "status": "fallback_success",
+                    "original_skill": skill_name,
+                    "fallback_skill": fallback_skill,
+                    "result": fallback_result.get("data"),
+                    "execution_log": execution_log
+                }
+            except Exception as fb_err:
+                execution_log.append({"fallback": fallback_skill, "status": "failed", "error": str(fb_err)})
+                
+    # Law 4: Fail loud with full context
+    _update_skill_confidence(skill_name, success=False)
+    raise BlueprintExecutionError(
+        f"All attempts and fallbacks exhausted for {skill_name}. "
+        f"Last error: {last_error}. Requires human review."
     )
 ```
 
@@ -320,3 +343,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

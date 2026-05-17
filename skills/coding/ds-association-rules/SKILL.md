@@ -1,22 +1,25 @@
 ---
-name: association-rules
-description: '"Provides Discovers association rules and frequent itemsets using Apriori,
-  Eclat, and market basket analysis for pattern mining"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Discovers association rules and frequent itemsets using Apriori, Eclat, and market basket analysis
+  for pattern mining"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-clustering, ds-community-detection, ds-topic-modeling
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: association rules, market basket, apriori, frequent itemsets, recommendation,
-    pattern mining
-  related-skills: ds-clustering, ds-community-detection, ds-topic-modeling
+  triggers: association rules, market basket, apriori, frequent itemsets, recommendation, pattern mining
+  version: 1.0.0
+name: association-rules
 ---
-
-
-
 # Association Rules
 
 Comprehensive guide to association rules in machine learning and data science workflows.
@@ -58,34 +61,131 @@ Association Rules is a critical component of the machine learning workflow. This
 ### Pattern 1: Basic Association Rules
 
 ```python
-# Example pattern for Association Rules
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+from itertools import combinations
+from typing import Dict, List, Set, Tuple
 
-# Implementation pattern
-pass
+def find_frequent_itemsets(transactions: List[Set[str]], min_support: float = 0.5) -> Tuple[Dict[frozenset, float], Dict[frozenset, float]]:
+    """Find frequent itemsets using a simplified Apriori approach."""
+    if not transactions:
+        raise ValueError("Transactions list cannot be empty")
+        
+    all_items: Set[str] = set()
+    for txn in transactions:
+        all_items.update(txn)
+        
+    # Calculate support for single items
+    itemset_support: Dict[frozenset, float] = {
+        frozenset({item}): sum(1 for txn in transactions if item in txn) / len(transactions)
+        for item in all_items
+    }
+    
+    frequent_singletons: Dict[frozenset, float] = {k: v for k, v in itemset_support.items() if v >= min_support}
+    
+    # Generate candidate pairs and calculate support
+    frequent_pairs: Dict[frozenset, float] = {}
+    items: List[frozenset] = list(frequent_singletons.keys())
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            candidate: frozenset = items[i] | items[j]
+            support: float = sum(1 for txn in transactions if candidate.issubset(txn)) / len(transactions)
+            if support >= min_support:
+                frequent_pairs[candidate] = support
+                
+    return frequent_singletons, frequent_pairs
 ```
 
 ### Pattern 2: Production-Ready Association Rules
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, List, Set, Tuple
+from itertools import combinations
 
 logger = logging.getLogger(__name__)
 
-class AssociationRules:
-    """Production implementation of Association Rules"""
+class AssociationRuleMiner:
+    """Production-grade implementation of Association Rule Mining."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Association Rules on data"""
-        return {}
+    def __init__(self, min_support: float = 0.1, min_confidence: float = 0.5):
+        self.min_support = min_support
+        self.min_confidence = min_confidence
+        self.frequent_itemsets: Dict[frozenset, float] = {}
+        self.rules: List[Dict[str, Any]] = []
+        
+    def _count_support(self, transactions: List[Set[str]], itemset: frozenset) -> float:
+        count = sum(1 for txn in transactions if itemset.issubset(txn))
+        return count / len(transactions)
+        
+    def fit(self, transactions: List[Set[str]]) -> 'AssociationRuleMiner':
+        """Find frequent itemsets and generate association rules."""
+        if not transactions:
+            raise ValueError("Transactions list cannot be empty")
+            
+        logger.info(f"Processing {len(transactions)} transactions...")
+        all_items = set().union(*transactions)
+        self.frequent_itemsets = {
+            frozenset({item}): self._count_support(transactions, frozenset({item}))
+            for item in all_items
+        }
+        
+        # Generate rules from frequent pairs
+        for itemset, support in self.frequent_itemsets.items():
+            if len(itemset) == 2:
+                antecedent = itemset.copy()
+                consequent = itemset.copy()
+                consequent.discard(next(iter(antecedent)))
+                antecedent.discard(next(iter(consequent)))
+                antecedent = frozenset(antecedent)
+                consequent = frozenset(consequent)
+                
+                confidence = support / self.frequent_itemsets[antecedent]
+                if confidence >= self.min_confidence:
+                    lift = confidence / self.frequent_itemsets[consequent]
+                    self.rules.append({
+                        'antecedent': list(antecedent),
+                        'consequent': list(consequent),
+                        'support': support,
+                        'confidence': confidence,
+                        'lift': lift
+                    })
+        logger.info(f"Generated {len(self.rules)} rules.")
+        return self
+        
+    def get_rules(self) -> pd.DataFrame:
+        """Return rules as a DataFrame."""
+        return pd.DataFrame(self.rules)
+```
+
+### Pattern 3: BAD vs GOOD Examples
+
+```python
+# BAD: Hardcoded thresholds, no validation, ignores lift metric, violates DRY principle
+def bad_rule_mining(transactions):
+    rules = []
+    for t in transactions:
+        if 'Bread' in t and 'Butter' in t:
+            rules.append({'antecedent': 'Bread', 'consequent': 'Butter'})
+    return rules
+
+# GOOD: Parameterized, validates input, computes support/confidence/lift, uses type hints
+def good_rule_mining(transactions: List[Set[str]], min_support: float = 0.1, min_confidence: float = 0.5) -> pd.DataFrame:
+    if not transactions:
+        raise ValueError("Transactions cannot be empty")
+    total = len(transactions)
+    rules = []
+    for antecedent in transactions:
+        for consequent in transactions:
+            if antecedent == consequent: continue
+            support = sum(1 for t in transactions if antecedent.issubset(t) and consequent.issubset(t)) / total
+            conf = support / sum(1 for t in transactions if antecedent.issubset(t))
+            if support >= min_support and conf >= min_confidence:
+                lift = conf / sum(1 for t in transactions if consequent.issubset(t)) / total
+                rules.append({'antecedent': list(antecedent), 'consequent': list(consequent), 'support': support, 'confidence': conf, 'lift': lift})
+    return pd.DataFrame(rules)
 ```
 
 ## Best Practices
@@ -97,6 +197,8 @@ class AssociationRules:
 - ✅ Periodically review and update your approach
 - ✅ Test with edge cases and outliers
 - ✅ Log all significant operations for debugging
+- ✅ Follow DRY and KISS principles to maintain clean, reusable code
+- ✅ Reference industry standards like OWASP for data security and privacy compliance
 
 ## Common Pitfalls
 
@@ -111,76 +213,40 @@ class AssociationRules:
 ## Complete Working Example
 
 ```python
-# Full working example for Association Rules
 import pandas as pd
 import numpy as np
-from typing import Dict, Any
+import matplotlib.pyplot as plt
+from typing import Dict, Any, List, Set
 
-def implement_rules(data: pd.DataFrame) -> Dict[str, Any]:
+def generate_market_basket_data(n_transactions: int = 1000) -> List[Set[str]]:
+    """Generate synthetic market basket data."""
+    products = ['Bread', 'Butter', 'Milk', 'Eggs', 'Coffee', 'Sugar', 'Flour', 'Cheese']
+    data = []
+    for _ in range(n_transactions):
+        txn = set()
+        if np.random.random() < 0.6: txn.add('Bread')
+        if np.random.random() < 0.5: txn.add('Butter')
+        if np.random.random() < 0.7: txn.add('Milk')
+        if np.random.random() < 0.4: txn.add('Eggs')
+        if np.random.random() < 0.3: txn.add('Coffee')
+        if np.random.random() < 0.2: txn.add('Sugar')
+        if np.random.random() < 0.25: txn.add('Flour')
+        if np.random.random() < 0.35: txn.add('Cheese')
+        if 'Bread' in txn and np.random.random() < 0.8: txn.add('Butter')
+        if 'Milk' in txn and np.random.random() < 0.7: txn.add('Eggs')
+        if txn: data.append(txn)
+    return data
+
+def implement_rules(data: List[Set[str]], min_support: float = 0.1, min_confidence: float = 0.5) -> Dict[str, Any]:
     """
     Complete implementation of Association Rules.
     
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
     Args:
-        data: Input DataFrame with required columns
+        data: List of sets representing transactions
+        min_support: Minimum support threshold
+        min_confidence: Minimum confidence threshold
         
     Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_rules(df)
-        >>> print(results)
+        Dictionary with rules, metrics, and visualization data
     """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
-    
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
-    }
-    
-    return results
-
-# Usage and testing
-if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_rules(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
-```
-
-## Related Skills
-
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `coding-ds-clustering` | Clustering techniques | Complementary to this skill |
-| `coding-ds-topic-modeling` | Topic Modeling techniques | Complementary to this skill |
-| `coding-ds-community-detection` | Community Detection techniques | Complementary to this skill |
-
-## References
-
-- Official documentation and papers on Association Rules
-- Industry best practices and standards
-- Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
-
----
-
-*Last updated: 2026-04-24*
+    if not data:

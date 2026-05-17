@@ -1,22 +1,25 @@
 ---
-name: bias-variance-tradeoff
-description: '"Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization
-  strategies for improving model generalization"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Analyzes bias-variance tradeoff, overfitting, underfitting, and regularization strategies for improving model
+  generalization"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-cross-validation, ds-hyperparameter-tuning, ds-model-selection
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: bias-variance, overfitting, underfitting, regularization, generalization,
-    how do I prevent overfitting
-  related-skills: ds-cross-validation, ds-hyperparameter-tuning, ds-model-selection
+  triggers: bias-variance, overfitting, underfitting, regularization, generalization, how do I prevent overfitting
+  version: 1.0.0
+name: bias-variance-tradeoff
 ---
-
-
-
 # Bias-Variance Tradeoff
 
 Comprehensive guide to bias-variance tradeoff in machine learning and data science workflows.
@@ -58,34 +61,103 @@ Bias-Variance Tradeoff is a critical component of the machine learning workflow.
 ### Pattern 1: Basic Bias-Variance Tradeoff
 
 ```python
-# Example pattern for Bias-Variance Tradeoff
-# This demonstrates the core concepts
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.model_selection import learning_curve, cross_val_score
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import Ridge
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
 
-# Implementation pattern
-pass
+def analyze_bias_variance_tradeoff(X, y, max_degree=8, cv=5):
+    """Analyze bias-variance tradeoff using polynomial regression and learning curves."""
+    degrees = range(1, max_degree + 1)
+    train_scores_list, val_scores_list = [], []
+    
+    for degree in degrees:
+        model = make_pipeline(PolynomialFeatures(degree, include_bias=False), Ridge(alpha=1.0))
+        train_sizes, train_scores, val_scores = learning_curve(
+            model, X, y, train_sizes=np.linspace(0.1, 1.0, 5), cv=cv, scoring='r2', random_state=42
+        )
+        train_scores_list.append(np.mean(train_scores))
+        val_scores_list.append(np.mean(val_scores))
+        
+    bias = np.mean([1 - t for t in train_scores_list])
+    variance = np.mean([np.var(cross_val_score(make_pipeline(PolynomialFeatures(d, include_bias=False), Ridge(alpha=1.0)), X, y, cv=cv, scoring='r2')) for d in degrees])
+    
+    return {
+        'degrees': list(degrees),
+        'train_scores': train_scores_list,
+        'val_scores': val_scores_list,
+        'estimated_bias': bias,
+        'estimated_variance': variance
+    }
 ```
 
 ### Pattern 2: Production-Ready Bias-Variance Tradeoff
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import numpy as np
+import pandas as pd
+from typing import Any, Dict, List
+from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
 
-class Bias-VarianceTradeoff:
-    """Production implementation of Bias-Variance Tradeoff"""
+class BiasVarianceTradeoff:
+    """Production implementation for analyzing bias-variance tradeoff."""
     
-    def __init__(self):
-        pass
-    
-    def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Bias-Variance Tradeoff on data"""
-        return {}
+    def __init__(self, model=None, cv: int = 5, random_state: int = 42):
+        self.model = model or GradientBoostingRegressor(n_estimators=100, random_state=random_state)
+        self.cv = cv
+        self.random_state = random_state
+        self.results: Dict[str, Any] = {}
+        
+    def execute(self, data: pd.DataFrame, target_col: str) -> Dict[str, Any]:
+        """Execute bias-variance analysis on provided data."""
+        try:
+            X = data.drop(columns=[target_col])
+            y = data[target_col]
+            
+            if X.isnull().any().any() or y.isnull().any():
+                logger.warning("Data contains NaN values. Imputing with median.")
+                X = X.fillna(X.median())
+                y = y.fillna(y.median())
+                
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=self.random_state)
+            
+            self.model.fit(X_train, y_train)
+            train_preds = self.model.predict(X_train)
+            test_preds = self.model.predict(X_test)
+            
+            train_mse = mean_squared_error(y_train, train_preds)
+            test_mse = mean_squared_error(y_test, test_preds)
+            
+            cv_scores = cross_val_score(self.model, X, y, cv=self.cv, scoring='neg_mean_squared_error')
+            
+            bias = np.mean([1 - r2_score(y_train, train_preds)])
+            variance = np.var(cross_val_score(self.model, X, y, cv=self.cv, scoring='r2'))
+            
+            self.results = {
+                'train_mse': float(train_mse),
+                'test_mse': float(test_mse),
+                'cv_mse_mean': float(-np.mean(cv_scores)),
+                'cv_mse_std': float(np.std(cv_scores)),
+                'estimated_bias': float(bias),
+                'estimated_variance': float(variance),
+                'feature_importance': dict(zip(X.columns, self.model.feature_importances_))
+            }
+            logger.info(f"Analysis complete. Train MSE: {train_mse:.4f}, Test MSE: {test_mse:.4f}")
+            return self.results
+            
+        except Exception as e:
+            logger.error(f"Execution failed: {str(e)}")
+            raise ValueError(f"Failed to execute bias-variance analysis: {e}")
 ```
 
 ## Best Practices
@@ -111,60 +183,60 @@ class Bias-VarianceTradeoff:
 ## Complete Working Example
 
 ```python
-# Full working example for Bias-Variance Tradeoff
-import pandas as pd
 import numpy as np
-from typing import Dict, Any
+import pandas as pd
+from sklearn.model_selection import learning_curve, cross_val_score
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import Ridge
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.datasets import make_regression
+import matplotlib.pyplot as plt
 
-def implement_tradeoff(data: pd.DataFrame) -> Dict[str, Any]:
-    """
-    Complete implementation of Bias-Variance Tradeoff.
+def demonstrate_bias_variance_tradeoff():
+    """Demonstrate bias-variance tradeoff with synthetic data and polynomial regression."""
+    X, y = make_regression(n_samples=300, n_features=1, noise=0.3, random_state=42)
+    degrees = [1, 3, 10]
+    results = {}
     
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
+    for degree in degrees:
+        model = make_pipeline(PolynomialFeatures(degree, include_bias=False), Ridge(alpha=1.0))
+        model.fit(X, y)
         
-    Returns:
-        Dictionary with results and metadata
+        train_preds = model.predict(X)
+        train_mse = mean_squared_error(y, train_preds)
+        cv_scores = cross_val_score(model, X, y, cv=5, scoring='r2')
         
-    Raises:
-        ValueError: If input data is invalid
+        results[degree] = {
+            'train_mse': train_mse,
+            'cv_r2_mean': np.mean(cv_scores),
+            'cv_r2_std': np.std(cv_scores),
+            'bias': 1 - np.mean(cv_scores),
+            'variance': np.var(cv_scores)
+        }
         
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_tradeoff(df)
-        >>> print(results)
-    """
-    # Validate inputs
-    if data is None or data.empty:
-        raise ValueError("Input data cannot be None or empty")
-    
-    # Implementation
-    results = {
-        'status': 'success',
-        'data': data,
-        'metadata': {'rows': len(data), 'columns': data.shape[1]}
-    }
+    plt.figure(figsize=(10, 6))
+    for degree in degrees:
+        model = make_pipeline(PolynomialFeatures(degree, include_bias=False), Ridge(alpha=1.0))
+        train_sizes, train_scores, val_scores = learning_curve(
+            model, X, y, train_sizes=np.linspace(0.1, 1.0, 10), cv=5, scoring='r2', random_state=42
+        )
+        plt.plot(train_sizes, np.mean(train_scores, axis=1), label=f'Degree {degree} (Train)')
+        plt.plot(train_sizes, np.mean(val_scores, axis=1), label=f'Degree {degree} (Val)')
+        
+    plt.title('Bias-Variance Tradeoff: Learning Curves')
+    plt.xlabel('Training Set Size')
+    plt.ylabel('R² Score')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
     
     return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
-    
-    # Run implementation
-    results = implement_tradeoff(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    results = demonstrate_bias_variance_tradeoff()
+    for degree, metrics in results.items():
+        print(f"Degree {degree}: Train MSE={metrics['train_mse']:.4f}, CV R²={metrics['cv_r2_mean']:.4f} ± {metrics['cv_r2_std']:.4f}")
 ```
 
 ## Related Skills
@@ -184,3 +256,17 @@ if __name__ == "__main__":
 ---
 
 *Last updated: 2026-04-24*
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

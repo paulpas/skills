@@ -1,22 +1,25 @@
 ---
-name: instrumental-variables
-description: '"Provides Uses instrumental variables (IV), two-stage least squares
-  (2SLS), and IV estimation to identify causal effects in observational data"'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Provides Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal
+  effects in observational data"'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: ds-causal-inference, ds-linear-regression, ds-observational-studies
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: instrumental variables, IV, 2SLS, endogeneity, causal effect, how do i
-    handle endogeneity
-  related-skills: ds-causal-inference, ds-linear-regression, ds-observational-studies
+  triggers: instrumental variables, IV, 2SLS, endogeneity, causal effect, how do i handle endogeneity
+  version: 1.0.0
+name: instrumental-variables
 ---
-
-
-
 # Instrumental Variables
 
 Comprehensive guide to instrumental variables in machine learning and data science workflows.
@@ -58,34 +61,153 @@ Instrumental Variables is a critical component of the machine learning workflow.
 ### Pattern 1: Basic Instrumental Variables
 
 ```python
-# Example pattern for Instrumental Variables
-# This demonstrates the core concepts
 import pandas as pd
 import numpy as np
+import statsmodels.api as sm
 
-# Implementation pattern
-pass
+def basic_iv_2sls(X: pd.DataFrame, Z: pd.DataFrame, y: pd.Series) -> dict:
+    """
+    Perform Two-Stage Least Squares (2SLS) estimation.
+    X: Endogenous regressors (n, k)
+    Z: Instruments (n, l) including exogenous variables
+    y: Dependent variable (n,)
+    """
+    if X.shape[0] != Z.shape[0] or X.shape[0] != y.shape[0]:
+        raise ValueError("Sample sizes must match")
+    
+    # Stage 1: Regress X on Z to get predicted values
+    X_with_const = sm.add_constant(X)
+    Z_with_const = sm.add_constant(Z)
+    
+    stage1_results = sm.OLS(X_with_const, Z_with_const).fit()
+    X_hat = stage1_results.fittedvalues
+    
+    # Stage 2: Regress y on predicted X_hat
+    stage2_results = sm.OLS(y, X_hat).fit()
+    
+    return {
+        'coefficients': stage2_results.params.values,
+        'standard_errors': stage2_results.bse.values,
+        'r_squared': stage2_results.rsquared,
+        'f_statistic': stage2_results.fvalue,
+        'stage1_f_statistic': stage1_results.fvalue
+    }
+
+# Generate synthetic data with endogeneity
+np.random.seed(42)
+n = 500
+Z = np.random.randn(n, 2)  # Instruments
+X = 0.5 * Z[:, 0] + 0.3 * Z[:, 1] + np.random.randn(n) * 0.5  # Endogenous
+u = np.random.randn(n) * 0.5
+y = 2.0 * X + 1.5 * Z[:, 0] + u  # True model with endogeneity bias in OLS
+df_X = pd.DataFrame(X, columns=['x1'])
+df_Z = pd.DataFrame(Z, columns=['z1', 'z2'])
+series_y = pd.Series(y, name='y')
+
+results = basic_iv_2sls(df_X, df_Z, series_y)
+print(f"IV Coefficients: {results['coefficients']}")
+print(f"Stage 1 F-stat: {results['stage1_f_statistic']:.2f}")
 ```
 
 ### Pattern 2: Production-Ready Instrumental Variables
 
 ```python
-# Production-grade implementation
-# Includes error handling, logging, and optimization
 import logging
-from typing import Any, Dict
+import pandas as pd
+import numpy as np
+from typing import Any, Dict, List, Union
+import statsmodels.api as sm
 
 logger = logging.getLogger(__name__)
 
 class InstrumentalVariables:
-    """Production implementation of Instrumental Variables"""
+    """Production implementation of Instrumental Variables (2SLS)"""
     
-    def __init__(self):
-        pass
-    
+    def __init__(self, instrument_cols: List[str], endog_cols: List[str], 
+                 exog_cols: List[str] = None, alpha: float = 0.05):
+        self.instrument_cols = instrument_cols
+        self.endog_cols = endog_cols
+        self.exog_cols = exog_cols or []
+        self.alpha = alpha
+        self.model = None
+        self.results = None
+        
+    def _validate_data(self, data: pd.DataFrame) -> None:
+        required = self.instrument_cols + self.endog_cols + self.exog_cols
+        missing = [col for col in required if col not in data.columns]
+        if missing:
+            raise ValueError(f"Missing columns: {missing}")
+        if data.isnull().any().any():
+            raise ValueError("Input data contains NaN values")
+            
+    def fit(self, data: pd.DataFrame) -> 'InstrumentalVariables':
+        self._validate_data(data)
+        X = data[self.endog_cols + self.exog_cols]
+        Z = data[self.instrument_cols + self.exog_cols]
+        y = data['target']
+        
+        X_const = sm.add_constant(X)
+        Z_const = sm.add_constant(Z)
+        
+        stage1 = sm.OLS(X_const, Z_const).fit()
+        X_hat = stage1.fittedvalues
+        
+        self.results = sm.OLS(y, X_hat).fit()
+        self.model = self.results
+        logger.info(f"IV model fitted. R-squared: {self.results.rsquared:.4f}")
+        return self
+        
+    def predict(self, data: pd.DataFrame) -> np.ndarray:
+        if self.results is None:
+            raise RuntimeError("Model must be fitted before prediction")
+        X = data[self.endog_cols + self.exog_cols]
+        Z = data[self.instrument_cols + self.exog_cols]
+        X_const = sm.add_constant(X)
+        Z_const = sm.add_constant(Z)
+        stage1 = sm.OLS(X_const, Z_const).fit()
+        X_hat = stage1.fittedvalues
+        return self.results.predict(X_hat)
+        
     def execute(self, data: pd.DataFrame) -> Dict[str, Any]:
-        """Execute Instrumental Variables on data"""
-        return {}
+        self.fit(data)
+        predictions = self.predict(data)
+        return {
+            'status': 'success',
+            'coefficients': self.results.params.to_dict(),
+            'p_values': self.results.pvalues.to_dict(),
+            'confidence_intervals': self.results.conf_int(self.alpha).to_dict(),
+            'predictions': predictions.tolist(),
+            'r_squared': self.results.rsquared,
+            'aic': self.results.aic,
+            'bic': self.results.bic
+        }
+```
+
+### Pattern 3: Anti-Patterns vs Best Practices (BAD vs GOOD)
+
+```python
+# BAD: Hardcoded values, no validation, ignores instrument relevance
+def bad_iv_implementation(df):
+    X = df['x']
+    Z = df['z']
+    y = df['y']
+    # Assumes perfect correlation, no stage 1 check
+    beta = np.sum(y * Z) / np.sum(X * Z)
+    return beta
+
+# GOOD: Validates assumptions, checks first-stage strength, returns structured output
+def good_iv_implementation(df: pd.DataFrame, z_col: str, x_col: str, y_col: str) -> Dict[str, Any]:
+    if df[z_col].corr(df[x_col]) < 0.3:
+        raise ValueError("Weak instrument detected: correlation < 0.3")
+    # Proper 2SLS with constant and error handling
+    X_const = sm.add_constant(df[x_col])
+    Z_const = sm.add_constant(df[z_col])
+    stage1 = sm.OLS(X_const, Z_const).fit()
+    if stage1.fvalue < 10:
+        logger.warning("Weak instrument warning: First-stage F-stat < 10")
+    X_hat = stage1.fittedvalues
+    iv_res = sm.OLS(df[y_col], X_hat).fit()
+    return {'coefficient': iv_res.params.iloc[1], 'p_value': iv_res.pvalues.iloc[1]}
 ```
 
 ## Best Practices
@@ -111,60 +233,77 @@ class InstrumentalVariables:
 ## Complete Working Example
 
 ```python
-# Full working example for Instrumental Variables
 import pandas as pd
 import numpy as np
+import statsmodels.api as sm
+from sklearn.metrics import mean_squared_error, r2_score
 from typing import Dict, Any
 
-def implement_variables(data: pd.DataFrame) -> Dict[str, Any]:
+def implement_iv_analysis(data: pd.DataFrame, instrument_cols: list, 
+                          endog_cols: list, exog_cols: list = None) -> Dict[str, Any]:
     """
-    Complete implementation of Instrumental Variables.
-    
-    This example demonstrates:
-    - Proper input validation
-    - Core algorithm implementation
-    - Error handling
-    - Result formatting
-    
-    Args:
-        data: Input DataFrame with required columns
-        
-    Returns:
-        Dictionary with results and metadata
-        
-    Raises:
-        ValueError: If input data is invalid
-        
-    Example:
-        >>> df = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
-        >>> results = implement_variables(df)
-        >>> print(results)
+    Complete implementation of Instrumental Variables analysis.
+    Demonstrates data validation, 2SLS fitting, OLS comparison, and evaluation.
     """
-    # Validate inputs
     if data is None or data.empty:
         raise ValueError("Input data cannot be None or empty")
     
-    # Implementation
-    results = {
+    required = instrument_cols + endog_cols + exog_cols + ['target']
+    missing = [c for c in required if c not in data.columns]
+    if missing:
+        raise ValueError(f"Missing required columns: {missing}")
+        
+    X_endog = data[endog_cols]
+    X_exog = data[exog_cols] if exog_cols else pd.DataFrame(index=data.index)
+    Z = data[instrument_cols]
+    y = data['target']
+    
+    # Stage 1: Predict endogenous variables with instruments
+    X_combined = pd.concat([X_endog, X_exog], axis=1)
+    Z_combined = pd.concat([Z, X_exog], axis=1)
+    X_const = sm.add_constant(X_combined)
+    Z_const = sm.add_constant(Z_combined)
+    
+    stage1 = sm.OLS(X_const, Z_const).fit()
+    X_hat = stage1.fittedvalues
+    
+    # Stage 2: IV Estimation
+    iv_results = sm.OLS(y, X_hat).fit()
+    
+    # OLS for comparison (biased due to endogeneity)
+    ols_results = sm.OLS(y, X_const).fit()
+    
+    # Evaluation
+    iv_preds = iv_results.predict(X_hat)
+    ols_preds = ols_results.predict(X_const)
+    
+    return {
         'status': 'success',
-        'data': data,
+        'iv_coefficients': iv_results.params.to_dict(),
+        'iv_pvalues': iv_results.pvalues.to_dict(),
+        'iv_r_squared': iv_results.rsquared,
+        'ols_coefficients': ols_results.params.to_dict(),
+        'ols_r_squared': ols_results.rsquared,
+        'iv_rmse': np.sqrt(mean_squared_error(y, iv_preds)),
+        'ols_rmse': np.sqrt(mean_squared_error(y, ols_preds)),
+        'stage1_f_statistic': stage1.fvalue,
         'metadata': {'rows': len(data), 'columns': data.shape[1]}
     }
-    
-    return results
 
-# Usage and testing
 if __name__ == "__main__":
-    # Create sample data
-    sample_data = pd.DataFrame({
-        'x': np.arange(100),
-        'y': np.random.randn(100)
-    })
+    np.random.seed(42)
+    n = 1000
+    Z = np.random.randn(n, 2)
+    X = 0.8 * Z[:, 0] + 0.5 * Z[:, 1] + np.random.randn(n) * 0.3
+    u = np.random.randn(n) * 0.4
+    y = 2.5 * X + 1.2 * Z[:, 0] + u
     
-    # Run implementation
-    results = implement_variables(sample_data)
-    print(f"Status: {results['status']}")
-    print(f"Processed {results['metadata']['rows']} rows")
+    df = pd.DataFrame({'x1': X, 'z1': Z[:, 0], 'z2': Z[:, 1], 'target': y})
+    results = implement_iv_analysis(df, instrument_cols=['z1', 'z2'], 
+                                    endog_cols=['x1'], exog_cols=[])
+    print(f"IV Coeff: {results['iv_coefficients']['x1']:.3f}")
+    print(f"OLS Coeff: {results['ols_coefficients']['x1']:.3f}")
+    print(f"IV RMSE: {results['iv_rmse']:.3f}")
 ```
 
 ## Related Skills
@@ -172,15 +311,4 @@ if __name__ == "__main__":
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | `coding-ds-causal-inference` | Causal Inference techniques | Complementary to this skill |
-| `coding-ds-linear-regression` | Linear Regression techniques | Complementary to this skill |
-| `coding-ds-observational-studies` | Observational Studies techniques | Complementary to this skill |
-
-## References
-
-- Official documentation and papers on Instrumental Variables
-- Industry best practices and standards
-- Implementation examples from the scikit-learn, TensorFlow, and PyTorch libraries
-
----
-
-*Last updated: 2026-04-24*
+| `coding-ds-linear-regression` | Linear Regression techniques | Complementary to this skill

@@ -1,18 +1,26 @@
 ---
-name: kubernetes-debugging
-description: Implements comprehensive Kubernetes debugging workflow with pod inspection, log analysis, resource debugging, network troubleshooting, and common failure pattern diagnosis using kubectl commands.
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+- config
+description: Implements comprehensive Kubernetes debugging workflow with pod inspection, log analysis, resource debugging,
+  network troubleshooting, and common failure pattern diagnosis using kubectl commands.
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: cncf
-  triggers: kubernetes debugging, k8s troubleshooting, pod crashes, node failures, cluster debugging, kubectl debug, container logs, k8s errors
-  role: implementation
-  scope: implementation
   output-format: code
   related-skills: agent-docker-debugging, agent-network-troubleshooting, cncf-prometheus
+  role: implementation
+  scope: implementation
+  triggers: kubernetes debugging, k8s troubleshooting, pod crashes, node failures, cluster debugging, kubectl debug, container
+    logs, k8s errors
+  version: 1.0.0
+name: kubernetes-debugging
 ---
-
 # Kubernetes Cluster Debugging
 
 Implements systematic debugging workflows for Kubernetes clusters using kubectl commands to diagnose pod issues, node failures, network problems, resource constraints, and common failure patterns.

@@ -1,18 +1,25 @@
 ---
-name: hubspot-automation
-description: Implements intelligent hubspot automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent hubspot automation with multi-factor skill selection, fallback chains, and adherence to
+  the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: hubspot-automation, hubspot automation, how do i hubspot-automation, orchestrate hubspot-automation, automate hubspot-automation, agent hubspot-automation
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: hubspot-automation, hubspot automation, how do i hubspot-automation, orchestrate hubspot-automation, automate
+    hubspot-automation, agent hubspot-automation
+  version: 1.0.0
+name: hubspot-automation
 ---
-
 # Hubspot Automation
 
 Orchestrates intelligent skill selection and execution for hubspot automation workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -139,52 +146,57 @@ def select_skill(
     available_skills: List[Dict],
     min_confidence: float = 0.7
 ) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+    """Route HubSpot automation requests to the correct CRM endpoint.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Validates input against HubSpot schema requirements and selects
+    the optimal API endpoint (contacts, deals, companies, tickets)
+    based on entity type, required properties, and rate limit status.
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
+        task_description: Natural language description of the CRM task
+        available_skills: List of HubSpot endpoint skill metadata
         min_confidence: Minimum confidence threshold (0.0-1.0)
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected endpoint skill dictionary or None if no match meets threshold
     """
-    # Guard clause - Early Exit (Law 1)
     if not task_description or not task_description.strip():
         raise ValueError("Task description cannot be empty")
         
     if not available_skills:
-        raise ValueError("No skills available for selection")
+        raise ValueError("No HubSpot endpoints available for selection")
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
+    # Parse HubSpot entity type and required properties
+    entity_type = _extract_hubspot_entity(task_description)
+    required_props = _parse_property_requirements(task_description)
     
-    best_skill = None
+    best_endpoint = None
     best_score = 0.0
     
     for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
+        if skill.get("endpoint_type") != entity_type:
+            continue
+            
+        # Score based on property coverage and current API health
+        prop_match = _calculate_property_coverage(required_props, skill.get("supported_properties", []))
+        api_health = skill.get("health_status", 1.0)
+        score = prop_match * 0.7 + api_health * 0.3
         
         if score > best_score and score >= min_confidence:
             best_score = score
-            best_skill = skill
+            best_endpoint = skill
     
-    if best_skill is None:
+    if best_endpoint is None:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Return immutable routing config
+    return {
+        "endpoint": best_endpoint["name"],
+        "entity_type": entity_type,
+        "confidence": best_score,
+        "property_schema": required_props,
+        "timestamp": time.time()
+    }
 ```
 
 
@@ -196,64 +208,61 @@ def execute_with_fallback(
     task_context: Dict,
     max_retries: int = 2
 ) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+    """Execute HubSpot API request with rate-limit aware fallback chain.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements resilient CRM operations by handling HubSpot's 10 req/s
+    rate limits, transient network errors, and schema validation failures.
+    Falls back to batch API or async webhook queuing when single-object
+    endpoints are throttled or fail.
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
+        skill: Selected HubSpot endpoint metadata
+        task_context: Execution context including CRM object data
         max_retries: Maximum retry attempts before fallback
         
     Returns:
         Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
     """
-    # Guard clause - validate skill (Early Exit)
     if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+        raise SkillExecutionError(f"Invalid HubSpot endpoint: {skill.get('name', 'unknown')}")
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
+    validated_object = _validate_hubspot_object(task_context.get("object_data", {}), skill.get("schema", {}))
     
     for attempt in range(max_retries + 1):
         try:
-            result = _execute_skill_direct(skill, validated_context)
+            # Direct API call with HubSpot-specific headers
+            response = requests.post(
+                f"https://api.hubapi.com/crm/v3/objects/{skill['entity_type']}",
+                headers={
+                    "Authorization": f"Bearer {task_context['api_key']}",
+                    "Content-Type": "application/json"
+                },
+                json={"properties": validated_object},
+                timeout=10
+            )
             
-            # Success - Atomic Predictability (Law 3)
+            if response.status_code == 429:
+                # Rate limited - backoff and retry
+                time.sleep(response.headers.get("Retry-After", 1))
+                continue
+                
+            response.raise_for_status()
+            
             return {
                 "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
+                "endpoint": skill["name"],
+                "result": response.json(),
                 "attempts": attempt + 1,
                 "latency_ms": _calculate_latency()
             }
             
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 400:
+                raise SkillExecutionError(f"HubSpot validation failed: {e.response.json()}") from e
             if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+                return _apply_hubspot_fallback(skill, validated_object)
+                
+    raise SkillExecutionError(f"HubSpot API failed after {max_retries + 1} attempts")
 ```
 
 ### MUST DO
@@ -320,3 +329,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

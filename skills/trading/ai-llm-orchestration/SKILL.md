@@ -1,21 +1,24 @@
 ---
-name: llm-orchestration
-description: '"Large Language Model orchestration for trading analysis with structured"
-  output using instructor/pydantic'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- config
+- do-dont
+description: '"Large Language Model orchestration for trading analysis with structured" output using instructor/pydantic'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: trading
+  output-format: code
+  related-skills: ai-anomaly-detection, ai-explainable-ai
   role: implementation
   scope: implementation
-  output-format: code
   triggers: ai llm orchestration, ai-llm-orchestration, language, large, model
-  related-skills: ai-anomaly-detection, ai-explainable-ai
+  version: 1.0.0
+name: llm-orchestration
 ---
-
-
-
 # LLM Orchestration for Trading: The 5 Laws of AI-Powered Analysis
 
 **Role:** AI Integration Engineer — applies to LLM provider selection, structured output generation, prompt engineering, and cost optimization for trading analysis systems.
@@ -1466,3 +1469,37 @@ def analyze_market(prompt, task_type):
 3. **OpenAI API Pricing** - https://openai.com/api/pricing/ - GPT-4 and GPT-3.5 pricing
 4. **Anthropic Pricing** - https://www.anthropic.com/pricing - Claude model pricing
 5. **Groq API** - https://console.groq.com/docs/ - Fast inference with Llama models
+---
+
+## When to Use
+
+Use this skill when:
+
+- **Implementing position risk controls** — You need to add stop losses, position sizing, or drawdown limits to a trading algorithm
+- **Designing or reviewing trading system components** — You are building or auditing order execution, market data processing, or exchange connectivity
+- **Building market analysis or signal generation logic** — You need to create indicators, signals, or prediction models for trading decisions
+---
+
+## Core Workflow
+
+1. **Analyze Requirements** — Understand the trading scenario, market conditions, data sources, and risk constraints. **Checkpoint:** Clearly document inputs, outputs, edge cases, and failure modes.
+
+2. **Design Implementation** — Choose appropriate algorithms, data structures, and risk constraints following APEX platform conventions. **Checkpoint:** Verify the design includes proper error handling and risk enforcement at every step.
+
+3. **Implement & Test** — Write Python code with typed signatures, docstrings, and comprehensive tests including edge cases. **Checkpoint:** All risk constraints are enforced, tested, and documented. Emergency layers are independent.
+
+4. **Validate & Review** — Run all tests, verify risk controls under simulated conditions, and review against best practices. **Checkpoint:** All edge cases handled, emergency stops functional, and code follows APEX platform patterns.
+
+---
+
+## Constraints
+
+### MUST DO
+- Use Python with typed signatures and docstrings
+- Implement emergency stops as an independent layer
+- Follow APEX platform file path conventions (risk_engine/, data_pipeline/, execution/)
+
+### MUST NOT DO
+- Disable or bypass emergency stops under any circumstance
+- Place stops at round numbers (attracts stop hunting)
+- Use the same risk parameters across all market regimes without adjustment

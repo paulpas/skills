@@ -1,25 +1,26 @@
 ---
-name: driven-architecture
-description: '"''Event-driven architecture for real-time trading systems: pub/sub
-  patterns" event types, signal flow, strategy base, and common pitfalls'''
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"''Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy
+  base, and common pitfalls'''
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
-  triggers: event driven architecture, event-driven, event-driven-architecture, real-time,
-    trading, eventbridge, event bus, event routing
-  related-skills: null
+  triggers: event driven architecture, event-driven, event-driven-architecture, real-time, trading, eventbridge, event bus,
+    event routing
+  version: 1.0.0
+name: driven-architecture
 ---
-
-
-
-
-
-
 # Skill: coding-event-driven-architecture
 
 # Event-driven architecture for real-time trading systems: pub/sub patterns, event types, signal flow, strategy base, and common pitfalls
@@ -349,3 +350,17 @@ async def main():
 - **Atomic Predictability**: Events are immutable; each handler is a pure side-effectful function that should not mutate the event
 - **Fail Fast**: Dead letter queue or error log for failed handlers; bus never silently drops events
 - **Intentional Naming**: `process_bar`, `handle_signal`, `publish`, `subscribe`, `start`, `stop` — every method name is a verb describing exactly one action
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition

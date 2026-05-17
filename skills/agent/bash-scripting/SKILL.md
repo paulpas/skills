@@ -1,18 +1,25 @@
 ---
-name: bash-scripting
-description: Implements intelligent bash scripting with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent bash scripting with multi-factor skill selection, fallback chains, and adherence to the
+  5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: bash-scripting, bash scripting, how do i bash-scripting, orchestrate bash-scripting, automate bash-scripting, agent bash-scripting
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: bash-scripting, bash scripting, how do i bash-scripting, orchestrate bash-scripting, automate bash-scripting,
+    agent bash-scripting
+  version: 1.0.0
+name: bash-scripting
 ---
-
 # Bash Scripting
 
 Orchestrates intelligent skill selection and execution for bash scripting workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -133,127 +140,125 @@ Avoid this skill for:
 
 ### Pattern 1: Skill Selection Logic
 
-```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
-    
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
-    
-    Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
-        
-    Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
-    """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
-        
-    if not available_skills:
-        raise ValueError("No skills available for selection")
-    
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
-        return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+```bash
+#!/usr/bin/env bash
+# Pattern 1: Bash Scripting with Early Exit & Input Validation
+# Implements Law 1 (Early Exit) and Law 2 (Make Illegal States Unrepresentable)
+
+set -euo pipefail
+SCRIPT_NAME="$(basename "$0")"
+LOG_FILE="/var/log/${SCRIPT_NAME}.log"
+
+# Guard clause: Validate required arguments immediately (Law 1)
+if [[ $# -lt 2 ]]; then
+    echo "Usage: $SCRIPT_NAME <target_dir> <backup_prefix>" >&2
+    exit 1
+fi
+
+TARGET_DIR="$1"
+BACKUP_PREFIX="$2"
+
+# Validate state: Ensure target exists and is a directory (Law 2)
+if [[ ! -d "$TARGET_DIR" ]]; then
+    echo "ERROR: Target directory '$TARGET_DIR' does not exist or is not a directory." >&2
+    exit 2
+fi
+
+# Parse and sanitize inputs - create immutable state snapshot
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_NAME="${BACKUP_PREFIX}_${TIMESTAMP}.tar.gz"
+BACKUP_PATH="${TARGET_DIR}/backups/${BACKUP_NAME}"
+
+# Create backup directory if missing (atomic state transition)
+mkdir -p "${TARGET_DIR}/backups"
+
+# Execute core logic with strict error handling
+echo "Starting backup of ${TARGET_DIR} to ${BACKUP_PATH}..."
+if tar -czf "$BACKUP_PATH" -C "$(dirname "$TARGET_DIR")" "$(basename "$TARGET_DIR")"; then
+    echo "SUCCESS: Backup completed at $(date)"
+    # Log success with metadata for audit trail
+    echo "$(date -Iseconds) | SUCCESS | ${BACKUP_NAME}" >> "$LOG_FILE"
+else
+    echo "ERROR: tar command failed with exit code $?" >&2
+    exit 3
+fi
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
-```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
-    
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
-    
-    Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
-        
-    Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
-    """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
-    
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
-            }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
-    )
+```bash
+#!/usr/bin/env bash
+# Pattern 2: Bash Execution with Fallback Chain & Retry Logic
+# Implements Law 4 (Fail Fast, Fail Loud) and adaptive fallback routing
+
+set -euo pipefail
+MAX_RETRIES=3
+RETRY_DELAY=2
+
+# Function: Execute primary command with retry logic
+execute_with_retry() {
+    local cmd="$1"
+    local attempt=0
+
+    while (( attempt < MAX_RETRIES )); do
+        if eval "$cmd"; then
+            return 0
+        fi
+        attempt=$((attempt + 1))
+        if (( attempt < MAX_RETRIES )); then
+            echo "WARNING: Attempt $attempt failed. Retrying in ${RETRY_DELAY}s..." >&2
+            sleep "$RETRY_DELAY"
+        fi
+    done
+    return 1
+}
+
+# Fallback chain implementation
+run_fallback_chain() {
+    local primary_cmd="$1"
+    local fallback_cmd="$2"
+    local critical_task="$3"
+
+    # Attempt primary execution
+    if execute_with_retry "$primary_cmd"; then
+        echo "Primary execution succeeded."
+        return 0
+    fi
+
+    echo "Primary execution exhausted retries. Initiating fallback chain..." >&2
+
+    # Level 1: Retry with adjusted parameters (e.g., reduced concurrency)
+    local adjusted_cmd="${primary_cmd} --concurrency=1"
+    if execute_with_retry "$adjusted_cmd"; then
+        echo "Fallback Level 1 (adjusted parameters) succeeded."
+        return 0
+    fi
+
+    # Level 2: Try alternative command/skill
+    if [[ -n "$fallback_cmd" ]]; then
+        if execute_with_retry "$fallback_cmd"; then
+            echo "Fallback Level 2 (alternative command) succeeded."
+            return 0
+        fi
+    fi
+
+    # Level 3: Critical task failure - escalate to human operator
+    if [[ "$critical_task" == "true" ]]; then
+        echo "CRITICAL: All fallbacks exhausted. Escalating to human operator." >&2
+        # Trigger alert mechanism
+        curl -s -X POST "https://hooks.example.com/alert" \
+            -H "Content-Type: application/json" \
+            -d "{\"task\":\"$primary_cmd\",\"status\":\"failed\",\"escalated\":true}" || true
+        return 2
+    fi
+
+    echo "ERROR: All fallbacks failed. Task aborted." >&2
+    return 1
+}
+
+# Example usage
+# run_fallback_chain "rsync -a /data /backup" "cp -r /data /backup" "false"
 ```
 
 ### MUST DO
@@ -320,3 +325,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

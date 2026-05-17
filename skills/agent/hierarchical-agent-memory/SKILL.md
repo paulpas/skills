@@ -1,18 +1,25 @@
 ---
-name: hierarchical-agent-memory
-description: Implements intelligent hierarchical agent memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- guidance
+- examples
+- do-dont
+description: Implements intelligent hierarchical agent memory with multi-factor skill selection, fallback chains, and adherence
+  to the 5 Laws of Elegant Defense
+license: MIT
+maturity: stable
 metadata:
-  version: "1.0.0"
   domain: agent
-  triggers: hierarchical-agent-memory, hierarchical agent memory, how do i hierarchical-agent-memory, orchestrate hierarchical-agent-memory, automate hierarchical-agent-memory, agent hierarchical-agent-memory
-  role: orchestration
-  scope: orchestration
   output-format: analysis
   related-skills: agent-confidence-based-selector, agent-task-routing
+  role: orchestration
+  scope: orchestration
+  triggers: hierarchical-agent-memory, hierarchical agent memory, how do i hierarchical-agent-memory, orchestrate hierarchical-agent-memory,
+    automate hierarchical-agent-memory, agent hierarchical-agent-memory
+  version: 1.0.0
+name: hierarchical-agent-memory
 ---
-
 # Hierarchical Agent Memory
 
 Orchestrates intelligent skill selection and execution for hierarchical agent memory workflows. Applies the 5 Laws of Elegant Defense to guide data naturally through the orchestration pipeline, preventing errors before they occur. Selects optimal skills based on multi-factor scoring including text similarity, historical performance, and system availability.
@@ -134,125 +141,158 @@ Avoid this skill for:
 ### Pattern 1: Skill Selection Logic
 
 ```python
-def select_skill(
-    task_description: str,
-    available_skills: List[Dict],
-    min_confidence: float = 0.7
-) -> Optional[Dict]:
-    """Select the most appropriate skill for a given task.
+def select_memory_layer(
+    query: str,
+    agent_state: Dict[str, Any],
+    memory_store: MemoryBackend,
+    min_relevance: float = 0.65
+) -> Optional[MemoryChunk]:
+    """Select the optimal memory layer for a given query based on hierarchical scoring.
     
-    Uses a multi-factor scoring algorithm that considers:
-    - Text similarity between task and skill triggers
-    - Historical success rate for similar tasks
-    - Current system load and skill availability
+    Evaluates short-term buffer, long-term vector store, and episodic cache using:
+    - Semantic similarity to query
+    - Temporal decay factor (recency weighting)
+    - Agent confidence in stored context
+    - Cross-layer consistency checks
     
     Args:
-        task_description: Natural language description of the task
-        available_skills: List of skill metadata dictionaries
-        min_confidence: Minimum confidence threshold (0.0-1.0)
+        query: User or agent query string
+        agent_state: Current agent context including confidence scores and active tasks
+        memory_store: Backend interface for hierarchical memory access
+        min_relevance: Minimum relevance threshold for selection
         
     Returns:
-        Selected skill dictionary or None if no match meets threshold
-        
-    Raises:
-        ValueError: If task_description is empty or available_skills is empty
+        Selected MemoryChunk with metadata, or None if below threshold
     """
-    # Guard clause - Early Exit (Law 1)
-    if not task_description or not task_description.strip():
-        raise ValueError("Task description cannot be empty")
+    # Law 1: Early exit on invalid state
+    if not query or not isinstance(query, str):
+        raise ValueError("Query must be a non-empty string")
+    if not memory_store.is_healthy():
+        raise MemoryUnavailableError("Memory backend is currently unavailable")
         
-    if not available_skills:
-        raise ValueError("No skills available for selection")
+    # Law 2: Parse & validate inputs immutably
+    parsed_query = _normalize_query(query)
+    temporal_weight = _calculate_recency_decay(agent_state.get("session_start"))
     
-    # Parse input - Make Illegal States Unrepresentable (Law 2)
-    task_features = _extract_task_features(task_description)
-    
-    best_skill = None
-    best_score = 0.0
-    
-    for skill in available_skills:
-        score = _calculate_skill_score(task_features, skill)
-        
-        if score > best_score and score >= min_confidence:
-            best_score = score
-            best_skill = skill
-    
-    if best_skill is None:
+    candidates = []
+    for layer in ["short_term", "long_term", "episodic"]:
+        if not memory_store.has_layer(layer):
+            continue
+            
+        raw_results = memory_store.search(layer, parsed_query, top_k=3)
+        for chunk in raw_results:
+            relevance = _compute_multi_factor_score(
+                semantic=_embed_similarity(parsed_query, chunk.text),
+                temporal=temporal_weight * chunk.timestamp_weight,
+                confidence=agent_state.get("memory_confidence", 0.8)
+            )
+            if relevance >= min_relevance:
+                candidates.append({
+                    "chunk": chunk,
+                    "layer": layer,
+                    "score": relevance,
+                    "source_trace": f"{layer}:{chunk.id}"
+                })
+                
+    if not candidates:
         return None
-    
-    # Atomic Predictability (Law 3) - Return new dict, don't mutate
-    result = dict(best_skill)
-    result["selected_confidence"] = best_score
-    result["selection_timestamp"] = time.time()
-    return result
+        
+    # Law 3: Return new structure, never mutate agent_state
+    best = max(candidates, key=lambda x: x["score"])
+    return {
+        "selected_layer": best["layer"],
+        "memory_chunk": best["chunk"],
+        "relevance_score": best["score"],
+        "selection_context": {
+            "query_hash": hashlib.md5(parsed_query.encode()).hexdigest(),
+            "timestamp": time.time(),
+            "fallback_eligible": len(candidates) > 1
+        }
+    }
 ```
 
 
 ### Pattern 2: Execution with Fallback
 
 ```python
-def execute_with_fallback(
-    skill: Dict,
-    task_context: Dict,
-    max_retries: int = 2
-) -> Dict:
-    """Execute a skill with fallback chain for resilience.
+def execute_memory_retrieval(
+    selected_memory: Dict[str, Any],
+    agent_context: Dict[str, Any],
+    fallback_strategy: str = "cascade"
+) -> Dict[str, Any]:
+    """Execute memory retrieval with a structured fallback chain for hierarchical systems.
     
-    Implements the Fail Fast, Fail Loud principle (Law 4):
-    - Invalid states halt immediately with descriptive errors
-    - No silent failures or partial results
-    
-    Fallback chain:
-    1. Retry with original parameters
-    2. Retry with adjusted parameters (if applicable)
-    3. Try alternative skill from related skills list
-    4. Defer to human operator (for critical tasks)
+    Implements resilient memory access:
+    1. Direct layer retrieval (primary)
+    2. Cross-layer semantic expansion (secondary)
+    3. Default context window fallback (tertiary)
+    4. Explicit error state with audit logging (final)
     
     Args:
-        skill: Selected skill metadata
-        task_context: Execution context including inputs
-        max_retries: Maximum retry attempts before fallback
+        selected_memory: Output from select_memory_layer
+        agent_context: Full agent state including task history and constraints
+        fallback_strategy: Routing strategy for degraded states
         
     Returns:
-        Execution result with metadata (success, timing, confidence)
-        
-    Raises:
-        SkillExecutionError: If all retries and fallbacks exhausted
+        Enriched context dictionary with retrieved memory and execution metadata
     """
-    # Guard clause - validate skill (Early Exit)
-    if not _is_skill_valid(skill):
-        raise SkillExecutionError(f"Invalid skill: {skill.get('name', 'unknown')}")
+    # Law 1: Guard clause for required fields
+    required_keys = {"selected_layer", "memory_chunk", "relevance_score"}
+    if not required_keys.issubset(selected_memory.keys()):
+        raise MemoryRetrievalError("Incomplete memory selection metadata")
+        
+    layer = selected_memory["selected_layer"]
+    chunk = selected_memory["memory_chunk"]
     
-    # Parse context - Ensure trusted state (Law 2)
-    validated_context = _validate_and_parse_context(task_context, skill)
-    
-    for attempt in range(max_retries + 1):
-        try:
-            result = _execute_skill_direct(skill, validated_context)
-            
-            # Success - Atomic Predictability (Law 3)
-            return {
-                "success": True,
-                "skill_executed": skill["name"],
-                "result": result,
-                "attempts": attempt + 1,
-                "latency_ms": _calculate_latency()
+    # Law 4: Fail fast on corrupted or inaccessible memory
+    if not _validate_memory_integrity(chunk):
+        raise CorruptedMemoryError(f"Memory chunk {chunk.id} failed integrity check")
+        
+    try:
+        # Primary execution: Fetch full context from selected layer
+        enriched_context = _merge_memory_into_context(chunk, agent_context)
+        
+        # Law 3: Return immutable result
+        return {
+            "status": "success",
+            "layer_used": layer,
+            "context": enriched_context,
+            "metadata": {
+                "latency_ms": time.time() * 1000,
+                "confidence_boost": selected_memory["relevance_score"] * 0.15,
+                "audit_id": uuid4().hex
             }
-            
-        except InvalidStateError as e:
-            # Fail Fast - Don't try to patch bad data (Law 4)
-            raise SkillExecutionError(
-                f"Invalid state in {skill['name']}: {str(e)}"
-            ) from e
-            
-        except TransientError as e:
-            # Transient error - try fallback
-            if attempt == max_retries:
-                return _apply_fallback_chain(skill, validated_context)
-    
-    # All retries exhausted - Fail Loud (Law 4)
-    raise SkillExecutionError(
-        f"Failed to execute {skill['name']} after {max_retries + 1} attempts"
+        }
+        
+    except MemoryTimeoutError:
+        # Fallback 1: Cascade to alternative layer
+        if fallback_strategy == "cascade":
+            alt_layer = _select_alternative_layer(layer)
+            alt_chunk = _fetch_from_layer(alt_layer, chunk.query_hash)
+            if alt_chunk:
+                return execute_memory_retrieval({
+                    "selected_layer": alt_layer,
+                    "memory_chunk": alt_chunk,
+                    "relevance_score": 0.5
+                }, agent_context, "cascade")
+                
+    except MemoryAccessDeniedError:
+        # Fallback 2: Use default context window
+        return {
+            "status": "fallback",
+            "layer_used": "default_context",
+            "context": _load_default_context(agent_context),
+            "metadata": {
+                "latency_ms": time.time() * 1000,
+                "confidence_boost": 0.0,
+                "audit_id": uuid4().hex,
+                "reason": "access_denied"
+            }
+        }
+        
+    # Law 4: Fail loud with full context
+    raise MemoryRetrievalError(
+        f"Failed to retrieve memory for layer {layer} after fallback attempts"
     )
 ```
 
@@ -320,3 +360,17 @@ When applying this skill, produce:
 | `agent-dependency-graph-builder` | Builds and resolves skill dependency graphs |
 | `agent-task-decomposer` | Breaks complex tasks into delegable subtasks |
 | `agent-confidence-based-selector` | Alternative confidence-based routing approach
+
+---
+
+## Constraints
+
+### MUST DO
+- Ensure each agent handles a single responsibility
+- Include explicit fallback/error routing for every branching point
+- Reference code-philosophy (5 Laws of Elegant Defense)
+
+### MUST NOT DO
+- Use fixed thresholds without adaptive tuning
+- Ignore low-confidence fallback scenarios
+- Skip execution history tracking

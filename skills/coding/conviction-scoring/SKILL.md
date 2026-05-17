@@ -1,22 +1,25 @@
 ---
-name: scoring
-description: '"Multi-factor conviction scoring engine combining technical, momentum"
-  trend, volatility, and volume signals with configurable weights'
-license: MIT
 compatibility: opencode
+completeness: 95
+content-types:
+- code
+- guidance
+- do-dont
+- examples
+description: '"Multi-factor conviction scoring engine combining technical, momentum" trend, volatility, and volume signals
+  with configurable weights'
+license: MIT
+maturity: stable
 metadata:
-  version: 1.0.0
   domain: coding
+  output-format: code
+  related-skills: null
   role: implementation
   scope: implementation
-  output-format: code
   triggers: combining, conviction scoring, conviction-scoring, engine, multi-factor
-  related-skills: null
+  version: 1.0.0
+name: scoring
 ---
-
-
-
-
 # Skill: coding-conviction-scoring
 
 # Multi-factor conviction scoring engine combining technical, momentum, trend, volatility, and volume signals with configurable weights
@@ -299,3 +302,17 @@ print(f"Aggregate conviction: {combined_score.overall:.3f}")
 - **Atomic Predictability**: All scoring functions are pure — same inputs always produce the same `ConvictionScore`
 - **Fail Fast**: Invalid weights halt engine construction; out-of-range scores halt calculation; empty signal list raises
 - **Intentional Naming**: `should_enter`, `should_exit`, `score_signal_event`, `calculate_conviction_from_signals` — reads like a decision flow
+
+---
+
+## Constraints
+
+### MUST DO
+- Include at least one BAD/GOOD code example pair
+- Reference a relevant standard (OWASP, SOLID, DRY, KISS, etc.)
+- Use type hints on all function signatures
+
+### MUST NOT DO
+- Use magic numbers or hardcoded configuration values
+- Bypass error handling for assumed-valid inputs
+- Write functions longer than 50 lines without decomposition
