@@ -16,6 +16,7 @@ export interface SkillMetadata {
     maturity?: 'draft' | 'beta' | 'stable';
     completeness?: number;
     exampleCount?: number;
+    contentTypes?: ContentType[];
     performance?: {
         averageLatencyMs: number;
         successRate: number;
@@ -195,5 +196,24 @@ export interface EmbeddingResponse {
     model: string;
     inputTokens?: number;
     batchTokenCount?: number;
+}
+/**
+ * Content types that a skill may produce
+ */
+export type ContentType = 'guidance' | 'examples' | 'do-dont' | 'config' | 'code' | 'diagrams';
+/**
+ * Domain configuration defaults from domains.json
+ */
+export interface DomainConfig {
+    role: string;
+    scope: string;
+    contentTypes: ContentType[];
+    description?: string;
+}
+/**
+ * Domain configuration file structure
+ */
+export interface DomainsConfig {
+    domains: Record<string, DomainConfig>;
 }
 //# sourceMappingURL=types.d.ts.map

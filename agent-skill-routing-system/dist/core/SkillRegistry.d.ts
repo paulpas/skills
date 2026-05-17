@@ -198,6 +198,7 @@ export declare class SkillRegistry implements SkillRegistryWithCompression {
         skillsWithoutEmbeddings: number;
         stubSkills?: number;
         realSkills?: number;
+        domains?: number;
     };
     /**
      * Lenient line-by-line frontmatter extractor for YAML that strict parsers reject.

@@ -12,6 +12,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const Logger_1 = require("../observability/Logger");
 const CompressionMetrics_1 = require("../utils/CompressionMetrics");
+const DomainRegistry_1 = require("../core/DomainRegistry");
 /**
  * CompressionCleanupJob - Scheduled cleanup of compressed skill versions
  *
@@ -240,7 +241,11 @@ class CompressionCleanupJob {
      * Scan available domains in skills directory
      */
     async scanDomains() {
-        const domains = ['agent', 'cncf', 'coding', 'programming', 'trading'];
+        // Use DomainRegistry for dynamic domain discovery instead of hardcoded list
+        // This ensures writing/ and coding/ domains (which exist on disk) are included,
+        // while swe (which doesn't exist) is excluded
+        const domainRegistry = DomainRegistry_1.DomainRegistry.getInstance();
+        const domains = await domainRegistry.discoverDomains(this.skillsDirectory);
         const available = [];
         for (const domain of domains) {
             const domainPath = path_1.default.join(this.skillsDirectory, domain);
