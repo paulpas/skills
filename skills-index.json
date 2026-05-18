@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-18T19:39:54.675744Z",
-  "totalSkills": 593,
+  "generatedAt": "2026-05-18T20:26:41.824276Z",
+  "totalSkills": 594,
   "domains": {
     "agent": 230,
     "cncf": 169,
-    "coding": 84,
+    "coding": 85,
     "go": 12,
     "linux": 10,
     "programming": 4,
@@ -13,7 +13,7 @@
   },
   "roles": {
     "orchestration": 221,
-    "implementation": 213,
+    "implementation": 214,
     "information": 1,
     "reference": 157,
     "review": 1
@@ -12073,6 +12073,32 @@
       ],
       "version": "1.0.0",
       "source": "skills/go/testing-strategies/SKILL.md"
+    },
+    {
+      "name": "testing-unit-integration-e2e",
+      "domain": "coding",
+      "description": "Implements comprehensive testing strategies (unit, integration, contract, and end-to-end) with appropriate test doubles, isolation levels, and coverage thresholds for reliable software delivery.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "unit testing",
+        "integration testing",
+        "contract testing",
+        "end-to-end testing",
+        "e2e",
+        "test doubles",
+        "test isolation",
+        "smoke tests"
+      ],
+      "relatedSkills": [
+        "testing-tdd",
+        "testing-mocking-stubs",
+        "code-review",
+        "testing-static-analysis"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/testing-unit-integration-e2e/SKILL.md"
     },
     {
       "name": "thanos",
