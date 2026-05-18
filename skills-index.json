@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-18T00:15:44.347397Z",
-  "totalSkills": 591,
+  "generatedAt": "2026-05-18T17:38:09.187991Z",
+  "totalSkills": 592,
   "domains": {
     "agent": 230,
     "cncf": 169,
-    "coding": 82,
+    "coding": 83,
     "go": 12,
     "linux": 10,
     "programming": 4,
@@ -13,7 +13,7 @@
   },
   "roles": {
     "orchestration": 221,
-    "implementation": 211,
+    "implementation": 212,
     "information": 1,
     "reference": 157,
     "review": 1
@@ -4006,6 +4006,32 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/deployment-philosophy/SKILL.md"
+    },
+    {
+      "name": "design-patterns-and-principles",
+      "domain": "coding",
+      "description": "Implements and explains GoF design patterns (Factory, Observer, Strategy, Decorator, Singleton), SOLID principles, and DRY/YAGNI guidelines to produce maintainable, extensible software architecture.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "design patterns",
+        "GoF",
+        "SOLID",
+        "DRY",
+        "factory pattern",
+        "software architecture",
+        "refactoring",
+        "SOLID principles"
+      ],
+      "relatedSkills": [
+        "test-driven-development",
+        "code-review",
+        "refactoring",
+        "modular-design"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/design-patterns-and-principles/SKILL.md"
     },
     {
       "name": "development",
