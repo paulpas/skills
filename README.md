@@ -264,8 +264,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-18 19:39:55 UTC  
-> **Total skills:** 593
+> **Last updated:** 2026-05-18 15:14:16 UTC  
+> **Total skills:** 594
 
 ## Skills by Domain
 
@@ -681,7 +681,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (85 skills)
+### Coding (86 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -766,6 +766,7 @@ MIT — All skills are freely available and redistributable.
 | [statistical-power](skills/coding/statistical-power/SKILL.md) | "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control" | statistical power, power analysis, sample size, effect size, Type I error, Type II error |
 | [support-vector-machines](skills/coding/support-vector-machines/SKILL.md) | "Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression" | support vector machines, SVM, kernel methods, support vectors, SVM classification |
 | [synthetic-control](skills/coding/synthetic-control/SKILL.md) | "Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation" | synthetic control, difference-in-differences, DiD, quasi-experiment, impact evaluation |
+| [testing-unit-integration-e2e](skills/coding/testing-unit-integration-e2e/SKILL.md) | Implements comprehensive testing strategies (unit, integration, contract, and end-to-end) with appropriate test doubles, isolation levels, and coverage thresholds for reliable software delivery. | unit testing, integration testing, contract testing, end-to-end testing, e2e, test doubles, test isolation, smoke tests |
 | [time-series-forecasting](skills/coding/time-series-forecasting/SKILL.md) | "Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction" | time series forecasting, ARIMA, exponential smoothing, LSTM, forecasting, time series prediction |
 | [topic-modeling](skills/coding/topic-modeling/SKILL.md) | "Implements topic modeling using Latent Dirichlet Allocation (LDA), Non-negative Matrix Factorization (NMF), and other topic extraction methods" | topic modeling, LDA, NMF, topic extraction, latent dirichlet allocation, text analysis |
 | [tree-methods](skills/coding/tree-methods/SKILL.md) | "Implements decision trees, random forests, gradient boosting (XGBoost" LightGBM), and tree ensemble methods for classification and regression | decision trees, random forest, gradient boosting, xgboost, lightgbm, how do i use trees |
@@ -907,7 +908,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (213 skills)
+### Implementation (Build Features) (214 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1101,6 +1102,7 @@ MIT — All skills are freely available and redistributable.
 | [tail-risk](skills/trading/tail-risk/SKILL.md) | Trading | "Implements tail risk management and extreme event protection for risk management and algorithmic trading execution." |
 | [terraform](skills/cncf/terraform/SKILL.md) | Cncf | Implements Terraform infrastructure as code for cloud provisioning with state management, modules, remote backends, and troubleshooting |
 | [testing-strategies](skills/go/testing-strategies/SKILL.md) | Go | Implements comprehensive testing strategies for Go including unit tests, integration tests, benchmarks, table-driven tests, and mock patterns. |
+| [testing-unit-integration-e2e](skills/coding/testing-unit-integration-e2e/SKILL.md) | Coding | Implements comprehensive testing strategies (unit, integration, contract, and end-to-end) with appropriate test doubles, isolation levels, and coverage thresholds for reliable software delivery. |
 | [time-series-database](skills/trading/time-series-database/SKILL.md) | Trading | "Provides Time-series database queries and optimization for financial data" |
 | [time-series-forecasting](skills/coding/time-series-forecasting/SKILL.md) | Coding | "Implements ARIMA, exponential smoothing, state-space models, LSTM networks, and deep learning methods for temporal prediction" |
 | [time-series-forecasting](skills/trading/time-series-forecasting/SKILL.md) | Trading | "Provides Time series forecasting for price prediction and market analysis" |
@@ -2060,6 +2062,7 @@ MIT — All skills are freely available and redistributable.
 | [test-oracle-generator](skills/agent/test-oracle-generator/SKILL.md) | Agent | Implements intelligent test oracle generator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [testing-qa](skills/agent/testing-qa/SKILL.md) | Agent | Implements intelligent testing qa with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [testing-strategies](skills/go/testing-strategies/SKILL.md) | Go | Implements comprehensive testing strategies for Go including unit tests, integration tests, benchmarks, table-driven tests, and mock patterns. | Implementation |
+| [testing-unit-integration-e2e](skills/coding/testing-unit-integration-e2e/SKILL.md) | Coding | Implements comprehensive testing strategies (unit, integration, contract, and end-to-end) with appropriate test doubles, isolation levels, and coverage thresholds for reliable software delivery. | Implementation |
 | [thanos](skills/cncf/thanos/SKILL.md) | Cncf | "Provides Thanos in High availability Prometheus solution with long-term storage" | Reference |
 | [tikv](skills/cncf/tikv/SKILL.md) | Cncf | "TiKV in Distributed transactional key-value database inspired by Google" Spanner | Reference |
 | [time-series-database](skills/trading/time-series-database/SKILL.md) | Trading | "Provides Time-series database queries and optimization for financial data" | Implementation |
