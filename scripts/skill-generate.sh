@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # =============================================================================
-# skill-generate.sh — Generate new skills using the Skill Router API
+# skill-generate.sh — Generate new skills using the Skill Router API + Opencode
 # =============================================================================
 #
 # Generates SKILL.md files programmatically by combining:
-#   1. Skill Router API for domain context and relevant skill discovery
-#   2. Local LLM (llama.cpp) for content generation following the format spec
+#   1. Opencode (llamacpp/anomaly-llama-cpp-model) for intelligent generation
+#   2. Skill Router API for domain context and relevant skill discovery
 #   3. Automated validation and git integration
+#   4. Supporting file updates (skills-index.json, README.md, API reload)
 #
 # USAGE:
 #   ./scripts/skill-generate.sh "Generate a skill about X" [OPTIONS]
@@ -38,7 +39,7 @@ SKILLS_DIR="$PROJECT_ROOT/skills"
 INSTALL_CONF="$PROJECT_ROOT/install-skill-router.conf"
 SKILL_FORMAT_SPEC="$PROJECT_ROOT/SKILL_FORMAT_SPEC.md"
 API_URL="http://localhost:3000"
-LLM_SERVER_URL="http://localhost:8080"
+OPENCODE_MODEL="llamacpp/anomaly-llama-cpp-model"
 
 # Valid domains
 VALID_DOMAINS=("agent" "cncf" "coding" "go" "linux" "programming" "trading" "writing")
@@ -51,7 +52,6 @@ TAGS=""
 NO_PUSH=false
 DOMAIN_LIST=false
 PUSH_ALLOWED=false
-GENERATED_SKILL=""
 
 # ─── Colors ───────────────────────────────────────────────────────────────────
 RED='\033[0;31m'
@@ -72,7 +72,7 @@ show_help() {
     cat <<'HELP'
 Usage: ./scripts/skill-generate.sh "Task description" [OPTIONS]
 
-Generate new skills using the Skill Router API and local LLM.
+Generate new skills using the Skill Router API and Opencode agent.
 
 ARGUMENTS:
   "Task description"    Describe the skill you want to generate
@@ -198,24 +198,51 @@ infer_domain() {
     fi
 }
 
-infer_name() {
-    local task_lower
-    task_lower=$(echo "$TASK" | tr '[:upper:]' '[:lower:]')
+parse_ndjson_text() {
+    # Parse opencode NDJSON output, extract text from 'text' events
+    while IFS= read -r line; do
+        local etype
+        etype=$(echo "$line" | sed -n 's/.*"type":"\([^"]*\)".*/\1/p')
+        if [[ "$etype" == "text" ]]; then
+            local text
+            text=$(echo "$line" | sed -n 's/.*"text":"\(.*\)".*/\1/p')
+            [[ -n "$text" ]] && echo -n "$text"
+        fi
+    done
+}
 
-    # Extract key terms and convert to kebab-case
-    local name
-    # Remove common filler words, keep meaningful technical terms
-    name=$(echo "$task_lower" | sed -E 's/(generate|create|add|build|implement|write|make|about|for|the|a|an|with|using|of|and|in)//g' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+generate_name() {
+    # Use opencode to intelligently name the skill based on its actual purpose.
+    # Returns a kebab-case name, max 100 chars. Retries up to 3 times if too long.
 
-    # Replace spaces and special chars with hyphens, collapse multiple hyphens
-    name=$(echo "$name" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g; s/^-//; s/-$//')
+    local domain="$1"
+    local max_attempts=3
+    local attempt=0
 
-    # Ensure it's not too short
-    if [[ ${#name} -lt 3 ]]; then
-        name="new-skill"
-    fi
+    while [[ $attempt -lt $max_attempts ]]; do
+        attempt=$((attempt + 1))
 
-    echo "$name"
+        local name
+        name=$(opencode run "You name skills for the OpenCode Agent Skill Router. Rules: kebab-case only (all lowercase, hyphens between words, no spaces). No 'generate' or 'create' prefixes. Be specific to the skill's actual purpose, not a verbatim copy of the task. Return ONLY the name, nothing else." \
+            -m "$OPENCODE_MODEL" \
+            --dangerously-skip-permissions \
+            --format json 2>/dev/null | parse_ndjson_text)
+
+        # Strip quotes and whitespace
+        name="${name//\"/}"
+        name="${name//\'/}"
+        name=$(echo "$name" | xargs 2>/dev/null || echo "$name")
+
+        if [[ ${#name} -le 100 && ${#name} -ge 3 ]]; then
+            echo "$name"
+            return 0
+        fi
+
+        log_warn "Attempt $attempt: name too long (${#name} chars), retrying..."
+    done
+
+    log_error "Name generation failed all $max_attempts attempts"
+    return 1
 }
 
 check_api_health() {
@@ -276,7 +303,6 @@ try:
     data = json.load(sys.stdin)
     skills = [s.get('name','') for s in data.get('selectedSkills', []) if s.get('name')]
     if not skills:
-        # Try candidatePool as fallback
         skills = [s for s in data.get('candidatePool', [])][:3]
     print(','.join(skills))
 except:
@@ -308,12 +334,67 @@ fetch_skill_content() {
     echo "$content"
 }
 
-fetch_format_spec() {
+build_skill_prompt() {
+    # Build the full user prompt for opencode, including the format spec
+    # and relevant skill context.
+
+    local domain="$1"
+    local skill_name="$2"
+    local tags="$3"
+
+    # Read the format spec
+    local format_spec=""
     if [[ -f "$SKILL_FORMAT_SPEC" ]]; then
-        cat "$SKILL_FORMAT_SPEC"
-    else
-        echo "SKILL_FORMAT_SPEC.md not found at $SKILL_FORMAT_SPEC"
+        format_spec=$(cat "$SKILL_FORMAT_SPEC")
     fi
+
+    # Get content of relevant skills for context
+    local skill_context=""
+    local relevant_skills=""
+    if curl -sf "$API_URL/health" &>/dev/null; then
+        relevant_skills=$(get_relevant_skills)
+    fi
+
+    if [[ -n "$relevant_skills" ]]; then
+        IFS=',' read -ra skill_arr <<< "$relevant_skills"
+        for s in "${skill_arr[@]}"; do
+            if [[ -n "$s" ]]; then
+                local content
+                content=$(fetch_skill_content "$s")
+                if [[ -n "$content" ]]; then
+                    skill_context+="# Relevant skill: $s
+$content
+---
+
+"
+                fi
+            fi
+        done
+    fi
+
+    # Build the full user prompt
+    cat <<PROMPT
+TASK: $TASK
+
+DOMAIN: $domain
+SKILL NAME: $skill_name
+TAGS: $tags
+
+FORMAT SPECIFICATION:
+$format_spec
+
+RELEVANT SKILL CONTEXT:
+$skill_context
+
+Generate a complete SKILL.md for this skill. Follow the format specification exactly.
+Include all required sections, substantive code examples, proper YAML frontmatter, and domain-appropriate content.
+
+LANGUAGE PREFERENCE: Default to bash/CLI examples for all domains. Only use Python for trading/risk skills, Go for go/* skills, or YAML/JSON for Kubernetes manifests. Linux, CNCF, coding, agent, and programming skills should primarily use bash/CLI.
+
+Every code block must contain substantive implementation code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'. All code must be complete, working examples with real logic.
+
+Generate ONLY the SKILL.md content, nothing else. No markdown code fences around the output.
+PROMPT
 }
 
 generate_skill() {
@@ -338,98 +419,25 @@ generate_skill() {
         return 1
     fi
 
-    # Get relevant skills for context
-    local relevant_skills=""
-    if curl -sf "$API_URL/health" &>/dev/null; then
-        relevant_skills=$(get_relevant_skills)
-    fi
+    # Build the prompt
+    local user_prompt
+    user_prompt=$(build_skill_prompt "$domain" "$skill_name" "$tags")
 
-    # Build the LLM prompt
-    local format_spec
-    format_spec=$(fetch_format_spec)
+    # Use opencode for skill generation
+    log_info "Generating skill with opencode (model: $OPENCODE_MODEL)..."
 
-    # Get content of relevant skills
-    local skill_context=""
-    if [[ -n "$relevant_skills" ]]; then
-        IFS=',' read -ra skill_arr <<< "$relevant_skills"
-        for s in "${skill_arr[@]}"; do
-            if [[ -n "$s" ]]; then
-                local content
-                content=$(fetch_skill_content "$s")
-                if [[ -n "$content" ]]; then
-                    skill_context+="# Relevant skill: $s
-$content
----
+    local GENERATED_SKILL
+    GENERATED_SKILL=$(opencode run "$user_prompt" \
+        -m "$OPENCODE_MODEL" \
+        --dangerously-skip-permissions \
+        --format json 2>/dev/null | parse_ndjson_text)
 
-"
-                fi
-            fi
-        done
-    fi
-
-    # Try using llama.cpp server if available
-    if curl -sf "$LLM_SERVER_URL" &>/dev/null; then
-        log_info "Using local LLM (llama.cpp at $LLM_SERVER_URL) for generation..."
-
-        local llm_response
-        # Build JSON payload safely with jq to avoid breaking on quotes/backslashes in $format_spec, $skill_context
-        local system_msg="You are an expert skill writer for the OpenCode Agent Skill Router. Generate a complete, production-ready SKILL.md file following the format specification EXACTLY. Do NOT include any markdown code fences around the output — output the raw Markdown content directly. Every code block must contain substantive implementation code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'. All code must be complete, working examples with real logic. The skill must follow the SKILL_FORMAT_SPEC.md completely. Generate ONLY the SKILL.md content, nothing else."
-        local user_msg="TASK: $TASK\n\nDOMAIN: $domain\nSKILL NAME: $skill_name\nTAGS: $tags\n\nFORMAT SPECIFICATION:\n${format_spec}\n\nRELEVANT SKILL CONTEXT:\n${skill_context}\n\nGenerate a complete SKILL.md for this skill. Follow the format specification exactly. Include all required sections, substantive code examples, proper YAML frontmatter, and domain-appropriate content. The skill must be immediately useful when loaded by an AI agent."
-
-        llm_response=$(jq -n \
-            --arg sys "$system_msg" \
-            --arg usr "$user_msg" \
-            '{
-                model: "",
-                messages: [
-                    {role: "system", content: $sys},
-                    {role: "user", content: $usr}
-                ],
-                max_tokens: 8192,
-                temperature: 0.1
-            }' | curl -sf "$LLM_SERVER_URL/v1/chat/completions" \
-            -H "Content-Type: application/json" \
-            -d @-)
-
-        GENERATED_SKILL=$(echo "$llm_response" | python3 -c "
-import sys, json
-try:
-    data = json.load(sys.stdin)
-except json.JSONDecodeError as e:
-    print(f'ERROR: Invalid JSON from LLM server: {e}', file=sys.stderr)
-    sys.exit(1)
-try:
-    message = data['choices'][0]['message']
-    content = message.get('content', '')
-    # Fallback for reasoning models (e.g., Qwen3-Coder-Next) that put content in reasoning_content
-    if not content:
-        content = message.get('reasoning_content', '')
-    if not content:
-        print('ERROR: Empty response from model (both content and reasoning_content are empty)', file=sys.stderr)
-        sys.exit(1)
-    print(content, end='')
-except (KeyError, IndexError) as e:
-    print(f'ERROR: Unexpected LLM response structure: {e}', file=sys.stderr)
-    print(f'Response keys: {list(data.keys())}', file=sys.stderr)
-    sys.exit(1)
-except Exception as e:
-    print(f'ERROR: Failed to extract content: {e}', file=sys.stderr)
-    sys.exit(1)
-")
-
-        if [[ -n "$GENERATED_SKILL" ]]; then
-            log_ok "LLM generated skill content"
-        else
-            log_warn "LLM generation failed, will try with expanded prompt..."
-            GENERATED_SKILL=""
-        fi
-    else
-        log_warn "llama.cpp server not available at $LLM_SERVER_URL"
-        log_warn "Cannot generate skill content without an LLM"
-        log_info "Run: ./llama.cpp/build/bin/llama-server -m <model-path>"
-        log_info "Or provide a generated SKILL.md file directly"
+    if [[ -z "$GENERATED_SKILL" ]]; then
+        log_error "opencode returned empty response"
         return 1
     fi
+
+    log_ok "Opencode generated skill content"
 
     # Validate the generated skill
     if ! validate_skill "$GENERATED_SKILL" "$output_file"; then
@@ -507,6 +515,44 @@ validate_skill() {
 
     log_ok "Skill validation passed"
     return 0
+}
+
+update_supporting_files() {
+    local domain="$1"
+    local name="$2"
+    local output_file="$SKILLS_DIR/$domain/$name/SKILL.md"
+
+    if [[ ! -f "$output_file" ]]; then
+        log_warn "Skill file not found, skipping supporting file updates"
+        return 0
+    fi
+
+    log_info "Updating supporting files..."
+
+    cd "$PROJECT_ROOT"
+
+    # Regenerate skills-index.json
+    if [[ -f "scripts/generate_index.py" ]]; then
+        python3 scripts/generate_index.py 2>/dev/null || log_warn "skills-index.json regeneration failed (non-critical)"
+        log_ok "skills-index.json updated"
+    else
+        log_warn "generate_index.py not found, skipping"
+    fi
+
+    # Regenerate README.md
+    if [[ -f "scripts/generate_readme.py" ]]; then
+        python3 scripts/generate_readme.py 2>/dev/null || log_warn "README.md regeneration failed (non-critical)"
+        log_ok "README.md updated"
+    else
+        log_warn "generate_readme.py not found, skipping"
+    fi
+
+    # Reload skill-router API to pick up changes
+    if curl -sf -X POST "$API_URL/reload" &>/dev/null; then
+        log_ok "Skill Router API reloaded"
+    else
+        log_warn "API reload failed (non-critical — server may need restart)"
+    fi
 }
 
 commit_and_push() {
@@ -633,10 +679,10 @@ main() {
         log_info "Proceeding anyway (new domain)"
     fi
 
-    # Infer name if not specified
+    # Generate name with opencode if not specified
     if [[ -z "$NAME" ]]; then
-        NAME=$(infer_name)
-        log_info "Inferred skill name: $NAME"
+        NAME=$(generate_name "$DOMAIN")
+        log_info "Generated skill name: $NAME (${#NAME} chars)"
     fi
 
     # Check for existing skill
@@ -659,6 +705,9 @@ main() {
         log_error "Skill generation failed"
         exit 1
     fi
+
+    # Update supporting files (skills-index.json, README.md, API reload)
+    update_supporting_files "$DOMAIN" "$NAME"
 
     # Commit and push
     commit_and_push "$DOMAIN" "$NAME"
