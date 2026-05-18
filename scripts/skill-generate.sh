@@ -199,14 +199,21 @@ infer_domain() {
 }
 
 parse_ndjson_text() {
-    # Parse opencode NDJSON output, extract text from 'text' events using jq
+    # Parse opencode NDJSON output, extract text from the FIRST 'text' event only.
+    # Opencode appends a skill citation footer (> 📖 skill(...)) as a separate event.
+    # We only want the actual LLM response text.
+
+    local found_first=false
     while IFS= read -r line; do
         local etype
         etype=$(echo "$line" | jq -r '.type // empty' 2>/dev/null)
-        if [[ "$etype" == "text" ]]; then
+        if [[ "$etype" == "text" && "$found_first" == "false" ]]; then
+            found_first=true
             local text
             text=$(echo "$line" | jq -r '.part.text // empty' 2>/dev/null)
-            [[ -n "$text" ]] && printf '%s' "$text"
+            # Strip the automatic skill citation footer that opencode appends
+            text=$(echo "$text" | sed '/^> 📖 skill/d; s/^> 📖 skill.*$//')
+            printf '%s' "$text"
         fi
     done
 }
@@ -289,11 +296,10 @@ check_api_health() {
 }
 
 get_relevant_skills() {
-    # Use the Skill Router API to find relevant existing skills
+    local max_skills="${1:-5}"
     local skills_json=""
 
     if curl -sf "$API_URL/health" &>/dev/null; then
-        # Route the task to find relevant skills
         log_info "Querying Skill Router API for relevant skills..."
 
         local route_response
@@ -302,10 +308,9 @@ get_relevant_skills() {
             -d "{
                 \"task\": \"$TASK\",
                 \"context\": {\"domain\": \"$DOMAIN\", \"type\": \"new\"},
-                \"constraints\": {\"maxSkills\": 5}
+                \"constraints\": {\"maxSkills\": $max_skills}
             }")
 
-        # Extract relevant skill names
         skills_json=$(echo "$route_response" | python3 -c "
 import sys, json
 try:
@@ -344,44 +349,42 @@ fetch_skill_content() {
 }
 
 build_skill_prompt() {
-    # Build the full user prompt for opencode, including the format spec
-    # and relevant skill context.
+    # Build the full user prompt for opencode.
+    # Includes critical format rules (summarized from SKILL_FORMAT_SPEC.md)
+    # and relevant skill context from the API.
 
     local domain="$1"
     local skill_name="$2"
     local tags="$3"
 
-    # Read the format spec
-    local format_spec=""
-    if [[ -f "$SKILL_FORMAT_SPEC" ]]; then
-        format_spec=$(cat "$SKILL_FORMAT_SPEC")
-    fi
-
-    # Get content of relevant skills for context
+    # Get content of relevant skills for context (up to 2)
     local skill_context=""
     local relevant_skills=""
     if curl -sf "$API_URL/health" &>/dev/null; then
-        relevant_skills=$(get_relevant_skills)
+        relevant_skills=$(get_relevant_skills 2)
     fi
 
     if [[ -n "$relevant_skills" ]]; then
         IFS=',' read -ra skill_arr <<< "$relevant_skills"
+        local count=0
         for s in "${skill_arr[@]}"; do
-            if [[ -n "$s" ]]; then
+            if [[ -n "$s" && $count -lt 2 ]]; then
                 local content
                 content=$(fetch_skill_content "$s")
                 if [[ -n "$content" ]]; then
+                    local short_content
+                    short_content=$(echo "$content" | head -30)
                     skill_context+="# Relevant skill: $s
-$content
+$short_content
 ---
 
 "
                 fi
+                count=$((count + 1))
             fi
         done
     fi
 
-    # Build the full user prompt
     cat <<PROMPT
 TASK: $TASK
 
@@ -389,20 +392,37 @@ DOMAIN: $domain
 SKILL NAME: $skill_name
 TAGS: $tags
 
-FORMAT SPECIFICATION:
-$format_spec
+FORMAT REQUIREMENTS (from SKILL_FORMAT_SPEC.md):
+- Must start with YAML frontmatter delimited by ---, containing at minimum:
+  - name: (must match directory name in kebab-case)
+  - description: (single line, active verb, specific, <200 chars)
+  - license: MIT
+  - compatibility: opencode
+  - metadata: { version, domain, triggers (3-8 terms), role, scope, output-format, content-types }
+- Must have H1 title (human-readable, not kebab-case name)
+- Must have role/purpose paragraph (1-3 sentences, model-perspective)
+- Must have "## When to Use" section with specific bullet points
+- Must have "## Core Workflow" or "## Constraints" section
+- Must have "## Constraints" with MUST DO and MUST NOT DO sections
+
+DOMAIN-SPECIFIC RULES:
+- coding: Include BAD vs GOOD code examples, reference OWASP/SOLID/DRY
+- trading: Python with typed signatures, risk constraints, APEX layout
+- go: Idiomatic Go with error wrapping (%w), BAD vs GOOD examples
+- linux: Bash with set -euo pipefail, security, idempotent operations
+- cncf: YAML manifests, architecture diagrams, integration patterns
+- agent: ASCII flow diagram, fallback/error routing
+- programming: Algorithm pseudocode, complexity tables
+- writing: Before/after text comparisons
+
+LANGUAGE PREFERENCE: Default to bash/CLI examples. Only use Python for trading/risk, Go for go/*, YAML/JSON for manifests. Linux, CNCF, coding, agent, programming should primarily use bash/CLI.
+
+Every code block must contain substantive implementation code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'. All code must be complete, working examples with real logic.
 
 RELEVANT SKILL CONTEXT:
 $skill_context
 
-Generate a complete SKILL.md for this skill. Follow the format specification exactly.
-Include all required sections, substantive code examples, proper YAML frontmatter, and domain-appropriate content.
-
-LANGUAGE PREFERENCE: Default to bash/CLI examples for all domains. Only use Python for trading/risk skills, Go for go/* skills, or YAML/JSON for Kubernetes manifests. Linux, CNCF, coding, agent, and programming skills should primarily use bash/CLI.
-
-Every code block must contain substantive implementation code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'. All code must be complete, working examples with real logic.
-
-Generate ONLY the SKILL.md content, nothing else. No markdown code fences around the output.
+Generate ONLY the complete SKILL.md content, nothing else. No markdown code fences around the output.
 PROMPT
 }
 
@@ -441,7 +461,12 @@ generate_skill() {
         --dangerously-skip-permissions \
         --format json 2>/dev/null | parse_ndjson_text)
 
-    if [[ -z "$GENERATED_SKILL" ]]; then
+    log_info "Generated ${#GENERATED_SKILL} chars, first 100: ${GENERATED_SKILL:0:100}"
+
+    # Trim whitespace and check for empty
+    local trimmed
+    trimmed=$(echo "$GENERATED_SKILL" | tr -d '[:space:]')
+    if [[ -z "$trimmed" ]]; then
         log_error "opencode returned empty response"
         return 1
     fi
