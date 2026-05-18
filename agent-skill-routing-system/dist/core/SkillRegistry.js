@@ -18,6 +18,7 @@ const DiskCompressionCache_1 = require("./DiskCompressionCache");
 const InMemoryCompressionCache_1 = require("./InMemoryCompressionCache");
 const CompressionDeduplicator_1 = require("./CompressionDeduplicator");
 const EmbeddingService_1 = require("../embedding/EmbeddingService");
+const DomainRegistry_1 = require("./DomainRegistry");
 /**
  * Skill Registry - manages all available skills
  * Implements SkillRegistryWithCompression interface for type-safe access to compression methods
@@ -75,6 +76,9 @@ class SkillRegistry {
         this.embeddingService = new EmbeddingService_1.EmbeddingService({
             cacheDirectory: this.config.cacheDirectory,
         });
+        // Initialize DomainRegistry
+        const domainRegistry = DomainRegistry_1.DomainRegistry.getInstance();
+        domainRegistry.loadDomainsConfig();
         // Initialize metrics with max cache size
         const metrics = CompressionMetrics_1.CompressionMetrics.getInstance();
         metrics.setMaxCacheSize(this.maxCacheSizeBytes);
@@ -198,8 +202,10 @@ class SkillRegistry {
             : [this.config.skillsDirectory];
         for (const dir of localPaths) {
             // Try domain/skillname structure first, then fallback to flat structure
-            const DOMAINS = ['agent', 'cncf', 'swe', 'programming', 'trading'];
-            for (const domain of DOMAINS) {
+            // Dynamically discover domains from filesystem (fixes: writing/ and coding/ excluded, swe included but doesn't exist)
+            const domainRegistry = DomainRegistry_1.DomainRegistry.getInstance();
+            const domains = await domainRegistry.discoverDomains(dir);
+            for (const domain of domains) {
                 const localFile = path_1.default.join(dir, domain, name, 'SKILL.md');
                 try {
                     const content = await fs_1.default.promises.readFile(localFile, 'utf-8');
@@ -737,12 +743,32 @@ class SkillRegistry {
             nestedMeta.scope,
         ].filter(Boolean);
         const tags = [...new Set([category, ...triggerTags, ...roleTags])];
+        // Extract content-types from frontmatter (supports YAML array or comma-separated string)
+        let contentTypes;
+        const ctRaw = nestedMeta.contentTypes;
+        if (Array.isArray(ctRaw)) {
+            contentTypes = ctRaw.map((t) => String(t));
+        }
+        else if (typeof ctRaw === 'string') {
+            contentTypes = ctRaw
+                .split(',')
+                .map((t) => t.trim())
+                .filter((t) => t.length > 0);
+        }
+        // Cast to ContentType[] — caller should validate against allowed values
+        const validContentTypes = contentTypes?.map((t) => t);
+        // Backward compat: check for old output-format field and log deprecation
+        const outputFormat = nestedMeta.outputFormat;
+        if (outputFormat && !contentTypes) {
+            this.logger.debug(`Skill ${name}: 'output-format' is deprecated, use 'content-types' instead`);
+        }
         return {
             name,
             category,
             description,
             tags: tags.length > 0 ? tags : [category],
             version: nestedMeta.version || '1.0.0',
+            contentTypes: validContentTypes,
             input_schema: { type: 'object', properties: {}, required: [] },
             output_schema: { type: 'object', properties: {}, required: [] },
         };
@@ -896,6 +922,9 @@ class SkillRegistry {
         const skillsWithoutEmbeddings = Array.from(this.skills.values()).filter((s) => !s.metadata.embedding).length;
         const stubSkills = Array.from(this.skills.values()).filter((s) => s.metadata.draft === true).length;
         const realSkills = this.skills.size - stubSkills;
+        // Get domain count from DomainRegistry
+        const domainRegistry = DomainRegistry_1.DomainRegistry.getInstance();
+        const domains = domainRegistry.getDomainCount();
         return {
             totalSkills: this.skills.size,
             categories: this.skillsByCategory.size,
@@ -903,6 +932,7 @@ class SkillRegistry {
             skillsWithoutEmbeddings,
             stubSkills,
             realSkills,
+            domains,
         };
     }
     /**
@@ -927,7 +957,19 @@ class SkillRegistry {
             if (inMetadata && /^\s+\S/.test(line)) {
                 const metaMatch = trimmed.match(/^([a-zA-Z0-9_-]+)\s*:\s*(.*)/);
                 if (metaMatch) {
-                    metadataBlock[metaMatch[1]] = this.unquoteFrontmatterValue(metaMatch[2].trim());
+                    const rawValue = this.unquoteFrontmatterValue(metaMatch[2].trim());
+                    // content-types can be YAML array [code, guidance] or comma-separated string
+                    if (metaMatch[1] === 'content-types' && rawValue.startsWith('[')) {
+                        try {
+                            metadataBlock[metaMatch[1]] = yaml_1.default.parse(rawValue);
+                        }
+                        catch {
+                            metadataBlock[metaMatch[1]] = rawValue;
+                        }
+                    }
+                    else {
+                        metadataBlock[metaMatch[1]] = rawValue;
+                    }
                 }
                 continue;
             }

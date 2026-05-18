@@ -33,6 +33,12 @@ export declare class LLMRanker {
     private callOpenAICompatible;
     /** Anthropic Messages API */
     private callAnthropic;
+    /**
+     * Extract a valid JSON object from a response string, handling
+     * reasoning-model noise (thinking text before/after the JSON).
+     * Uses brace-counting to find the matching closing brace.
+     */
+    private extractJsonObject;
     private parseRankingResponse;
     private fallbackRanking;
     getModel(): string;
