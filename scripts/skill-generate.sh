@@ -199,14 +199,14 @@ infer_domain() {
 }
 
 parse_ndjson_text() {
-    # Parse opencode NDJSON output, extract text from 'text' events
+    # Parse opencode NDJSON output, extract text from 'text' events using jq
     while IFS= read -r line; do
         local etype
-        etype=$(echo "$line" | sed -n 's/.*"type":"\([^"]*\)".*/\1/p')
+        etype=$(echo "$line" | jq -r '.type // empty' 2>/dev/null)
         if [[ "$etype" == "text" ]]; then
             local text
-            text=$(echo "$line" | sed -n 's/.*"text":"\(.*\)".*/\1/p')
-            [[ -n "$text" ]] && echo -n "$text"
+            text=$(echo "$line" | jq -r '.part.text // empty' 2>/dev/null)
+            [[ -n "$text" ]] && printf '%s' "$text"
         fi
     done
 }
