@@ -48,6 +48,7 @@ FAQ.md
 
 # Local installer config (contains API keys)
 install-skill-router.conf
+.env
 
 # Backup files from skill-fixer
 *.bak
