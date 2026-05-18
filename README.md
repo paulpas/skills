@@ -264,8 +264,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-18 00:15:45 UTC  
-> **Total skills:** 591
+> **Last updated:** 2026-05-18 12:34:08 UTC  
+> **Total skills:** 592
 
 ## Skills by Domain
 
@@ -681,7 +681,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (83 skills)
+### Coding (84 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -713,6 +713,7 @@ MIT — All skills are freely available and redistributable.
 | [data-versioning](skills/coding/data-versioning/SKILL.md) | "Implements data versioning, lineage tracking, provenance management, and reproducible data pipelines for experiment tracking and governance" | data versioning, data lineage, provenance, reproducibility, data governance, how do i track data |
 | [data-visualization](skills/coding/data-visualization/SKILL.md) | "Creates effective visualizations including plots, charts, dashboards, and interactive visualizations for data insight and storytelling" | data visualization, plotting, dashboards, charts, matplotlib, seaborn, plotly, how do i visualize data |
 | [dependency-management](skills/coding/dependency-management/SKILL.md) | "Provides Cybersecurity operations skill for automating software dependency version updates based on CVE (Common Vulnerabilities and Exposures) data, vulnerabil" | CVE, dependency management, vulnerability scanning, dependency updates, security patching, SCA, software composition analysis, vulnerability remediation |
+| [design-patterns-and-principles](skills/coding/design-patterns-and-principles/SKILL.md) | Implements and explains GoF design patterns (Factory, Observer, Strategy, Decorator, Singleton), SOLID principles, and DRY/YAGNI guidelines to produce maintainable, extensible software architecture. | design patterns, GoF, SOLID, DRY, factory pattern, software architecture, refactoring, SOLID principles |
 | [dimensionality-reduction](skills/coding/dimensionality-reduction/SKILL.md) | "Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency" | dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do i reduce dimensions |
 | [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" | distribution fitting, goodness-of-fit, fitting distributions, distribution selection, how do i fit |
 | [driven-architecture](skills/coding/driven-architecture/SKILL.md) | "'Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy base, and common pitfalls' | event driven architecture, event-driven, event-driven-architecture, real-time, trading, eventbridge, event bus, event routing |
@@ -905,7 +906,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (211 skills)
+### Implementation (Build Features) (212 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -960,6 +961,7 @@ MIT — All skills are freely available and redistributable.
 | [dependency-management](skills/coding/dependency-management/SKILL.md) | Coding | "Provides Cybersecurity operations skill for automating software dependency version updates based on CVE (Common Vulnerabilities and Exposures) data, vulnerabil" |
 | [deployment-orchestration](skills/cncf/deployment-orchestration/SKILL.md) | Cncf | Orchestrates complex multi-stage deployments with dependency management, sequencing rules, and failure handling across interconnected services. |
 | [deployment-patterns](skills/go/deployment-patterns/SKILL.md) | Go | Deploys Go applications with build optimization, multi-stage Docker builds, binary sizing, and deployment strategies for cloud and on-prem. |
+| [design-patterns-and-principles](skills/coding/design-patterns-and-principles/SKILL.md) | Coding | Implements and explains GoF design patterns (Factory, Observer, Strategy, Decorator, Singleton), SOLID principles, and DRY/YAGNI guidelines to produce maintainable, extensible software architecture. |
 | [dimensionality-reduction](skills/coding/dimensionality-reduction/SKILL.md) | Coding | "Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency" |
 | [disaster-recovery](skills/cncf/disaster-recovery/SKILL.md) | Cncf | Implements comprehensive disaster recovery planning for Kubernetes clusters with backup strategies, recovery procedures, cross-region replication, RPO/RTO planning, and validation workflows. |
 | [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" |
@@ -1698,6 +1700,7 @@ MIT — All skills are freely available and redistributable.
 | [deployment-orchestration](skills/cncf/deployment-orchestration/SKILL.md) | Cncf | Orchestrates complex multi-stage deployments with dependency management, sequencing rules, and failure handling across interconnected services. | Implementation |
 | [deployment-patterns](skills/go/deployment-patterns/SKILL.md) | Go | Deploys Go applications with build optimization, multi-stage Docker builds, binary sizing, and deployment strategies for cloud and on-prem. | Implementation |
 | [deployment-philosophy](skills/cncf/deployment-philosophy/SKILL.md) | Cncf | Architects multi-stage deployment strategies that balance speed, safety, and reliability through systematic risk assessment and controlled change delivery. | Reference |
+| [design-patterns-and-principles](skills/coding/design-patterns-and-principles/SKILL.md) | Coding | Implements and explains GoF design patterns (Factory, Observer, Strategy, Decorator, Singleton), SOLID principles, and DRY/YAGNI guidelines to produce maintainable, extensible software architecture. | Implementation |
 | [development](skills/agent/development/SKILL.md) | Agent | Implements intelligent development with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [diary](skills/agent/diary/SKILL.md) | Agent | Implements intelligent diary with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [diff-quality-analyzer](skills/agent/diff-quality-analyzer/SKILL.md) | Agent | Implements intelligent diff quality analyzer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
