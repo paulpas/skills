@@ -228,17 +228,26 @@ generate_name() {
             --dangerously-skip-permissions \
             --format json 2>/dev/null | parse_ndjson_text)
 
-        # Strip quotes and whitespace
+        # Sanitize: strip ALL non-kebab-case characters (emojis, markdown, quotes, parens, etc.)
         name="${name//\"/}"
         name="${name//\'/}"
         name=$(echo "$name" | xargs 2>/dev/null || echo "$name")
+
+        # Remove everything that isn't lowercase letter, number, or hyphen
+        name=$(echo "$name" | tr -cd '[:lower:][:digit:]-')
+
+        # Collapse multiple hyphens into one
+        name=$(echo "$name" | sed 's/--*/-/g')
+
+        # Remove leading/trailing hyphens
+        name=$(echo "$name" | sed 's/^-//;s/-$//')
 
         if [[ ${#name} -le 100 && ${#name} -ge 3 ]]; then
             echo "$name"
             return 0
         fi
 
-        log_warn "Attempt $attempt: name too long (${#name} chars), retrying..."
+        log_warn "Attempt $attempt: name too long (${#name} chars) or too short, retrying..."
     done
 
     log_error "Name generation failed all $max_attempts attempts"
