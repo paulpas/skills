@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 # =============================================================================
-# skill-generate.sh — Generate new skills using the Skill Router API + Opencode
+# skill-generate.sh — Generate new skills using the Skill Router + Opencode
 # =============================================================================
 #
-# Generates SKILL.md files programmatically by combining:
-#   1. Opencode (llamacpp/anomaly-llama-cpp-model) for intelligent generation
-#   2. Skill Router API for domain context and relevant skill discovery
-#   3. Automated validation and git integration
-#   4. Supporting file updates (skills-index.json, README.md, API reload)
+# Generates SKILL.md files by delegating to opencode with SKILL_FORMAT_SPEC.md
+# as context. No API calls, no separate name generation — opencode handles it
+# all in one pass.
 #
 # USAGE:
 #   ./scripts/skill-generate.sh "Generate a skill about X" [OPTIONS]
@@ -15,7 +13,7 @@
 # OPTIONS:
 #   -d, --domain DOMAIN       Domain (cncf, coding, agent, go, linux, trading,
 #                             programming, writing, or NEW_DOMAIN)
-#   -n, --name NAME           Skill name (kebab-case, auto-inferred if omitted)
+#   -n, --name NAME           Skill name (kebab-case, auto-extracted if omitted)
 #   -t, --tags TAG1,TAG2,...  Comma-separated tags
 #   --no-push                 Save locally only, do not commit/push
 #   --domain-list             List all domains and their skill counts
@@ -53,6 +51,10 @@ NO_PUSH=false
 DOMAIN_LIST=false
 PUSH_ALLOWED=false
 
+# Extracted values from generated skill (set by generate_skill)
+EXTRACTED_DOMAIN=""
+EXTRACTED_NAME=""
+
 # ─── Colors ───────────────────────────────────────────────────────────────────
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -72,7 +74,7 @@ show_help() {
     cat <<'HELP'
 Usage: ./scripts/skill-generate.sh "Task description" [OPTIONS]
 
-Generate new skills using the Skill Router API and Opencode agent.
+Generate new skills using the Skill Router and Opencode agent.
 
 ARGUMENTS:
   "Task description"    Describe the skill you want to generate
@@ -80,7 +82,7 @@ ARGUMENTS:
 OPTIONS:
   -d, --domain DOMAIN   Domain: agent, cncf, coding, go, linux, trading,
                         programming, writing, or a new domain name
-  -n, --name NAME       Skill name in kebab-case (auto-inferred from task)
+  -n, --name NAME       Skill name in kebab-case (auto-extracted from generated content)
   -t, --tags TAGS       Comma-separated tags (e.g., "kubernetes,networking")
   --no-push             Save locally only, do not commit/push to git
   --domain-list         List all domains and their skill counts
@@ -218,48 +220,6 @@ parse_ndjson_text() {
     done
 }
 
-generate_name() {
-    # Use opencode to intelligently name the skill based on its actual purpose.
-    # Returns a kebab-case name, max 100 chars. Retries up to 3 times.
-    # Robust against opencode footer corruption by extracting kebab-case words.
-
-    local domain="$1"
-    local max_attempts=3
-    local attempt=0
-
-    while [[ $attempt -lt $max_attempts ]]; do
-        attempt=$((attempt + 1))
-
-        local raw_output
-        raw_output=$(opencode run "You are a skill naming engine for the OpenCode Agent Skill Router. Output ONLY a single kebab-case skill name on one line. No explanation, no preamble, no footer. Example: design-patterns. The skill is about: $TASK" \
-            -m "$OPENCODE_MODEL" \
-            --dangerously-skip-permissions \
-            --format json 2>/dev/null | parse_ndjson_text)
-
-        # Extract ALL kebab-case candidates from raw output (words with 3+ alpha chars,
-        # separated by hyphens). This ignores footers, emojis, markdown, etc.
-        # A valid name is 3-100 chars, only lowercase letters, digits, and hyphens.
-        local name
-        # First, clean the raw output to find the best kebab-case name
-        name=$(echo "$raw_output" | tr -cs '[:lower:][:digit:]-' '\n' | \
-            grep -E '^[a-z]{3,}' | \
-            head -1)
-
-        # Validate length
-        if [[ ${#name} -le 100 && ${#name} -ge 3 ]]; then
-            echo "$name"
-            return 0
-        fi
-
-        log_warn "Attempt $attempt: no valid name extracted (${#name:-0} chars), retrying..."
-    done
-
-    log_error "Name generation failed all $max_attempts attempts"
-    # Final fallback: domain-based
-    echo "${domain}-skill"
-    return 1
-}
-
 check_api_health() {
     if ! curl -sf "$API_URL/health" &>/dev/null; then
         log_warn "Skill Router API at $API_URL is not available"
@@ -294,175 +254,41 @@ check_api_health() {
     return 0
 }
 
-get_relevant_skills() {
-    local max_skills="${1:-5}"
-    local skills_json=""
-
-    if curl -sf "$API_URL/health" &>/dev/null; then
-        log_info "Querying Skill Router API for relevant skills..."
-
-        local route_response
-        route_response=$(curl -sf -X POST "$API_URL/route" \
-            -H "Content-Type: application/json" \
-            -d "{
-                \"task\": \"$TASK\",
-                \"context\": {\"domain\": \"$DOMAIN\", \"type\": \"new\"},
-                \"constraints\": {\"maxSkills\": $max_skills}
-            }")
-
-        skills_json=$(echo "$route_response" | python3 -c "
-import sys, json
-try:
-    data = json.load(sys.stdin)
-    skills = [s.get('name','') for s in data.get('selectedSkills', []) if s.get('name')]
-    if not skills:
-        skills = [s for s in data.get('candidatePool', [])][:3]
-    print(','.join(skills))
-except:
-    print('')
-" 2>/dev/null || echo "")
-    fi
-
-    echo "$skills_json"
-}
-
-fetch_skill_content() {
-    local skill_name="$1"
-    local content=""
-
-    # Try API first
-    if curl -sf "$API_URL/health" &>/dev/null; then
-        content=$(curl -sf "$API_URL/skill/$skill_name" 2>/dev/null || echo "")
-    fi
-
-    # Fallback to local file
-    if [[ -z "$content" ]]; then
-        local path
-        path=$(find "$SKILLS_DIR" -path "*/$skill_name/SKILL.md" -type f 2>/dev/null | head -1)
-        if [[ -n "$path" && -f "$path" ]]; then
-            content=$(cat "$path")
-        fi
-    fi
-
-    echo "$content"
-}
-
-build_skill_prompt() {
-    # Build the full user prompt for opencode.
-    # Includes critical format rules (summarized from SKILL_FORMAT_SPEC.md)
-    # and relevant skill context from the API.
-
-    local domain="$1"
-    local skill_name="$2"
-    local tags="$3"
-
-    # Get content of relevant skills for context (up to 2)
-    local skill_context=""
-    local relevant_skills=""
-    if curl -sf "$API_URL/health" &>/dev/null; then
-        relevant_skills=$(get_relevant_skills 2)
-    fi
-
-    if [[ -n "$relevant_skills" ]]; then
-        IFS=',' read -ra skill_arr <<< "$relevant_skills"
-        local count=0
-        for s in "${skill_arr[@]}"; do
-            if [[ -n "$s" && $count -lt 2 ]]; then
-                local content
-                content=$(fetch_skill_content "$s")
-                if [[ -n "$content" ]]; then
-                    local short_content
-                    short_content=$(echo "$content" | head -30)
-                    skill_context+="# Relevant skill: $s
-$short_content
----
-
-"
-                fi
-                count=$((count + 1))
-            fi
-        done
-    fi
-
-    cat <<PROMPT
-TASK: $TASK
-
-DOMAIN: $domain
-SKILL NAME: $skill_name
-TAGS: $tags
-
-FORMAT REQUIREMENTS (from SKILL_FORMAT_SPEC.md):
-- Must start with YAML frontmatter delimited by ---, containing at minimum:
-  - name: (must match directory name in kebab-case)
-  - description: (single line, active verb, specific, <200 chars)
-  - license: MIT
-  - compatibility: opencode
-  - metadata: { version, domain, triggers (3-8 terms), role, scope, output-format, content-types }
-- Must have H1 title (human-readable, not kebab-case name)
-- Must have role/purpose paragraph (1-3 sentences, model-perspective)
-- Must have "## When to Use" section with specific bullet points
-- Must have "## Core Workflow" or "## Constraints" section
-- Must have "## Constraints" with MUST DO and MUST NOT DO sections
-
-DOMAIN-SPECIFIC RULES:
-- coding: Include BAD vs GOOD code examples, reference OWASP/SOLID/DRY
-- trading: Python with typed signatures, risk constraints, APEX layout
-- go: Idiomatic Go with error wrapping (%w), BAD vs GOOD examples
-- linux: Bash with set -euo pipefail, security, idempotent operations
-- cncf: YAML manifests, architecture diagrams, integration patterns
-- agent: ASCII flow diagram, fallback/error routing
-- programming: Algorithm pseudocode, complexity tables
-- writing: Before/after text comparisons
-
-LANGUAGE: Default to bash/CLI. Only Python for trading/risk, Go for go/*, YAML/JSON for manifests.
-
-CODE: Every code block must contain substantive, complete, working code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'.
-
-OUTPUT FORMAT: Return ONLY raw SKILL.md text — no markdown code fences, no preamble, no explanation, no footer.
-
-RELEVANT SKILL CONTEXT:
-$skill_context
-PROMPT
-}
-
 generate_skill() {
-    local domain="$1"
-    local skill_name="$2"
-    local tags="$3"
+    local domain="${1:-}"
+    local tags="${2:-}"
 
-    log_info "Generating skill: $domain/$skill_name"
-    log_info "Task: $TASK"
+    log_info "Generating skill..."
+    if [[ -n "$domain" ]]; then
+        log_info "  Domain: $domain"
+    fi
+    log_info "  Task: $TASK"
 
-    local output_file="$SKILLS_DIR/$domain/$skill_name/SKILL.md"
-    local output_dir
-    output_dir=$(dirname "$output_file")
+    # Build the simple prompt
+    local prompt="let's make a new skill. look at SKILL_FORMAT_SPEC.md to learn how to make a skill and how to name it and all the other requirements. after you understand, create a skill based upon the phrase: $TASK, utilizing your newly learned framework requirements."
 
-    # Create output directory
-    mkdir -p "$output_dir"
-
-    # Check if skill already exists
-    if [[ -f "$output_file" ]]; then
-        log_warn "Skill already exists at $output_file"
-        log_info "Skipping generation (existing file preserved)"
-        return 1
+    # Domain hint in the prompt if provided
+    if [[ -n "$domain" ]]; then
+        prompt+="\n\nPlace this skill in the '$domain' domain."
     fi
 
-    # Build the prompt
-    local user_prompt
-    user_prompt=$(build_skill_prompt "$domain" "$skill_name" "$tags")
+    # If tags were provided, mention them
+    if [[ -n "$tags" ]]; then
+        prompt+="\n\nRelevant tags: $tags"
+    fi
 
     # Use opencode for skill generation
-    log_info "Generating skill with opencode (model: $OPENCODE_MODEL)..."
+    log_info "Running opencode (model: $OPENCODE_MODEL)..."
+    log_info "Attaching SKILL_FORMAT_SPEC.md for reference..."
 
     local GENERATED_SKILL
-    GENERATED_SKILL=$(opencode run "$user_prompt" \
+    GENERATED_SKILL=$(opencode run "$prompt" \
         -m "$OPENCODE_MODEL" \
+        --file "$SKILL_FORMAT_SPEC" \
         --dangerously-skip-permissions \
         --format json 2>/dev/null | parse_ndjson_text)
 
-    log_info "Generated ${#GENERATED_SKILL} chars, first 100: ${GENERATED_SKILL:0:100}"
-
-    # Trim whitespace and check for empty
+    # Check for empty
     local trimmed
     trimmed=$(echo "$GENERATED_SKILL" | tr -d '[:space:]')
     if [[ -z "$trimmed" ]]; then
@@ -470,7 +296,43 @@ generate_skill() {
         return 1
     fi
 
-    log_ok "Opencode generated skill content"
+    log_ok "Opencode generated skill content (${#GENERATED_SKILL} chars)"
+
+    # Extract name from YAML frontmatter
+    local extracted_name
+    extracted_name=$(echo "$GENERATED_SKILL" | sed -n '/^---$/,/^---$/p' | grep '^name:' | head -1 | sed 's/^name:[[:space:]]*//')
+
+    # Extract domain from metadata if not provided
+    local extracted_domain="${domain}"
+    if [[ -z "$extracted_domain" ]]; then
+        extracted_domain=$(echo "$GENERATED_SKILL" | sed -n '/^---$/,/^---$/p' | grep 'domain:' | head -1 | sed 's/.*domain:[[:space:]]*//')
+    fi
+
+    # Fallbacks
+    if [[ -z "$extracted_name" ]]; then
+        log_error "Could not extract skill name from generated content"
+        return 1
+    fi
+    if [[ -z "$extracted_domain" ]]; then
+        log_warn "Could not extract domain, inferring from task"
+        extracted_domain=$(infer_domain)
+    fi
+
+    log_info "Extracted name: $extracted_name"
+    log_info "Extracted domain: $extracted_domain"
+
+    # Validate length
+    if [[ ${#extracted_name} -gt 100 ]]; then
+        log_warn "Extracted name too long (${#extracted_name} chars), this may cause issues"
+    fi
+
+    # Check for existing skill
+    local output_file="$SKILLS_DIR/$extracted_domain/$extracted_name/SKILL.md"
+    if [[ -f "$output_file" ]]; then
+        log_warn "Skill already exists at: $output_file"
+        log_info "Skipping generation (existing file preserved)"
+        return 1
+    fi
 
     # Validate the generated skill
     if ! validate_skill "$GENERATED_SKILL" "$output_file"; then
@@ -478,6 +340,7 @@ generate_skill() {
     fi
 
     # Save the skill
+    mkdir -p "$(dirname "$output_file")"
     echo "$GENERATED_SKILL" > "$output_file"
     log_ok "Skill saved to: $output_file"
 
@@ -485,6 +348,10 @@ generate_skill() {
     local line_count
     line_count=$(wc -l < "$output_file")
     log_info "Skill: $line_count lines"
+
+    # Set globals for main() to use in commit_and_push
+    EXTRACTED_NAME="$extracted_name"
+    EXTRACTED_DOMAIN="$extracted_domain"
 
     return 0
 }
@@ -712,41 +579,25 @@ main() {
         log_info "Proceeding anyway (new domain)"
     fi
 
-    # Generate name with opencode if not specified
-    if [[ -z "$NAME" ]]; then
-        NAME=$(generate_name "$DOMAIN")
-        log_info "Generated skill name: $NAME (${#NAME} chars)"
-    fi
-
-    # Check for existing skill
-    local existing
-    existing=$(find "$SKILLS_DIR" -path "*/$DOMAIN/$NAME/SKILL.md" -type f 2>/dev/null | head -1)
-    if [[ -n "$existing" ]]; then
-        log_error "Skill already exists at: $existing"
-        exit 1
-    fi
-
-    # Generate the skill
+    # Generate the skill (extracts name and domain from generated content)
     echo ""
-    log_info "Generating skill..."
-    echo "  Domain: $DOMAIN"
-    echo "  Name:   $NAME"
-    echo "  Task:   $TASK"
-    echo ""
-
-    if ! generate_skill "$DOMAIN" "$NAME" "$TAGS"; then
+    if ! generate_skill "$DOMAIN" "$TAGS"; then
         log_error "Skill generation failed"
         exit 1
     fi
 
-    # Update supporting files (skills-index.json, README.md, API reload)
-    update_supporting_files "$DOMAIN" "$NAME"
+    # Use extracted values
+    local final_domain="${EXTRACTED_DOMAIN:-$DOMAIN}"
+    local final_name="${EXTRACTED_NAME:-$NAME}"
+
+    # Update supporting files
+    update_supporting_files "$final_domain" "$final_name"
 
     # Commit and push
-    commit_and_push "$DOMAIN" "$NAME"
+    commit_and_push "$final_domain" "$final_name"
 
     echo ""
-    log_ok "Done! Skill created at: $SKILLS_DIR/$DOMAIN/$NAME/SKILL.md"
+    log_ok "Done! Skill created at: $SKILLS_DIR/$final_domain/$final_name/SKILL.md"
 }
 
 main "$@"
