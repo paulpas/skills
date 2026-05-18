@@ -264,8 +264,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-18 20:26:42 UTC  
-> **Total skills:** 594
+> **Last updated:** 2026-05-18 15:35:57 UTC  
+> **Total skills:** 595
 
 ## Skills by Domain
 
@@ -681,7 +681,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (86 skills)
+### Coding (87 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -737,6 +737,7 @@ MIT — All skills are freely available and redistributable.
 | [kernel-density](skills/coding/kernel-density/SKILL.md) | "Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions" | kernel density estimation, KDE, non-parametric, density estimation, bandwidth selection |
 | [linear-regression](skills/coding/linear-regression/SKILL.md) | "Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction" | linear regression, OLS, ridge regression, lasso, elastic net, regularization |
 | [logistic-regression](skills/coding/logistic-regression/SKILL.md) | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" | logistic regression, classification, binary classification, multinomial, how do i classify |
+| [makefile](skills/coding/makefile/SKILL.md) | Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes. | makefile, make, build automation, phony targets, pattern rules, build system, make command, cross-platform make |
 | [manager](skills/coding/manager/SKILL.md) | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing | connection, machine, ml, state, websocket manager, websocket-manager, machine learning, ai |
 | [maximum-likelihood](skills/coding/maximum-likelihood/SKILL.md) | Implements maximum likelihood estimation, likelihood functions, and optimization methods for parameter estimation in probabilistic models | maximum likelihood, MLE, likelihood estimation, likelihood function, optimization, performance, speed |
 | [metrics-and-kpis](skills/coding/metrics-and-kpis/SKILL.md) | "Defines, selects, and monitors key performance indicators (KPIs), business metrics, and evaluation metrics for decision-making" | metrics, KPI, key performance indicator, business metrics, metric definition, how do I choose metrics, cloudwatch, optimization |
@@ -908,7 +909,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (214 skills)
+### Implementation (Build Features) (215 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1017,6 +1018,7 @@ MIT — All skills are freely available and redistributable.
 | [llm-orchestration](skills/trading/llm-orchestration/SKILL.md) | Trading | "Large Language Model orchestration for trading analysis with structured" output using instructor/pydantic |
 | [logistic-regression](skills/coding/logistic-regression/SKILL.md) | Coding | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" |
 | [lookahead-bias](skills/trading/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict causality enforcement" time-based validation, and comprehensive detection frameworks. |
+| [makefile](skills/coding/makefile/SKILL.md) | Coding | Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes. |
 | [manager](skills/coding/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing |
 | [market-data-cache](skills/trading/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low latency and high" throughput |
 | [market-impact](skills/trading/market-impact/SKILL.md) | Trading | "Implements market impact modeling and order book simulation for risk management and algorithmic trading execution." |
@@ -1867,6 +1869,7 @@ MIT — All skills are freely available and redistributable.
 | [m365-agents-dotnet](skills/agent/m365-agents-dotnet/SKILL.md) | Agent | Implements intelligent m365 agents dotnet with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [m365-agents-ts](skills/agent/m365-agents-ts/SKILL.md) | Agent | Implements intelligent m365 agents ts with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [make-automation](skills/agent/make-automation/SKILL.md) | Agent | Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [makefile](skills/coding/makefile/SKILL.md) | Coding | Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes. | Implementation |
 | [manager](skills/cncf/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes | Reference |
 | [manager](skills/coding/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing | Implementation |
 | [market-data-cache](skills/trading/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low latency and high" throughput | Implementation |
