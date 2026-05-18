@@ -220,7 +220,8 @@ parse_ndjson_text() {
 
 generate_name() {
     # Use opencode to intelligently name the skill based on its actual purpose.
-    # Returns a kebab-case name, max 100 chars. Retries up to 3 times if too long.
+    # Returns a kebab-case name, max 100 chars. Retries up to 3 times.
+    # Robust against opencode footer corruption by extracting kebab-case words.
 
     local domain="$1"
     local max_attempts=3
@@ -229,35 +230,33 @@ generate_name() {
     while [[ $attempt -lt $max_attempts ]]; do
         attempt=$((attempt + 1))
 
-        local name
-        name=$(opencode run "You name skills for the OpenCode Agent Skill Router. Rules: kebab-case only (all lowercase, hyphens between words, no spaces). No 'generate' or 'create' prefixes. Be specific to the skill's actual purpose, not a verbatim copy of the task. Return ONLY the name, nothing else." \
+        local raw_output
+        raw_output=$(opencode run "You are a skill naming engine for the OpenCode Agent Skill Router. Output ONLY a single kebab-case skill name on one line. No explanation, no preamble, no footer. Example: design-patterns. The skill is about: $TASK" \
             -m "$OPENCODE_MODEL" \
             --dangerously-skip-permissions \
             --format json 2>/dev/null | parse_ndjson_text)
 
-        # Sanitize: strip ALL non-kebab-case characters (emojis, markdown, quotes, parens, etc.)
-        name="${name//\"/}"
-        name="${name//\'/}"
-        name=$(echo "$name" | xargs 2>/dev/null || echo "$name")
+        # Extract ALL kebab-case candidates from raw output (words with 3+ alpha chars,
+        # separated by hyphens). This ignores footers, emojis, markdown, etc.
+        # A valid name is 3-100 chars, only lowercase letters, digits, and hyphens.
+        local name
+        # First, clean the raw output to find the best kebab-case name
+        name=$(echo "$raw_output" | tr -cs '[:lower:][:digit:]-' '\n' | \
+            grep -E '^[a-z]{3,}' | \
+            head -1)
 
-        # Remove everything that isn't lowercase letter, number, or hyphen
-        name=$(echo "$name" | tr -cd '[:lower:][:digit:]-')
-
-        # Collapse multiple hyphens into one
-        name=$(echo "$name" | sed 's/--*/-/g')
-
-        # Remove leading/trailing hyphens
-        name=$(echo "$name" | sed 's/^-//;s/-$//')
-
+        # Validate length
         if [[ ${#name} -le 100 && ${#name} -ge 3 ]]; then
             echo "$name"
             return 0
         fi
 
-        log_warn "Attempt $attempt: name too long (${#name} chars) or too short, retrying..."
+        log_warn "Attempt $attempt: no valid name extracted (${#name:-0} chars), retrying..."
     done
 
     log_error "Name generation failed all $max_attempts attempts"
+    # Final fallback: domain-based
+    echo "${domain}-skill"
     return 1
 }
 
@@ -415,14 +414,14 @@ DOMAIN-SPECIFIC RULES:
 - programming: Algorithm pseudocode, complexity tables
 - writing: Before/after text comparisons
 
-LANGUAGE PREFERENCE: Default to bash/CLI examples. Only use Python for trading/risk, Go for go/*, YAML/JSON for manifests. Linux, CNCF, coding, agent, programming should primarily use bash/CLI.
+LANGUAGE: Default to bash/CLI. Only Python for trading/risk, Go for go/*, YAML/JSON for manifests.
 
-Every code block must contain substantive implementation code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'. All code must be complete, working examples with real logic.
+CODE: Every code block must contain substantive, complete, working code — NO pass statements, NO return {}, NO placeholder comments like 'example pattern for' or 'TODO'.
+
+OUTPUT FORMAT: Return ONLY raw SKILL.md text — no markdown code fences, no preamble, no explanation, no footer.
 
 RELEVANT SKILL CONTEXT:
 $skill_context
-
-Generate ONLY the complete SKILL.md content, nothing else. No markdown code fences around the output.
 PROMPT
 }
 
