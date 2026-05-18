@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-17T18:21:02.077356Z",
-  "totalSkills": 590,
+  "generatedAt": "2026-05-18T00:15:44.347397Z",
+  "totalSkills": 591,
   "domains": {
-    "agent": 229,
+    "agent": 230,
     "cncf": 169,
     "coding": 82,
     "go": 12,
@@ -12,7 +12,7 @@
     "writing": 1
   },
   "roles": {
-    "orchestration": 220,
+    "orchestration": 221,
     "implementation": 211,
     "information": 1,
     "reference": 157,
@@ -3230,6 +3230,30 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/contour/SKILL.md"
+    },
+    {
+      "name": "contrarian-cloud-deployment-review",
+      "domain": "agent",
+      "description": "Generates structured contrarian critiques and adversarial review prompts for cloud deployment architectures to enable rigorous agentic council vetting.",
+      "role": "orchestration",
+      "scope": "orchestration",
+      "outputFormat": "analysis",
+      "triggers": [
+        "cloud architecture review",
+        "adversarial design",
+        "contrarian critique",
+        "deployment vetting",
+        "agentic council",
+        "cloud security review",
+        "infrastructure review"
+      ],
+      "relatedSkills": [
+        "cloud-architecture-patterns",
+        "security-architecture-review",
+        "cost-optimization-review"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/skill-contrarian-cloud-designs-for-agentic-council/SKILL.md"
     },
     {
       "name": "conversation-memory",

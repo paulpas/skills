@@ -264,13 +264,13 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-17 18:21:02 UTC  
-> **Total skills:** 592
+> **Last updated:** 2026-05-18 00:15:45 UTC  
+> **Total skills:** 591
 
 ## Skills by Domain
 
 
-### Agent (229 skills)
+### Agent (230 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -346,6 +346,7 @@ MIT — All skills are freely available and redistributable.
 | [container-inspector](skills/agent/container-inspector/SKILL.md) | Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | container-inspector, container inspector, how do i container-inspector, orchestrate container-inspector, automate container-inspector, agent container-inspector |
 | [context-window-management](skills/agent/context-window-management/SKILL.md) | Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | context-window-management, context window management, how do i context-window-management, orchestrate context-window-management, automate context-window-management, agent context-window-management |
 | [context7-auto-research](skills/agent/context7-auto-research/SKILL.md) | Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | context7-auto-research, context7 auto research, how do i context7-auto-research, orchestrate context7-auto-research, automate context7-auto-research, agent context7-auto-research |
+| [contrarian-cloud-deployment-review](skills/agent/contrarian-cloud-deployment-review/SKILL.md) | Generates structured contrarian critiques and adversarial review prompts for cloud deployment architectures to enable rigorous agentic council vetting. | cloud architecture review, adversarial design, contrarian critique, deployment vetting, agentic council, cloud security review, infrastructure review |
 | [conversation-memory](skills/agent/conversation-memory/SKILL.md) | Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | conversation-memory, conversation memory, how do i conversation-memory, orchestrate conversation-memory, automate conversation-memory, agent conversation-memory |
 | [create-branch](skills/agent/create-branch/SKILL.md) | Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | create-branch, create branch, how do i create-branch, orchestrate create-branch, automate create-branch, agent create-branch |
 | [create-issue-gate](skills/agent/create-issue-gate/SKILL.md) | Implements intelligent create issue gate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | create-issue-gate, create issue gate, how do i create-issue-gate, orchestrate create-issue-gate, automate create-issue-gate, agent create-issue-gate |
@@ -505,7 +506,7 @@ MIT — All skills are freely available and redistributable.
 | [zoom-automation](skills/agent/zoom-automation/SKILL.md) | Implements intelligent zoom automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | zoom-automation, zoom automation, how do i zoom-automation, orchestrate zoom-automation, automate zoom-automation, agent zoom-automation |
 
 
-### Cncf (171 skills)
+### Cncf (169 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -680,7 +681,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (82 skills)
+### Coding (83 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -811,12 +812,6 @@ MIT — All skills are freely available and redistributable.
 | [async-runtime](skills/programming/async-runtime/SKILL.md) | Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems. | rust async, tokio, async-std, futures, executor, concurrency, non-blocking io, async runtime |
 | [v10-learning](skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow | abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress abl |
 | [v12-learning](skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins | abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch throw, jsonobject, read-json |
-
-
-### Writing (1 skills)
-
-| Skill Name | Description | Triggers |
-|---|---|---|
 
 
 ### Trading (83 skills)
@@ -1290,7 +1285,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices |
 
 
-### Orchestration (Manage AI Agents) (220 skills)
+### Orchestration (Manage AI Agents) (221 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1364,6 +1359,7 @@ MIT — All skills are freely available and redistributable.
 | [container-inspector](skills/agent/container-inspector/SKILL.md) | Agent | Implements intelligent container inspector with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [context-window-management](skills/agent/context-window-management/SKILL.md) | Agent | Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [context7-auto-research](skills/agent/context7-auto-research/SKILL.md) | Agent | Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [contrarian-cloud-deployment-review](skills/agent/contrarian-cloud-deployment-review/SKILL.md) | Agent | Generates structured contrarian critiques and adversarial review prompts for cloud deployment architectures to enable rigorous agentic council vetting. |
 | [conversation-memory](skills/agent/conversation-memory/SKILL.md) | Agent | Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [create-branch](skills/agent/create-branch/SKILL.md) | Agent | Implements intelligent create branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [create-issue-gate](skills/agent/create-issue-gate/SKILL.md) | Agent | Implements intelligent create issue gate with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
@@ -1668,6 +1664,7 @@ MIT — All skills are freely available and redistributable.
 | [context-window-management](skills/agent/context-window-management/SKILL.md) | Agent | Implements intelligent context window management with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [context7-auto-research](skills/agent/context7-auto-research/SKILL.md) | Agent | Implements intelligent context7 auto research with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [contour](skills/cncf/contour/SKILL.md) | Cncf | "Contour in Service Proxy - cloud native architecture, patterns, pitfalls" and best practices | Reference |
+| [contrarian-cloud-deployment-review](skills/agent/contrarian-cloud-deployment-review/SKILL.md) | Agent | Generates structured contrarian critiques and adversarial review prompts for cloud deployment architectures to enable rigorous agentic council vetting. | Orchestration |
 | [conversation-memory](skills/agent/conversation-memory/SKILL.md) | Agent | Implements intelligent conversation memory with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [coredns](skills/cncf/coredns/SKILL.md) | Cncf | "Coredns in Cloud-Native Engineering - CoreDNS is a DNS server that chains" plugins | Reference |
 | [correlation-analysis](skills/coding/correlation-analysis/SKILL.md) | Coding | "Analyzes correlation, covariance, and multivariate relationships between variables using statistical methods and visualization techniques" | Implementation |
