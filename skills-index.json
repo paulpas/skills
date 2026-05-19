@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-05-19T03:42:31.815873Z",
-  "totalSkills": 604,
+  "generatedAt": "2026-05-19T04:28:44.142296Z",
+  "totalSkills": 606,
   "domains": {
     "agent": 234,
     "cncf": 169,
-    "coding": 91,
+    "coding": 92,
     "go": 12,
     "linux": 10,
-    "programming": 4,
+    "programming": 5,
     "trading": 83,
     "writing": 1
   },
   "roles": {
     "orchestration": 224,
-    "implementation": 221,
+    "implementation": 222,
     "information": 1,
-    "reference": 157,
+    "reference": 158,
     "review": 1
   },
   "skills": [
@@ -5274,6 +5274,31 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/cncf/flux/SKILL.md"
+    },
+    {
+      "name": "for-loop-iteration",
+      "domain": "programming",
+      "description": "Teaches idiomatic for loop patterns across Python, JavaScript, Go, C/C++, Rust, and shell scripting with anti-patterns, common pitfalls, and best practices.",
+      "role": "reference",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "for loop",
+        "iteration",
+        "loop patterns",
+        "enumerate",
+        "range",
+        "iterator",
+        "list comprehension",
+        "index-based loop",
+        "how do i iterate over a collection"
+      ],
+      "relatedSkills": [
+        "algorithms",
+        "sorting-algorithms"
+      ],
+      "version": "1.0.0",
+      "source": "skills/programming/for-loop-iteration/SKILL.md"
     },
     {
       "name": "framework",
@@ -11560,6 +11585,30 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/aws-sns/SKILL.md"
+    },
+    {
+      "name": "software-architecture",
+      "domain": "coding",
+      "description": "Implements and evaluates architectural patterns (hexagonal, clean, microservices, event-driven) with concrete Python examples to structure maintainable, scalable systems.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "software architecture",
+        "hexagonal architecture",
+        "clean architecture",
+        "event-driven design",
+        "system design",
+        "dependency inversion",
+        "bounded contexts"
+      ],
+      "relatedSkills": [
+        "modular-design",
+        "dependency-injection",
+        "error-handling"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/software-architecture/SKILL.md"
     },
     {
       "name": "software-design-principles",
