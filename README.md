@@ -264,8 +264,8 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-18 20:39:14 UTC  
-> **Total skills:** 597
+> **Last updated:** 2026-05-18 21:06:30 UTC  
+> **Total skills:** 599
 
 ## Skills by Domain
 
@@ -682,7 +682,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (88 skills)
+### Coding (90 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -766,6 +766,8 @@ MIT — All skills are freely available and redistributable.
 | [review](skills/coding/review/SKILL.md) | "Security-focused code review identifying vulnerabilities like injection" XSS, insecure deserialization, and misconfigurations, with remediation guidance | identifying, security review, security-focused, security-review, vulnerabilities, vulnerability scanning, security, security auditing |
 | [scoring](skills/coding/scoring/SKILL.md) | "Multi-factor conviction scoring engine combining technical, momentum" trend, volatility, and volume signals with configurable weights | combining, conviction scoring, conviction-scoring, engine, multi-factor |
 | [shop](skills/coding/shop/SKILL.md) | "'OWASP Juice Shop guide: Web application security testing with intentionally" vulnerable Node.js/Express application for learning and practice' | application, guide, juice shop, juice-shop, owasp, security best practices, security guidelines, vulnerability scanning |
+| [software-design-principles](skills/coding/software-design-principles/SKILL.md) | Implements core software design principles (SOLID, KISS, YAGNI, composition over inheritance, DRY) to guide architecture decisions and prevent structural debt. | software design, SOLID principles, KISS, YAGNI, DRY, composition over inheritance, clean code, modular design |
+| [software-engineering-principles](skills/coding/software-engineering-principles/SKILL.md) | Applies core software engineering principles (modularity, separation of concerns, defensive programming, YAGNI) to produce maintainable, robust, and scalable code. | software engineering, modular design, separation of concerns, defensive programming, KISS principle, YAGNI, clean architecture |
 | [statistical-power](skills/coding/statistical-power/SKILL.md) | "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control" | statistical power, power analysis, sample size, effect size, Type I error, Type II error |
 | [support-vector-machines](skills/coding/support-vector-machines/SKILL.md) | "Implements support vector machines (SVM) with kernel methods, support vectors, and margin maximization for classification and regression" | support vector machines, SVM, kernel methods, support vectors, SVM classification |
 | [synthetic-control](skills/coding/synthetic-control/SKILL.md) | "Implements synthetic control methods, difference-in-differences estimation, and quasi-experimental designs for impact evaluation" | synthetic control, difference-in-differences, DiD, quasi-experiment, impact evaluation |
@@ -911,7 +913,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (216 skills)
+### Implementation (Build Features) (218 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1093,6 +1095,8 @@ MIT — All skills are freely available and redistributable.
 | [shop](skills/coding/shop/SKILL.md) | Coding | "'OWASP Juice Shop guide: Web application security testing with intentionally" vulnerable Node.js/Express application for learning and practice' |
 | [slippage-model](skills/trading/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for risk management and algorithmic trading execution." |
 | [slippage-modeling](skills/trading/slippage-modeling/SKILL.md) | Trading | "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution" Analysis |
+| [software-design-principles](skills/coding/software-design-principles/SKILL.md) | Coding | Implements core software design principles (SOLID, KISS, YAGNI, composition over inheritance, DRY) to guide architecture decisions and prevent structural debt. |
+| [software-engineering-principles](skills/coding/software-engineering-principles/SKILL.md) | Coding | Applies core software engineering principles (modularity, separation of concerns, defensive programming, YAGNI) to produce maintainable, robust, and scalable code. |
 | [state-management](skills/cncf/state-management/SKILL.md) | Cncf | Manages application state across deployment stages including database migrations, cache invalidation, and data consistency during rolling updates. |
 | [statistical-arbitrage](skills/trading/statistical-arbitrage/SKILL.md) | Trading | "Implements pair trading and cointegration-based arbitrage strategies for risk management and algorithmic trading execution." |
 | [statistical-power](skills/coding/statistical-power/SKILL.md) | Coding | "Analyzes statistical power, sample size determination, effect size estimation, and Type I/Type II error control" |
@@ -2039,6 +2043,8 @@ MIT — All skills are freely available and redistributable.
 | [slippage-model](skills/trading/slippage-model/SKILL.md) | Trading | "Implements slippage modeling and execution simulation for risk management and algorithmic trading execution." | Implementation |
 | [slippage-modeling](skills/trading/slippage-modeling/SKILL.md) | Trading | "Slippage Estimation, Simulation, and Fee Modeling for Realistic Execution" Analysis | Implementation |
 | [sns](skills/cncf/sns/SKILL.md) | Cncf | "Deploys managed pub/sub messaging with SNS for asynchronous notifications" across services, mobile push, email, and Lambda integrations. | Reference |
+| [software-design-principles](skills/coding/software-design-principles/SKILL.md) | Coding | Implements core software design principles (SOLID, KISS, YAGNI, composition over inheritance, DRY) to guide architecture decisions and prevent structural debt. | Implementation |
+| [software-engineering-principles](skills/coding/software-engineering-principles/SKILL.md) | Coding | Applies core software engineering principles (modularity, separation of concerns, defensive programming, YAGNI) to produce maintainable, robust, and scalable code. | Implementation |
 | [spiffe](skills/cncf/spiffe/SKILL.md) | Cncf | "Provides SPIFFE in Secure Product Identity Framework for Applications" | Reference |
 | [spire](skills/cncf/spire/SKILL.md) | Cncf | "Configures spire in spiffe implementation for real-world deployments for cloud-native deployment and infrastructure management." | Reference |
 | [sql-database](skills/cncf/sql-database/SKILL.md) | Cncf | Provides Managed relational database with elastic pools, geo-replication, and automatic backups | Reference |
