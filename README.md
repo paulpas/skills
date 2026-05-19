@@ -264,13 +264,13 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-18 15:35:57 UTC  
-> **Total skills:** 595
+> **Last updated:** 2026-05-18 20:39:14 UTC  
+> **Total skills:** 597
 
 ## Skills by Domain
 
 
-### Agent (230 skills)
+### Agent (231 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -468,6 +468,7 @@ MIT — All skills are freely available and redistributable.
 | [skill-optimizer](skills/agent/skill-optimizer/SKILL.md) | Implements intelligent skill optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-optimizer, skill optimizer, how do i skill-optimizer, orchestrate skill-optimizer, automate skill-optimizer, agent skill-optimizer |
 | [skill-rails-upgrade](skills/agent/skill-rails-upgrade/SKILL.md) | Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-rails-upgrade, skill rails upgrade, how do i skill-rails-upgrade, orchestrate skill-rails-upgrade, automate skill-rails-upgrade, agent skill-rails-upgrade |
 | [skill-router](skills/agent/skill-router/SKILL.md) | Implements intelligent skill router with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-router, skill router, how do i skill-router, orchestrate skill-router, automate skill-router, agent skill-router |
+| [skill-router-system](skills/agent/skill-router-system/SKILL.md) | Implements and configures the AI agent skill routing system for auto-loading, trigger matching, confidence scoring, and skills-index generation across orchestration layers. | skill router, auto-routing, trigger matching, skills-index, agent dispatch, adaptive routing, prompt injection, task routing |
 | [skill-scanner](skills/agent/skill-scanner/SKILL.md) | Implements intelligent skill scanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-scanner, skill scanner, how do i skill-scanner, orchestrate skill-scanner, automate skill-scanner, agent skill-scanner |
 | [skill-seekers](skills/agent/skill-seekers/SKILL.md) | Implements intelligent skill seekers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-seekers, skill seekers, how do i skill-seekers, orchestrate skill-seekers, automate skill-seekers, agent skill-seekers |
 | [skill-sentinel](skills/agent/skill-sentinel/SKILL.md) | Implements intelligent skill sentinel with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | skill-sentinel, skill sentinel, how do i skill-sentinel, orchestrate skill-sentinel, automate skill-sentinel, agent skill-sentinel |
@@ -681,7 +682,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (87 skills)
+### Coding (88 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -737,6 +738,7 @@ MIT — All skills are freely available and redistributable.
 | [kernel-density](skills/coding/kernel-density/SKILL.md) | "Implements kernel density estimation, non-parametric density estimation, and bandwidth selection for probability density functions" | kernel density estimation, KDE, non-parametric, density estimation, bandwidth selection |
 | [linear-regression](skills/coding/linear-regression/SKILL.md) | "Implements linear regression including OLS, ridge regression, lasso, elastic net, and other regularized linear models for prediction" | linear regression, OLS, ridge regression, lasso, elastic net, regularization |
 | [logistic-regression](skills/coding/logistic-regression/SKILL.md) | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" | logistic regression, classification, binary classification, multinomial, how do i classify |
+| [make](skills/coding/make/SKILL.md) | Implements systematic build orchestration (Makefile, Nix, Bazel, Just) with dependency tracking, incremental compilation, phony targets, and cross-platform portability for reproducible software construction. | make, build system, makefile, compilation, incremental build, build automation, justfile, phony targets |
 | [makefile](skills/coding/makefile/SKILL.md) | Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes. | makefile, make, build automation, phony targets, pattern rules, build system, make command, cross-platform make |
 | [manager](skills/coding/manager/SKILL.md) | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing | connection, machine, ml, state, websocket manager, websocket-manager, machine learning, ai |
 | [maximum-likelihood](skills/coding/maximum-likelihood/SKILL.md) | Implements maximum likelihood estimation, likelihood functions, and optimization methods for parameter estimation in probabilistic models | maximum likelihood, MLE, likelihood estimation, likelihood function, optimization, performance, speed |
@@ -909,7 +911,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (215 skills)
+### Implementation (Build Features) (216 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1018,6 +1020,7 @@ MIT — All skills are freely available and redistributable.
 | [llm-orchestration](skills/trading/llm-orchestration/SKILL.md) | Trading | "Large Language Model orchestration for trading analysis with structured" output using instructor/pydantic |
 | [logistic-regression](skills/coding/logistic-regression/SKILL.md) | Coding | "Implements logistic regression for binary and multinomial classification with probability estimation and odds ratio interpretation" |
 | [lookahead-bias](skills/trading/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict causality enforcement" time-based validation, and comprehensive detection frameworks. |
+| [make](skills/coding/make/SKILL.md) | Coding | Implements systematic build orchestration (Makefile, Nix, Bazel, Just) with dependency tracking, incremental compilation, phony targets, and cross-platform portability for reproducible software construction. |
 | [makefile](skills/coding/makefile/SKILL.md) | Coding | Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes. |
 | [manager](skills/coding/manager/SKILL.md) | Coding | "WebSocket connection manager with state machine (connecting/connected/reconnecting/error)" exponential backoff, and message routing |
 | [market-data-cache](skills/trading/market-data-cache/SKILL.md) | Trading | "High-performance caching layer for market data with low latency and high" throughput |
@@ -1293,7 +1296,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices |
 
 
-### Orchestration (Manage AI Agents) (221 skills)
+### Orchestration (Manage AI Agents) (222 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1482,6 +1485,7 @@ MIT — All skills are freely available and redistributable.
 | [skill-optimizer](skills/agent/skill-optimizer/SKILL.md) | Agent | Implements intelligent skill optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [skill-rails-upgrade](skills/agent/skill-rails-upgrade/SKILL.md) | Agent | Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [skill-router](skills/agent/skill-router/SKILL.md) | Agent | Implements intelligent skill router with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [skill-router-system](skills/agent/skill-router-system/SKILL.md) | Agent | Implements and configures the AI agent skill routing system for auto-loading, trigger matching, confidence scoring, and skills-index generation across orchestration layers. |
 | [skill-scanner](skills/agent/skill-scanner/SKILL.md) | Agent | Implements intelligent skill scanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [skill-seekers](skills/agent/skill-seekers/SKILL.md) | Agent | Implements intelligent skill seekers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [skill-sentinel](skills/agent/skill-sentinel/SKILL.md) | Agent | Implements intelligent skill sentinel with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
@@ -1868,6 +1872,7 @@ MIT — All skills are freely available and redistributable.
 | [lookahead-bias](skills/trading/lookahead-bias/SKILL.md) | Trading | "Preventing lookahead bias in backtesting through strict causality enforcement" time-based validation, and comprehensive detection frameworks. | Implementation |
 | [m365-agents-dotnet](skills/agent/m365-agents-dotnet/SKILL.md) | Agent | Implements intelligent m365 agents dotnet with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [m365-agents-ts](skills/agent/m365-agents-ts/SKILL.md) | Agent | Implements intelligent m365 agents ts with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [make](skills/coding/make/SKILL.md) | Coding | Implements systematic build orchestration (Makefile, Nix, Bazel, Just) with dependency tracking, incremental compilation, phony targets, and cross-platform portability for reproducible software construction. | Implementation |
 | [make-automation](skills/agent/make-automation/SKILL.md) | Agent | Implements intelligent make automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [makefile](skills/coding/makefile/SKILL.md) | Coding | Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes. | Implementation |
 | [manager](skills/cncf/manager/SKILL.md) | Cncf | "cert-manager in Cloud-Native Engineering - Certificate Management for" Kubernetes | Reference |
@@ -2025,6 +2030,7 @@ MIT — All skills are freely available and redistributable.
 | [skill-optimizer](skills/agent/skill-optimizer/SKILL.md) | Agent | Implements intelligent skill optimizer with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [skill-rails-upgrade](skills/agent/skill-rails-upgrade/SKILL.md) | Agent | Implements intelligent skill rails upgrade with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [skill-router](skills/agent/skill-router/SKILL.md) | Agent | Implements intelligent skill router with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [skill-router-system](skills/agent/skill-router-system/SKILL.md) | Agent | Implements and configures the AI agent skill routing system for auto-loading, trigger matching, confidence scoring, and skills-index generation across orchestration layers. | Orchestration |
 | [skill-scanner](skills/agent/skill-scanner/SKILL.md) | Agent | Implements intelligent skill scanner with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [skill-seekers](skills/agent/skill-seekers/SKILL.md) | Agent | Implements intelligent skill seekers with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [skill-sentinel](skills/agent/skill-sentinel/SKILL.md) | Agent | Implements intelligent skill sentinel with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
