@@ -264,18 +264,19 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-18 21:37:10 UTC  
-> **Total skills:** 601
+> **Last updated:** 2026-05-18 22:14:08 UTC  
+> **Total skills:** 603
 
 ## Skills by Domain
 
 
-### Agent (232 skills)
+### Agent (233 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
 | [acceptance-orchestrator](skills/agent/acceptance-orchestrator/SKILL.md) | Implements intelligent acceptance orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | acceptance-orchestrator, acceptance orchestrator, how do i acceptance-orchestrator, orchestrate acceptance-orchestrator, automate acceptance-orchestrator, agent acceptance-orchestrator |
 | [address-github-comments](skills/agent/address-github-comments/SKILL.md) | Implements intelligent address github comments with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | address-github-comments, address github comments, how do i address-github-comments, orchestrate address-github-comments, automate address-github-comments, agent address-github-comments |
+| [agent-context-management](skills/agent/agent-context-management/SKILL.md) | Implements context window management, sliding window strategies, and persistent memory patterns to maintain AI agent coherence across long interactions. | context window, agent memory, sliding window, session state, prompt optimization, rag, token management, long conversation history |
 | [agent-evaluation](skills/agent/agent-evaluation/SKILL.md) | Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | agent-evaluation, agent evaluation, how do i agent-evaluation, orchestrate agent-evaluation, automate agent-evaluation, agent agent-evaluation |
 | [agent-manager-skill](skills/agent/agent-manager-skill/SKILL.md) | Implements intelligent agent manager skill with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | agent-manager-skill, agent manager skill, how do i agent-manager-skill, orchestrate agent-manager-skill, automate agent-manager-skill, agent agent-manager-skill |
 | [agent-memory-systems](skills/agent/agent-memory-systems/SKILL.md) | Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | agent-memory-systems, agent memory systems, how do i agent-memory-systems, orchestrate agent-memory-systems, automate agent-memory-systems, agent agent-memory-systems |
@@ -683,7 +684,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices | cdn, container, infrastructure as code, monitoring, registry, zot, cloudformation, cloudfront |
 
 
-### Coding (91 skills)
+### Coding (92 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -719,6 +720,7 @@ MIT — All skills are freely available and redistributable.
 | [design-patterns-architecture](skills/coding/design-patterns-architecture/SKILL.md) | Implements GoF design patterns and SOLID/DRY/YAGNI principles to architect scalable, maintainable, and testable software systems. | design patterns, GoF, SOLID, DRY, YAGNI, architecture, creational patterns, structural patterns |
 | [dimensionality-reduction](skills/coding/dimensionality-reduction/SKILL.md) | "Provides Reduces data dimensionality using PCA, t-SNE, UMAP, autoencoders, and other feature extraction methods for visualization and efficiency" | dimensionality reduction, PCA, t-SNE, UMAP, feature extraction, how do i reduce dimensions |
 | [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" | distribution fitting, goodness-of-fit, fitting distributions, distribution selection, how do i fit |
+| [domain-driven-design](skills/coding/domain-driven-design/SKILL.md) | Implements Domain-Driven Design patterns (aggregates, value objects, entities, bounded contexts, domain events) to model complex business logic and align software architecture with domain expertise. | domain driven design, ddd, bounded context, aggregate root, entity, value object, strategic design, tactical patterns |
 | [driven-architecture](skills/coding/driven-architecture/SKILL.md) | "'Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy base, and common pitfalls' | event driven architecture, event-driven, event-driven-architecture, real-time, trading, eventbridge, event bus, event routing |
 | [driven-development](skills/coding/driven-development/SKILL.md) | "Test-Driven Development (TDD) and Behavior-Driven Development (BDD) patterns" with pytest, unit tests, mocking, and test pyramid principles | behavior-driven, patterns, test driven development, test-driven, test-driven-development |
 | [dry-principles](skills/coding/dry-principles/SKILL.md) | Implements DRY (Don't Repeat Yourself) principle enforcement through pattern recognition, code duplication detection, and refactoring guidance for clean maintainable codebases | dry principle, don't repeat yourself, code duplication, refactoring, code duplication detection, refactoring guidance, maintainable code, code reuse |
@@ -915,7 +917,7 @@ MIT — All skills are freely available and redistributable.
 ## Skills by Role
 
 
-### Implementation (Build Features) (220 skills)
+### Implementation (Build Features) (221 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -976,6 +978,7 @@ MIT — All skills are freely available and redistributable.
 | [disaster-recovery](skills/cncf/disaster-recovery/SKILL.md) | Cncf | Implements comprehensive disaster recovery planning for Kubernetes clusters with backup strategies, recovery procedures, cross-region replication, RPO/RTO planning, and validation workflows. |
 | [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" |
 | [docker-debugging](skills/agent/docker-debugging/SKILL.md) | Agent | Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization |
+| [domain-driven-design](skills/coding/domain-driven-design/SKILL.md) | Coding | Implements Domain-Driven Design patterns (aggregates, value objects, entities, bounded contexts, domain events) to model complex business logic and align software architecture with domain expertise. |
 | [drawdown-analysis](skills/trading/drawdown-analysis/SKILL.md) | Trading | "Implements maximum drawdown, recovery time, and value-at-risk analysis for risk management and algorithmic trading execution." |
 | [drawdown-control](skills/trading/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity preservation for risk management and algorithmic trading execution." |
 | [driven-architecture](skills/coding/driven-architecture/SKILL.md) | Coding | "'Event-driven architecture for real-time trading systems: pub/sub patterns" event types, signal flow, strategy base, and common pitfalls' |
@@ -1304,12 +1307,13 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices |
 
 
-### Orchestration (Manage AI Agents) (222 skills)
+### Orchestration (Manage AI Agents) (223 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
 | [acceptance-orchestrator](skills/agent/acceptance-orchestrator/SKILL.md) | Agent | Implements intelligent acceptance orchestrator with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [address-github-comments](skills/agent/address-github-comments/SKILL.md) | Agent | Implements intelligent address github comments with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [agent-context-management](skills/agent/agent-context-management/SKILL.md) | Agent | Implements context window management, sliding window strategies, and persistent memory patterns to maintain AI agent coherence across long interactions. |
 | [agent-evaluation](skills/agent/agent-evaluation/SKILL.md) | Agent | Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [agent-manager-skill](skills/agent/agent-manager-skill/SKILL.md) | Agent | Implements intelligent agent manager skill with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [agent-memory-systems](skills/agent/agent-memory-systems/SKILL.md) | Agent | Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
@@ -1547,6 +1551,7 @@ MIT — All skills are freely available and redistributable.
 | [address-github-comments](skills/agent/address-github-comments/SKILL.md) | Agent | Implements intelligent address github comments with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [advanced](skills/coding/advanced/SKILL.md) | Coding | "Provides Advanced Git operations including rebasing, cherry-picking, bisecting, reflog, worktrees, filtering branches, and multi-repository workflows for exper" | Reference |
 | [advanced-patterns](skills/go/advanced-patterns/SKILL.md) | Go | Applies advanced Go patterns including generics, reflection, functional options, and metaprogramming for performance-critical and framework-level code. | Implementation |
+| [agent-context-management](skills/agent/agent-context-management/SKILL.md) | Agent | Implements context window management, sliding window strategies, and persistent memory patterns to maintain AI agent coherence across long interactions. | Orchestration |
 | [agent-evaluation](skills/agent/agent-evaluation/SKILL.md) | Agent | Implements intelligent agent evaluation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [agent-manager-skill](skills/agent/agent-manager-skill/SKILL.md) | Agent | Implements intelligent agent manager skill with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [agent-memory-systems](skills/agent/agent-memory-systems/SKILL.md) | Agent | Implements intelligent agent memory systems with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
@@ -1729,6 +1734,7 @@ MIT — All skills are freely available and redistributable.
 | [distribution-fitting](skills/coding/distribution-fitting/SKILL.md) | Coding | "Provides Fits statistical distributions to data using goodness-of-fit tests, parameter estimation, and distribution selection methods" | Implementation |
 | [docker-debugging](skills/agent/docker-debugging/SKILL.md) | Agent | Diagnoses and resolves Docker container issues including crashes, OOM errors, network problems, volume mounts, resource contention, and caching optimization | Implementation |
 | [documentation](skills/agent/documentation/SKILL.md) | Agent | Implements intelligent documentation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
+| [domain-driven-design](skills/coding/domain-driven-design/SKILL.md) | Coding | Implements Domain-Driven Design patterns (aggregates, value objects, entities, bounded contexts, domain events) to model complex business logic and align software architecture with domain expertise. | Implementation |
 | [dragonfly](skills/cncf/dragonfly/SKILL.md) | Cncf | "Provides Dragonfly in Cloud-Native Engineering - P2P file distribution" | Reference |
 | [drawdown-analysis](skills/trading/drawdown-analysis/SKILL.md) | Trading | "Implements maximum drawdown, recovery time, and value-at-risk analysis for risk management and algorithmic trading execution." | Implementation |
 | [drawdown-control](skills/trading/drawdown-control/SKILL.md) | Trading | "Implements maximum drawdown control and equity preservation for risk management and algorithmic trading execution." | Implementation |
