@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-19T03:23:24.920882Z",
-  "totalSkills": 603,
+  "generatedAt": "2026-05-19T03:42:31.815873Z",
+  "totalSkills": 604,
   "domains": {
-    "agent": 233,
+    "agent": 234,
     "cncf": 169,
     "coding": 91,
     "go": 12,
@@ -12,7 +12,7 @@
     "writing": 1
   },
   "roles": {
-    "orchestration": 223,
+    "orchestration": 224,
     "implementation": 221,
     "information": 1,
     "reference": 157,
@@ -5292,6 +5292,32 @@
       "relatedSkills": [],
       "version": "1.0.0",
       "source": "skills/cncf/operator-framework/SKILL.md"
+    },
+    {
+      "name": "framework-selection",
+      "domain": "agent",
+      "description": "Applies structured decision-making frameworks (weighted scoring, RICE, MoSCoW, decision matrices) to evaluate options against requirements and select optimal solutions.",
+      "role": "orchestration",
+      "scope": "orchestration",
+      "outputFormat": "analysis",
+      "triggers": [
+        "framework selection",
+        "weighted scoring",
+        "decision matrix",
+        "option evaluation",
+        "criteria-based selection",
+        "RICE prioritization",
+        "MoSCoW",
+        "how do i choose between options"
+      ],
+      "relatedSkills": [
+        "goal-to-milestones",
+        "task-decomposition-engine",
+        "dynamic-replanner",
+        "self-critique-engine"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/framework-selection/SKILL.md"
     },
     {
       "name": "freshdesk-automation",
