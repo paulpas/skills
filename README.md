@@ -264,13 +264,13 @@ MIT — All skills are freely available and redistributable.
 
 <!-- AUTO-GENERATED SKILLS INDEX START -->
 
-> **Last updated:** 2026-05-19 03:23:25 UTC  
-> **Total skills:** 603
+> **Last updated:** 2026-05-18 22:39:44 UTC  
+> **Total skills:** 604
 
 ## Skills by Domain
 
 
-### Agent (233 skills)
+### Agent (234 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
@@ -369,6 +369,7 @@ MIT — All skills are freely available and redistributable.
 | [fal-audio](skills/agent/fal-audio/SKILL.md) | Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | fal-audio, fal audio, how do i fal-audio, orchestrate fal-audio, automate fal-audio, agent fal-audio |
 | [filesystem-context](skills/agent/filesystem-context/SKILL.md) | Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | filesystem-context, filesystem context, how do i filesystem-context, orchestrate filesystem-context, automate filesystem-context, agent filesystem-context |
 | [finishing-a-development-branch](skills/agent/finishing-a-development-branch/SKILL.md) | Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | finishing-a-development-branch, finishing a development branch, how do i finishing-a-development-branch, orchestrate finishing-a-development-branch, automate finishing-a-development-branch, agent finishing-a-development-branch |
+| [framework-selection](skills/agent/framework-selection/SKILL.md) | Applies structured decision-making frameworks (weighted scoring, RICE, MoSCoW, decision matrices) to evaluate options against requirements and select optimal solutions. | framework selection, weighted scoring, decision matrix, option evaluation, criteria-based selection, RICE prioritization, MoSCoW, how do i choose between options |
 | [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | freshdesk-automation, freshdesk automation, how do i freshdesk-automation, orchestrate freshdesk-automation, automate freshdesk-automation, agent freshdesk-automation |
 | [full-stack-orchestration-full-stack-feature](skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | full-stack-orchestration-full-stack-feature, full stack orchestration full stack feature, how do i full-stack-orchestration-full-stack-feature, orchestrate full-stack-orchestration-full-stack-feature, automate full-stack-orchestration-full-stack-feature, agent full-stack-orchestration-full-stack-feature |
 | [gemini-api-integration](skills/agent/gemini-api-integration/SKILL.md) | Implements intelligent gemini api integration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | gemini-api-integration, gemini api integration, how do i gemini-api-integration, orchestrate gemini-api-integration, automate gemini-api-integration, agent gemini-api-integration |
@@ -1307,7 +1308,7 @@ MIT — All skills are freely available and redistributable.
 | [zot](skills/cncf/zot/SKILL.md) | Cncf | "Zot in Container Registry - cloud native architecture, patterns, pitfalls" and best practices |
 
 
-### Orchestration (Manage AI Agents) (223 skills)
+### Orchestration (Manage AI Agents) (224 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1402,6 +1403,7 @@ MIT — All skills are freely available and redistributable.
 | [fal-audio](skills/agent/fal-audio/SKILL.md) | Agent | Implements intelligent fal audio with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [filesystem-context](skills/agent/filesystem-context/SKILL.md) | Agent | Implements intelligent filesystem context with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [finishing-a-development-branch](skills/agent/finishing-a-development-branch/SKILL.md) | Agent | Implements intelligent finishing a development branch with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
+| [framework-selection](skills/agent/framework-selection/SKILL.md) | Agent | Applies structured decision-making frameworks (weighted scoring, RICE, MoSCoW, decision matrices) to evaluate options against requirements and select optimal solutions. |
 | [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [full-stack-orchestration-full-stack-feature](skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Agent | Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
 | [gemini-api-integration](skills/agent/gemini-api-integration/SKILL.md) | Agent | Implements intelligent gemini api integration with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense |
@@ -1779,6 +1781,7 @@ MIT — All skills are freely available and redistributable.
 | [fluid](skills/cncf/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for data-intensive" applications | Reference |
 | [flux](skills/cncf/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for kubernetes for cloud-native deployment and infrastructure management." | Reference |
 | [framework](skills/cncf/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes operators" with standardized patterns | Reference |
+| [framework-selection](skills/agent/framework-selection/SKILL.md) | Agent | Applies structured decision-making frameworks (weighted scoring, RICE, MoSCoW, decision matrices) to evaluate options against requirements and select optimal solutions. | Orchestration |
 | [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [full-stack-orchestration-full-stack-feature](skills/agent/full-stack-orchestration-full-stack-feature/SKILL.md) | Agent | Implements intelligent full stack orchestration full stack feature with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
 | [functions](skills/cncf/functions/SKILL.md) | Cncf | Provides Serverless computing with event-driven functions and automatic scaling | Reference |
