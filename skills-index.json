@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-18T20:39:43.203434Z",
-  "totalSkills": 595,
+  "generatedAt": "2026-05-19T03:23:24.920882Z",
+  "totalSkills": 603,
   "domains": {
-    "agent": 230,
+    "agent": 233,
     "cncf": 169,
-    "coding": 86,
+    "coding": 91,
     "go": 12,
     "linux": 10,
     "programming": 4,
@@ -12,8 +12,8 @@
     "writing": 1
   },
   "roles": {
-    "orchestration": 221,
-    "implementation": 215,
+    "orchestration": 223,
+    "implementation": 221,
     "information": 1,
     "reference": 157,
     "review": 1
@@ -138,6 +138,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/go/advanced-patterns/SKILL.md"
+    },
+    {
+      "name": "agent-context-management",
+      "domain": "agent",
+      "description": "Implements context window management, sliding window strategies, and persistent memory patterns to maintain AI agent coherence across long interactions.",
+      "role": "orchestration",
+      "scope": "orchestration",
+      "outputFormat": "analysis",
+      "triggers": [
+        "context window",
+        "agent memory",
+        "sliding window",
+        "session state",
+        "prompt optimization",
+        "rag",
+        "token management",
+        "long conversation history"
+      ],
+      "relatedSkills": [
+        "agent-conversation-summarizer",
+        "agent-task-decomposition-engine",
+        "agent-reasoning-framework"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/agent-context-management/SKILL.md"
     },
     {
       "name": "agent-evaluation",
@@ -4261,6 +4286,31 @@
       "source": "skills/agent/documentation/SKILL.md"
     },
     {
+      "name": "domain-driven-design",
+      "domain": "coding",
+      "description": "Implements Domain-Driven Design patterns (aggregates, value objects, entities, bounded contexts, domain events) to model complex business logic and align software architecture with domain expertise.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "domain driven design",
+        "ddd",
+        "bounded context",
+        "aggregate root",
+        "entity",
+        "value object",
+        "strategic design",
+        "tactical patterns"
+      ],
+      "relatedSkills": [
+        "design-patterns-architecture",
+        "software-design-principles",
+        "event-driven-architecture"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/domain-driven-design/SKILL.md"
+    },
+    {
       "name": "dragonfly",
       "domain": "cncf",
       "description": "\"Provides Dragonfly in Cloud-Native Engineering - P2P file distribution\"",
@@ -6400,6 +6450,34 @@
       "source": "skills/agent/inngest/SKILL.md"
     },
     {
+      "name": "input-validation",
+      "domain": "coding",
+      "description": "Validates, sanitizes, and transforms inbound data through typed schema checks, OWASP-compliant sanitization, and defensive parsing to prevent injection attacks and data corruption.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "input validation",
+        "data sanitization",
+        "schema validation",
+        "input filtering",
+        "sanitize user input",
+        "prevent injection",
+        "OWASP",
+        "form validation",
+        "parse and validate",
+        "defense in depth",
+        "data entry"
+      ],
+      "relatedSkills": [
+        "security-review",
+        "test-driven-development",
+        "error-handling"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/input-validation/SKILL.md"
+    },
+    {
       "name": "instrumental-variables",
       "domain": "coding",
       "description": "\"Provides Uses instrumental variables (IV), two-stage least squares (2SLS), and IV estimation to identify causal effects in observational data\"",
@@ -7647,6 +7725,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/m365-agents-ts/SKILL.md"
+    },
+    {
+      "name": "make",
+      "domain": "coding",
+      "description": "Implements systematic build orchestration (Makefile, Nix, Bazel, Just) with dependency tracking, incremental compilation, phony targets, and cross-platform portability for reproducible software construction.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "make",
+        "build system",
+        "makefile",
+        "compilation",
+        "incremental build",
+        "build automation",
+        "justfile",
+        "phony targets"
+      ],
+      "relatedSkills": [
+        "testing",
+        "refactoring",
+        "ci-cd-pipelines"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/make/SKILL.md"
     },
     {
       "name": "make-automation",
@@ -11097,6 +11200,31 @@
       "source": "skills/agent/skill-developer/SKILL.md"
     },
     {
+      "name": "skill-engineering",
+      "domain": "agent",
+      "description": "Engineers production-ready AI skills following framework standards, including YAML frontmatter, trigger design, workflow structuring, and stub prevention for reliable agent routing.",
+      "role": "implementation",
+      "scope": "infrastructure",
+      "outputFormat": "code",
+      "triggers": [
+        "skill design",
+        "skill creation",
+        "AI skill",
+        "framework standards",
+        "trigger engineering",
+        "workflow pattern",
+        "agent configuration",
+        "skill routing"
+      ],
+      "relatedSkills": [
+        "confidence-based-selector",
+        "task-routing-engine",
+        "dependency-graph-builder"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/skill-engineering/SKILL.md"
+    },
+    {
       "name": "skill-improver",
       "domain": "agent",
       "description": "Implements intelligent skill improver with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense",
@@ -11205,6 +11333,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/skill-router/SKILL.md"
+    },
+    {
+      "name": "skill-router-system",
+      "domain": "agent",
+      "description": "Implements and configures the AI agent skill routing system for auto-loading, trigger matching, confidence scoring, and skills-index generation across orchestration layers.",
+      "role": "orchestration",
+      "scope": "orchestration",
+      "outputFormat": "analysis",
+      "triggers": [
+        "skill router",
+        "auto-routing",
+        "trigger matching",
+        "skills-index",
+        "agent dispatch",
+        "adaptive routing",
+        "prompt injection",
+        "task routing"
+      ],
+      "relatedSkills": [
+        "confidence-based-selector",
+        "parallel-skill-runner",
+        "dependency-graph-builder"
+      ],
+      "version": "1.0.0",
+      "source": "skills/agent/skill-router-system/SKILL.md"
     },
     {
       "name": "skill-scanner",
@@ -11381,6 +11534,56 @@
       ],
       "version": "1.0.0",
       "source": "skills/cncf/aws-sns/SKILL.md"
+    },
+    {
+      "name": "software-design-principles",
+      "domain": "coding",
+      "description": "Implements core software design principles (SOLID, KISS, YAGNI, composition over inheritance, DRY) to guide architecture decisions and prevent structural debt.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "software design",
+        "SOLID principles",
+        "KISS",
+        "YAGNI",
+        "DRY",
+        "composition over inheritance",
+        "clean code",
+        "modular design"
+      ],
+      "relatedSkills": [
+        "coding-code-review",
+        "coding-design-patterns",
+        "coding-refactoring"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/software-design-principles/SKILL.md"
+    },
+    {
+      "name": "software-engineering-principles",
+      "domain": "coding",
+      "description": "Applies core software engineering principles (modularity, separation of concerns, defensive programming, YAGNI) to produce maintainable, robust, and scalable code.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "software engineering",
+        "modular design",
+        "separation of concerns",
+        "defensive programming",
+        "KISS principle",
+        "YAGNI",
+        "clean architecture"
+      ],
+      "relatedSkills": [
+        "coding-code-review",
+        "coding-testing",
+        "coding-error-handling",
+        "coding-refactoring"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/software-engineering-principles/SKILL.md"
     },
     {
       "name": "spiffe",
