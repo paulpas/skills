@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-18T20:26:41.824276Z",
-  "totalSkills": 594,
+  "generatedAt": "2026-05-18T20:39:43.203434Z",
+  "totalSkills": 595,
   "domains": {
     "agent": 230,
     "cncf": 169,
-    "coding": 85,
+    "coding": 86,
     "go": 12,
     "linux": 10,
     "programming": 4,
@@ -13,7 +13,7 @@
   },
   "roles": {
     "orchestration": 221,
-    "implementation": 214,
+    "implementation": 215,
     "information": 1,
     "reference": 157,
     "review": 1
@@ -7669,6 +7669,31 @@
       ],
       "version": "1.0.0",
       "source": "skills/agent/make-automation/SKILL.md"
+    },
+    {
+      "name": "makefile",
+      "domain": "coding",
+      "description": "Implements Makefile best practices for build automation including phony targets, pattern rules, variable scoping, and cross-platform compatibility to streamline software build processes.",
+      "role": "implementation",
+      "scope": "implementation",
+      "outputFormat": "code",
+      "triggers": [
+        "makefile",
+        "make",
+        "build automation",
+        "phony targets",
+        "pattern rules",
+        "build system",
+        "make command",
+        "cross-platform make"
+      ],
+      "relatedSkills": [
+        "shell-scripting",
+        "docker-compose",
+        "ci-cd-pipelines"
+      ],
+      "version": "1.0.0",
+      "source": "skills/coding/makefile/SKILL.md"
     },
     {
       "name": "manager",
