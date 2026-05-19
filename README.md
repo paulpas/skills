@@ -817,12 +817,13 @@ MIT — All skills are freely available and redistributable.
 | [storage-architecture](skills/linux/storage-architecture/SKILL.md) | Designs and implements Linux storage architectures for cloud block storage and on-prem SAN/NAS with performance and durability guarantees. | storage architecture, LVM, filesystem, XFS, ext4, btrfs, cloud storage, NVMe, mount options, storage monitoring |
 
 
-### Programming (4 skills)
+### Programming (5 skills)
 
 | Skill Name | Description | Triggers |
 |---|---|---|
 | [algorithms](skills/programming/algorithms/SKILL.md) | ''Provides Comprehensive algorithm selection guide u2014 choose, implement, and' optimize algorithms based on time/space trade-offs, input characteristics, and problem constraints'' | algorithms, comprehensive, algorithm, selection |
 | [async-runtime](skills/programming/async-runtime/SKILL.md) | Implements and analyzes Rust async runtime patterns including tokio, async-std, and custom executors for high-performance concurrent systems. | rust async, tokio, async-std, futures, executor, concurrency, non-blocking io, async runtime |
+| [for-loop-iteration](skills/programming/for-loop-iteration/SKILL.md) | Teaches idiomatic for loop patterns across Python, JavaScript, Go, C/C++, Rust, and shell scripting with anti-patterns, common pitfalls, and best practices. | for loop, iteration, loop patterns, enumerate, range, iterator, list comprehension, index-based loop, how do i iterate over a collection |
 | [v10-learning](skills/programming/v10-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 10.1A (2005) — data types" variable declaration, procedures, functions, OOP basics, error handling, database access, transaction handling, control flow | abl, abl programming, abl v10, openedge, openedge 10, progress 4gl, progress abl |
 | [v12-learning](skills/programming/v12-learning/SKILL.md) | "Reference guide for Progress OpenEdge ABL 12.7 (2023) — v10→v12 migration" INT64, ENUM, VAR shorthand, CATCH/THROW/FINALLY, JSON support, generic collections, safe navigation operator, server-side joins | abl v12, openedge 12, abl 12.7, v10 to v12 migration, abl migration, catch throw, jsonobject, read-json |
 
@@ -1145,7 +1146,7 @@ MIT — All skills are freely available and redistributable.
 | [websocket-streaming](skills/trading/websocket-streaming/SKILL.md) | Trading | "Implements real-time market data streaming and processing for risk management and algorithmic trading execution." |
 
 
-### Reference (Learn & Understand) (157 skills)
+### Reference (Learn & Understand) (158 skills)
 
 | Skill Name | Domain | Description |
 |---|---|---|
@@ -1211,6 +1212,7 @@ MIT — All skills are freely available and redistributable.
 | [fluentd](skills/cncf/fluentd/SKILL.md) | Cncf | "Fluentd unified logging layer for collecting, transforming, and routing" log data in cloud-native environments |
 | [fluid](skills/cncf/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for data-intensive" applications |
 | [flux](skills/cncf/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for kubernetes for cloud-native deployment and infrastructure management." |
+| [for-loop-iteration](skills/programming/for-loop-iteration/SKILL.md) | Programming | Teaches idiomatic for loop patterns across Python, JavaScript, Go, C/C++, Rust, and shell scripting with anti-patterns, common pitfalls, and best practices. |
 | [framework](skills/cncf/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes operators" with standardized patterns |
 | [functions](skills/cncf/functions/SKILL.md) | Cncf | Provides Serverless computing with event-driven functions and automatic scaling |
 | [gke](skills/cncf/gke/SKILL.md) | Cncf | "Provides Managed Kubernetes cluster with automatic scaling, networking, and GCP service integration" |
@@ -1780,6 +1782,7 @@ MIT — All skills are freely available and redistributable.
 | [fluentd](skills/cncf/fluentd/SKILL.md) | Cncf | "Fluentd unified logging layer for collecting, transforming, and routing" log data in cloud-native environments | Reference |
 | [fluid](skills/cncf/fluid/SKILL.md) | Cncf | "Fluid in A Kubernetes-native data acceleration layer for data-intensive" applications | Reference |
 | [flux](skills/cncf/flux/SKILL.md) | Cncf | "Configures flux in cloud-native engineering - gitops for kubernetes for cloud-native deployment and infrastructure management." | Reference |
+| [for-loop-iteration](skills/programming/for-loop-iteration/SKILL.md) | Programming | Teaches idiomatic for loop patterns across Python, JavaScript, Go, C/C++, Rust, and shell scripting with anti-patterns, common pitfalls, and best practices. | Reference |
 | [framework](skills/cncf/framework/SKILL.md) | Cncf | "Operator Framework in Tools to build and manage Kubernetes operators" with standardized patterns | Reference |
 | [framework-selection](skills/agent/framework-selection/SKILL.md) | Agent | Applies structured decision-making frameworks (weighted scoring, RICE, MoSCoW, decision matrices) to evaluate options against requirements and select optimal solutions. | Orchestration |
 | [freshdesk-automation](skills/agent/freshdesk-automation/SKILL.md) | Agent | Implements intelligent freshdesk automation with multi-factor skill selection, fallback chains, and adherence to the 5 Laws of Elegant Defense | Orchestration |
